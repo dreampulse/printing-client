@@ -1,0 +1,14 @@
+{
+  "extends": "../../.eslintrc",
+  "rules": {
+    "import/no-extraneous-dependencies": 0
+  },
+  "globals": {
+    "expect": true,
+    "sinon": true,
+    "mockStore": true
+  },
+  "env": {
+    "mocha": true
+  }
+}

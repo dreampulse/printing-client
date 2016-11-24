@@ -1,0 +1,101 @@
+.button {
+  background-color: $color-gray-dark;
+  color: $color-invert-text;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+
+  padding: .4em .8em;
+  border-radius: $border-radius;
+
+  > .icon {
+    position: relative;
+    margin-right: .5em;
+    top: -0.1em; // Optimize vertical center
+  }
+
+  &:hover, &:active {
+    background-color: $color-text-secondary;
+  }
+
+  &[disabled] {
+    opacity: .7;
+    cursor: not-allowed;
+
+    &:hover, &:active {
+      background-color: $color-gray-dark;
+    }
+  }
+
+  &--l {
+    padding: 1em 2em;
+  }
+
+  &--input-height {
+    height: $input-height;
+  }
+
+  &--primary {
+    background-color: $color-primary;
+
+    &[disabled] {
+      &:hover, &:active {
+        background-color: $color-primary;
+      }
+    }
+
+    &:hover, &:active {
+      background-color: $color-primary-active;
+    }
+  }
+
+  &--minor {
+    background-color: $color-gray-light;
+    color: $color-text-secondary;
+
+    &[disabled] {
+      &:hover, &:active {
+        background-color: $color-gray-light;
+      }
+    }
+
+    &:hover, &:active {
+      background-color: $color-gray-lighter;
+    }
+  }
+
+  &--text {
+    background-color: inherit;
+    color: $color-primary;
+
+    &[disabled] {
+      &:hover, &:active {
+        color: $color-primary;
+        background-color: inherit;
+      }
+    }
+
+    &:hover, &:active {
+      background-color: inherit;
+      color: $color-primary-active;
+    }
+  }
+
+  &--danger {
+    background-color: $color-danger;
+
+    &[disabled] {
+      &:hover, &:active {
+        background-color: $color-danger;
+      }
+    }
+
+    &:hover, &:active {
+      background-color: $color-danger-active;
+    }
+  }
+
+  &--block {
+    display: block;
+    width: 100%;
+  }
+}

@@ -1,0 +1,22 @@
+.headline {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-l;
+  margin: 0 0 $space-s;
+
+  &--s {
+    color: $color-text-secondary;
+  }
+
+  &--l {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-medium;
+    margin-bottom: $space-xl;
+  }
+
+  &--xl {
+    font-size: $font-size-xxl;
+    font-weight: $font-weight-medium;
+    margin-bottom: $space-xl;
+  }
+}

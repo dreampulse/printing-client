@@ -1,0 +1,10 @@
+.context-menu-list {
+  background-color: $color-invert-bg;
+  color: $color-invert-text;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-base;
+
+  list-style-type: none;
+  margin: 0;
+  padding: .4em;
+}
