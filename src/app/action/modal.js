@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 
-import TYPE from '../../../../purelabs-conference-manager/src/app/type';
+import TYPE from '../../../src/app/type';
 
 export default function create() {
   const open = (title, contentFactory, contentProps, contentModifiers) =>
