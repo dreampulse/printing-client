@@ -1,6 +1,6 @@
-import React from 'react';
-import {storiesOf} from '@kadira/storybook';
-import TwoColumnLayout from '../../app/component/two-column-layout';
+import React from 'react'
+import {storiesOf} from '@kadira/storybook'
+import TwoColumnLayout from '../../app/component/two-column-layout'
 
 storiesOf('Two column layout', module)
   .add('default', () => (
@@ -17,4 +17,4 @@ storiesOf('Two column layout', module)
       </div>
     </TwoColumnLayout>
   ))
-;
+

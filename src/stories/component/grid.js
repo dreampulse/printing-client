@@ -1,7 +1,7 @@
-import React from 'react';
-import {storiesOf} from '@kadira/storybook';
-import Grid from '../../app/component/grid';
-import Column from '../../app/component/column';
+import React from 'react'
+import {storiesOf} from '@kadira/storybook'
+import Grid from '../../app/component/grid'
+import Column from '../../app/component/column'
 
 storiesOf('Grid & Column', module)
   .add('default', () => (
@@ -23,4 +23,4 @@ storiesOf('Grid & Column', module)
       </Column>
     </Grid>
   ))
-;
+

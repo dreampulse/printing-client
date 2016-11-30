@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactModal from 'react-modal';
+import React from 'react'
+import ReactModal from 'react-modal'
 
-import propTypes from '../util/prop-types';
-import buildClassName from '../util/build-class-name';
+import propTypes from '../util/prop-types'
+import buildClassName from '../util/build-class-name'
 
-ReactModal.defaultStyles = {};
+ReactModal.defaultStyles = {}
 
 const Portal = ({
   classNames,
@@ -20,12 +20,12 @@ const Portal = ({
   >
     {children}
   </ReactModal>
-);
+)
 
 Portal.propTypes = {
   ...propTypes.component,
   overlayClassNames: React.PropTypes.arrayOf(React.PropTypes.string),
   children: React.PropTypes.node.isRequired
-};
+}
 
-export default Portal;
+export default Portal

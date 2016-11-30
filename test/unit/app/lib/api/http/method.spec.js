@@ -1,31 +1,31 @@
-import $method from '../../../../../../src/app/lib/api/http/method';
+import $method from '../../../../../../src/app/lib/api/http/method'
 
 describe('http method', () => {
-  let request;
-  let bodyParser;
-  let method;
+  let request
+  let bodyParser
+  let method
 
   beforeEach(() => {
-    request = sinon.stub().resolves();
+    request = sinon.stub().resolves()
     bodyParser = {
       parseJson: () => {}
-    };
-    method = $method({request, bodyParser});
-  });
+    }
+    method = $method({request, bodyParser})
+  })
 
-  function describeNoBody(httpMethod, httpFunctionName) {
+  function describeNoBody (httpMethod, httpFunctionName) {
     return () => {
-      let path;
-      let query;
-      let parser;
-      let httpFunction;
+      let path
+      let query
+      let parser
+      let httpFunction
 
       beforeEach(() => {
-        path = '/some/path';
-        query = {some: 'query'};
-        parser = () => {};
-        httpFunction = method[httpFunctionName];
-      });
+        path = '/some/path'
+        query = {some: 'query'}
+        parser = () => {}
+        httpFunction = method[httpFunctionName]
+      })
 
       it('calls request with defaults', () => {
         httpFunction(path)
@@ -36,9 +36,9 @@ describe('http method', () => {
               null,
               null,
               bodyParser.parseJson
-            ]);
-          });
-      });
+            ])
+          })
+      })
 
       it('calls request', () => {
         httpFunction(path, query, parser)
@@ -49,30 +49,30 @@ describe('http method', () => {
               null,
               query,
               parser
-            ]);
-          });
-      });
-    };
+            ])
+          })
+      })
+    }
   }
 
-  describe('get()', describeNoBody('get', 'get'));
-  describe('remove()', describeNoBody('delete', 'remove'));
+  describe('get()', describeNoBody('get', 'get'))
+  describe('remove()', describeNoBody('delete', 'remove'))
 
-  function describeWithBody(httpMethod) {
+  function describeWithBody (httpMethod) {
     return () => {
-      let path;
-      let query;
-      let parser;
-      let httpFunction;
-      let body;
+      let path
+      let query
+      let parser
+      let httpFunction
+      let body
 
       beforeEach(() => {
-        path = '/some/path';
-        query = {some: 'query'};
-        parser = () => {};
-        body = {some: 'body'};
-        httpFunction = method[httpMethod];
-      });
+        path = '/some/path'
+        query = {some: 'query'}
+        parser = () => {}
+        body = {some: 'body'}
+        httpFunction = method[httpMethod]
+      })
 
       it('calls request with defaults', () => {
         httpFunction(path)
@@ -83,9 +83,9 @@ describe('http method', () => {
               {},
               null,
               bodyParser.parseJson
-            ]);
-          });
-      });
+            ])
+          })
+      })
 
       it('calls request', () => {
         httpFunction(path, body, query, parser)
@@ -96,13 +96,13 @@ describe('http method', () => {
               body,
               query,
               parser
-            ]);
-          });
-      });
-    };
+            ])
+          })
+      })
+    }
   }
 
-  describe('post()', describeWithBody('post'));
-  describe('put()', describeWithBody('put'));
-  describe('patch()', describeWithBody('patch'));
-});
+  describe('post()', describeWithBody('post'))
+  describe('put()', describeWithBody('put'))
+  describe('patch()', describeWithBody('patch'))
+})

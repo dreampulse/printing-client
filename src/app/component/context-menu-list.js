@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-import propTypes from '../util/prop-types';
-import buildClassName from '../util/build-class-name';
+import propTypes from '../util/prop-types'
+import buildClassName from '../util/build-class-name'
 
 const ContextMenuList = ({children, classNames, modifiers}) => (
   <ul className={buildClassName('context-menu-list')}>
@@ -9,11 +9,10 @@ const ContextMenuList = ({children, classNames, modifiers}) => (
       <li key={index}>{child}</li>
     )}
   </ul>
-);
+)
 
 ContextMenuList.propTypes = {
   ...propTypes.component
-};
+}
 
-
-export default ContextMenuList;
+export default ContextMenuList

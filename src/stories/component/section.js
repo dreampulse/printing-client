@@ -1,6 +1,6 @@
-import React from 'react';
-import {storiesOf} from '@kadira/storybook';
-import Section from '../../app/component/section';
+import React from 'react'
+import {storiesOf} from '@kadira/storybook'
+import Section from '../../app/component/section'
 
 storiesOf('Section', module)
   .add('default', () => (
@@ -12,4 +12,4 @@ storiesOf('Section', module)
       cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
       proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </Section>
-  ));
+  ))

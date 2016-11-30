@@ -46,7 +46,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
     "css-loader": "^0.26.0",
-    "eslint": "^3.3.1",
+    "eslint": "^3.11.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.1",
@@ -112,6 +112,8 @@
     "redux-thunk": "^2.0.1",
     "scut": "^1.4.0",
     "serve-favicon": "^2.3.0",
+    "standard": "^8.6.0",
+    "standard-react": "^4.0.0",
     "susy": "^2.2.12",
     "timezones.json": "^1.1.0",
     "whatwg-fetch": "^2.0.1"

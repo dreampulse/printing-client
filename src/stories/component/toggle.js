@@ -1,10 +1,10 @@
-import React from 'react';
-import {storiesOf, action} from '@kadira/storybook';
-import Toggle from '../../app/component/toggle';
+import React from 'react'
+import {storiesOf, action} from '@kadira/storybook'
+import Toggle from '../../app/component/toggle'
 
 storiesOf('Toggle', module)
   .add('default', () => (
-    <Toggle onChange={action('change')} label="Some Label" />
+    <Toggle onChange={action('change')} label='Some Label' />
   ))
   .add('secondary', () => (
     <Toggle modifiers={['secondary']} onChange={action('change')} />
@@ -16,6 +16,6 @@ storiesOf('Toggle', module)
     <Toggle value onChange={action('change')} />
   ))
   .add('block', () => (
-    <Toggle modifiers={['block']} label="Some Label" />
+    <Toggle modifiers={['block']} label='Some Label' />
   ))
-;
+

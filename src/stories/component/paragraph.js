@@ -1,6 +1,6 @@
-import React from 'react';
-import {storiesOf} from '@kadira/storybook';
-import Paragraph from '../../app/component/paragraph';
+import React from 'react'
+import {storiesOf} from '@kadira/storybook'
+import Paragraph from '../../app/component/paragraph'
 
 storiesOf('Paragraph', module)
   .add('default', () => (
@@ -12,4 +12,4 @@ storiesOf('Paragraph', module)
       cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
       proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </Paragraph>
-  ));
+  ))

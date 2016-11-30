@@ -1,20 +1,20 @@
-import 'babel-polyfill';
-import expect from 'unexpected';
-import unexpectedSinon from 'unexpected-sinon';
-import sinon from 'sinon';
-import 'sinon-as-promised';
-import configureStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import {browserHistory} from 'react-router';
-import {routerMiddleware} from 'react-router-redux';
+import 'babel-polyfill'
+import expect from 'unexpected'
+import unexpectedSinon from 'unexpected-sinon'
+import sinon from 'sinon'
+import 'sinon-as-promised'
+import configureStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {browserHistory} from 'react-router'
+import {routerMiddleware} from 'react-router-redux'
 
 // Add store middlewares here
 global.mockStore = configureStore([
   thunk,
   routerMiddleware(browserHistory)
-]);
+])
 
-expect.use(unexpectedSinon);
+expect.use(unexpectedSinon)
 
-global.expect = expect;
-global.sinon = sinon;
+global.expect = expect
+global.sinon = sinon

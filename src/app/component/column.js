@@ -1,8 +1,8 @@
-import React from 'react';
-import compact from 'lodash/compact';
+import React from 'react'
+import compact from 'lodash/compact'
 
-import propTypes from '../util/prop-types';
-import buildClassName from '../util/build-class-name';
+import propTypes from '../util/prop-types'
+import buildClassName from '../util/build-class-name'
 
 const Column = ({classNames, modifiers = [], children, sm = 12, md, lg, smPush, mdPush, lgPush}) => {
   const allModifiers = compact([
@@ -13,14 +13,14 @@ const Column = ({classNames, modifiers = [], children, sm = 12, md, lg, smPush, 
     mdPush ? `md-push-${mdPush}` : undefined,
     lgPush ? `lg-push-${lgPush}` : undefined,
     ...modifiers
-  ]);
+  ])
 
   return (
     <div className={buildClassName('column', allModifiers, classNames)}>
       {children}
     </div>
-  );
-};
+  )
+}
 
 Column.propTypes = {
   ...propTypes.component,
@@ -31,6 +31,6 @@ Column.propTypes = {
   smPush: React.PropTypes.number,
   mdPush: React.PropTypes.number,
   lgPush: React.PropTypes.number
-};
+}
 
-export default Column;
+export default Column

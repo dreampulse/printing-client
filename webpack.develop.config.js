@@ -1,8 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
+const path = require('path')
+const webpack = require('webpack')
+const autoprefixer = require('autoprefixer')
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000
 
 module.exports = {
   entry: [
@@ -63,4 +63,4 @@ module.exports = {
     })
   ],
   devtool: 'eval-source-map'  // https://webpack.github.io/docs/configuration.html#devtool
-};
+}

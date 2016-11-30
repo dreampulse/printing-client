@@ -1,8 +1,8 @@
-import React from 'react';
-import {storiesOf} from '@kadira/storybook';
+import React from 'react'
+import {storiesOf} from '@kadira/storybook'
 
-import InvertDecorator from '../decorator/invert';
-import LoadingIndicator from '../../app/component/loading-indicator';
+import InvertDecorator from '../decorator/invert'
+import LoadingIndicator from '../../app/component/loading-indicator'
 
 storiesOf('Loading Indicator', module)
   .add('default', () => (
@@ -13,4 +13,4 @@ storiesOf('Loading Indicator', module)
   ))
   .add('invert', () => InvertDecorator(() => (
     <LoadingIndicator modifiers={['invert']} />
-  )));
+  )))

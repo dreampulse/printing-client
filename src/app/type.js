@@ -8,4 +8,4 @@ export default {
   APP: {
     FOO_ACTION: 'APP.FOO_ACTION'
   }
-};
+}

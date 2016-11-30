@@ -1,8 +1,8 @@
-import $app from '../../../../../src/app/lib/api/app';
+import $app from '../../../../../src/app/lib/api/app'
 
 describe('api app', () => {
-  let http;
-  let app;
+  let http
+  let app
 
   beforeEach(() => {
     http = {
@@ -10,18 +10,18 @@ describe('api app', () => {
       put: sinon.stub().resolves(),
       post: sinon.stub().resolves(),
       remove: sinon.stub().resolves()
-    };
+    }
 
-    app = $app({http});
-  });
+    app = $app({http})
+  })
 
   describe('getConstants()', () => {
     it('calls http.get', () => {
       return app.getConstants().then(() => {
         expect(http.get, 'to have a call satisfying', [
           '/api/constants/'
-        ]);
-      });
-    });
-  });
-});
+        ])
+      })
+    })
+  })
+})

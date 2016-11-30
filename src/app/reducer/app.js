@@ -1,14 +1,14 @@
-import {handleActions} from 'redux-actions';
+import {handleActions} from 'redux-actions'
 
-import TYPE from '../type';
+import TYPE from '../type'
 
-export default function create() {
+export default function create () {
   const initialState = {
     hello: 'hi!',
     foo: 0
-  };
+  }
 
-  function handleFooAction(state, action) {
+  function handleFooAction (state, action) {
     return {
       ...state,
       foo: state.foo + 1
@@ -17,5 +17,5 @@ export default function create() {
 
   return handleActions({
     [TYPE.APP.FOO_ACTION]: handleFooAction
-  }, initialState);
+  }, initialState)
 }

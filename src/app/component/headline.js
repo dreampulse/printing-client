@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 
-import propTypes from '../util/prop-types';
-import buildClassName from '../util/build-class-name';
+import propTypes from '../util/prop-types'
+import buildClassName from '../util/build-class-name'
 
 const Headline = ({modifiers, classNames, label, tag = 'h1'}) =>
   React.createElement(tag, {
     className: buildClassName('headline', modifiers, classNames)
-  }, label);
+  }, label)
 
 Headline.propTypes = {
   ...propTypes.component,
@@ -14,6 +14,6 @@ Headline.propTypes = {
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
   ]),
   label: React.PropTypes.string.isRequired
-};
+}
 
-export default Headline;
+export default Headline

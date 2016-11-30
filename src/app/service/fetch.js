@@ -1,3 +1,3 @@
-import 'whatwg-fetch';
+import 'whatwg-fetch'
 
-export default global.fetch;
+export default global.fetch

@@ -1,6 +1,6 @@
-import React from 'react';
-import {storiesOf, action} from '@kadira/storybook';
-import Checkbox from '../../app/component/checkbox';
+import React from 'react'
+import {storiesOf, action} from '@kadira/storybook'
+import Checkbox from '../../app/component/checkbox'
 
 storiesOf('Checkbox', module)
   .add('default', () => (
@@ -9,4 +9,4 @@ storiesOf('Checkbox', module)
   .add('checked', () => (
     <Checkbox checked onChange={action('change')} />
   ))
-;
+
