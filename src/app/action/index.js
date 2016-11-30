@@ -1,15 +1,12 @@
-import {routerActions} from 'react-router-redux';
+import * as api from '../lib/api';
+import Modal from './modal';
+import Model from './model';
 
 import TYPE from '../type';
 
-import $modal from './modal';
-
-const modal = $modal({});
-
-export default {
-  modal,
-  routerActions,
-  foo: {
-    bar: () => ({type: TYPE.APP.FOO_ACTION})
-  }
+export {routerActions} from 'react-router-redux';
+export const modal = Modal({});
+export const model = Model({api});
+export const foo = {
+  bar: () => ({type: TYPE.APP.FOO_ACTION})
 };

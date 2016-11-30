@@ -1,15 +1,32 @@
 export default ({fetch}) => {
-  const baseUrl = 'https://printing-engine.all3dp.com/v1';
+  const baseUrl = 'http://localhost:8000/v1';
 
-  const upload = (fileFormField, unit) => {
-    const data = new FormData();
-    data.append('file', fileFormField);
-    data.append('unit', unit);
+  const upload = (form, onProgressChange) => {
+    const xhr = new XMLHttpRequest();
 
-    return fetch(baseUrl + '/model', {
-      method: 'POST',
-      body: data
-    })
+    xhr.upload.addEventListener('progress', event => {
+      if (event.lengthComputable) {
+        const progress = event.loaded / event.total;
+        onProgressChange(progress)
+      }
+    });
+
+    const promise = new Promise((resolve, reject) => {
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve(JSON.parse(xhr.responseText));
+          } else {
+            reject(xhr.responseText);
+          }
+        }
+      };
+    });
+
+    xhr.open('POST', baseUrl + '/model');
+    xhr.send(form);
+
+    return promise;
   };
 
   const listMaterials = () => {
@@ -42,7 +59,6 @@ export default ({fetch}) => {
     upload,
     listMaterials,
     createUser,
-    priceRequest,
     createPriceRequest,
     getPrice
   }

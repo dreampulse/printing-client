@@ -10,6 +10,11 @@ class Upload extends Component {
     progress: null
   };
 
+  static propTypes = {
+    onUpload: React.PropTypes.func.isRequired,
+    onUploaded: React.PropTypes.func.isRequired
+  };
+
   componentDidMount() {
     this.refs.fileInputDom.addEventListener('change', this.fileSelected);
   }
@@ -17,48 +22,35 @@ class Upload extends Component {
   fileSelected = event => {
     const files = event.currentTarget.files;
     if (files.length > 0) {
-      this.upload(files[0]);
+      const form = new FormData();
+      form.append('file', files[0]);
+      form.append('unit', 'mm');
+
+      this.setState({
+        isUploadInProgress: true,
+        progress: 0
+      });
+      this.props.onUpload(form, this.onProgressChange)
+        .then(res => {
+          this.setState({
+            isUploadInProgress: false,
+            progress: null
+          });
+
+          this.props.onUploaded(res);
+        })
+        .catch(err => {
+          this.setState({
+            isUploadInProgress: false,
+            progress: null
+          });
+        })
     }
   };
 
-  upload(file) {
-    const {uploadPath, onUploadFinished, onUploadFailed} = this.props;
-
-    this.setState({isUploadInProgress: true});
-
-    const form = new FormData();
-    form.append('file', file);
-    form.append('unit', 'mm');
-    // form.append('unit', this.state.unit);
-
-    const xhr = new XMLHttpRequest();
-
-    xhr.upload.addEventListener('progress', event => {
-      if (event.lengthComputable) {
-        const progress = event.loaded / event.total;
-
-        this.setState({progress});
-      }
-    });
-
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          onUploadFinished(xhr.responseText);
-        } else {
-          onUploadFailed(xhr.responseText);
-        }
-
-        this.setState({
-          isUploadInProgress: false,
-          progress: null
-        });
-      }
-    };
-
-    xhr.open('POST', uploadPath);
-    xhr.send(form);
-  }
+  onProgressChange = progress => {
+    this.setState({progress});
+  };
 
   openFileUploadDialog = () => event => {
     this.refs.fileInputDom.click();
@@ -66,13 +58,14 @@ class Upload extends Component {
 
   render() {
     const {classNames, modifiers, accept} = this.props;
-    const {isUploadInProgress, progress} = this.props;
+    const {isUploadInProgress, progress} = this.state;
+
+    const label = isUploadInProgress ? `${Math.round(progress * 100)}% uploaded` : 'upload'
 
     return (
       <div className={buildClassName('upload', modifiers, classNames)}>
         <input type="file" accept={accept} className="upload__file-input" ref="fileInputDom"/>
-        <Button label="upload" onClick={this.openFileUploadDialog()}/>
-        { isUploadInProgress ? <div>Progress: {progress * 100}%</div> : null }
+        <Button label={label} onClick={this.openFileUploadDialog()} disabled={isUploadInProgress}/>
       </div>
     );
   }
