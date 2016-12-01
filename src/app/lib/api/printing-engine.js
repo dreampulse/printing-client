@@ -30,39 +30,27 @@ export default ({fetch}) => {
     return promise
   }
 
-  const getUploadStatus = ({modelId}) => {
-    return fetch(baseUrl + '/model/' + modelId)
+  const getUploadStatus = ({modelId}) =>
+    fetch(baseUrl + '/model/' + modelId)
       .then(response => response.status === 200)
       .catch(() => false)
-  }
 
-  const listMaterials = () => {
-    return fetch(baseUrl + '/material')
-      .then(response => response.json())
-  }
+  const listMaterials = () => http('/materials')
 
-  const createUser = ({currency, city, zipCode, stateCode, countryCode}) => {
-    return fetch(baseUrl + '/material', {
-      method: 'POST',
-      body: {currency, shippingAddress: {city, zipCode, stateCode, countryCode} }
-    })
-      .then(response => response.json())
-  }
+  const createUser = ({user}) => http('/user', {method: 'POST', body: user})
 
-  const createPriceRequest = ({modelId, materialId, userId}) => {
-    return fetch(baseUrl + '/price', {
+  const createPriceRequest = ({modelId, materialId, userId}) =>
+    http('/price', {
       method: 'POST',
       body: {items: [{modelId, materialId}], userId}
     })
-      .then(response => response.json())
-  }
 
-  const getPrice = ({priceId}) => {
-    return fetch(`${baseUrl}/price/${priceId}`)
-      .then(response => response.json())
-  }
+  const getPrice = ({priceId}) => http('/price/' + priceId)
 
-  const getMaterials = async () => await (fetch(`${baseUrl}/materials`)).json()
+  async function http (path, options) {
+    const response = await fetch(baseUrl + path, options)
+    return response.json()
+  }
 
   return {
     uploadModel,
@@ -70,7 +58,6 @@ export default ({fetch}) => {
     listMaterials,
     createUser,
     createPriceRequest,
-    getPrice,
-    getMaterials
+    getPrice
   }
 }
