@@ -2,6 +2,8 @@ import React from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
 
+import 'babel-polyfill'
+
 import action from './action'
 import store from './store'
 import router from './router'

@@ -1,7 +1,8 @@
 export default ({fetch}) => {
-  const baseUrl = 'http://localhost:8000/v1'
+  // const baseUrl = 'http://localhost:8000/v1'
+  const baseUrl = 'https://printing-engine.all3dp.com/v1'
 
-  const upload = (form, onProgressChange) => {
+  const uploadModel = (form, onProgressChange) => {
     const xhr = new XMLHttpRequest()
 
     xhr.upload.addEventListener('progress', event => {
@@ -27,6 +28,12 @@ export default ({fetch}) => {
     xhr.send(form)
 
     return promise
+  }
+
+  const getUploadStatus = ({modelId}) => {
+    return fetch(baseUrl + '/model/' + modelId)
+      .then(response => response.status === 200)
+      .catch(() => false)
   }
 
   const listMaterials = () => {
@@ -55,11 +62,15 @@ export default ({fetch}) => {
       .then(response => response.json())
   }
 
+  const getMaterials = async () => await (fetch(`${baseUrl}/materials`)).json()
+
   return {
-    upload,
+    uploadModel,
+    getUploadStatus,
     listMaterials,
     createUser,
     createPriceRequest,
-    getPrice
+    getPrice,
+    getMaterials
   }
 }

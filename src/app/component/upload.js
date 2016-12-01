@@ -12,7 +12,8 @@ class Upload extends Component {
 
   static propTypes = {
     onUpload: React.PropTypes.func.isRequired,
-    onUploaded: React.PropTypes.func.isRequired
+    onUploaded: React.PropTypes.func.isRequired,
+    label: React.PropTypes.string.isRequired
   };
 
   componentDidMount() {
@@ -24,7 +25,7 @@ class Upload extends Component {
     if (files.length > 0) {
       const form = new FormData();
       form.append('file', files[0]);
-      form.append('unit', 'mm');
+      form.append('unit', 'mm');  // TODO
 
       this.setState({
         isUploadInProgress: true,
@@ -57,15 +58,15 @@ class Upload extends Component {
   };
 
   render() {
-    const {classNames, modifiers, accept} = this.props;
+    const {classNames, modifiers, accept, label} = this.props;
     const {isUploadInProgress, progress} = this.state;
 
-    const label = isUploadInProgress ? `${Math.round(progress * 100)}% uploaded` : 'upload'
+    const buttonLabel = isUploadInProgress ? `${Math.round(progress * 100)}% uploaded` : label
 
     return (
       <div className={buildClassName('upload', modifiers, classNames)}>
         <input type="file" accept={accept} className="upload__file-input" ref="fileInputDom"/>
-        <Button label={label} onClick={this.openFileUploadDialog()} disabled={isUploadInProgress}/>
+        <Button label={buttonLabel} onClick={this.openFileUploadDialog()} disabled={isUploadInProgress}/>
       </div>
     );
   }

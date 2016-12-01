@@ -8,5 +8,7 @@ export {routerActions} from 'react-router-redux'
 export const modal = Modal({})
 export const model = Model({api})
 export const foo = {
-  bar: () => ({type: TYPE.APP.FOO_ACTION})
+  bar: () => ({
+    type: TYPE.APP.FOO_ACTION
+  })
 }
