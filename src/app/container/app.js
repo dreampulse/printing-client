@@ -5,23 +5,26 @@ import * as actions from '../action'
 
 import Upload from '../component/upload'
 import Headline from '../component/headline'
+import Button from '../component/button'
 
 console.log('-- actions', actions)
-const App = ({hello, bar, counter, onUpload, onUploaded}) => (
+const App = ({hello, bar, counter, onUpload, onUploaded, onGetPrice}) => (
   <div>
     <Headline label='Printing Engine Test Client' />
     <Upload label='Upload a model' onUpload={onUpload} onUploaded={onUploaded} />
+
+    <Button label='Get Price' onClick={onGetPrice}/>
+
+    <div>Price</div>
   </div>
 )
 
 const mapStateToProps = (state, ownProps) => ({
-  hello: state.app.hello,
-  counter: state.app.foo
 })
 const mapDispatchToProps = {
-  bar: actions.foo.bar,
   onUpload: actions.model.upload,
-  onUploaded: actions.model.modelUploaded
+  onUploaded: actions.model.modelUploaded,
+  onGetPrice: actions.price.createPriceRequest
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
