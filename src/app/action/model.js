@@ -17,7 +17,7 @@ export default ({api}) => {
       else dispatch(createAction(TYPE.MODEL.UPLOAD_ABORTED)())
     }
 
-    pollStatus(100)
+    await pollStatus(100)
   }
 
   return {

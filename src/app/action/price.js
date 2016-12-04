@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions'
 
-import TYPE from '../../../src/app/type'
+// import TYPE from '../../../src/app/type'
 
 export default function create ({api, materials}) {
   const createPriceRequest = () => async dispatch => {

@@ -5042,9 +5042,9 @@ reduce-reducers@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/reduce-reducers/-/reduce-reducers-0.1.2.tgz#fa1b4718bc5292a71ddd1e5d839c9bea9770f14b"
 
-redux-actions@^0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/redux-actions/-/redux-actions-0.13.0.tgz#34bf77c5698e86d86b0edb533ea23a1c0658f4fe"
+redux-actions@0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/redux-actions/-/redux-actions-0.11.0.tgz#055113e6052399f32f7f02783f6704ef6789dc67"
   dependencies:
     lodash "^4.13.1"
     reduce-reducers "^0.1.0"
