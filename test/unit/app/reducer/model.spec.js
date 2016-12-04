@@ -10,7 +10,7 @@ describe('app reducer', () => {
 
   it('returns the initial state', () => {
     expect(reducer(undefined, {}), 'to equal', {
-      isUploadFinished: true,
+      isUploadFinished: false,
       modelId: null
     })
   })

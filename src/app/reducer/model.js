@@ -4,7 +4,7 @@ import TYPE from '../type'
 
 export default function create () {
   const initialState = {
-    isUploadFinished: true,
+    isUploadFinished: false,
     modelId: null
   }
 
