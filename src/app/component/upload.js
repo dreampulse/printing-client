@@ -20,32 +20,20 @@ class Upload extends Component {
     this.refs.fileInputDom.addEventListener('change', this.fileSelected);
   }
 
-  fileSelected = event => {
-    const files = event.currentTarget.files;
-    if (files.length > 0) {
-      const form = new FormData();
-      form.append('file', files[0]);
-      form.append('unit', 'mm');  // TODO
+  fileSelected = async event => {
+    const files = event.currentTarget.files
+    if (files.length < 1) return
 
-      this.setState({
-        isUploadInProgress: true,
-        progress: 0
-      });
-      this.props.onUpload(form, this.onProgressChange)
-        .then(res => {
-          this.setState({
-            isUploadInProgress: false,
-            progress: null
-          });
+    const form = new FormData();
+    form.append('file', files[0]);
+    form.append('unit', 'mm');  // TODO
 
-          this.props.onUploaded(res);
-        })
-        .catch(err => {
-          this.setState({
-            isUploadInProgress: false,
-            progress: null
-          });
-        })
+    try {
+      this.setState({ isUploadInProgress: true, progress: 0 });
+      const res = await this.props.onUpload(form, this.onProgressChange)
+      this.props.onUploaded(res)
+    } finally {
+      this.setState({ isUploadInProgress: false, progress: null });
     }
   };
 
