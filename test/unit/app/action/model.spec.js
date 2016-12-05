@@ -43,7 +43,5 @@ describe('model actions', () => {
 
       expect(api.printingEngine.getUploadStatus, 'was called with', options)
     })
-
-    it.skip('reties a few times')  // @TODO
   })
 })
