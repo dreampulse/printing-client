@@ -48,7 +48,11 @@ export const createPriceRequest = ({modelId, materialId, userId}) =>
 
 export const getPrice = ({priceId}) => http('/price/' + priceId)
 
-async function http (path, options) {
+export const getMaterials = () => http('/materials')
+
+async function http (path, options = {}) {
+  options.headers = { 'Content-Type': 'application/json' }
+  if (options.body) options.body = JSON.stringify(options.body)
   const response = await fetch(baseUrl + path, options)
   return response.json()
 }

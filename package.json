@@ -23,8 +23,7 @@
     "posttest:coverage": "istanbul check-coverage",
     "changes": "./bin/update-changelog.js ./ --dry-run",
     "prerelease": "npm run test && ./bin/update-changelog.js ./",
-    "release": "./bin/bump-release.js ./",
-    "postinstall": "npm run build"
+    "release": "./bin/bump-release.js ./"
   },
   "author": "All3dp <info@all3dp.com>",
   "contributors": [
@@ -60,6 +59,7 @@
     "html-webpack-plugin": "^2.16.0",
     "http-server": "^0.9.0",
     "import-glob-loader": "^1.1.0",
+    "isomorphic-fetch": "^2.2.1",
     "isparta": "^4.0.0",
     "istanbul": "^0.4.5",
     "json-loader": "^0.5.4",
