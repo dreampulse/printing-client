@@ -21,19 +21,10 @@ describe('model actions', () => {
   });
 
   describe('upload()', () => {
-    it('dispatches no actions', async () => {
-      await store.dispatch(model.upload('some-form-data', 'some-callback'))
-      expect(store.getActions(), 'to equal', []);
-    });
-
     it('calls the printing engine api', async () => {
-      await store.dispatch(model.upload('some-form-data', 'some-callback'))
-      expect(api.printingEngine.uploadModel, 'was called with',
-        'some-form-data', 'some-callback')
-    });
-
-    it('returns the correct value', async () => {
       const result = await store.dispatch(model.upload('some-form-data', 'some-callback'))
+      expect(store.getActions(), 'to equal', [])
+      expect(api.printingEngine.uploadModel, 'was called with', 'some-form-data', 'some-callback')
       expect(result, 'to equal', 'upload-model-api-response')
     })
   });
@@ -52,7 +43,5 @@ describe('model actions', () => {
 
       expect(api.printingEngine.getUploadStatus, 'was called with', options)
     })
-
-    it.skip('reties a few times')  // @TODO
   })
 })
