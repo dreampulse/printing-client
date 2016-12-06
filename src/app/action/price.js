@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions'
 
 // import TYPE from '../../../src/app/type'
 
-export default function create ({api, materials}) {
+export default function create ({printingEngine, materials}) {
   const createPriceRequest = () => async dispatch => {
     const user = {
       currency: 'USD',
@@ -14,13 +14,13 @@ export default function create ({api, materials}) {
       }
     }
 
-    const {userId} = await api.printingEngine.createUser({user})
+    const {userId} = await printingEngine.createUser({user})
 
-    const materials = await api.printingEngine.getMaterials()
+    const materials = await printingEngine.getMaterials()
     console.log("-- materials", materials);
     const materialId = Object.keys(materials)[0]
 
-    const {priceId} = await api.printingEngine.createPriceRequest({
+    const {priceId} = await printingEngine.createPriceRequest({
       modelId,
       materialId
     })

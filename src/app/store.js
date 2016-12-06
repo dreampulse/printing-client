@@ -5,7 +5,6 @@ import {routerMiddleware} from 'react-router-redux'
 
 import rootReducer from './reducer'
 
-
 export default (initialState = {}) => {
   let middleware = compose(
     applyMiddleware(

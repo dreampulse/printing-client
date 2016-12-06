@@ -6,13 +6,15 @@ import 'babel-polyfill'
 
 import action from './action'
 import Store from './store'
-import router from './router'
+import Router from './router'
 
 import '../sass/main.scss'
 
+const store = Store()
+
 render(
-  <Provider store={Store()}>
-    {router}
+  <Provider store={store}>
+    <Router store={store} />
   </Provider>,
   global.document.getElementById('root')
 )

@@ -2,9 +2,9 @@ import {createAction} from 'redux-actions'
 
 import TYPE from '../../../src/app/type'
 
-export default function create ({api}) {
+export default function create ({printingEngine}) {
   const getMaterials = () => async dispatch => {
-    const materials = await api.printingEngine.getMaterials()
+    const materials = await printingEngine.getMaterials()
     dispatch(createAction(TYPE.MATERIAL.RECEIVED)(materials))
   }
 
