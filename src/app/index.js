@@ -5,13 +5,13 @@ import {Provider} from 'react-redux'
 import 'babel-polyfill'
 
 import action from './action'
-import store from './store'
+import Store from './store'
 import router from './router'
 
 import '../sass/main.scss'
 
 render(
-  <Provider store={store}>
+  <Provider store={Store()}>
     {router}
   </Provider>,
   global.document.getElementById('root')
