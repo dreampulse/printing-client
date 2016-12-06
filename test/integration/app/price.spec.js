@@ -2,7 +2,7 @@ import PriceAction from '../../../../src/app/action/price'
 import Store from '../../../../src/app/store'
 import printingEngine from '../../../../src/app/lib/printing-engine'
 
-describe('Printing engine libraray', () => {
+describe('Price Integration Test', () => {
   let price, store
 
   beforeEach(() => {
