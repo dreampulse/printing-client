@@ -8,20 +8,20 @@ import Upload from '../component/upload'
 import Headline from '../component/headline'
 import Button from '../component/button'
 
-
-const App = ({onUpload, onUploaded, onGetPrice}) => (
+const App = ({onUpload, onUploaded, onGetPrice, modelId}) => (
   <div>
     <Headline label='Printing Engine Test Client' />
     <Upload label='Upload a model' onUpload={onUpload} onUploaded={onUploaded} />
 
-    <Button label='Get Price' onClick={onGetPrice} />
-
-    <div>Price</div>
+    {modelId ? <Button label='Get Price' onClick={onGetPrice} /> : null}
+    
   </div>
 )
 
 const mapStateToProps = (state, ownProps) => ({
+  modelId: state.model.modelId
 })
+
 const mapDispatchToProps = {
   onUpload: upload,
   onUploaded: modelUploaded,
