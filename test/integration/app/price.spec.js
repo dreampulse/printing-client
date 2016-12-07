@@ -24,7 +24,7 @@ describe('Price Integration Test', () => {
           modelId
         }
       })
-      
+
       restApi.createUser.resolves({userId})
       restApi.createPriceRequest.resolves({priceId})
       restApi.listMaterials.resolves({'0':{}})

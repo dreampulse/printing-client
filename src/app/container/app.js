@@ -9,7 +9,7 @@ import Headline from '../component/headline'
 import Button from '../component/button'
 
 
-const App = ({hello, bar, counter, onUpload, onUploaded, onGetPrice}) => (
+const App = ({onUpload, onUploaded, onGetPrice}) => (
   <div>
     <Headline label='Printing Engine Test Client' />
     <Upload label='Upload a model' onUpload={onUpload} onUploaded={onUploaded} />
