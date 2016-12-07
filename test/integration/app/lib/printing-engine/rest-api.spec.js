@@ -1,4 +1,3 @@
-import config from '../../../../../src/app/config'
 import * as http from '../../../../../src/app/service/http'
 import * as restApi from '../../../../../src/app/lib/printing-engine/rest-api'
 

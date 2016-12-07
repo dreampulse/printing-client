@@ -49,6 +49,7 @@
     "css-loader": "^0.26.0",
     "eslint": "^3.11.1",
     "eslint-config-airbnb": "^13.0.0",
+    "eslint-config-standard-jsx": "^3.2.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.1",
     "eslint-plugin-react": "^6.1.2",

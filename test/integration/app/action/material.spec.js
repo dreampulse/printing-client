@@ -2,7 +2,6 @@ import { getMaterials } from '../../../../src/app/action/material'
 import Store from '../../../../src/app/store'
 import * as restApi from '../../../../src/app/lib/printing-engine/rest-api'
 
-
 describe('Material Integration Test', () => {
   let store
 
@@ -24,5 +23,4 @@ describe('Material Integration Test', () => {
       expect(store.getState().material, 'to equal', 'some-materials')
     })
   })
-
 })

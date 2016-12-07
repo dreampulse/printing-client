@@ -2,7 +2,6 @@ import { createPriceRequest } from '../../../../src/app/action/price'
 import Store from '../../../../src/app/store'
 import * as restApi from '../../../../src/app/lib/printing-engine/rest-api'
 
-
 describe('Price Integration Test', () => {
   let store
 
@@ -28,7 +27,7 @@ describe('Price Integration Test', () => {
 
       restApi.createUser.resolves({userId})
       restApi.createPriceRequest.resolves({priceId})
-      restApi.listMaterials.resolves({'0':{}})
+      restApi.listMaterials.resolves({'0': {}})
 
       await store.dispatch(createPriceRequest({modelId}))
 
@@ -37,5 +36,4 @@ describe('Price Integration Test', () => {
       })
     })
   })
-
 })

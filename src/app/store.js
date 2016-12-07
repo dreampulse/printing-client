@@ -35,5 +35,5 @@ export default (initialState = {}) => {
     }
   }
 
-  return store;
+  return store
 }
