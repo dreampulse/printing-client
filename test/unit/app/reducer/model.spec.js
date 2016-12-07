@@ -1,13 +1,7 @@
-import Reducer from '../../../../src/app/reducer/model'
+import reducer from '../../../../src/app/reducer/model'
 import TYPE from '../../../../src/app/type'
 
 describe('app reducer', () => {
-  let reducer
-
-  beforeEach(() => {
-    reducer = Reducer()
-  })
-
   it('returns the initial state', () => {
     expect(reducer(undefined, {}), 'to equal', {
       isUploadFinished: false,

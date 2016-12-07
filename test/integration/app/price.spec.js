@@ -1,4 +1,4 @@
-import { price } from '../../../src/app/action'
+import { createPriceRequest } from '../../../src/app/action/price'
 import Store from '../../../src/app/store'
 import * as restApi from '../../../src/app/lib/printing-engine/rest-api'
 
@@ -23,7 +23,7 @@ describe('Price Integration Test', () => {
       restApi.createPriceRequest.resolves({priceId})
       restApi.listMaterials.resolves({'0':{}})
 
-      await store.dispatch(price.createPriceRequest({modelId}))
+      await store.dispatch(createPriceRequest({modelId}))
 
       expect(store.getState().price, 'to equal', {
         priceId
