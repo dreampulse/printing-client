@@ -4,7 +4,7 @@ import TYPE from '../type'
 
 const initialState = {}
 
-function handleReceivedMaterials(state, {payload}) {
+function handleReceivedMaterials (state, {payload}) {
   return payload
 }
 

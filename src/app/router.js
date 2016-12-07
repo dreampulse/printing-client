@@ -1,5 +1,5 @@
 import React from 'react'
-import {Router, Route, IndexRoute, IndexRedirect, browserHistory} from 'react-router'
+import {Router, Route, browserHistory} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 
 import App from './container/app'

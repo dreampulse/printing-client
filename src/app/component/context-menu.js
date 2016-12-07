@@ -1,9 +1,9 @@
-import React, {Component, PropTypes, cloneElement} from 'react';
+import React, {Component, PropTypes, cloneElement} from 'react'
 
-import Portal from '../../app/component/portal';
-import ContextMenuList from '../../app/component/context-menu-list';
-import buildClassName from '../util/build-class-name';
-import propTypes from '../util/prop-types';
+import Portal from '../../app/component/portal'
+import ContextMenuList from '../../app/component/context-menu-list'
+import buildClassName from '../util/build-class-name'
+import propTypes from '../util/prop-types'
 
 export default class ContextMenu extends Component {
 
@@ -26,7 +26,7 @@ export default class ContextMenu extends Component {
     this.setState({
       isContextMenuSizeKnown: false,
       isOpen: false
-    });
+    })
   }
 
   handleOpen = (event) => {
@@ -36,60 +36,60 @@ export default class ContextMenu extends Component {
         x: event.pageX,
         y: event.pageY
       }
-    });
+    })
   }
 
   handleContextMenuItemClicked = (contextMenuItemOnClickHandler) => {
     return (event) => {
-      this.handleClose();
-      if (contextMenuItemOnClickHandler) contextMenuItemOnClickHandler(event);
-    };
+      this.handleClose()
+      if (contextMenuItemOnClickHandler) contextMenuItemOnClickHandler(event)
+    }
   }
 
   contextMenuDidOpen = () => {
-    const size = this.menuListDOM.getBoundingClientRect();
+    const size = this.menuListDOM.getBoundingClientRect()
 
     this.setState({
       isContextMenuSizeKnown: true,
       contextMenuSize: size
-    });
+    })
   }
 
-  render() {
-    const {modifiers, classNames, children, menu} = this.props;
+  render () {
+    const {modifiers, classNames, children, menu} = this.props
 
     const style = {
       content: {
         top: 0,
         left: 0
       }
-    };
+    }
 
     if (this.state.isContextMenuSizeKnown) {
-      const {x, y} = this.state.clickOrigin;
+      const {x, y} = this.state.clickOrigin
 
-      const viewportHeight = global.innerHeight;
-      const viewportWidth = global.innerWidth;
-      const contextMenuHeight = this.state.contextMenuSize.height;
-      const contextMenuWidth = this.state.contextMenuSize.width;
+      const viewportHeight = global.innerHeight
+      const viewportWidth = global.innerWidth
+      const contextMenuHeight = this.state.contextMenuSize.height
+      const contextMenuWidth = this.state.contextMenuSize.width
 
       // Calculate context menu position
       style.content = {
         left: (x + contextMenuWidth > viewportWidth ? viewportWidth - contextMenuWidth : x),
         top: (y + contextMenuHeight > viewportHeight ? viewportHeight - contextMenuHeight : y)
-      };
+      }
     }
 
     // Add a an additional click handler for each context menu items
     // I assume, that all children are of type <ContextMenuItem />
     const modifiedMenu = menu.map((menuItem, index) => {
-      const contextMenuItemOnClickHandler = menuItem.props.onClick;
+      const contextMenuItemOnClickHandler = menuItem.props.onClick
 
       return cloneElement(menuItem, {
         key: index,
         onClick: this.handleContextMenuItemClicked(contextMenuItemOnClickHandler)
-      });
-    });
+      })
+    })
 
     return (
       <span
@@ -103,7 +103,7 @@ export default class ContextMenu extends Component {
           onAfterOpen={this.contextMenuDidOpen}
           onRequestClose={this.handleClose}
         >
-          <div ref={d => { this.menuListDOM = d; }}>
+          <div ref={d => { this.menuListDOM = d }}>
             <ContextMenuList>
               {modifiedMenu}
             </ContextMenuList>
@@ -111,6 +111,6 @@ export default class ContextMenu extends Component {
         </Portal>
         {children}
       </span>
-    );
+    )
   }
 }

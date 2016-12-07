@@ -2171,7 +2171,7 @@ eslint-config-standard-jsx@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/eslint-config-standard-jsx/-/eslint-config-standard-jsx-3.0.0.tgz#d8c10a3cfb81fae4068589963df7516ffc0bdd4e"
 
-eslint-config-standard-jsx@3.2.0, eslint-config-standard-jsx@^3.0.0:
+eslint-config-standard-jsx@3.2.0, eslint-config-standard-jsx@^3.0.0, eslint-config-standard-jsx@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/eslint-config-standard-jsx/-/eslint-config-standard-jsx-3.2.0.tgz#c240e26ed919a11a42aa4de8059472b38268d620"
 

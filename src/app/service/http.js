@@ -1,6 +1,7 @@
 import 'whatwg-fetch'
 
 export const fetch = global.fetch
+export const Xhr = global.XMLHttpRequest
 
 export async function request (url, options = {}) {
   options.headers = { 'Content-Type': 'application/json' }
@@ -9,7 +10,7 @@ export async function request (url, options = {}) {
   return checkStatus(response)
 }
 
-function checkStatus(response) {
+function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
     if (isJSON(response)) return response.json()
   } else {
@@ -20,12 +21,12 @@ function checkStatus(response) {
   }
 }
 
-function isJSON({ headers }) {
+function isJSON ({ headers }) {
   return headers.get('content-type').includes('application/json')
 }
 
 export function upload (url, data, onProgress) {
-  const xhr = new XMLHttpRequest()
+  const xhr = new Xhr()
 
   xhr.upload.addEventListener('progress', event => {
     if (event.lengthComputable) {

@@ -2,7 +2,6 @@ import { upload, modelUploaded } from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as restApi from '../../../../src/app/lib/printing-engine/rest-api'
 
-
 describe('Model Integration Test', () => {
   let store
 
@@ -25,7 +24,7 @@ describe('Model Integration Test', () => {
       expect(restApi.uploadModel, 'was called with', 'some-form-data', 'some-callback')
       expect(result, 'to equal', apiResponse)
     })
-  });
+  })
 
   describe('modelUploaded()', () => {
     it('handles the finished case', async () => {
@@ -39,7 +38,7 @@ describe('Model Integration Test', () => {
     })
 
     it('handles the aborted case', async () => {
-      restApi.getUploadStatus.rejects(new Error)
+      restApi.getUploadStatus.rejects(new Error())
       await store.dispatch(modelUploaded({modelId}))
 
       expect(store.getState().model, 'to equal', {
