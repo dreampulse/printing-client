@@ -1,7 +1,7 @@
 import reducer from '../../../../src/app/reducer/model'
 import TYPE from '../../../../src/app/type'
 
-describe('app reducer', () => {
+describe('Model Reducer Unit Test', () => {
   it('returns the initial state', () => {
     expect(reducer(undefined, {}), 'to equal', {
       isUploadFinished: false,

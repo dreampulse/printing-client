@@ -19,7 +19,7 @@
     "test:integration:watch": "mocha --opts test/mocha.opts ./test/integration/ --watch",
     "test:unit": "mocha --opts test/mocha.opts ./test/unit/",
     "test:unit:watch": "mocha --opts test/mocha.opts ./test/unit/ --watch",
-    "test:coverage": "babel-node node_modules/isparta/bin/isparta cover _mocha -- --opts test/unit/mocha.opts",
+    "test:coverage": "babel-node node_modules/isparta/bin/isparta cover _mocha -- --opts test/mocha.opts",
     "posttest:coverage": "istanbul check-coverage",
     "changes": "./bin/update-changelog.js ./ --dry-run",
     "prerelease": "npm run test && ./bin/update-changelog.js ./",

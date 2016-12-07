@@ -2,6 +2,7 @@ import { createPriceRequest } from '../../../../src/app/action/price'
 import Store from '../../../../src/app/store'
 import * as restApi from '../../../../src/app/lib/printing-engine/rest-api'
 
+
 describe('Price Integration Test', () => {
   let store
 
