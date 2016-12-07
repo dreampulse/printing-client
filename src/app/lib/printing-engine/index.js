@@ -7,7 +7,7 @@ export function pollUploadStatus ({modelId}) {
 
   return new Promise((resolve, reject) => {
     const pollStatus = async () => {
-      const isFinished = await getUploadStatus({modelId})
+      const isFinished = await getUploadStatus({modelId}).catch(reject)
       if (isFinished) resolve()
       else if (retries-- > 0) setTimeout(pollStatus, interval)
       else reject()

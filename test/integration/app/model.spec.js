@@ -37,5 +37,15 @@ describe('Model Integration Test', () => {
         modelId
       })
     })
+
+    it('handles the aborted case', async () => {
+      restApi.getUploadStatus.rejects(new Error)
+      await store.dispatch(model.modelUploaded({modelId}))
+
+      expect(store.getState().model, 'to equal', {
+        isUploadFinished: false,
+        modelId
+      })
+    })
   })
 })
