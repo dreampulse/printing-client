@@ -1,9 +1,9 @@
 import {createAction} from 'redux-actions'
 
-// import TYPE from '../../../src/app/type'
+import TYPE from '../../../src/app/type'
 
 export default function create ({printingEngine, materials}) {
-  const createPriceRequest = () => async dispatch => {
+  const createPriceRequest = ({ modelId }) => async dispatch => {
     const user = {
       currency: 'USD',
       shippingAddress: {
@@ -15,19 +15,16 @@ export default function create ({printingEngine, materials}) {
     }
 
     const {userId} = await printingEngine.createUser({user})
-
-    const materials = await printingEngine.getMaterials()
-    console.log("-- materials", materials);
+    const materials = await printingEngine.listMaterials()
     const materialId = Object.keys(materials)[0]
 
     const {priceId} = await printingEngine.createPriceRequest({
+      userId,
       modelId,
       materialId
     })
 
-    console.log("-- priceId", priceId)
-
-    // dispatch(createAction(TYPE.MATERIAL.RECEIVED)(materials))
+    dispatch(createAction(TYPE.PRICE.REQUEST_CREATED)(priceId))
   }
 
   return {

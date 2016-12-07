@@ -1,26 +1,33 @@
-import PriceAction from '../../../../src/app/action/price'
-import Store from '../../../../src/app/store'
-import * as printingEngine from '../../../src/app/lib/printing-engine/printing-engine'
+import { price } from '../../../src/app/action'
+import Store from '../../../src/app/store'
+import * as restApi from '../../../src/app/lib/printing-engine/rest-api'
 
 describe('Price Integration Test', () => {
-  let price, store
+  let store
 
   beforeEach(() => {
+    sinon.stub(restApi)
     store = Store({})
-    price = PriceAction({printingEngine})
+  })
+
+  afterEach(() => {
+    sinon.restore(restApi)
   })
 
   describe('createPriceRequest()', () => {
     it('should work', async () => {
-      const foo = await store.dispatch(price.createPriceRequest())
+      const modelId = '123'
+      const priceId = '456'
+      const userId = '789'
+      restApi.createUser.resolves({userId})
+      restApi.createPriceRequest.resolves({priceId})
+      restApi.listMaterials.resolves({'0':{}})
 
-      console.log("-- foo", foo);
+      await store.dispatch(price.createPriceRequest({modelId}))
 
-      // expect(store.getState().model, 'to equal', {
-      //   isUploadFinished: true,
-      //   modelId
-      // })
-      // expect(printingEngine.pollUploadStatus, 'was called with', options)
+      expect(store.getState().price, 'to equal', {
+        priceId
+      })
     })
   })
 

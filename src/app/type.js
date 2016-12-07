@@ -15,5 +15,8 @@ export default {
   },
   MATERIAL: {
     RECEIVED: 'MATERIAL.RECEIVED'
+  },
+  PRICE: {
+    REQUEST_CREATED: 'PRICE.REQUEST_CREATED'
   }
 }
