@@ -1,4 +1,6 @@
+import config from '../../config'
+import RestApi from './rest-api'
 import PrintingEngine from './printing-engine'
-import * as restApi from './rest-api'
 
+const restApi = RestApi({config})
 export default PrintingEngine({restApi})
