@@ -1,22 +1,24 @@
-import ModelAction from '../../../src/app/action/model'
+import { model } from '../../../src/app/action'
 import Store from '../../../src/app/store'
-import printingEngine from '../../../src/app/lib/printing-engine'
+import * as printingEngine from '../../../src/app/lib/printing-engine'
+import * as restApi from '../../../src/app/lib/printing-engine/rest-api'
+
 
 describe('Model Integration Test', () => {
-  let model, store
+  let store
 
   const modelId = 'some-model-id'
 
   beforeEach(() => {
     sinon.stub(printingEngine)
+    sinon.stub(restApi)
     store = Store({})
-    model = ModelAction({printingEngine})
   })
 
   afterEach(() => {
     sinon.restore(printingEngine)
+    sinon.restore(restApi)
   })
-
 
   describe('upload()', () => {
     it('calls the printing engine api', async () => {

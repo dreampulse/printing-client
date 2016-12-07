@@ -1,6 +1,17 @@
-import config from '../../config'
-import RestApi from './rest-api'
-import PrintingEngine from './printing-engine'
+import { getUploadStatus } from './rest-api'
+export * from './rest-api'
 
-const restApi = RestApi({config})
-export default PrintingEngine({restApi})
+export function pollUploadStatus ({modelId}) {
+  let retries = 100
+  const interval = 1000
+
+  return new Promise((resolve, reject) => {
+    const pollStatus = async () => {
+      const isFinished = await getUploadStatus({modelId})
+      if (isFinished) resolve()
+      else if (retries-- > 0) setTimeout(pollStatus, interval)
+      else reject()
+    }
+    pollStatus()
+  })
+}

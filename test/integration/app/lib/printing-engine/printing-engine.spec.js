@@ -1,4 +1,4 @@
-import printingEngine from '../../../../../src/app/lib/printing-engine'
+import * as printingEngine from '../../../../../src/app/lib/printing-engine'
 
 describe('Printing Engine REST Api Integration Test', () => {
   let price, store

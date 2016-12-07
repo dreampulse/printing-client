@@ -21,7 +21,7 @@ function checkStatus(response) {
 }
 
 function isJSON({ headers }) {
-  return headers._headers['content-type'].some(i => i.includes('application/json'))
+  return headers.get('content-type').includes('application/json')
 }
 
 export function upload (url, data, onProgress) {

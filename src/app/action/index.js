@@ -1,4 +1,4 @@
-import printingEngine from '../lib/printing-engine'
+import * as printingEngine from '../lib/printing-engine'
 import Modal from './modal'
 import Model from './model'
 import Material from './material'
