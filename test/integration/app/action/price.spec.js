@@ -1,16 +1,16 @@
 import { createPriceRequest } from '../../../../src/app/action/price'
 import Store from '../../../../src/app/store'
-import * as restApi from '../../../../src/app/lib/printing-engine/rest-api'
+import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
 describe('Price Integration Test', () => {
   let store
 
   beforeEach(() => {
-    sinon.stub(restApi)
+    sinon.stub(printingEngine)
   })
 
   afterEach(() => {
-    sinon.restore(restApi)
+    sinon.restore(printingEngine)
   })
 
   describe('createPriceRequest()', () => {
@@ -25,14 +25,17 @@ describe('Price Integration Test', () => {
         }
       })
 
-      restApi.createUser.resolves({userId})
-      restApi.createPriceRequest.resolves({priceId})
-      restApi.listMaterials.resolves({'0': {}})
+      printingEngine.createUser.resolves({userId})
+      printingEngine.createPriceRequest.resolves({priceId})
+      printingEngine.listMaterials.resolves({'0': {}})
+      printingEngine.getPriceStatus.resolves(true)
+      printingEngine.getPrice.resolves('some-price')
 
       await store.dispatch(createPriceRequest({modelId}))
 
       expect(store.getState().price, 'to equal', {
-        priceId
+        priceId,
+        price: 'some-price'
       })
     })
   })

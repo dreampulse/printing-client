@@ -1,5 +1,5 @@
-import config from '../../config'
-import { upload, request, fetch } from '../../service/http'
+import config from '../config'
+import { upload, request, fetch } from '../service/http'
 
 const baseUrl = config.printingEngineBaseUrl
 
@@ -23,3 +23,8 @@ export const createPriceRequest = ({modelId, materialId, userId}) =>
   })
 
 export const getPrice = ({priceId}) => request(baseUrl + '/price/' + priceId)
+
+export const getPriceStatus = async ({priceId}) => {
+  const response = await fetch(baseUrl + '/price/' + priceId)
+  return response.status === 200
+}
