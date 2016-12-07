@@ -1,6 +1,6 @@
-import { upload, modelUploaded } from '../../../src/app/action/model'
-import Store from '../../../src/app/store'
-import * as restApi from '../../../src/app/lib/printing-engine/rest-api'
+import { upload, modelUploaded } from '../../../../src/app/action/model'
+import Store from '../../../../src/app/store'
+import * as restApi from '../../../../src/app/lib/printing-engine/rest-api'
 
 
 describe('Model Integration Test', () => {

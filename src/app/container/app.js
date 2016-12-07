@@ -14,7 +14,7 @@ const App = ({onUpload, onUploaded, onGetPrice, modelId}) => (
     <Upload label='Upload a model' onUpload={onUpload} onUploaded={onUploaded} />
 
     {modelId ? <Button label='Get Price' onClick={onGetPrice} /> : null}
-    
+
   </div>
 )
 
