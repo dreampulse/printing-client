@@ -3,7 +3,7 @@ import {createAction} from 'redux-actions'
 import TYPE from '../../../src/app/type'
 import * as printingEngine from '../lib/printing-engine'
 
-export const createPriceRequest = ({ modelId }) => async dispatch => {
+export const createPriceRequest = () => async (dispatch, getState) => {
   const user = {
     currency: 'USD',
     shippingAddress: {
@@ -13,6 +13,8 @@ export const createPriceRequest = ({ modelId }) => async dispatch => {
       countryCode: 'US'
     }
   }
+
+  const modelId = getState().model.modelId
 
   const {userId} = await printingEngine.createUser({user})
   const materials = await printingEngine.listMaterials()

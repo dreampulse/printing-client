@@ -7,7 +7,6 @@ describe('Price Integration Test', () => {
 
   beforeEach(() => {
     sinon.stub(restApi)
-    store = Store({})
   })
 
   afterEach(() => {
@@ -19,6 +18,13 @@ describe('Price Integration Test', () => {
       const modelId = '123'
       const priceId = '456'
       const userId = '789'
+
+      store = Store({
+        model: {
+          modelId
+        }
+      })
+      
       restApi.createUser.resolves({userId})
       restApi.createPriceRequest.resolves({priceId})
       restApi.listMaterials.resolves({'0':{}})
