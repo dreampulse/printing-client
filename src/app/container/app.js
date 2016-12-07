@@ -1,30 +1,31 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
-import * as actions from '../action'
+import { upload, modelUploaded } from '../action/model'
+import { createPriceRequest } from '../action/price'
 
 import Upload from '../component/upload'
 import Headline from '../component/headline'
 import Button from '../component/button'
 
-console.log('-- actions', actions)
-const App = ({hello, bar, counter, onUpload, onUploaded, onGetPrice}) => (
+const App = ({onUpload, onUploaded, onGetPrice, modelId}) => (
   <div>
     <Headline label='Printing Engine Test Client' />
     <Upload label='Upload a model' onUpload={onUpload} onUploaded={onUploaded} />
 
-    <Button label='Get Price' onClick={onGetPrice}/>
+    {modelId ? <Button label='Get Price' onClick={onGetPrice} /> : null}
 
-    <div>Price</div>
   </div>
 )
 
 const mapStateToProps = (state, ownProps) => ({
+  modelId: state.model.modelId
 })
+
 const mapDispatchToProps = {
-  onUpload: actions.model.upload,
-  onUploaded: actions.model.modelUploaded,
-  onGetPrice: actions.price.createPriceRequest
+  onUpload: upload,
+  onUploaded: modelUploaded,
+  onGetPrice: createPriceRequest
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

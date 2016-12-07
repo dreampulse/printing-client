@@ -1,6 +1,6 @@
-import { model } from '../../../src/app/action'
-import Store from '../../../src/app/store'
-import * as restApi from '../../../src/app/lib/printing-engine/rest-api'
+import { upload, modelUploaded } from '../../../../src/app/action/model'
+import Store from '../../../../src/app/store'
+import * as restApi from '../../../../src/app/lib/printing-engine/rest-api'
 
 
 describe('Model Integration Test', () => {
@@ -21,7 +21,7 @@ describe('Model Integration Test', () => {
     it('calls the printing engine api', async () => {
       const apiResponse = 'upload-model-api-response'
       restApi.uploadModel.resolves(apiResponse)
-      const result = await store.dispatch(model.upload('some-form-data', 'some-callback'))
+      const result = await store.dispatch(upload('some-form-data', 'some-callback'))
       expect(restApi.uploadModel, 'was called with', 'some-form-data', 'some-callback')
       expect(result, 'to equal', apiResponse)
     })
@@ -30,7 +30,7 @@ describe('Model Integration Test', () => {
   describe('modelUploaded()', () => {
     it('handles the finished case', async () => {
       restApi.getUploadStatus.resolves(true)
-      await store.dispatch(model.modelUploaded({modelId}))
+      await store.dispatch(modelUploaded({modelId}))
 
       expect(store.getState().model, 'to equal', {
         isUploadFinished: true,
@@ -40,7 +40,7 @@ describe('Model Integration Test', () => {
 
     it('handles the aborted case', async () => {
       restApi.getUploadStatus.rejects(new Error)
-      await store.dispatch(model.modelUploaded({modelId}))
+      await store.dispatch(modelUploaded({modelId}))
 
       expect(store.getState().model, 'to equal', {
         isUploadFinished: false,

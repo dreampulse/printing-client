@@ -1,21 +1,7 @@
 import {handleActions} from 'redux-actions'
 
-import TYPE from '../type'
 
-export default function create () {
-  const initialState = {
-    hello: 'hi!',
-    foo: 0
-  }
+const initialState = {}
 
-  function handleFooAction (state, action) {
-    return {
-      ...state,
-      foo: state.foo + 1
-    }
-  }
+export default handleActions({}, initialState)
 
-  return handleActions({
-    [TYPE.APP.FOO_ACTION]: handleFooAction
-  }, initialState)
-}

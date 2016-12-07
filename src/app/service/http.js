@@ -13,7 +13,7 @@ function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     if (isJSON(response)) return response.json()
   } else {
-    var error = new Error(response.statusText)
+    const error = new Error(response.statusText)
     error.status = response.status
     error.response = response
     throw error

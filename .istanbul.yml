@@ -11,3 +11,10 @@ check:
         branches: 100
         functions: 100
         excludes: []
+instrumentation:
+    root: .
+    extensions:
+        - .js
+    default-excludes: true
+    excludes:
+        - src/app/*.js
