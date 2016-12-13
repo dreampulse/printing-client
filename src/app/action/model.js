@@ -11,7 +11,7 @@ export const upload = (form, onProgressChange) => dispatch => {
 export const modelUploaded = ({modelId}) => async dispatch => {
   dispatch(createAction(TYPE.MODEL.UPLOAD_STARTED)(modelId))
   try {
-    await pollApi(printingEngine.getUploadStatus({modelId}))
+    await pollApi(() => printingEngine.getUploadStatus({modelId}))
     dispatch(createAction(TYPE.MODEL.UPLOAD_FINISHED)())
   } catch (e) {
     dispatch(createAction(TYPE.MODEL.UPLOAD_ABORTED)())

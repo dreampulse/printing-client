@@ -67,12 +67,12 @@ function getPullRequests (callback) {
 }
 
 function findLatestCommitInChangelog (callback) {
-  const matcher = /c: ([^\)]+)\)$/
+  const matcher = /c: ([^)]+)\)$/
   let commit
   const input = fs.createReadStream(changelogPath)
   const lineReader = readline.createInterface({input})
 
-  input.on('error', (error) => {
+  input.on('error', () => {
     console.error('Warning: %s does not exist, yet. Attempt to create file now.', changelogName)
     callback(null)
   })
