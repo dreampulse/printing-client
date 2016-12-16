@@ -1,5 +1,5 @@
 import pollApi from '../../../../src/app/lib/poll-api'
-import * as config from '../../../../src/app/config'
+import config from '../../../../src/app/config'
 
 describe('poll api lib', () => {
   beforeEach(() => {
