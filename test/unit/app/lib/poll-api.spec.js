@@ -2,16 +2,11 @@ import pollApi from '../../../../src/app/lib/poll-api'
 import * as config from '../../../../src/app/config'
 
 describe('poll api lib', () => {
-  let clock
-
   beforeEach(() => {
     sinon.stub(config)
-    // clock = sinon.useFakeTimers()
-    // clock.tick(0)
   })
 
   afterEach(() => {
-    // clock.restore()
     sinon.restore(config)
   })
 
