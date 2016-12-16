@@ -30,7 +30,7 @@ export const createPriceRequest = () => async (dispatch, getState) => {
   dispatch(createAction(TYPE.PRICE.REQUEST_CREATED)(priceId))
 
   try {
-    await pollApi(printingEngine.getPriceStatus({priceId}))
+    await pollApi(() => printingEngine.getPriceStatus({priceId}))
     const price = await printingEngine.getPrice({priceId})
     dispatch(createAction(TYPE.PRICE.RECEIVED)(price))
   } catch (e) {

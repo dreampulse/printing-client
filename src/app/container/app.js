@@ -4,24 +4,42 @@ import {connect} from 'react-redux'
 import { upload, modelUploaded } from '../action/model'
 import { createPriceRequest } from '../action/price'
 
+import Main from '../component/main'
 import Upload from '../component/upload'
 import Headline from '../component/headline'
+import SectionHeadline from '../component/section-headline'
 import Button from '../component/button'
 
-const App = ({onUpload, onUploaded, onGetPrice, modelId, price}) => (
-  <div>
-    <Headline label='Printing Engine Test Client' />
-    <Upload label='Upload a model' onUpload={onUpload} onUploaded={onUploaded} />
+const App = ({onUpload, onUploaded, onGetPrice, isUploadFinished, price}) => {
+  const UploadSection = () => (
+    <section>
+      <SectionHeadline label='Select a file' />
+      <Upload label='Upload a model' onUpload={onUpload} onUploaded={onUploaded} />
+    </section>
+  )
 
-    {modelId ? <Button label='Get Price' onClick={onGetPrice} /> : null}
-    {price ? <code>{JSON.stringify(price, null, 2)}</code> : null}
+  const GetPriceSection = () => (
+    isUploadFinished ? (
+      <section>
+        <SectionHeadline label='Get price for the model' />
+        <Button label='Get Price' onClick={onGetPrice} />
+        {price ? <pre>{JSON.stringify(price, null, 2)}</pre> : null}
+      </section>
+    ) : null
+  )
 
-  </div>
-)
+  return (
+    <Main>
+      <Headline label='Printing Engine Test Client' modifiers={['xl']} />
+      <UploadSection />
+      <GetPriceSection />
+    </Main>
+  )
+}
 
 const mapStateToProps = (state, ownProps) => ({
-  modelId: state.model.modelId,
-  price: state.price.price
+  price: state.price.price,
+  isUploadFinished: state.model.isUploadFinished
 })
 
 const mapDispatchToProps = {

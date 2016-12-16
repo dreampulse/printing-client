@@ -18,3 +18,4 @@ instrumentation:
     default-excludes: true
     excludes:
         - src/app/*.js
+        - src/service/http.js
