@@ -7,6 +7,7 @@ import modal from './modal'
 import model from './model'
 import material from './material'
 import price from './price'
+import cart from './cart'
 
 const rootReducer = combineReducers({
   app,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   model,
   material,
   price,
+  cart,
   routing: routerReducer
 })
 
