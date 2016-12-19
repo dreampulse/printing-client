@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import { upload, modelUploaded } from '../action/model'
 import { createPriceRequest } from '../action/price'
-import { createShoppingCart } from '../action/shopping-cart'
+import { createShoppingCart } from '../action/cart'
 
 import Main from '../component/main'
 import Upload from '../component/upload'
@@ -60,7 +60,7 @@ const App = ({
 const mapStateToProps = (state, ownProps) => ({
   price: state.price.price,
   isUploadFinished: state.model.isUploadFinished,
-  cartPrice: state.shoppingCart.cartPrice
+  cartPrice: state.cart.cartPrice
 })
 
 const mapDispatchToProps = {

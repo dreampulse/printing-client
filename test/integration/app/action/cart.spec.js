@@ -1,4 +1,4 @@
-import { createShoppingCart } from '../../../../src/app/action/shopping-cart'
+import { createShoppingCart } from '../../../../src/app/action/cart'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
@@ -35,7 +35,7 @@ describe('Shopping Cart Integration Test', () => {
 
       await store.dispatch(createShoppingCart({modelId}))
 
-      expect(store.getState().shoppingCart, 'to equal', {
+      expect(store.getState().cart, 'to equal', {
         cartId: 'some-cart-id',
         cartPrice: 'final-cart-price'
       })

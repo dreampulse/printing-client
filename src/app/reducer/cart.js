@@ -22,6 +22,6 @@ function handleReceiveFinalPrice (state, {payload}) {
 }
 
 export default handleActions({
-  [TYPE.SHOPPING_CART.REQUEST_CREATED]: handleCartRequestCreated,
-  [TYPE.SHOPPING_CART.RECEIVED_FINAL_PRICE]: handleReceiveFinalPrice
+  [TYPE.CART.REQUEST_CREATED]: handleCartRequestCreated,
+  [TYPE.CART.RECEIVED_FINAL_PRICE]: handleReceiveFinalPrice
 }, initialState)
