@@ -20,5 +20,8 @@ export default {
     REQUEST_CREATED: 'PRICE.REQUEST_CREATED',
     RECEIVED: 'PRICE.RECEIVED',
     ERROR: 'PRICE.ERROR'
+  },
+  USER: {
+    CREATED: 'USER.CREATED'
   }
 }
