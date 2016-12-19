@@ -18,13 +18,25 @@ describe('Shopping Cart Integration Test', () => {
       const modelId = '123'
       const priceId = '456'
       const userId = '789'
+      const price = {
+        _id: priceId,
+        printingService: {
+          shapeways: {
+            shipping: [{
+              name: 'USPS First-Class',
+              price: 1.99
+            }]
+          }
+        }
+      }
 
       store = Store({
         model: {
           modelId
         },
         price: {
-          priceId
+          priceId,
+          price
         }
       })
 

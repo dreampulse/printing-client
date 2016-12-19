@@ -30,7 +30,10 @@ export const getPriceStatus = async ({priceId}) => {
 }
 
 export const createShoppingCart = ({userId, priceId, items, shipping}) =>
-  request(baseUrl + '/cart', {method: 'POST', body: {userId, priceId, items, shipping}})
+  request(baseUrl + '/cart', {
+    method: 'POST',
+    body: {userId, priceId, items, shipping}
+  })
 
 export const getFinalCartPrice = ({cartId}) =>
   request(baseUrl + '/cart/' + cartId)

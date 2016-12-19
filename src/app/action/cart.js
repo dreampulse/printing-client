@@ -5,9 +5,10 @@ import * as printingEngine from '../lib/printing-engine'
 
 export const createShoppingCart = () => async (dispatch, getState) => {
   const modelId = getState().model.modelId
-  const priceId = getState().price.priceId
+  const { priceId, price } = getState().price
   const userId = getState().user.userId
   const materials = getState().material
+  const vendorId = 'shapeways'
 
   const materialId = Object.keys(materials)[0]
 
@@ -17,12 +18,12 @@ export const createShoppingCart = () => async (dispatch, getState) => {
     items: [{
       modelId,
       materialId,
-      vendorId: 'shapeways',
+      vendorId,
       quantity: 1
     }],
     shipping: [{
-      name: 'USPS First-Class',
-      vendorId: 'shapeways'
+      name: price.printingService[vendorId].shipping[0].name,
+      vendorId
     }]
   })
 

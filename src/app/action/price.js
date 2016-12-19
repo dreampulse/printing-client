@@ -4,14 +4,18 @@ import TYPE from '../../../src/app/type'
 import * as printingEngine from '../lib/printing-engine'
 import pollApi from '../lib/poll-api'
 import { createUser } from './user'
+import { getMaterials } from './material'
 
 export const createPriceRequest = () => async (dispatch, getState) => {
-  await dispatch(createUser())
+  const userPromise = dispatch(createUser())
+  const materialPromise = dispatch(getMaterials())
+  await userPromise
+  await materialPromise
 
   const modelId = getState().model.modelId
   const userId = getState().user.userId
+  const materials = getState().material
 
-  const materials = await printingEngine.listMaterials()
   const materialId = Object.keys(materials)[0]
 
   const {priceId} = await printingEngine.createPriceRequest({
