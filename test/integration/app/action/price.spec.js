@@ -35,13 +35,13 @@ describe('Price Integration Test', () => {
       })
 
       geolocation.getLocation.resolves(location)
-      printingEngine.createUser.resolves({userId})
-      printingEngine.createPriceRequest.resolves({priceId})
+      printingEngine.createUser.resolves({ userId })
+      printingEngine.createPriceRequest.resolves({ priceId })
       printingEngine.listMaterials.resolves({'0': {}})
       printingEngine.getPriceStatus.resolves(true)
       printingEngine.getPrice.resolves('some-price')
 
-      await store.dispatch(createPriceRequest({modelId}))
+      await store.dispatch(createPriceRequest())
 
       expect(store.getState().price, 'to equal', {
         priceId,

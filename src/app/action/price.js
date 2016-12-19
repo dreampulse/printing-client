@@ -3,17 +3,14 @@ import {createAction} from 'redux-actions'
 import TYPE from '../../../src/app/type'
 import * as printingEngine from '../lib/printing-engine'
 import pollApi from '../lib/poll-api'
-import { getLocation } from '../service/geolocation'
+import { createUser } from './user'
 
 export const createPriceRequest = () => async (dispatch, getState) => {
-  const user = {
-    currency: 'USD',
-    shippingAddress: await getLocation()
-  }
+  await dispatch(createUser())
 
   const modelId = getState().model.modelId
+  const userId = getState().user.userId
 
-  const {userId} = await printingEngine.createUser({user})
   const materials = await printingEngine.listMaterials()
   const materialId = Object.keys(materials)[0]
 
