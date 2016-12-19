@@ -14,7 +14,7 @@ function handleCartRequestCreated (state, {payload}) {
   }
 }
 
-function handleReceiveFinalPrice(state, {payload}) {
+function handleReceiveFinalPrice (state, {payload}) {
   return {
     ...state,
     cartPrice: payload
