@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 
 import { upload, modelUploaded } from '../action/model'
 import { createPriceRequest } from '../action/price'
+import { createShoppingCart } from '../action/shopping-cart'
 
 import Main from '../component/main'
 import Upload from '../component/upload'
@@ -10,7 +11,15 @@ import Headline from '../component/headline'
 import SectionHeadline from '../component/section-headline'
 import Button from '../component/button'
 
-const App = ({onUpload, onUploaded, onGetPrice, isUploadFinished, price}) => {
+const App = ({
+  onUpload,
+  onUploaded,
+  onGetPrice,
+  onGetShoppingCart,
+  isUploadFinished,
+  price,
+  cartPrice
+}) => {
   const UploadSection = () => (
     <section>
       <SectionHeadline label='Select a file' />
@@ -28,24 +37,37 @@ const App = ({onUpload, onUploaded, onGetPrice, isUploadFinished, price}) => {
     ) : null
   )
 
+  const GetShoppingCart = () => (
+    price ? (
+      <section>
+        <SectionHeadline label='Create shopping cart' />
+        <Button label='Get cart price' onClick={onGetShoppingCart} />
+        {cartPrice ? <pre>{JSON.stringify(cartPrice, null, 2)}</pre> : null}
+      </section>
+    ) : null
+  )
+
   return (
     <Main>
       <Headline label='Printing Engine Test Client' modifiers={['xl']} />
       <UploadSection />
       <GetPriceSection />
+      <GetShoppingCart />
     </Main>
   )
 }
 
 const mapStateToProps = (state, ownProps) => ({
   price: state.price.price,
-  isUploadFinished: state.model.isUploadFinished
+  isUploadFinished: state.model.isUploadFinished,
+  cartPrice: state.shoppingCart.cartPrice
 })
 
 const mapDispatchToProps = {
   onUpload: upload,
   onUploaded: modelUploaded,
-  onGetPrice: createPriceRequest
+  onGetPrice: createPriceRequest,
+  onGetShoppingCart: createShoppingCart
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

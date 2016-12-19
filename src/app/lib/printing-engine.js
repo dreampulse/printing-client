@@ -28,3 +28,9 @@ export const getPriceStatus = async ({priceId}) => {
   const response = await fetch(baseUrl + '/price/' + priceId)
   return response.status === 200
 }
+
+export const createShoppingCart = ({userId, priceId, items, shipping}) =>
+  request(baseUrl + '/cart', {method: 'POST', body: {userId, priceId, items, shipping}})
+
+export const getFinalCartPrice = ({cartId}) =>
+  request(baseUrl + '/cart/' + cartId)
