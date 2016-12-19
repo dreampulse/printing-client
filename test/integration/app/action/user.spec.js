@@ -1,9 +1,9 @@
-import { createPriceRequest } from '../../../../src/app/action/price'
+import { createUser } from '../../../../src/app/action/user'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 import * as geolocation from '../../../../src/app/service/geolocation'
 
-describe('Price Integration Test', () => {
+describe('User Integration Test', () => {
   let store
 
   beforeEach(() => {
@@ -16,10 +16,8 @@ describe('Price Integration Test', () => {
     sinon.restore(geolocation)
   })
 
-  describe('createPriceRequest()', () => {
+  describe('createUser()', () => {
     it('should work', async () => {
-      const modelId = '123'
-      const priceId = '456'
       const userId = '789'
       const location = {
         city: 'Pittsburgh',
@@ -28,24 +26,15 @@ describe('Price Integration Test', () => {
         countryCode: 'US'
       }
 
-      store = Store({
-        model: {
-          modelId
-        }
-      })
+      store = Store()
 
       geolocation.getLocation.resolves(location)
       printingEngine.createUser.resolves({ userId })
-      printingEngine.createPriceRequest.resolves({ priceId })
-      printingEngine.listMaterials.resolves({'0': {}})
-      printingEngine.getPriceStatus.resolves(true)
-      printingEngine.getPrice.resolves('some-price')
 
-      await store.dispatch(createPriceRequest())
+      await store.dispatch(createUser())
 
-      expect(store.getState().price, 'to equal', {
-        priceId,
-        price: 'some-price'
+      expect(store.getState().user, 'to equal', {
+        userId
       })
     })
   })
