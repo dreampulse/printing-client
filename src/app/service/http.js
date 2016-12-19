@@ -10,7 +10,7 @@ export async function request (url, options = {}) {
   return checkStatus(response)
 }
 
-function checkStatus (response) {
+export function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
     if (isJSON(response)) return response.json()
   } else {

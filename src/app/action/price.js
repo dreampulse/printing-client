@@ -3,16 +3,12 @@ import {createAction} from 'redux-actions'
 import TYPE from '../../../src/app/type'
 import * as printingEngine from '../lib/printing-engine'
 import pollApi from '../lib/poll-api'
+import { getLocation } from '../service/geolocation'
 
 export const createPriceRequest = () => async (dispatch, getState) => {
   const user = {
     currency: 'USD',
-    shippingAddress: {
-      city: 'Pittsburgh',
-      zipCode: '15234',
-      stateCode: 'PA',
-      countryCode: 'US'
-    }
+    shippingAddress: await getLocation()
   }
 
   const modelId = getState().model.modelId
