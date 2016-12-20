@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import { upload, modelUploaded } from '../action/model'
 import { createPriceRequest } from '../action/price'
 import { createShoppingCart } from '../action/cart'
+import { createOrderWithStripe } from '../action/order'
 
 import Main from '../component/main'
 import Upload from '../component/upload'
@@ -18,7 +19,9 @@ const App = ({
   onGetShoppingCart,
   isUploadFinished,
   price,
-  cartPrice
+  cartPrice,
+  orderId,
+  onOrderWithStripe
 }) => {
   const UploadSection = () => (
     <section>
@@ -47,12 +50,23 @@ const App = ({
     ) : null
   )
 
+  const Order = () => (
+    cartPrice ? (
+      <section>
+        <SectionHeadline label='Buy' />
+        <Button label='Pay with Stripe' onClick={onOrderWithStripe} />
+        {orderId ? <pre>Success! OrderId: {orderId}</pre> : null}
+      </section>
+    ) : null
+  )
+
   return (
     <Main>
       <Headline label='Printing Engine Test Client' modifiers={['xl']} />
       <UploadSection />
       <GetPriceSection />
       <GetShoppingCart />
+      <Order />
     </Main>
   )
 }
@@ -60,14 +74,16 @@ const App = ({
 const mapStateToProps = (state, ownProps) => ({
   price: state.price.price,
   isUploadFinished: state.model.isUploadFinished,
-  cartPrice: state.cart.cartPrice
+  cartPrice: state.cart.cartPrice,
+  orderId: state.order.orderId
 })
 
 const mapDispatchToProps = {
   onUpload: upload,
   onUploaded: modelUploaded,
   onGetPrice: createPriceRequest,
-  onGetShoppingCart: createShoppingCart
+  onGetShoppingCart: createShoppingCart,
+  onOrderWithStripe: createOrderWithStripe
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

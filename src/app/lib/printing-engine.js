@@ -37,3 +37,15 @@ export const createShoppingCart = ({userId, priceId, items, shipping}) =>
 
 export const getFinalCartPrice = ({cartId}) =>
   request(baseUrl + '/cart/' + cartId)
+
+export const order = ({cartId, type, token}) =>
+  request(baseUrl + '/order', {
+    method: 'POST',
+    body: {
+      cartId,
+      payment: {
+        type,
+        token
+      }
+    }
+  })

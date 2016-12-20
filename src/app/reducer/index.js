@@ -8,6 +8,7 @@ import model from './model'
 import material from './material'
 import price from './price'
 import cart from './cart'
+import order from './order'
 
 const rootReducer = combineReducers({
   app,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   material,
   price,
   cart,
+  order,
   routing: routerReducer
 })
 
