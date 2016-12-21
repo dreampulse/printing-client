@@ -11,6 +11,7 @@ import Upload from '../component/upload'
 import Headline from '../component/headline'
 import SectionHeadline from '../component/section-headline'
 import Button from '../component/button'
+import PaypalButton from '../component/paypal-button'
 
 const App = ({
   onUpload,
@@ -60,6 +61,13 @@ const App = ({
     ) : null
   )
 
+  const PaymentSection = () => (
+    <section>
+      <SectionHeadline label='Payment' />
+      <PaypalButton />
+    </section>
+  )
+
   return (
     <Main>
       <Headline label='Printing Engine Test Client' modifiers={['xl']} />
@@ -67,6 +75,7 @@ const App = ({
       <GetPriceSection />
       <GetShoppingCart />
       <Order />
+      <PaymentSection />
     </Main>
   )
 }
