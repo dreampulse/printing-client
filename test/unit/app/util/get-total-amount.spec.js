@@ -10,9 +10,9 @@ describe('getTotalAmount()', () => {
       shipping: [{
         price: 5
       }],
-      vatPercentage: 0.5
+      vatPercentage: 0.19
     }
 
-    expect(getTotalAmount({cart}), 'to equal', 12.5)
+    expect(getTotalAmount({cart}), 'to equal', 29.75)
   })
 })
