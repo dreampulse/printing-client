@@ -14,5 +14,5 @@ function handleOrderSuccess (state, {payload}) {
 }
 
 export default handleActions({
-  [TYPE.ORDER.SUCCESS]: handleOrderSuccess,
+  [TYPE.ORDER.SUCCESS]: handleOrderSuccess
 }, initialState)

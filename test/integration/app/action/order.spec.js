@@ -1,27 +1,24 @@
 import { createOrderWithStripe } from '../../../../src/app/action/order'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
-// i would like to:
-// import stripeCheckout from ..
-// but the stub doesn't work. Need help ;-)
-import * as stripeCheckout from '../../../../src/app/service/stripe-checkout'
+import * as stripe from '../../../../src/app/service/stripe'
 
 describe('Shopping Cart Integration Test', () => {
   let store
 
   beforeEach(() => {
     sinon.stub(printingEngine)
-    sinon.stub(stripeCheckout)
+    sinon.stub(stripe)
   })
 
   afterEach(() => {
     sinon.restore(printingEngine)
-    sinon.restore(stripeCheckout)
+    sinon.restore(stripe)
   })
 
   describe('createOrderWithStripe()', () => {
     it('should work', async () => {
-      stripeCheckout.default.resolves({
+      stripe.checkout.resolves({
         id: 'some-stripe-token'
       })
 
@@ -53,7 +50,7 @@ describe('Shopping Cart Integration Test', () => {
         orderId: 'some-order-id'
       })
 
-      expect(stripeCheckout.default, 'was called with', {
+      expect(stripe.checkout, 'was called with', {
         amount: 17.5,
         currency: 'some-currency',
         email: 'test@test.test'
