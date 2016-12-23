@@ -14,3 +14,10 @@ export function createPayment ({ amount, currency, cartId }) {
   }]
   return paypal.rest.payment.create(env, client, { transactions })
 }
+
+export async function executePayment ({ actions }) {
+  await actions.payment.execute()
+  const payment = await actions.payment.get()
+  if (payment.state !== 'approved') throw new Error('PayPal payment not approved')
+  return payment
+}

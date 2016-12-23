@@ -13,20 +13,16 @@ class PaypalButton extends Component {
   }
 
   componentDidMount () {
-    const { onPayment, onAuthorize, onError, onCancel } = this.props
+    const { payment, onAuthorize, onCancel, onError } = this.props
 
     const options = {
       ...config.paypal,
-      commit: true, // show 'Pay Now' button during checkout
-      style: { size: 'small', color: 'gold', shape: 'pill' },
-      onError,
+      payment,
+      onAuthorize,
       onCancel,
-      payment: onPayment,
-      async onAuthorize (data, actions) {
-        await actions.payment.execute()
-        const payment = await actions.payment.get()
-        return onAuthorize(payment)
-      }
+      onError,
+      commit: true, // show 'Pay Now' button during checkout
+      style: { size: 'small', color: 'gold', shape: 'pill' }
     }
 
     paypal.Button.render(options, '#paypal-button')

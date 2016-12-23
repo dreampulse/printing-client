@@ -59,10 +59,10 @@ const App = ({
         <SectionHeadline label='Buy' />
         <Button label='Pay with Stripe' onClick={onOrderWithStripe} />
         <PaypalButton
-          onPayment={onOrderWithPaypal}
+          payment={onOrderWithPaypal}
           onAuthorize={onAuthorizePaypal}
-          onCancel={() => window.alert('Payment failed')}
-          onError={() => window.alert('Payment canceled')}
+          onCancel={() => global.alert('Payment canceled')}
+          onError={() => global.alert('Payment failed')}
         />
         {orderId ? <pre>Success! OrderId: {orderId}</pre> : null}
       </section>

@@ -31,8 +31,8 @@ export const initPaymentWithPaypal = () => (dispatch, getState) => {
   return paypal.createPayment({ amount, currency, cartId })
 }
 
-export const createOrderWithPaypal = (payment) => async (dispatch, getState) => {
-  if (payment.state !== 'approved') throw new Error('PayPal payment not approved')
+export const createOrderWithPaypal = (data, actions) => async (dispatch, getState) => {
+  const payment = await paypal.executePayment({ actions })
 
   const cartId = getState().cart.cartId
   const token = payment.id
