@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-
 import config from '../config'
+import getTotalAmount from '../util/get-total-amount'
+
+const paypal = global.paypal
 
 class PaypalButton extends Component {
 
@@ -11,39 +13,23 @@ class PaypalButton extends Component {
   }
 
   componentDidMount () {
+    const { onPayment, onAuthorize, onError, onCancel } = this.props
+
     const options = {
       ...config.paypal,
-      commit: true, // Optional: show a 'Pay Now' button in the checkout flow
-      style: {
-        size: 'small',
-        color: 'gold',
-        shape: 'pill'
-      },
-      payment () {
-        // Set up the payment here, when the buyer clicks on the button
-        const env = this.props.env
-        const client = this.props.client
-        const options = {
-          transactions: [{
-            amount: { total: '1.00', currency: 'USD' }
-          }]
-        }
-        return paypal.rest.payment.create(env, client, options)
-      },
+      commit: true, // show 'Pay Now' button during checkout
+      style: { size: 'small', color: 'gold', shape: 'pill' },
+      onError,
+      onCancel,
+      payment: onPayment,
       async onAuthorize (data, actions) {
-        // Execute the payment here, when the buyer approves the transaction
-        // Optional: display a confirmation page here
-
         await actions.payment.execute()
-
-        // Show a success page to the buyer
-        alert('Payment authorized')
-      },
-      onCancel (data, actions) {
-        alert('Payment canceled')
+        const payment = await actions.payment.get()
+        return onAuthorize(payment)
       }
     }
-    global.paypal.Button.render(options, '#paypal-button')
+
+    paypal.Button.render(options, '#paypal-button')
   }
 
 }

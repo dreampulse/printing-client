@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import { upload, modelUploaded } from '../action/model'
 import { createPriceRequest } from '../action/price'
 import { createShoppingCart } from '../action/cart'
-import { createOrderWithStripe } from '../action/order'
+import { createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal } from '../action/order'
 
 import Main from '../component/main'
 import Upload from '../component/upload'
@@ -22,7 +22,9 @@ const App = ({
   price,
   cartPrice,
   orderId,
-  onOrderWithStripe
+  onOrderWithStripe,
+  onOrderWithPaypal,
+  onAuthorizePaypal
 }) => {
   const UploadSection = () => (
     <section>
@@ -56,16 +58,15 @@ const App = ({
       <section>
         <SectionHeadline label='Buy' />
         <Button label='Pay with Stripe' onClick={onOrderWithStripe} />
+        <PaypalButton
+          onPayment={onOrderWithPaypal}
+          onAuthorize={onAuthorizePaypal}
+          onCancel={() => window.alert('Payment failed')}
+          onError={() => window.alert('Payment canceled')}
+        />
         {orderId ? <pre>Success! OrderId: {orderId}</pre> : null}
       </section>
     ) : null
-  )
-
-  const PaymentSection = () => (
-    <section>
-      <SectionHeadline label='Payment' />
-      <PaypalButton />
-    </section>
   )
 
   return (
@@ -75,7 +76,6 @@ const App = ({
       <GetPriceSection />
       <GetShoppingCart />
       <Order />
-      <PaymentSection />
     </Main>
   )
 }
@@ -92,7 +92,9 @@ const mapDispatchToProps = {
   onUploaded: modelUploaded,
   onGetPrice: createPriceRequest,
   onGetShoppingCart: createShoppingCart,
-  onOrderWithStripe: createOrderWithStripe
+  onOrderWithStripe: createOrderWithStripe,
+  onOrderWithPaypal: initPaymentWithPaypal,
+  onAuthorizePaypal: createOrderWithPaypal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
