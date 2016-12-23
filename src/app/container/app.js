@@ -23,8 +23,8 @@ const App = ({
   cartPrice,
   orderId,
   onOrderWithStripe,
-  onOrderWithPaypal,
-  onAuthorizePaypal
+  onPayWithPaypal,
+  onOrderWithPaypal
 }) => {
   const UploadSection = () => (
     <section>
@@ -59,8 +59,8 @@ const App = ({
         <SectionHeadline label='Buy' />
         <Button label='Pay with Stripe' onClick={onOrderWithStripe} />
         <PaypalButton
-          payment={onOrderWithPaypal}
-          onAuthorize={onAuthorizePaypal}
+          payment={onPayWithPaypal}
+          onAuthorize={onOrderWithPaypal}
           onCancel={() => global.alert('Payment canceled')}
           onError={() => global.alert('Payment failed')}
         />
@@ -93,8 +93,8 @@ const mapDispatchToProps = {
   onGetPrice: createPriceRequest,
   onGetShoppingCart: createShoppingCart,
   onOrderWithStripe: createOrderWithStripe,
-  onOrderWithPaypal: initPaymentWithPaypal,
-  onAuthorizePaypal: createOrderWithPaypal
+  onPayWithPaypal: initPaymentWithPaypal,
+  onOrderWithPaypal: createOrderWithPaypal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
