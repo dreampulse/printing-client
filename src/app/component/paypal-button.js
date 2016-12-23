@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import config from '../config'
-import getTotalAmount from '../util/get-total-amount'
 
 const paypal = global.paypal
 
@@ -8,7 +7,7 @@ class PaypalButton extends Component {
 
   render () {
     return (
-      <div id="paypal-button"></div>
+      <div id='paypal-button' />
     )
   }
 
