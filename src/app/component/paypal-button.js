@@ -7,7 +7,7 @@ class PaypalButton extends Component {
 
   render () {
     return (
-      <div id='paypal-button' />
+      <div ref={div => { this.paypalButton = div }} />
     )
   }
 
@@ -24,7 +24,7 @@ class PaypalButton extends Component {
       style: { size: 'small', color: 'gold', shape: 'pill' }
     }
 
-    paypal.Button.render(options, '#paypal-button')
+    paypal.Button.render(options, this.paypalButton)
   }
 
 }
