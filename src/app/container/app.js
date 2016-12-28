@@ -4,13 +4,14 @@ import {connect} from 'react-redux'
 import { upload, modelUploaded } from '../action/model'
 import { createPriceRequest } from '../action/price'
 import { createShoppingCart } from '../action/cart'
-import { createOrderWithStripe } from '../action/order'
+import { createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal } from '../action/order'
 
 import Main from '../component/main'
 import Upload from '../component/upload'
 import Headline from '../component/headline'
 import SectionHeadline from '../component/section-headline'
 import Button from '../component/button'
+import PaypalButton from '../component/paypal-button'
 
 const App = ({
   onUpload,
@@ -21,7 +22,9 @@ const App = ({
   price,
   cartPrice,
   orderId,
-  onOrderWithStripe
+  onOrderWithStripe,
+  onPayWithPaypal,
+  onOrderWithPaypal
 }) => {
   const UploadSection = () => (
     <section>
@@ -55,6 +58,12 @@ const App = ({
       <section>
         <SectionHeadline label='Buy' />
         <Button label='Pay with Stripe' onClick={onOrderWithStripe} />
+        <PaypalButton
+          payment={onPayWithPaypal}
+          onAuthorize={onOrderWithPaypal}
+          onCancel={() => global.alert('Payment canceled')}
+          onError={() => global.alert('Payment failed')}
+        />
         {orderId ? <pre>Success! OrderId: {orderId}</pre> : null}
       </section>
     ) : null
@@ -83,7 +92,9 @@ const mapDispatchToProps = {
   onUploaded: modelUploaded,
   onGetPrice: createPriceRequest,
   onGetShoppingCart: createShoppingCart,
-  onOrderWithStripe: createOrderWithStripe
+  onOrderWithStripe: createOrderWithStripe,
+  onPayWithPaypal: initPaymentWithPaypal,
+  onOrderWithPaypal: createOrderWithPaypal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
