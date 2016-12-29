@@ -1526,6 +1526,12 @@ concat-stream@^1.4.6:
     readable-stream "~2.0.0"
     typedarray "~0.0.5"
 
+config@^1.24.0:
+  version "1.24.0"
+  resolved "https://registry.yarnpkg.com/config/-/config-1.24.0.tgz#553bc4d77637d6630a305b52c33cb6da2b9f42f0"
+  dependencies:
+    json5 "0.4.0"
+
 configstore@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/configstore/-/configstore-2.1.0.tgz#737a3a7036e9886102aa6099e47bb33ab1aba1a1"
@@ -3462,6 +3468,10 @@ json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
 json3@3.3.2, json3@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/json3/-/json3-3.3.2.tgz#3c0434743df93e2f5c42aee7b19bcb483575f4e1"
+
+json5@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-0.4.0.tgz#054352e4c4c80c86c0923877d449de176a732c8d"
 
 json5@^0.5.0:
   version "0.5.0"
