@@ -1,4 +1,4 @@
-import config from '../config'
+import config from '../../../config'
 import { upload, request, fetch } from '../service/http'
 
 const baseUrl = config.printingEngineBaseUrl

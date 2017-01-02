@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import config from '../config'
+import config from '../../../config'
 
 const paypal = global.paypal
 
