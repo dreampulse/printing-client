@@ -13,7 +13,7 @@ export default ({ store }) => {
 
   return (
     <Router history={history}>
-      <Redirect from='/' to='/api' />
+      <Redirect from='/' to='/model' />
 
       <Route component={Model} path='/model' />
       <Route component={Vendor} path='/vendor' />
