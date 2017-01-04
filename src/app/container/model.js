@@ -25,7 +25,7 @@ const Model = ({ onUpload, onUploaded, materials, onSelectedMaterial }) => {
   )
 
   const MaterialSelect = () => (
-    <select disabled={!materials} onChange={onSelectedMaterial}>
+    <select disabled={!materials} onChange={e => onSelectedMaterial(e.target.value)}>
       <option>Select material</option>
       {materials && Object.keys(materials).map(k =>
         <option value={k} key={k}>{materials[k].name}</option>
