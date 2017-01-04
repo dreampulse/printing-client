@@ -2,14 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Main from '../component/main'
+import Button from '../component/button'
 import Upload from '../component/upload'
 import Headline from '../component/headline'
 import SectionHeadline from '../component/section-headline'
 
+import { goToVendor } from '../action/navigation'
 import { selectMaterial } from '../action/material'
 import { upload, modelUploaded } from '../action/model'
 
-const Model = ({ onUpload, onUploaded, materials, onSelectedMaterial }) => {
+const Model = ({ onUpload, onUploaded, materials, onSelectedMaterial, onGoToVendor }) => {
   const UploadSection = () => (
     <section>
       <SectionHeadline label='1. Upload files' />
@@ -38,6 +40,7 @@ const Model = ({ onUpload, onUploaded, materials, onSelectedMaterial }) => {
       <Headline label='Model config' modifiers={['xl']} />
       <UploadSection />
       <MaterialSection />
+      <Button label='Continue' onClick={onGoToVendor} />
     </Main>
   )
 }
@@ -49,7 +52,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   onUpload: upload,
   onUploaded: modelUploaded,
-  onSelectedMaterial: selectMaterial
+  onSelectedMaterial: selectMaterial,
+  onGoToVendor: goToVendor
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Model)
