@@ -38,9 +38,9 @@ $ npm run start
 ~~~
 
 ## Terminology
-- Services: Services are JS modules which can be found in `/src/app/service`. They wrap external dependencies (e.g. DOM, external libs) which we don't want to include in the unit tests. They will always be dependency injected.
-- Utils: Utilities are JS modules which usually consist of simple helper functions (e.g. lodash). Our own utilities are located in `/src/app/util`. They are not dependency injected and just used directly by the module which needs them.
-- Libs: Libs are our own libraries which are developed in a way that we can depencency inject them into other modules. They can be found in `/src/app/lib`.
+- Services: Services are JS modules which can be found in `/src/app/service`. They wrap external dependencies (e.g. DOM, external libs) which we don't want to include in the unit tests.
+- Utils: Utilities are JS modules which usually consist of simple helper functions (e.g. lodash). Thy shouldn't contain business logic. Our own utilities are located in `/src/app/util`.
+- Libs: Libs are our own libraries which contain the core business logic. They can be found in `/src/app/lib`.
 
 ## Dependency Injection
 We use a very explicit dependency injection model in order to be able to write better mocks in our tests and raise coverage. Therefore, modules with dependencies are wrapped in a `create(dependencies, settings)` function. This function returns the interface which the module wants to expose. Every module folder then has an index.js file where the dependencies are imported and the create functions are called. This `index.js` file may only contain simple glue code because it won't be tested in unit tests.
