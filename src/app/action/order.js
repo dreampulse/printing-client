@@ -4,7 +4,7 @@ import TYPE from '../../../src/app/type'
 import * as stripe from '../service/stripe'
 import * as paypal from '../service/paypal'
 import * as printingEngine from '../lib/printing-engine'
-import getTotalAmount from '../util/get-total-amount'
+import getTotalAmount from '../lib/get-total-amount'
 
 export const createOrderWithStripe = () => async (dispatch, getState) => {
   const cart = getState().cart.cartPrice

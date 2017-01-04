@@ -1,4 +1,4 @@
-import getTotalAmount from '../../../../src/app/util/get-total-amount'
+import getTotalAmount from '../../../../src/app/lib/get-total-amount'
 
 describe('getTotalAmount()', () => {
   it('works', () => {
