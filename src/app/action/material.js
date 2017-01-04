@@ -8,6 +8,6 @@ export const getMaterials = () => async dispatch => {
   dispatch(createAction(TYPE.MATERIAL.RECEIVED)(materials))
 }
 
-export const selectMaterial = materialId => dispatch => {
-  dispatch(createAction(TYPE.MATERIAL.SELECTED)(materialId))
+export const selectMaterial = materialId => {
+  return createAction(TYPE.MATERIAL.SELECTED)(materialId)
 }
