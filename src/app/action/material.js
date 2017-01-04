@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { browserHistory } from 'react-router'
+import { routerActions } from 'react-router-redux'
 
 import TYPE from '../../../src/app/type'
 import * as printingEngine from '../lib/printing-engine'
@@ -12,5 +12,5 @@ export const getMaterials = () => async dispatch => {
 export const selectMaterial = materialId => dispatch => {
   dispatch(createAction(TYPE.MATERIAL.SELECTED)(materialId))
   // navigate to next page
-  browserHistory.push('/vendor')
+  dispatch(routerActions.push('/vendor'))
 }
