@@ -1,5 +1,7 @@
+import { detectAddress } from './user'
 import { getMaterials } from './material'
 
 export default () => async dispatch => {
-  await dispatch(getMaterials())
+  dispatch(detectAddress())
+  dispatch(getMaterials())
 }
