@@ -6,17 +6,23 @@ import Button from '../component/button'
 import Upload from '../component/upload'
 import Headline from '../component/headline'
 import SectionHeadline from '../component/section-headline'
+import LoadingIndicator from '../component/loading-indicator'
 
 import { goToVendor } from '../action/navigation'
 import { selectMaterial } from '../action/material'
 import { upload, modelUploaded } from '../action/model'
 
-const Model = ({ onUpload, onUploaded, materials, onSelectedMaterial, onGoToVendor }) => {
+const Model = ({ onUpload, onUploaded, isUploading, isUploadFinished, materials, onSelectedMaterial, selectedMaterial, onGoToVendor }) => {
   const UploadSection = () => (
     <section>
       <SectionHeadline label='1. Upload files' />
       <Upload label='Upload a model' onUpload={onUpload} onUploaded={onUploaded} />
+      <Loading />
     </section>
+  )
+
+  const Loading = () => (
+    isUploading ? <LoadingIndicator modifiers={['l']} /> : null
   )
 
   const MaterialSection = () => (
@@ -40,13 +46,16 @@ const Model = ({ onUpload, onUploaded, materials, onSelectedMaterial, onGoToVend
       <Headline label='Model config' modifiers={['xl']} />
       <UploadSection />
       <MaterialSection />
-      <Button label='Continue' onClick={onGoToVendor} />
+      <Button label='Continue' disabled={!isUploadFinished || !selectedMaterial} onClick={onGoToVendor} />
     </Main>
   )
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  materials: state.material.materials
+  isUploading: state.model.modelId && !state.model.isUploadFinished,
+  isUploadFinished: state.model.isUploadFinished,
+  materials: state.material.materials,
+  selectedMaterial: state.material.selected
 })
 
 const mapDispatchToProps = {
