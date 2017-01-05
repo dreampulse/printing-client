@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions'
 
-import TYPE from '../../../src/app/type'
+import TYPE from '../type'
 import * as printingEngine from '../lib/printing-engine'
 
 export const createShoppingCart = () => async (dispatch, getState) => {

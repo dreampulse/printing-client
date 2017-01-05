@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions'
 
-import TYPE from '../../../src/app/type'
+import TYPE from '../type'
 import { getLocation } from '../service/geolocation'
 import * as printingEngine from '../lib/printing-engine'
 

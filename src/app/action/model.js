@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions'
 
+import TYPE from '../type'
 import pollApi from '../lib/poll-api'
-import TYPE from '../../../src/app/type'
 import * as printingEngine from '../lib/printing-engine'
 
 export const upload = (form, onProgressChange) => dispatch => {

@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions'
 
-import TYPE from '../../../src/app/type'
+import TYPE from '../type'
 import * as stripe from '../service/stripe'
 import * as paypal from '../service/paypal'
 import * as printingEngine from '../lib/printing-engine'
