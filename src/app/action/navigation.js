@@ -1,5 +1,7 @@
 import { routerActions } from 'react-router-redux'
+import { createPriceRequest } from '../action/price'
 
-export const goToVendor = () => {
-  return routerActions.push('/vendor')
+export const goToVendor = () => dispatch => {
+  dispatch(createPriceRequest())
+  dispatch(routerActions.push('/vendor'))
 }
