@@ -2,11 +2,15 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Main from '../component/main'
+import Button from '../component/button'
 import Headline from '../component/headline'
 import SectionHeadline from '../component/section-headline'
 import LoadingIndicator from '../component/loading-indicator'
 
-const Vendor = ({ location, price }) => {
+import { goToCart } from '../action/navigation'
+import { getPriceAmount } from '../lib/get-total-amount'
+
+const Vendor = ({ location, price, onSelectVendor }) => {
   const json = data => JSON.stringify(data, null, 2)
 
   const ShippingSection = () => (
@@ -19,8 +23,32 @@ const Vendor = ({ location, price }) => {
   const PriceSection = () => (
     <section>
       <SectionHeadline label='Prices' />
-      {price ? <pre>{json(price)}</pre> : <LoadingIndicator modifiers={['l']} />}
+      {price ? <PriceTable /> : <LoadingIndicator modifiers={['l']} />}
     </section>
+  )
+
+  const PriceTable = () => (
+    <table style={{border: '1px solid black'}}>
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Price incl. shipping</th>
+          <th>Shipping ption</th>
+        </tr>
+      </thead>
+      <tbody>
+        {Object.keys(price.printingService).map(k => <VendorRow key={k} vendor={k} />)}
+      </tbody>
+    </table>
+  )
+
+  const VendorRow = ({ vendor }) => (
+    <tr>
+      <td>{vendor}</td>
+      <td style={{border: '1px solid black'}}>{getPriceAmount(price.printingService[vendor])}</td>
+      <td>{price.printingService[vendor].shipping[0].name}</td>
+      <td><Button label='Select' onClick={onSelectVendor} /></td>
+    </tr>
   )
 
   return (
@@ -38,6 +66,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
+  onSelectVendor: goToCart
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Vendor)

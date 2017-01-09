@@ -5,3 +5,7 @@ export const goToVendor = () => dispatch => {
   dispatch(createPriceRequest())
   dispatch(routerActions.push('/vendor'))
 }
+
+export const goToCart = () => dispatch => {
+  dispatch(routerActions.push('/cart'))
+}

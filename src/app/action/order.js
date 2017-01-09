@@ -4,7 +4,7 @@ import TYPE from '../type'
 import * as stripe from '../service/stripe'
 import * as paypal from '../service/paypal'
 import * as printingEngine from '../lib/printing-engine'
-import getTotalAmount from '../lib/get-total-amount'
+import { getCartAmount } from '../lib/get-total-amount'
 
 export const createOrderWithStripe = () => async (dispatch, getState) => {
   const cart = getState().cart.cartPrice
@@ -12,7 +12,7 @@ export const createOrderWithStripe = () => async (dispatch, getState) => {
 
   const { currency } = cart
   const email = 'test@test.test'
-  const amount = getTotalAmount({ cart })
+  const amount = getCartAmount(cart)
 
   const tokenObject = await stripe.checkout({ amount, currency, email })
   const token = tokenObject.id
@@ -26,7 +26,7 @@ export const initPaymentWithPaypal = () => (dispatch, getState) => {
   const cartId = getState().cart.cartId
 
   const { currency } = cart
-  const amount = getTotalAmount({ cart })
+  const amount = getCartAmount(cart)
 
   return paypal.createPayment({ amount, currency, cartId })
 }
