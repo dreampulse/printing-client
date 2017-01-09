@@ -3,7 +3,7 @@ import {handleActions} from 'redux-actions'
 import TYPE from '../type'
 
 const initialState = {
-  selected: null,
+  selected: undefined,
   materials: null
 }
 
