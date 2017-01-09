@@ -12,7 +12,16 @@ import { goToVendor } from '../action/navigation'
 import { selectMaterial } from '../action/material'
 import { upload, modelUploaded } from '../action/model'
 
-const Model = ({ onUpload, onUploaded, isUploading, isUploadFinished, materials, onSelectedMaterial, selectedMaterial, onGoToVendor }) => {
+const Model = ({
+  onUpload,
+  onUploaded,
+  isUploading,
+  materials,
+  onSelectedMaterial,
+  selectedMaterial,
+  onGoToVendor,
+  isConfigured
+}) => {
   const UploadSection = () => (
     <section>
       <SectionHeadline label='1. Upload files' />
@@ -46,14 +55,14 @@ const Model = ({ onUpload, onUploaded, isUploading, isUploadFinished, materials,
       <Headline label='Model config' modifiers={['xl']} />
       <UploadSection />
       <MaterialSection />
-      <Button label='Continue' disabled={!isUploadFinished || !selectedMaterial} onClick={onGoToVendor} />
+      <Button label='Continue' disabled={!isConfigured} onClick={onGoToVendor} />
     </Main>
   )
 }
 
 const mapStateToProps = (state, ownProps) => ({
   isUploading: state.model.modelId && !state.model.isUploadFinished,
-  isUploadFinished: state.model.isUploadFinished,
+  isConfigured: state.model.isUploadFinished && state.material.selected,
   materials: state.material.materials,
   selectedMaterial: state.material.selected
 })
