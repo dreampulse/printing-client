@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { compose, lifecycle } from 'recompose'
 
 import Main from '../component/main'
 import Button from '../component/button'
@@ -8,6 +9,7 @@ import SectionHeadline from '../component/section-headline'
 import LoadingIndicator from '../component/loading-indicator'
 
 import { goToCart } from '../action/navigation'
+import { createPriceRequest } from '../action/price'
 import { getPriceAmount } from '../lib/get-total-amount'
 
 const Vendor = ({ location, price, onSelectVendor }) => {
@@ -66,7 +68,18 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-  onSelectVendor: goToCart
+  onSelectVendor: goToCart,
+  createPriceRequest: createPriceRequest
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Vendor)
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  lifecycle({
+    componentDidMount () {
+      this.props.createPriceRequest()
+    }
+  })
+)
+
+
+export default enhance(Vendor)
