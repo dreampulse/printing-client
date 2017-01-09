@@ -13,12 +13,10 @@ import { createPriceRequest } from '../action/price'
 import { getPriceAmount } from '../lib/get-total-amount'
 
 const Vendor = ({ location, price, onSelectVendor }) => {
-  const json = data => JSON.stringify(data, null, 2)
-
   const ShippingSection = () => (
     <section>
       <SectionHeadline label='Shipping to' />
-      {location ? <pre>{json(location)}</pre> : null}
+      {location ? <pre>{JSON.stringify(location, null, 2)}</pre> : null}
     </section>
   )
 
