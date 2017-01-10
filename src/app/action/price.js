@@ -3,6 +3,7 @@ import {createAction} from 'redux-actions'
 import TYPE from '../type'
 import { createUser } from './user'
 import pollApi from '../lib/poll-api'
+import { goToCart } from '../action/navigation'
 import * as printingEngine from '../lib/printing-engine'
 
 export const createPriceRequest = () => async (dispatch, getState) => {
@@ -29,4 +30,9 @@ export const createPriceRequest = () => async (dispatch, getState) => {
   } catch (e) {
     dispatch(createAction(TYPE.PRICE.ERROR)(e))
   }
+}
+
+export const selectVendor = vendorId => dispatch => {
+  dispatch(createAction(TYPE.PRICE.VENDOR_SELECTED)(vendorId))
+  dispatch(goToCart())
 }

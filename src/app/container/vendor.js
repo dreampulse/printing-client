@@ -8,9 +8,9 @@ import Headline from '../component/headline'
 import SectionHeadline from '../component/section-headline'
 import LoadingIndicator from '../component/loading-indicator'
 
-import { goBack, goToCart } from '../action/navigation'
-import { createPriceRequest } from '../action/price'
+import { goBack } from '../action/navigation'
 import { getPriceAmount } from '../lib/get-total-amount'
+import { createPriceRequest, selectVendor } from '../action/price'
 
 const Vendor = ({ location, addressDetectionFailed, price, onGoBack, onSelectVendor }) => {
   const ShippingSection = () => (
@@ -70,7 +70,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   onGoBack: goBack,
-  onSelectVendor: goToCart,
+  onSelectVendor: selectVendor,
   createPriceRequest: createPriceRequest
 }
 
