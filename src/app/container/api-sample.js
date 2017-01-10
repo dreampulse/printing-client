@@ -13,7 +13,7 @@ import SectionHeadline from '../component/section-headline'
 import Button from '../component/button'
 import PaypalButton from '../component/paypal-button'
 
-const App = ({
+const ApiSample = ({
   onUpload,
   onUploaded,
   onGetPrice,
@@ -97,4 +97,4 @@ const mapDispatchToProps = {
   onOrderWithPaypal: createOrderWithPaypal
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(ApiSample)

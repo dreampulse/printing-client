@@ -20,6 +20,10 @@ class Upload extends Component {
     this.refs.fileInputDom.addEventListener('change', this.fileSelected)
   }
 
+  componentWillUnmount () {
+    this.refs.fileInputDom.removeEventListener('change', this.fileSelected)
+  }
+
   fileSelected = async event => {
     const files = event.currentTarget.files
     if (files.length < 1) return

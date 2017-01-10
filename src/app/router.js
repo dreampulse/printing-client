@@ -1,16 +1,25 @@
 import React from 'react'
-import {Router, Route, browserHistory} from 'react-router'
-import {syncHistoryWithStore} from 'react-router-redux'
+import { syncHistoryWithStore } from 'react-router-redux'
+import { Router, Route, browserHistory, Redirect } from 'react-router'
 
-import App from './container/app'
+import Cart from './container/cart'
+import Model from './container/model'
+import Vendor from './container/vendor'
+import ApiSample from './container/api-sample'
 
-export default ({store}) => {
+export default ({ store }) => {
   // Create an enhanced history that syncs navigation events with the store
   const history = syncHistoryWithStore(browserHistory, store)
 
   return (
     <Router history={history}>
-      <Route component={App} path='/' />
+      <Redirect from='/' to='/model' />
+
+      <Route component={Model} path='/model' />
+      <Route component={Vendor} path='/vendor' />
+      <Route component={Cart} path='/cart' />
+
+      <Route component={ApiSample} path='/api' />
     </Router>
   )
 }

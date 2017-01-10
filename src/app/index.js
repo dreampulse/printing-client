@@ -9,14 +9,18 @@ import Router from './router'
 
 import '../sass/main.scss'
 
+import init from './action/init'
+
 const store = Store()
 
-render(
-  <Provider store={store}>
-    <Router store={store} />
-  </Provider>,
-  global.document.getElementById('root')
-)
+store.dispatch(init()).then(() => {
+  render(
+    <Provider store={store}>
+      <Router store={store} />
+    </Provider>,
+    global.document.getElementById('root')
+  )
+})
 
 // Webpack (uglify) will remove this code in the production build
 if (process.env.NODE_ENV !== 'production') {
