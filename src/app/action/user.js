@@ -5,8 +5,12 @@ import { getLocation } from '../service/geolocation'
 import * as printingEngine from '../lib/printing-engine'
 
 export const detectAddress = () => async dispatch => {
-  const shippingAddress = await getLocation()
-  dispatch(createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(shippingAddress))
+  try {
+    const shippingAddress = await getLocation()
+    dispatch(createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(shippingAddress))
+  } catch (e) {
+    dispatch(createAction(TYPE.USER.SHIPPING_ADDRESS_DETECTION_FAILED)())
+  }
 }
 
 export const createUser = () => async (dispatch, getState) => {

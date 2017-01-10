@@ -34,7 +34,23 @@ describe('User Integration Test', () => {
         user: {
           currency: 'USD',
           shippingAddress: location
-        }
+        },
+        addressDetectionFailed: null
+      })
+    })
+
+    it('should fail', async () => {
+      geolocation.getLocation.rejects(new Error('Boom!'))
+
+      await store.dispatch(detectAddress())
+
+      expect(store.getState().user, 'to equal', {
+        userId: null,
+        user: {
+          currency: 'USD',
+          shippingAddress: null
+        },
+        addressDetectionFailed: true
       })
     })
   })
@@ -51,7 +67,8 @@ describe('User Integration Test', () => {
         user: {
           currency: 'USD',
           shippingAddress: null
-        }
+        },
+        addressDetectionFailed: null
       })
     })
   })
