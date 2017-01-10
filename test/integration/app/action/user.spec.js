@@ -29,14 +29,7 @@ describe('User Integration Test', () => {
 
       await store.dispatch(detectAddress())
 
-      expect(store.getState().user, 'to equal', {
-        userId: null,
-        user: {
-          currency: 'USD',
-          shippingAddress: location
-        },
-        addressDetectionFailed: null
-      })
+      expect(store.getState().user.user.shippingAddress, 'to equal', location)
     })
 
     it('should fail', async () => {
@@ -44,12 +37,7 @@ describe('User Integration Test', () => {
 
       await store.dispatch(detectAddress())
 
-      expect(store.getState().user, 'to equal', {
-        userId: null,
-        user: {
-          currency: 'USD',
-          shippingAddress: null
-        },
+      expect(store.getState().user, 'to satisfy', {
         addressDetectionFailed: true
       })
     })
@@ -62,13 +50,8 @@ describe('User Integration Test', () => {
 
       await store.dispatch(createUser())
 
-      expect(store.getState().user, 'to equal', {
-        userId,
-        user: {
-          currency: 'USD',
-          shippingAddress: null
-        },
-        addressDetectionFailed: null
+      expect(store.getState().user, 'to satisfy', {
+        userId
       })
     })
   })
