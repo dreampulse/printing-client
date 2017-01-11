@@ -5,8 +5,33 @@ import TYPE from '../type'
 const initialState = {
   userId: null,
   user: {
+    emailAddress: '',
+    phoneNumber: '',
     currency: 'USD',
-    shippingAddress: null
+    isCompany: false,
+    vatId: '',
+    shippingAddress: {
+      firstName: '',
+      lastName: '',
+      street: '',
+      houseNumber: '',
+      addressLine2: '',
+      city: '',
+      zipCode: '',
+      stateCode: '',
+      countryCode: ''
+    },
+    billingAddress: {
+      firstName: '',
+      lastName: '',
+      street: '',
+      houseNumber: '',
+      addressLine2: '',
+      city: '',
+      zipCode: '',
+      stateCode: '',
+      countryCode: ''
+    }
   },
   addressDetectionFailed: null
 }

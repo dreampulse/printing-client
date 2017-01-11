@@ -7,6 +7,7 @@ import Headline from '../component/headline'
 import PaypalButton from '../component/paypal-button'
 import SectionHeadline from '../component/section-headline'
 
+import { goBack } from '../action/navigation'
 import { createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal } from '../action/order'
 
 const Cart = ({
@@ -14,6 +15,7 @@ const Cart = ({
   quantity,
   shipping,
   selectedShipping,
+  onGoBack,
   onOrderWithStripe,
   onPayWithPaypal,
   onOrderWithPaypal
@@ -83,6 +85,7 @@ const Cart = ({
   return (
     <Main>
       <Headline label='Order summary' modifiers={['xl']} />
+      <Button style={{ position: 'absolute', right: '250px', top: '25px' }} label='Back' onClick={onGoBack} />
       <CartPreviewSection />
       <ShippingSection />
       <OrderSection />
@@ -98,6 +101,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
+  onGoBack: goBack,
   onOrderWithStripe: createOrderWithStripe,
   onPayWithPaypal: initPaymentWithPaypal,
   onOrderWithPaypal: createOrderWithPaypal

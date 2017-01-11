@@ -68,12 +68,12 @@ describe('Price Integration Test', () => {
 
   describe('selectVendor', () => {
     it('should work', () => {
-      navigation.goToCart.returns({type: 'foo'})
+      navigation.goToAddress.returns({type: 'foo'})
 
       store = Store({})
       store.dispatch(selectVendor('some-vendor-id'))
       expect(store.getState().price.selectedVendor, 'to equal', 'some-vendor-id')
-      expect(navigation.goToCart, 'was called once')
+      expect(navigation.goToAddress, 'was called once')
     })
   })
 })
