@@ -60,8 +60,16 @@ function handleUserCreated (state, { payload }) {
   }
 }
 
+function handleUserUpdated (state, { payload }) {
+  return {
+    ...state,
+    user: payload
+  }
+}
+
 export default handleActions({
   [TYPE.USER.SHIPPING_ADDRESS_CHANGED]: handleShippingAddressChange,
   [TYPE.USER.SHIPPING_ADDRESS_DETECTION_FAILED]: handleAddressDetectionFailed,
-  [TYPE.USER.CREATED]: handleUserCreated
+  [TYPE.USER.CREATED]: handleUserCreated,
+  [TYPE.USER.UPDATED]: handleUserUpdated
 }, initialState)
