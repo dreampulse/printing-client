@@ -15,10 +15,10 @@ const Address = ({
   onGoBack,
   onSubmit
 }) => {
-  const TextInput = ({ label, name }) => (
+  const TextInput = ({ label, name, type }) => (
     <div>
       <label htmlFor={name}>{label}</label>
-      <Field name={name} component='input' type='text' />
+      <Field name={name} component='input' type={type || 'text'} />
     </div>
   )
 
@@ -32,7 +32,7 @@ const Address = ({
   const ContactDataSection = () => (
     <section>
       <SectionHeadline label='Contact data' />
-      <TextInput label='Email address' name='emailAddress' />
+      <TextInput label='Email address' name='emailAddress' type='email' />
       <TextInput label='Phone number' name='phoneNumber' />
       <TextInput label='Currency' name='currency' />
       <CheckBox label='Company' name='isCompany' />
