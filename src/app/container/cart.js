@@ -8,13 +8,16 @@ import PaypalButton from '../component/paypal-button'
 import SectionHeadline from '../component/section-headline'
 
 import { goBack } from '../action/navigation'
+import { selectShipping, changeQuantity } from '../action/cart'
 import { createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal } from '../action/order'
 
 const Cart = ({
   items,
   quantity,
+  onChangeQuantity,
   shipping,
   selectedShipping,
+  onSelectShipping,
   onGoBack,
   onOrderWithStripe,
   onPayWithPaypal,
@@ -53,6 +56,21 @@ const Cart = ({
     </tr>
   )
 
+  const QuantitySection = () => (
+    <section>
+      <SectionHeadline label='Choose quantity' />
+      <QuantitySelect />
+    </section>
+  )
+
+  const QuantitySelect = () => (
+    <select onChange={e => onChangeQuantity(e.target.value)} value={quantity}>
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(q =>
+        <option value={q} key={q}>{q}</option>
+      )}
+    </select>
+  )
+
   const ShippingSection = () => (
     <section>
       <SectionHeadline label='Shipping options' />
@@ -61,7 +79,7 @@ const Cart = ({
   )
 
   const ShippingSelect = () => (
-    <select onChange={e => console.log(e.target.value)} value={selectedShipping}>
+    <select onChange={e => onSelectShipping(e.target.value)} value={selectedShipping}>
       <option>Select shipping</option>
       {shipping.map(s =>
         <option value={s.name} key={s.name}>{s.name}</option>
@@ -87,6 +105,7 @@ const Cart = ({
       <Headline label='Order summary' modifiers={['xl']} />
       <Button style={{ position: 'absolute', right: '250px', top: '25px' }} label='Back' onClick={onGoBack} />
       <CartPreviewSection />
+      <QuantitySection />
       <ShippingSection />
       <OrderSection />
     </Main>
@@ -94,14 +113,16 @@ const Cart = ({
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  items: [{modelId: '0', price: 1.99}], // state.price.price.printingService[state.price.selectedVendor].items,
-  shipping: [{name: 'UPS Express'}], // state.price.price.printingService[state.price.selectedVendor].shipping,
-  selectedShipping: null, // state.price.selectedShipping,
-  quantity: 1
+  items: [{modelId: '0', price: 1.99}], // state.price.price.printingService[state.cart.selectedVendor].items,
+  shipping: [{name: 'UPS Express'}], // state.price.price.printingService[state.cart.selectedVendor].shipping,
+  selectedShipping: state.cart.selectedShipping,
+  quantity: state.cart.quantity
 })
 
 const mapDispatchToProps = {
   onGoBack: goBack,
+  onSelectShipping: selectShipping,
+  onChangeQuantity: changeQuantity,
   onOrderWithStripe: createOrderWithStripe,
   onPayWithPaypal: initPaymentWithPaypal,
   onOrderWithPaypal: createOrderWithPaypal

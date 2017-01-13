@@ -7,7 +7,7 @@ import * as printingEngine from '../lib/printing-engine'
 import { getCartAmount } from '../lib/get-total-amount'
 
 export const createOrderWithStripe = () => async (dispatch, getState) => {
-  const cart = getState().cart.cartPrice
+  const cart = getState().cart.cart
   const cartId = getState().cart.cartId
 
   const { currency } = cart
@@ -22,7 +22,7 @@ export const createOrderWithStripe = () => async (dispatch, getState) => {
 }
 
 export const initPaymentWithPaypal = () => (dispatch, getState) => {
-  const cart = getState().cart.cartPrice
+  const cart = getState().cart.cart
   const cartId = getState().cart.cartId
 
   const { currency } = cart

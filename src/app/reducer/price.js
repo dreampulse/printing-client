@@ -4,8 +4,7 @@ import TYPE from '../type'
 
 const initialState = {
   priceId: null,
-  price: null,
-  selectedVendor: null
+  price: null
 }
 
 function handlePriceRequestCreated (state, { payload }) {
@@ -22,15 +21,7 @@ function handlePriceReceived (state, { payload }) {
   }
 }
 
-function handleVendorSelected (state, { payload }) {
-  return {
-    ...state,
-    selectedVendor: payload
-  }
-}
-
 export default handleActions({
   [TYPE.PRICE.REQUEST_CREATED]: handlePriceRequestCreated,
-  [TYPE.PRICE.RECEIVED]: handlePriceReceived,
-  [TYPE.PRICE.VENDOR_SELECTED]: handleVendorSelected
+  [TYPE.PRICE.RECEIVED]: handlePriceReceived
 }, initialState)
