@@ -1,11 +1,13 @@
 import {createAction} from 'redux-actions'
 
 import TYPE from '../type'
-import * as printingEngine from '../lib/printing-engine'
-import pollApi from '../lib/poll-api'
 import { createUser } from './user'
+import pollApi from '../lib/poll-api'
+import * as printingEngine from '../lib/printing-engine'
 
 export const createPriceRequest = () => async (dispatch, getState) => {
+  if (!getState().user.user.shippingAddress) return
+
   await dispatch(createUser())
 
   const modelId = getState().model.modelId

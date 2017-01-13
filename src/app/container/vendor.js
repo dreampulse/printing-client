@@ -12,11 +12,12 @@ import { goToCart } from '../action/navigation'
 import { createPriceRequest } from '../action/price'
 import { getPriceAmount } from '../lib/get-total-amount'
 
-const Vendor = ({ location, price, onSelectVendor }) => {
+const Vendor = ({ location, addressDetectionFailed, price, onSelectVendor }) => {
   const ShippingSection = () => (
     <section>
       <SectionHeadline label='Shipping to' />
       {location ? <pre>{JSON.stringify(location, null, 2)}</pre> : null}
+      {addressDetectionFailed ? <p>Location detection failed!</p> : null}
     </section>
   )
 
@@ -62,6 +63,7 @@ const Vendor = ({ location, price, onSelectVendor }) => {
 
 const mapStateToProps = (state, ownProps) => ({
   location: state.user.user.shippingAddress,
+  addressDetectionFailed: state.user.addressDetectionFailed,
   price: state.price.price
 })
 

@@ -12,7 +12,8 @@ export const getLocation = async () => {
     countryCode
   } = await checkStatus(response)
 
-  if (status !== 'success') {
+  if (status !== 'success' ||
+      !city || !zip || !region || !countryCode) {
     throw new Error('Location detection failed')
   }
 
