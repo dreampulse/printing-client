@@ -1,4 +1,5 @@
 import React from 'react'
+import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 
@@ -11,9 +12,8 @@ import { updateUser } from '../action/user'
 import { goBack } from '../action/navigation'
 
 const Address = ({
-  user,
-  onGoBack,
-  onSubmit
+  handleSubmit,
+  onGoBack
 }) => {
   const TextInput = ({ label, name, type }) => (
     <div>
@@ -70,7 +70,7 @@ const Address = ({
     </section>
   )
 
-  const AddressForm = ({ handleSubmit }) => (
+  const AddressForm = () => (
     <form onSubmit={handleSubmit}>
       <ContactDataSection />
       <ShippingAddressSection />
@@ -79,19 +79,17 @@ const Address = ({
     </form>
   )
 
-  const AddressReduxForm = reduxForm({ form: 'address' })(AddressForm)
-
   return (
     <Main>
       <Headline label='Enter your details' modifiers={['xl']} />
       <Button style={{ position: 'absolute', right: '250px', top: '25px' }} label='Back' onClick={onGoBack} />
-      <AddressReduxForm onSubmit={onSubmit} />
+      <AddressForm />
     </Main>
   )
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  user: state.user.user
+  initialValues: state.user.user
 })
 
 const mapDispatchToProps = {
@@ -99,4 +97,9 @@ const mapDispatchToProps = {
   onSubmit: updateUser
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Address)
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({ form: 'address' })
+)
+
+export default enhance(Address)
