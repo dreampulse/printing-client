@@ -113,8 +113,8 @@ const Cart = ({
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  items: [{modelId: '0', price: 1.99}], // state.price.price.printingService[state.cart.selectedVendor].items,
-  shipping: [{name: 'UPS Express'}], // state.price.price.printingService[state.cart.selectedVendor].shipping,
+  items: state.price.price.printingService[state.cart.selectedVendor].items,
+  shipping: state.price.price.printingService[state.cart.selectedVendor].shipping,
   selectedShipping: state.cart.selectedShipping,
   quantity: state.cart.quantity
 })
