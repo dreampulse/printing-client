@@ -1,5 +1,6 @@
-import {combineReducers} from 'redux'
-import {routerReducer} from 'react-router-redux'
+import { combineReducers } from 'redux'
+import { routerReducer } from 'react-router-redux'
+import { reducer as formReducer } from 'redux-form'
 
 import app from './app'
 import user from './user'
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   price,
   cart,
   order,
-  routing: routerReducer
+  routing: routerReducer,
+  form: formReducer
 })
 
 export default rootReducer

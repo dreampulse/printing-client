@@ -3,10 +3,12 @@ import {createAction} from 'redux-actions'
 import TYPE from '../type'
 import { createUser } from './user'
 import pollApi from '../lib/poll-api'
+import { goToAddress } from '../action/navigation'
 import * as printingEngine from '../lib/printing-engine'
 
 export const createPriceRequest = () => async (dispatch, getState) => {
-  if (!getState().user.user.shippingAddress) return
+  const sa = getState().user.user.shippingAddress
+  if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) return
 
   await dispatch(createUser())
 
@@ -29,4 +31,9 @@ export const createPriceRequest = () => async (dispatch, getState) => {
   } catch (e) {
     dispatch(createAction(TYPE.PRICE.ERROR)(e))
   }
+}
+
+export const selectVendor = vendorId => dispatch => {
+  dispatch(createAction(TYPE.PRICE.VENDOR_SELECTED)(vendorId))
+  dispatch(goToAddress())
 }

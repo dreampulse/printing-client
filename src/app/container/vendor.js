@@ -8,11 +8,11 @@ import Headline from '../component/headline'
 import SectionHeadline from '../component/section-headline'
 import LoadingIndicator from '../component/loading-indicator'
 
-import { goToCart } from '../action/navigation'
-import { createPriceRequest } from '../action/price'
+import { goBack } from '../action/navigation'
 import { getPriceAmount } from '../lib/get-total-amount'
+import { createPriceRequest, selectVendor } from '../action/price'
 
-const Vendor = ({ location, addressDetectionFailed, price, onSelectVendor }) => {
+const Vendor = ({ location, addressDetectionFailed, price, onGoBack, onSelectVendor }) => {
   const ShippingSection = () => (
     <section>
       <SectionHeadline label='Shipping to' />
@@ -55,6 +55,7 @@ const Vendor = ({ location, addressDetectionFailed, price, onSelectVendor }) => 
   return (
     <Main>
       <Headline label='Choose provider & shipping' modifiers={['xl']} />
+      <Button style={{ position: 'absolute', right: '250px', top: '25px' }} label='Back' onClick={onGoBack} />
       <ShippingSection />
       <PriceSection />
     </Main>
@@ -68,7 +69,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-  onSelectVendor: goToCart,
+  onGoBack: goBack,
+  onSelectVendor: selectVendor,
   createPriceRequest: createPriceRequest
 }
 

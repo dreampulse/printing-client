@@ -16,6 +16,8 @@ export const listMaterials = () => request(baseUrl + '/material')
 
 export const createUser = ({user}) => request(baseUrl + '/user', {method: 'POST', body: user})
 
+export const updateUser = ({userId, user}) => request(baseUrl + '/user/' + userId, {method: 'PUT', body: user})
+
 export const createPriceRequest = ({modelId, materialId, userId}) =>
   request(baseUrl + '/price', {
     method: 'POST',

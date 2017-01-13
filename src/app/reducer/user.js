@@ -5,8 +5,33 @@ import TYPE from '../type'
 const initialState = {
   userId: null,
   user: {
+    emailAddress: '',
+    phoneNumber: '',
     currency: 'USD',
-    shippingAddress: null
+    isCompany: false,
+    vatId: '',
+    shippingAddress: {
+      firstName: '',
+      lastName: '',
+      street: '',
+      houseNumber: '',
+      addressLine2: '',
+      city: '',
+      zipCode: '',
+      stateCode: '',
+      countryCode: ''
+    },
+    billingAddress: {
+      firstName: '',
+      lastName: '',
+      street: '',
+      houseNumber: '',
+      addressLine2: '',
+      city: '',
+      zipCode: '',
+      stateCode: '',
+      countryCode: ''
+    }
   },
   addressDetectionFailed: null
 }
@@ -35,8 +60,16 @@ function handleUserCreated (state, { payload }) {
   }
 }
 
+function handleUserUpdated (state, { payload }) {
+  return {
+    ...state,
+    user: payload
+  }
+}
+
 export default handleActions({
   [TYPE.USER.SHIPPING_ADDRESS_CHANGED]: handleShippingAddressChange,
   [TYPE.USER.SHIPPING_ADDRESS_DETECTION_FAILED]: handleAddressDetectionFailed,
-  [TYPE.USER.CREATED]: handleUserCreated
+  [TYPE.USER.CREATED]: handleUserCreated,
+  [TYPE.USER.UPDATED]: handleUserUpdated
 }, initialState)
