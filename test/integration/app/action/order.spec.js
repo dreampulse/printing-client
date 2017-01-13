@@ -14,7 +14,7 @@ describe('Shopping Cart Integration Test', () => {
 
     store = Store({
       cart: {
-        cartPrice: {
+        cart: {
           currency: 'some-currency',
           items: [{
             price: 10,

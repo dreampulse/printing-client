@@ -1,7 +1,6 @@
-import { createPriceRequest, selectVendor } from '../../../../src/app/action/price'
+import { createPriceRequest } from '../../../../src/app/action/price'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
-import * as navigation from '../../../../src/app/action/navigation'
 
 describe('Price Integration Test', () => {
   let store
@@ -18,12 +17,10 @@ describe('Price Integration Test', () => {
 
   beforeEach(() => {
     sinon.stub(printingEngine)
-    sinon.stub(navigation)
   })
 
   afterEach(() => {
     sinon.restore(printingEngine)
-    sinon.restore(navigation)
   })
 
   describe('createPriceRequest()', () => {
@@ -63,17 +60,6 @@ describe('Price Integration Test', () => {
         priceId: null,
         price: null
       })
-    })
-  })
-
-  describe('selectVendor', () => {
-    it('should work', () => {
-      navigation.goToAddress.returns({type: 'foo'})
-
-      store = Store({})
-      store.dispatch(selectVendor('some-vendor-id'))
-      expect(store.getState().price.selectedVendor, 'to equal', 'some-vendor-id')
-      expect(navigation.goToAddress, 'was called once')
     })
   })
 })

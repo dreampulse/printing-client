@@ -9,8 +9,9 @@ import SectionHeadline from '../component/section-headline'
 import LoadingIndicator from '../component/loading-indicator'
 
 import { goBack } from '../action/navigation'
+import { selectVendor } from '../action/cart'
+import { createPriceRequest } from '../action/price'
 import { getPriceAmount } from '../lib/get-total-amount'
-import { createPriceRequest, selectVendor } from '../action/price'
 
 const Vendor = ({ location, addressDetectionFailed, price, onGoBack, onSelectVendor }) => {
   const ShippingSection = () => (
