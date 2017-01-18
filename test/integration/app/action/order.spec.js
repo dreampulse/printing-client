@@ -1,4 +1,4 @@
-import { createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal } from '../../../../src/app/action/order'
+import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from '../../../../src/app/action/order'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 import * as stripe from '../../../../src/app/service/stripe'
@@ -80,7 +80,7 @@ describe('Shopping Cart Integration Test', () => {
     it('should work', async () => {
       const data = {foo: 'bar'}
       const actions = {bar: 'baz'}
-      paypal.executePayment.withArgs({actions}).resolves({ id: 'some-payment-id' })
+      paypal.executePayment.withArgs({actions}).resolves({id: 'some-payment-id'})
 
       await store.dispatch(createOrderWithPaypal(data, actions))
 

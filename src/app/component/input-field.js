@@ -33,10 +33,10 @@ const InputField = ({modifiers = [], classNames, icon, label, value, type = 'tex
 
   return (
     <div className={buildClassName('input-field', inputFieldModifiers, classNames)}>
-      <input id={id} className='input-field__input' type={type} value={value} {...params} />
-      <label htmlFor={id} className='input-field__label'>{label}</label>
+      <input id={id} className="input-field__input" type={type} value={value} {...params} />
+      <label htmlFor={id} className="input-field__label">{label}</label>
       { inputFieldIcon
-        ? <div className='input-field__icon'><Icon source={inputFieldIcon} /></div>
+        ? <div className="input-field__icon"><Icon source={inputFieldIcon} /></div>
         : null
       }
     </div>

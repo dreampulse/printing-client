@@ -1,10 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import { upload, modelUploaded } from '../action/model'
-import { createPriceRequest } from '../action/price'
-import { createShoppingCart } from '../action/cart'
-import { createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal } from '../action/order'
+import {upload, modelUploaded} from '../action/model'
+import {createPriceRequest} from '../action/price'
+import {createShoppingCart} from '../action/cart'
+import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from '../action/order'
 
 import Main from '../component/main'
 import Upload from '../component/upload'
@@ -28,16 +28,16 @@ const ApiSample = ({
 }) => {
   const UploadSection = () => (
     <section>
-      <SectionHeadline label='Select a file' />
-      <Upload label='Upload a model' onUpload={onUpload} onUploaded={onUploaded} />
+      <SectionHeadline label="Select a file" />
+      <Upload label="Upload a model" onUpload={onUpload} onUploaded={onUploaded} />
     </section>
   )
 
   const GetPriceSection = () => (
     isUploadFinished ? (
       <section>
-        <SectionHeadline label='Get price for the model' />
-        <Button label='Get Price' onClick={onGetPrice} />
+        <SectionHeadline label="Get price for the model" />
+        <Button label="Get Price" onClick={onGetPrice} />
         {price ? <pre>{JSON.stringify(price, null, 2)}</pre> : null}
       </section>
     ) : null
@@ -46,8 +46,8 @@ const ApiSample = ({
   const GetShoppingCart = () => (
     price ? (
       <section>
-        <SectionHeadline label='Create shopping cart' />
-        <Button label='Get cart price' onClick={onGetShoppingCart} />
+        <SectionHeadline label="Create shopping cart" />
+        <Button label="Get cart price" onClick={onGetShoppingCart} />
         {cartPrice ? <pre>{JSON.stringify(cartPrice, null, 2)}</pre> : null}
       </section>
     ) : null
@@ -56,8 +56,8 @@ const ApiSample = ({
   const Order = () => (
     cartPrice ? (
       <section>
-        <SectionHeadline label='Buy' />
-        <Button label='Pay with Stripe' onClick={onOrderWithStripe} />
+        <SectionHeadline label="Buy" />
+        <Button label="Pay with Stripe" onClick={onOrderWithStripe} />
         <PaypalButton
           payment={onPayWithPaypal}
           onAuthorize={onOrderWithPaypal}
@@ -71,7 +71,7 @@ const ApiSample = ({
 
   return (
     <Main>
-      <Headline label='Printing Engine Test Client' modifiers={['xl']} />
+      <Headline label="Printing Engine Test Client" modifiers={['xl']} />
       <UploadSection />
       <GetPriceSection />
       <GetShoppingCart />

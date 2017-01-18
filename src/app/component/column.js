@@ -4,7 +4,8 @@ import compact from 'lodash/compact'
 import propTypes from '../util/prop-types'
 import buildClassName from '../util/build-class-name'
 
-const Column = ({classNames, modifiers = [], children, sm = 12, md, lg, smPush, mdPush, lgPush}) => {
+const Column = ({classNames, modifiers = [], children,
+  sm = 12, md, lg, smPush, mdPush, lgPush}) => {
   const allModifiers = compact([
     sm ? `sm-${sm}` : undefined,
     md ? `md-${md}` : undefined,

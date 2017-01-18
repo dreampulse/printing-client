@@ -22,9 +22,9 @@ class MyPortal extends Component {
   render () {
     return (
       <div>
-        <Button onClick={this.handleOnOpen} label='open' />
+        <Button onClick={this.handleOnOpen} label="open" />
         <Portal modifiers={['modal']} isOpen={this.state.isOpen} onRequestClose={this.handleOnClose}>
-          <Modal title='My title' onClose={this.handleOnClose}>
+          <Modal title="My title" onClose={this.handleOnClose}>
             Some content
           </Modal>
         </Portal>

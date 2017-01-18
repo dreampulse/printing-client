@@ -10,14 +10,13 @@ const TabItem = ({classNames, modifiers, label, value, icon, onClick = () => {},
     onClick(value)
   }
   return (
-    <a
-      href='#'
+    <button
       onClick={handleOnClick}
       className={buildClassName('tab-item', modifiers, classNames)} {...params}
     >
       {icon ? <Icon source={icon} /> : null}
       {label}
-    </a>
+    </button>
   )
 }
 

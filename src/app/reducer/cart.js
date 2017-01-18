@@ -10,21 +10,21 @@ const initialState = {
   cart: null
 }
 
-function handleVendorSelected (state, { payload }) {
+function handleVendorSelected (state, {payload}) {
   return {
     ...state,
     selectedVendor: payload
   }
 }
 
-function handleShippingSelected (state, { payload }) {
+function handleShippingSelected (state, {payload}) {
   return {
     ...state,
     selectedShipping: payload
   }
 }
 
-function handleQuantityChanged (state, { payload }) {
+function handleQuantityChanged (state, {payload}) {
   return {
     ...state,
     quantity: payload

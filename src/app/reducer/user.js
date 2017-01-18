@@ -1,4 +1,4 @@
-import { handleActions } from 'redux-actions'
+import {handleActions} from 'redux-actions'
 
 import TYPE from '../type'
 
@@ -36,7 +36,7 @@ const initialState = {
   addressDetectionFailed: null
 }
 
-function handleShippingAddressChange (state, { payload }) {
+function handleShippingAddressChange (state, {payload}) {
   return {
     ...state,
     user: {
@@ -46,21 +46,21 @@ function handleShippingAddressChange (state, { payload }) {
   }
 }
 
-function handleAddressDetectionFailed (state, { payload }) {
+function handleAddressDetectionFailed (state, {payload}) {
   return {
     ...state,
     addressDetectionFailed: true
   }
 }
 
-function handleUserCreated (state, { payload }) {
+function handleUserCreated (state, {payload}) {
   return {
     ...state,
     userId: payload
   }
 }
 
-function handleUserUpdated (state, { payload }) {
+function handleUserUpdated (state, {payload}) {
   return {
     ...state,
     user: payload

@@ -1,4 +1,4 @@
-import { createPriceRequest } from '../../../../src/app/action/price'
+import {createPriceRequest} from '../../../../src/app/action/price'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
@@ -36,9 +36,9 @@ describe('Price Integration Test', () => {
         }
       })
 
-      printingEngine.createUser.resolves({ userId })
-      printingEngine.createPriceRequest.resolves({ priceId })
-      printingEngine.listMaterials.resolves({'0': {}})
+      printingEngine.createUser.resolves({userId})
+      printingEngine.createPriceRequest.resolves({priceId})
+      printingEngine.listMaterials.resolves({0: {}})
       printingEngine.getPriceStatus.resolves(true)
       printingEngine.getPrice.resolves('some-price')
 

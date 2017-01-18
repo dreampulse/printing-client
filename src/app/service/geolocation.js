@@ -1,4 +1,4 @@
-import { fetch, checkStatus } from './http'
+import {fetch, checkStatus} from './http'
 
 const url = 'http://ip-api.com/json'
 

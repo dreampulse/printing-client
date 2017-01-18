@@ -8,13 +8,13 @@ import buildClassName from '../util/build-class-name'
 
 const Modal = ({classNames, modifiers, children, title, onClose}) => (
   <section className={buildClassName('modal', modifiers, classNames)}>
-    <header className='modal__header'>
+    <header className="modal__header">
       <Headline label={title} />
-      <button className='modal__icon' onClick={onClose}>
+      <button className="modal__icon" onClick={onClose}>
         <Icon source={closeIcon} />
       </button>
     </header>
-    <div className='modal__body'>{children}</div>
+    <div className="modal__body">{children}</div>
   </section>
 )
 

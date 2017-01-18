@@ -1,4 +1,4 @@
-import { getCartAmount, getPriceAmount } from '../../../../src/app/lib/get-total-amount'
+import {getCartAmount, getPriceAmount} from '../../../../src/app/lib/get-total-amount'
 
 describe('getCartAmount()', () => {
   it('works', () => {
@@ -24,8 +24,8 @@ describe('getPriceAmount()', () => {
         price: 10
       }],
       shipping: [
-        { price: 5 },
-        { price: 6 }
+        {price: 5},
+        {price: 6}
       ],
       vatPercentage: 0.19
     }

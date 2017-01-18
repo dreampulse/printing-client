@@ -4,14 +4,14 @@ import Headline from '../../app/component/headline'
 
 storiesOf('Headline', module)
   .add('default', () => (
-    <Headline label='Default Headline' />
+    <Headline label="Default Headline" />
   ))
   .add('s', () => (
-    <Headline label='Small Headline' modifiers={['s']} />
+    <Headline label="Small Headline" modifiers={['s']} />
   ))
   .add('l', () => (
-    <Headline label='Large Headline' modifiers={['l']} />
+    <Headline label="Large Headline" modifiers={['l']} />
   ))
   .add('xl', () => (
-    <Headline label='Extra Large Headline' modifiers={['xl']} />
+    <Headline label="Extra Large Headline" modifiers={['xl']} />
   ))

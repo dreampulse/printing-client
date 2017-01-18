@@ -1,6 +1,6 @@
 import config from '../../../config'
 
-export default api => {
+export default (api) => {
   let retries = config.pollingRetries
   const interval = config.pollingInvervall
 

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -37,9 +38,9 @@ module.exports = {
       }, {
         test: /\.svg$/,
         loaders: [
-          'svg-sprite?' + JSON.stringify({
+          `svg-sprite?${JSON.stringify({
             name: '[name]'
-          }),
+          })}`,
           'svgo'
         ]
       }, {

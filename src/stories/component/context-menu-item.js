@@ -7,9 +7,9 @@ import icon from '../../asset/icon/placeholder.svg'
 
 storiesOf('Context Menu Item', module)
   .add('default', () => (
-    <ContextMenuItem icon={icon} label='My Item' onClick={action('My Item clicked')} />
+    <ContextMenuItem icon={icon} label="My Item" onClick={action('My Item clicked')} />
   ))
   .add('disabled', () => (
-    <ContextMenuItem icon={icon} label='My Item' disabled onClick={action('My Item clicked')} />
+    <ContextMenuItem icon={icon} label="My Item" disabled onClick={action('My Item clicked')} />
   ))
 

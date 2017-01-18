@@ -1,11 +1,11 @@
-import { createAction } from 'redux-actions'
+import {createAction} from 'redux-actions'
 
 import TYPE from '../type'
-import { goToCart } from './navigation'
-import { getLocation } from '../service/geolocation'
+import {goToCart} from './navigation'
+import {getLocation} from '../service/geolocation'
 import * as printingEngine from '../lib/printing-engine'
 
-export const detectAddress = () => async dispatch => {
+export const detectAddress = () => async (dispatch) => {
   try {
     const shippingAddress = await getLocation()
     dispatch(createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(shippingAddress))
@@ -16,13 +16,13 @@ export const detectAddress = () => async dispatch => {
 
 export const createUser = () => async (dispatch, getState) => {
   const user = getState().user.user
-  const { userId } = await printingEngine.createUser({ user })
+  const {userId} = await printingEngine.createUser({user})
   dispatch(createAction(TYPE.USER.CREATED)(userId))
 }
 
 export const updateUser = user => async (dispatch, getState) => {
   const userId = getState().user.userId
-  await printingEngine.updateUser({ userId, user })
+  await printingEngine.updateUser({userId, user})
   dispatch(createAction(TYPE.USER.UPDATED)(user))
   dispatch(goToCart())
 }

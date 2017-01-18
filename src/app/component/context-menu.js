@@ -39,11 +39,9 @@ export default class ContextMenu extends Component {
     })
   }
 
-  handleContextMenuItemClicked = (contextMenuItemOnClickHandler) => {
-    return (event) => {
-      this.handleClose()
-      if (contextMenuItemOnClickHandler) contextMenuItemOnClickHandler(event)
-    }
+  handleContextMenuItemClicked = contextMenuItemOnClickHandler => (event) => {
+    this.handleClose()
+    if (contextMenuItemOnClickHandler) contextMenuItemOnClickHandler(event)
   }
 
   contextMenuDidOpen = () => {
@@ -103,7 +101,7 @@ export default class ContextMenu extends Component {
           onAfterOpen={this.contextMenuDidOpen}
           onRequestClose={this.handleClose}
         >
-          <div ref={d => { this.menuListDOM = d }}>
+          <div ref={(d) => { this.menuListDOM = d }}>
             <ContextMenuList>
               {modifiedMenu}
             </ContextMenuList>

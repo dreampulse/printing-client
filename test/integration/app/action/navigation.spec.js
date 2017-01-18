@@ -1,7 +1,7 @@
-import { routerActions } from 'react-router-redux'
+import {routerActions} from 'react-router-redux'
 
 import Store from '../../../../src/app/store'
-import { goToVendor, goToCart } from '../../../../src/app/action/navigation'
+import {goToVendor, goToCart} from '../../../../src/app/action/navigation'
 
 describe('Navigation Integration Test', () => {
   let store

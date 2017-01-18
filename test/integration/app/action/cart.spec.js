@@ -38,7 +38,6 @@ describe('Shopping Cart Integration Test', () => {
   describe('changeQuantity', () => {
     it('should work', () => {
       store = Store({})
-      console.log(cart.changeQuantity(2))
       store.dispatch(cart.changeQuantity(2))
       expect(store.getState().cart.quantity, 'to equal', 2)
     })

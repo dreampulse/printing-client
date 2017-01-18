@@ -18,7 +18,7 @@ export default function buildClassName (componentName, modifiers = [], className
   )
 
   const modifiersList = unfoldObject(wrapList(modifiers))
-    .map(name => componentName + '--' + name)
+    .map(name => `${componentName}--${name}`)
 
   const classNameList = unfoldObject(wrapList(classNames))
 

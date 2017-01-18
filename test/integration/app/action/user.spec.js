@@ -1,4 +1,4 @@
-import { detectAddress, createUser, updateUser } from '../../../../src/app/action/user'
+import {detectAddress, createUser, updateUser} from '../../../../src/app/action/user'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 import * as geolocation from '../../../../src/app/service/geolocation'
@@ -49,7 +49,7 @@ describe('User Integration Test', () => {
   describe('createUser()', () => {
     it('should work', async () => {
       const userId = '789'
-      printingEngine.createUser.resolves({ userId })
+      printingEngine.createUser.resolves({userId})
 
       await store.dispatch(createUser())
 
@@ -70,7 +70,7 @@ describe('User Integration Test', () => {
       printingEngine.updateUser.resolves()
       navigation.goToCart.returns({type: 'foo'})
 
-      const user = { foo: 'bar' }
+      const user = {foo: 'bar'}
       await store.dispatch(updateUser(user))
 
       expect(store.getState().user, 'to satisfy', {

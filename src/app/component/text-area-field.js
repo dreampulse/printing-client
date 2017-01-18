@@ -15,8 +15,8 @@ const TextAreaField = ({modifiers, classNames, label, value, ...params}) => {
 
   return (
     <div className={buildClassName('text-area-field', textAreaModifiers, classNames)}>
-      <textarea id={id} className='text-area-field__input' value={value} {...params} />
-      <label htmlFor={id} className='text-area-field__label'>{label}</label>
+      <textarea id={id} className="text-area-field__input" value={value} {...params} />
+      <label htmlFor={id} className="text-area-field__label">{label}</label>
     </div>
   )
 }

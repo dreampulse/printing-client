@@ -1,4 +1,4 @@
-import { upload, modelUploaded } from '../../../../src/app/action/model'
+import {upload, modelUploaded} from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 

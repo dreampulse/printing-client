@@ -1,4 +1,4 @@
-import { getMaterials, selectMaterial } from '../../../../src/app/action/material'
+import {getMaterials, selectMaterial} from '../../../../src/app/action/material'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 

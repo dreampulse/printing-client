@@ -14,8 +14,8 @@ const Checkbox = ({classNames, modifiers = [], checked, ...params}) => {
 
   return (
     <div className={buildClassName('checkbox', checkboxModifiers, classNames)}>
-      <input className='checkbox__input' type='checkbox' {...params} />
-      <div className='checkbox__checked-icon'>
+      <input className="checkbox__input" type="checkbox" {...params} />
+      <div className="checkbox__checked-icon">
         <Icon source={checkIcon} />
       </div>
     </div>

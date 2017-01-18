@@ -29,12 +29,12 @@ const SelectField = ({
 
   return (
     <div className={buildClassName('select-field', modifiers, classNames)}>
-      <select id={id} value={value} selected={value} className='select-field__input' {...params}>
+      <select id={id} value={value} selected={value} className="select-field__input" {...params}>
         {children}
       </select>
-      <label htmlFor={id} className='select-field__label'>{label}</label>
-      <div className='select-field__selected-text'>{selectedChildren}</div>
-      <div className='select-field__expand-icon'><Icon source={arrowDownIcon} /></div>
+      <label htmlFor={id} className="select-field__label">{label}</label>
+      <div className="select-field__selected-text">{selectedChildren}</div>
+      <div className="select-field__expand-icon"><Icon source={arrowDownIcon} /></div>
     </div>
   )
 }

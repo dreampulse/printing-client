@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 
 import Main from '../component/main'
 import Button from '../component/button'
@@ -7,9 +7,9 @@ import Headline from '../component/headline'
 import PaypalButton from '../component/paypal-button'
 import SectionHeadline from '../component/section-headline'
 
-import { goBack } from '../action/navigation'
-import { selectShipping, changeQuantity } from '../action/cart'
-import { createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal } from '../action/order'
+import {goBack} from '../action/navigation'
+import {selectShipping, changeQuantity} from '../action/cart'
+import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from '../action/order'
 
 const Cart = ({
   items,
@@ -46,19 +46,19 @@ const Cart = ({
     </table>
   )
 
-  const ItemRow = ({ item }) => (
+  const ItemRow = ({item}) => (
     <tr>
       <td />
       <td>file.stl</td>
       <td>{quantity}</td>
       <td>{item.price}</td>
-      <td><Button label='Remove' /></td>
+      <td><Button label="Remove" /></td>
     </tr>
   )
 
   const QuantitySection = () => (
     <section>
-      <SectionHeadline label='Choose quantity' />
+      <SectionHeadline label="Choose quantity" />
       <QuantitySelect />
     </section>
   )
@@ -73,7 +73,7 @@ const Cart = ({
 
   const ShippingSection = () => (
     <section>
-      <SectionHeadline label='Shipping options' />
+      <SectionHeadline label="Shipping options" />
       {shipping ? <ShippingSelect /> : null}
     </section>
   )
@@ -89,8 +89,8 @@ const Cart = ({
 
   const OrderSection = () => (
     <section>
-      <SectionHeadline label='Payment' />
-      <Button label='Pay with Stripe' onClick={onOrderWithStripe} />
+      <SectionHeadline label="Payment" />
+      <Button label="Pay with Stripe" onClick={onOrderWithStripe} />
       <PaypalButton
         payment={onPayWithPaypal}
         onAuthorize={onOrderWithPaypal}
@@ -102,8 +102,8 @@ const Cart = ({
 
   return (
     <Main>
-      <Headline label='Order summary' modifiers={['xl']} />
-      <Button style={{ position: 'absolute', right: '250px', top: '25px' }} label='Back' onClick={onGoBack} />
+      <Headline label="Order summary" modifiers={['xl']} />
+      <Button style={{position: 'absolute', right: '250px', top: '25px'}} label="Back" onClick={onGoBack} />
       <CartPreviewSection />
       <QuantitySection />
       <ShippingSection />

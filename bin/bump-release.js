@@ -32,11 +32,12 @@ if (!toVersion || !fileExists(packageJsonPath) || argv.help) {
     'Uses "git" and "npm".\n',
     'Usage: bump-release.js NPM_PACKAGE_DIR [<newversion> | major | minor | patch | prerelease] [options]',
     'Options:',
-    '  --verify-script Verification / test script that runs before bumping. [default: "' + defaultVerifyScript + '"]'
+    `  --verify-script Verification / test script that runs before bumping. [default: "${defaultVerifyScript}"]`
   ].join('\n'))
   process.exit(1)
 }
 
+/* eslint-disable  import/no-dynamic-require */
 const packageJson = require(packageJsonPath)
 let newVersion // used as the version that the release should be bumped with
 
@@ -47,46 +48,46 @@ if (semver.valid(toVersion) && semver.gt(toVersion, packageJson.version)) {
 }
 
 if (newVersion === null) {
-  console.error('Current version "' + packageJson.version + '" just can be bumped to a higher version')
+  console.error(`Current version "${packageJson.version}" just can be bumped to a higher version`)
   process.exit(1)
 }
 
 // used to create|merge a major-branch
-const newMajorBranchName = semver.parse(newVersion).major + '.x'
+const newMajorBranchName = `${semver.parse(newVersion).major}.x`
 
 const changelogCommands = fileExists(changelogPath) ? [
   '# add version string to CHANGELOG and commit CHANGELOG',
-  'echo "\\n### v' + newVersion + ' / ' + formattedDate + '\\n\\n$(cat ' + changelogPath + ')" > ' +
-  changelogPath + ' &&',
-  'git add ' + changelogPath + ' &&',
-  'git commit -m "Prepare CHANGELOG for version v' + newVersion + '" &&'
+  `echo "\\n### v${newVersion} / ${formattedDate}\\n\\n$(cat ${changelogPath})" > ${
+  changelogPath} &&`,
+  `git add ${changelogPath} &&`,
+  `git commit -m "Prepare CHANGELOG for version v${newVersion}" &&`
 ] : []
 
 const cmd = [].concat([
   '',
   '############ EXECUTE THE FOLLOWING COMMANDS ################',
-  'cd ' + cdPath + ' &&',
+  `cd ${cdPath} &&`,
   '# pull the current upstream state',
   'git pull --all --tags &&',
   '# verify the release',
-  argv['verify-script'] + ' & wait $! &&'
+  `${argv['verify-script']} & wait $! &&`
 ], changelogCommands, [
   '# updates package.json, does git commit and git tag',
-  'npm version ' + newVersion + ' &&',
+  `npm version ${newVersion} &&`,
   '# push everything upstream',
   'git push &&',
   'git push --tags &&',
   '# save current branch to return to it later',
   'releaseBranchName=$(git symbolic-ref HEAD --short) &&',
-  'echo "### checkout|create major-branch ' + newMajorBranchName + ', set upstream to origin" &&',
-  'git checkout -B ' + newMajorBranchName + ' &&',
+  `echo "### checkout|create major-branch ${newMajorBranchName}, set upstream to origin" &&`,
+  `git checkout -B ${newMajorBranchName} &&`,
   '# when major branch does not exist on remote, then push it to origin',
-  'git ls-remote --exit-code . origin/' + newMajorBranchName + ' || git push origin ' + newMajorBranchName + ' -u  &&',
+  `git ls-remote --exit-code . origin/${newMajorBranchName} || git push origin ${newMajorBranchName} -u  &&`,
   '# pull the current upstream state',
   'git fetch --all &&',
   '# update major branch with changes from this release',
-  'git merge v' + newVersion + ' &&',
-  'git push origin ' + newMajorBranchName + ' -u &&',
+  `git merge v${newVersion} &&`,
+  `git push origin ${newMajorBranchName} -u &&`,
   '# go back to release branch',
   'git checkout $releaseBranchName',
   '########### END EXECUTE THE FOLLOWING COMMANDS ##############',

@@ -28,6 +28,6 @@ new WebpackDevServer(webpack(webpackConfig), {
   if (err) console.error(err)
   else {
     console.log(`Webpack Dev Server listening at localhost:${port}`)
-    open('http://localhost:' + port)
+    open(`http://localhost:${port}`)
   }
 })

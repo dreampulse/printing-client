@@ -5,7 +5,7 @@ import Icon from './icon'
 import buildClassName from '../util/build-class-name'
 
 const Button = ({classNames, modifiers, label, icon, ...params}) => (
-  <button type='button' className={buildClassName('button', modifiers, classNames)} {...params}>
+  <button type="button" className={buildClassName('button', modifiers, classNames)} {...params}>
     {icon ? <Icon source={icon} /> : null}
     {label}
   </button>

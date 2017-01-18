@@ -16,10 +16,10 @@ const SelectActionField = ({
   ...params
 }) => (
   <div className={buildClassName('select-action-field', modifiers, classNames)}>
-    <div className='select-action-field__select'>
+    <div className="select-action-field__select">
       <SelectField {...params}>{children}</SelectField>
     </div>
-    <div className='select-action-field__button'>
+    <div className="select-action-field__button">
       <Button onClick={onActionClick} label={actionLabel} modifiers={['block', 'minor', 'input-height']} />
     </div>
   </div>

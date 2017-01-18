@@ -1,6 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { compose, lifecycle } from 'recompose'
+import {connect} from 'react-redux'
+import {compose, lifecycle} from 'recompose'
 
 import Main from '../component/main'
 import Button from '../component/button'
@@ -8,15 +8,15 @@ import Headline from '../component/headline'
 import SectionHeadline from '../component/section-headline'
 import LoadingIndicator from '../component/loading-indicator'
 
-import { goBack } from '../action/navigation'
-import { selectVendor } from '../action/cart'
-import { createPriceRequest } from '../action/price'
-import { getPriceAmount } from '../lib/get-total-amount'
+import {goBack} from '../action/navigation'
+import {selectVendor} from '../action/cart'
+import {createPriceRequest} from '../action/price'
+import {getPriceAmount} from '../lib/get-total-amount'
 
-const Vendor = ({ location, addressDetectionFailed, price, onGoBack, onSelectVendor }) => {
+const Vendor = ({location, addressDetectionFailed, price, onGoBack, onSelectVendor}) => {
   const ShippingSection = () => (
     <section>
-      <SectionHeadline label='Shipping to' />
+      <SectionHeadline label="Shipping to" />
       {location ? <pre>{JSON.stringify(location, null, 2)}</pre> : null}
       {addressDetectionFailed ? <p>Location detection failed!</p> : null}
     </section>
@@ -24,7 +24,7 @@ const Vendor = ({ location, addressDetectionFailed, price, onGoBack, onSelectVen
 
   const PriceSection = () => (
     <section>
-      <SectionHeadline label='Prices' />
+      <SectionHeadline label="Prices" />
       {price ? <PriceTable /> : <LoadingIndicator modifiers={['l']} />}
     </section>
   )
@@ -44,19 +44,19 @@ const Vendor = ({ location, addressDetectionFailed, price, onGoBack, onSelectVen
     </table>
   )
 
-  const VendorRow = ({ vendor }) => (
+  const VendorRow = ({vendor}) => (
     <tr>
       <td>{vendor}</td>
       <td style={{border: '1px solid black'}}>{getPriceAmount(price.printingService[vendor])}</td>
       <td>{price.printingService[vendor].shipping[0].name}</td>
-      <td><Button label='Select' onClick={onSelectVendor} /></td>
+      <td><Button label="Select" onClick={onSelectVendor} /></td>
     </tr>
   )
 
   return (
     <Main>
-      <Headline label='Choose provider & shipping' modifiers={['xl']} />
-      <Button style={{ position: 'absolute', right: '250px', top: '25px' }} label='Back' onClick={onGoBack} />
+      <Headline label="Choose provider & shipping" modifiers={['xl']} />
+      <Button style={{position: 'absolute', right: '250px', top: '25px'}} label="Back" onClick={onGoBack} />
       <ShippingSection />
       <PriceSection />
     </Main>
@@ -72,7 +72,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   onGoBack: goBack,
   onSelectVendor: selectVendor,
-  createPriceRequest: createPriceRequest
+  createPriceRequest
 }
 
 const enhance = compose(

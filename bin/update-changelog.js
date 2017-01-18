@@ -20,7 +20,7 @@ const changelogPath = path.resolve(process.cwd(), rootDirectory, changelogName)
 
 if (argv.help) {
   console.log([
-    'Adds merged pulled requests since last versioned release to ' + changelogName,
+    `Adds merged pulled requests since last versioned release to ${changelogName}`,
     'Supports pull requests from Github and Bitbucket. Uses "git" and "npm".\n',
     'Usage: update-changelog.js ROOT_DIR',
     'Options:',
@@ -45,7 +45,7 @@ function getPullRequests (callback) {
     stdout.split('\n').forEach((line) => {
       if (!line) {
         // Filter empty lines
-        return
+
       } else if (line === '__pr-start__') {
         group = []
       } else if (line === '__pr-end__') {
@@ -101,12 +101,13 @@ function resolveImplementers (pullRequests, callback) {
     }
 
     // The second parent is always the latest commit of the merged branch
-    const cmd = 'git show ' + pullRequests[pos].commit + '^2 --format=\'%an\' --no-patch'
+    const cmd = `git show ${pullRequests[pos].commit}^2 --format='%an' --no-patch`
     const child = exec(cmd, (error, stdout, stderr) => {
       if (error) {
         throw error
       }
 
+      /* eslint-disable no-param-reassign */
       pullRequests[pos].implementer = stdout.replace(/\n|\r/g, '').trim()
 
       next(pos + 1)
@@ -118,12 +119,10 @@ function resolveImplementers (pullRequests, callback) {
 }
 
 function stringifyPullRequests (pullRequests) {
-  return pullRequests.map((request) => {
-    return '- ' + request.message +
-      ' (i: ' + request.implementer +
-      ', r: ' + request.reviewer +
-      ', c: ' + request.commit + ')\n'
-  }).join('')
+  return pullRequests.map(request => `- ${request.message
+      } (i: ${request.implementer
+      }, r: ${request.reviewer
+      }, c: ${request.commit})\n`).join('')
 }
 
 function prependToChangelog (str) {

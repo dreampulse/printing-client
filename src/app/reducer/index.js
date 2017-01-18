@@ -1,6 +1,6 @@
-import { combineReducers } from 'redux'
-import { routerReducer } from 'react-router-redux'
-import { reducer as formReducer } from 'redux-form'
+import {combineReducers} from 'redux'
+import {routerReducer} from 'react-router-redux'
+import {reducer as formReducer} from 'redux-form'
 
 import app from './app'
 import user from './user'

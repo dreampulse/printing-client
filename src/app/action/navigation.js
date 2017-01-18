@@ -1,4 +1,4 @@
-import { routerActions } from 'react-router-redux'
+import {routerActions} from 'react-router-redux'
 
 export const goBack = () => routerActions.goBack()
 

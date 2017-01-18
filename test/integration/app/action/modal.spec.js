@@ -1,4 +1,4 @@
-import { open, close } from '../../../../src/app/action/modal'
+import {open, close} from '../../../../src/app/action/modal'
 import Store from '../../../../src/app/store'
 
 describe('Modal Integration Test', () => {

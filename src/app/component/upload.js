@@ -1,30 +1,40 @@
 import React, {Component} from 'react'
 
+import propTypes from '../util/prop-types'
 import buildClassName from '../util/build-class-name'
 import Button from './button'
 
 class Upload extends Component {
 
-  state = {
-    isUploadInProgress: false,
-    progress: null
-  };
-
   static propTypes = {
     onUpload: React.PropTypes.func.isRequired,
     onUploaded: React.PropTypes.func.isRequired,
-    label: React.PropTypes.string.isRequired
+    label: React.PropTypes.string.isRequired,
+    ...propTypes.component
   };
 
+  state = {
+    isUploadInProgress: false,
+    progress: null
+  }
+
   componentDidMount () {
-    this.refs.fileInputDom.addEventListener('change', this.fileSelected)
+    this.fileInputDom.addEventListener('change', this.fileSelected)
   }
 
   componentWillUnmount () {
-    this.refs.fileInputDom.removeEventListener('change', this.fileSelected)
+    this.fileInputDom.removeEventListener('change', this.fileSelected)
   }
 
-  fileSelected = async event => {
+  onProgressChange = (progress) => {
+    this.setState({progress})
+  };
+
+  openFileUploadDialog = () => (event) => {
+    this.fileInputDom.click()
+  };
+
+  fileSelected = async (event) => {
     const files = event.currentTarget.files
     if (files.length < 1) return
 
@@ -33,21 +43,13 @@ class Upload extends Component {
     form.append('unit', 'mm')  // TODO
 
     try {
-      this.setState({ isUploadInProgress: true, progress: 0 })
+      this.setState({isUploadInProgress: true, progress: 0})
       const res = await this.props.onUpload(form, this.onProgressChange)
       this.props.onUploaded(res)
     } finally {
-      this.setState({ isUploadInProgress: false, progress: null })
+      this.setState({isUploadInProgress: false, progress: null})
     }
-  };
-
-  onProgressChange = progress => {
-    this.setState({progress})
-  };
-
-  openFileUploadDialog = () => event => {
-    this.refs.fileInputDom.click()
-  };
+  }
 
   render () {
     const {classNames, modifiers, accept, label} = this.props
@@ -57,8 +59,17 @@ class Upload extends Component {
 
     return (
       <div className={buildClassName('upload', modifiers, classNames)}>
-        <input type='file' accept={accept} className='upload__file-input' ref='fileInputDom' />
-        <Button label={buttonLabel} onClick={this.openFileUploadDialog()} disabled={isUploadInProgress} />
+        <input
+          type="file"
+          accept={accept}
+          className="upload__file-input"
+          ref={(element) => { this.fileInputDom = element }}
+        />
+        <Button
+          label={buttonLabel}
+          onClick={this.openFileUploadDialog()}
+          disabled={isUploadInProgress}
+        />
       </div>
     )
   }

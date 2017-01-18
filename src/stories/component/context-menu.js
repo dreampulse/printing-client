@@ -12,11 +12,11 @@ storiesOf('Context Menu', module)
     <div style={{margin: 20}}>
       <ContextMenu
         menu={[
-          <ContextMenuItem icon={icon} label='My Item' onClick={action('My Item clicked')} />,
-          <ContextMenuItem icon={icon} label='My Item 2' onClick={action('My Item 2 clicked')} />
+          <ContextMenuItem icon={icon} label="My Item" onClick={action('My Item clicked')} />,
+          <ContextMenuItem icon={icon} label="My Item 2" onClick={action('My Item 2 clicked')} />
         ]}
       >
-        <Button label='open' />
+        <Button label="open" />
       </ContextMenu>
     </div>
   ))
@@ -24,11 +24,11 @@ storiesOf('Context Menu', module)
     <div style={{margin: 20, position: 'absolute', right: 0}}>
       <ContextMenu
         menu={[
-          <ContextMenuItem icon={icon} label='My Item' onClick={action('My Item clicked')} />,
-          <ContextMenuItem icon={icon} label='My Item 2' onClick={action('My Item 2 clicked')} />
+          <ContextMenuItem icon={icon} label="My Item" onClick={action('My Item clicked')} />,
+          <ContextMenuItem icon={icon} label="My Item 2" onClick={action('My Item 2 clicked')} />
         ]}
       >
-        <Button label='open' />
+        <Button label="open" />
       </ContextMenu>
     </div>
   ))
@@ -36,11 +36,11 @@ storiesOf('Context Menu', module)
     <div style={{margin: 20, position: 'absolute', bottom: 0}}>
       <ContextMenu
         menu={[
-          <ContextMenuItem icon={icon} label='My Item' onClick={action('My Item clicked')} />,
-          <ContextMenuItem icon={icon} label='My Item 2' onClick={action('My Item 2 clicked')} />
+          <ContextMenuItem icon={icon} label="My Item" onClick={action('My Item clicked')} />,
+          <ContextMenuItem icon={icon} label="My Item 2" onClick={action('My Item 2 clicked')} />
         ]}
       >
-        <Button label='open' />
+        <Button label="open" />
       </ContextMenu>
     </div>
   ))
@@ -48,11 +48,11 @@ storiesOf('Context Menu', module)
     <div style={{margin: 20, position: 'absolute', bottom: 0, right: 0}}>
       <ContextMenu
         menu={[
-          <ContextMenuItem icon={icon} label='My Item' onClick={action('My Item clicked')} />,
-          <ContextMenuItem icon={icon} label='My Item 2' onClick={action('My Item 2 clicked')} />
+          <ContextMenuItem icon={icon} label="My Item" onClick={action('My Item clicked')} />,
+          <ContextMenuItem icon={icon} label="My Item 2" onClick={action('My Item 2 clicked')} />
         ]}
       >
-        <Button label='open' />
+        <Button label="open" />
       </ContextMenu>
     </div>
   ))

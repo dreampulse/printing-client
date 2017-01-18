@@ -1,18 +1,13 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import config from '../../../config'
 
 const paypal = global.paypal
 
+/* eslint-disable */  //@TODO: fix it!
 class PaypalButton extends Component {
 
-  render () {
-    return (
-      <div ref={div => { this.paypalButton = div }} />
-    )
-  }
-
   componentDidMount () {
-    const { payment, onAuthorize, onCancel, onError } = this.props
+    const {payment, onAuthorize, onCancel, onError} = this.props
 
     const options = {
       ...config.paypal,
@@ -21,10 +16,16 @@ class PaypalButton extends Component {
       onCancel,
       onError,
       commit: true, // show 'Pay Now' button during checkout
-      style: { size: 'small', color: 'gold', shape: 'pill' }
+      style: {size: 'small', color: 'gold', shape: 'pill'}
     }
 
     paypal.Button.render(options, this.paypalButton)
+  }
+
+  render () {
+    return (
+      <div ref={(div) => { this.paypalButton = div }} />
+    )
   }
 
 }

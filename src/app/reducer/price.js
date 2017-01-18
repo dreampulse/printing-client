@@ -1,4 +1,4 @@
-import { handleActions } from 'redux-actions'
+import {handleActions} from 'redux-actions'
 
 import TYPE from '../type'
 
@@ -7,14 +7,14 @@ const initialState = {
   price: null
 }
 
-function handlePriceRequestCreated (state, { payload }) {
+function handlePriceRequestCreated (state, {payload}) {
   return {
     ...state,
     priceId: payload
   }
 }
 
-function handlePriceReceived (state, { payload }) {
+function handlePriceReceived (state, {payload}) {
   return {
     ...state,
     price: payload

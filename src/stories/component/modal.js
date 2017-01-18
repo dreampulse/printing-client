@@ -5,7 +5,7 @@ import Modal from '../../app/component/modal'
 
 storiesOf('Modal', module)
   .add('default', () => (
-    <Modal title='My Title' onClose={action('close')}>
+    <Modal title="My Title" onClose={action('close')}>
       Some content
     </Modal>
   ))

@@ -9,17 +9,17 @@ const Toggle = ({classNames, modifiers, label, value, ...params}) => {
 
   return (
     <div className={buildClassName('toggle', modifiers, classNames)}>
-      {label && <label htmlFor={id} className='toggle__label'>{label}</label>}
-      <div className='toggle__wrapper'>
+      {label && <label htmlFor={id} className="toggle__label">{label}</label>}
+      <div className="toggle__wrapper">
         <input
           id={id}
-          className='toggle__input'
-          type='checkbox'
+          className="toggle__input"
+          type="checkbox"
           checked={value}
           {...params}
         />
-        <div className='toggle__background' />
-        <div className='toggle__knob' />
+        <div className="toggle__background" />
+        <div className="toggle__knob" />
       </div>
     </div>
   )

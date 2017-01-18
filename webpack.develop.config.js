@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const path = require('path')
 const webpack = require('webpack')
 const autoprefixer = require('autoprefixer')
@@ -6,7 +7,7 @@ const port = process.env.PORT || 3000
 
 module.exports = {
   entry: [
-    'webpack-dev-server/client?http://localhost:' + port,
+    `webpack-dev-server/client?http://localhost:${port}`,
     'webpack/hot/only-dev-server'
     // add entry path here...
   ],
@@ -41,9 +42,9 @@ module.exports = {
           path.resolve(__dirname, 'src/asset/icon')
         ],
         loaders: [
-          'svg-sprite?' + JSON.stringify({
+          `svg-sprite?${JSON.stringify({
             name: '[name]'
-          }),
+          })}`,
           'svgo'
         ]
       }, {
