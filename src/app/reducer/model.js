@@ -14,7 +14,7 @@ function handleUploadStarted (state, {payload}) {
   }
 }
 
-function handleUploadFinished (state, {payload}) {
+function handleUploadFinished (state) {
   return {
     ...state,
     isUploadFinished: true

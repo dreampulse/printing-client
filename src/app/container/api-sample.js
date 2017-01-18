@@ -80,7 +80,7 @@ const ApiSample = ({
   )
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   price: state.price.price,
   isUploadFinished: state.model.isUploadFinished,
   cartPrice: state.cart.cartPrice,

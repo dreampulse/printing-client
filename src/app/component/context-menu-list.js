@@ -4,7 +4,7 @@ import propTypes from '../util/prop-types'
 import buildClassName from '../util/build-class-name'
 
 const ContextMenuList = ({children, classNames, modifiers}) => (
-  <ul className={buildClassName('context-menu-list')}>
+  <ul className={buildClassName('context-menu-list', modifiers, classNames)}>
     {children.map((child, index) =>
       <li key={index}>{child}</li>
     )}

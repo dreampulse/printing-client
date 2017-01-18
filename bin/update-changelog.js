@@ -102,7 +102,7 @@ function resolveImplementers (pullRequests, callback) {
 
     // The second parent is always the latest commit of the merged branch
     const cmd = `git show ${pullRequests[pos].commit}^2 --format='%an' --no-patch`
-    const child = exec(cmd, (error, stdout, stderr) => {
+    const child = exec(cmd, (error, stdout) => {
       if (error) {
         throw error
       }

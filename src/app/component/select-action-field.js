@@ -9,7 +9,6 @@ import buildClassName from '../util/build-class-name'
 const SelectActionField = ({
   classNames,
   modifiers = [],
-  button,
   children,
   onActionClick,
   actionLabel,

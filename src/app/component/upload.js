@@ -30,7 +30,7 @@ class Upload extends Component {
     this.setState({progress})
   };
 
-  openFileUploadDialog = () => (event) => {
+  openFileUploadDialog = () => () => {
     this.fileInputDom.click()
   };
 

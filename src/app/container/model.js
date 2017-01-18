@@ -64,7 +64,7 @@ const Model = ({
   )
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   isUploading: state.model.modelId && !state.model.isUploadFinished,
   isConfigured: state.model.isUploadFinished && state.material.selected,
   materials: state.material.materials,

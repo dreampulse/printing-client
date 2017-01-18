@@ -63,7 +63,7 @@ const Vendor = ({location, addressDetectionFailed, price, onGoBack, onSelectVend
   )
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   location: state.user.user.shippingAddress,
   addressDetectionFailed: state.user.addressDetectionFailed,
   price: state.price.price

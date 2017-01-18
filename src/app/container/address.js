@@ -88,7 +88,7 @@ const Address = ({
   )
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   initialValues: state.user.user
 })
 

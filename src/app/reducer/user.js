@@ -46,7 +46,7 @@ function handleShippingAddressChange (state, {payload}) {
   }
 }
 
-function handleAddressDetectionFailed (state, {payload}) {
+function handleAddressDetectionFailed (state) {
   return {
     ...state,
     addressDetectionFailed: true

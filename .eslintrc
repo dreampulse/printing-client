@@ -16,10 +16,12 @@
     "object-curly-spacing": ["error", "never"],
     "no-mixed-operators": 0,
     "no-plusplus": 0,
-    "jsx-a11y/anchor-has-content": 0
+    "jsx-a11y/anchor-has-content": 0,
+    "no-unused-vars-rest/no-unused-vars": 2
   },
   "plugins": [
-    "react"
+    "react",
+    "no-unused-vars-rest"
   ],
   "root": true
 }
