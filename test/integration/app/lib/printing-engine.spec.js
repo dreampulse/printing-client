@@ -1,5 +1,5 @@
-import * as http from '../../../../../src/app/service/http'
-import * as printingEngine from '../../../../../src/app/lib/printing-engine'
+import * as http from '../../../../src/app/service/http'
+import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
 describe('Printing Engine REST Api Integration Test', () => {
   beforeEach(() => {

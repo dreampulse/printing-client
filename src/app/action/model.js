@@ -4,8 +4,8 @@ import TYPE from '../type'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
 
-export const upload = (form, onProgressChange) => () =>
-  printingEngine.uploadModel(form, onProgressChange)
+export const upload = (files, onProgressChange) => () =>
+  printingEngine.uploadModel(files, onProgressChange)
 
 export const modelUploaded = ({modelId}) => async (dispatch) => {
   dispatch(createAction(TYPE.MODEL.UPLOAD_STARTED)(modelId))

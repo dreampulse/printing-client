@@ -17,7 +17,8 @@
     "no-mixed-operators": 0,
     "no-plusplus": 0,
     "jsx-a11y/anchor-has-content": 0,
-    "no-unused-vars-rest/no-unused-vars": 2
+    "no-unused-vars-rest/no-unused-vars": 2,
+    "no-param-reassign": 0
   },
   "plugins": [
     "react",

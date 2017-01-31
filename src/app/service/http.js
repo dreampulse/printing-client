@@ -10,6 +10,7 @@ function isJSON ({headers}) {
 export function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
     if (isJSON(response)) return response.json()
+    return null
   }
 
   const error = new Error(response.statusText)
@@ -28,7 +29,7 @@ export async function request (url, additionalOptions = {}) {
   return checkStatus(response)
 }
 
-export function upload (url, data, onProgress) {
+export function upload (url, files, onProgress) {
   const xhr = new Xhr()
 
   xhr.upload.addEventListener('progress', (event) => {
@@ -50,8 +51,12 @@ export function upload (url, data, onProgress) {
     }
   })
 
+  const form = new global.FormData()
+  form.append('file', files[0])
+  form.append('unit', 'mm')  // TODO
+
   xhr.open('POST', url)
-  xhr.send(data)
+  xhr.send(form)
 
   return promise
 }
