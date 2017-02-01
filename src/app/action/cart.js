@@ -4,8 +4,8 @@ import TYPE from '../type'
 import {goToAddress} from '../action/navigation'
 import * as printingEngine from '../lib/printing-engine'
 
-export const selectVendor = vendorId => (dispatch) => {
-  dispatch(createAction(TYPE.CART.VENDOR_SELECTED)(vendorId))
+export const selectVendor = vendor => (dispatch) => {
+  dispatch(createAction(TYPE.CART.VENDOR_SELECTED)(vendor))
   dispatch(goToAddress())
 }
 

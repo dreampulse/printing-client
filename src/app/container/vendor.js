@@ -49,7 +49,7 @@ const Vendor = ({location, addressDetectionFailed, price, onGoBack, onSelectVend
       <td>{vendor}</td>
       <td style={{border: '1px solid black'}}>{getPriceAmount(price.printingService[vendor])}</td>
       <td>{price.printingService[vendor].shipping[0].name}</td>
-      <td><Button label="Select" onClick={onSelectVendor(vendor)} /></td>
+      <td><Button label="Select" onClick={() => onSelectVendor(vendor)} /></td>
     </tr>
   )
 
