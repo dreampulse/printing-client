@@ -1,10 +1,9 @@
 import React from 'react'
 
-import propTypes from '../util/prop-types'
-import buildClassName from '../util/build-class-name'
+import enhanceClassName from '../lib/enhance-class-name'
 
-const ContextMenuList = ({children, classNames, modifiers}) => (
-  <ul className={buildClassName('context-menu-list', modifiers, classNames)}>
+const ContextMenuList = ({children, ...params}) => (
+  <ul {...params}>
     {children.map((child, index) =>
       <li key={index}>{child}</li>
     )}
@@ -12,7 +11,7 @@ const ContextMenuList = ({children, classNames, modifiers}) => (
 )
 
 ContextMenuList.propTypes = {
-  ...propTypes.component
+  children: React.PropTypes.node
 }
 
-export default ContextMenuList
+export default enhanceClassName('context-menu-list')(ContextMenuList)
