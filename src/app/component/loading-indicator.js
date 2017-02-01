@@ -1,14 +1,9 @@
 import React from 'react'
 
-import propTypes from '../util/prop-types'
-import buildClassName from '../util/build-class-name'
+import enhanceClassName from '../lib/enhance-class-name'
 
-const LoadingIndicator = ({classNames, modifiers}) => (
-  <span className={buildClassName('loading-indicator', modifiers, classNames)} />
+const LoadingIndicator = ({...params}) => (
+  <span {...params} />
 )
 
-LoadingIndicator.propTypes = {
-  ...propTypes.component
-}
-
-export default LoadingIndicator
+export default enhanceClassName('loading-indicator')(LoadingIndicator)
