@@ -38,13 +38,9 @@ class Upload extends Component {
     const files = event.currentTarget.files
     if (files.length < 1) return
 
-    const form = new global.FormData()
-    form.append('file', files[0])
-    form.append('unit', 'mm')  // TODO
-
     try {
       this.setState({isUploadInProgress: true, progress: 0})
-      const res = await this.props.onUpload(form, this.onProgressChange)
+      const res = await this.props.onUpload(files, this.onProgressChange)
       this.props.onUploaded(res)
     } finally {
       this.setState({isUploadInProgress: false, progress: null})

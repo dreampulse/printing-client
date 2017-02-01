@@ -7,7 +7,10 @@ const Main = ({children}) => (
 )
 
 Main.propTypes = {
-  children: React.PropTypes.element.isRequired
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.element,
+    React.PropTypes.array
+  ])
 }
 
 export default Main
