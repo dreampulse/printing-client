@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {compose} from 'recompose'
 
 import Main from '../component/main'
 import Button from '../component/button'
@@ -8,7 +9,7 @@ import PaypalButton from '../component/paypal-button'
 import SectionHeadline from '../component/section-headline'
 
 import {goBack} from '../action/navigation'
-import {selectShipping, changeQuantity} from '../action/cart'
+import {selectShipping, changeQuantity, createShoppingCart} from '../action/cart'
 import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from '../action/order'
 
 const Cart = ({
@@ -21,7 +22,8 @@ const Cart = ({
   onGoBack,
   onOrderWithStripe,
   onPayWithPaypal,
-  onOrderWithPaypal
+  onOrderWithPaypal,
+  onCreateShoppingCart
 }) => {
   const CartPreviewSection = () => (
     <section>
@@ -107,6 +109,8 @@ const Cart = ({
       <CartPreviewSection />
       <QuantitySection />
       <ShippingSection />
+      <SectionHeadline label="Create Cart" />
+      <Button label="Create Cart" onClick={onCreateShoppingCart} />
       <OrderSection />
     </Main>
   )
@@ -125,7 +129,11 @@ const mapDispatchToProps = {
   onChangeQuantity: changeQuantity,
   onOrderWithStripe: createOrderWithStripe,
   onPayWithPaypal: initPaymentWithPaypal,
-  onOrderWithPaypal: createOrderWithPaypal
+  onCreateShoppingCart: createShoppingCart
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Cart)
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps)
+)
+
+export default enhance(Cart)
