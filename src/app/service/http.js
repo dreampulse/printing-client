@@ -8,7 +8,7 @@ function isJSON ({headers}) {
 }
 
 export function checkStatus (response) {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.status >= 200 && response.status < 400) {
     if (isJSON(response)) return response.json()
     return null
   }
@@ -29,7 +29,7 @@ export async function request (url, additionalOptions = {}) {
   return checkStatus(response)
 }
 
-export function upload (url, files, onProgress) {
+export function upload (url, file, onProgress, params = {}) {
   const xhr = new Xhr()
 
   xhr.upload.addEventListener('progress', (event) => {
@@ -42,7 +42,7 @@ export function upload (url, files, onProgress) {
   const promise = new Promise((resolve, reject) => {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
-        if (xhr.status >= 200 && xhr.status < 300) {
+        if (xhr.status >= 200 && xhr.status < 400) {
           resolve(JSON.parse(xhr.responseText))
         } else {
           reject(xhr.responseText)
@@ -52,8 +52,10 @@ export function upload (url, files, onProgress) {
   })
 
   const form = new global.FormData()
-  form.append('file', files[0])
-  form.append('unit', 'mm')  // TODO
+  form.append('file', file)
+  Object.keys(params).forEach((param) => {
+    form.append(param, params[params])
+  })
 
   xhr.open('POST', url)
   xhr.send(form)

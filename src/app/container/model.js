@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import toArray from 'lodash/toArray'
 
 import Main from '../component/main'
 import Button from '../component/button'
@@ -10,11 +11,10 @@ import LoadingIndicator from '../component/loading-indicator'
 
 import {goToVendor} from '../action/navigation'
 import {selectMaterial} from '../action/material'
-import {upload, modelUploaded} from '../action/model'
+import {uploadFiles} from '../action/model'
 
 const Model = ({
-  onUpload,
-  onUploaded,
+  onUploadFiles,
   isUploading,
   materials,
   onSelectedMaterial,
@@ -22,10 +22,16 @@ const Model = ({
   onGoToVendor,
   isConfigured
 }) => {
+  const onUpload = (files) => {
+    onUploadFiles(toArray(files))
+  }
+
   const UploadSection = () => (
     <section>
       <SectionHeadline label="1. Upload files" />
-      <Upload label="Upload a model" onUpload={onUpload} onUploaded={onUploaded} />
+      <Upload onUpload={onUpload} multiple>
+        <Button label="upload" />
+      </Upload>
       <Loading />
     </section>
   )
@@ -72,8 +78,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onUpload: upload,
-  onUploaded: modelUploaded,
+  onUploadFiles: uploadFiles,
   onSelectedMaterial: selectMaterial,
   onGoToVendor: goToVendor
 }
