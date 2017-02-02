@@ -1,8 +1,8 @@
 import React from 'react'
 
 import Icon from './icon'
-import propTypes from '../util/prop-types'
-import buildClassName from '../util/build-class-name'
+import propTypes from '../lib/prop-types'
+import buildClassName from '../lib/build-class-name'
 
 const TabItem = ({classNames, modifiers, label, value, icon, onClick = () => {}, ...params}) => {
   const handleOnClick = (event) => {

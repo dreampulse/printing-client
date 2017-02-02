@@ -1,18 +1,16 @@
 import React from 'react'
 
-import propTypes from '../util/prop-types'
-import buildClassName from '../util/build-class-name'
+import enhanceClassName from '../lib/enhance-class-name'
 
-const Paragraph = ({classNames, modifiers, children}) => (
-  <p className={buildClassName('paragraph', modifiers, classNames)}>
+const Paragraph = ({children, ...params}) => (
+  <p {...params}>
     {children}
   </p>
 )
 
 Paragraph.propTypes = {
-  ...propTypes.component,
   children: React.PropTypes.node.isRequired
 }
 
-export default Paragraph
+export default enhanceClassName('paragraph')(Paragraph)
 
