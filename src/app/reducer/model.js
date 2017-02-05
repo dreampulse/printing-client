@@ -9,20 +9,6 @@ const initialState = {
   models: {}
 }
 
-// function handleUploadStarted (state, {payload}) {
-//   return {
-//     ...state,
-//     modelId: payload
-//   }
-// }
-//
-// function handleUploadFinished (state) {
-//   return {
-//     ...state,
-//     isUploadFinished: true
-//   }
-// }
-
 function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
   return {
     ...state,
@@ -84,12 +70,53 @@ function handleUploadToBackedFailed (state, {payload: {fileId}}) {
   }
 }
 
+function handleCheckStatusStarted (state, {payload: {fileId}}) {
+  return {
+    ...state,
+    models: {
+      ...state.models,
+      [fileId]: {
+        ...state.models[fileId],
+        checkStatusFinished: false
+      }
+    }
+  }
+}
+
+function handleCheckStatusFinished (state, {payload: {fileId}}) {
+  return {
+    ...state,
+    models: {
+      ...state.models,
+      [fileId]: {
+        ...state.models[fileId],
+        checkStatusFinished: true
+      }
+    }
+  }
+}
+
+function handleCheckStatusFailed (state, {payload: {fileId}}) {
+  return {
+    ...state,
+    models: {
+      ...state.models,
+      [fileId]: {
+        ...state.models[fileId],
+        checkStatusFinished: true,
+        error: true
+      }
+    }
+  }
+}
+
 export default handleActions({
   [TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED]: handleUploadToBackedStarted,
   [TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED]: handleUploadToBackedProgressed,
   [TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED]: handleUploadToBackedFinished,
-  [TYPE.MODEL.UPLOAD_TO_BACKEND_FAILED]: handleUploadToBackedFailed
-  // [TYPE.MODEL.UPLOAD_FINISHED]: handleUploadFinished,
-  // [TYPE.MODEL.UPLOAD_STARTED]: handleUploadStarted
+  [TYPE.MODEL.UPLOAD_TO_BACKEND_FAILED]: handleUploadToBackedFailed,
+  [TYPE.MODEL.CHECK_STATUS_STARTED]: handleCheckStatusStarted,
+  [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished,
+  [TYPE.MODEL.CHECK_STATUS_FAILED]: handleCheckStatusFailed
 }, initialState)
 

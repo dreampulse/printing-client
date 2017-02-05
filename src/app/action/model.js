@@ -1,61 +1,69 @@
-import {createAction} from 'redux-actions'
+import {bindActionCreators} from 'redux'
 
 import uniqueId from 'lodash/uniqueId'
 
-import TYPE from '../type'
+import * as actionCreator from '../action-creator'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
 
+export const checkUploadStatus = ({modelId, fileId}) => async (dispatch) => {
+  const {
+    modelCheckStatusStarted,
+    modelCheckStatusFinished,
+    modelCheckStatusFailed
+  } = bindActionCreators(actionCreator, dispatch)
+
+  modelCheckStatusStarted({fileId})
+  try {
+    await pollApi(() => printingEngine.getUploadStatus({modelId}))
+    modelCheckStatusFinished({fileId})
+  } catch (e) {
+    modelCheckStatusFailed({fileId})
+  }
+}
+
 export const uploadFile = file => async (dispatch, getState) => {
+  const {
+    modelUploadToBackendStarted,
+    modelUploadToBackendProgressed,
+    modelUploadToBackendFinished,
+    modelUploadToBackendFailed
+  } = bindActionCreators(actionCreator, dispatch)
+
   const fileId = uniqueId('file-id-')
   const unit = getState().model.selectedUnit
 
-  dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED)({
+  modelUploadToBackendStarted({
     fileId,
     name: file.name,
     size: file.size
-  }))
+  })
 
   try {
     const {modelId} = await printingEngine.uploadModel(file, (progress) => {
-      dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED)({
+      modelUploadToBackendProgressed({
         fileId,
         progress
-      }))
+      })
     }, {
       unit
     })
 
-    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({
-      fileId,
-      modelId
-    }))
+    modelUploadToBackendFinished({fileId, modelId})
+    return {modelId, fileId}
   } catch (error) {
-    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FAILED)({fileId, error}))
+    modelUploadToBackendFailed({fileId, error})
+    throw error
   }
 }
 
-// export const modelsUploaded = ({modelId, fileId}) => async (dispatch) => {
-//   dispatch(createAction(TYPE.MODEL.UPLOAD_STARTED)({modelId, fileId}))
-//   try {
-//     await pollApi(() => printingEngine.getUploadStatus({modelId}))
-//     dispatch(createAction(TYPE.MODEL.UPLOAD_FINISHED)({fileId}))
-//   } catch (e) {
-//     dispatch(createAction(TYPE.MODEL.UPLOAD_FAILED)({fileId}))
-//   }
-// }
-//
-// export const uploadFiles = files => async (dispatch, getState) => {
-//   await Promise.all(files.map(file => dispatch(uploadFile(file))))
-//   const models = getState().model.models
-//
-//   Object.keys(models)
-//     .reduce((last, cur) => (cur.error ? last : [...last, cur]), [])
-//     .map(fileId => models[fileId].modelId)
-//     .forEach(modelId => dispatch(modelsUploaded({modelId})))
-// }
-
-
 export const uploadFiles = files => async (dispatch) => {
-  await Promise.all(files.map(file => dispatch(uploadFile(file))))
+  await Promise.all(files.map(async (file) => {
+    try {
+      const {modelId, fileId} = await dispatch(uploadFile(file))
+      return dispatch(checkUploadStatus({modelId, fileId}))
+    } catch (e) {
+      return Promise.reject()
+    }
+  }))
 }

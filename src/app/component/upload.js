@@ -33,7 +33,8 @@ class Upload extends Component {
   }
 
   render () {
-    const {classNames, modifiers, onUpload, children, ...rest} = this.props  // eslint-disable-line no-unused-vars-rest/no-unused-vars
+    // eslint-disable-next-line no-unused-vars, no-unused-vars-rest/no-unused-vars
+    const {classNames, modifiers, onUpload, children, ...rest} = this.props
 
     return (
       <div

@@ -54,7 +54,7 @@ export function upload (url, file, onProgress, params = {}) {
   const form = new global.FormData()
   form.append('file', file)
   Object.keys(params).forEach((param) => {
-    form.append(param, params[params])
+    form.append(param, params[param])
   })
 
   xhr.open('POST', url)

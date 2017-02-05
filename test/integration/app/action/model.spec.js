@@ -1,11 +1,9 @@
-import {upload, uploadFile} from '../../../../src/app/action/model'
+import {checkUploadStatus, uploadFile, uploadFiles} from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
 describe('Model Integration Test', () => {
   let store
-
-  // const modelId = 'some-model-id'
 
   beforeEach(() => {
     sinon.stub(printingEngine)
@@ -30,8 +28,10 @@ describe('Model Integration Test', () => {
       }
     })
 
-    it('starts the upload to the backend', async () => {
-      store.dispatch(uploadFile(file, 'some-callback'))
+    it('starts the upload to the backend', () => {
+      printingEngine.uploadModel.resolves(apiResponse)
+
+      const promise = store.dispatch(uploadFile(file, 'some-callback'))
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: false,
@@ -46,6 +46,8 @@ describe('Model Integration Test', () => {
         size: 42,
         progress: 0
       })
+
+      return promise
     })
 
     it('success uploading to the backend', async () => {
@@ -72,7 +74,11 @@ describe('Model Integration Test', () => {
     it('fails uploading to the backend', async () => {
       printingEngine.uploadModel.rejects()
 
-      await store.dispatch(uploadFile(file, 'some-callback'))
+      try {
+        await store.dispatch(uploadFile(file, 'some-callback'))
+      } catch (e) {
+        // Expect a failure
+      }
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: false,
@@ -88,25 +94,59 @@ describe('Model Integration Test', () => {
     })
   })
 
-  // describe('modelUploaded()', () => {
-  //   it('handles the finished case', async () => {
-  //     printingEngine.getUploadStatus.resolves(true)
-  //     await store.dispatch(modelUploaded({modelId}))
-  //
-  //     expect(store.getState().model, 'to equal', {
-  //       isUploadFinished: true,
-  //       modelId
-  //     })
-  //   })
-  //
-  //   it('handles the aborted case', async () => {
-  //     printingEngine.getUploadStatus.rejects(new Error())
-  //     await store.dispatch(modelUploaded({modelId}))
-  //
-  //     expect(store.getState().model, 'to equal', {
-  //       isUploadFinished: false,
-  //       modelId
-  //     })
-  //   })
-  // })
+  describe('checkUploadStatus()', () => {
+    it('handles the finished case', async () => {
+      printingEngine.getUploadStatus.resolves(true)
+
+      await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
+
+      expect(store.getState().model.models['some-file-id'], 'to equal', {
+        checkStatusFinished: true
+      })
+    })
+
+    it('handles the aborted case', async () => {
+      printingEngine.getUploadStatus.rejects(new Error())
+
+      await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
+
+      expect(store.getState().model.models['some-file-id'], 'to equal', {
+        checkStatusFinished: true,
+        error: true
+      })
+    })
+  })
+
+  describe('uploadFiles()', () => {
+    it('works for the success case', async () => {
+      const apiResponse = {
+        modelId: 'some-mode-id'
+      }
+      const files = [{
+        name: 'some-file-name',
+        size: 42
+      }]
+      printingEngine.getUploadStatus.resolves(true)
+      printingEngine.uploadModel.resolves(apiResponse)
+
+      await store.dispatch(uploadFiles(files, 'some-callback'))
+
+      expect(store.getState().model, 'to satisfy', {
+        areAllUploadsFinished: true,
+        numberOfUploads: 0,
+        selectedUnit: 'mm'
+      })
+
+      const fileId = Object.keys(store.getState().model.models)[0]
+
+      expect(store.getState().model.models[fileId], 'to equal', {
+        fileId,
+        name: 'some-file-name',
+        size: 42,
+        progress: 1,
+        modelId: 'some-mode-id',
+        checkStatusFinished: true
+      })
+    })
+  })
 })

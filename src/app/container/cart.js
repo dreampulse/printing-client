@@ -10,7 +10,7 @@ import SectionHeadline from '../component/section-headline'
 
 import {goBack} from '../action/navigation'
 import {selectShipping, changeQuantity, createShoppingCart} from '../action/cart'
-import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from '../action/order'
+import {createOrderWithStripe, initPaymentWithPaypal} from '../action/order'
 
 const Cart = ({
   items,
