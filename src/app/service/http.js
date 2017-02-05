@@ -29,7 +29,7 @@ export async function request (url, additionalOptions = {}) {
   return checkStatus(response)
 }
 
-export function upload (url, file, onProgress, params = {}) {
+export function upload (url, file, params = {}, onProgress) {
   const xhr = new Xhr()
 
   xhr.upload.addEventListener('progress', (event) => {

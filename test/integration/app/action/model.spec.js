@@ -81,7 +81,7 @@ describe('Model Integration Test', () => {
       }
 
       expect(store.getState().model, 'to satisfy', {
-        areAllUploadsFinished: false,
+        areAllUploadsFinished: true,
         numberOfUploads: 0
       })
 

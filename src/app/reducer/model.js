@@ -38,7 +38,7 @@ function handleUploadToBackedProgressed (state, {payload: {fileId, progress}}) {
   }
 }
 
-function handleUploadToBackedFinished (state, {payload: {fileId, modelId}}) {
+function handleUploadToBackedFinished (state, {error, payload: {fileId, modelId}}) {
   const areAllUploadsFinished = state.numberOfUploads === 1
 
   return {
@@ -50,21 +50,8 @@ function handleUploadToBackedFinished (state, {payload: {fileId, modelId}}) {
       [fileId]: {
         ...state.models[fileId],
         progress: 1,
-        modelId
-      }
-    }
-  }
-}
-
-function handleUploadToBackedFailed (state, {payload: {fileId}}) {
-  return {
-    ...state,
-    numberOfUploads: state.numberOfUploads - 1,
-    models: {
-      ...state.models,
-      [fileId]: {
-        ...state.models[fileId],
-        error: true
+        modelId,
+        error
       }
     }
   }
@@ -83,20 +70,7 @@ function handleCheckStatusStarted (state, {payload: {fileId}}) {
   }
 }
 
-function handleCheckStatusFinished (state, {payload: {fileId}}) {
-  return {
-    ...state,
-    models: {
-      ...state.models,
-      [fileId]: {
-        ...state.models[fileId],
-        checkStatusFinished: true
-      }
-    }
-  }
-}
-
-function handleCheckStatusFailed (state, {payload: {fileId}}) {
+function handleCheckStatusFinished (state, {error, payload: {fileId}}) {
   return {
     ...state,
     models: {
@@ -104,7 +78,7 @@ function handleCheckStatusFailed (state, {payload: {fileId}}) {
       [fileId]: {
         ...state.models[fileId],
         checkStatusFinished: true,
-        error: true
+        error
       }
     }
   }
@@ -114,9 +88,7 @@ export default handleActions({
   [TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED]: handleUploadToBackedStarted,
   [TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED]: handleUploadToBackedProgressed,
   [TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED]: handleUploadToBackedFinished,
-  [TYPE.MODEL.UPLOAD_TO_BACKEND_FAILED]: handleUploadToBackedFailed,
   [TYPE.MODEL.CHECK_STATUS_STARTED]: handleCheckStatusStarted,
   [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished,
-  [TYPE.MODEL.CHECK_STATUS_FAILED]: handleCheckStatusFailed
 }, initialState)
 

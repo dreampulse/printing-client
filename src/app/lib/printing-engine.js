@@ -3,8 +3,8 @@ import {upload, request, fetch} from '../service/http'
 
 const baseUrl = config.printingEngineBaseUrl
 
-export const uploadModel = (file, onProgressChange, params) =>
-  upload(`${baseUrl}/model`, file, onProgressChange, params)
+export const uploadModel = (file, params, onProgressChange) =>
+  upload(`${baseUrl}/model`, file, params, onProgressChange)
 
 export const getUploadStatus = async ({modelId}) => {
   const response = await fetch(`${baseUrl}/model/${modelId}`)
