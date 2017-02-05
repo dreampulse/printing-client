@@ -6,81 +6,78 @@ const initialState = {
   areAllUploadsFinished: false,
   numberOfUploads: 0,
   selectedUnit: 'mm',
-  models: {}
+  models: []
 }
+
+// Util
+const update = field => quantor => changes =>
+  field.map((element) => (quantor(element) ? ({
+      ...element,
+      ...changes
+    }) : element))
 
 function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
   return {
     ...state,
     numberOfUploads: state.numberOfUploads + 1,
-    models: {
-      ...state.models,
-      [fileId]: {
+    models: [
+      ...state.models, {
         fileId,
         name,
         size,
         progress: 0
       }
-    }
+    ]
   }
 }
 
 function handleUploadToBackedProgressed (state, {payload: {fileId, progress}}) {
+  const updateModels = update(state.models)(model => model.fileId === fileId)
+
   return {
     ...state,
-    models: {
-      ...state.models,
-      [fileId]: {
-        ...state.models[fileId],
-        progress
-      }
-    }
+    models: updatedModels({
+      progress
+    })
   }
 }
 
 function handleUploadToBackedFinished (state, {error, payload: {fileId, modelId}}) {
+  const updateModels = update(state.models)(model => model.fileId === fileId)
   const areAllUploadsFinished = state.numberOfUploads === 1
 
   return {
     ...state,
     areAllUploadsFinished,
     numberOfUploads: state.numberOfUploads - 1,
-    models: {
-      ...state.models,
-      [fileId]: {
-        ...state.models[fileId],
-        progress: 1,
-        modelId,
-        error
-      }
-    }
+    models: updateModels({
+      progress: 1,
+      modelId,
+      error
+    })
   }
 }
 
 function handleCheckStatusStarted (state, {payload: {fileId}}) {
+  const updateModels = update(state.models)(model => model.fileId === fileId)
+
   return {
     ...state,
-    models: {
-      ...state.models,
-      [fileId]: {
-        ...state.models[fileId],
-        checkStatusFinished: false
-      }
-    }
+    models: updateModels({
+      checkStatusFinished: false
+    })
   }
 }
 
 function handleCheckStatusFinished (state, {error, payload: {fileId}}) {
+  const updateModels = update(state.models)(model => model.fileId === fileId)
+
   return {
     ...state,
-    models: {
-      ...state.models,
-      [fileId]: {
-        ...state.models[fileId],
-        checkStatusFinished: true,
-        error
-      }
-    }
+    models: updateModels({
+      checkStatusFinished: true,
+      error
+    })
   }
 }
 

@@ -47,13 +47,8 @@ export const uploadFile = file => async (dispatch, getState) => {
           progress
         })
       }
-    ).then(({modelId}) => ({
-      modelId,
-      fileId
-    })
-    ).catch(() => Promise.reject({
-      fileId
-    }))
+    ).then(({modelId}) => ({modelId, fileId})
+    ).catch(() => Promise.reject({fileId}))
   )
 
   return {modelId, fileId}

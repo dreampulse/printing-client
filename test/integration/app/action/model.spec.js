@@ -38,10 +38,7 @@ describe('Model Integration Test', () => {
         numberOfUploads: 1
       })
 
-      const fileId = Object.keys(store.getState().model.models)[0]
-
-      expect(store.getState().model.models[fileId], 'to equal', {
-        fileId,
+      expect(store.getState().model.models[0], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
         progress: 0
@@ -60,10 +57,7 @@ describe('Model Integration Test', () => {
         numberOfUploads: 0
       })
 
-      const fileId = Object.keys(store.getState().model.models)[0]
-
-      expect(store.getState().model.models[fileId], 'to equal', {
-        fileId,
+      expect(store.getState().model.models[0], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
         progress: 1,
@@ -85,10 +79,7 @@ describe('Model Integration Test', () => {
         numberOfUploads: 0
       })
 
-      const fileId = Object.keys(store.getState().model.models)[0]
-
-      expect(store.getState().model.models[fileId], 'to satisfy', {
-        fileId,
+      expect(store.getState().model.models[0], 'to satisfy', {
         error: true
       })
     })
@@ -98,9 +89,17 @@ describe('Model Integration Test', () => {
     it('handles the finished case', async () => {
       printingEngine.getUploadStatus.resolves(true)
 
+      store = Store({
+        model: {
+          models: [{
+            fileId: 'some-file-id'
+          }]
+        }
+      })
+
       await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
 
-      expect(store.getState().model.models['some-file-id'], 'to equal', {
+      expect(store.getState().model.models[0], 'to satisfy', {
         checkStatusFinished: true
       })
     })
@@ -108,9 +107,17 @@ describe('Model Integration Test', () => {
     it('handles the aborted case', async () => {
       printingEngine.getUploadStatus.rejects(new Error())
 
+      store = Store({
+        model: {
+          models: [{
+            fileId: 'some-file-id'
+          }]
+        }
+      })
+
       await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
 
-      expect(store.getState().model.models['some-file-id'], 'to equal', {
+      expect(store.getState().model.models[0], 'to satisfy', {
         checkStatusFinished: true,
         error: true
       })
@@ -137,10 +144,7 @@ describe('Model Integration Test', () => {
         selectedUnit: 'mm'
       })
 
-      const fileId = Object.keys(store.getState().model.models)[0]
-
-      expect(store.getState().model.models[fileId], 'to equal', {
-        fileId,
+      expect(store.getState().model.models[0], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
         progress: 1,
