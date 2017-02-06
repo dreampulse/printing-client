@@ -3,7 +3,7 @@ import {handleActions} from 'redux-actions'
 import TYPE from '../type'
 
 const initialState = {
-  selected: undefined,
+  selectedIndex: undefined,
   materials: null
 }
 
@@ -17,7 +17,7 @@ function handleReceivedMaterials (state, {payload}) {
 function handleSelectedMaterial (state, {payload}) {
   return {
     ...state,
-    selected: payload
+    selectedIndex: payload
   }
 }
 

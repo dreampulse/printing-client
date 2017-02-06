@@ -17,7 +17,7 @@ const Model = ({
   materials,
   models,
   onSelectedMaterial,
-  selectedMaterial,
+  selectedMaterialIndex,
   onGoToVendor,
   isConfigured
 }) => {
@@ -42,11 +42,11 @@ const Model = ({
       <select
         disabled={!materials}
         onChange={e => onSelectedMaterial(e.target.value)}
-        value={selectedMaterial}
+        value={selectedMaterialIndex}
       >
         <option>Select material</option>
-        {materials && Object.keys(materials).map(k =>
-          <option value={k} key={k}>{materials[k].name}</option>
+        {materials && Object.keys(materials).map((material, index) =>
+          <option value={index} key={index}>{materials[material].name}</option>
         )}
       </select>
     </section>
@@ -58,6 +58,7 @@ const Model = ({
       <UploadSection />
       <MaterialSection />
       <Button label="Continue" disabled={!isConfigured} onClick={onGoToVendor} />
+
     </Main>
   )
 }
@@ -66,7 +67,7 @@ const mapStateToProps = state => ({
   isConfigured: state.model.areAllUploadsFinished && state.material.selected,
   materials: state.material.materials,
   models: state.model.models,
-  selectedMaterial: state.material.selected
+  selectedMaterialIndex: state.material.selectedIndex
 })
 
 const mapDispatchToProps = {

@@ -4,7 +4,6 @@ import {Router, Route, browserHistory, Redirect} from 'react-router'
 
 import Cart from './container/cart'
 import Model from './container/model'
-import Vendor from './container/vendor'
 import Address from './container/address'
 import ApiSample from './container/api-sample'
 
@@ -18,7 +17,6 @@ export default ({store}) => {
       <Redirect from="/" to="/model" />
 
       <Route component={Model} path="/model" />
-      <Route component={Vendor} path="/vendor" />
       <Route component={Address} path="/address" />
       <Route component={Cart} path="/cart" />
 

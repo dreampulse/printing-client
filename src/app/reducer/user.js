@@ -32,8 +32,7 @@ const initialState = {
       stateCode: '',
       countryCode: ''
     }
-  },
-  addressDetectionFailed: null
+  }
 }
 
 function handleShippingAddressChange (state, {payload}) {
@@ -46,17 +45,10 @@ function handleShippingAddressChange (state, {payload}) {
   }
 }
 
-function handleAddressDetectionFailed (state) {
+function handleUserCreated (state, {payload: {userId}}) {
   return {
     ...state,
-    addressDetectionFailed: true
-  }
-}
-
-function handleUserCreated (state, {payload}) {
-  return {
-    ...state,
-    userId: payload
+    userId
   }
 }
 
@@ -69,7 +61,6 @@ function handleUserUpdated (state, {payload}) {
 
 export default handleActions({
   [TYPE.USER.SHIPPING_ADDRESS_CHANGED]: handleShippingAddressChange,
-  [TYPE.USER.SHIPPING_ADDRESS_DETECTION_FAILED]: handleAddressDetectionFailed,
   [TYPE.USER.CREATED]: handleUserCreated,
   [TYPE.USER.UPDATED]: handleUserUpdated
 }, initialState)

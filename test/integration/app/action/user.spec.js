@@ -2,7 +2,6 @@ import {detectAddress, createUser, updateUser} from '../../../../src/app/action/
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 import * as geolocation from '../../../../src/app/service/geolocation'
-import * as navigation from '../../../../src/app/action/navigation'
 
 describe('User Integration Test', () => {
   let store
@@ -10,14 +9,12 @@ describe('User Integration Test', () => {
   beforeEach(() => {
     sinon.stub(printingEngine)
     sinon.stub(geolocation)
-    sinon.stub(navigation)
     store = Store()
   })
 
   afterEach(() => {
     sinon.restore(printingEngine)
     sinon.restore(geolocation)
-    sinon.restore(navigation)
   })
 
   describe('detectAddress()', () => {
@@ -34,16 +31,6 @@ describe('User Integration Test', () => {
 
       expect(store.getState().user.user.shippingAddress, 'to equal', location)
     })
-
-    it('should fail', async () => {
-      geolocation.getLocation.rejects(new Error('Boom!'))
-
-      await store.dispatch(detectAddress())
-
-      expect(store.getState().user, 'to satisfy', {
-        addressDetectionFailed: true
-      })
-    })
   })
 
   describe('createUser()', () => {
@@ -52,7 +39,6 @@ describe('User Integration Test', () => {
       printingEngine.createUser.resolves({userId})
 
       await store.dispatch(createUser())
-
       expect(store.getState().user, 'to satisfy', {
         userId
       })
@@ -62,15 +48,16 @@ describe('User Integration Test', () => {
   describe('updateUser()', () => {
     it('should work', async () => {
       const userId = '789'
+      const user = {someUserInfo: 'something'}
+
       store = Store({
         user: {
           userId
         }
       })
-      printingEngine.updateUser.resolves()
-      navigation.goToCart.returns({type: 'foo'})
 
-      const user = {foo: 'bar'}
+      printingEngine.updateUser.resolves(user)
+
       await store.dispatch(updateUser(user))
 
       expect(store.getState().user, 'to satisfy', {
@@ -81,7 +68,6 @@ describe('User Integration Test', () => {
         userId,
         user
       })
-      expect(navigation.goToCart, 'was called once')
     })
   })
 })

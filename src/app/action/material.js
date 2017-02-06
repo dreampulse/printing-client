@@ -1,11 +1,16 @@
-import {createAction} from 'redux-actions'
+import {bindActionCreators} from 'redux'
 
-import TYPE from '../type'
 import * as printingEngine from '../lib/printing-engine'
+import * as actionCreator from '../action-creator'
+
+// Epics
 
 export const getMaterials = () => async (dispatch) => {
+  const {materialReceived} = bindActionCreators(actionCreator, dispatch)
+
   const materials = await printingEngine.listMaterials()
-  dispatch(createAction(TYPE.MATERIAL.RECEIVED)(materials))
+  return materialReceived(materials)
 }
 
-export const selectMaterial = materialId => createAction(TYPE.MATERIAL.SELECTED)(materialId)
+export const selectMaterial = actionCreator.materialSelected
+
