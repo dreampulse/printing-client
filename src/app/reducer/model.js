@@ -1,6 +1,7 @@
 import {handleActions} from 'redux-actions'
 
 import TYPE from '../type'
+import {update} from '../lib/util'
 
 const initialState = {
   areAllUploadsFinished: false,
@@ -8,13 +9,6 @@ const initialState = {
   selectedUnit: 'mm',
   models: []
 }
-
-// Util
-const update = field => quantor => changes =>
-  field.map((element) => (quantor(element) ? ({
-      ...element,
-      ...changes
-    }) : element))
 
 function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
   return {
@@ -32,18 +26,18 @@ function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
 }
 
 function handleUploadToBackedProgressed (state, {payload: {fileId, progress}}) {
-  const updateModels = update(state.models)(model => model.fileId === fileId)
+  const updateModels = update(state.models, model => model.fileId === fileId)
 
   return {
     ...state,
-    models: updatedModels({
+    models: updateModels({
       progress
     })
   }
 }
 
 function handleUploadToBackedFinished (state, {error, payload: {fileId, modelId}}) {
-  const updateModels = update(state.models)(model => model.fileId === fileId)
+  const updateModels = update(state.models, model => model.fileId === fileId)
   const areAllUploadsFinished = state.numberOfUploads === 1
 
   return {
@@ -59,7 +53,7 @@ function handleUploadToBackedFinished (state, {error, payload: {fileId, modelId}
 }
 
 function handleCheckStatusStarted (state, {payload: {fileId}}) {
-  const updateModels = update(state.models)(model => model.fileId === fileId)
+  const updateModels = update(state.models, model => model.fileId === fileId)
 
   return {
     ...state,
@@ -70,7 +64,7 @@ function handleCheckStatusStarted (state, {payload: {fileId}}) {
 }
 
 function handleCheckStatusFinished (state, {error, payload: {fileId}}) {
-  const updateModels = update(state.models)(model => model.fileId === fileId)
+  const updateModels = update(state.models, model => model.fileId === fileId)
 
   return {
     ...state,
@@ -86,6 +80,6 @@ export default handleActions({
   [TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED]: handleUploadToBackedProgressed,
   [TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED]: handleUploadToBackedFinished,
   [TYPE.MODEL.CHECK_STATUS_STARTED]: handleCheckStatusStarted,
-  [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished,
+  [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished
 }, initialState)
 

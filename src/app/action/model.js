@@ -37,7 +37,7 @@ export const uploadFile = file => async (dispatch, getState) => {
     size: file.size
   })
 
-  const {modelId} = await modelUploadToBackendFinished(
+  const {payload: {modelId}} = await modelUploadToBackendFinished(
     printingEngine.uploadModel(
       file,
       {unit},

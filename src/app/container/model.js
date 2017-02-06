@@ -7,7 +7,6 @@ import Button from '../component/button'
 import Upload from '../component/upload'
 import Headline from '../component/headline'
 import SectionHeadline from '../component/section-headline'
-import LoadingIndicator from '../component/loading-indicator'
 
 import {goToVendor} from '../action/navigation'
 import {selectMaterial} from '../action/material'
@@ -15,8 +14,8 @@ import {uploadFiles} from '../action/model'
 
 const Model = ({
   onUploadFiles,
-  isUploading,
   materials,
+  models,
   onSelectedMaterial,
   selectedMaterial,
   onGoToVendor,
@@ -32,32 +31,25 @@ const Model = ({
       <Upload onUpload={onUpload} multiple>
         <Button label="upload" />
       </Upload>
-      <Loading />
-    </section>
-  )
 
-  const Loading = () => (
-    isUploading ? <LoadingIndicator modifiers={['l']} /> : null
+      <pre>{JSON.stringify(models, '', 2)}</pre>
+    </section>
   )
 
   const MaterialSection = () => (
     <section>
       <SectionHeadline label="2. Choose a material" />
-      <MaterialSelect />
+      <select
+        disabled={!materials}
+        onChange={e => onSelectedMaterial(e.target.value)}
+        value={selectedMaterial}
+      >
+        <option>Select material</option>
+        {materials && Object.keys(materials).map(k =>
+          <option value={k} key={k}>{materials[k].name}</option>
+        )}
+      </select>
     </section>
-  )
-
-  const MaterialSelect = () => (
-    <select
-      disabled={!materials}
-      onChange={e => onSelectedMaterial(e.target.value)}
-      value={selectedMaterial}
-    >
-      <option>Select material</option>
-      {materials && Object.keys(materials).map(k =>
-        <option value={k} key={k}>{materials[k].name}</option>
-      )}
-    </select>
   )
 
   return (
@@ -71,9 +63,9 @@ const Model = ({
 }
 
 const mapStateToProps = state => ({
-  isUploading: state.model.modelId && !state.model.isUploadFinished,
-  isConfigured: state.model.isUploadFinished && state.material.selected,
+  isConfigured: state.model.areAllUploadsFinished && state.material.selected,
   materials: state.material.materials,
+  models: state.model.models,
   selectedMaterial: state.material.selected
 })
 
