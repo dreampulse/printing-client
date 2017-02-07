@@ -1,6 +1,6 @@
 import {getLocation} from '../../../../src/app/service/geolocation'
 
-describe('Geolocation Integration Test', () => {
+describe('Geolocation Integration Test', function test () {
   this.timeout(20000)
 
   describe('getLocation()', () => {
