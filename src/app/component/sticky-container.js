@@ -15,7 +15,8 @@ class StickyContainer extends React.Component {
   };
 
   state = {
-    translateY: 0
+    sticky: false,
+    height: 0
   };
 
   componentDidMount () {
@@ -27,35 +28,45 @@ class StickyContainer extends React.Component {
   }
 
   updateSticky = () => {
+    const {sticky} = this.state
     // Compute position of element
     const rect = this.el.getBoundingClientRect()
 
-    let translateY = 0
-    if (rect.top < 0) {
-      translateY = -1 * rect.top
-    }
+    if (sticky && rect.top >= 0) {
+      this.setState({
+        sticky: false
+      })
+    } else if (!sticky && rect.top < 0) {
+      // Compute height of child
+      const height = this.childEl.getBoundingClientRect().height
 
-    this.setState({translateY})
+      this.setState({
+        sticky: true,
+        height
+      })
+    }
   };
 
   render () {
-    const {translateY} = this.state
+    const {sticky, height} = this.state
     const {children, classNames, modifiers} = this.props
+    const finalModifiers = [{sticky}, ...modifiers]
 
     return (
       <div
-        className={buildClassName('sticky-container', modifiers, classNames)}
+        className={buildClassName('sticky-container', finalModifiers, classNames)}
         ref={(el) => { this.el = el }}
       >
         <div
           className="sticky-container__child"
-          style={{
-            webkitTransform: `translateY(${translateY}px)`,
-            transform: `translateY(${translateY}px)`
-          }}
+          ref={(el) => { this.childEl = el }}
         >
           {children}
         </div>
+        <div
+          className="sticky-container__placeholder"
+          style={{height: `${height}px`}}
+        />
       </div>
     )
   }

@@ -59,18 +59,22 @@ $space-base: 12px;
 $space-l: 20px;
 $space-xl: 30px;
 $space-xxl: 40px;
+$space-xxxl: 70px;
 
-/*$column-width: 95px;
-$gutter-width: $space-l;
+$global-max-width: 1170px;
+
+$columns: 12;
+$gutter-width: 15px;
+$column-width: $global-max-width / $columns - $gutter-width;
 
 $susy: (
-  columns: 12,
+  columns: $columns,
   math: fluid,
   column-width: $column-width,
   gutters: $gutter-width / $column-width,
   gutter-position: inside-static,
   global-box-sizing: border-box
-);*/
+);
 
 // Breakpoints
 // ---------------------------------------------------
@@ -88,8 +92,3 @@ $box-shadow-active: 1px 1px 6px 0 rgba(0, 0, 0, 0.4);
 
 $transition-duration: .4s;
 $transition-duration-fast: .15s;
-
-// Stacking
-// ---------------------------------------------------
-
-$global-stacking: main;
