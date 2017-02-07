@@ -1,3 +1,4 @@
+/*
 import React from 'react'
 import {compose} from 'recompose'
 import {connect} from 'react-redux'
@@ -82,7 +83,11 @@ const Address = ({
   return (
     <Main>
       <Headline label="Enter your details" modifiers={['xl']} />
-      <Button style={{position: 'absolute', right: '250px', top: '25px'}} label="Back" onClick={onGoBack} />
+      <Button
+        style={{position: 'absolute', right: '250px', top: '25px'}}
+        label="Back"
+        onClick={onGoBack}
+      />
       <AddressForm />
     </Main>
   )
@@ -103,3 +108,4 @@ const enhance = compose(
 )
 
 export default enhance(Address)
+*/
