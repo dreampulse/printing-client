@@ -14,18 +14,13 @@ const Button = ({
   icon,
   type = 'button',
   disabled = false,
-  selected = false,
   onClick = () => {}
 }) => {
-  const finalIcon = selected ? selectedIcon : icon
-  const finalModifiers = [
-    ...modifiers,
-    {selected}
-  ]
+  const finalIcon = modifiers.indexOf('selected') >= 0 ? selectedIcon : icon
 
   return (
     <button
-      className={buildClassName('button', finalModifiers, classNames)}
+      className={buildClassName('button', modifiers, classNames)}
       type={type}
       disabled={disabled}
       onClick={onClick}

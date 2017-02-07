@@ -11,6 +11,7 @@ $font-size-xxxl: 45px;
 
 $line-height-base: 1.4;
 
+$font-weight-light: 300;
 $font-weight-regular: 400;
 $font-weight-bold: 700;
 
@@ -26,9 +27,11 @@ $color-gray-4: #f0f0f0;
 $color-blue-dark: #122732;
 $color-blue: #0277bd;
 $color-blue-light: #03a2d8;
+$color-yellow: #f6a623;
 $color-red: #ca0f0f;
 $color-green: #559c03;
 $color-white: #ffffff;
+$color-black: #000000;
 
 $color-bg: $color-gray-4;
 $color-bg-highlight: $color-white;
@@ -38,6 +41,7 @@ $color-primary: $color-blue;
 $color-primary-active: #1589cf;
 $color-minor: $color-gray-2;
 $color-border: $color-gray-2;
+$color-warning: $color-yellow;
 $color-error: $color-red;
 $color-field-focus: $color-primary;
 $color-disabled: $color-gray-3;

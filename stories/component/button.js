@@ -22,5 +22,5 @@ storiesOf('Button', module)
     <Button label="Block Button" modifiers={['block']} onClick={action('click')} />
   ))
   .add('selected', () => (
-    <Button label="Selected Button" selected onClick={action('click')} />
+    <Button label="Selected Button" modifiers={['selected']} onClick={action('click')} />
   ))
