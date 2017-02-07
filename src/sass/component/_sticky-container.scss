@@ -1,0 +1,5 @@
+.sticky-container {
+  &__child {
+    will-change: transform;
+  }
+}
