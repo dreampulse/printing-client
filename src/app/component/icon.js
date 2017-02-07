@@ -1,16 +1,19 @@
 import React from 'react'
+
 import placeholder from '../../asset/icon/placeholder.svg'
 
-import enhanceClassName from '../lib/enhance-class-name'
+import propTypes from '../lib/prop-types'
+import buildClassName from '../lib/build-class-name'
 
-const Icon = ({source = placeholder, ...params}) => (
-  <svg {...params}>
+const Icon = ({source = placeholder}) => (
+  <svg className={buildClassName('icon')}>
     <use xlinkHref={source} />
   </svg>
 )
 
 Icon.propTypes = {
+  ...propTypes.component,
   source: React.PropTypes.string
 }
 
-export default enhanceClassName('icon')(Icon)
+export default Icon

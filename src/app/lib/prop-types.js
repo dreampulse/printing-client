@@ -1,8 +1,16 @@
-import React from 'react'
+import {PropTypes} from 'react'
 
 export default {
   component: {
-    classNames: React.PropTypes.arrayOf(React.PropTypes.string),
-    modifiers: React.PropTypes.arrayOf(React.PropTypes.string)
+    classNames: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+      PropTypes.arrayOf(PropTypes.string)
+    ]),
+    modifiers: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+      PropTypes.arrayOf(PropTypes.string)
+    ])
   }
 }

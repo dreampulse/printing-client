@@ -1,77 +1,62 @@
 // Typography
 // ---------------------------------------------------
 
-$font-family-base: 'Raleway', sans-serif;
+$font-family-base: 'Roboto', sans-serif;
 
-$font-size-s: 12px;
-$font-size-base: 14px;
-$font-size-l: 16px;
-$font-size-xl: 24px;
-$font-size-xxl: 36px;
+$font-size-base: 15px;
+$font-size-l: 20px;
+$font-size-xl: 25px;
+$font-size-xxl: 35px;
+$font-size-xxxl: 45px;
 
-$line-height-base: 1.3;
-$line-height-l: 25px / $font-size-base;
+$line-height-base: 1.4;
 
-$font-weight-light: 300;
 $font-weight-regular: 400;
-$font-weight-medium: 500;
-$font-weight-semi-bold: 600;
 $font-weight-bold: 700;
-
 
 // Colors
 // ---------------------------------------------------
 
-$color-gray-dark: #393c45;
-$color-gray-medium: #9195a0;
-$color-gray-light: #e5e7ef;
-$color-gray-lighter: #f4f5f8;
+$color-gray-0: #333333;
+$color-gray-1: #666666;
+$color-gray-2: #999999;
+$color-gray-3: #cccccc;
+$color-gray-4: #f0f0f0;
 
-$color-blue: #6e8fef;
-$color-blue-light: #a8bcf5;
-$color-red: #ec6172;
-$color-red-light: #f2a2b0;
-$color-green: #64eac2;
+$color-blue-dark: #122732;
+$color-blue: #0277bd;
+$color-blue-light: #03a2d8;
+$color-red: #e05757;
 $color-white: #ffffff;
 
-$color-bg: $color-white;
-$color-text: $color-gray-dark;
-$color-text-secondary: $color-gray-medium;
+$color-bg: $color-gray-4;
+$color-bg-highlight: $color-white;
 
-$color-invert-bg: $color-gray-dark;
-$color-invert-text: $color-white;
-$color-invert-text-secondary: $color-gray-medium;
-
+$color-text: $color-gray-0;
 $color-primary: $color-blue;
-$color-danger: $color-red;
-$color-danger-active: $color-red-light;
 $color-primary-active: $color-blue-light;
-$color-secondary: $color-green;
-$color-border: $color-gray-light;
+$color-minor: $color-gray-2;
+$color-border: $color-gray-2;
 $color-error: $color-red;
-$color-field-focus: $color-blue-light;
+$color-field-focus: $color-primary;
+$color-disabled: $color-gray-3;
+$color-link: $color-blue-light;
+
+$color-invert-bg: $color-blue-dark;
+$color-invert-text: $color-white;
 
 
-// Layout
+// Layout & Grid
 // ---------------------------------------------------
 
 $space-s: 5px;
 $space-base: 12px;
-$space-l: 16px;
+$space-l: 20px;
 $space-xl: 30px;
+$space-xxl: 40px;
 
-$input-height: 40px;
-$border-radius: 3px;
-
-$box-shadow-base: 0 2px 4px -1px rgba(0, 0, 0, 0.14),
-                  0 4px 5px  0   rgba(0, 0, 0, 0.098),
-                  0 1px 10px 0   rgba(0, 0, 0, 0.084);
-
-// Grid
-// ---------------------------------------------------
-
-$column-width: 95px;
-$gutter-width: $space-base;
+/*$column-width: 95px;
+$gutter-width: $space-l;
 
 $susy: (
   columns: 12,
@@ -80,33 +65,23 @@ $susy: (
   gutters: $gutter-width / $column-width,
   gutter-position: inside-static,
   global-box-sizing: border-box
-);
+);*/
 
 // Breakpoints
 // ---------------------------------------------------
 
-$screen-s-max: 440px;
-$screen-sm-max: 749px;
-$screen-md-min: 750px;
-$screen-md-max: 959px;
-$screen-lg-min: 960px;
-
-$mediaqueries: (
-  small-only: "(max-width: #{$screen-sm-max})",
-  medium: "(min-width: #{$screen-md-min})",
-  medium-only: "(min-width: #{$screen-md-min}) and (max-width: #{$screen-md-max})",
-  large: "(min-width: #{$screen-lg-min})",
-);
+$mediaqueries: ();
 
 // Misc
 // ---------------------------------------------------
 
+$border-radius: 5px;
+$box-shadow-base: 1px 1px 3px 0 rgba(0, 0, 0, 0.2);
+
 $transition-duration: .4s;
 $transition-duration-fast: .15s;
-
-$item-bar-height: 45px;
 
 // Stacking
 // ---------------------------------------------------
 
-$global-stacking: main, fixed-footer, topbar, portal, splash;
+$global-stacking: main;

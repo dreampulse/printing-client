@@ -1,3 +1,4 @@
+/*
 import React from 'react'
 import {connect} from 'react-redux'
 import {compose, lifecycle} from 'recompose'
@@ -56,7 +57,11 @@ const Vendor = ({location, addressDetectionFailed, price, onGoBack, onSelectVend
   return (
     <Main>
       <Headline label="Choose provider & shipping" modifiers={['xl']} />
-      <Button style={{position: 'absolute', right: '250px', top: '25px'}} label="Back" onClick={onGoBack} />
+      <Button
+        style={{position: 'absolute', right: '250px', top: '25px'}}
+        label="Back"
+        onClick={onGoBack}
+      />
       <ShippingSection />
       <PriceSection />
     </Main>
@@ -85,3 +90,4 @@ const enhance = compose(
 )
 
 export default enhance(Vendor)
+*/

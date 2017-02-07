@@ -1,3 +1,4 @@
+/*
 import React from 'react'
 import {connect} from 'react-redux'
 
@@ -103,7 +104,11 @@ const Cart = ({
   return (
     <Main>
       <Headline label="Order summary" modifiers={['xl']} />
-      <Button style={{position: 'absolute', right: '250px', top: '25px'}} label="Back" onClick={onGoBack} />
+      <Button
+        style={{position: 'absolute', right: '250px', top: '25px'}}
+        label="Back"
+        onClick={onGoBack}
+      />
       <CartPreviewSection />
       <QuantitySection />
       <ShippingSection />
@@ -129,3 +134,4 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)
+*/
