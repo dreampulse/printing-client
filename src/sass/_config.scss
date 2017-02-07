@@ -26,7 +26,8 @@ $color-gray-4: #f0f0f0;
 $color-blue-dark: #122732;
 $color-blue: #0277bd;
 $color-blue-light: #03a2d8;
-$color-red: #e05757;
+$color-red: #ca0f0f;
+$color-green: #559c03;
 $color-white: #ffffff;
 
 $color-bg: $color-gray-4;
@@ -34,7 +35,7 @@ $color-bg-highlight: $color-white;
 
 $color-text: $color-gray-0;
 $color-primary: $color-blue;
-$color-primary-active: $color-blue-light;
+$color-primary-active: #1589cf;
 $color-minor: $color-gray-2;
 $color-border: $color-gray-2;
 $color-error: $color-red;
@@ -75,8 +76,11 @@ $mediaqueries: ();
 // Misc
 // ---------------------------------------------------
 
+$field-height: 50px;
 $border-radius: 5px;
+
 $box-shadow-base: 1px 1px 3px 0 rgba(0, 0, 0, 0.2);
+$box-shadow-active: 1px 1px 6px 0 rgba(0, 0, 0, 0.4);
 
 $transition-duration: .4s;
 $transition-duration-fast: .15s;
