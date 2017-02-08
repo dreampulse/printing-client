@@ -1,0 +1,33 @@
+.loading-indicator {
+  display: inline-block;
+
+  &__spinner {
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+
+    &:after,
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      border-left: 0.15em solid $color-primary;
+      border-top: 0.15em solid $color-primary;
+      border-bottom: 0.15em solid $color-primary;
+      border-radius: 0.5em 0 0 0.5em;
+      animation: loading-indicator-spin 1s linear infinite;
+      transform-origin: 100% 50%;
+    }
+    &:before {
+      animation-delay: -0.25s;
+    }
+  }
+
+  @keyframes loading-indicator-spin {
+    100% { transform: rotate(360deg); }
+  }
+}
