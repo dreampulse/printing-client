@@ -19,3 +19,7 @@ export const userAddressChanged = createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGE
 export const userAddressDetectionFailed = createAction(TYPE.USER.SHIPPING_ADDRESS_DETECTION_FAILED)
 export const userCreated = createAction(TYPE.USER.CREATED)
 export const userUpdated = createAction(TYPE.USER.UPDATED)
+
+// Price
+export const priceRequested = createAction(TYPE.PRICE.REQUESTED)
+export const priceReceived = createAction(TYPE.PRICE.RECEIVED)

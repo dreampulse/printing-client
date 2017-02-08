@@ -5058,9 +5058,9 @@ redux-mock-store@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/redux-mock-store/-/redux-mock-store-1.2.1.tgz#630c0e2642927d1417c844d935266b501f2fc231"
 
-redux-promise@^0.5.3:
+redux-promise@dreampulse/redux-promise:
   version "0.5.3"
-  resolved "https://registry.yarnpkg.com/redux-promise/-/redux-promise-0.5.3.tgz#e97e6c9d3bf376eacb79babe6d906da20112d6d8"
+  resolved "https://codeload.github.com/dreampulse/redux-promise/tar.gz/ff61b19d710457ca2d3cac1d9017185002fe2112"
   dependencies:
     flux-standard-action "^0.6.1"
 

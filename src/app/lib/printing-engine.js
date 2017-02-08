@@ -17,10 +17,10 @@ export const createUser = ({user}) => request(`${baseUrl}/user`, {method: 'POST'
 
 export const updateUser = ({userId, user}) => request(`${baseUrl}/user/${userId}`, {method: 'PUT', body: user})
 
-export const createPriceRequest = ({modelId, materialId, userId}) =>
+export const createPriceRequest = ({items, userId}) =>
   request(`${baseUrl}/price`, {
     method: 'POST',
-    body: {items: [{modelId, materialId}], userId}
+    body: {items, userId}
   })
 
 export const getPrice = ({priceId}) => request(`${baseUrl}/price/${priceId}`)

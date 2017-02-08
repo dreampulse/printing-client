@@ -1,29 +1,36 @@
-import {createAction} from 'redux-actions'
+import {bindActionCreators} from 'redux'
+import {xprod} from 'ramda'
 
-import TYPE from '../type'
-import {createUser} from './user'
+import * as actionCreator from '../action-creator'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
 
 export const createPriceRequest = () => async (dispatch, getState) => {
-  const sa = getState().user.user.shippingAddress
-  if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) return
+  const {
+    priceRequested,
+    priceReceived
+  } = bindActionCreators(actionCreator, dispatch)
 
-  await dispatch(createUser())  // remove
+  const sa = getState().user.user.shippingAddress
+  if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
+    throw new Error('Shipping Address Invalid')
+  }
+
+  const materialIds = Object.keys(getState().material.materials)
+  const modelIds = getState().model.models.map(model => model.modelId)
+
+  const items = xprod(materialIds, modelIds)
+    .map(([materialId, modelId]) => ({
+      modelId,
+      materialId
+    }))
 
   const options = {
     userId: getState().user.userId,
-    modelId: getState().model.modelId,
-    materialId: getState().material.selected
+    items
   }
-  const {priceId} = await printingEngine.createPriceRequest(options)
-  dispatch(createAction(TYPE.PRICE.REQUEST_CREATED)(priceId))
 
-  try {
-    await pollApi(() => printingEngine.getPriceStatus({priceId}))
-    const price = await printingEngine.getPrice({priceId})
-    dispatch(createAction(TYPE.PRICE.RECEIVED)(price))
-  } catch (e) {
-    dispatch(createAction(TYPE.PRICE.ERROR)(e))
-  }
+  const {payload: {priceId}} = await priceRequested(printingEngine.createPriceRequest(options))
+  await pollApi(() => printingEngine.getPriceStatus({priceId}))
+  return priceReceived(printingEngine.getPrice({priceId}))
 }

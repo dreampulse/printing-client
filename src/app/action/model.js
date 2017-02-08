@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux'
 import uniqueId from 'lodash/uniqueId'
 
 import * as actionCreator from '../action-creator'
+import {createPriceRequest} from './price'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
 
@@ -64,5 +65,5 @@ export const uploadFiles = files => async (dispatch) => {
     }
   }))
 
-  // TODO: call createPrice request
+  return dispatch(createPriceRequest())
 }

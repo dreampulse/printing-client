@@ -115,12 +115,14 @@ describe('Model Integration Test', () => {
         }
       })
 
-      await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
-
-      expect(store.getState().model.models[0], 'to satisfy', {
-        checkStatusFinished: true,
-        error: true
-      })
+      try {
+        await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
+      } catch (e) {
+        expect(store.getState().model.models[0], 'to satisfy', {
+          checkStatusFinished: true,
+          error: true
+        })
+      }
     })
   })
 
@@ -133,8 +135,30 @@ describe('Model Integration Test', () => {
         name: 'some-file-name',
         size: 42
       }]
+
+      store = Store({
+        material: {
+          materials: {
+            'some-material-id': 'something'
+          }
+        },
+        user: {
+          user: {
+            shippingAddress: {
+              city: 'Pittsburgh',
+              zipCode: '15234',
+              stateCode: 'PA',
+              countryCode: 'US'
+            }
+          }
+        }
+      })
+
       printingEngine.getUploadStatus.resolves(true)
       printingEngine.uploadModel.resolves(apiResponse)
+      printingEngine.createPriceRequest.resolves({priceId: '123'})
+      printingEngine.getPriceStatus.resolves(true)  // Finished polling
+      printingEngine.getPrice.resolves('some-price')
 
       await store.dispatch(uploadFiles(files, 'some-callback'))
 
