@@ -1,0 +1,38 @@
+.select-field {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: $field-height;
+  padding: 0 2.4em 0 1em;
+  line-height: $field-height;
+  font-size: $font-size-l;
+  border-radius: $border-radius;
+  border: 1px solid $color-border;
+  box-shadow: $box-shadow-base;
+  outline: 0;
+  text-align: left;
+  background: $color-bg-highlight;
+  color: $color-minor;
+
+  &__value {
+    @include scut-truncate;
+
+    display: block;
+  }
+
+  & > .icon {
+    position: absolute;
+    top: 0;
+    right: 0.7em;
+    height: $field-height;
+  }
+
+  &--selected {
+    color: $color-text;
+  }
+
+  &:focus {
+    box-shadow: $box-shadow-focus;
+    border-color: $color-primary;
+  }
+}
