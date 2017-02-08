@@ -56,7 +56,7 @@
     "glob": "^7.0.5",
     "html-webpack-plugin": "^2.16.0",
     "http-server": "^0.9.0",
-    "import-glob-loader": "^1.1.0",
+    "import-glob": "^1.5.0",
     "isomorphic-fetch": "^2.2.1",
     "isparta": "^4.0.0",
     "istanbul": "^0.4.5",

@@ -93,7 +93,9 @@ const Model = ({
             <TableCell>{offer.name}</TableCell>
             <TableCell>{getPriceAmount(offer)} {offer.currency}</TableCell>
             <TableCell>{offer.shipping.name}</TableCell>
-            <TableCell classNames={['u-align-right']}><Button label="Select" onClick={(offer) => {}} /></TableCell>
+            <TableCell classNames={['u-align-right']}>
+              <Button label="Select" onClick={() => { console.log('-- todo') }} />
+            </TableCell>
           </TableRow>
         )}
       />
