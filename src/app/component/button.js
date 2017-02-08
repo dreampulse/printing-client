@@ -25,7 +25,7 @@ const Button = ({
       disabled={disabled}
       onClick={onClick}
     >
-      {finalIcon ? <Icon source={finalIcon} /> : null}
+      {Boolean(finalIcon) && <Icon source={finalIcon} />}
       {label}
     </button>
   )
