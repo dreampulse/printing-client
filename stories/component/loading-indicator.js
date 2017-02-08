@@ -3,7 +3,7 @@ import {storiesOf} from '@kadira/storybook'
 
 import LoadingIndicator from '../../src/app/component/loading-indicator'
 
-storiesOf('LoadingIndicator', module)
+storiesOf('Loading Indicator', module)
   .add('default', () => (
     <LoadingIndicator />
   ))

@@ -4,7 +4,7 @@ import {storiesOf} from '@kadira/storybook'
 import HandleValue from '../util/handle-value'
 import NumberField from '../../src/app/component/number-field'
 
-storiesOf('NumberField', module)
+storiesOf('Number Field', module)
   .add('default', () => (
     <HandleValue initialValue={42}>
       <NumberField />
