@@ -63,4 +63,6 @@ export const uploadFiles = files => async (dispatch) => {
       return Promise.reject()
     }
   }))
+
+  // TODO: call createPrice request
 }

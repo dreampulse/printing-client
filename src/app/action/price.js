@@ -9,7 +9,7 @@ export const createPriceRequest = () => async (dispatch, getState) => {
   const sa = getState().user.user.shippingAddress
   if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) return
 
-  await dispatch(createUser())
+  await dispatch(createUser())  // remove
 
   const options = {
     userId: getState().user.userId,
