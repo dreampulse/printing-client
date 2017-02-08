@@ -2,7 +2,7 @@
   @include scut-ratio-box(4/3);
 
   width: 100%;
-  background: $color-gray-4;
+  background-image: radial-gradient(circle at 50% 51%, #2e6887, #020e18);
 
   &__content {
     display: flex;
@@ -15,6 +15,6 @@
     right: 0;
     background-size: cover;
     background-position: center center;
-    font-size: $font-size-l;
+    font-size: $font-size-xl;
   }
 }

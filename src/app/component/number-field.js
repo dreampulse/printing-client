@@ -17,7 +17,7 @@ const NumberField = ({
   value,
   onChange = () => {},
   lowerLimit = 1,
-  upperLimit = Number.MAX_SAFE_INTEGER,
+  upperLimit = 999,
   disabled = false,
   hasFocus,
   setFocus

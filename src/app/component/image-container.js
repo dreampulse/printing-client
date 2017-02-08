@@ -17,7 +17,7 @@ const ImageContainer = ({classNames, modifiers, source}) => {
         className="image-container__content"
         style={style}
       >
-        {!source && <LoadingIndicator />}
+        {!source && <LoadingIndicator modifiers={['invert']} />}
       </div>
     </div>
   )

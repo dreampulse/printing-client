@@ -1,30 +1,44 @@
 .loading-indicator {
   display: inline-block;
+  color: $color-primary;
 
   &__spinner {
     position: relative;
     display: inline-block;
     width: 1em;
     height: 1em;
+    animation: loading-indicator-spin 1s linear infinite;
 
-    &:after,
-    &:before {
+    &:after{
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 50%;
       height: 100%;
-      border-left: 0.15em solid $color-primary;
-      border-top: 0.15em solid $color-primary;
-      border-bottom: 0.15em solid $color-primary;
+      border-left: 0.15em solid currentColor;
+      border-top: 0.15em solid currentColor;
+      border-bottom: 0.15em solid currentColor;
       border-radius: 0.5em 0 0 0.5em;
-      animation: loading-indicator-spin 1s linear infinite;
-      transform-origin: 100% 50%;
     }
+
     &:before {
-      animation-delay: -0.25s;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      border-left: 0.15em solid currentColor;
+      border-top: 0.15em solid currentColor;
+      border-right: 0.15em solid currentColor;
+      border-radius: 0.5em 0.5em 0 0;
     }
+  }
+
+  &--invert {
+    color: $color-invert-text;
+    opacity: 0.5;
   }
 
   @keyframes loading-indicator-spin {

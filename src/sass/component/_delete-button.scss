@@ -1,0 +1,10 @@
+.delete-button {
+  $size: 40px;
+
+  display: inline-block;
+  width: $size;
+  height: $size;
+  font-size: $font-size-base;
+  color: $color-minor;
+  outline: 0;
+}
