@@ -1,0 +1,25 @@
+.app {
+  $stacking: footer, main, header;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &__header {
+    position: relative;
+    z-index: z($stacking, header);
+    margin-bottom: $space-xxxl;
+  }
+
+  &__main {
+    flex: 1;
+    position: relative;
+    z-index: z($stacking, main);
+    margin-bottom: $space-xxxl;
+  }
+
+  &__footer {
+    position: relative;
+    z-index: z($stacking, footer);
+  }
+}
