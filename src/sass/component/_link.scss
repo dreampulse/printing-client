@@ -1,0 +1,17 @@
+.link {
+  color: $color-link;
+  text-decoration: none;
+  cursor: pointer;
+
+  & > .icon {
+    position: relative;
+    margin-right: .5em;
+    font-size: 0.8em;
+    top: -0.08em; // Optimize vertical center
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}

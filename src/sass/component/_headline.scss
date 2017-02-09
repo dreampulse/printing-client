@@ -1,0 +1,41 @@
+.headline {
+  margin: 0 0 $space-base;
+  font-weight: $font-weight-bold;
+  color: inherit;
+  font-size: $font-size-xl;
+
+  & > .icon {
+    position: relative;
+    font-size: 1.3em;
+    margin-right: .5em;
+    top: -0.08em; // Optimize vertical center
+  }
+
+  &--s {
+    font-size: $font-size-l;
+    font-weight: $font-weight-bold;
+  }
+
+  &--l {
+    font-size: $font-size-xxl;
+    font-weight: $font-weight-light;
+    color: $color-black;
+  }
+
+  &--xl {
+    margin-bottom: $space-xl;
+    font-size: $font-size-xxxl;
+    font-weight: $font-weight-light;
+    color: $color-gray-1;
+  }
+
+  &--disabled {
+    color: $color-disabled;
+  }
+
+  &--warning {
+    & > .icon {
+      color: $color-warning;
+    }
+  }
+}

@@ -1,0 +1,75 @@
+.button {
+  display: inline-block;
+  height: $field-height;
+  line-height: $field-height;
+  padding: 0 2em;
+  background-color: $color-primary;
+  color: $color-invert-text;
+  font-size: $font-size-l;
+  border-radius: $border-radius;
+  text-align: center;
+  box-shadow: $box-shadow-base;
+  outline: 0;
+
+  & > .icon {
+    position: relative;
+    font-size: 1.3em;
+    margin-right: .5em;
+    top: -0.08em; // Optimize vertical center
+  }
+
+  &:hover:not([disabled]),
+  &:focus:not([disabled]) {
+    background-color: $color-primary-active;
+  }
+
+  &:active:not([disabled]) {
+    background-color: $color-primary-active;
+    box-shadow: $box-shadow-active;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    background-color: $color-gray-4;
+    color: $color-minor;
+    box-shadow: none;
+  }
+
+  &--selected {
+    background-color: $color-gray-4;
+    color: $color-minor;
+    box-shadow: none;
+
+    & > .icon {
+      color: $color-green;
+    }
+
+    &:hover:not([disabled]),
+    &:focus:not([disabled]),
+    &:active:not([disabled]) {
+      background-color: $color-gray-4;
+      color: $color-minor;
+      box-shadow: none;
+    }
+  }
+
+  &--text {
+    padding: 0;
+    background-color: inherit;
+    color: $color-link;
+    box-shadow: none;
+
+    &:hover:not([disabled]),
+    &:focus:not([disabled]),
+    &:active:not([disabled]) {
+      background-color: inherit;
+      color: $color-link;
+      box-shadow: none;
+    }
+  }
+
+  &--block {
+    display: block;
+    width: 100%;
+  }
+}
