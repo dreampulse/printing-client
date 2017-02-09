@@ -4,11 +4,13 @@ export const fetch = global.fetch
 export const Xhr = global.XMLHttpRequest
 
 function isJSON ({headers}) {
-  return headers.get('content-type').includes('application/json')
+  const contentType = headers.get('content-type')
+  if (contentType) return contentType.indexOf('application/json') >= 0
+  return false
 }
 
 export function checkStatus (response) {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.status >= 200 && response.status < 400) {
     if (isJSON(response)) return response.json()
     return null
   }

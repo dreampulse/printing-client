@@ -1,3 +1,4 @@
+import {goToCart} from './navigation'
 
 import {getLocation} from '../service/geolocation'
 import * as printingEngine from '../lib/printing-engine'
@@ -18,4 +19,9 @@ export const updateUser = user => (dispatch, getState) => {
   const userId = getState().user.userId
   const userPromise = printingEngine.updateUser({userId, user})
   return dispatch(userUpdated(userPromise))
+}
+
+export const reviewOrder = form => async (dispatch) => {
+  await dispatch(updateUser(form))
+  return dispatch(goToCart())
 }

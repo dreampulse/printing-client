@@ -32,7 +32,6 @@ describe('Shopping Cart Integration Test', () => {
     })
   })
 
-
   describe('changeQuantity', () => {
     it('should work', () => {
       store = Store({})

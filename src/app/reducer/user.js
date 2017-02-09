@@ -9,6 +9,7 @@ const initialState = {
     phoneNumber: '',
     currency: 'USD',
     isCompany: false,
+    // companyName: '',
     vatId: '',
     shippingAddress: {
       firstName: '',
@@ -21,6 +22,7 @@ const initialState = {
       stateCode: '',
       countryCode: ''
     },
+    // useDifferentBillingAddress: false,
     billingAddress: {
       firstName: '',
       lastName: '',
