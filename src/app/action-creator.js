@@ -29,3 +29,6 @@ export const cartSelectShipping = createAction(TYPE.CART.SHIPPING_SELECTED)
 export const cartChangeQuantity = createAction(TYPE.CART.QUANTITY_CHANGED)
 export const cartCreated = createAction(TYPE.CART.CREATED)
 export const cartReceivedFinalPrice = createAction(TYPE.CART.RECEIVED_FINAL_PRICE)
+
+// Order
+export const orderOrdered = createAction(TYPE.ORDER.ORDERED)
