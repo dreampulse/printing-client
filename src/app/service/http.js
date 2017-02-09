@@ -8,7 +8,7 @@ function isJSON ({headers}) {
 }
 
 export function checkStatus (response) {
-  if (response.status >= 200 && response.status < 400) {
+  if (response.status >= 200 && response.status < 300) {
     if (isJSON(response)) return response.json()
     return null
   }
@@ -42,7 +42,7 @@ export function upload (url, file, params = {}, onProgress) {
   const promise = new Promise((resolve, reject) => {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
-        if (xhr.status >= 200 && xhr.status < 400) {
+        if (xhr.status >= 200 && xhr.status < 300) {
           resolve(JSON.parse(xhr.responseText))
         } else {
           reject(xhr.responseText)
