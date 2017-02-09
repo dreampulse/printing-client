@@ -44,7 +44,7 @@ describe('Shopping Cart Integration Test', () => {
     it('should work', async () => {
       store = Store({
         material: {
-          selectedIndex: 'some-material-id'
+          selectedMaterial: 'some-material-id'
         },
         model: {
           models: [{

@@ -25,7 +25,7 @@ const Model = ({
   materials,
   models,
   onSelectedMaterial,
-  selectedMaterialIndex,
+  selectedMaterial,
   location,
   price,
   onSelectOffer
@@ -51,7 +51,7 @@ const Model = ({
       <select
         disabled={!materials}
         onChange={e => onSelectedMaterial(e.target.value)}
-        value={selectedMaterialIndex}
+        value={selectedMaterial}
       >
         <option>Select material</option>
         {materials && Object.keys(materials).map((material, index) =>
@@ -135,7 +135,7 @@ const Model = ({
 const mapStateToProps = state => ({
   materials: state.material.materials,
   models: state.model.models,
-  selectedMaterialIndex: state.material.selectedIndex,
+  selectedMaterial: state.material.selectedMaterial,
   location: state.user.user.shippingAddress,
   price: state.price.price
 })

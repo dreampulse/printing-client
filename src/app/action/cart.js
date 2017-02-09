@@ -10,13 +10,11 @@ export const createShoppingCart = () => async (dispatch, getState) => {
     cartReceivedFinalPrice
   } = bindActionCreators(actionCreator, dispatch)
 
-  const selectedMaterial = getState().material.selectedIndex // TODO: rename it to selected Material
-
   const items = getState().model.models.map(model => ({
     modelId: model.modelId,
     vendorId: getState().cart.selectedVendor,
     quantity: getState().cart.quantity,
-    materialId: selectedMaterial
+    materialId: getState().material.selectedMaterial
   }))
 
   const shipping = items.map(() => ({
