@@ -16,6 +16,7 @@ import TableCell from '../component/table-cell'
 import {goToVendor} from '../action/navigation'
 import {selectMaterial} from '../action/material'
 import {uploadFiles} from '../action/model'
+import {selectOffer} from '../action/cart'
 
 import {getPriceAmount} from '../lib/get-total-amount'
 
@@ -26,7 +27,8 @@ const Model = ({
   onSelectedMaterial,
   selectedMaterialIndex,
   location,
-  price
+  price,
+  onSelectOffer
 }) => {
   const onUpload = (files) => {
     onUploadFiles(toArray(files))
@@ -94,7 +96,15 @@ const Model = ({
             <TableCell>{getPriceAmount(offer)} {offer.currency}</TableCell>
             <TableCell>{offer.shipping.name}</TableCell>
             <TableCell classNames={['u-align-right']}>
-              <Button label="Select" onClick={() => { console.log('-- todo') }} />
+              <Button
+                label="Select"
+                onClick={() =>
+                  onSelectOffer({
+                    vendor: offer.name,
+                    shippingName: offer.shipping.name
+                  })
+                }
+              />
             </TableCell>
           </TableRow>
         )}
@@ -133,7 +143,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onUploadFiles: uploadFiles,
   onSelectedMaterial: selectMaterial,
-  onGoToVendor: goToVendor
+  onGoToVendor: goToVendor,
+  onSelectOffer: selectOffer
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Model)

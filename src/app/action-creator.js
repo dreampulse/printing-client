@@ -16,10 +16,15 @@ export const materialReceived = createAction(TYPE.MATERIAL.RECEIVED)
 
 // User
 export const userAddressChanged = createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)
-export const userAddressDetectionFailed = createAction(TYPE.USER.SHIPPING_ADDRESS_DETECTION_FAILED)
 export const userCreated = createAction(TYPE.USER.CREATED)
 export const userUpdated = createAction(TYPE.USER.UPDATED)
 
 // Price
 export const priceRequested = createAction(TYPE.PRICE.REQUESTED)
 export const priceReceived = createAction(TYPE.PRICE.RECEIVED)
+
+// Cart
+
+export const cartSelectVendor = createAction(TYPE.CART.VENDOR_SELECTED)
+export const cartSelectShipping = createAction(TYPE.CART.SHIPPING_SELECTED)
+export const cartChangeQuantity = createAction(TYPE.CART.QUANTITY_CHANGED)

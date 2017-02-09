@@ -16,24 +16,22 @@ describe('Shopping Cart Integration Test', () => {
     sinon.restore(navigation)
   })
 
-  describe('selectVendor', () => {
+  describe('selectOffer()', () => {
     it('should work', () => {
-      navigation.goToAddress.returns({type: 'foo'})
-
       store = Store({})
-      store.dispatch(cart.selectVendor('some-vendor-id'))
+      navigation.goToAddress.returns({type: 'some-type'})
+
+      store.dispatch(cart.selectOffer({
+        vendor: 'some-vendor-id',
+        shippingName: 'some-shipping-name'
+      }))
+
       expect(store.getState().cart.selectedVendor, 'to equal', 'some-vendor-id')
+      expect(store.getState().cart.selectedShipping, 'to equal', 'some-shipping-name')
       expect(navigation.goToAddress, 'was called once')
     })
   })
 
-  describe('selectShipping', () => {
-    it('should work', () => {
-      store = Store({})
-      store.dispatch(cart.selectShipping('some-shipping-id'))
-      expect(store.getState().cart.selectedShipping, 'to equal', 'some-shipping-id')
-    })
-  })
 
   describe('changeQuantity', () => {
     it('should work', () => {
@@ -42,7 +40,7 @@ describe('Shopping Cart Integration Test', () => {
       expect(store.getState().cart.quantity, 'to equal', 2)
     })
   })
-
+/*
   describe('createShoppingCart()', () => {
     it('should work', async () => {
       const modelId = '123'
@@ -83,4 +81,5 @@ describe('Shopping Cart Integration Test', () => {
       })
     })
   })
+  */
 })
