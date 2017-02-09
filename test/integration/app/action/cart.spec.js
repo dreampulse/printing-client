@@ -101,5 +101,4 @@ describe('Shopping Cart Integration Test', () => {
       })
     })
   })
-
 })

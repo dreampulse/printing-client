@@ -48,5 +48,4 @@ export const selectOffer = ({vendor, shippingName}) => (dispatch) => {
   dispatch(goToAddress())
 }
 
-
 export const changeQuantity = quantitiy => actionCreator.cartChangeQuantity(quantitiy)
