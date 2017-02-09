@@ -39,46 +39,67 @@ describe('Shopping Cart Integration Test', () => {
       expect(store.getState().cart.quantity, 'to equal', 2)
     })
   })
-/*
+
   describe('createShoppingCart()', () => {
     it('should work', async () => {
-      const modelId = '123'
-      const priceId = '456'
-      const price = {
-        _id: priceId,
-        printingService: {
-          shapeways: {
-            shipping: [{
-              name: 'USPS First-Class',
-              price: 1.99
-            }]
-          }
-        }
-      }
-
       store = Store({
+        material: {
+          selectedIndex: 'some-material-id'
+        },
         model: {
-          modelId
+          models: [{
+            modelId: 'some-model-id'
+          }, {
+            modelId: 'some-other-model-id'
+          }]
         },
         price: {
-          priceId,
-          price
+          priceId: 'some-price-id'
         },
         cart: {
-          quantity: 1
+          quantity: 1,
+          selectedVendor: 'some-vendor',
+          selectedShipping: 'some-shipping-method'
         }
       })
 
       printingEngine.createShoppingCart.resolves({cartId: 'some-cart-id'})
       printingEngine.getFinalCartPrice.resolves('final-cart-price')
 
-      await store.dispatch(cart.createShoppingCart({modelId}))
+      await store.dispatch(cart.createShoppingCart())
 
       expect(store.getState().cart, 'to satisfy', {
         cartId: 'some-cart-id',
         cart: 'final-cart-price'
       })
+
+      expect(printingEngine.createShoppingCart, 'was called with', {
+        userId: null,
+        priceId: 'some-price-id',
+        items: [{
+          modelId: 'some-model-id',
+          vendorId: 'some-vendor',
+          quantity: 1,
+          materialId: 'some-material-id'
+        }, {
+          modelId: 'some-other-model-id',
+          vendorId: 'some-vendor',
+          quantity: 1,
+          materialId: 'some-material-id'
+        }],
+        shipping: [{
+          name: 'some-shipping-method',
+          vendorId: 'some-vendor'
+        }, {
+          name: 'some-shipping-method',
+          vendorId: 'some-vendor'
+        }]
+      })
+
+      expect(printingEngine.getFinalCartPrice, 'was called with', {
+        cartId: 'some-cart-id'
+      })
     })
   })
-  */
+
 })

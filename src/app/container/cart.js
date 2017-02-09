@@ -1,131 +1,92 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
+// import {find, propEq} from 'ramda'
 
 import Main from '../component/main'
 import Button from '../component/button'
 import Headline from '../component/headline'
-import PaypalButton from '../component/paypal-button'
+// import PaypalButton from '../component/paypal-button'
 import SectionHeadline from '../component/section-headline'
+import Table from '../component/table'
+import TableHeadCell from '../component/table-head-cell'
+import TableRow from '../component/table-row'
+import TableCell from '../component/table-cell'
 
 import {goBack} from '../action/navigation'
-import {selectShipping, changeQuantity, createShoppingCart} from '../action/cart'
+import {changeQuantity, createShoppingCart} from '../action/cart'
 import {createOrderWithStripe, initPaymentWithPaypal} from '../action/order'
 
 const Cart = ({
-  items,
-  quantity,
-  onChangeQuantity,
-  shipping,
+  models,
+  price,
   selectedShipping,
-  onSelectShipping,
+  selectedVendor,
   onGoBack,
-  onOrderWithStripe,
-  onPayWithPaypal,
-  onOrderWithPaypal,
-  onCreateShoppingCart
+  onOrderWithStripe
+  // onPayWithPaypal,
+  // onOrderWithPaypal
 }) => {
+  const pricesFromVendor = price.printingService[selectedVendor]
+
+  // const shipping = find(propEq('name', selectedVendor))(pricesFromVendor.shipping)
+  // const priceItemByModelId = pricesFromVendor.items
+  //   .reduce((acc, cur) => ({...acc, [cur.modelId]: cur}), {})
+  //
+
   const CartPreviewSection = () => (
-    <section>
-      {items ? <ItemsTable /> : null}
-    </section>
-  )
-
-  const ItemsTable = () => (
-    <table style={{border: '1px solid black'}}>
-      <thead>
-        <tr>
-          <th />
-          <th>Filename</th>
-          <th>Qty</th>
-          <th>Price</th>
-          <th />
-        </tr>
-      </thead>
-      <tbody>
-        {items.map(i => <ItemRow key={i.modelId} item={i} />)}
-      </tbody>
-    </table>
-  )
-
-  const ItemRow = ({item}) => (
-    <tr>
-      <td />
-      <td>file.stl</td>
-      <td>{quantity}</td>
-      <td>{item.price}</td>
-      <td><Button label="Remove" /></td>
-    </tr>
-  )
-
-  const QuantitySection = () => (
-    <section>
-      <SectionHeadline label="Choose quantity" />
-      <QuantitySelect />
-    </section>
-  )
-
-  const QuantitySelect = () => (
-    <select onChange={e => onChangeQuantity(e.target.value)} value={quantity}>
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(q =>
-        <option value={q} key={q}>{q}</option>
+    <Table
+      head={[
+        <TableHeadCell key={0}>Model Name</TableHeadCell>,
+        <TableHeadCell key={1}>Price excl. shipping</TableHeadCell>
+      ]}
+      rows={models.map(model =>
+        <TableRow key={model.fileId}>
+          <TableCell>{model.name}</TableCell>
+          <TableCell><pre>{pricesFromVendor.items}</pre></TableCell>
+        </TableRow>
       )}
-    </select>
+    />
   )
 
-  const ShippingSection = () => (
-    <section>
-      <SectionHeadline label="Shipping options" />
-      {shipping ? <ShippingSelect /> : null}
-    </section>
-  )
-
-  const ShippingSelect = () => (
-    <select onChange={e => onSelectShipping(e.target.value)} value={selectedShipping}>
-      <option>Select shipping</option>
-      {shipping.map(s =>
-        <option value={s.name} key={s.name}>{s.name}</option>
-      )}
-    </select>
-  )
-
-  const OrderSection = () => (
+  const PaymentSection = () => (
     <section>
       <SectionHeadline label="Payment" />
       <Button label="Pay with Stripe" onClick={onOrderWithStripe} />
-      <PaypalButton
-        payment={onPayWithPaypal}
-        onAuthorize={onOrderWithPaypal}
-        onCancel={() => console.log('Payment canceled')}
-        onError={() => console.log('Payment failed')}
-      />
+      {/*
+        <PaypalButton
+          payment={onPayWithPaypal}
+          onAuthorize={onOrderWithPaypal}
+          onCancel={() => console.log('Payment canceled')}
+          onError={() => console.log('Payment failed')}
+        />
+       */}
     </section>
   )
 
   return (
     <Main>
+      <Button label="Back" onClick={onGoBack} />
       <Headline label="Order summary" modifiers={['xl']} />
-      <Button style={{position: 'absolute', right: '250px', top: '25px'}} label="Back" onClick={onGoBack} />
       <CartPreviewSection />
-      <QuantitySection />
-      <ShippingSection />
-      <SectionHeadline label="Create Cart" />
-      <Button label="Create Cart" onClick={onCreateShoppingCart} />
-      <OrderSection />
+      <ul>
+        <li>Selected Vendor: {selectedVendor}</li>
+        <li>Selected Shipping Method: {selectedShipping}</li>
+      </ul>
+      <PaymentSection />
     </Main>
   )
 }
 
 const mapStateToProps = state => ({
-  items: state.price.price.printingService[state.cart.selectedVendor].items,
-  shipping: state.price.price.printingService[state.cart.selectedVendor].shipping,
-  selectedShipping: state.cart.selectedShipping,
-  quantity: state.cart.quantity
+  models: state.model.models,
+  price: state.price.price,
+  selectedVendor: state.cart.selectedVendor,
+  selectedShipping: state.cart.selectedShipping
 })
 
 const mapDispatchToProps = {
   onGoBack: goBack,
-  onSelectShipping: selectShipping,
   onChangeQuantity: changeQuantity,
   onOrderWithStripe: createOrderWithStripe,
   onPayWithPaypal: initPaymentWithPaypal,

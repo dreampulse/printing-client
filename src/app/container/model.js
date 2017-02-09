@@ -88,7 +88,7 @@ const Model = ({
         head={[
           <TableHeadCell key={0}>Provider</TableHeadCell>,
           <TableHeadCell key={1}>Price incl. shipping</TableHeadCell>,
-          <TableHeadCell key={2}>Shipping ption</TableHeadCell>
+          <TableHeadCell key={2}>Shipping option</TableHeadCell>
         ]}
         rows={offers.map((offer, index) =>
           <TableRow key={index}>

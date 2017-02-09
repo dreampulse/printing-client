@@ -24,7 +24,8 @@ export const priceRequested = createAction(TYPE.PRICE.REQUESTED)
 export const priceReceived = createAction(TYPE.PRICE.RECEIVED)
 
 // Cart
-
 export const cartSelectVendor = createAction(TYPE.CART.VENDOR_SELECTED)
 export const cartSelectShipping = createAction(TYPE.CART.SHIPPING_SELECTED)
 export const cartChangeQuantity = createAction(TYPE.CART.QUANTITY_CHANGED)
+export const cartCreated = createAction(TYPE.CART.CREATED)
+export const cartReceivedFinalPrice = createAction(TYPE.CART.RECEIVED_FINAL_PRICE)

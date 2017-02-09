@@ -31,10 +31,10 @@ function handleQuantityChanged (state, {payload}) {
   }
 }
 
-function handleCartRequestCreated (state, {payload}) {
+function handleCartCreated (state, {payload: {cartId}}) {
   return {
     ...state,
-    cartId: payload
+    cartId
   }
 }
 
@@ -49,6 +49,6 @@ export default handleActions({
   [TYPE.CART.VENDOR_SELECTED]: handleVendorSelected,
   [TYPE.CART.SHIPPING_SELECTED]: handleShippingSelected,
   [TYPE.CART.QUANTITY_CHANGED]: handleQuantityChanged,
-  [TYPE.CART.REQUEST_CREATED]: handleCartRequestCreated,
+  [TYPE.CART.CREATED]: handleCartCreated,
   [TYPE.CART.RECEIVED_FINAL_PRICE]: handleReceiveFinalPrice
 }, initialState)
