@@ -1,6 +1,6 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
-import InputField from '../../app/component/input-field'
+import InputField from '../../app/component-legacy/input-field'
 
 import icon from '../../asset/icon/placeholder.svg'
 

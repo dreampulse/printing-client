@@ -1,6 +1,6 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
-import Checkbox from '../../app/component/checkbox'
+import Checkbox from '../../app/component-legacy/checkbox'
 
 storiesOf('Checkbox', module)
   .add('default', () => (

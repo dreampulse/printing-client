@@ -6,12 +6,12 @@ import {createPriceRequest} from '../action/price'
 import {createShoppingCart} from '../action/cart'
 import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from '../action/order'
 
-import Main from '../component/main'
-import Upload from '../component/upload'
-import Headline from '../component/headline'
-import SectionHeadline from '../component/section-headline'
-import Button from '../component/button'
-import PaypalButton from '../component/paypal-button'
+import Main from '../component-legacy/main'
+import Upload from '../component-legacy/upload'
+import Headline from '../component-legacy/headline'
+import SectionHeadline from '../component-legacy/section-headline'
+import Button from '../component-legacy/button'
+import PaypalButton from '../component-legacy/paypal-button'
 
 const ApiSample = ({
   onUpload,

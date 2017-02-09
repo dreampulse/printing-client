@@ -1,10 +1,10 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
-import Table from '../../../../printing-engine-client/src/app/component/table'
-import TableHeadCell from '../../../../printing-engine-client/src/app/component/table-head-cell'
-import TableRow from '../../../../printing-engine-client/src/app/component/table-row'
-import TableCell from '../../../../printing-engine-client/src/app/component/table-cell'
-import FootCell from '../../../../printing-engine-client/src/app/component/table-foot-cell'
+import Table from '../../app/component-legacy/table'
+import TableHeadCell from '../../app/component-legacy/table-head-cell'
+import TableRow from '../../app/component-legacy/table-row'
+import TableCell from '../../app/component-legacy/table-cell'
+import FootCell from '../../app/component-legacy/table-foot-cell'
 
 storiesOf('Table', module)
   .add('default', () => (

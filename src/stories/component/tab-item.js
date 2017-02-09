@@ -1,6 +1,6 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
-import TabItem from '../../app/component/tab-item'
+import TabItem from '../../app/component-legacy/tab-item'
 import icon from '../../asset/icon/placeholder.svg'
 
 storiesOf('Tab Item', module)

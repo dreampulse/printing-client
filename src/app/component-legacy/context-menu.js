@@ -1,7 +1,7 @@
 import React, {Component, PropTypes, cloneElement} from 'react'
 
-import Portal from '../../app/component/portal'
-import ContextMenuList from '../../app/component/context-menu-list'
+import Portal from './/portal'
+import ContextMenuList from './/context-menu-list'
 import buildClassName from '../lib/build-class-name'
 import propTypes from '../lib/prop-types'
 
