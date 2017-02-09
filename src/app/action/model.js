@@ -1,18 +1,66 @@
-import {createAction} from 'redux-actions'
+import {bindActionCreators} from 'redux'
 
-import TYPE from '../type'
+import uniqueId from 'lodash/uniqueId'
+
+import * as actionCreator from '../action-creator'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
 
-export const upload = (files, onProgressChange) => () =>
-  printingEngine.uploadModel(files, onProgressChange)
+export const checkUploadStatus = ({modelId, fileId}) => (dispatch) => {
+  const {
+    modelCheckStatusStarted,
+    modelCheckStatusFinished
+  } = bindActionCreators(actionCreator, dispatch)
 
-export const modelUploaded = ({modelId}) => async (dispatch) => {
-  dispatch(createAction(TYPE.MODEL.UPLOAD_STARTED)(modelId))
-  try {
-    await pollApi(() => printingEngine.getUploadStatus({modelId}))
-    dispatch(createAction(TYPE.MODEL.UPLOAD_FINISHED)())
-  } catch (e) {
-    dispatch(createAction(TYPE.MODEL.UPLOAD_ABORTED)())
-  }
+  modelCheckStatusStarted({fileId})
+
+  return modelCheckStatusFinished(
+    pollApi(() => printingEngine.getUploadStatus({modelId}))
+      .then(() => ({fileId}))
+      .catch(() => Promise.reject({fileId}))
+  )
+}
+
+export const uploadFile = file => async (dispatch, getState) => {
+  const {
+    modelUploadToBackendStarted,
+    modelUploadToBackendProgressed,
+    modelUploadToBackendFinished
+  } = bindActionCreators(actionCreator, dispatch)
+
+  const fileId = uniqueId('file-id-')
+  const unit = getState().model.selectedUnit
+
+  modelUploadToBackendStarted({
+    fileId,
+    name: file.name,
+    size: file.size
+  })
+
+  const {payload: {modelId}} = await modelUploadToBackendFinished(
+    printingEngine.uploadModel(
+      file,
+      {unit},
+      (progress) => {
+        modelUploadToBackendProgressed({
+          fileId,
+          progress
+        })
+      }
+    ).then(({modelId}) => ({modelId, fileId})
+    ).catch(() => Promise.reject({fileId}))
+  )
+
+  return {modelId, fileId}
+}
+
+export const uploadFiles = files => async (dispatch) => {
+  await Promise.all(files.map(async (file) => {
+    try {
+      const {modelId, fileId} = await dispatch(uploadFile(file))
+      return dispatch(checkUploadStatus({modelId, fileId}))
+    } catch (e) {
+      return Promise.reject()
+    }
+  }))
 }

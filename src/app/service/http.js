@@ -29,7 +29,7 @@ export async function request (url, additionalOptions = {}) {
   return checkStatus(response)
 }
 
-export function upload (url, files, onProgress) {
+export function upload (url, file, params = {}, onProgress) {
   const xhr = new Xhr()
 
   xhr.upload.addEventListener('progress', (event) => {
@@ -52,8 +52,10 @@ export function upload (url, files, onProgress) {
   })
 
   const form = new global.FormData()
-  form.append('file', files[0])
-  form.append('unit', 'mm')  // TODO
+  form.append('file', file)
+  Object.keys(params).forEach((param) => {
+    form.append(param, params[param])
+  })
 
   xhr.open('POST', url)
   xhr.send(form)

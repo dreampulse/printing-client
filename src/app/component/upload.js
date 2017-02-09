@@ -2,21 +2,14 @@ import React, {Component} from 'react'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
-import Button from './button'
 
 class Upload extends Component {
 
   static propTypes = {
     onUpload: React.PropTypes.func.isRequired,
-    onUploaded: React.PropTypes.func.isRequired,
-    label: React.PropTypes.string.isRequired,
+    children: React.PropTypes.node.isRequired,
     ...propTypes.component
   };
-
-  state = {
-    isUploadInProgress: false,
-    progress: null
-  }
 
   componentDidMount () {
     this.fileInputDom.addEventListener('change', this.fileSelected)
@@ -30,42 +23,31 @@ class Upload extends Component {
     this.setState({progress})
   };
 
-  openFileUploadDialog = () => () => {
+  openFileUploadDialog = () => {
     this.fileInputDom.click()
   };
 
-  fileSelected = async (event) => {
+  fileSelected = (event) => {
     const files = event.currentTarget.files
-    if (files.length < 1) return
-
-    try {
-      this.setState({isUploadInProgress: true, progress: 0})
-      const res = await this.props.onUpload(files, this.onProgressChange)
-      this.props.onUploaded(res)
-    } finally {
-      this.setState({isUploadInProgress: false, progress: null})
-    }
+    this.props.onUpload(files)
   }
 
   render () {
-    const {classNames, modifiers, accept, label} = this.props
-    const {isUploadInProgress, progress} = this.state
-
-    const buttonLabel = isUploadInProgress ? `${Math.round(progress * 100)}% uploaded` : label
+    // eslint-disable-next-line no-unused-vars, no-unused-vars-rest/no-unused-vars
+    const {classNames, modifiers, onUpload, children, ...rest} = this.props
 
     return (
-      <div className={buildClassName('upload', modifiers, classNames)}>
+      <div
+        className={buildClassName('upload', modifiers, classNames)}
+        onClick={this.openFileUploadDialog}
+      >
         <input
           type="file"
-          accept={accept}
           className="upload__file-input"
           ref={(element) => { this.fileInputDom = element }}
+          {...rest}
         />
-        <Button
-          label={buttonLabel}
-          onClick={this.openFileUploadDialog()}
-          disabled={isUploadInProgress}
-        />
+        {children}
       </div>
     )
   }
