@@ -36,7 +36,7 @@ function handleUploadToBackedProgressed (state, {payload: {fileId, progress}}) {
   }
 }
 
-function handleUploadToBackedFinished (state, {error, payload: {fileId, modelId}}) {
+function handleUploadToBackedFinished (state, {payload: {fileId, modelId, error}}) {
   const updateModels = update(state.models, model => model.fileId === fileId)
   const areAllUploadsFinished = state.numberOfUploads === 1
 
@@ -79,6 +79,7 @@ export default handleActions({
   [TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED]: handleUploadToBackedStarted,
   [TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED]: handleUploadToBackedProgressed,
   [TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED]: handleUploadToBackedFinished,
+  [TYPE.MODEL.UPLOAD_TO_BACKEND_FAILED]: handleUploadToBackedFinished,
   [TYPE.MODEL.CHECK_STATUS_STARTED]: handleCheckStatusStarted,
   [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished
 }, initialState)

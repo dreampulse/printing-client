@@ -1,6 +1,9 @@
 import {checkUploadStatus, uploadFile, uploadFiles} from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
+import {Observable} from 'rxjs/Observable'
+
+import TYPE from '../../../../src/app/type'
 
 describe('Model Integration Test', () => {
   let store
@@ -28,29 +31,14 @@ describe('Model Integration Test', () => {
       }
     })
 
-    it('starts the upload to the backend', () => {
-      printingEngine.uploadModel.resolves(apiResponse)
-
-      const promise = store.dispatch(uploadFile(file, 'some-callback'))
-
-      expect(store.getState().model, 'to satisfy', {
-        areAllUploadsFinished: false,
-        numberOfUploads: 1
-      })
-
-      expect(store.getState().model.models[0], 'to satisfy', {
-        name: 'some-file-name',
-        size: 42,
-        progress: 0
-      })
-
-      return promise
-    })
-
     it('success uploading to the backend', async () => {
-      printingEngine.uploadModel.resolves(apiResponse)
+      printingEngine.uploadModel.returns({
+        result$: Observable.of(apiResponse).delay(1),
+        progress$: Observable.empty()
+      })
 
-      await store.dispatch(uploadFile(file, 'some-callback'))
+      store.dispatch(uploadFile(file, 'some-callback'))
+      await actionFinished(store, TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: true,
@@ -66,13 +54,15 @@ describe('Model Integration Test', () => {
     })
 
     it('fails uploading to the backend', async () => {
-      printingEngine.uploadModel.rejects()
+      printingEngine.uploadModel.returns({
+        result$: Observable.throw(new Error()),
+        progress$: Observable.empty()
+      })
 
-      try {
-        await store.dispatch(uploadFile(file, 'some-callback'))
-      } catch (e) {
-        // Expect a failure
-      }
+      const isActionFinished = actionFinished(store, TYPE.MODEL.UPLOAD_TO_BACKEND_FAILED)
+
+      store.dispatch(uploadFile(file, 'some-callback'))
+      await isActionFinished  // This is divided, because the error gets propagated immediately
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: true,
@@ -136,6 +126,15 @@ describe('Model Integration Test', () => {
         size: 42
       }]
 
+      printingEngine.uploadModel.returns({
+        result$: Observable.of(apiResponse),
+        progress$: Observable.of(0.5)
+      })
+      printingEngine.getUploadStatus.resolves(true)
+      printingEngine.createPriceRequest.resolves({priceId: '123'})
+      printingEngine.getPriceStatus.resolves(true)  // Finished polling
+      printingEngine.getPrice.resolves('some-price')
+
       store = Store({
         material: {
           materials: {
@@ -154,13 +153,8 @@ describe('Model Integration Test', () => {
         }
       })
 
-      printingEngine.getUploadStatus.resolves(true)
-      printingEngine.uploadModel.resolves(apiResponse)
-      printingEngine.createPriceRequest.resolves({priceId: '123'})
-      printingEngine.getPriceStatus.resolves(true)  // Finished polling
-      printingEngine.getPrice.resolves('some-price')
-
-      await store.dispatch(uploadFiles(files, 'some-callback'))
+      store.dispatch(uploadFiles(files, 'some-callback'))
+      await actionFinished(store, TYPE.MODEL.CHECK_STATUS_FINISHED)
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: true,
@@ -171,7 +165,7 @@ describe('Model Integration Test', () => {
       expect(store.getState().model.models[0], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
-        progress: 1,
+        progress: 0.5,
         modelId: 'some-mode-id',
         checkStatusFinished: true
       })
