@@ -1,0 +1,21 @@
+.select-action-field {
+  height: $input-height;
+  display: flex;
+
+    &__select {
+      flex-grow: 1;
+
+      > .select-field {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+    &__button {
+      min-width: $column-width;
+
+      > .button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+}

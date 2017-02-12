@@ -39,7 +39,8 @@ module.exports = {
       }, {
         test: /\.svg$/,
         include: [
-          path.resolve(__dirname, 'src/asset/icon')
+          path.resolve(__dirname, 'src/asset/icon'),
+          path.resolve(__dirname, 'src/asset-legacy/icon')  // TODO remove this
         ],
         loaders: [
           `svg-sprite?${JSON.stringify({

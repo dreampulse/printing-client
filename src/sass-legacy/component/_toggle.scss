@@ -1,0 +1,83 @@
+.toggle {
+  $knob-size: 25px;
+  $knob-inner-margin: 5px;
+
+  $toggle-width: 2 * $knob-size + 2 * $knob-inner-margin;
+  $toggle-height: $knob-size + 2 * $knob-inner-margin;
+
+  @include scut-clearfix;
+
+  display: inline-block;
+
+  position: relative;
+  height: $toggle-height;
+
+  margin-top: ($input-height - $toggle-height) / 2;
+
+  &__wrapper {
+    position: relative;
+
+    width: $toggle-width;
+    height: 100%;
+
+    float: right;
+  }
+
+  &__label {
+    color: $color-text-secondary;
+    font-weight: $font-weight-semi-bold;
+    font-size: $font-size-base;
+    line-height: $toggle-height;
+    margin-right: $space-base;
+  }
+
+  &__background {
+    height: 100%;
+    background-color: $color-gray-medium;
+    border-radius: $toggle-height / 2;
+
+    transition: background-color $transition-duration-fast ease-in-out;
+  }
+
+  &__knob {
+    position: absolute;
+    width: $knob-size;
+    height: $knob-size;
+    top: $knob-inner-margin;
+    left: $knob-inner-margin;
+    background-color: $color-white;
+    border-radius: $knob-size / 2;
+    transition: transform $transition-duration-fast ease-in-out;
+  }
+
+  &__input {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    opacity: 0;
+    height: 100%;
+    width: 100%;
+
+    cursor: pointer;
+
+    &:checked ~ .toggle__knob {
+      transform: translateX($toggle-width - $knob-size - 2 * $knob-inner-margin);
+    }
+
+    &:checked ~ .toggle__background {
+      background-color: $color-primary;
+    }
+  }
+
+  &--secondary {
+    .toggle__input:checked ~ .toggle__background {
+      background-color: $color-secondary;
+    }
+  }
+
+  &--block {
+    display: block;
+    width: 100%;
+    margin-bottom: $space-base;
+  }
+}

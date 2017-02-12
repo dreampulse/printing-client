@@ -1,0 +1,52 @@
+.loading-indicator {
+  position: relative;
+  display: inline-block;
+  font-size: $font-size-l;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border: 2px solid $color-primary;
+    border-radius: 50%;
+    animation: 2s ease-out 0s infinite both loading-indicator-animation;
+    opacity: 0;
+  }
+
+  &:after {
+    animation-delay: -1s;
+  }
+
+  &--l {
+    font-size: $font-size-xxl;
+  }
+
+  &--invert {
+    &:before,
+    &:after {
+      border-color: $color-invert-text;
+    }
+  }
+}
+
+@keyframes loading-indicator-animation {
+  0%   {
+    opacity: 1;
+    transform: scale(0.2);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}

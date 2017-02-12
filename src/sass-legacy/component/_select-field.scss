@@ -1,0 +1,84 @@
+.select-field {
+  $label-nothing-selected-size: $font-size-s;
+  $field-space-base: 5px;
+  $border-width: 2px;
+
+  position: relative;
+
+  width: 100%;
+  height: $input-height;
+
+  border: 2px solid $color-gray-light;
+  border-radius: $border-radius;
+
+  margin-bottom: $space-base;
+
+  &__input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $input-height;
+    min-height: $input-height;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  &__label {
+    position: absolute;
+    color: $color-text-secondary;
+    font-weight: $font-weight-semi-bold;
+    font-size: $label-nothing-selected-size;
+
+    padding: {
+      left: 2 * $field-space-base;
+      right: 7 * $field-space-base;  // Include the size of the Icon
+    };
+
+    white-space: nowrap;
+
+    transform-origin: 0 50%;  // To keep the distance to the left
+    transition: transform $transition-duration-fast ease-in-out;
+  }
+
+  &__selected-text {
+    padding: {
+      top: $label-nothing-selected-size;
+      left: 2 * $field-space-base;
+      right: 7 * $field-space-base;  // Include the size of the Icon
+    };
+
+    font-weight: $font-weight-bold;
+
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  &__expand-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    margin-right: $space-s;
+
+    display: flex;
+    align-items: center;
+
+    color: $color-text-secondary;
+    font-size: $font-size-l;
+  }
+
+  &--nothing-selected &__label {
+    $label-scale-empty: $font-size-base / $label-nothing-selected-size;
+    transform: scale($label-scale-empty) translateY($input-height/2 - $label-nothing-selected-size);
+  }
+
+  &--error {
+    border-color: $color-error;
+
+    .select-field__selected-text {
+      color: $color-error;
+    }
+  }
+}
+

@@ -1,0 +1,94 @@
+// Typography
+// ---------------------------------------------------
+
+$font-family-base: 'Roboto', sans-serif;
+
+$font-size-base: 15px;
+$font-size-l: 20px;
+$font-size-xl: 25px;
+$font-size-xxl: 35px;
+$font-size-xxxl: 45px;
+
+$line-height-base: 1.4;
+
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-bold: 700;
+
+// Colors
+// ---------------------------------------------------
+
+$color-gray-0: #333333;
+$color-gray-1: #666666;
+$color-gray-2: #999999;
+$color-gray-3: #cccccc;
+$color-gray-4: #f0f0f0;
+
+$color-blue-dark: #122732;
+$color-blue: #0277bd;
+$color-blue-light: #03a2d8;
+$color-yellow: #f6a623;
+$color-red: #ca0f0f;
+$color-green: #559c03;
+$color-white: #ffffff;
+$color-black: #000000;
+
+$color-bg: $color-gray-4;
+$color-bg-highlight: $color-white;
+
+$color-text: $color-gray-0;
+$color-primary: $color-blue;
+$color-primary-active: #1589cf;
+$color-minor: $color-gray-2;
+$color-border: $color-gray-2;
+$color-warning: $color-yellow;
+$color-error: $color-red;
+$color-field-focus: $color-primary;
+$color-disabled: $color-gray-3;
+$color-link: $color-blue-light;
+
+$color-invert-bg: $color-blue-dark;
+$color-invert-text: $color-white;
+
+
+// Layout & Grid
+// ---------------------------------------------------
+
+$space-s: 5px;
+$space-base: 12px;
+$space-l: 20px;
+$space-xl: 30px;
+$space-xxl: 40px;
+$space-xxxl: 70px;
+
+$global-max-width: 1170px;
+
+$columns: 12;
+$gutter-width: 15px;
+$column-width: $global-max-width / $columns - $gutter-width;
+
+$susy: (
+  columns: $columns,
+  math: fluid,
+  column-width: $column-width,
+  gutters: $gutter-width / $column-width,
+  gutter-position: inside-static,
+  global-box-sizing: border-box
+);
+
+// Breakpoints
+// ---------------------------------------------------
+
+$mediaqueries: ();
+
+// Misc
+// ---------------------------------------------------
+
+$field-height: 50px;
+$border-radius: 5px;
+
+$box-shadow-base: 1px 1px 3px 0 rgba(0, 0, 0, 0.2);
+$box-shadow-active: 1px 1px 6px 0 rgba(0, 0, 0, 0.4);
+
+$transition-duration: .4s;
+$transition-duration-fast: .15s;

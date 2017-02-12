@@ -1,0 +1,18 @@
+.table-row {
+  padding: {
+    right: $space-base;
+    top: $space-base;
+    bottom: $space-base;
+    left: 0;
+  };
+  border-bottom: solid 1px $color-border;
+  vertical-align: middle;
+
+  &:first-child {
+    border-top: solid 2px $color-border;
+  }
+
+  &:last-child {
+    border-bottom: solid 2px $color-border;
+  }
+}

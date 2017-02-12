@@ -1,0 +1,28 @@
+@include scut-reset-button;
+@include scut-reset-border-box;
+@include scut-reset-pointer;
+@include scut-reset-form;
+
+html {
+  height: 100%;
+  background: $color-bg;
+  color: $color-text;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: $font-family-base;
+  font-weight: $font-weight-regular;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+}
+
+#root {
+  height: 100%
+}
+
+section {
+  margin-bottom: $space-l;
+}
