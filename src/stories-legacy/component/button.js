@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
 import Button from '../../app/component-legacy/button'
-import icon from '../../asset/icon/placeholder.svg'
+import icon from '../../asset-legacy/icon/placeholder.svg'
 
 storiesOf('Button', module)
   .add('default', () => (

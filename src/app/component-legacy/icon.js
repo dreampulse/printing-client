@@ -1,5 +1,5 @@
 import React from 'react'
-import placeholder from '../../asset/icon/placeholder.svg'
+import placeholder from '../../asset-legacy/icon/placeholder.svg'
 
 import enhanceClassName from '../lib/enhance-class-name'
 

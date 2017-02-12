@@ -3,7 +3,7 @@ import React from 'react'
 import enhanceClassName from '../lib/enhance-class-name'
 import Icon from './icon'
 import Headline from './headline'
-import closeIcon from '../../asset/icon/close.svg'
+import closeIcon from '../../asset-legacy/icon/close.svg'
 
 const Modal = ({children, title, onClose, ...params}) => (
   <section {...params}>

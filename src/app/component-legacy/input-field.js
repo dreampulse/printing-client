@@ -6,8 +6,8 @@ import Icon from './icon'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
-import dateIcon from '../../asset/icon/date.svg'
-import timeIcon from '../../asset/icon/time.svg'
+import dateIcon from '../../asset-legacy/icon/date.svg'
+import timeIcon from '../../asset-legacy/icon/time.svg'
 
 const InputField = ({modifiers = [], classNames, icon, label, value, type = 'text', ...params}) => {
   let inputFieldIcon = icon

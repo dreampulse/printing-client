@@ -4,7 +4,7 @@ import uniqueId from 'lodash/uniqueId'
 import identity from 'lodash/identity'
 
 import Icon from './icon'
-import arrowDownIcon from '../../asset/icon/arrow-down.svg'
+import arrowDownIcon from '../../asset-legacy/icon/arrow-down.svg'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 

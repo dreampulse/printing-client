@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 import TabMenu from '../../app/component-legacy/tab-menu'
 import TabItem from '../../app/component-legacy/tab-item'
-import icon from '../../asset/icon/placeholder.svg'
+import icon from '../../asset-legacy/icon/placeholder.svg'
 
 storiesOf('Tab Menu', module)
   .add('default', () => (
