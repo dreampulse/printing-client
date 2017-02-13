@@ -1,4 +1,5 @@
 import {Observable} from 'rxjs/Observable'
+import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {createAction} from 'redux-actions'
 import uniqueId from 'lodash/uniqueId'
 
@@ -54,24 +55,31 @@ export const uploadFileEpic = (action$, {getState}) =>
       const fileId = uniqueId('file-id-')
       const unit = getState().model.selectedUnit
 
-      const {result$, progress$} = printingEngine.uploadModel(file, {unit})
+      const uploadStart$ = Observable.of(
+        uploadToBackendStarted({
+          fileId,
+          name: file.name,
+          size: file.size
+        })
+      )
+      const uploadProgress$ = new BehaviorSubject()
+      const uploadResult$ = Observable.fromPromise(
+        printingEngine.uploadModel(file, {unit}, uploadProgress$)
+      )
 
       return [
-        Observable.of(
-          uploadToBackendStarted({
-            fileId,
-            name: file.name,
-            size: file.size
-          })
-        ),
-        result$.map(({modelId}) =>
-          uploadToBackendFinished({modelId, fileId})
-        ).catch(() =>
-          Observable.of(uploadToBackendFailed({fileId, error: true}))
-        ),
-        progress$.map(progress =>
-          uploadToBackendProgressed({progress, fileId})
-        )
+        uploadStart$,
+        uploadResult$
+          .map(({modelId}) =>
+            uploadToBackendFinished({modelId, fileId})
+          )
+          .catch(() =>
+            Observable.of(uploadToBackendFailed({fileId, error: true}))
+          ),
+        uploadProgress$
+          .map(progress =>
+            uploadToBackendProgressed({progress, fileId})
+          )
       ]
     })
     .mergeAll()

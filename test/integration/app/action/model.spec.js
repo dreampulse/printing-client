@@ -1,7 +1,6 @@
 import {uploadFile, uploadFiles, uploadToBackendFinished} from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
-import {Observable} from 'rxjs/Observable'
 
 import TYPE from '../../../../src/app/type'
 
@@ -32,10 +31,7 @@ describe('Model Integration Test', () => {
     })
 
     it('success uploading to the backend', async () => {
-      printingEngine.uploadModel.returns({
-        result$: Observable.of(apiResponse).delay(1),
-        progress$: Observable.empty()
-      })
+      printingEngine.uploadModel.resolves(apiResponse)
 
       store.dispatch(uploadFile(file, 'some-callback'))
       await actionFinished(store, TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)
@@ -54,15 +50,10 @@ describe('Model Integration Test', () => {
     })
 
     it('fails uploading to the backend', async () => {
-      printingEngine.uploadModel.returns({
-        result$: Observable.throw(new Error()),
-        progress$: Observable.empty()
-      })
-
-      const isActionFinished = actionFinished(store, TYPE.MODEL.UPLOAD_TO_BACKEND_FAILED)
+      printingEngine.uploadModel.rejects(new Error())
 
       store.dispatch(uploadFile(file, 'some-callback'))
-      await isActionFinished  // This is divided, because the error gets propagated immediately
+      await actionFinished(store, TYPE.MODEL.UPLOAD_TO_BACKEND_FAILED)
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: true,
@@ -127,10 +118,7 @@ describe('Model Integration Test', () => {
         size: 42
       }]
 
-      printingEngine.uploadModel.returns({
-        result$: Observable.of(apiResponse),
-        progress$: Observable.of(0.5)
-      })
+      printingEngine.uploadModel.resolves(apiResponse)
       printingEngine.getUploadStatus.resolves(true)
       printingEngine.createPriceRequest.resolves({priceId: '123'})
       printingEngine.getPriceStatus.resolves(true)  // Finished polling
@@ -166,7 +154,7 @@ describe('Model Integration Test', () => {
       expect(store.getState().model.models[0], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
-        progress: 0.5,
+        progress: 1,
         modelId: 'some-mode-id',
         checkStatusFinished: true
       })

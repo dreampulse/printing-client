@@ -1,5 +1,4 @@
 import 'whatwg-fetch'
-import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 
 export const fetch = global.fetch
 export const Xhr = global.XMLHttpRequest
@@ -32,31 +31,29 @@ export async function request (url, additionalOptions = {}) {
   return checkStatus(response)
 }
 
-export function upload (url, file, params) {
-  const result$ = new BehaviorSubject()
-  const progress$ = new BehaviorSubject()
-
+export function upload (url, file, params, progress$) {
   const xhr = new Xhr()
 
   xhr.upload.addEventListener('progress', (event) => {
     if (event.lengthComputable) {
       const progress = event.loaded / event.total
-      progress$.next(progress)
+      if (progress$ && progress$.next) {
+        progress$.next(progress)
+      }
     }
   })
 
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4) {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        result$.next(JSON.parse(xhr.responseText))
-        result$.complete()
-        progress$.complete()
-      } else {
-        result$.throw(xhr.responseText)
-        progress$.complete()
+  const promise = new Promise((resolve, reject) => {
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(JSON.parse(xhr.responseText))
+        } else {
+          reject(xhr.responseText)
+        }
       }
     }
-  }
+  })
 
   const form = new global.FormData()
   form.append('file', file)
@@ -67,8 +64,5 @@ export function upload (url, file, params) {
   xhr.open('POST', url)
   xhr.send(form)
 
-  return {
-    result$,
-    progress$
-  }
+  return promise
 }

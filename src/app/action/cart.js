@@ -11,7 +11,6 @@ export const changeQuantity = createAction(TYPE.CART.QUANTITY_CHANGED)
 export const cartCreated = createAction(TYPE.CART.CREATED)
 export const receivedFinalPrice = createAction(TYPE.CART.RECEIVED_FINAL_PRICE)
 
-
 export const createShoppingCart = () => async (dispatch, getState) => {
   const items = getState().model.models.map(model => ({
     modelId: model.modelId,
