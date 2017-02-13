@@ -1,15 +1,16 @@
-import {bindActionCreators} from 'redux'
 import {xprod} from 'ramda'
+import {createAction} from 'redux-actions'
 
-import * as actionCreator from '../action-creator'
+import TYPE from '../type'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
 
+export const priceRequested = createAction(TYPE.PRICE.REQUESTED)
+export const priceReceived = createAction(TYPE.PRICE.RECEIVED)
+
+// Async actions
+
 export const createPriceRequest = () => async (dispatch, getState) => {
-  const {
-    priceRequested,
-    priceReceived
-  } = bindActionCreators(actionCreator, dispatch)
 
   const sa = getState().user.user.shippingAddress
   if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
@@ -30,7 +31,9 @@ export const createPriceRequest = () => async (dispatch, getState) => {
     items
   }
 
-  const {payload: {priceId}} = await priceRequested(printingEngine.createPriceRequest(options))
+  const {payload: {priceId}} = await dispatch(
+    priceRequested(printingEngine.createPriceRequest(options))
+  )
   await pollApi(() => printingEngine.getPriceStatus({priceId}))
-  return priceReceived(printingEngine.getPrice({priceId}))
+  return dispatch(priceReceived(printingEngine.getPrice({priceId})))
 }

@@ -1,8 +1,14 @@
+import {createAction} from 'redux-actions'
+
+import TYPE from '../type'
 import * as stripe from '../service/stripe'
 import * as paypal from '../service/paypal'
 import * as printingEngine from '../lib/printing-engine'
-import * as actionCreator from '../action-creator'
 import {getCartAmount} from '../lib/get-total-amount'
+
+export const orderOrdered = createAction(TYPE.ORDER.ORDERED)
+
+// Async actions
 
 export const createOrderWithStripe = () => async (dispatch, getState) => {
   // TODO: createShoppingCart()
@@ -18,7 +24,7 @@ export const createOrderWithStripe = () => async (dispatch, getState) => {
   const token = tokenObject.id
 
   return dispatch(
-    actionCreator.orderOrdered(
+    orderOrdered(
       printingEngine.order({
         cartId, type: 'stripe', token
       })
@@ -43,7 +49,7 @@ export const createOrderWithPaypal = (data, actions) => async (dispatch, getStat
   const token = payment.id
 
   return dispatch(
-    actionCreator.orderOrdered(
+    orderOrdered(
       printingEngine.order({
         cartId, type: 'paypal', token
       })

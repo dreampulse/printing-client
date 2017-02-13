@@ -1,12 +1,18 @@
 import {combineEpics} from 'redux-observable'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 
-import model from './model'
+import {
+  uploadFileEpic,
+  uploadFilesEpic,
+  checkUploadStatusEpic
+} from './action/model'
 
 export default () => {
   const epic$ = new BehaviorSubject(
     combineEpics(
-      model
+      uploadFileEpic,
+      uploadFilesEpic,
+      checkUploadStatusEpic
     )
   )
 

@@ -1,13 +1,18 @@
-import {goToCart} from './navigation'
+import {createAction} from 'redux-actions'
 
+import TYPE from '../type'
+import {goToCart} from './navigation'
 import {getLocation} from '../service/geolocation'
 import * as printingEngine from '../lib/printing-engine'
-import {userAddressChanged, userCreated, userUpdated} from '../action-creator'
 
-// Epics
+export const addressChanged = createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)
+export const userCreated = createAction(TYPE.USER.CREATED)
+export const userUpdated = createAction(TYPE.USER.UPDATED)
+
+// Async actions
 
 export const detectAddress = () =>
-  userAddressChanged(getLocation())
+  addressChanged(getLocation())
 
 export const createUser = () => (dispatch, getState) => {
   const user = getState().user.user

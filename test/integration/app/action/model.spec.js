@@ -1,4 +1,4 @@
-import {checkUploadStatus, uploadFile, uploadFiles} from '../../../../src/app/action/model'
+import {uploadFile, uploadFiles, uploadToBackendFinished} from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 import {Observable} from 'rxjs/Observable'
@@ -87,7 +87,8 @@ describe('Model Integration Test', () => {
         }
       })
 
-      await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
+      store.dispatch(uploadToBackendFinished({modelId: 'some-model-id', fileId: 'some-file-id'}))
+      await actionFinished(store, TYPE.MODEL.CHECK_STATUS_FINISHED)
 
       expect(store.getState().model.models[0], 'to satisfy', {
         checkStatusFinished: true
@@ -106,7 +107,7 @@ describe('Model Integration Test', () => {
       })
 
       try {
-        await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
+        await store.dispatch(uploadToBackendFinished({modelId: 'some-model-id', fileId: 'some-file-id'}))
       } catch (e) {
         expect(store.getState().model.models[0], 'to satisfy', {
           checkStatusFinished: true,
