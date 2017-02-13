@@ -11,7 +11,6 @@ export const priceReceived = createAction(TYPE.PRICE.RECEIVED)
 // Async actions
 
 export const createPriceRequest = () => async (dispatch, getState) => {
-
   const sa = getState().user.user.shippingAddress
   if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
     throw new Error('Shipping Address Invalid')
