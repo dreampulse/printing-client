@@ -1,0 +1,94 @@
+.number-field {
+  $field-width: 140px;
+  $button-width: 40px;
+  $compact-height: 40px;
+
+  position: relative;
+  display: inline-block;
+  width: $field-width;
+  height: $field-height;
+  padding: 0 $button-width;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-base;
+
+  &__less,
+  &__more {
+    display: block;
+    position: absolute;
+    top: 0;
+    width: $button-width;
+    height: 100%;
+    background: $color-gray-4;
+    color: $color-text;
+    font-size: $font-size-xl;
+    outline: 0;
+    transition: background-color $transition-duration-fast ease-in-out;
+
+    & > .icon {
+      position: relative;
+      top: -0.05em;
+    }
+
+    &:hover:not(:disabled),
+    &:focus:not(:disabled),
+    &:active:not(:disabled) {
+      background: darken($color-gray-4, 5%);
+    }
+
+    &:disabled {
+      color: $color-disabled;
+      cursor: not-allowed;
+    }
+  }
+
+  &__less {
+    left: 0;
+    border-radius: $border-radius 0 0 $border-radius;
+  }
+
+  &__more {
+    right: 0;
+    border-radius: 0 $border-radius $border-radius 0;
+  }
+
+  &__value {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-left: 1px solid $color-border;
+    border-right: 1px solid $color-border;
+    text-align: center;
+    font-size: $font-size-l;
+    -moz-appearance: textfield;
+
+    &:focus {
+      outline: 0;
+    }
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0; // Removes leftover margin
+    }
+  }
+
+  &--focus {
+    border-color: $color-primary;
+    box-shadow: $box-shadow-focus;
+  }
+
+  &--disabled {
+    box-shadow: none;
+
+    .number-field__value {
+      background: $color-gray-4;
+      color: $color-minor;
+    }
+  }
+
+  &--compact {
+    height: $compact-height;
+  }
+}
