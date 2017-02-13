@@ -1,9 +1,11 @@
 .number-field {
+  $field-width: 140px;
   $button-width: 40px;
+  $compact-height: 40px;
 
   position: relative;
   display: inline-block;
-  width: 140px;
+  width: $field-width;
   height: $field-height;
   padding: 0 $button-width;
   border: 1px solid $color-border;
@@ -87,6 +89,6 @@
   }
 
   &--compact {
-    height: 40px;
+    height: $compact-height;
   }
 }

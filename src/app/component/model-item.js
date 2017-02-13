@@ -16,8 +16,8 @@ const ModelItem = ({
   quantity,
   title,
   subline,
-  onQuantityChange,
-  onDelete
+  onQuantityChange = () => {},
+  onDelete = () => {}
 }) => {
   const handleDeleteClick = (event) => {
     event.preventDefault()
@@ -45,7 +45,12 @@ const ModelItem = ({
 
 ModelItem.propTypes = {
   ...propTypes.component,
-  imageSource: PropTypes.string
+  imageSource: PropTypes.string.isRequired,
+  quantity: PropTypes.number.isRequired,
+  title: PropTypes.string,
+  subline: PropTypes.string,
+  onQuantityChange: PropTypes.func,
+  onDelete: PropTypes.func
 }
 
 export default ModelItem
