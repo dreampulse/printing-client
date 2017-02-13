@@ -1,20 +1,15 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
 import promiseMiddleware from 'redux-promise'
-import {createEpicMiddleware} from 'redux-observable'
 import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
 
 import rootReducer from './reducer'
-import Epic from './epic'
 
-export default (initialState = {}, epic = Epic()) => {
-  const epicMiddleware = createEpicMiddleware(epic.rootEpic)
-
+export default (initialState = {}) => {
   let middleware = applyMiddleware(
     thunk,
     promiseMiddleware,
-    epicMiddleware,
     routerMiddleware(browserHistory)
   )
 
@@ -41,15 +36,7 @@ export default (initialState = {}, epic = Epic()) => {
         const nextReducer = require('./reducer').default
         store.replaceReducer(nextReducer)
       })
-
-      module.hot.accept('./epic', () => {
-        const rootEpic = require('./epic').default
-        epicMiddleware.replaceEpic(rootEpic)
-      })
     }
-
-    // Access to the stream for the integration tests
-    store.epic$ = epic.epic$
   }
 
   return store

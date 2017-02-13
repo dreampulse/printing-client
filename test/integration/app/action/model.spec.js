@@ -1,23 +1,24 @@
 import {
   uploadFile,
   uploadFiles,
-  uploadToBackendFinished
+  checkUploadStatus
 } from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
-
-import TYPE from '../../../../src/app/type'
+import * as priceActions from '../../../../src/app/action/price'
 
 describe('Model Integration Test', () => {
   let store
 
   beforeEach(() => {
     sinon.stub(printingEngine)
+    sinon.stub(priceActions)
     store = Store({})
   })
 
   afterEach(() => {
     sinon.restore(printingEngine)
+    sinon.restore(priceActions)
   })
 
   describe('uploadFile()', () => {
@@ -37,8 +38,10 @@ describe('Model Integration Test', () => {
     it('success uploading to the backend', async () => {
       printingEngine.uploadModel.resolves(apiResponse)
 
-      store.dispatch(uploadFile(file, 'some-callback'))
-      await actionFinished(store, TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)
+      printingEngine.getUploadStatus.resolves(true)
+      printingEngine.getPriceStatus.resolves(true)  // Finished polling
+
+      await store.dispatch(uploadFile(file, 'some-callback'))
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: true,
@@ -56,8 +59,7 @@ describe('Model Integration Test', () => {
     it('fails uploading to the backend', async () => {
       printingEngine.uploadModel.rejects(new Error())
 
-      store.dispatch(uploadFile(file, 'some-callback'))
-      await actionFinished(store, TYPE.MODEL.UPLOAD_TO_BACKEND_FAILED)
+      await store.dispatch(uploadFile(file, 'some-callback'))
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: true,
@@ -82,8 +84,7 @@ describe('Model Integration Test', () => {
         }
       })
 
-      store.dispatch(uploadToBackendFinished({modelId: 'some-model-id', fileId: 'some-file-id'}))
-      await actionFinished(store, TYPE.MODEL.CHECK_STATUS_FINISHED)
+      await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
 
       expect(store.getState().model.models[0], 'to satisfy', {
         checkStatusFinished: true
@@ -102,7 +103,7 @@ describe('Model Integration Test', () => {
       })
 
       try {
-        await store.dispatch(uploadToBackendFinished({modelId: 'some-model-id', fileId: 'some-file-id'}))
+        await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
       } catch (e) {
         expect(store.getState().model.models[0], 'to satisfy', {
           checkStatusFinished: true,
@@ -147,8 +148,7 @@ describe('Model Integration Test', () => {
         }
       })
 
-      store.dispatch(uploadFiles(files, 'some-callback'))
-      await actionFinished(store, TYPE.MODEL.CHECK_STATUS_FINISHED)
+      await store.dispatch(uploadFiles(files, 'some-callback'))
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: true,
