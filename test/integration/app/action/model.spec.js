@@ -1,4 +1,8 @@
-import {uploadFile, uploadFiles, uploadToBackendFinished} from '../../../../src/app/action/model'
+import {
+  uploadFile,
+  uploadFiles,
+  uploadToBackendFinished
+} from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
@@ -131,6 +135,7 @@ describe('Model Integration Test', () => {
           }
         },
         user: {
+          userId: 'some-user-id',
           user: {
             shippingAddress: {
               city: 'Pittsburgh',

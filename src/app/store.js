@@ -8,8 +8,7 @@ import {routerMiddleware} from 'react-router-redux'
 import rootReducer from './reducer'
 import Epic from './epic'
 
-export default (initialState = {}) => {
-  const epic = Epic()
+export default (initialState = {}, epic = Epic()) => {
   const epicMiddleware = createEpicMiddleware(epic.rootEpic)
 
   let middleware = applyMiddleware(

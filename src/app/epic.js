@@ -7,13 +7,20 @@ import {
   checkUploadStatusEpic
 } from './action/model'
 
-export default () => {
+import {
+  createPriceRequestEpic
+} from './action/price'
+
+const allEpics = [
+  uploadFileEpic,
+  uploadFilesEpic,
+  checkUploadStatusEpic,
+  createPriceRequestEpic
+]
+
+export default (epics = allEpics) => {
   const epic$ = new BehaviorSubject(
-    combineEpics(
-      uploadFileEpic,
-      uploadFilesEpic,
-      checkUploadStatusEpic
-    )
+    combineEpics(...epics)
   )
 
   const rootEpic = (action$, store) =>

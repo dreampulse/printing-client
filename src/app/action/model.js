@@ -6,6 +6,7 @@ import uniqueId from 'lodash/uniqueId'
 import * as modelActions from '../action/model'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
+import {createPriceRequest} from '../action/price'
 
 import TYPE from '../type'
 
@@ -32,9 +33,10 @@ export const checkUploadStatusEpic = action$ =>
       ),
       Observable.fromPromise(
         pollApi(() => printingEngine.getUploadStatus({modelId}))
-      ).map(() =>
-        checkStatusFinished({fileId})
-      ).catch(() =>
+      ).flatMap(() => [
+        checkStatusFinished({fileId}),
+        createPriceRequest()
+      ]).catch(() =>
         Observable.of(checkStatusFinished({fileId, error: true}))
       )
     ])

@@ -1,6 +1,7 @@
 import {createPriceRequest} from '../../../../src/app/action/price'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
+import TYPE from '../../../../src/app/type'
 
 describe('Price Integration Test', () => {
   let store
@@ -46,7 +47,8 @@ describe('Price Integration Test', () => {
       printingEngine.getPriceStatus.resolves(true)  // Finished polling
       printingEngine.getPrice.resolves('some-price')
 
-      await store.dispatch(createPriceRequest())
+      store.dispatch(createPriceRequest())
+      await actionFinished(store, TYPE.PRICE.RECEIVED)
 
       // The cross product of all combinations
       expect(printingEngine.createPriceRequest, 'was called with', {
