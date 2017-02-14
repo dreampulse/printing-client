@@ -16,7 +16,7 @@ export const checkUploadStatus = ({modelId, fileId}) => async (dispatch) => {
     dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({fileId}))
     await dispatch(createPriceRequest())
   } catch (e) {
-    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FAILED)({fileId}))
+    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({fileId, error: true}))
   }
 }
 
@@ -38,7 +38,7 @@ export const uploadFile = file => async (dispatch, getState) => {
     dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({modelId, fileId}))
     await dispatch(checkUploadStatus({modelId, fileId}))
   } catch (e) {
-    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FAILED)({fileId}))
+    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({fileId, error: true}))
   }
 }
 
