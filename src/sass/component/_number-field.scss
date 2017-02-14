@@ -1,7 +1,6 @@
 .number-field {
   $field-width: 140px;
   $button-width: 40px;
-  $compact-height: 40px;
 
   position: relative;
   display: inline-block;
@@ -89,6 +88,6 @@
   }
 
   &--compact {
-    height: $compact-height;
+    height: $compact-field-height;
   }
 }

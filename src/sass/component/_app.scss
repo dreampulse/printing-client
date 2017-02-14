@@ -1,6 +1,8 @@
 .app {
   $stacking: footer, main, header;
 
+  position: relative;
+  z-index: z($global-stacking, app);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
