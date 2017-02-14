@@ -2,6 +2,7 @@ import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
 import LabledCheckbox from '../../src/app/component/labled-checkbox'
+import HandleValue from '../util/handle-value'
 
 storiesOf('Labled Checkbox', module)
   .add('default', () => (

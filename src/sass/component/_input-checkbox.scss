@@ -9,6 +9,7 @@
   border: 2px solid $color-border;
   border-radius: $border-radius / 2;
   margin-bottom: $space-base;
+  box-shadow: 0 0 4px 0 $color-border;
 
   &__input {
     position: absolute;
@@ -17,7 +18,6 @@
     opacity: 0;
     height: 100%;
     width: 100%;
-
     cursor: pointer;
 
     &:hover ~ .checkbox__checked-icon {

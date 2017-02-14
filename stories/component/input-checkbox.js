@@ -2,14 +2,21 @@ import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
 import InputCheckbox from '../../src/app/component/input-checkbox'
+import HandleChecked from '../util/handle-checked'
 
 storiesOf('Input Checkbox', module)
   .add('default', () => (
-    <InputCheckbox onChange={action('onChange')} />
+    <HandleChecked>
+      <InputCheckbox onChange={action('onChange')} />
+    </HandleChecked>
   ))
   .add('checked', () => (
-    <InputCheckbox checked />
+    <HandleChecked initialChecked>
+      <InputCheckbox checked />
+    </HandleChecked>
   ))
   .add('error', () => (
-    <InputCheckbox modifiers={['error']} checked />
+    <HandleChecked initialChecked>
+      <InputCheckbox modifiers={['error']} checked />
+    </HandleChecked>
   ))

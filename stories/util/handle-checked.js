@@ -4,10 +4,10 @@ import {
   withState
 } from 'recompose'
 
-const HandleValue = ({children, value, onChange}) => {
+const HandleChecked = ({children, checked, onChange}) => {
   const change = (input) => {
-    if (input.target && typeof input.target.value !== 'undefined') {
-      return onChange(input.target.value)
+    if (input.target && typeof input.target.checked !== 'undefined') {
+      return onChange(input.target.checked)
     }
     return onChange(input)
   }
@@ -15,7 +15,7 @@ const HandleValue = ({children, value, onChange}) => {
   const modifiedChildren = React.Children.map(children, (child, index) => (
     cloneElement(child, {
       key: index,
-      value,
+      checked,
       onChange: change
     })
   ))
@@ -27,12 +27,12 @@ const HandleValue = ({children, value, onChange}) => {
   )
 }
 
-HandleValue.propTypes = {
+HandleChecked.propTypes = {
   children: PropTypes.node.isRequired,
-  value: PropTypes.any, // eslint-disable-line react/forbid-prop-types
+  checked: PropTypes.any, // eslint-disable-line react/forbid-prop-types
   onChange: PropTypes.func.isRequired
 }
 
 export default compose(
-  withState('value', 'onChange', props => props.initialValue)
-)(HandleValue)
+  withState('checked', 'onChange', props => props.initialChecked)
+)(HandleChecked)
