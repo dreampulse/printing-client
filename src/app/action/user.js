@@ -5,9 +5,8 @@ import {goToCart} from './navigation'
 import {getLocation} from '../service/geolocation'
 import * as printingEngine from '../lib/printing-engine'
 
-export const detectAddress = () => {
-  return createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(getLocation())
-}
+export const detectAddress = () =>
+  createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(getLocation())
 
 export const createUser = () => (dispatch, getState) => {
   const user = getState().user.user
