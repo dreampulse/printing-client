@@ -36,7 +36,7 @@ const ModelItemLoad = ({
       <button type="button" className="model-item__delete" onClick={handleDeleteClick}>
         <Icon source={deleteIcon} />
       </button>
-      <div className="model-item__wrapper" style={{width: percentage + '%'}} />
+      <div className="model-item__wrapper" style={{width: `${percentage}%`}} />
     </div>
   )
 }

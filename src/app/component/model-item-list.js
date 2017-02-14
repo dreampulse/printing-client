@@ -4,7 +4,7 @@ import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
 const ModelItemList = ({classNames, modifiers, children}) => {
-  const modifiedChildren = React.Children.map(children, (child, index) => (
+  const modifiedChildren = React.Children.map(children, child => (
     cloneElement(child, {
       key: child.props.label
     })
@@ -19,8 +19,7 @@ const ModelItemList = ({classNames, modifiers, children}) => {
 
 ModelItemList.propTypes = {
   ...propTypes.component,
-  children: PropTypes.node.isRequired,
-  currentStep: PropTypes.number
+  children: PropTypes.node.isRequired
 }
 
 export default ModelItemList
