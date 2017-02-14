@@ -1,17 +1,24 @@
-import {checkUploadStatus, uploadFile, uploadFiles} from '../../../../src/app/action/model'
+import {
+  uploadFile,
+  uploadFiles,
+  checkUploadStatus
+} from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
+import * as priceActions from '../../../../src/app/action/price'
 
 describe('Model Integration Test', () => {
   let store
 
   beforeEach(() => {
     sinon.stub(printingEngine)
+    sinon.stub(priceActions)
     store = Store({})
   })
 
   afterEach(() => {
     sinon.restore(printingEngine)
+    sinon.restore(priceActions)
   })
 
   describe('uploadFile()', () => {
@@ -28,27 +35,11 @@ describe('Model Integration Test', () => {
       }
     })
 
-    it('starts the upload to the backend', () => {
-      printingEngine.uploadModel.resolves(apiResponse)
-
-      const promise = store.dispatch(uploadFile(file, 'some-callback'))
-
-      expect(store.getState().model, 'to satisfy', {
-        areAllUploadsFinished: false,
-        numberOfUploads: 1
-      })
-
-      expect(store.getState().model.models[0], 'to satisfy', {
-        name: 'some-file-name',
-        size: 42,
-        progress: 0
-      })
-
-      return promise
-    })
-
     it('success uploading to the backend', async () => {
       printingEngine.uploadModel.resolves(apiResponse)
+
+      printingEngine.getUploadStatus.resolves(true)
+      printingEngine.getPriceStatus.resolves(true)  // Finished polling
 
       await store.dispatch(uploadFile(file, 'some-callback'))
 
@@ -66,13 +57,9 @@ describe('Model Integration Test', () => {
     })
 
     it('fails uploading to the backend', async () => {
-      printingEngine.uploadModel.rejects()
+      printingEngine.uploadModel.rejects(new Error())
 
-      try {
-        await store.dispatch(uploadFile(file, 'some-callback'))
-      } catch (e) {
-        // Expect a failure
-      }
+      await store.dispatch(uploadFile(file, 'some-callback'))
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: true,
@@ -115,12 +102,14 @@ describe('Model Integration Test', () => {
         }
       })
 
-      await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
-
-      expect(store.getState().model.models[0], 'to satisfy', {
-        checkStatusFinished: true,
-        error: true
-      })
+      try {
+        await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
+      } catch (e) {
+        expect(store.getState().model.models[0], 'to satisfy', {
+          checkStatusFinished: true,
+          error: true
+        })
+      }
     })
   })
 
@@ -133,8 +122,31 @@ describe('Model Integration Test', () => {
         name: 'some-file-name',
         size: 42
       }]
-      printingEngine.getUploadStatus.resolves(true)
+
       printingEngine.uploadModel.resolves(apiResponse)
+      printingEngine.getUploadStatus.resolves(true)
+      printingEngine.createPriceRequest.resolves({priceId: '123'})
+      printingEngine.getPriceStatus.resolves(true)  // Finished polling
+      printingEngine.getPrice.resolves('some-price')
+
+      store = Store({
+        material: {
+          materials: {
+            'some-material-id': 'something'
+          }
+        },
+        user: {
+          userId: 'some-user-id',
+          user: {
+            shippingAddress: {
+              city: 'Pittsburgh',
+              zipCode: '15234',
+              stateCode: 'PA',
+              countryCode: 'US'
+            }
+          }
+        }
+      })
 
       await store.dispatch(uploadFiles(files, 'some-callback'))
 

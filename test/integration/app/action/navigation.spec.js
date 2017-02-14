@@ -1,7 +1,7 @@
 import {routerActions} from 'react-router-redux'
 
 import Store from '../../../../src/app/store'
-import {goToVendor, goToCart} from '../../../../src/app/action/navigation'
+import {goToCart} from '../../../../src/app/action/navigation'
 
 describe('Navigation Integration Test', () => {
   let store
@@ -13,13 +13,6 @@ describe('Navigation Integration Test', () => {
 
   afterEach(() => {
     sinon.restore(routerActions.push)
-  })
-
-  describe('goToVendor()', () => {
-    it('should got to vendor', () => {
-      store.dispatch(goToVendor())
-      expect(routerActions.push, 'was called with', '/vendor')
-    })
   })
 
   describe('goToCart()', () => {

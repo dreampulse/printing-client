@@ -1,8 +1,8 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
-import ContextMenuItem from '../../app/component/context-menu-item'
-import ContextMenuList from '../../app/component/context-menu-list'
+import ContextMenuItem from '../../app/component-legacy/context-menu-item'
+import ContextMenuList from '../../app/component-legacy/context-menu-list'
 
 import icon from '../../asset/icon/placeholder.svg'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
-import SelectActionField from '../../app/component/select-action-field'
+import SelectActionField from '../../app/component-legacy/select-action-field'
 
 storiesOf('Select Action Field', module)
   .add('default', () => (

@@ -5,8 +5,7 @@
   },
   "globals": {
     "expect": true,
-    "sinon": true,
-    "mockStore": true
+    "sinon": true
   },
   "env": {
     "mocha": true

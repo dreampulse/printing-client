@@ -6,13 +6,13 @@ const initialState = {
   orderId: null
 }
 
-function handleOrderSuccess (state, {payload}) {
+function handleOrderOrdered (state, {payload: {orderId}}) {
   return {
     ...state,
-    orderId: payload
+    orderId
   }
 }
 
 export default handleActions({
-  [TYPE.ORDER.SUCCESS]: handleOrderSuccess
+  [TYPE.ORDER.ORDERED]: handleOrderOrdered
 }, initialState)

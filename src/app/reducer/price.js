@@ -7,21 +7,23 @@ const initialState = {
   price: null
 }
 
-function handlePriceRequestCreated (state, {payload}) {
+function handlePriceRequested (state, {payload: {priceId}, error}) {
   return {
     ...state,
-    priceId: payload
+    priceId,
+    error: !!error
   }
 }
 
-function handlePriceReceived (state, {payload}) {
+function handlePriceReceived (state, {payload, error}) {
   return {
     ...state,
-    price: payload
+    price: payload,
+    error: !!error
   }
 }
 
 export default handleActions({
-  [TYPE.PRICE.REQUEST_CREATED]: handlePriceRequestCreated,
+  [TYPE.PRICE.REQUESTED]: handlePriceRequested,
   [TYPE.PRICE.RECEIVED]: handlePriceReceived
 }, initialState)

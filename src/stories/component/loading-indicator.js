@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
 import InvertDecorator from '../decorator/invert'
-import LoadingIndicator from '../../app/component/loading-indicator'
+import LoadingIndicator from '../../app/component-legacy/loading-indicator'
 
 storiesOf('Loading Indicator', module)
   .add('default', () => (

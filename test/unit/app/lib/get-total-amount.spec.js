@@ -1,7 +1,7 @@
 import {getCartAmount, getPriceAmount} from '../../../../src/app/lib/get-total-amount'
 
 describe('getCartAmount()', () => {
-  it('works', () => {
+  it('works as expected', () => {
     const cart = {
       items: [{
         price: 10,
@@ -18,18 +18,19 @@ describe('getCartAmount()', () => {
 })
 
 describe('getPriceAmount()', () => {
-  it('works', () => {
-    const cart = {
+  it('works as expected', () => {
+    const offer = {
       items: [{
         price: 10
+      }, {
+        price: 15
       }],
-      shipping: [
-        {price: 5},
-        {price: 6}
-      ],
+      shipping: {
+        price: 5
+      },
       vatPercentage: 0.19
     }
 
-    expect(getPriceAmount(cart), 'to equal', 17.85)
+    expect(getPriceAmount(offer), 'to equal', 35.7)
   })
 })

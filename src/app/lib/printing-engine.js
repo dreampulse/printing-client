@@ -3,8 +3,8 @@ import {upload, request, fetch} from '../service/http'
 
 const baseUrl = config.printingEngineBaseUrl
 
-export const uploadModel = (file, params, onProgressChange) =>
-  upload(`${baseUrl}/model`, file, params, onProgressChange)
+export const uploadModel = (file, params, onProgress) =>
+  upload(`${baseUrl}/model`, file, params, onProgress)
 
 export const getUploadStatus = async ({modelId}) => {
   const response = await fetch(`${baseUrl}/model/${modelId}`)
@@ -17,10 +17,10 @@ export const createUser = ({user}) => request(`${baseUrl}/user`, {method: 'POST'
 
 export const updateUser = ({userId, user}) => request(`${baseUrl}/user/${userId}`, {method: 'PUT', body: user})
 
-export const createPriceRequest = ({modelId, materialId, userId}) =>
+export const createPriceRequest = ({items, userId}) =>
   request(`${baseUrl}/price`, {
     method: 'POST',
-    body: {items: [{modelId, materialId}], userId}
+    body: {items, userId}
   })
 
 export const getPrice = ({priceId}) => request(`${baseUrl}/price/${priceId}`)

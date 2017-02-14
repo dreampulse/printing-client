@@ -1,6 +1,6 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
-import TextAreaField from '../../app/component/text-area-field'
+import TextAreaField from '../../app/component-legacy/text-area-field'
 
 storiesOf('Text Area Field', module)
   .add('default', () => (

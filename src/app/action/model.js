@@ -1,66 +1,47 @@
-import {bindActionCreators} from 'redux'
-
+import {createAction} from 'redux-actions'
 import uniqueId from 'lodash/uniqueId'
+import {compose} from 'ramda'
 
-import * as actionCreator from '../action-creator'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
+import {createPriceRequest} from '../action/price'
 
-export const checkUploadStatus = ({modelId, fileId}) => (dispatch) => {
-  const {
-    modelCheckStatusStarted,
-    modelCheckStatusFinished
-  } = bindActionCreators(actionCreator, dispatch)
+import TYPE from '../type'
 
-  modelCheckStatusStarted({fileId})
+export const checkUploadStatus = ({modelId, fileId}) => async (dispatch) => {
+  dispatch(createAction(TYPE.MODEL.CHECK_STATUS_STARTED)({fileId}))
 
-  return modelCheckStatusFinished(
-    pollApi(() => printingEngine.getUploadStatus({modelId}))
-      .then(() => ({fileId}))
-      .catch(() => Promise.reject({fileId}))
-  )
+  try {
+    await pollApi(() => printingEngine.getUploadStatus({modelId}))
+    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({fileId}))
+    await dispatch(createPriceRequest())
+  } catch (e) {
+    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({fileId, error: true}))
+  }
 }
 
 export const uploadFile = file => async (dispatch, getState) => {
-  const {
-    modelUploadToBackendStarted,
-    modelUploadToBackendProgressed,
-    modelUploadToBackendFinished
-  } = bindActionCreators(actionCreator, dispatch)
-
   const fileId = uniqueId('file-id-')
   const unit = getState().model.selectedUnit
 
-  modelUploadToBackendStarted({
+  dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED)({
     fileId,
     name: file.name,
     size: file.size
-  })
+  }))
 
-  const {payload: {modelId}} = await modelUploadToBackendFinished(
-    printingEngine.uploadModel(
-      file,
-      {unit},
-      (progress) => {
-        modelUploadToBackendProgressed({
-          fileId,
-          progress
-        })
-      }
-    ).then(({modelId}) => ({modelId, fileId})
-    ).catch(() => Promise.reject({fileId}))
-  )
+  const onUploadProgressed = progress =>
+    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED)({progress, fileId}))
 
-  return {modelId, fileId}
+  try {
+    const {modelId} = await printingEngine.uploadModel(file, {unit}, onUploadProgressed)
+    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({modelId, fileId}))
+    await dispatch(checkUploadStatus({modelId, fileId}))
+  } catch (e) {
+    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({fileId, error: true}))
+  }
 }
 
 export const uploadFiles = files => async (dispatch) => {
-  await Promise.all(files.map(async (file) => {
-    try {
-      const {modelId, fileId} = await dispatch(uploadFile(file))
-      return dispatch(checkUploadStatus({modelId, fileId}))
-    } catch (e) {
-      return Promise.reject()
-    }
-  }))
+  await Promise.all(files.map(compose(dispatch, uploadFile)))
 }

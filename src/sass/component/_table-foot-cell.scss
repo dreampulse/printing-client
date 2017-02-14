@@ -1,0 +1,9 @@
+.table-foot-cell {
+  padding: {
+    right: $space-base;
+    top: $space-base;
+    bottom: $space-base;
+    left: 0;
+  };
+  border-bottom: solid 2px $color-border;
+}

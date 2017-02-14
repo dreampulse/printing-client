@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import Portal from '../../app/component/portal'
-import Modal from '../../app/component/modal'
-import Button from '../../app/component/button'
+import Portal from '../../app/component-legacy/portal'
+import Modal from '../../app/component-legacy/modal'
+import Button from '../../app/component-legacy/button'
 
 class MyPortal extends Component {
 

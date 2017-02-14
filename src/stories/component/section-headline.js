@@ -1,6 +1,6 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
-import SectionHeadline from '../../app/component/section-headline'
+import SectionHeadline from '../../app/component-legacy/section-headline'
 
 import icon from '../../asset/icon/placeholder.svg'
 

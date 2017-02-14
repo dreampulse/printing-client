@@ -4,8 +4,8 @@ export function getCartAmount (cart) {
   return Math.round((itemPrice + shippingPrice) * (cart.vatPercentage + 1) * 100) / 100
 }
 
-export function getPriceAmount (vendor) {
-  const itemPrice = vendor.items.reduce((last, cur) => last + cur.price, 0)
-  const shippingPrice = Math.min(...vendor.shipping.map(s => s.price))
-  return Math.round((itemPrice + shippingPrice) * (vendor.vatPercentage + 1) * 100) / 100
+export function getPriceAmount (offer) {
+  const itemPrice = offer.items.reduce((last, cur) => last + cur.price, 0)
+  const shippingPrice = offer.shipping.price
+  return Math.round((itemPrice + shippingPrice) * (offer.vatPercentage + 1) * 100) / 100
 }
