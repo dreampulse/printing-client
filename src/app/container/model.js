@@ -124,10 +124,8 @@ const Model = ({
       <Headline label="Model config" modifiers={['xl']} />
       <UploadSection />
       <MaterialSection />
-
       <ShippingSection />
       <PriceSection />
-
     </Main>
   )
 }

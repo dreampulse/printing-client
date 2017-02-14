@@ -5,8 +5,7 @@
   },
   "globals": {
     "expect": true,
-    "sinon": true,
-    "actionFinished": true
+    "sinon": true
   },
   "env": {
     "mocha": true
