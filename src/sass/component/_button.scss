@@ -1,10 +1,10 @@
 .button {
   display: inline-block;
   height: $field-height;
-  line-height: $field-height;
   padding: 0 2em;
   background-color: $color-primary;
   color: $color-invert-text;
+  line-height: $field-height;
   font-size: $font-size-l;
   border-radius: $border-radius;
   text-align: center;

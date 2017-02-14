@@ -1,0 +1,43 @@
+.model-item {
+  $image-container-width: 130px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: $space-base $space-xl;
+  height: $model-item-height;
+  border-top: 1px solid $color-bg-highlight;
+  border-bottom: 1px solid $color-bg-highlight;
+  background: $color-bg-highlight;
+
+  & > .image-container {
+    flex-shrink: 0;
+    width: $image-container-width;
+    margin-right: $space-xl;
+  }
+
+  & > .number-field {
+    flex-shrink: 0;
+  }
+
+  &__description {
+    flex-grow: 1;
+    margin-left: $space-xl;
+    font-size: $font-size-l;
+  }
+
+  &__title {
+    @include scut-truncate;
+
+    display: block;
+    color: $color-text;
+    font-weight: $font-weight-regular;
+  }
+
+  &__subline {
+    @include scut-truncate;
+
+    display: block;
+    color: $color-minor;
+  }
+}

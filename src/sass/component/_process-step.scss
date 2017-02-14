@@ -1,0 +1,79 @@
+.process-step {
+  $stacking: line, point;
+  $point-size: 20px;
+
+  position: relative;
+  padding-top: $point-size + $space-s;
+  text-align: center;
+  font-size: $font-size-l;
+  font-weight: $font-weight-light;
+  color: $color-invert-text;
+  transition: color $transition-duration-fast ease-in-out;
+
+  &__point {
+    display: block;
+    position: absolute;
+    z-index: z($stacking, point);
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: $point-size;
+    height: $point-size;
+    border-radius: 50%;
+    background: currentColor;
+    border: 4px solid $color-blue-light;
+    transition:
+      background-color $transition-duration-fast ease-in-out,
+      border-color $transition-duration-fast ease-in-out;
+  }
+
+  &:after,
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: z($stacking, line);
+    top: 0.5 * $point-size;
+    height: 0;
+    width: 50%;
+    border-top: 1px solid $color-blue-light;
+    transition: border-color $transition-duration-fast ease-in-out;
+  }
+  &:after {
+    left: 50%;
+  }
+  &:before {
+    right: 50%;
+  }
+
+  &--inactive {
+    color: $color-gray-2;
+
+    .process-step__point {
+      border-color: $color-gray-3;
+    }
+
+    &:after,
+    &:before {
+      border-top-color: $color-gray-3;
+    }
+  }
+
+  &--first {
+    &:before {
+      display: none;
+    }
+  }
+
+  &--last {
+    &:after {
+      display: none;
+    }
+  }
+
+  &--last-active {
+    &:after {
+      border-top-color: $color-gray-3;
+    }
+  }
+}

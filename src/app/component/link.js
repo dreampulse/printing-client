@@ -7,7 +7,7 @@ import Icon from './icon'
 
 const Link = ({classNames, modifiers, label, href = '#', icon, onClick = () => {}}) => (
   <a className={buildClassName('link', modifiers, classNames)} href={href} onClick={onClick}>
-    {icon ? <Icon source={icon} /> : null}
+    {icon && <Icon source={icon} />}
     {label}
   </a>
 )
