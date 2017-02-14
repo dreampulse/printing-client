@@ -5,7 +5,7 @@ import ContextMenu from '../../app/component-legacy/context-menu'
 import ContextMenuItem from '../../app/component-legacy/context-menu-item'
 import Button from '../../app/component-legacy/button'
 
-import icon from '../../asset/icon/placeholder.svg'
+import icon from '../../asset-legacy/icon/placeholder.svg'
 
 storiesOf('Context Menu', module)
   .add('default position', () => (

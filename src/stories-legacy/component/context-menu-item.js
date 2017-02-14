@@ -3,7 +3,7 @@ import {storiesOf, action} from '@kadira/storybook'
 
 import ContextMenuItem from '../../app/component-legacy/context-menu-item'
 
-import icon from '../../asset/icon/placeholder.svg'
+import icon from '../../asset-legacy/icon/placeholder.svg'
 
 storiesOf('Context Menu Item', module)
   .add('default', () => (

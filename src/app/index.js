@@ -7,7 +7,8 @@ import 'babel-polyfill'
 import Store from './store'
 import Router from './router'
 
-import '../sass/main.scss'
+// import '../sass/main.scss'
+import '../sass-legacy/main.scss'
 
 import init from './action/init'
 

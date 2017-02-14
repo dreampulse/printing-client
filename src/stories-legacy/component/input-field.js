@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 import InputField from '../../app/component-legacy/input-field'
 
-import icon from '../../asset/icon/placeholder.svg'
+import icon from '../../asset-legacy/icon/placeholder.svg'
 
 storiesOf('Input field', module)
   .add('default', () => (

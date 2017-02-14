@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 import SectionHeadline from '../../app/component-legacy/section-headline'
 
-import icon from '../../asset/icon/placeholder.svg'
+import icon from '../../asset-legacy/icon/placeholder.svg'
 
 storiesOf('Section Headline', module)
   .add('default', () => (
