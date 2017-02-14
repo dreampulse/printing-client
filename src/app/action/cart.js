@@ -1,15 +1,15 @@
-import {bindActionCreators} from 'redux'
+import {createAction} from 'redux-actions'
+
+import TYPE from '../type'
 
 import {goToAddress} from '../action/navigation'
 import * as printingEngine from '../lib/printing-engine'
-import * as actionCreator from '../action-creator'
 
+// Sync actions
+export const changeQuantity = createAction(TYPE.CART.QUANTITY_CHANGED)
+
+// Async actions
 export const createShoppingCart = () => async (dispatch, getState) => {
-  const {
-    cartCreated,
-    cartReceivedFinalPrice
-  } = bindActionCreators(actionCreator, dispatch)
-
   const items = getState().model.models.map(model => ({
     modelId: model.modelId,
     vendorId: getState().cart.selectedVendor,
@@ -31,19 +31,15 @@ export const createShoppingCart = () => async (dispatch, getState) => {
 
   // TODO: why two calls?
   // Maybe there is a better point in time to call createShoppingCart()
-  const {payload: {cartId}} = await cartCreated(printingEngine.createShoppingCart(options))
-  return cartReceivedFinalPrice(printingEngine.getFinalCartPrice({cartId}))
+  const shoppingCartPromise = printingEngine.createShoppingCart(options)
+  const {payload: {cartId}} = await dispatch(createAction(TYPE.CART.CREATED)(shoppingCartPromise))
+
+  const finalCartPricePromise = printingEngine.getFinalCartPrice({cartId})
+  return await dispatch(createAction(TYPE.CART.RECEIVED_FINAL_PRICE)(finalCartPricePromise))
 }
 
 export const selectOffer = ({vendor, shippingName}) => (dispatch) => {
-  const {
-    cartSelectVendor,
-    cartSelectShipping
-  } = bindActionCreators(actionCreator, dispatch)
-
-  cartSelectVendor(vendor)
-  cartSelectShipping(shippingName)
+  dispatch(createAction(TYPE.CART.VENDOR_SELECTED)(vendor))
+  dispatch(createAction(TYPE.CART.SHIPPING_SELECTED)(shippingName))
   dispatch(goToAddress())
 }
-
-export const changeQuantity = quantitiy => actionCreator.cartChangeQuantity(quantitiy)

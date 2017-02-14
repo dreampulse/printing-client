@@ -31,13 +31,15 @@ export async function request (url, additionalOptions = {}) {
   return checkStatus(response)
 }
 
-export function upload (url, file, params = {}, onProgress) {
+export function upload (url, file, params, onProgress) {
   const xhr = new Xhr()
 
   xhr.upload.addEventListener('progress', (event) => {
     if (event.lengthComputable) {
       const progress = event.loaded / event.total
-      onProgress(progress)
+      if (onProgress) {
+        onProgress(progress)
+      }
     }
   })
 

@@ -1,24 +1,23 @@
-import {goToCart} from './navigation'
+import {createAction} from 'redux-actions'
 
+import TYPE from '../type'
+import {goToCart} from './navigation'
 import {getLocation} from '../service/geolocation'
 import * as printingEngine from '../lib/printing-engine'
-import {userAddressChanged, userCreated, userUpdated} from '../action-creator'
-
-// Epics
 
 export const detectAddress = () =>
-  userAddressChanged(getLocation())
+  createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(getLocation())
 
 export const createUser = () => (dispatch, getState) => {
   const user = getState().user.user
   const userPromise = printingEngine.createUser({user})
-  return dispatch(userCreated(userPromise))
+  return dispatch(createAction(TYPE.USER.CREATED)(userPromise))
 }
 
 export const updateUser = user => (dispatch, getState) => {
   const userId = getState().user.userId
   const userPromise = printingEngine.updateUser({userId, user})
-  return dispatch(userUpdated(userPromise))
+  return dispatch(createAction(TYPE.USER.UPDATED)(userPromise))
 }
 
 export const reviewOrder = form => async (dispatch) => {
