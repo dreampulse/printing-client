@@ -1,5 +1,9 @@
 .form-row {
   @include with-layout($susy-form-layout) {
+    & > * {
+      @include span(12);
+    }
+
     &--half-half {
       & > * {
         @include span(12);
@@ -7,15 +11,6 @@
           @include span(6);
         }
       }
-    }
-
-    &--full {
-      @include span(12);
-    }
-
-    &--empty {
-      height: $field-height;
-      margin-bottom: $space-base;
     }
   }
 }

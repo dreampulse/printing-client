@@ -9,14 +9,19 @@ const style = {
 }
 const column = (<div><div style={style}>column</div></div>)
 
-storiesOf('Form Layout', module)
+storiesOf('Form Row', module)
   .add('default', () => (
     <FormLayout>
-      <FormRow modifiers={['half-half']}>
+      <FormRow>
         <div>{column}</div>
         <div>{column}</div>
       </FormRow>
-      <FormRow>
+    </FormLayout>
+  ))
+  .add('half-half', () => (
+    <FormLayout>
+      <FormRow modifiers={['half-half']}>
+        <div>{column}</div>
         <div>{column}</div>
       </FormRow>
     </FormLayout>
