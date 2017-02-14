@@ -16,11 +16,11 @@ export default (initialState = {}) => {
   if (process.env.NODE_ENV !== 'production') {
     /* eslint global-require: 0 */
     /* eslint import/no-extraneous-dependencies: 0 */
-    // const createLogger = require('redux-logger')
+    const createLogger = require('redux-logger')
     // Enable redux dev-tools
     middleware = compose(
       middleware,
-      // applyMiddleware(createLogger()),
+      applyMiddleware(createLogger()),
       global.devToolsExtension ? global.devToolsExtension() : f => f
     )
   }
