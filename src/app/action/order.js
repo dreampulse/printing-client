@@ -6,10 +6,6 @@ import * as paypal from '../service/paypal'
 import * as printingEngine from '../lib/printing-engine'
 import {getCartAmount} from '../lib/get-total-amount'
 
-export const orderOrdered = createAction(TYPE.ORDER.ORDERED)
-
-// Async actions
-
 export const createOrderWithStripe = () => async (dispatch, getState) => {
   // TODO: createShoppingCart()
 
@@ -23,13 +19,8 @@ export const createOrderWithStripe = () => async (dispatch, getState) => {
   const tokenObject = await stripe.checkout({amount, currency, email})
   const token = tokenObject.id
 
-  return dispatch(
-    orderOrdered(
-      printingEngine.order({
-        cartId, type: 'stripe', token
-      })
-    )
-  )
+  const orderPromise = printingEngine.order({cartId, type: 'stripe', token})
+  return dispatch(createAction(TYPE.ORDER.ORDERED)(orderPromise))
 }
 
 export const initPaymentWithPaypal = () => (dispatch, getState) => {
@@ -48,11 +39,6 @@ export const createOrderWithPaypal = (data, actions) => async (dispatch, getStat
   const cartId = getState().cart.cartId
   const token = payment.id
 
-  return dispatch(
-    orderOrdered(
-      printingEngine.order({
-        cartId, type: 'paypal', token
-      })
-    )
-  )
+  const orderPromise = printingEngine.order({cartId, type: 'paypal', token})
+  return dispatch(createAction(TYPE.ORDER.ORDERED)(orderPromise))
 }

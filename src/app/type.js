@@ -5,9 +5,6 @@ export default {
     OPEN: 'MODAL.OPEN',
     CLOSE: 'MODAL.CLOSE'
   },
-  APP: {
-    FOO_ACTION: 'APP.FOO_ACTION'
-  },
   MODEL: {
     UPLOAD_FILES: 'MODEL.UPLOAD_FILES',
     UPLOAD_FILE: 'MODEL.UPLOAD_FILE',

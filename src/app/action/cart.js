@@ -5,12 +5,10 @@ import TYPE from '../type'
 import {goToAddress} from '../action/navigation'
 import * as printingEngine from '../lib/printing-engine'
 
-export const selectVendor = createAction(TYPE.CART.VENDOR_SELECTED)
-export const selectShipping = createAction(TYPE.CART.SHIPPING_SELECTED)
+// Sync actions
 export const changeQuantity = createAction(TYPE.CART.QUANTITY_CHANGED)
-export const cartCreated = createAction(TYPE.CART.CREATED)
-export const receivedFinalPrice = createAction(TYPE.CART.RECEIVED_FINAL_PRICE)
 
+// Async actions
 export const createShoppingCart = () => async (dispatch, getState) => {
   const items = getState().model.models.map(model => ({
     modelId: model.modelId,
@@ -33,16 +31,15 @@ export const createShoppingCart = () => async (dispatch, getState) => {
 
   // TODO: why two calls?
   // Maybe there is a better point in time to call createShoppingCart()
-  const {payload: {cartId}} = await dispatch(
-    cartCreated(printingEngine.createShoppingCart(options))
-  )
-  return dispatch(
-    receivedFinalPrice(printingEngine.getFinalCartPrice({cartId}))
-  )
+  const shoppingCartPromise = printingEngine.createShoppingCart(options)
+  const {payload: {cartId}} = await dispatch(createAction(TYPE.CART.CREATED)(shoppingCartPromise))
+
+  const finalCartPricePromise = printingEngine.getFinalCartPrice({cartId})
+  return await dispatch(createAction(TYPE.CART.RECEIVED_FINAL_PRICE)(finalCartPricePromise))
 }
 
 export const selectOffer = ({vendor, shippingName}) => (dispatch) => {
-  dispatch(selectVendor(vendor))
-  dispatch(selectShipping(shippingName))
+  dispatch(createAction(TYPE.CART.VENDOR_SELECTED)(vendor))
+  dispatch(createAction(TYPE.CART.SHIPPING_SELECTED)(shippingName))
   dispatch(goToAddress())
 }

@@ -5,25 +5,20 @@ import {goToCart} from './navigation'
 import {getLocation} from '../service/geolocation'
 import * as printingEngine from '../lib/printing-engine'
 
-export const addressChanged = createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)
-export const userCreated = createAction(TYPE.USER.CREATED)
-export const userUpdated = createAction(TYPE.USER.UPDATED)
-
-// Async actions
-
-export const detectAddress = () =>
-  addressChanged(getLocation())
+export const detectAddress = () => {
+  return createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(getLocation())
+}
 
 export const createUser = () => (dispatch, getState) => {
   const user = getState().user.user
   const userPromise = printingEngine.createUser({user})
-  return dispatch(userCreated(userPromise))
+  return dispatch(createAction(TYPE.USER.CREATED)(userPromise))
 }
 
 export const updateUser = user => (dispatch, getState) => {
   const userId = getState().user.userId
   const userPromise = printingEngine.updateUser({userId, user})
-  return dispatch(userUpdated(userPromise))
+  return dispatch(createAction(TYPE.USER.UPDATED)(userPromise))
 }
 
 export const reviewOrder = form => async (dispatch) => {
