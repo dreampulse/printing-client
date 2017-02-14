@@ -1,0 +1,21 @@
+.form-row {
+  @include with-layout($susy-form-layout) {
+    &--half-half {
+      & > * {
+        @include span(12);
+        @include respond-to(medium) {
+          @include span(6);
+        }
+      }
+    }
+
+    &--full {
+      @include span(12);
+    }
+
+    &--empty {
+      height: $field-height;
+      margin-bottom: $space-base;
+    }
+  }
+}
