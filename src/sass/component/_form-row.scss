@@ -1,0 +1,16 @@
+.form-row {
+  @include with-layout($susy-form-layout) {
+    & > * {
+      @include span(12);
+    }
+
+    &--half-half {
+      & > * {
+        @include span(12);
+        @include respond-to(medium) {
+          @include span(6);
+        }
+      }
+    }
+  }
+}
