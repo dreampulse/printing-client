@@ -1,0 +1,83 @@
+.input-field {
+  $label-not-empty-size: $font-size-s;
+  $field-space-base: 5px;
+  $border-width: 1px;
+
+  position: relative;
+  height: $field-height;
+  margin-bottom: $space-base;
+
+  &__input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $field-height;
+    border: $border-width solid $color-border;
+    box-shadow: $box-shadow-base;
+    border-radius: $border-radius;
+    font-size: $font-size-l;
+    padding: {
+      top: $label-not-empty-size;
+      left: 2 * $field-space-base;
+      right: 2 * $field-space-base;
+    }
+
+    outline: none;
+    color: $color-text;
+
+    &:focus {
+      border-color: $color-field-focus;
+      box-shadow: $box-shadow-focus;
+    }
+
+    &:active {
+      box-shadow: $box-shadow-active;
+    }
+
+    &:invalid {
+      border-color: $color-error;
+      color: $color-error;
+      box-shadow: $box-shadow-error;
+    }
+  }
+
+  &__label {
+    position: absolute;
+    top: $border-width;
+    left: $border-width;
+    cursor: text;
+    color: $color-minor;
+    font-size: $label-not-empty-size;
+    padding: {
+      right: 2 * $field-space-base;
+      left: 2 * $field-space-base;
+    }
+
+    transform-origin: 0 50%;  // To keep the distance to the left
+    transition: transform $transition-duration-fast linear;
+  }
+
+  &--empty {
+    .input-field__input:not(:focus) ~ .input-field__label {
+      $label-scale-empty: $font-size-l / $label-not-empty-size;
+      transform: scale($label-scale-empty) translateY(10px) // center the label manually
+    }
+
+    .input-field__input:not(:focus) {
+      color: transparent;
+    }
+  }
+
+  &--error {
+    .input-field__input,
+    .input-field__input:focus {
+      border-color: $color-error;
+      color: $color-error;
+      box-shadow: $box-shadow-error;
+    }
+    .input-field__input:focus {
+      box-shadow: $box-shadow-focus;
+    }
+  }
+}
