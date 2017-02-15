@@ -1,0 +1,41 @@
+.select-menu-item {
+  $height: 40px;
+
+  position: relative;
+  display: block;
+  width: 100%;
+  height: $height;
+  line-height: $height;
+  padding: 0 $space-base 0 (2 * $space-base + $font-size-base);
+  outline: 0;
+  background: $color-bg-highlight;
+  text-align: left;
+  font-size: $font-size-base;
+
+  & > .icon {
+    position: absolute;
+    left: $space-base;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  & > .color-square {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    & + .select-menu-item__label {
+      margin-left: $color-square-size + $space-base;
+    }
+  }
+
+  &__label {
+    @include scut-truncate;
+
+    display: block;
+  }
+
+  &:hover:not(.select-menu-item--selected) {
+    background: $color-gray-4;
+  }
+}
