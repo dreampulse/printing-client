@@ -1,0 +1,62 @@
+import React, {PropTypes, Component} from 'react'
+
+import propTypes from '../lib/prop-types'
+import buildClassName from '../lib/build-class-name'
+
+import Icon from './icon'
+import closeIcon from '../../asset/icon/close.svg'
+
+class Overlay extends Component {
+
+  static propTypes = {
+    ...propTypes.component,
+    closePortal: PropTypes.func.isRequired,
+    children: PropTypes.node,
+    headline: PropTypes.node.isRequired,
+    buttons: PropTypes.arrayOf(
+      PropTypes.node
+    )
+  }
+
+  static defaultProps = {
+    closePortal: () => {}
+  }
+
+  componentDidMount () {
+    global.document.body.classList.add('u-prevent-scrolling')
+  }
+
+  componentWillUnmount () {
+    global.document.body.classList.remove('u-prevent-scrolling')
+  }
+
+  render () {
+    return (
+      <div className={buildClassName('overlay', this.props.modifiers, this.props.classNames)}>
+        <div className="overlay__mask" onClick={this.props.closePortal}>
+          <div className="overlay__modal" onClick={e => e.stopPropagation()}>
+
+            <header className="overlay__header">
+              <div className="overlay__headline">
+                {this.props.headline}
+                <button onClick={this.props.closePortal} className="overlay__close">
+                  <Icon source={closeIcon} />
+                </button>
+              </div>
+            </header>
+
+            <div className="overlay__content">
+              {this.props.children}
+            </div>
+
+            <footer className="overlay__footer">
+              {this.props.buttons}
+            </footer>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default Overlay
