@@ -3,6 +3,7 @@
 
 $font-family-base: 'Roboto', sans-serif;
 
+$font-size-s: 12px;
 $font-size-base: 15px;
 $font-size-l: 20px;
 $font-size-xl: 25px;
@@ -46,6 +47,7 @@ $color-border: $color-gray-2;
 $color-warning: $color-yellow;
 $color-error: $color-red;
 $color-field-focus: $color-primary;
+$color-field-bg: $color-white;
 $color-disabled: $color-gray-3;
 $color-link: $color-blue-light;
 
@@ -66,7 +68,7 @@ $space-xxxl: 70px;
 $global-max-width: 1170px;
 
 $columns: 12;
-$gutter-width: 15px;
+$gutter-width: 30px;
 $column-width: $global-max-width / $columns - $gutter-width;
 
 $susy: (
@@ -78,21 +80,41 @@ $susy: (
   global-box-sizing: border-box
 );
 
+$susy-form-layout: (
+  gutters: $gutter-width / $column-width
+);
+
 // Breakpoints
 // ---------------------------------------------------
 
-$mediaqueries: ();
+$screen-s-max: 440px;
+$screen-sm-max: 749px;
+$screen-md-min: 750px;
+$screen-md-max: 959px;
+$screen-lg-min: 960px;
+
+$mediaqueries: (
+  small-only: "(max-width: #{$screen-sm-max})",
+  medium: "(min-width: #{$screen-md-min})",
+  medium-only: "(min-width: #{$screen-md-min}) and (max-width: #{$screen-md-max})",
+  large: "(min-width: #{$screen-lg-min})",
+);
 
 // Misc
 // ---------------------------------------------------
 
 $field-height: 50px;
+$compact-field-height: 40px;
 $border-radius: 5px;
 $model-item-height: 127px;
+$color-square-size: 20px;
 
 $box-shadow-base: 1px 1px 3px 0 rgba(0, 0, 0, 0.2);
 $box-shadow-active: 1px 1px 6px 0 rgba(0, 0, 0, 0.4);
 $box-shadow-focus: 0px 0px 4px 0 $color-primary;
+$box-shadow-error: 0px 0px 4px 0 $color-error;
 
 $transition-duration: .4s;
 $transition-duration-fast: .15s;
+
+$global-stacking: app, select-menu;

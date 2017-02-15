@@ -1,0 +1,83 @@
+.select-field {
+  $space-around-icon: 0.7em;
+  $space-around-icon-compact: 0.5em;
+
+  position: relative;
+  display: block;
+  width: 100%;
+  height: $field-height;
+  padding: 0 (2 * $space-around-icon + 1em) 0 1em;
+  line-height: $field-height;
+  font-size: $font-size-l;
+  border-radius: $border-radius;
+  border: 1px solid $color-border;
+  box-shadow: $box-shadow-base;
+  outline: 0;
+  text-align: left;
+  background: $color-bg-highlight;
+  color: $color-minor;
+
+  & > .color-square {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    & + .select-field__value {
+      margin-left: $color-square-size + $space-base;
+    }
+  }
+
+  &__value {
+    @include scut-truncate;
+
+    display: block;
+  }
+
+  & > .icon {
+    position: absolute;
+    top: 0;
+    right: $space-around-icon;
+    height: 100%;
+    color: $color-text;
+  }
+
+  &__menu {
+    position: absolute;
+    z-index: z($global-stacking, select-menu);
+  }
+
+  &--selected {
+    color: $color-text;
+  }
+
+  &--compact {
+    height: $compact-field-height;
+    line-height: $compact-field-height;
+    font-size: $font-size-base;
+    padding-left: 0.5em;
+    padding-right: 2 * $space-around-icon-compact + 1em;
+
+    & > .icon {
+      right: $space-around-icon-compact;
+    }
+  }
+
+  &--constant {
+    padding-left: 0;
+    padding-right: 0;
+    border-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    background-color: transparent;
+    cursor: initial;
+
+    & > .icon {
+      display: none;
+    }
+  }
+
+  &:focus:not(:disabled) {
+    box-shadow: $box-shadow-focus;
+    border-color: $color-primary;
+  }
+}
