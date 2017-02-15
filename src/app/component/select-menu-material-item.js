@@ -4,13 +4,13 @@ import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
 import Icon from './icon'
-import ColorSquare from './color-square'
 
 import selectedIcon from '../../asset/icon/selected.svg'
+import hasColorIcon from '../../asset/icon/placeholder.svg'
 
 const getLabel = ({value, label}) => (label || value)
 
-const SelectMenuItem = ({
+const SelectMenuMaterialItem = ({
   classNames,
   modifiers = [],
   value,
@@ -30,28 +30,30 @@ const SelectMenuItem = ({
   return (
     <button
       type="button"
-      className={buildClassName('select-menu-item', finalModifier, classNames)}
+      className={buildClassName('select-menu-material-item', finalModifier, classNames)}
       onClick={handleClick}
     >
       {selected && <Icon source={selectedIcon} />}
-      {(value.colorValue || value.colorImage) && (
-        <ColorSquare color={value.colorValue} image={value.colorImage} />
-      )}
-      <span className="select-menu-item__label">{getLabel(value)}</span>
+      <span className="select-menu-material-item__label">{getLabel(value)}</span>
+      <span className="select-menu-material-item__color">
+        {Boolean(value.hasColor) && <Icon source={hasColorIcon} />}
+      </span>
+      <span className="select-menu-material-item__price">{value.price}</span>
     </button>
   )
 }
 
-SelectMenuItem.propTypes = {
+SelectMenuMaterialItem.propTypes = {
   ...propTypes.component,
   value: PropTypes.shape({
+    type: PropTypes.oneOf(['material']),
     value: PropTypes.string.isRequired,
     label: PropTypes.string, // When not provided value will be shown
-    colorValue: propTypes.string, // Optional color square
-    colorImage: PropTypes.string // Optional color image URL
+    hasColor: PropTypes.bool,
+    price: PropTypes.string
   }).isRequired,
   selected: PropTypes.bool,
   onClick: PropTypes.func
 }
 
-export default SelectMenuItem
+export default SelectMenuMaterialItem
