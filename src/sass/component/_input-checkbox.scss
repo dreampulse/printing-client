@@ -9,7 +9,7 @@
   border: 2px solid $color-border;
   border-radius: $border-radius / 2;
   margin-bottom: $space-base;
-  box-shadow: 0 0 4px 0 $color-border;
+  box-shadow: $box-shadow-base;
 
   &__input {
     position: absolute;
@@ -19,14 +19,20 @@
     height: 100%;
     width: 100%;
     cursor: pointer;
+    border-radius: $border-radius / 2;
 
-    &:hover ~ .checkbox__checked-icon {
-      color: $color-border;
+    &:invalid ~ .input-checkbox__checked-icon{
+      border-color: $color-error;
+      box-shadow: $box-shadow-error;
     }
 
-    &:invalid {
-      border-color: $color-error;
-      box-shadow: 0 0 4px 0 $color-error;
+    &:focus ~ .input-checkbox__checked-icon{
+      border-color: $color-field-focus;
+      box-shadow: $box-shadow-focus;
+    }
+
+    &:active ~ .input-checkbox__checked-icon{
+      box-shadow: $box-shadow-active;
     }
   }
 
@@ -36,7 +42,6 @@
     align-items: center;
     height: 100%;
     width: 100%;
-
     color: transparent;
     font-size: $font-size-l;
   }
@@ -49,7 +54,10 @@
 
   &--error {
     border-color: $color-error;
-    box-shadow: 0 0 4px 0 $color-error;
+    box-shadow: $box-shadow-error;
+  }
+
+  &--error.input-checkbox--checked, {
     .input-checkbox__checked-icon {
       color: $color-error;
     }

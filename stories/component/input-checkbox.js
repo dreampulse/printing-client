@@ -11,12 +11,12 @@ storiesOf('Input Checkbox', module)
     </HandleChecked>
   ))
   .add('checked', () => (
-    <HandleChecked initialChecked>
-      <InputCheckbox checked />
+    <HandleChecked checked>
+      <InputCheckbox />
     </HandleChecked>
   ))
   .add('error', () => (
-    <HandleChecked initialChecked>
-      <InputCheckbox modifiers={['error']} checked />
+    <HandleChecked checked>
+      <InputCheckbox modifiers={['error']} />
     </HandleChecked>
   ))

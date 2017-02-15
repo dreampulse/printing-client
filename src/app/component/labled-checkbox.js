@@ -14,7 +14,7 @@ const LabledCheckbox = ({
   name = ''
 }) => {
   const id = uniqueId('uid-')
-  const inputModifiers = [modifiers.indexOf('error') > -1 ? 'error' : undefined]
+  const inputModifiers = [{error: modifiers.indexOf('error') > -1}]
   return (
     <div className={buildClassName('labled-checkbox', modifiers, classNames)}>
       <InputCheckbox

@@ -34,5 +34,5 @@ HandleChecked.propTypes = {
 }
 
 export default compose(
-  withState('checked', 'onChange', props => props.initialChecked)
+  withState('checked', 'onChange', props => props.checked)
 )(HandleChecked)
