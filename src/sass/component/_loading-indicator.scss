@@ -1,6 +1,7 @@
 .loading-indicator {
   display: inline-block;
   color: $color-primary;
+  vertical-align: middle;
 
   &__spinner {
     position: relative;
