@@ -1,9 +1,12 @@
 .select-field {
+  $space-around-icon: 0.7em;
+  $space-around-icon-compact: 0.5em;
+
   position: relative;
   display: block;
   width: 100%;
   height: $field-height;
-  padding: 0 (2 * 0.7em + 1em) 0 1em;
+  padding: 0 (2 * $space-around-icon + 1em) 0 1em;
   line-height: $field-height;
   font-size: $font-size-l;
   border-radius: $border-radius;
@@ -33,7 +36,7 @@
   & > .icon {
     position: absolute;
     top: 0;
-    right: 0.7em;
+    right: $space-around-icon;
     height: 100%;
     color: $color-text;
   }
@@ -52,10 +55,10 @@
     line-height: $compact-field-height;
     font-size: $font-size-base;
     padding-left: 0.5em;
-    padding-right: 2 * 0.5em + 1em;
+    padding-right: 2 * $space-around-icon-compact + 1em;
 
     & > .icon {
-      right: 0.5em;
+      right: $space-around-icon-compact;
     }
   }
 

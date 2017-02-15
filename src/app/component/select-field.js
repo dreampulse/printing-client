@@ -25,7 +25,8 @@ export default class SelectField extends Component {
   }
 
   state = {
-    isOpen: false
+    isOpen: false,
+    menuStyle: null
   }
 
   onMenuOpen = () => {
@@ -100,7 +101,6 @@ export default class SelectField extends Component {
         className={buildClassName('select-field', finalModifiers, classNames)}
         onClick={this.handleSelectClick}
         disabled={!menu}
-        ref={(d) => { this.selectDOM = d }}
       >
         {Boolean(value) && (value.colorValue || value.colorImage) && (
           <ColorSquare color={value.colorValue} image={value.colorImage} />
