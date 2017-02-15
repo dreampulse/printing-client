@@ -8,10 +8,8 @@
   padding: $space-base $space-xl;
   height: $model-item-height;
   border-top: 1px solid $color-bg-highlight;
-  border-bottom: 1px solid $color-bg;
+  border-bottom: 1px solid $color-bg-highlight;
   background: $color-bg-highlight;
-
-
 
   & > .image-container {
     flex-shrink: 0;
@@ -46,8 +44,6 @@
 
   &--error {
     background-color: $color-red-light;
-    border-top: 1px solid $color-bg-highlight;
-    border-bottom: 1px solid $color-bg-highlight;
 
     .model-item__title {
       color:$color-error;

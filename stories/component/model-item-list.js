@@ -6,8 +6,6 @@ import ModelItemError from '../../src/app/component/model-item-error'
 import ModelItemLoad from '../../src/app/component/model-item-load'
 import ModelItemList from '../../src/app/component/model-item-list'
 
-import errorIcon from '../../src/asset/icon/error.svg'
-
 storiesOf('Model Item List', module)
   .add('default', () => (
     <ModelItemList>
@@ -24,7 +22,6 @@ storiesOf('Model Item List', module)
         subline="42 x 42 x 42 mm"
       />
       <ModelItemError
-        imageSource="http://placehold.it/500x500"
         title="Upload failed"
         subline="This is why"
         modifiers={['error']}

@@ -4,7 +4,6 @@ import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
 import Icon from './icon'
-import ImageContainer from './image-container'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 
@@ -12,7 +11,6 @@ const ModelItemError = ({
   classNames,
   modifiers,
   title,
-  imageSource,
   subline,
   onDelete = () => {}
 }) => {
@@ -22,17 +20,17 @@ const ModelItemError = ({
   }
 
   return (
-    <div className={buildClassName('model-item', modifiers, classNames)}>
-      <ImageContainer source={imageSource} />
-      <div className="model-item__description">
+    <div className={buildClassName('model-item-error', modifiers, classNames)}>
+      <div className="model-item-error__image" />
+      <div className="model-item-error__description">
         {Boolean(title) && (
-          <strong className="model-item__title">{title}</strong>
+          <strong className="model-item-error__title">{title}</strong>
         )}
         {Boolean(subline) && (
-          <span className="model-item__subline">{subline}</span>
+          <span className="model-item-error__subline">{subline}</span>
         )}
       </div>
-      <button type="button" className="model-item__delete" onClick={handleDeleteClick}>
+      <button type="button" className="model-item-error__delete" onClick={handleDeleteClick}>
         <Icon source={deleteIcon} />
       </button>
     </div>
@@ -41,7 +39,6 @@ const ModelItemError = ({
 
 ModelItemError.propTypes = {
   ...propTypes.component,
-  imageSource: PropTypes.string.isRequired,
   title: PropTypes.string,
   subline: PropTypes.string,
   onDelete: PropTypes.func

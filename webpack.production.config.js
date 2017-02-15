@@ -46,6 +46,12 @@ module.exports = {
       }, {
         test: /\.json$/,
         loader: 'json-loader'
+      }, {
+        test: /\.(jpg|png|gif|svg)$/,
+        include: [
+          path.resolve(__dirname, 'src/asset/image')
+        ],
+        loader: 'file'
       }
     ]
   },

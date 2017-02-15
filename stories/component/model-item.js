@@ -5,8 +5,6 @@ import ModelItem from '../../src/app/component/model-item'
 import ModelItemError from '../../src/app/component/model-item-error'
 import ModelItemLoad from '../../src/app/component/model-item-load'
 
-import errorIcon from '../../src/asset/icon/error.svg'
-
 storiesOf('Model Item', module)
   .add('default', () => (
     <ModelItem

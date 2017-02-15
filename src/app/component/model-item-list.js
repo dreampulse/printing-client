@@ -1,19 +1,17 @@
-import React, {PropTypes, cloneElement} from 'react'
+import React, {PropTypes} from 'react'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
 const ModelItemList = ({classNames, modifiers, children}) => {
   const modifiedChildren = React.Children.map(children, child => (
-    cloneElement(child, {
-      key: child.props.label
-    })
+    <li className="model-item-list__item" key={child.props.label}>{child}</li>
   ))
 
   return (
-    <div className={buildClassName('model-item-list', modifiers, classNames)}>
+    <ul className={buildClassName('model-item-list', modifiers, classNames)}>
       {modifiedChildren}
-    </div>
+    </ul>
   )
 }
 
