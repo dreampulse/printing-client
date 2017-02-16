@@ -10,7 +10,9 @@ export const changeQuantity = createAction(TYPE.CART.QUANTITY_CHANGED)
 
 // Async actions
 export const createShoppingCart = () => async (dispatch, getState) => {
-  const items = getState().model.models.map(model => ({
+  const items = Object.keys(getState().model.models)
+  .map(modelId => getState().model.models[modelId])
+  .map(model => ({
     modelId: model.modelId,
     vendorId: getState().cart.selectedVendor,
     quantity: getState().cart.quantity,
@@ -29,8 +31,6 @@ export const createShoppingCart = () => async (dispatch, getState) => {
     shipping
   }
 
-  // TODO: why two calls?
-  // Maybe there is a better point in time to call createShoppingCart()
   const shoppingCartPromise = printingEngine.createShoppingCart(options)
   const {payload: {cartId}} = await dispatch(createAction(TYPE.CART.CREATED)(shoppingCartPromise))
 
