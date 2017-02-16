@@ -5,14 +5,25 @@ import TYPE from '../type'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
 
+// TODO: what happens if I have multiple concurrent createPriceRequest() calls
+// This would be easy with rxjs
+
+export const getFinalPrice = ({priceId}) => async (dispatch) => {
+  await pollApi(() => printingEngine.getPriceStatus({priceId}))
+
+  const pricePromise = printingEngine.getPrice({priceId})
+  return dispatch(createAction(TYPE.PRICE.RECEIVED)(pricePromise))
+}
+
 export const createPriceRequest = () => async (dispatch, getState) => {
   const sa = getState().user.user.shippingAddress
+  // TODO: Issue #35
   if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
     throw new Error('Shipping Address Invalid')
   }
 
   const materialIds = Object.keys(getState().material.materials)
-  const modelIds = getState().model.models.map(model => model.modelId)
+  const modelIds = Object.keys(getState().model.models)
 
   const items = xprod(materialIds, modelIds).map(([materialId, modelId]) => ({
     modelId,
@@ -28,8 +39,5 @@ export const createPriceRequest = () => async (dispatch, getState) => {
   const {payload: {priceId}} =
     await dispatch(createAction(TYPE.PRICE.REQUESTED)(priceRequestPromise))
 
-  const pricePromise = printingEngine.getPrice({priceId})
-  await pollApi(() => printingEngine.getPriceStatus({priceId}))
-
-  return dispatch(createAction(TYPE.PRICE.RECEIVED)(pricePromise))
+  await dispatch(getFinalPrice({priceId}))
 }

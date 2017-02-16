@@ -40,8 +40,8 @@ const Cart = ({
         <TableHeadCell key={0}>Model Name</TableHeadCell>,
         <TableHeadCell key={1}>Price excl. shipping</TableHeadCell>
       ]}
-      rows={models.map(model =>
-        <TableRow key={model.fileId}>
+      rows={Object.keys(models).map(modelId => models[modelId]).map(model =>
+        <TableRow key={model.modelId}>
           <TableCell>{model.name}</TableCell>
           <TableCell><pre>{JSON.stringify(pricesFromVendor.items, '', 2)}</pre></TableCell>
         </TableRow>

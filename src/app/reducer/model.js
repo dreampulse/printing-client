@@ -7,14 +7,15 @@ const initialState = {
   areAllUploadsFinished: false,
   numberOfUploads: 0,
   selectedUnit: 'mm',
-  models: []
+  uploadingModels: [],
+  models: {}
 }
 
 function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
   return {
     ...state,
     numberOfUploads: state.numberOfUploads + 1,
-    models: [
+    uploadingModels: [
       ...state.models, {
         fileId,
         name,
@@ -26,52 +27,78 @@ function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
 }
 
 function handleUploadToBackedProgressed (state, {payload: {fileId, progress}}) {
-  const updateModels = update(state.models, model => model.fileId === fileId)
+  const updateModels = update(state.uploadingModels, model => model.fileId === fileId)
 
   return {
     ...state,
-    models: updateModels({
+    uploadingModels: updateModels({
       progress
     })
   }
 }
 
 function handleUploadToBackedFinished (state, {payload: {fileId, modelId, error}}) {
-  const updateModels = update(state.models, model => model.fileId === fileId)
+  // TODO: The backend should return all needed fields Issue: #66
+  const updateModels = update(state.uploadingModels, model => model.fileId === fileId)
+  const uploadingModel = state.uploadingModels
+    .filter(model => model.fileId === fileId)[0]
   const areAllUploadsFinished = state.numberOfUploads === 1
+
+  if (error) {
+    return {
+      ...state,
+      areAllUploadsFinished,
+      numberOfUploads: state.numberOfUploads - 1,
+      uploadingModels: updateModels({
+        progress: 1,
+        error
+      })
+    }
+  }
 
   return {
     ...state,
     areAllUploadsFinished,
     numberOfUploads: state.numberOfUploads - 1,
-    models: updateModels({
+    uploadingModels: updateModels({
       progress: 1,
-      modelId,
-      error
-    })
+      uploadFinished: 1,
+      modelId
+    }),
+    models: {
+      ...state.models,
+      [modelId]: {
+        ...uploadingModel,
+        modelId
+      }
+    }
   }
 }
 
-function handleCheckStatusStarted (state, {payload: {fileId}}) {
-  const updateModels = update(state.models, model => model.fileId === fileId)
-
+function handleCheckStatusStarted (state, {payload: {modelId}}) {
   return {
     ...state,
-    models: updateModels({
-      checkStatusFinished: false
-    })
+    models: {
+      ...state.models,
+      [modelId]: {
+        ...state.models[modelId],
+        checkStatusFinished: false
+      }
+    }
   }
 }
 
-function handleCheckStatusFinished (state, {payload: {fileId, error}}) {
-  const updateModels = update(state.models, model => model.fileId === fileId)
-
+function handleCheckStatusFinished (state, {payload: {modelId, error}}) {
   return {
     ...state,
-    models: updateModels({
-      checkStatusFinished: true,
-      error
-    })
+    models: {
+      ...state.models,
+      [modelId]: {
+        ...state.models[modelId],
+        checkStatusFinished: true,
+        error
+      }
+    }
   }
 }
 
@@ -82,4 +109,3 @@ export default handleActions({
   [TYPE.MODEL.CHECK_STATUS_STARTED]: handleCheckStatusStarted,
   [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished
 }, initialState)
-

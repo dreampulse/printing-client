@@ -1,6 +1,7 @@
 import React from 'react'
 import {chain} from 'ramda'
 import {connect} from 'react-redux'
+import {compose} from 'recompose'
 import toArray from 'lodash/toArray'
 
 import Main from '../component-legacy/main'
@@ -28,6 +29,7 @@ const Model = ({
   selectedMaterial,
   location,
   price,
+  uploadingModels,
   onSelectOffer
 }) => {
   const onUpload = (files) => {
@@ -41,6 +43,7 @@ const Model = ({
         <Button label="upload" />
       </Upload>
 
+      <pre>{JSON.stringify(uploadingModels, '', 2)}</pre>
       <pre>{JSON.stringify(models, '', 2)}</pre>
     </section>
   )
@@ -132,6 +135,7 @@ const Model = ({
 
 const mapStateToProps = state => ({
   materials: state.material.materials,
+  uploadingModels: state.model.uploadingModels,
   models: state.model.models,
   selectedMaterial: state.material.selectedMaterial,
   location: state.user.user.shippingAddress,
@@ -145,4 +149,6 @@ const mapDispatchToProps = {
   onSelectOffer: selectOffer
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Model)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps)
+)(Model)

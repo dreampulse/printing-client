@@ -5,20 +5,17 @@ import {
 } from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
-import * as priceActions from '../../../../src/app/action/price'
 
 describe('Model Integration Test', () => {
   let store
 
   beforeEach(() => {
     sinon.stub(printingEngine)
-    sinon.stub(priceActions)
     store = Store({})
   })
 
   afterEach(() => {
     sinon.restore(printingEngine)
-    sinon.restore(priceActions)
   })
 
   describe('uploadFile()', () => {
@@ -48,10 +45,17 @@ describe('Model Integration Test', () => {
         numberOfUploads: 0
       })
 
-      expect(store.getState().model.models[0], 'to satisfy', {
+      expect(store.getState().model.uploadingModels[0], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
         progress: 1,
+        uploadFinished: 1,
+        modelId: 'some-mode-id'
+      })
+
+      expect(store.getState().model.models['some-mode-id'], 'to satisfy', {
+        name: 'some-file-name',
+        size: 42,
         modelId: 'some-mode-id'
       })
     })
@@ -59,14 +63,18 @@ describe('Model Integration Test', () => {
     it('fails uploading to the backend', async () => {
       printingEngine.uploadModel.rejects(new Error())
 
-      await store.dispatch(uploadFile(file, 'some-callback'))
+      try {
+        await store.dispatch(uploadFile(file, 'some-callback'))
+      } catch (e) {
+        // do nothing
+      }
 
       expect(store.getState().model, 'to satisfy', {
         areAllUploadsFinished: true,
         numberOfUploads: 0
       })
 
-      expect(store.getState().model.models[0], 'to satisfy', {
+      expect(store.getState().model.uploadingModels[0], 'to satisfy', {
         error: true
       })
     })
@@ -78,15 +86,15 @@ describe('Model Integration Test', () => {
 
       store = Store({
         model: {
-          models: [{
-            fileId: 'some-file-id'
-          }]
+          models: {
+            'some-model-id': {}
+          }
         }
       })
 
-      await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
+      await store.dispatch(checkUploadStatus({modelId: 'some-model-id'}))
 
-      expect(store.getState().model.models[0], 'to satisfy', {
+      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         checkStatusFinished: true
       })
     })
@@ -96,16 +104,16 @@ describe('Model Integration Test', () => {
 
       store = Store({
         model: {
-          models: [{
-            fileId: 'some-file-id'
-          }]
+          models: {
+            'some-model-id': {}
+          }
         }
       })
 
       try {
-        await store.dispatch(checkUploadStatus({modelId: 'some-model-id', fileId: 'some-file-id'}))
+        await store.dispatch(checkUploadStatus({modelId: 'some-model-id'}))
       } catch (e) {
-        expect(store.getState().model.models[0], 'to satisfy', {
+        expect(store.getState().model.models['some-model-id'], 'to satisfy', {
           checkStatusFinished: true,
           error: true
         })
@@ -116,7 +124,7 @@ describe('Model Integration Test', () => {
   describe('uploadFiles()', () => {
     it('works for the success case', async () => {
       const apiResponse = {
-        modelId: 'some-mode-id'
+        modelId: 'some-model-id'
       }
       const files = [{
         name: 'some-file-name',
@@ -156,11 +164,10 @@ describe('Model Integration Test', () => {
         selectedUnit: 'mm'
       })
 
-      expect(store.getState().model.models[0], 'to satisfy', {
+      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
-        progress: 1,
-        modelId: 'some-mode-id',
+        modelId: 'some-model-id',
         checkStatusFinished: true
       })
     })

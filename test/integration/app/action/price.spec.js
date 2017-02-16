@@ -17,11 +17,10 @@ describe('Price Integration Test', () => {
     it('should work if shipping address is set', async () => {
       store = Store({
         model: {
-          models: [{
-            modelId: 'material-id-model-1'
-          }, {
-            modelId: 'material-id-model-2'
-          }]
+          models: {
+            'material-id-model-1': {},
+            'material-id-model-2': {}
+          }
         },
         material: {
           materials: {

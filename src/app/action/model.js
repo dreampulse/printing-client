@@ -1,23 +1,23 @@
 import {createAction} from 'redux-actions'
 import uniqueId from 'lodash/uniqueId'
-import {compose} from 'ramda'
 
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
-import {createPriceRequest} from '../action/price'
+import {createPriceRequest} from './price'
 
 import TYPE from '../type'
 
-export const checkUploadStatus = ({modelId, fileId}) => async (dispatch) => {
-  dispatch(createAction(TYPE.MODEL.CHECK_STATUS_STARTED)({fileId}))
+export const checkUploadStatus = ({modelId}) => async (dispatch) => {
+  dispatch(createAction(TYPE.MODEL.CHECK_STATUS_STARTED)({modelId}))
 
   try {
     await pollApi(() => printingEngine.getUploadStatus({modelId}))
-    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({fileId}))
-    await dispatch(createPriceRequest())
+    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({modelId}))
   } catch (e) {
-    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({fileId, error: true}))
+    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({modelId, error: true}))
   }
+
+  // await dispatch(createPriceRequest())  // todo: move down
 }
 
 export const uploadFile = file => async (dispatch, getState) => {
@@ -36,12 +36,20 @@ export const uploadFile = file => async (dispatch, getState) => {
   try {
     const {modelId} = await printingEngine.uploadModel(file, {unit}, onUploadProgressed)
     dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({modelId, fileId}))
-    await dispatch(checkUploadStatus({modelId, fileId}))
+    return {modelId}
+    // await dispatch(checkUploadStatus({modelId}))
   } catch (e) {
     dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({fileId, error: true}))
+    throw new Error()
   }
 }
 
 export const uploadFiles = files => async (dispatch) => {
-  await Promise.all(files.map(compose(dispatch, uploadFile)))
+  await Promise.all(
+    files.map(async (file) => {
+      const {modelId} = await dispatch(uploadFile(file))
+      await dispatch(checkUploadStatus({modelId}))
+      await dispatch(createPriceRequest())
+    })
+  )
 }

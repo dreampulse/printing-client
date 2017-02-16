@@ -47,11 +47,14 @@ describe('Shopping Cart Integration Test', () => {
           selectedMaterial: 'some-material-id'
         },
         model: {
-          models: [{
-            modelId: 'some-model-id'
-          }, {
-            modelId: 'some-other-model-id'
-          }]
+          models: {
+            'some-model-id': {
+              modelId: 'some-model-id'
+            },
+            'some-other-model-id': {
+              modelId: 'some-other-model-id'
+            }
+          }
         },
         price: {
           priceId: 'some-price-id'
