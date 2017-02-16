@@ -16,8 +16,6 @@ export const checkUploadStatus = ({modelId}) => async (dispatch) => {
   } catch (e) {
     dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({modelId, error: true}))
   }
-
-  // await dispatch(createPriceRequest())  // todo: move down
 }
 
 export const uploadFile = file => async (dispatch, getState) => {
@@ -37,7 +35,6 @@ export const uploadFile = file => async (dispatch, getState) => {
     const {modelId} = await printingEngine.uploadModel(file, {unit}, onUploadProgressed)
     dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({modelId, fileId}))
     return {modelId}
-    // await dispatch(checkUploadStatus({modelId}))
   } catch (e) {
     dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({fileId, error: true}))
     throw new Error()
