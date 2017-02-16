@@ -14,6 +14,7 @@ export const createOrderWithStripe = () => async (dispatch, getState) => {
 
   const {currency} = cart
   const email = 'test@test.test'
+   // TODO: The cart should provide the total amount
   const amount = getCartAmount(cart)
 
   const tokenObject = await stripe.checkout({amount, currency, email})

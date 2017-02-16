@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
-// import {find, propEq} from 'ramda'
+import {selectCartItems, selectCart} from '../lib/selector'
 
 import Main from '../component-legacy/main'
 import Button from '../component-legacy/button'
@@ -18,34 +18,51 @@ import {changeQuantity, createShoppingCart} from '../action/cart'
 import {createOrderWithStripe, initPaymentWithPaypal} from '../action/order'
 
 const Cart = ({
-  models,
-  price,
+  cartItems,
+  cart,
   selectedShipping,
   selectedVendor,
+  selectedMaterial,
   onGoBack,
   onOrderWithStripe
   // onPayWithPaypal,
   // onOrderWithPaypal
 }) => {
-  const pricesFromVendor = price.printingService[selectedVendor]
-
-  // const shipping = find(propEq('name', selectedVendor))(pricesFromVendor.shipping)
-  // const priceItemByModelId = pricesFromVendor.items
-  //   .reduce((acc, cur) => ({...acc, [cur.modelId]: cur}), {})
-  //
-
   const CartPreviewSection = () => (
     <Table
       head={[
         <TableHeadCell key={0}>Model Name</TableHeadCell>,
-        <TableHeadCell key={1}>Price excl. shipping</TableHeadCell>
+        <TableHeadCell key={1}>Price excl. shipping</TableHeadCell>,
+        <TableHeadCell key={2}>Quantity</TableHeadCell>,
+        <TableHeadCell key={3}>Raw</TableHeadCell>
       ]}
-      rows={Object.keys(models).map(modelId => models[modelId]).map(model =>
-        <TableRow key={model.modelId}>
-          <TableCell>{model.name}</TableCell>
-          <TableCell><pre>{JSON.stringify(pricesFromVendor.items, '', 2)}</pre></TableCell>
+      rows={cartItems.map(item =>
+        <TableRow key={item.modelId}>
+          <TableCell>{item.name}</TableCell>
+          <TableCell>{item.price} {cart.currency}</TableCell>
+          <TableCell>{item.quantity}</TableCell>
+          <TableCell><pre>{JSON.stringify(item, '', 2)}</pre></TableCell>
         </TableRow>
       )}
+    />
+  )
+
+  const TotalPriceSection = () => (
+    <Table
+      head={[
+        <TableHeadCell key={0}>Sub Total</TableHeadCell>,
+        <TableHeadCell key={1}>Shipping</TableHeadCell>,
+        <TableHeadCell key={2}>VAT</TableHeadCell>,
+        <TableHeadCell key={3}>Total</TableHeadCell>
+      ]}
+      rows={[
+        <TableRow key={0}>
+          <TableCell>{cart.subTotal}</TableCell>
+          <TableCell>{cart.shippingTotal}</TableCell>
+          <TableCell>{cart.vatTotal}</TableCell>
+          <TableCell>{cart.totalPrice}</TableCell>
+        </TableRow>
+      ]}
     />
   )
 
@@ -72,17 +89,20 @@ const Cart = ({
       <ul>
         <li>Selected Vendor: {selectedVendor}</li>
         <li>Selected Shipping Method: {selectedShipping}</li>
+        <li>Selected Material-Id: {selectedMaterial}</li>
       </ul>
+      <TotalPriceSection />
       <PaymentSection />
     </Main>
   )
 }
 
 const mapStateToProps = state => ({
-  models: state.model.models,
-  price: state.price.price,
+  cartItems: selectCartItems(state),
+  cart: selectCart(state),  // TODO: change this to: state.cart.cart
   selectedVendor: state.cart.selectedVendor,
-  selectedShipping: state.cart.selectedShipping
+  selectedShipping: state.cart.selectedShipping,
+  selectedMaterial: state.material.selectedMaterial
 })
 
 const mapDispatchToProps = {
