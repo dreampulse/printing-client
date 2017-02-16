@@ -6,7 +6,7 @@ import {selectCartItems, selectCart} from '../lib/selector'
 import Main from '../component-legacy/main'
 import Button from '../component-legacy/button'
 import Headline from '../component-legacy/headline'
-// import PaypalButton from '../component-legacy/paypal-button'
+import PaypalButton from '../component-legacy/paypal-button'
 import SectionHeadline from '../component-legacy/section-headline'
 import Table from '../component-legacy/table'
 import TableHeadCell from '../component-legacy/table-head-cell'
@@ -15,18 +15,19 @@ import TableCell from '../component-legacy/table-cell'
 
 import {goBack} from '../action/navigation'
 import {changeQuantity, createShoppingCart} from '../action/cart'
-import {createOrderWithStripe, initPaymentWithPaypal} from '../action/order'
+import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from '../action/order'
 
 const Cart = ({
   cartItems,
   cart,
+  user,
   selectedShipping,
   selectedVendor,
   selectedMaterial,
   onGoBack,
-  onOrderWithStripe
-  // onPayWithPaypal,
-  // onOrderWithPaypal
+  onOrderWithStripe,
+  onPayWithPaypal,
+  onOrderWithPaypal
 }) => {
   const CartPreviewSection = () => (
     <Table
@@ -70,14 +71,21 @@ const Cart = ({
     <section>
       <SectionHeadline label="Payment" />
       <Button label="Pay with Stripe" onClick={onOrderWithStripe} />
-      {/*
-        <PaypalButton
-          payment={onPayWithPaypal}
-          onAuthorize={onOrderWithPaypal}
-          onCancel={() => console.log('Payment canceled')}
-          onError={() => console.log('Payment failed')}
-        />
-       */}
+      <PaypalButton
+        onPayment={onPayWithPaypal}
+        onAuthorize={onOrderWithPaypal}
+        onCancel={() => {}}
+        onError={() => {}}
+      />
+    </section>
+  )
+
+  const AddressSection = () => (
+    <section>
+      <SectionHeadline label="Shipping Address" />
+      <pre>{JSON.stringify(user.shippingAddress, '', 2)}</pre>
+      <SectionHeadline label="Billing Address" />
+      <pre>{JSON.stringify(user.billingAddress, '', 2)}</pre>
     </section>
   )
 
@@ -91,6 +99,7 @@ const Cart = ({
         <li>Selected Shipping Method: {selectedShipping}</li>
         <li>Selected Material-Id: {selectedMaterial}</li>
       </ul>
+      <AddressSection />
       <TotalPriceSection />
       <PaymentSection />
     </Main>
@@ -102,13 +111,15 @@ const mapStateToProps = state => ({
   cart: selectCart(state),  // TODO: change this to: state.cart.cart
   selectedVendor: state.cart.selectedVendor,
   selectedShipping: state.cart.selectedShipping,
-  selectedMaterial: state.material.selectedMaterial
+  selectedMaterial: state.material.selectedMaterial,
+  user: state.user.user
 })
 
 const mapDispatchToProps = {
   onGoBack: goBack,
   onChangeQuantity: changeQuantity,
   onOrderWithStripe: createOrderWithStripe,
+  onOrderWithPaypal: createOrderWithPaypal,
   onPayWithPaypal: initPaymentWithPaypal,
   onCreateShoppingCart: createShoppingCart
 }
