@@ -1,6 +1,6 @@
 import config from '../../../config'
 
-const paypal = global.paypal
+export const paypal = global.paypal
 
 export function createPayment ({amount, currency, cartId}) {
   const env = config.paypal.env

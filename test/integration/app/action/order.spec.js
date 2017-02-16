@@ -29,6 +29,11 @@ describe('Shopping Cart Integration Test', () => {
           vatPercentage: 0.5
         },
         cartId: 'some-cart-id'
+      },
+      user: {
+        user: {
+          emailAddress: 'em@il.com'
+        }
       }
     })
 
@@ -56,7 +61,7 @@ describe('Shopping Cart Integration Test', () => {
       expect(stripe.checkout, 'was called with', {
         amount: 52.5,
         currency: 'some-currency',
-        email: 'test@test.test'
+        email: 'em@il.com'
       })
     })
   })

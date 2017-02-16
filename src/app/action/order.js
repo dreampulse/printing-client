@@ -7,13 +7,11 @@ import * as printingEngine from '../lib/printing-engine'
 import {getCartAmount} from '../lib/get-total-amount'
 
 export const createOrderWithStripe = () => async (dispatch, getState) => {
-  // TODO: createShoppingCart()
-
   const cart = getState().cart.cart
   const cartId = getState().cart.cartId
 
   const {currency} = cart
-  const email = 'test@test.test'
+  const email = getState().user.user.emailAddress
    // TODO: The cart should provide the total amount
   const amount = getCartAmount(cart)
 
