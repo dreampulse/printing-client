@@ -1,0 +1,37 @@
+.radio-button {
+  @include scut-truncate();
+  display: block;
+  background-color: $color-white;
+  height: $field-height;
+  line-height: $field-height;
+  padding: 0 15px;
+  text-align: center;
+
+  &:hover {
+    background-color: $color-gray-4;
+  }
+
+  &[aria-checked="true"] {
+    background-color: $color-primary;
+    color: $color-invert-text;
+  }
+
+  &[aria-disabled="true"] {
+    background-color: $color-disabled;
+    cursor: not-allowed;
+    color: darken($color-disabled, 30);
+
+    &:hover {
+      background-color: $color-disabled;
+    }
+  }
+
+  &[aria-checked="true"].radio-button[aria-disabled="true"] {
+    background-color: darken($color-primary, 10);
+    color: $color-invert-text;
+  }
+
+  &__input {
+    display: none;
+  }
+}
