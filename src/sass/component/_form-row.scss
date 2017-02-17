@@ -12,5 +12,37 @@
         }
       }
     }
+
+    &--small-large {
+      @include span(12);
+
+      &:first-child {
+        @include respond-to(medium) {
+          @include span(3);
+        }
+      }
+
+      &:last-child {
+        @include respond-to(medium) {
+          @include span(9);
+        }
+      }
+    }
+
+    &--large-small {
+      @include span(12);
+
+      &:first-child {
+        @include respond-to(medium) {
+          @include span(9);
+        }
+      }
+
+      &:last-child {
+        @include respond-to(medium) {
+          @include span(3);
+        }
+      }
+    }
   }
 }

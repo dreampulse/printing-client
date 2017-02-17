@@ -26,3 +26,19 @@ storiesOf('Form Row', module)
       </FormRow>
     </FormLayout>
   ))
+  .add('small-large', () => (
+    <FormLayout>
+      <FormRow modifiers={['small-large']}>
+        <div>{column}</div>
+        <div>{column}</div>
+      </FormRow>
+    </FormLayout>
+  ))
+  .add('large-small', () => (
+    <FormLayout>
+      <FormRow modifiers={['large-small']}>
+        <div>{column}</div>
+        <div>{column}</div>
+      </FormRow>
+    </FormLayout>
+  ))
