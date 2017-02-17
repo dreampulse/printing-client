@@ -1,5 +1,9 @@
 .select-menu {
-  max-height: 250px;
+  $max-height: 250px;
+  $max-height-l: 500px;
+  $min-width-l: 400px;
+
+  max-height: $max-height;
   overflow-y: auto;
   padding: $space-base 0;
   margin: 0;
@@ -9,5 +13,10 @@
 
   &__item {
     display: block;
+  }
+
+  &--l {
+    min-width: $min-width-l;
+    max-height: $max-height-l;
   }
 }

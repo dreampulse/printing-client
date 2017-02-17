@@ -15,6 +15,27 @@ const colorValues = [
   {value: 'item5', colorImage: 'http://placehold.it/40x40', label: 'Color 5'}
 ]
 
+const materialChildren = prefix => range(1, 10)
+  .map(i => ({
+    type: 'material',
+    value: `${prefix}-item${i}`,
+    label: `Select Menu Item ${i}`,
+    hasColor: true,
+    price: 'From $19.99'
+  }))
+const materialValues = [{
+  value: 'regular-item1',
+  label: 'Regular Item'
+}, {
+  type: 'group',
+  label: 'Group Item 1',
+  children: materialChildren('group1')
+}, {
+  type: 'group',
+  label: 'Group Item 2',
+  children: materialChildren('group2')
+}]
+
 storiesOf('Select Menu', module)
   .add('default', () => (
     <SelectMenu
@@ -23,11 +44,26 @@ storiesOf('Select Menu', module)
       onClick={action('click')}
     />
   ))
+  .add('large', () => (
+    <SelectMenu
+      modifiers={['l']}
+      values={values}
+      selectedValue="item2"
+      onClick={action('click')}
+    />
+  ))
   .add('color', () => (
     <SelectMenu
-      modifiers={['color']}
       values={colorValues}
       selectedValue="item2"
+      onClick={action('click')}
+    />
+  ))
+  .add('material', () => (
+    <SelectMenu
+      modifiers={['l']}
+      values={materialValues}
+      selectedValue="group1-item2"
       onClick={action('click')}
     />
   ))
