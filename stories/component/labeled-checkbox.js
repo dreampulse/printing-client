@@ -1,22 +1,22 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
-import LabledCheckbox from '../../src/app/component/labled-checkbox'
+import LabeledCheckbox from '../../src/app/component/labeled-checkbox'
 import HandleChecked from '../util/handle-checked'
 
-storiesOf('Labled Checkbox', module)
+storiesOf('Labeled Checkbox', module)
   .add('default', () => (
     <HandleChecked>
-      <LabledCheckbox label="Label" onChange={action('onChange')} />
+      <LabeledCheckbox label="Label" onChange={action('onChange')} />
     </HandleChecked>
   ))
   .add('checked', () => (
     <HandleChecked checked>
-      <LabledCheckbox label="Label" />
+      <LabeledCheckbox label="Label" />
     </HandleChecked>
   ))
   .add('error', () => (
     <HandleChecked checked>
-      <LabledCheckbox modifiers={['error']} label="Label" />
+      <LabeledCheckbox modifiers={['error']} label="Label" />
     </HandleChecked>
   ))
