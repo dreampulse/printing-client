@@ -3,7 +3,7 @@ import uniqueId from 'lodash/uniqueId'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
-import InputCheckbox from './input-checkbox'
+import CheckboxField from './checkbox-field'
 
 const LabledCheckbox = ({
   classNames,
@@ -17,7 +17,7 @@ const LabledCheckbox = ({
   const inputModifiers = [{error: modifiers.indexOf('error') > -1}]
   return (
     <div className={buildClassName('labled-checkbox', modifiers, classNames)}>
-      <InputCheckbox
+      <CheckboxField
         name={name}
         modifiers={inputModifiers}
         id={id}
