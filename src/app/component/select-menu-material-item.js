@@ -6,7 +6,6 @@ import buildClassName from '../lib/build-class-name'
 import Icon from './icon'
 
 import selectedIcon from '../../asset/icon/selected.svg'
-import hasColorIcon from '../../asset/icon/placeholder.svg'
 
 const getLabel = ({value, label}) => (label || value)
 
@@ -24,7 +23,10 @@ const SelectMenuMaterialItem = ({
 
   const finalModifier = [
     ...modifiers,
-    {selected}
+    {
+      selected,
+      'has-color': value.hasColor
+    }
   ]
 
   return (
@@ -35,9 +37,7 @@ const SelectMenuMaterialItem = ({
     >
       {selected && <Icon source={selectedIcon} />}
       <span className="select-menu-material-item__label">{getLabel(value)}</span>
-      <span className="select-menu-material-item__color">
-        {Boolean(value.hasColor) && <Icon source={hasColorIcon} />}
-      </span>
+      <span className="select-menu-material-item__color" />
       <span className="select-menu-material-item__price">{value.price}</span>
     </button>
   )

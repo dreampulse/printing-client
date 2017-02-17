@@ -23,7 +23,7 @@ const SelectMenu = ({classNames, modifiers, values, selectedValue, onClick = () 
       values.map((value) => {
         const Item = getMenuItem(value.type)
         return (
-          <li className="select-menu__item" key={value.value}>
+          <li className="select-menu__item" key={value.value || value.label}>
             <Item
               value={value}
               selected={selectedValue === value.value}

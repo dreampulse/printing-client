@@ -43,4 +43,16 @@
   &:hover:not(.select-menu-material-item--selected) {
     background: $color-gray-4;
   }
+
+  &--has-color {
+    .select-menu-material-item__color:after {
+      content: '';
+      display: inline-block;
+      width: 1.5em;
+      height: 1.5em;
+      vertical-align: middle;
+      background: url(../asset/image/color.png) center center no-repeat;
+      background-size: contain;
+    }
+  }
 }

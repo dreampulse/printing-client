@@ -21,7 +21,7 @@ const SelectMenuGroupItem = ({classNames, modifiers, value, selectedValue, onCli
         value.children.map((child) => {
           const Item = getMenuItem(child.type)
           return (
-            <li className="select-menu-group-item__item">
+            <li className="select-menu-group-item__item" key={child.value}>
               <Item
                 value={child}
                 selected={child.value === selectedValue}
