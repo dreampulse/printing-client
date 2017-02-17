@@ -5,7 +5,7 @@ import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 import CheckboxField from './checkbox-field'
 
-const LabledCheckbox = ({
+const LabeledCheckbox = ({
   classNames,
   modifiers = [],
   checked,
@@ -16,7 +16,7 @@ const LabledCheckbox = ({
   const id = uniqueId('uid-')
   const inputModifiers = [{error: modifiers.indexOf('error') > -1}]
   return (
-    <div className={buildClassName('labled-checkbox', modifiers, classNames)}>
+    <div className={buildClassName('labeled-checkbox', modifiers, classNames)}>
       <CheckboxField
         name={name}
         modifiers={inputModifiers}
@@ -24,12 +24,12 @@ const LabledCheckbox = ({
         checked={checked}
         onChange={onChange}
       />
-      <label htmlFor={id} className="labled-checkbox__label">{label}</label>
+      <label htmlFor={id} className="labeled-checkbox__label">{label}</label>
     </div>
   )
 }
 
-LabledCheckbox.propTypes = {
+LabeledCheckbox.propTypes = {
   ...propTypes.component,
   checked: React.PropTypes.bool,
   label: React.PropTypes.string.isRequired,
@@ -37,4 +37,4 @@ LabledCheckbox.propTypes = {
   name: React.PropTypes.string
 }
 
-export default LabledCheckbox
+export default LabeledCheckbox
