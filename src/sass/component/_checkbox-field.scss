@@ -1,4 +1,4 @@
-.input-checkbox {
+.checkbox-field {
   $checkbox-size: 20px;
 
   display: inline-block;
@@ -21,17 +21,17 @@
     cursor: pointer;
     border-radius: $border-radius / 2;
 
-    &:invalid ~ .input-checkbox__checked-icon{
+    &:invalid ~ .checkbox-field__checked-icon{
       border-color: $color-error;
       box-shadow: $box-shadow-error;
     }
 
-    &:focus ~ .input-checkbox__checked-icon{
+    &:focus ~ .checkbox-field__checked-icon{
       border-color: $color-field-focus;
       box-shadow: $box-shadow-focus;
     }
 
-    &:active ~ .input-checkbox__checked-icon{
+    &:active ~ .checkbox-field__checked-icon{
       box-shadow: $box-shadow-active;
     }
   }
@@ -47,7 +47,7 @@
   }
 
   &--checked {
-    .input-checkbox__checked-icon {
+    .checkbox-field__checked-icon {
       color: $color-text;
     }
   }
@@ -57,8 +57,8 @@
     box-shadow: $box-shadow-error;
   }
 
-  &--error.input-checkbox--checked, {
-    .input-checkbox__checked-icon {
+  &--error.checkbox-field--checked, {
+    .checkbox-field__checked-icon {
       color: $color-error;
     }
   }
