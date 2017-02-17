@@ -4,7 +4,7 @@
   padding-left: 30px;
   line-height: $field-height;
 
-  & > .input-checkbox {
+  & > .checkbox-field {
     @include scut-center-transform(y);
     left: 0;
   }

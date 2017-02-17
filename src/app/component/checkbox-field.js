@@ -5,7 +5,7 @@ import buildClassName from '../lib/build-class-name'
 import Icon from './icon'
 import checkIcon from '../../asset/icon/selected.svg'
 
-const InputCheckbox = ({
+const CheckboxField = ({
   classNames,
   modifiers = [],
   checked,
@@ -20,16 +20,16 @@ const InputCheckbox = ({
   }
 
   return (
-    <div className={buildClassName('input-checkbox', checkboxModifiers, classNames)}>
-      <input name={name} id={id} className="input-checkbox__input" type="checkbox" onChange={onChange} />
-      <div className="input-checkbox__checked-icon">
+    <div className={buildClassName('checkbox-field', checkboxModifiers, classNames)}>
+      <input name={name} id={id} className="checkbox-field__input" type="checkbox" onChange={onChange} />
+      <div className="checkbox-field__checked-icon">
         <Icon source={checkIcon} />
       </div>
     </div>
   )
 }
 
-InputCheckbox.propTypes = {
+CheckboxField.propTypes = {
   ...propTypes.component,
   checked: React.PropTypes.bool,
   label: React.PropTypes.string,
@@ -38,4 +38,4 @@ InputCheckbox.propTypes = {
   onChange: React.PropTypes.func
 }
 
-export default InputCheckbox
+export default CheckboxField

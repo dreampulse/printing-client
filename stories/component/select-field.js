@@ -17,8 +17,30 @@ const colorValues = [
   {value: 'value5', colorImage: 'http://placehold.it/40x40', label: 'Color 5'}
 ]
 
+const materialChildren = prefix => range(1, 10)
+  .map(i => ({
+    type: 'material',
+    value: `${prefix}-item${i}`,
+    label: `Select Menu Item ${i}`,
+    hasColor: true,
+    price: 'From $19.99'
+  }))
+const materialValues = [{
+  value: 'regular-item1',
+  label: 'Regular Item'
+}, {
+  type: 'group',
+  label: 'Group Item 1',
+  children: materialChildren('group1')
+}, {
+  type: 'group',
+  label: 'Group Item 2',
+  children: materialChildren('group2')
+}]
+
 const menu = <SelectMenu values={values} />
-const colorMenu = <SelectMenu modifiers={['color']} values={colorValues} />
+const colorMenu = <SelectMenu values={colorValues} />
+const materialMenu = <SelectMenu modifiers={['l']} values={materialValues} />
 
 storiesOf('Select Field', module)
   .add('default', () => (
@@ -69,4 +91,12 @@ storiesOf('Select Field', module)
       modifiers={['compact']}
       value={{value: 'item2', colorValue: 'ff0000', label: 'Constant Select Field'}}
     />
+  ))
+  .add('material', () => (
+    <HandleValue>
+      <SelectField
+        placeholder="Placeholder"
+        menu={materialMenu}
+      />
+    </HandleValue>
   ))

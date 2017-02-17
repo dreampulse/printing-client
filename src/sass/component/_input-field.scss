@@ -54,7 +54,7 @@
     }
 
     transform-origin: 0 50%;  // To keep the distance to the left
-    transition: transform $transition-duration-fast linear;
+    transition: transform $transition-duration-fast ease-in-out;
   }
 
   &--empty {
