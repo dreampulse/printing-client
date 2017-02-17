@@ -3,7 +3,6 @@
   position: relative;
   padding-left: 30px;
   line-height: $field-height;
-  margin-bottom: $space-base;
 
   & > .input-checkbox {
     @include scut-center-transform(y);
