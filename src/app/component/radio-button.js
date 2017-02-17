@@ -11,7 +11,7 @@ const RadioButton = ({
   label,
   value,
   checked,
-  disabled,
+  disabled = false,
   onClick = () => {}
 }) => {
   const buttonId = uniqueId('radio-button-')

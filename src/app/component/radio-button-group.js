@@ -10,7 +10,7 @@ const RadioButtonGroup = ({
   children,
   name,
   value,
-  disabled,
+  disabled = false,
   onChange = () => {}
 }) => {
   const onClick = (event) => {
