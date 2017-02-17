@@ -28,8 +28,10 @@ $color-gray-4: #f0f0f0;
 $color-blue-dark: #122732;
 $color-blue: #0277bd;
 $color-blue-light: #03a2d8;
+$color-blue-very-light: #cce4f2;
 $color-yellow: #f6a623;
 $color-red: #ca0f0f;
+$color-red-light: #fcd1d1;
 $color-green: #559c03;
 $color-white: #ffffff;
 $color-black: #000000;
@@ -102,8 +104,10 @@ $mediaqueries: (
 // ---------------------------------------------------
 
 $field-height: 50px;
+$compact-field-height: 40px;
 $border-radius: 5px;
 $model-item-height: 127px;
+$color-square-size: 20px;
 
 $box-shadow-base: 1px 1px 3px 0 rgba(0, 0, 0, 0.2);
 $box-shadow-active: 1px 1px 6px 0 rgba(0, 0, 0, 0.4);
@@ -112,3 +116,5 @@ $box-shadow-error: 0px 0px 4px 0 $color-error;
 
 $transition-duration: .4s;
 $transition-duration-fast: .15s;
+
+$global-stacking: app, select-menu;
