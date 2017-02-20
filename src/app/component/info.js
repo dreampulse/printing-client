@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, PropType} from 'react'
 import Portal from 'react-portal'
 import ReactDOM from 'react-dom'
 
@@ -10,7 +10,8 @@ import Tooltip from './tooltip'
 export default class Info extends Component {
 
   static propTypes = {
-    ...propTypes.component
+    ...propTypes.component,
+    children: PropType.node
   }
 
   state = {
