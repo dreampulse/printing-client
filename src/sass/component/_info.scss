@@ -1,0 +1,29 @@
+.info {
+  $info-size: 1em;
+  position: relative;
+
+  position: relative;
+  border: 1px solid $color-blue;
+  border-radius: 50%;
+  color: $color-blue;
+  width: $info-size;
+  height: $info-size;
+  font-family: AmericanTypewriter, monospace;
+  outline: 0;
+
+  &:hover {
+    border: 1px solid $color-blue-light;
+    color: $color-blue-light;
+  }
+
+  &:before {
+    @include scut-center-transform();
+    font-size: .8em;
+    font-weight: $font-weight-bold;
+    content: 'i';
+  }
+
+  &__tooltip {
+    position: absolute;
+  }
+}

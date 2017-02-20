@@ -1,0 +1,31 @@
+.price {
+  $price-height: 30px;
+
+  line-height: $price-height;
+  height: $price-height;
+  margin-bottom: $space-base;
+
+  &__value {
+    @include scut-truncate();
+    font-size: $font-size-l;
+    font-weight: $font-weight-bold;
+  }
+
+  &__loading {
+    color: $color-minor;
+    font-style: italic;
+
+    & > .loading-indicator {
+      font-size: $price-height;
+      margin-right: $space-s;
+    }
+  }
+
+  &__meta {
+    color: $color-minor;
+    font-style: italic;
+    font-size: $font-size-base;
+    font-weight: $font-weight-regular;
+    margin-left: $space-s;
+  }
+}
