@@ -1,4 +1,4 @@
-import React, {Component, PropType} from 'react'
+import React, {Component, PropTypes} from 'react'
 import Portal from 'react-portal'
 import ReactDOM from 'react-dom'
 
@@ -11,7 +11,7 @@ export default class Info extends Component {
 
   static propTypes = {
     ...propTypes.component,
-    children: PropType.node
+    children: PropTypes.node
   }
 
   state = {

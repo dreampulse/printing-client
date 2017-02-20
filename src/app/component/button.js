@@ -16,7 +16,7 @@ const Button = ({
   disabled = false,
   onClick = () => {}
 }) => {
-  const finalIcon = modifiers.indexOf && modifiers.indexOf('selected') >= 0 || modifiers.selected ? selectedIcon : icon
+  const finalIcon = modifiers.indexOf('selected') >= 0 ? selectedIcon : icon
 
   return (
     <button
