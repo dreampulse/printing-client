@@ -4,6 +4,10 @@
   color: $color-invert-text;
   text-align: center;
 
+  &__grid {
+    @include grid;
+  }
+
   &__copyline {
     @include span(12);
     margin-bottom: $space-base;
