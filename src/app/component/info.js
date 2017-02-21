@@ -19,13 +19,30 @@ export default class Info extends Component {
     openRight: false
   }
 
-  onInfoClick = () => {
+  componentWillUnmount () {
+    if (this.timeout) clearTimeout(this.timeout)
     this.setState({
-      tooltipOpen: !this.state.tooltipOpen
+      tooltipOpen: false
     })
   }
 
+  onInfoEnter = () => {
+    if (this.timeout) clearTimeout(this.timeout)
+    this.setState({
+      tooltipOpen: true
+    })
+  }
+
+  onInfoLeave = () => {
+    this.timeout = setTimeout(() => {
+      this.setState({
+        tooltipOpen: false
+      })
+    }, 2000)
+  }
+
   onTooltipClose = () => {
+    if (this.timeout) clearTimeout(this.timeout)
     this.setState({
       tooltipOpen: false
     })
@@ -48,7 +65,7 @@ export default class Info extends Component {
     this.setState({
       style: {
         left,
-        top: infoSize.top + infoSize.height / 2
+        top: infoSize.top + infoSize.height / 2 + global.scrollY
       },
       openRight
     })
@@ -57,7 +74,11 @@ export default class Info extends Component {
   render () {
     const tooltipStyle = {}
     return (
-      <button onClick={this.onInfoClick} className={buildClassName('info', this.props.modifiers, this.props.classNames)}>
+      <button
+        onMouseEnter={this.onInfoEnter}
+        onMouseLeave={this.onInfoLeave}
+        className={buildClassName('info', this.props.modifiers, this.props.classNames)}
+      >
         <Portal
           closeOnEsc
           closeOnOutsideClick
@@ -83,5 +104,4 @@ export default class Info extends Component {
       </button>
     )
   }
-
 }

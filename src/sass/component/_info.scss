@@ -2,10 +2,9 @@
   $info-size: 1em;
   position: relative;
 
-  position: relative;
-  border: 1px solid $color-blue;
+  border: 1px solid $color-primary;
   border-radius: 50%;
-  color: $color-blue;
+  color: $color-primary;
   width: $info-size;
   height: $info-size;
   font-family: AmericanTypewriter, monospace;
@@ -24,6 +23,7 @@
   }
 
   &__tooltip {
+    z-index: z($global-stacking, tooltip);
     position: absolute;
   }
 }

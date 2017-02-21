@@ -9,12 +9,10 @@
   padding: $space-l;
   color: $color-tooltip-text;
   border-radius: $border-radius;
-  transform: translateY(-50% )translateX($arrow-width);
+  transform: translateY(-50% ) translateX($arrow-width);
 
-  & > * {
-    &:last-child {
-      margin-bottom: 0;
-    }
+  & > :last-child {
+    margin-bottom: 0;
   }
 
   &:before {

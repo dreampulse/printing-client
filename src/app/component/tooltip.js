@@ -11,9 +11,7 @@ const Tooltip = ({classNames, modifiers, children}) => (
 
 Tooltip.propTypes = {
   ...propTypes.component,
-  children: PropTypes.arrayOf(
-    PropTypes.node
-  )
+  children: PropTypes.node
 }
 
 export default Tooltip
