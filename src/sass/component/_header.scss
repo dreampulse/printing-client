@@ -8,6 +8,10 @@
   font-size: $font-size-l;
   font-weight: $font-weight-light;
 
+  &__grid {
+    @include grid;
+  }
+
   &__identity {
     @include span(12);
     @include scut-clearfix;

@@ -4,14 +4,13 @@ import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
 import Container from './container'
-import Grid from './grid'
 
 import logoImage from '../../asset/image/logo.svg'
 
 const Header = ({classNames, modifiers, children}) => (
   <header className={buildClassName('header', modifiers, classNames)}>
     <Container>
-      <Grid>
+      <div className="header__grid">
         <div className="header__identity">
           <img className="header__logo" src={logoImage} alt="All3DP" />
           <strong className="header__subline">
@@ -22,7 +21,7 @@ const Header = ({classNames, modifiers, children}) => (
         <div className="header__content">
           {children}
         </div>
-      </Grid>
+      </div>
     </Container>
   </header>
 )
