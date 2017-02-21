@@ -72,7 +72,6 @@ export default class Info extends Component {
   }
 
   render () {
-    const tooltipStyle = {}
     return (
       <button
         onMouseEnter={this.onInfoEnter}
@@ -95,7 +94,6 @@ export default class Info extends Component {
               modifiers={[{
                 right: this.state.openRight
               }]}
-              style={tooltipStyle}
             >
               {this.props.children}
             </Tooltip>
