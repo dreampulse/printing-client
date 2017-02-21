@@ -7,17 +7,17 @@ import FormRow from '../../src/app/component/form-row'
 const style = {
   backgroundColor: '#666666'
 }
-const column = (<div><div style={style}>column</div></div>)
+const column = (<div style={style}>column</div>)
 
 storiesOf('Form Layout', module)
   .add('default', () => (
     <FormLayout>
       <FormRow modifiers={['half-half']}>
-        <div>{column}</div>
-        <div>{column}</div>
+        {column}
+        {column}
       </FormRow>
       <FormRow>
-        <div>{column}</div>
+        {column}
       </FormRow>
     </FormLayout>
   ))
