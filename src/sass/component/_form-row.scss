@@ -13,7 +13,7 @@
       }
     }
 
-    &--small-large {
+    &--s-l {
       @include span(12);
 
       .form-row__column {
@@ -31,7 +31,7 @@
       }
     }
 
-    &--large-small {
+    &--l-s {
       @include span(12);
 
       .form-row__column {

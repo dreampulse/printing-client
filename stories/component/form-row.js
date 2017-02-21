@@ -28,7 +28,7 @@ storiesOf('Form Row', module)
   ))
   .add('small-large', () => (
     <FormLayout>
-      <FormRow modifiers={['small-large']}>
+      <FormRow modifiers={['s-l']}>
         {column}
         {column}
       </FormRow>
@@ -36,7 +36,7 @@ storiesOf('Form Row', module)
   ))
   .add('large-small', () => (
     <FormLayout>
-      <FormRow modifiers={['large-small']}>
+      <FormRow modifiers={['l-s']}>
         {column}
         {column}
       </FormRow>
