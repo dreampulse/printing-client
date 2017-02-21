@@ -1,0 +1,52 @@
+.header {
+  $logo-height: 50px;
+
+  padding: $space-xl 0;
+  background: $color-invert-bg;
+  background: radial-gradient(circle at 50% 50%, $color-blue-dark, #030e16);
+  color: $color-invert-text;
+  font-size: $font-size-l;
+  font-weight: $font-weight-light;
+
+  &__grid {
+    @include scut-clearfix;
+
+    margin-left: -1 * gutter();
+    margin-right: -1 * gutter();
+  }
+
+  &__identity {
+    @include span(12);
+    @include scut-clearfix;
+    margin-bottom: $space-l;
+    text-align: center;
+
+    @include respond-to(large) {
+      @include span(6);
+      margin-bottom: 0;
+      text-align: left;
+    }
+  }
+
+  &__content {
+    @include span(12);
+    @include respond-to(large) {
+      @include span(6);
+    }
+  }
+
+  &__logo {
+    display: inline-block;
+    height: $logo-height;
+    margin-right: $space-l;
+    vertical-align: middle;
+  }
+
+  &__subline {
+    display: inline-block;
+    position: relative;
+    font-weight: inherit;
+    top: -0.2em; // Align with logo
+    vertical-align: middle;
+  }
+}
