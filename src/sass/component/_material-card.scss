@@ -2,7 +2,7 @@
   // Fixed height: price + select + shipping + spacing
   $footer-height: 30px + 40px + 21px + 50px + 4 * $space-base;
 
-  max-width: 260px;
+  max-width: $screen-sm-max;
   border-radius: $border-radius;
   overflow: hidden;
 
