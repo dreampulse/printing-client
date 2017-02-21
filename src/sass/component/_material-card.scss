@@ -1,6 +1,7 @@
 .material-card {
-  // Fixed height: price + select + shipping + spacing
-  $footer-height: 30px + 40px + 21px + 50px + 4 * $space-base;
+  // Fixed height: border + price + select + shipping + spacing
+  $shipping-height: $font-size-base * $line-height-base;
+  $footer-height: 1px + 30px + 40px + $shipping-height + 50px + 4 * $space-base;
 
   max-width: $screen-sm-max;
   border-radius: $border-radius;
@@ -28,13 +29,10 @@
 
   &__header {
     border-bottom: 1px solid $color-border;
-  }
 
-  &__headline {
-    @include scut-truncate();
-    margin: 0 0 $space-base;
-    font-size: $font-size-xl;
-    line-height: $font-size-xl;
+    & > .headline {
+      @include scut-truncate();
+    }
   }
 
   &__subline {
@@ -66,14 +64,11 @@
     border-top: 1px solid $color-border;
     padding-top: $space-base;
     height: $footer-height;
+    line-height: 0;
+  }
 
-    & > * {
-      margin-bottom: $space-base;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
+  &__color {
+    margin-bottom: $space-base;
   }
 
   &__shipping {
@@ -83,7 +78,8 @@
     position: relative;
     padding: 0 $font-size-base + $space-s;
     line-height: $line-height-base;
-    height: $font-size-base * $line-height-base;
+    height: $shipping-height;
+    margin-bottom: $space-base;
 
     & > .icon {
       @include scut-center-transform(y);
