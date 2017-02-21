@@ -6,6 +6,9 @@ import MaterialCard from '../../src/app/component/material-card'
 import Price from '../../src/app/component/price'
 import SelectField from '../../src/app/component/select-field'
 import SelectMenu from '../../src/app/component/select-menu'
+import Info from '../../src/app/component/info'
+import Headline from '../../src/app/component/headline'
+import Paragraph from '../../src/app/component/paragraph'
 
 import HandleValue from '../util/handle-value'
 
@@ -26,6 +29,15 @@ const colorSelect = (
   </HandleValue>
 )
 
+const info = (
+  <Info>
+    <Headline modifiers={['s']} label="Headline" />
+    <Paragraph>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit
+    </Paragraph>
+  </Info>
+)
+
 const card = (
   <MaterialCard
     title="Polyamide"
@@ -33,6 +45,8 @@ const card = (
     subline="Solid, raw"
     description="Best all-round material"
     price={price}
+    info={info}
+    image="http://placehold.it/260x170/ff0000"
     colorSelect={colorSelect}
   />
 )
