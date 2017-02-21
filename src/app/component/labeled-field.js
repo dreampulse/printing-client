@@ -10,12 +10,8 @@ const LabeledField = ({
   children
 }) => (
   <div className={buildClassName('labeled-field', modifiers, classNames)}>
-    {/* eslint-disable jsx-a11y/label-has-for */}
-    <label>
-      <span className="labeled-field__label">{label}</span>
-      <div className="labeled-field__field">{children}</div>
-    </label>
-    {/* eslint-enable jsx-a11y/label-has-for */}
+    <span className="labeled-field__label">{label}</span>
+    <div className="labeled-field__field">{children}</div>
   </div>
 )
 
