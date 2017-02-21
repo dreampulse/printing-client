@@ -3,6 +3,7 @@
   line-height: $field-height;
 
   &__label {
+    display: inline-block;
     font-size: $font-size-l;
     color: $color-minor;
     padding-right: $space-l;

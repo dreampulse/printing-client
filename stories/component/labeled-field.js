@@ -7,7 +7,7 @@ import HandleValue from '../util/handle-value'
 
 storiesOf('Labeled Field', module)
   .add('default', () => (
-    <HandleValue initialValue={0}>
+    <HandleValue initialValue={1}>
       <LabeledField label="Label:">
         <NumberField />
       </LabeledField>

@@ -1,5 +1,4 @@
 import React, {cloneElement} from 'react'
-import uniqueId from 'lodash/uniqueId'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
@@ -13,19 +12,22 @@ const LabeledField = ({
   onChange,
   value
 }) => {
-  const id = uniqueId('uid-')
   const mappedChildren = React.Children.map(children, child => (
     cloneElement(child, {
       name: child.props.name || name,
       onChange: child.props.onChange || onChange,
-      value: child.props.value || value,
-      id
+      value: child.props.value || value
     })
   ))
+
   return (
     <div className={buildClassName('labeled-field', modifiers, classNames)}>
-      <label htmlFor={id} className="labeled-field__label">{label}</label>
-      <div className="labeled-field__field">{mappedChildren}</div>
+      {/* eslint-disable jsx-a11y/label-has-for */}
+      <label>
+        <span className="labeled-field__label">{label}</span>
+        <div className="labeled-field__field">{mappedChildren}</div>
+      </label>
+      {/* eslint-enable jsx-a11y/label-has-for */}
     </div>
   )
 }
