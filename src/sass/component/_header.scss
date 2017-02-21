@@ -8,13 +8,6 @@
   font-size: $font-size-l;
   font-weight: $font-weight-light;
 
-  &__grid {
-    @include scut-clearfix;
-
-    margin-left: -1 * gutter();
-    margin-right: -1 * gutter();
-  }
-
   &__identity {
     @include span(12);
     @include scut-clearfix;
