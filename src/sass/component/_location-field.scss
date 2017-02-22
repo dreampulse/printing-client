@@ -1,0 +1,49 @@
+.location-field {
+  $field-space: 10px;
+
+  width: 100%;
+
+  &__input {
+    display: block;
+    width: 100%;
+    height: $field-height;
+    padding: 0 $field-space;
+    border: 1px solid $color-border;
+    box-shadow: $box-shadow-base;
+    border-radius: $border-radius;
+    color: $color-text;
+    font-size: $font-size-l;
+    outline: none;
+
+    &:focus {
+      border-color: $color-field-focus;
+      box-shadow: $box-shadow-focus;
+    }
+
+    &:active {
+      box-shadow: $box-shadow-active;
+    }
+
+    &:invalid {
+      border-color: $color-error;
+      color: $color-error;
+      box-shadow: $box-shadow-error;
+    }
+
+    &:placeholder {
+      color: $color-minor;
+    }
+  }
+
+  &--error {
+    .location-field__input,
+    .location-field__input:focus {
+      border-color: $color-error;
+      color: $color-error;
+      box-shadow: $box-shadow-error;
+    }
+    .location-field__input:focus {
+      box-shadow: $box-shadow-focus;
+    }
+  }
+}

@@ -13,16 +13,14 @@ const InputField = ({
   onChange = () => {},
   name = ''
 }) => {
-  let inputFieldModifiers = modifiers
-
-  if (!value) {
-    inputFieldModifiers = [...inputFieldModifiers, 'empty']
-  }
-
+  const finalModifiers = [
+    ...modifiers,
+    {empty: !value}
+  ]
   const id = uniqueId('uid-')
 
   return (
-    <div className={buildClassName('input-field', inputFieldModifiers, classNames)}>
+    <div className={buildClassName('input-field', finalModifiers, classNames)}>
       <input name={name} id={id} className="input-field__input" type={type} value={value} onChange={onChange} />
       <label htmlFor={id} className="input-field__label">{label}</label>
     </div>
