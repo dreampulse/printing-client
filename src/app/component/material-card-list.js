@@ -5,14 +5,14 @@ import buildClassName from '../lib/build-class-name'
 
 const MaterialCardList = ({classNames, modifiers, children}) => {
   const cards = React.Children.map(children, card => (
-    <div className="material-card-list__card">
+    <li className="material-card-list__card">
       {card}
-    </div>
+    </li>
   ))
   return (
-    <div className={buildClassName('material-card-list', modifiers, classNames)}>
+    <ul className={buildClassName('material-card-list', modifiers, classNames)}>
       {cards}
-    </div>
+    </ul>
   )
 }
 

@@ -64,6 +64,5 @@ storiesOf('Material Card List', module)
         {cloneElement(card, {title: 'Polyamide 7', unavailable: true})}
         {cloneElement(card, {title: 'Polyamide 8'})}
       </MaterialCardList>
-      <div>asdfasdf</div>
     </div>
   ))
