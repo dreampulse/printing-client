@@ -38,7 +38,7 @@ export default class Info extends Component {
       this.setState({
         tooltipOpen: false
       })
-    }, 2000)
+    }, 1000)
   }
 
   onTooltipClose = () => {
