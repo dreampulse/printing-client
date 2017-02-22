@@ -1,8 +1,17 @@
 .star-rating {
   display: inline-block;
   font-size: 1.1em; // increase size to fit design
+  color: $color-yellow;
 
-  & > .icon:not(:last-child) {
-    margin-right: $space-s;
+  &__star-empty {
+    color: $color-disabled;
+  }
+
+  & > .icon {
+    vertical-align: top;
+
+    &:not(:last-child) {
+      margin-right: $space-s;
+    }
   }
 }
