@@ -1,0 +1,21 @@
+.material-card-list {
+  @include grid;
+  margin-top: 0;
+  margin-bottom: -2*gutter()+$space-base;
+  padding: 0;
+  list-style: none;
+
+  &__card {
+    @include span(12);
+    margin: 0 0 2 * gutter() 0;
+    padding: 0;
+
+    @include respond-to(medium) {
+      @include span(6);
+    }
+
+    @include respond-to(large) {
+      @include span(3);
+    }
+  }
+}
