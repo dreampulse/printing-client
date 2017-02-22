@@ -1,0 +1,11 @@
+.checked {
+  color: $color-disabled;
+
+  & > .icon {
+    font-size: 1.2em;
+  }
+
+  &--checked {
+    color: $color-green;
+  }
+}
