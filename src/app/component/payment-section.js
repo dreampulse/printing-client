@@ -26,7 +26,7 @@ const PaymentSection = ({classNames, modifiers, children, subtotal, shipping, va
     <ul className="payment-section__buttons">
       {
         React.Children.map(children, child => (
-          <li className="payment-section__button">
+          <li key={child.key} className="payment-section__button">
             {child}
           </li>
         ))
@@ -38,7 +38,7 @@ const PaymentSection = ({classNames, modifiers, children, subtotal, shipping, va
 PaymentSection.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
-  subotal: PropTypes.string.isRequired,
+  subtotal: PropTypes.string.isRequired,
   shipping: PropTypes.string.isRequired,
   vat: PropTypes.string.isRequired,
   total: PropTypes.string.isRequired
