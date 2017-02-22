@@ -1,0 +1,36 @@
+.tooltip {
+  $arrow-width: 10px;
+  $tooltip-width: 300px;
+
+  text-align: left;
+  width: $tooltip-width;
+  position: relative;
+  background: $color-tooltip-bg;
+  padding: $space-l;
+  color: $color-tooltip-text;
+  border-radius: $border-radius;
+  transform: translateY(-50%) translateX($arrow-width);
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+
+  &:before {
+    @include scut-triangle(left, $arrow-width 20px, $color-tooltip-bg);
+    transform: rotate(360deg) translateY(-50%);
+    left: -1*$arrow-width;
+    top: 50%;
+    content: ' ';
+    position: absolute;
+  }
+
+  &--right {
+    transform: translateY(-50%) translateX(-1*$tooltip-width - $arrow-width);
+    &:before {
+      @include scut-triangle(right, $arrow-width 20px, $color-tooltip-bg);
+      transform: rotate(360deg) translateY(-50%);
+      right: -1*$arrow-width;
+      left: auto;
+    }
+  }
+}
