@@ -32,7 +32,7 @@ export default class InputField extends Component {
   render () {
     const inputId = this.props.id || this.id
     const finalModifiers = [
-      ...modifiers,
+      ...this.props.modifiers,
       {empty: !this.props.value}
     ]
     return (
