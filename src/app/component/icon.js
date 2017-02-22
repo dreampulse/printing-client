@@ -5,8 +5,8 @@ import placeholder from '../../asset/icon/placeholder.svg'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
-const Icon = ({source = placeholder}) => (
-  <svg className={buildClassName('icon')}>
+const Icon = ({modifiers, classNames, source = placeholder}) => (
+  <svg className={buildClassName('icon', modifiers, classNames)}>
     <use xlinkHref={source} />
   </svg>
 )

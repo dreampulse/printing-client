@@ -1,0 +1,15 @@
+.feature-list-item {
+  @include scut-clearfix;
+  padding: 0;
+  margin: 0 0 $space-base;
+  display: block;
+
+  &__feature {
+    float: left;
+    margin-right: $space-l;
+  }
+
+  &__label {
+    float: left;
+  }
+}
