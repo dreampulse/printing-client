@@ -1,7 +1,9 @@
 .radio-button-group {
   $border-radius: 5px;
   $border: 1px solid $color-primary;
+
   display: flex;
+  box-shadow: $box-shadow-base;
 
   & > .radio-button {
     flex: 1;

@@ -5,7 +5,7 @@ import FormLayout from '../../src/app/component/form-layout'
 import FormRow from '../../src/app/component/form-row'
 
 const style = {
-  backgroundColor: '#666666'
+  backgroundColor: '#fff'
 }
 const column = (<div style={style}>column</div>)
 
