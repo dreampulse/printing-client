@@ -1,0 +1,33 @@
+.provider-list {
+  width: 100%;
+  margin: 0 0 $space-base;
+  table-layout: fixed;
+  border-collapse: collapse;
+
+  &__header {
+    background: $color-invert-bg;
+    color: $color-invert-text;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-l;
+  }
+
+  &__provider,
+  &__price,
+  &__delivery-time,
+  &__checkout {
+    width: 25%;
+    padding: $space-base $space-xl;
+    text-align: left;
+
+    & > .info {
+      position: relative;
+      top: -0.1em;
+      vertical-align: middle;
+      margin-left: 0.5em;
+    }
+  }
+
+  &__checkout {
+    width: 250px;
+  }
+}
