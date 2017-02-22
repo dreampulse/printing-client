@@ -9,13 +9,13 @@ import Icon from './icon'
 import starIcon from '../../asset/icon/star.svg'
 
 const StarRating = ({classNames, modifiers, stars, of = 5}) => (
-  <span className={buildClassName('star-rating', modifiers, classNames)} aria-label={`${stars} of ${of}`}>
+  <ul className={buildClassName('star-rating', modifiers, classNames)} aria-label={`${stars} of ${of}`}>
     {
       range(of).map(key => (
-        <Icon key={`star-${key}`} classNames={[{'star-rating__star-empty': key >= stars}]} source={starIcon} />
+        <li className={key >= stars ? 'star-rating__star-empty' : null}><Icon key={`star-${key}`} source={starIcon} /></li>
       ))
     }
-  </span>
+  </ul>
 )
 
 StarRating.propTypes = {

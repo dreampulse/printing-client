@@ -2,13 +2,20 @@
   display: inline-block;
   font-size: 1.1em; // increase size to fit design
   color: $color-yellow;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
   &__star-empty {
     color: $color-disabled;
   }
 
-  & > .icon {
-    vertical-align: top;
+  & > li {
+    display: inline-block;
+
+    & > .icon {
+      vertical-align: top;
+    }
 
     &:not(:last-child) {
       margin-right: $space-s;
