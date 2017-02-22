@@ -1,3 +1,13 @@
 .section {
-  margin: 0 0 $space-xxxl;
+  margin: 0 0 $space-xl;
+
+  &--highlight {
+    padding: $space-xl $space-xxl;
+    background: $color-bg-highlight;
+  }
+
+  &--highlight-wide {
+    padding: $space-xxxl $space-xxxxl;
+    background: $color-bg-highlight;
+  }
 }
