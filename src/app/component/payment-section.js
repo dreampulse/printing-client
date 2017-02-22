@@ -1,4 +1,4 @@
-import React, {PropTypes, cloneElement} from 'react'
+import React, {PropTypes} from 'react'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
