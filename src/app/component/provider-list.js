@@ -5,16 +5,20 @@ import buildClassName from '../lib/build-class-name'
 
 const ProviderList = ({classNames, modifiers, children, providerInfo}) => (
   <table className={buildClassName('provider-list', modifiers, classNames)}>
-    <tr className="provider-list__header">
-      <th className="provider-list__provider">
-        Provider
-        {providerInfo}
-      </th>
-      <th className="provider-list__price">Price incl. Shipping</th>
-      <th className="provider-list__delivery-time">Delivery Time</th>
-      <th className="provider-list__checkout" />
-    </tr>
-    {children}
+    <thead>
+      <tr className="provider-list__header">
+        <th className="provider-list__provider">
+          Provider
+          {providerInfo}
+        </th>
+        <th className="provider-list__price">Price incl. Shipping</th>
+        <th className="provider-list__delivery-time">Delivery Time</th>
+        <th className="provider-list__checkout" />
+      </tr>
+    </thead>
+    <tbody>
+      {children}
+    </tbody>
   </table>
 )
 
