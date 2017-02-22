@@ -1,0 +1,25 @@
+.configuration-header {
+  padding: $space-l 0;
+  background: $color-bg;
+  border-bottom: 1px solid $color-border;
+
+  &__grid {
+    @include grid;
+  }
+
+  &__cell {
+    @include span(12);
+
+    @include respond-to(medium) {
+      @include span(6);
+    }
+
+    &:nth-child(2n) {
+      @include respond-to(medium) {
+        & > * {
+          float: right
+        }
+      }
+    }
+  }
+}

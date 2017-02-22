@@ -38,3 +38,5 @@ export const selectMenuMaterialValues = [{
   label: 'Group Item 2',
   children: materialChildren('group2')
 }]
+
+export const googleMapsApiKey = 'AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo'

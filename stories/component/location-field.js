@@ -3,13 +3,14 @@ import {storiesOf, action} from '@kadira/storybook'
 
 import LocationField from '../../src/app/component/location-field'
 import HandleValue from '../util/handle-value'
+import {googleMapsApiKey} from '../util/data'
 
 storiesOf('Location Field', module)
   .add('default', () => (
     <HandleValue>
       <LocationField
         placeholder="Set your location"
-        googleMapsApiKey="AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo"
+        googleMapsApiKey={googleMapsApiKey}
         onChange={action('change')}
       />
     </HandleValue>
@@ -18,7 +19,7 @@ storiesOf('Location Field', module)
     <HandleValue initialValue="München, Deutschland">
       <LocationField
         placeholder="Set your location"
-        googleMapsApiKey="AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo"
+        googleMapsApiKey={googleMapsApiKey}
         onChange={action('change')}
       />
     </HandleValue>
@@ -28,7 +29,7 @@ storiesOf('Location Field', module)
       <LocationField
         modifiers={['error']}
         placeholder="Set your location"
-        googleMapsApiKey="AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo"
+        googleMapsApiKey={googleMapsApiKey}
         onChange={action('change')}
       />
     </HandleValue>
