@@ -14,4 +14,8 @@
   &:focus {
     text-decoration: underline;
   }
+
+  &--invert {
+    color: $color-invert-text;
+  }
 }
