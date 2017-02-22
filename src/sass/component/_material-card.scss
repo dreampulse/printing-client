@@ -1,0 +1,115 @@
+.material-card {
+  // Fixed height: border + price + select + shipping + spacing
+  $shipping-height: $font-size-base * $line-height-base;
+  $footer-height: 1px + 30px + 40px + $shipping-height + 50px + 4 * $space-base;
+
+  max-width: $screen-sm-max;
+  border-radius: $border-radius;
+  overflow: hidden;
+
+  &__figure {
+    @include scut-ratio-box(26/17);
+    margin: 0;
+    width: 100%;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &__content {
+    padding: $space-l;
+    background: $color-bg-highlight;
+  }
+
+  &__header {
+    border-bottom: 1px solid $color-border;
+
+    & > .headline {
+      @include scut-truncate();
+    }
+  }
+
+  &__subline {
+    @include scut-truncate();
+    display: block;
+    margin: 0 0 $space-base;
+    font-size: $font-size-l;
+    line-height: $font-size-l;
+  }
+
+  &__body {
+    line-height: $line-height-base;
+    margin: $space-base 0;
+    height: 2 * $font-size-base * $line-height-base;
+    overflow: hidden;
+  }
+
+  &__more {
+    outline: 0;
+    color: $color-blue;
+
+    &:hover {
+      color: $color-blue-light;
+    }
+  }
+
+  &__footer {
+    position: relative;
+    border-top: 1px solid $color-border;
+    padding-top: $space-base;
+    height: $footer-height;
+    line-height: 0;
+  }
+
+  &__color {
+    margin-bottom: $space-base;
+  }
+
+  &__shipping {
+    @include scut-truncate();
+    max-width: 100%;
+    display: inline-block;
+    position: relative;
+    padding: 0 $font-size-base + $space-s;
+    line-height: $line-height-base;
+    height: $shipping-height;
+    margin-bottom: $space-base;
+
+    & > .icon {
+      @include scut-center-transform(y);
+      display: block;
+      font-size: $font-size-base;
+      position: absolute;
+      left: 0;
+    }
+
+    & > .info {
+      @include scut-center-transform(y);
+      display: block;
+      font-size: $font-size-base;
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  &__unavailable {
+    font-size: $font-size-l;
+    font-weight: $font-weight-bold;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  &--unavailable {
+    color: $color-minor;
+    .material-card__image {
+      filter: grayscale(100%);
+    }
+  }
+}

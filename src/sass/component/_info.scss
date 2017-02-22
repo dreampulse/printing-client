@@ -1,0 +1,29 @@
+.info {
+  $info-size: 1em;
+  position: relative;
+
+  border: 1px solid $color-primary;
+  border-radius: 50%;
+  color: $color-primary;
+  width: $info-size;
+  height: $info-size;
+  font-family: AmericanTypewriter, sans-serif;
+  outline: 0;
+
+  &:hover {
+    border: 1px solid $color-primary-active;
+    color: $color-primary-active;
+  }
+
+  &:before {
+    @include scut-center-transform();
+    font-size: .8em;
+    font-weight: $font-weight-bold;
+    content: 'i';
+  }
+
+  &__tooltip {
+    z-index: z($global-stacking, tooltip);
+    position: absolute;
+  }
+}
