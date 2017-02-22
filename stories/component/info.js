@@ -16,3 +16,11 @@ storiesOf('Info', module)
       </Paragraph>
     </Info>
   ))
+  .add('minor', () => (
+    <Info modifiers={['minor']}>
+      <Headline modifiers={['s']} label="Headline" />
+      <Paragraph>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit
+      </Paragraph>
+    </Info>
+  ))
