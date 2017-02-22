@@ -1,44 +1,48 @@
-import React from 'react'
+import React, {Component, PropTypes} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
-const InputField = ({
-  modifiers = [],
-  classNames,
-  label,
-  value,
-  type = 'text',
-  onChange = () => {},
-  name = ''
-}) => {
-  let inputFieldModifiers = modifiers
+export default class InputField extends Component {
 
-  if (!value) {
-    inputFieldModifiers = [...inputFieldModifiers, 'empty']
+  static propTypes = {
+    ...propTypes.component,
+    label: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([
+      PropTypes.string.isRequired,
+      PropTypes.number.isRequired
+    ]),
+    name: PropTypes.string,
+    type: PropTypes.string,
+    onChange: PropTypes.func,
+    id: PropTypes.string
   }
 
-  const id = uniqueId('uid-')
+  static defaultProps = {
+    modifiers: [],
+    type: 'text',
+    onChange: () => {},
+    name: '',
+    value: ''
+  }
 
-  return (
-    <div className={buildClassName('input-field', inputFieldModifiers, classNames)}>
-      <input name={name} id={id} className="input-field__input" type={type} value={value} onChange={onChange} />
-      <label htmlFor={id} className="input-field__label">{label}</label>
-    </div>
-  )
+  id = uniqueId('uid-')
+
+  render () {
+    const inputId = this.props.id || this.id
+    return (
+      <div className={buildClassName('input-field', [...this.props.modifiers, {empty: !this.props.value}], this.props.classNames)}>
+        <input
+          name={this.props.name}
+          id={inputId}
+          className="input-field__input"
+          type={this.props.type}
+          value={this.props.value}
+          onChange={this.props.onChange}
+        />
+        <label htmlFor={inputId} className="input-field__label">{this.props.label}</label>
+      </div>
+    )
+  }
 }
-
-InputField.propTypes = {
-  ...propTypes.component,
-  label: React.PropTypes.string.isRequired,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.string.isRequired,
-    React.PropTypes.number.isRequired
-  ]),
-  name: React.PropTypes.string,
-  type: React.PropTypes.string,
-  onChange: React.PropTypes.func
-}
-
-export default InputField

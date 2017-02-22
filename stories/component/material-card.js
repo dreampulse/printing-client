@@ -21,7 +21,7 @@ const colorSelect = (
 )
 
 const info = (
-  <Info>
+  <Info modifiers={['minor']}>
     <Headline modifiers={['s']} label="Headline" />
     <Paragraph>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit
