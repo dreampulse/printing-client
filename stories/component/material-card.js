@@ -10,16 +10,9 @@ import Headline from '../../src/app/component/headline'
 import Paragraph from '../../src/app/component/paragraph'
 
 import HandleValue from '../util/handle-value'
+import {selectMenuColorValues} from '../util/data'
 
-const colorValues = [
-  {value: 'value1', colorValue: 'ffffff', label: 'Color 1'},
-  {value: 'value2', colorValue: 'ff0000', label: 'Color 2'},
-  {value: 'value3', colorValue: '00ff00', label: 'Color 3'},
-  {value: 'value4', colorValue: '0000ff', label: 'Color 4'},
-  {value: 'value5', colorImage: 'http://placehold.it/40x40', label: 'Color 5'}
-]
-
-const colorMenu = (<SelectMenu values={colorValues} />)
+const colorMenu = (<SelectMenu values={selectMenuColorValues} />)
 const price = (<Price value="$19.99" meta="incl. tax & shipping" />)
 const colorSelect = (
   <HandleValue>
@@ -84,7 +77,7 @@ storiesOf('Material Card', module)
   ))
   .add('single color', () => {
     const colorSelectConstant = (
-      <SelectField modifiers={['compact']} value={{value: 'item2', colorValue: 'ff0000', label: 'Red'}} />
+      <SelectField modifiers={['compact']} value={selectMenuColorValues[0]} />
     )
     return (
       <MaterialCard
