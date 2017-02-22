@@ -14,3 +14,22 @@ storiesOf('Location Field', module)
       />
     </HandleValue>
   ))
+  .add('initial value', () => (
+    <HandleValue initialValue="München, Deutschland">
+      <LocationField
+        placeholder="Set your location"
+        googleMapsApiKey="AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo"
+        onChange={action('change')}
+      />
+    </HandleValue>
+  ))
+  .add('error', () => (
+    <HandleValue>
+      <LocationField
+        modifiers={['error']}
+        placeholder="Set your location"
+        googleMapsApiKey="AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo"
+        onChange={action('change')}
+      />
+    </HandleValue>
+  ))

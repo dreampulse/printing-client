@@ -6,7 +6,7 @@ global.initMap = () => {
   defers.forEach(resolve => resolve(googleMaps))
 }
 
-const getGoogleMaps = (googleMapsKey) => {
+export function getGoogleMaps (googleMapsKey) {
   if (googleMaps) {
     return Promise.resolve(googleMaps)
   }
@@ -23,4 +23,20 @@ const getGoogleMaps = (googleMapsKey) => {
   })
 }
 
-export default getGoogleMaps
+export function geocode (_googleMaps, coords) {
+  const geocoder = new _googleMaps.Geocoder()
+
+  return new Promise((resolve, reject) => {
+    geocoder.geocode({location: coords}, (results, status) => {
+      if (status === googleMaps.GeocoderStatus.OK) {
+        if (results.length) {
+          resolve(results)
+        } else {
+          reject(new Error('No results found.'))
+        }
+      } else {
+        reject(new Error(`Geocoder failed due to: ${status}`))
+      }
+    })
+  })
+}

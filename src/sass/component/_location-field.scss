@@ -1,5 +1,6 @@
 .location-field {
   $field-space: 10px;
+  $button-size: 30px;
 
   width: 100%;
 
@@ -7,13 +8,13 @@
     display: block;
     width: 100%;
     height: $field-height;
-    padding: 0 $field-space;
+    padding: 0 (2 * $field-space + $button-size) 0 $field-space;
     border: 1px solid $color-border;
     box-shadow: $box-shadow-base;
     border-radius: $border-radius;
     color: $color-text;
     font-size: $font-size-l;
-    outline: none;
+    outline: 0;
 
     &:focus {
       border-color: $color-field-focus;
@@ -33,6 +34,35 @@
     &:placeholder {
       color: $color-minor;
     }
+  }
+
+  &__button {
+    position: absolute;
+    top: 0.5 * ($field-height - $button-size);
+    right: $field-space;
+    display: inline-block;
+    width: $button-size;
+    height: $button-size;
+    color: $color-primary;
+    outline: 0;
+
+    &:hover,
+    &:focus {
+      color: $color-primary-active;
+    }
+
+    & > .icon {
+      display: block;
+      width: $button-size;
+      height: $button-size;
+    }
+  }
+
+  & > .loading-indicator {
+    position: absolute;
+    top: 0.5 * ($field-height - $button-size);
+    right: $field-space;
+    font-size: $button-size;
   }
 
   &--error {
