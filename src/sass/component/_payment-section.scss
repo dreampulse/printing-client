@@ -1,3 +1,53 @@
 .payment-section {
+  padding: $space-l;
+  background-color: $color-bg-highlight;
 
+  &__price-components {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 $space-l;
+    margin-bottom: $space-l;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__price-component,
+  &__total-price {
+    @include scut-clearfix;
+    margin: $space-base 0;
+    padding: 0;
+    font-size: $font-size-l;
+
+    &:first-child {
+      margin: 0;
+    }
+  }
+
+  &__price-label {
+    float: left;
+    color: $color-minor;
+  }
+
+  &__price-value {
+    float: right;
+  }
+
+  &__total-price {
+    margin: $space-l 0 0;
+    .payment-section__price-value {
+      font-size: $font-size-xxl;
+    }
+  }
+
+  &__buttons {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__button {
+    margin-bottom: $space-l;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }

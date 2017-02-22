@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React, {PropTypes, cloneElement} from 'react'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
@@ -23,9 +23,15 @@ const PaymentSection = ({classNames, modifiers, children, subtotal, shipping, va
         <span className="payment-section__price-value">{total}</span>
       </li>
     </ul>
-    <div className="payment-section__buttons">
-    </div>
-    {children}
+    <ul className="payment-section__buttons">
+      {
+        React.Children.map(children, child => (
+          <li className="payment-section__button">
+            {child}
+          </li>
+        ))
+      }
+    </ul>
   </section>
 )
 
