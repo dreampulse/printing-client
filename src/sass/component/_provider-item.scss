@@ -1,0 +1,17 @@
+.provider-item {
+  background: $color-bg-highlight;
+
+  &:not(:last-child) {
+    border: 1px solid $color-gray-4;
+  }
+
+  &__provider,
+  &__price,
+  &__delivery-time,
+  &__checkout {
+    padding: $space-l $space-xl;
+    vertical-align: middle;
+    font-size: $font-size-l;
+    text-align: left;
+  }
+}
