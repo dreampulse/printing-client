@@ -1,0 +1,8 @@
+.star-rating {
+  display: inline-block;
+  font-size: 1.1em; // increase size to fit design
+
+  & > .icon:not(:last-child) {
+    margin-right: $space-s;
+  }
+}
