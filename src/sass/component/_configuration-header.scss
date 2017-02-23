@@ -10,8 +10,15 @@
   &__cell {
     @include span(12);
 
+    &:not(:last-child) {
+      margin-bottom: $space-base;
+    }
+
     @include respond-to(medium) {
       @include span(6);
+      &:not(:last-child) {
+        margin-bottom: 0;
+      }
     }
 
     &:nth-child(2n) {
