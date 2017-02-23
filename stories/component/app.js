@@ -9,8 +9,15 @@ import ProcessStepBar from '../../src/app/component/process-step-bar'
 import ProcessStep from '../../src/app/component/process-step'
 import Footer from '../../src/app/component/footer'
 import Link from '../../src/app/component/link'
+import ConfigurationHeader from '../../src/app/component/configuration-header'
+import LabeledField from '../../src/app/component/labeled-field'
+import LocationField from '../../src/app/component/location-field'
+import NumberField from '../../src/app/component/number-field'
 
-const header = (currentStep = 1) => (
+import HandleValue from '../util/handle-value'
+import {googleMapsApiKey} from '../util/data'
+
+const header = (currentStep = 0) => (
   <Header key="header">
     <ProcessStepBar currentStep={currentStep}>
       <ProcessStep label="Your Order" />
@@ -18,6 +25,21 @@ const header = (currentStep = 1) => (
       <ProcessStep label="Review and Pay" />
     </ProcessStepBar>
   </Header>
+)
+
+const configurationHeader = (
+  <ConfigurationHeader>
+    <LabeledField label="Shipping:" modifiers={['block']}>
+      <HandleValue>
+        <LocationField googleMapsApiKey={googleMapsApiKey} />
+      </HandleValue>
+    </LabeledField>
+    <LabeledField label="Quantity:">
+      <HandleValue initialValue={1}>
+        <NumberField />
+      </HandleValue>
+    </LabeledField>
+  </ConfigurationHeader>
 )
 
 const footer = (
@@ -33,7 +55,7 @@ storiesOf('App', module)
       header={[
         header(),
         <StickyContainer key="configHeader">
-          TODO CONFIG HEADER
+          {configurationHeader}
         </StickyContainer>
       ]}
       footer={footer}

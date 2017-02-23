@@ -89,7 +89,7 @@ export default class LocationField extends Component {
   }
 
   getValue = () => {
-    const value = this.state.value || this.props.value
+    const value = typeof this.state.value === 'undefined' ? this.props.value : this.state.value
     if (typeof value === 'object') {
       return value.formatted_address
     }

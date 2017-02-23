@@ -63,6 +63,7 @@
     top: 0.5 * ($field-height - $button-size);
     right: $field-space;
     font-size: $button-size;
+    line-height: $button-size;
   }
 
   &--error {
