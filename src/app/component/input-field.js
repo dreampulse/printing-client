@@ -31,8 +31,12 @@ export default class InputField extends Component {
 
   render () {
     const inputId = this.props.id || this.id
+    const finalModifiers = [
+      ...this.props.modifiers,
+      {empty: !this.props.value}
+    ]
     return (
-      <div className={buildClassName('input-field', [...this.props.modifiers, {empty: !this.props.value}], this.props.classNames)}>
+      <div className={buildClassName('input-field', finalModifiers, this.props.classNames)}>
         <input
           name={this.props.name}
           id={inputId}

@@ -1,6 +1,6 @@
 .input-field {
   $label-not-empty-size: $font-size-s;
-  $field-space-base: 5px;
+  $field-space: 10px;
   $border-width: 1px;
 
   position: relative;
@@ -18,8 +18,8 @@
     font-size: $font-size-l;
     padding: {
       top: $label-not-empty-size;
-      left: 2 * $field-space-base;
-      right: 2 * $field-space-base;
+      left: $field-space;
+      right: $field-space;
     }
 
     outline: none;
@@ -49,8 +49,8 @@
     color: $color-minor;
     font-size: $label-not-empty-size;
     padding: {
-      right: 2 * $field-space-base;
-      left: 2 * $field-space-base;
+      right: $field-space;
+      left: $field-space;
     }
 
     transform-origin: 0 50%;  // To keep the distance to the left
