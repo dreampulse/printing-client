@@ -1,14 +1,18 @@
 .rich-text {
-  i {
+  em {
     font-style: italic;
   }
 
-  b {
+  strong {
     font-weight: $font-weight-bold;
   }
 
   p {
     @extend .paragraph;
+  }
+
+  a {
+    @extend .link;
   }
 
   &--l {

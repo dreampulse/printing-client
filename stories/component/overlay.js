@@ -20,7 +20,7 @@ import errorImage from '../../src/asset/image/error.svg'
 
 import HandleValue from '../util/handle-value'
 
-const headline = <Headline label="Warning Headline" modifiers={['l', 'warning']} />
+const headline = <Headline label="Warning Headline" modifiers={['l']} />
 const headlineOther = <Headline label="Overlay Headline" modifiers={['l']} />
 const buttons = [
   <Button label="Cancel" modifiers={['text']} />,
@@ -46,8 +46,8 @@ storiesOf('Overlay', module)
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <RichText>
           <p>
-            We used the location <b>Munich, Germany</b> to calculate prices.
-            You have entered <b>New York, USA</b> as your shipping address.
+            We used the location <strong>Munich, Germany</strong> to calculate prices.
+            You have entered <strong>New York, USA</strong> as your shipping address.
           </p>
         </RichText>
         <RichText>
@@ -82,10 +82,10 @@ storiesOf('Overlay', module)
     return (
       <Overlay headline={systemErrorHeadline} buttons={systemErrorButtons} closePortal={action('onClose')}>
         <Grid>
-          <Column sm="3">
+          <Column sm={3}>
             <Image src={errorImage} alt="System Error" />
           </Column>
-          <Column sm="9">
+          <Column sm={3}>
             <Paragraph>
               An unexpected error occured. Our technicians have been automatically
               warned and are working to fix the problem.
@@ -104,7 +104,7 @@ storiesOf('Overlay', module)
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <RichText modifiers={['l']}>
           <p>
-            <i>We need this to calculate the right price.</i>
+            <em>We need this to calculate the right price.</em>
           </p>
         </RichText>
         <Paragraph modifiers={['l']}>
@@ -130,7 +130,7 @@ storiesOf('Overlay', module)
     return (
       <Overlay modifiers={['l']} headline={materialDetailHeadline} buttons={materialDetailButtons} closePortal={action('onClose')}>
         <Grid>
-          <Column sm={7}>
+          <Column sm={12} md={8} lg={7}>
             <RichText classNames={['u-margin-bottom-xl']}>
               <p>
                 A great all-round material with great money value. Polyamide is extremely versatile.
@@ -169,7 +169,7 @@ storiesOf('Overlay', module)
               </Column>
             </Grid>
           </Column>
-          <Column sm={5}>
+          <Column sm={12} md={4} lg={5}>
             <Image src="http://placehold.it/360x270" alt="Polyamide" />
           </Column>
         </Grid>

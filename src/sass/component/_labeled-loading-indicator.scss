@@ -1,18 +1,16 @@
 .labeled-loading-indicator {
   $spinner-size: 70px;
 
-  position: relative;
-  height: $spinner-size;;
+  height: $spinner-size;
+  display: flex;
+  align-items: center;
 
   & > .loading-indicator {
-    @include scut-center-transform(y);
     font-size: $spinner-size;
-    left: 0;
   }
 
   &__text {
-    @include scut-center-transform(y);
-    padding-left: $spinner-size + $space-l;
     font-size: $font-size-l;
+    margin-left: $space-l;
   }
 }
