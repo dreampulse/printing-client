@@ -1,3 +1,8 @@
 .paragraph {
   margin: 0 0 $space-base;
+
+  &--l {
+    font-size: $font-size-l;
+    margin: 0 0 $space-l;
+  }
 }
