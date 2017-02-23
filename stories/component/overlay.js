@@ -17,6 +17,7 @@ import StarRating from '../../src/app/component/star-rating'
 import Checked from '../../src/app/component/checked'
 
 import errorImage from '../../src/asset/image/error.svg'
+import {googleMapsApiKey} from '../util/data'
 
 import HandleValue from '../util/handle-value'
 
@@ -85,7 +86,7 @@ storiesOf('Overlay', module)
           <Column sm={3}>
             <Image src={errorImage} alt="System Error" />
           </Column>
-          <Column sm={3}>
+          <Column sm={9}>
             <Paragraph>
               An unexpected error occured. Our technicians have been automatically
               warned and are working to fix the problem.
@@ -111,7 +112,7 @@ storiesOf('Overlay', module)
           <HandleValue>
             <LocationField
               placeholder="Set your location"
-              googleMapsApiKey="AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo"
+              googleMapsApiKey={googleMapsApiKey}
               onChange={action('change')}
             />
           </HandleValue>
