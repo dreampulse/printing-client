@@ -1,0 +1,16 @@
+.labeled-loading-indicator {
+  $spinner-size: 70px;
+
+  height: $spinner-size;
+  display: flex;
+  align-items: center;
+
+  & > .loading-indicator {
+    font-size: $spinner-size;
+  }
+
+  &__text {
+    font-size: $font-size-l;
+    margin-left: $space-l;
+  }
+}

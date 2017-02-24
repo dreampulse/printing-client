@@ -7,6 +7,9 @@ storiesOf('Headline', module)
   .add('default', () => (
     <Headline label="Default Headline" />
   ))
+  .add('xs', () => (
+    <Headline label="Small Headline" modifiers={['xs']} />
+  ))
   .add('s', () => (
     <Headline label="Small Headline" modifiers={['s']} />
   ))

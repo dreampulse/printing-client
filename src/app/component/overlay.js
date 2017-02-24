@@ -1,4 +1,4 @@
-import React, {PropTypes, Component} from 'react'
+import React, {PropTypes, Component, cloneElement} from 'react'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
@@ -50,7 +50,11 @@ class Overlay extends Component {
             </div>
 
             <footer className="overlay__footer">
-              {this.props.buttons}
+              {
+                React.Children.map(
+                  this.props.buttons, button => cloneElement(button, {key: button.key})
+                )
+              }
             </footer>
           </div>
         </div>
