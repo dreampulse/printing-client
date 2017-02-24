@@ -2,6 +2,8 @@
   display: inline-block;
   color: $color-primary;
   vertical-align: middle;
+  width: 1em;
+  height: 1em;
 
   &__spinner {
     position: relative;

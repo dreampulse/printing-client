@@ -11,6 +11,11 @@
     top: -0.08em; // Optimize vertical center
   }
 
+  &--xs {
+    font-size: $font-size-base;
+    font-weight: $font-weight-bold;
+  }
+
   &--s {
     font-size: $font-size-l;
     font-weight: $font-weight-bold;
