@@ -10,13 +10,13 @@ storiesOf('Model Item List', module)
   .add('default', () => (
     <ModelItemList>
       <ModelItem
-        imageSource="http://placehold.it/500x500"
+        imageSource="http://placehold.it/130x98"
         quantity={1}
         title="model_item_title.stl"
         subline="42 x 42 x 42 mm"
       />
       <ModelItem
-        imageSource="http://placehold.it/500x500"
+        imageSource="http://placehold.it/130x98"
         quantity={1}
         title="model_item_title.stl"
         subline="42 x 42 x 42 mm"
