@@ -108,15 +108,14 @@ storiesOf('Overlay', module)
             <em>We need this to calculate the right price.</em>
           </p>
         </RichText>
-        <Paragraph modifiers={['l']}>
-          <HandleValue>
-            <LocationField
-              placeholder="Set your location"
-              googleMapsApiKey={googleMapsApiKey}
-              onChange={action('change')}
-            />
-          </HandleValue>
-        </Paragraph>
+        <HandleValue>
+          <LocationField
+            classNames={['u-margin-bottom']}
+            placeholder="Set your location"
+            googleMapsApiKey={googleMapsApiKey}
+            onChange={action('change')}
+          />
+        </HandleValue>
       </Overlay>
     )
   })
