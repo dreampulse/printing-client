@@ -8,7 +8,7 @@ import ModelItemLoad from '../../src/app/component/model-item-load'
 storiesOf('Model Item', module)
   .add('default', () => (
     <ModelItem
-      imageSource="http://placehold.it/500x500"
+      imageSource="http://placehold.it/130x98"
       quantity={1}
       title="model_item_title.stl"
       subline="42 x 42 x 42 mm"
@@ -18,7 +18,7 @@ storiesOf('Model Item', module)
   ))
   .add('error', () => (
     <ModelItemError
-      imageSource="http://placehold.it/500x500"
+      imageSource="http://placehold.it/130x98"
       modifiers={['error']}
       title="Upload failed"
       subline="This is why"
