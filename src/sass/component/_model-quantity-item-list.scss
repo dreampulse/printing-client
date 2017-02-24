@@ -1,0 +1,9 @@
+.model-quantity-item-list {
+  margin: 0 0 $space-base;
+  list-style: none;
+  padding: 0;
+
+  &__item {
+    border-bottom: 1px solid $color-bg;
+  }
+}

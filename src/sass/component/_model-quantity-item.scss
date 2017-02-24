@@ -1,0 +1,50 @@
+.model-quantity-item {
+  $image-container-width: 130px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: $space-base $space-xl;
+  height: $model-item-height;
+  border-top: 1px solid $color-bg-highlight;
+  border-bottom: 1px solid $color-bg-highlight;
+  background: $color-bg-highlight;
+
+  & > .image-container {
+    flex-shrink: 0;
+    width: $image-container-width;
+    margin-right: $space-xl;
+  }
+
+  &__body {
+    flex-grow: 1;
+    flex-shrink: 0;
+    margin-left: $space-xl;
+    font-size: $font-size-l;
+    height: 100%;
+    position: relative;
+
+    & > .number-field {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
+  }
+
+  &__title {
+    @include scut-truncate;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  & > .price {
+    flex-shrink: 0;
+    margin-bottom: 0;
+    margin-left: $space-xl;
+  }
+
+  &__delete {
+    margin-left: $space-xl;
+  }
+}
