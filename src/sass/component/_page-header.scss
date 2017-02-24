@@ -1,0 +1,12 @@
+.page-header {
+  margin-bottom: $space-xxl;
+
+  &__title {
+    margin-bottom: $space-base;
+    border-bottom: 2px solid $color-border;
+
+    & > * {
+      margin-bottom: $space-base;
+    }
+  }
+}
