@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import StickyContainer from '../../src/app/component/sticky-container'
+import StickyContainer from 'Component/sticky-container'
 
 storiesOf('Sticky Container', module)
   .add('default', () => (

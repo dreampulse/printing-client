@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Icon from './icon'
+import Icon from 'Component/icon'
 
-import deleteIcon from '../../asset/icon/delete.svg'
+import deleteIcon from 'Icon/delete.svg'
 
 const ModelItemLoad = ({
   classNames,

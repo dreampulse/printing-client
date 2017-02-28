@@ -1,9 +1,9 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
-import Link from '../../src/app/component/link'
+import Link from 'Component/link'
 
-import backIcon from '../../src/asset/icon/back.svg'
+import backIcon from 'Icon/back.svg'
 
 storiesOf('Link', module)
   .add('default', () => (

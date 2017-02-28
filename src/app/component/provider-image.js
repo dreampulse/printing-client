@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import imaterialiseImage from '../../asset/image/printing-service/imaterialise.png'
-import sculpteoImage from '../../asset/image/printing-service/sculpteo.png'
-import shapewaysImage from '../../asset/image/printing-service/shapeways.png'
+import imaterialiseImage from 'Image/printing-service/imaterialise.png'
+import sculpteoImage from 'Image/printing-service/sculpteo.png'
+import shapewaysImage from 'Image/printing-service/shapeways.png'
 
 const providerImages = {
   imaterialise: imaterialiseImage,

@@ -1,4 +1,4 @@
-import pollApi from '../../../../src/app/lib/poll-api'
+import pollApi from 'Lib/poll-api'
 import config from '../../../../config'
 
 describe('poll api lib', () => {

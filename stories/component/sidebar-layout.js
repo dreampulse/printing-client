@@ -1,9 +1,9 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import SidebarLayout from '../../src/app/component/sidebar-layout'
-import Section from '../../src/app/component/section'
-import Paragraph from '../../src/app/component/paragraph'
+import SidebarLayout from 'Component/sidebar-layout'
+import Section from 'Component/section'
+import Paragraph from 'Component/paragraph'
 
 storiesOf('Sidebar Layout', module)
   .add('default', () => {

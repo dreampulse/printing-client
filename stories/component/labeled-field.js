@@ -1,9 +1,9 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import LabeledField from '../../src/app/component/labeled-field'
-import NumberField from '../../src/app/component/number-field'
-import InputField from '../../src/app/component/input-field'
+import LabeledField from 'Component/labeled-field'
+import NumberField from 'Component/number-field'
+import InputField from 'Component/input-field'
 import HandleValue from '../util/handle-value'
 
 storiesOf('Labeled Field', module)

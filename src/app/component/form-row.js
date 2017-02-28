@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
 const FormRow = ({classNames, modifiers, children}) => {
   const mappedChildren = React.Children.map(children, child => (

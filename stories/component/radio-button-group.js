@@ -1,8 +1,8 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import RadioButtonGroup from '../../src/app/component/radio-button-group'
-import RadioButton from '../../src/app/component/radio-button'
+import RadioButtonGroup from 'Component/radio-button-group'
+import RadioButton from 'Component/radio-button'
 
 import HandleValue from '../util/handle-value'
 

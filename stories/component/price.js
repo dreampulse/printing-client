@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import Price from '../../src/app/component/price'
+import Price from 'Component/price'
 
 storiesOf('Price', module)
   .add('default', () => (

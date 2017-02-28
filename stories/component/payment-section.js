@@ -1,12 +1,12 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import PaymentSection from '../../src/app/component/payment-section'
-import Button from '../../src/app/component/button'
-import Link from '../../src/app/component/link'
+import PaymentSection from 'Component/payment-section'
+import Button from 'Component/button'
+import Link from 'Component/link'
 
-import creditCardIcon from '../../src/asset/icon/credit-card.svg'
-import paypalIcon from '../../src/asset/icon/paypal.svg'
+import creditCardIcon from 'Icon/credit-card.svg'
+import paypalIcon from 'Icon/paypal.svg'
 
 storiesOf('Payment Section', module)
   .add('default', () => (

@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Headline from './headline'
+import Headline from 'Component/headline'
 
 const PageHeader = ({classNames, modifiers, label, backLink}) => (
   <div className={buildClassName('page-header', modifiers, classNames)}>

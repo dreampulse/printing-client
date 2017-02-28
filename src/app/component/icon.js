@@ -1,9 +1,9 @@
 import React from 'react'
 
-import placeholder from '../../asset/icon/placeholder.svg'
+import placeholder from 'Icon/placeholder.svg'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
 const Icon = ({modifiers, classNames, source = placeholder}) => (
   <svg className={buildClassName('icon', modifiers, classNames)}>

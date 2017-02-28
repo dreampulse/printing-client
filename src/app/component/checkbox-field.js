@@ -1,9 +1,11 @@
 import React from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
-import Icon from './icon'
-import checkIcon from '../../asset/icon/selected.svg'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
+
+import Icon from 'Component/icon'
+
+import checkIcon from 'Icon/selected.svg'
 
 const CheckboxField = ({
   classNames,

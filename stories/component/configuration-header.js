@@ -1,10 +1,10 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import ConfigurationHeader from '../../src/app/component/configuration-header'
-import LabeledField from '../../src/app/component/labeled-field'
-import LocationField from '../../src/app/component/location-field'
-import NumberField from '../../src/app/component/number-field'
+import ConfigurationHeader from 'Component/configuration-header'
+import LabeledField from 'Component/labeled-field'
+import LocationField from 'Component/location-field'
+import NumberField from 'Component/number-field'
 
 import HandleValue from '../util/handle-value'
 import {googleMapsApiKey} from '../util/data'

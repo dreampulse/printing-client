@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import ImageContainer from '../../src/app/component/image-container'
+import ImageContainer from 'Component/image-container'
 
 storiesOf('Image Container', module)
   .add('default', () => (

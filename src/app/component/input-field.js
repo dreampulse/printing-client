@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
 export default class InputField extends Component {
 

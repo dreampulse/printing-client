@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
 import invert from '../decorator/invert'
-import ProcessStep from '../../src/app/component/process-step'
+import ProcessStep from 'Component/process-step'
 
 storiesOf('Process Step', module)
   .addDecorator(invert)

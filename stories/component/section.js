@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import Section from '../../src/app/component/section'
+import Section from 'Component/section'
 
 storiesOf('Section', module)
   .add('default', () => (

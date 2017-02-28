@@ -1,8 +1,8 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
-import Footer from '../../src/app/component/footer'
-import Link from '../../src/app/component/link'
+import Footer from 'Component/footer'
+import Link from 'Component/link'
 
 storiesOf('Footer', module)
   .add('default', () => (
