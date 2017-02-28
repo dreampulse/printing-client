@@ -1,8 +1,8 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
-import ModelQuantityItem from '../../src/app/component/model-quantity-item'
-import ModelQuantityItemList from '../../src/app/component/model-quantity-item-list'
+import ModelQuantityItem from 'Component/model-quantity-item'
+import ModelQuantityItemList from 'Component/model-quantity-item-list'
 
 storiesOf('Model Quantity Item List & Model Quantity Item', module)
   .add('default', () => (

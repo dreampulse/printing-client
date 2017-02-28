@@ -1,11 +1,11 @@
 import React, {cloneElement} from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import FeatureList from '../../src/app/component/feature-list'
-import FeatureListItem from '../../src/app/component/feature-list-item'
+import FeatureList from 'Component/feature-list'
+import FeatureListItem from 'Component/feature-list-item'
 
-import StarRating from '../../src/app/component/star-rating'
-import Checked from '../../src/app/component/checked'
+import StarRating from 'Component/star-rating'
+import Checked from 'Component/checked'
 
 const feature = (<StarRating stars={3} />)
 const checked = (<Checked />)

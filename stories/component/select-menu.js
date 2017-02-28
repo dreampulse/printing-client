@@ -7,7 +7,7 @@ import {
   selectMenuMaterialValues
 } from '../util/data'
 
-import SelectMenu from '../../src/app/component/select-menu'
+import SelectMenu from 'Component/select-menu'
 
 storiesOf('Select Menu', module)
   .add('default', () => (

@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
-import ModelItemLoad from '../../src/app/component/model-item-load'
+import ModelItemLoad from 'Component/model-item-load'
 
 storiesOf('Model Item Load', module)
   .add('default', () => (

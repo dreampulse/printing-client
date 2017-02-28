@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
 const FeatureListItem = ({classNames, modifiers, feature, label}) => (
   <li className={buildClassName('feature-list-item', modifiers, classNames)}>

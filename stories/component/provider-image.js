@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import ProviderImage from '../../src/app/component/provider-image'
+import ProviderImage from 'Component/provider-image'
 
 storiesOf('Provider Image', module)
   .add('default', () => (

@@ -4,12 +4,12 @@ import {
   withState
 } from 'recompose'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Icon from './icon'
+import Icon from 'Component/icon'
 
-import placeholderIcon from '../../asset/icon/placeholder.svg'
+import placeholderIcon from 'Icon/placeholder.svg'
 
 const NumberField = ({
   classNames,

@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
-import SelectMenuItem from '../../src/app/component/select-menu-item'
+import SelectMenuItem from 'Component/select-menu-item'
 
 storiesOf('Select Menu Item', module)
   .add('default', () => (

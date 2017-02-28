@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import ProviderProgressBar from '../../src/app/component/provider-progress-bar'
+import ProviderProgressBar from 'Component/provider-progress-bar'
 
 storiesOf('Provider Progress Bar', module)
   .add('default', () => (

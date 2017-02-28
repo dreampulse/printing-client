@@ -2,9 +2,9 @@ import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 import centered from '@kadira/react-storybook-decorator-centered'
 
-import Info from '../../src/app/component/info'
-import Headline from '../../src/app/component/headline'
-import Paragraph from '../../src/app/component/paragraph'
+import Info from 'Component/info'
+import Headline from 'Component/headline'
+import Paragraph from 'Component/paragraph'
 
 storiesOf('Info', module)
   .addDecorator(centered)

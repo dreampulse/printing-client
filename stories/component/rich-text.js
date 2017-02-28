@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import RichText from '../../src/app/component/rich-text'
+import RichText from 'Component/rich-text'
 
 storiesOf('Rich Text', module)
   .add('default', () => (

@@ -1,9 +1,9 @@
 import React, {PropTypes, Children, cloneElement} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Container from './container'
+import Container from 'Component/container'
 
 const Footer = ({classNames, modifiers, children, copyline}) => (
   <footer className={buildClassName('footer', modifiers, classNames)}>

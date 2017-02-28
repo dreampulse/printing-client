@@ -1,14 +1,14 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import ImageContainer from './image-container'
-import NumberField from './number-field'
-import Icon from './icon'
-import Price from './price'
+import ImageContainer from 'Component/image-container'
+import NumberField from 'Component/number-field'
+import Icon from 'Component/icon'
+import Price from 'Component/price'
 
-import deleteIcon from '../../asset/icon/delete.svg'
+import deleteIcon from 'Icon/delete.svg'
 
 const ModelQuantityItem = ({
   classNames,

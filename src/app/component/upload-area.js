@@ -1,12 +1,12 @@
 import React, {PropTypes, Component} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Icon from './icon'
+import Icon from 'Component/icon'
 
-import uploadIcon from '../../asset/icon/upload.svg'
+import uploadIcon from 'Icon/upload.svg'
 
 export default class UploadArea extends Component {
   static propTypes = {
