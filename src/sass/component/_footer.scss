@@ -1,0 +1,44 @@
+.footer {
+  padding: $space-xl 0;
+  background: $color-invert-bg;
+  color: $color-invert-text;
+  text-align: center;
+
+  &__grid {
+    @include grid;
+  }
+
+  &__copyline {
+    @include span(12);
+    margin-bottom: $space-base;
+
+    @include respond-to(medium) {
+      @include span(6);
+      margin-bottom: 0;
+      text-align: left;
+    }
+  }
+
+  &__link-list {
+    @include span(12);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    @include respond-to(medium) {
+      @include span(6);
+      text-align: right;
+    }
+  }
+
+  &__link {
+    display: inline-block;
+
+    &:not(:first-child) {
+      margin-left: 0.5em;
+    }
+    &:not(:last-child) {
+      margin-right: 0.5em;
+    }
+  }
+}

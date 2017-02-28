@@ -1,0 +1,14 @@
+import React from 'react'
+import {storiesOf} from '@kadira/storybook'
+
+import LoadingIndicator from '../../src/app/component/loading-indicator'
+
+storiesOf('Loading Indicator', module)
+  .add('default', () => (
+    <LoadingIndicator />
+  ))
+  .add('invert', () => (
+    <div className="u-invert" style={{width: '100%', height: '100%'}}>
+      <LoadingIndicator modifiers={['invert']} />
+    </div>
+  ))

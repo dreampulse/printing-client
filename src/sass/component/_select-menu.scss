@@ -1,0 +1,22 @@
+.select-menu {
+  $max-height: 250px;
+  $max-height-l: 500px;
+  $min-width-l: 400px;
+
+  max-height: $max-height;
+  overflow-y: auto;
+  padding: $space-base 0;
+  margin: 0;
+  background: $color-bg-highlight;
+  list-style: none;
+  box-shadow: $box-shadow-active;
+
+  &__item {
+    display: block;
+  }
+
+  &--l {
+    min-width: $min-width-l;
+    max-height: $max-height-l;
+  }
+}

@@ -1,0 +1,47 @@
+.info {
+  $info-size: 1em;
+
+  box-sizing: content-box;
+  border: 1px solid $color-primary;
+  background: $color-primary;
+  border-radius: 50%;
+  color: $color-white;
+  width: $info-size;
+  height: $info-size;
+  line-height: $info-size;
+  font-family: AmericanTypewriter, sans-serif;
+  outline: 0;
+  transition:
+    background-color $transition-duration-fast ease-in-out,
+    border-color $transition-duration-fast ease-in-out,
+    color $transition-duration-fast ease-in-out;
+
+  &:hover {
+    border-color: $color-primary-active;
+    background: $color-primary-active;
+  }
+
+  &:before {
+    @include scut-center-transform;
+    content: 'i';
+    display: block;
+    font-size: .8em;
+    font-weight: $font-weight-bold;
+  }
+
+  &__tooltip {
+    z-index: z($global-stacking, tooltip);
+    position: absolute;
+  }
+
+  &--minor {
+    background: transparent;
+    color: $color-primary;
+
+    &:hover {
+      border-color: $color-primary-active;
+      color: $color-primary-active;
+      background: transparent;
+    }
+  }
+}

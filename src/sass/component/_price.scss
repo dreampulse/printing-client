@@ -1,0 +1,36 @@
+.price {
+  $price-height: 30px;
+
+  line-height: $price-height;
+  height: $price-height;
+  margin-bottom: $space-base;
+
+  &__loading {
+    color: $color-minor;
+    font-style: italic;
+
+    & > .loading-indicator {
+      font-size: $price-height;
+      margin-right: $space-s;
+    }
+  }
+
+  &__price {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  &__value {
+    font-size: $font-size-l;
+    font-weight: $font-weight-bold;
+  }
+
+  &__meta {
+    @include scut-truncate();
+    color: $color-minor;
+    font-style: italic;
+    font-size: $font-size-base;
+    font-weight: $font-weight-regular;
+    margin-left: $space-s;
+  }
+}

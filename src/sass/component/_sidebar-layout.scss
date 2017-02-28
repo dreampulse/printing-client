@@ -1,0 +1,13 @@
+.sidebar-layout {
+  @include grid;
+
+  &__main {
+    @include span(8);
+  }
+
+  &__aside {
+    @include span(4);
+    position: sticky;
+    top: 0;
+  }
+}

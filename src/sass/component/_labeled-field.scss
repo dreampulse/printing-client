@@ -1,0 +1,19 @@
+.labeled-field {
+  display: flex;
+  height: $field-height;
+  line-height: $field-height;
+
+  &__label {
+    font-size: $font-size-l;
+    color: $color-minor;
+    padding-right: $space-l;
+  }
+
+  &--block {
+    width: 100%;
+
+    .labeled-field__field {
+      flex-grow: 1;
+    }
+  }
+}

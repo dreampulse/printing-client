@@ -1,0 +1,56 @@
+.form-row {
+  @include with-layout($susy-form-layout) {
+    & > .form-row__column {
+      @include span(12);
+    }
+
+    &--half-half {
+      & > .form-row__column {
+        @include span(12);
+        @include respond-to(medium) {
+          @include span(6);
+        }
+      }
+    }
+
+    &--s-l {
+      @include span(12);
+
+      .form-row__column {
+        &:first-child {
+          @include respond-to(medium) {
+            @include span(3);
+          }
+        }
+
+        &:last-child {
+          @include respond-to(medium) {
+            @include span(9);
+          }
+        }
+      }
+    }
+
+    &--l-s {
+      @include span(12);
+
+      .form-row__column {
+        &:first-child {
+          @include respond-to(medium) {
+            @include span(9);
+          }
+        }
+
+        &:last-child {
+          @include respond-to(medium) {
+            @include span(3);
+          }
+        }
+      }
+    }
+  }
+
+  &__column {
+    margin-bottom: $space-base;
+  }
+}
