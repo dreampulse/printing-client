@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import LoadingIndicator from './loading-indicator'
-import Icon from './icon'
+import LoadingIndicator from 'Component/loading-indicator'
+import Icon from 'Component/icon'
 
-import selectedIcon from '../../asset/icon/selected.svg'
+import selectedIcon from 'Icon/selected.svg'
 
 const ProviderProgressBar = ({classNames, modifiers, currentStep, totalSteps}) => (
   <div className={buildClassName('provider-progress-bar', modifiers, classNames)}>

@@ -1,10 +1,10 @@
 import React, {PropTypes, Component, cloneElement} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Icon from './icon'
-import closeIcon from '../../asset/icon/close.svg'
+import Icon from 'Component/icon'
+import closeIcon from 'Icon/close.svg'
 
 class Overlay extends Component {
 

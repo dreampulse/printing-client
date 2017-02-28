@@ -1,17 +1,17 @@
 import React, {Component, PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 import {
   getGoogleMaps,
   geocode
-} from '../service/google-maps'
-import geolocate from '../service/navigator-geolocate'
+} from 'Service/google-maps'
+import geolocate from 'Service/navigator-geolocate'
 
-import Icon from './icon'
-import LoadingIndicator from './loading-indicator'
+import Icon from 'Component/icon'
+import LoadingIndicator from 'Component/loading-indicator'
 
-import locationIcon from '../../asset/icon/location.svg'
+import locationIcon from 'Icon/location.svg'
 
 export default class LocationField extends Component {
   static propTypes = {

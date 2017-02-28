@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Icon from './icon'
-import ColorSquare from './color-square'
+import Icon from 'Component/icon'
+import ColorSquare from 'Component/color-square'
 
-import selectedIcon from '../../asset/icon/selected.svg'
+import selectedIcon from 'Icon/selected.svg'
 
 const getLabel = ({value, label}) => (label || value)
 

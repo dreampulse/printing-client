@@ -1,7 +1,7 @@
 import React, {PropTypes, cloneElement} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
 const ProcessStepBar = ({classNames, modifiers, children, currentStep = 0}) => {
   const modifiedChildren = React.Children.map(children, (child, index) => (

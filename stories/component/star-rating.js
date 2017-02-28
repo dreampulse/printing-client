@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import StarRating from '../../src/app/component/star-rating'
+import StarRating from 'Component/star-rating'
 
 storiesOf('Star Rating', module)
   .add('default', () => (

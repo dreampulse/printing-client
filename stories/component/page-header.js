@@ -1,10 +1,10 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import PageHeader from '../../src/app/component/page-header'
-import Link from '../../src/app/component/link'
+import PageHeader from 'Component/page-header'
+import Link from 'Component/link'
 
-import backIcon from '../../src/asset/icon/back.svg'
+import backIcon from 'Icon/back.svg'
 
 storiesOf('Page Header', module)
   .add('default', () => {

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
 const ModelItemList = ({classNames, modifiers, children}) => {
   const modifiedChildren = React.Children.map(children, child => (

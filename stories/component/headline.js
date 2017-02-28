@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import Headline from '../../src/app/component/headline'
+import Headline from 'Component/headline'
 
 storiesOf('Headline', module)
   .add('default', () => (

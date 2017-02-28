@@ -8,8 +8,8 @@ import {
   selectMenuMaterialValues
 } from '../util/data'
 
-import SelectMenu from '../../src/app/component/select-menu'
-import SelectField from '../../src/app/component/select-field'
+import SelectMenu from 'Component/select-menu'
+import SelectField from 'Component/select-field'
 
 const menu = <SelectMenu values={selectMenuValues} />
 const colorMenu = <SelectMenu values={selectMenuColorValues} />

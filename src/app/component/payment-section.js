@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
 const PaymentSection = ({classNames, modifiers, children, subtotal, shipping, vat, total}) => (
   <section className={buildClassName('payment-section', modifiers, classNames)}>

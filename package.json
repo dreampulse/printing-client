@@ -46,6 +46,7 @@
     "eslint": "^3.13.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-config-standard-jsx": "^3.2.0",
+    "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "2",
     "eslint-plugin-no-unused-vars-rest": "^1.0.4",

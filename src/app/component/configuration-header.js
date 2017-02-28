@@ -1,9 +1,9 @@
 import React, {Children, PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Container from './container'
+import Container from 'Component/container'
 
 const ConfigurationHeader = ({classNames, modifiers, children}) => (
   <div className={buildClassName('configuration-header', modifiers, classNames)}>

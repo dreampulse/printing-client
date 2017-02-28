@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
-import LabeledCheckbox from '../../src/app/component/labeled-checkbox'
+import LabeledCheckbox from 'Component/labeled-checkbox'
 import HandleChecked from '../util/handle-checked'
 
 storiesOf('Labeled Checkbox', module)
