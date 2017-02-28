@@ -1,7 +1,7 @@
 import React, {cloneElement, PropTypes} from 'react'
 
 import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import buildClassName, {buildClassArray} from '../lib/build-class-name'
 
 import Button from './button'
 import Headline from './headline'
@@ -27,7 +27,7 @@ const MaterialCard = ({
   onMoreClick = () => {},
   onSelectClick = () => {}
 }) => {
-  const buttonModifiers = ['block', {selected}]
+  const buttonModifiers = buildClassArray(['block', {selected}])
   const selectedLabel = selected ? 'Selected' : 'Select'
   modifiers.push({
     unavailable
