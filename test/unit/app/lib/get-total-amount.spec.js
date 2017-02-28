@@ -1,4 +1,4 @@
-import {getCartAmount, getPriceAmount} from '../../../../src/app/lib/get-total-amount'
+import {getCartAmount, getPriceAmount} from 'Lib/get-total-amount'
 
 describe('getCartAmount()', () => {
   it('works as expected', () => {

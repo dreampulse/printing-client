@@ -1,4 +1,4 @@
-import buildClassName from '../../../../src/app/lib/build-class-name'
+import buildClassName from 'Lib/build-class-name'
 
 describe('buildClassName()', () => {
   it('returns proper class name when modifier and className are strings', () => {
