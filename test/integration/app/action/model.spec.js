@@ -1,11 +1,13 @@
-import {upload, modelUploaded} from '../../../../src/app/action/model'
+import {
+  uploadFile,
+  uploadFiles,
+  checkUploadStatus
+} from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
 describe('Model Integration Test', () => {
   let store
-
-  const modelId = 'some-model-id'
 
   beforeEach(() => {
     sinon.stub(printingEngine)
@@ -16,34 +18,157 @@ describe('Model Integration Test', () => {
     sinon.restore(printingEngine)
   })
 
-  describe('upload()', () => {
-    it('calls the printing engine api', async () => {
-      const apiResponse = 'upload-model-api-response'
+  describe('uploadFile()', () => {
+    let apiResponse
+    let file
+
+    beforeEach(() => {
+      apiResponse = {
+        modelId: 'some-mode-id'
+      }
+      file = {
+        name: 'some-file-name',
+        size: 42
+      }
+    })
+
+    it('success uploading to the backend', async () => {
       printingEngine.uploadModel.resolves(apiResponse)
-      const result = await store.dispatch(upload('some-form-data', 'some-callback'))
-      expect(printingEngine.uploadModel, 'was called with', 'some-form-data', 'some-callback')
-      expect(result, 'to equal', apiResponse)
+
+      printingEngine.getUploadStatus.resolves(true)
+      printingEngine.getPriceStatus.resolves(true)  // Finished polling
+
+      await store.dispatch(uploadFile(file, 'some-callback'))
+
+      expect(store.getState().model, 'to satisfy', {
+        areAllUploadsFinished: true,
+        numberOfUploads: 0
+      })
+
+      expect(store.getState().model.uploadingModels[0], 'to satisfy', {
+        name: 'some-file-name',
+        size: 42,
+        progress: 1,
+        uploadFinished: 1,
+        modelId: 'some-mode-id'
+      })
+
+      expect(store.getState().model.models['some-mode-id'], 'to satisfy', {
+        name: 'some-file-name',
+        size: 42,
+        modelId: 'some-mode-id'
+      })
+    })
+
+    it('fails uploading to the backend', async () => {
+      printingEngine.uploadModel.rejects(new Error())
+
+      try {
+        await store.dispatch(uploadFile(file, 'some-callback'))
+      } catch (e) {
+        // do nothing
+      }
+
+      expect(store.getState().model, 'to satisfy', {
+        areAllUploadsFinished: true,
+        numberOfUploads: 0
+      })
+
+      expect(store.getState().model.uploadingModels[0], 'to satisfy', {
+        error: true
+      })
     })
   })
 
-  describe('modelUploaded()', () => {
+  describe('checkUploadStatus()', () => {
     it('handles the finished case', async () => {
       printingEngine.getUploadStatus.resolves(true)
-      await store.dispatch(modelUploaded({modelId}))
 
-      expect(store.getState().model, 'to equal', {
-        isUploadFinished: true,
-        modelId
+      store = Store({
+        model: {
+          models: {
+            'some-model-id': {}
+          }
+        }
+      })
+
+      await store.dispatch(checkUploadStatus({modelId: 'some-model-id'}))
+
+      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+        checkStatusFinished: true
       })
     })
 
     it('handles the aborted case', async () => {
       printingEngine.getUploadStatus.rejects(new Error())
-      await store.dispatch(modelUploaded({modelId}))
 
-      expect(store.getState().model, 'to equal', {
-        isUploadFinished: false,
-        modelId
+      store = Store({
+        model: {
+          models: {
+            'some-model-id': {}
+          }
+        }
+      })
+
+      try {
+        await store.dispatch(checkUploadStatus({modelId: 'some-model-id'}))
+      } catch (e) {
+        expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+          checkStatusFinished: true,
+          error: true
+        })
+      }
+    })
+  })
+
+  describe('uploadFiles()', () => {
+    it('works for the success case', async () => {
+      const apiResponse = {
+        modelId: 'some-model-id'
+      }
+      const files = [{
+        name: 'some-file-name',
+        size: 42
+      }]
+
+      printingEngine.uploadModel.resolves(apiResponse)
+      printingEngine.getUploadStatus.resolves(true)
+      printingEngine.createPriceRequest.resolves({priceId: '123'})
+      printingEngine.getPriceStatus.resolves(true)  // Finished polling
+      printingEngine.getPrice.resolves('some-price')
+
+      store = Store({
+        material: {
+          materials: {
+            'some-material-id': 'something'
+          }
+        },
+        user: {
+          userId: 'some-user-id',
+          user: {
+            shippingAddress: {
+              city: 'Pittsburgh',
+              zipCode: '15234',
+              stateCode: 'PA',
+              countryCode: 'US'
+            }
+          }
+        }
+      })
+
+      await store.dispatch(uploadFiles(files, 'some-callback'))
+
+      expect(store.getState().model, 'to satisfy', {
+        areAllUploadsFinished: true,
+        numberOfUploads: 0,
+        selectedUnit: 'mm'
+      })
+
+      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+        name: 'some-file-name',
+        size: 42,
+        modelId: 'some-model-id',
+        checkStatusFinished: true
       })
     })
   })

@@ -11,7 +11,12 @@ describe('Modal Integration Test', () => {
   describe('open()', () => {
     it('works with all parameters set', async () => {
       store.dispatch(
-        open('some-title', 'some-contentFactory', 'some-contentProps', 'some-contentModifiers')
+        open({
+          title: 'some-title',
+          contentFactory: 'some-contentFactory',
+          contentProps: 'some-contentProps',
+          contentModifiers: 'some-contentModifiers'
+        })
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
@@ -24,7 +29,10 @@ describe('Modal Integration Test', () => {
 
     it('works with default parameters', async () => {
       store.dispatch(
-        open('some-title', 'some-contentFactory')
+        open({
+          title: 'some-title',
+          contentFactory: 'some-contentFactory'
+        })
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,

@@ -27,7 +27,7 @@ describe('Material Integration Test', () => {
   describe('selectMaterial()', () => {
     it('should work', () => {
       store.dispatch(selectMaterial('some-material-id'))
-      expect(store.getState().material.selected, 'to equal', 'some-material-id')
+      expect(store.getState().material.selectedMaterial, 'to equal', 'some-material-id')
     })
   })
 })

@@ -1,0 +1,29 @@
+.table-head-cell {
+  padding: {
+    right: $space-base;
+    top: $space-s;
+    bottom: $space-s;
+    left: 0;
+  };
+  color: $color-text-secondary;
+  text-align: left;
+  font-weight: $font-weight-semi-bold;
+
+  &__sortable {
+    color: $color-text-secondary;
+    text-decoration: none;
+    font-weight: $font-weight-medium;
+
+    > .icon {
+      color: $color-text-secondary;
+    }
+  }
+
+  &--checkbox {
+    width: $input-height / 2 + $space-base;
+  }
+
+  &--avatar {
+    width: $input-height + $space-base;
+  }
+}

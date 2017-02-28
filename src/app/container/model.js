@@ -1,58 +1,125 @@
-/*
 import React from 'react'
+import {chain} from 'ramda'
 import {connect} from 'react-redux'
+import {compose} from 'recompose'
+import toArray from 'lodash/toArray'
 
-import Main from '../component/main'
-import Button from '../component/button'
-import Upload from '../component/upload'
-import Headline from '../component/headline'
-import SectionHeadline from '../component/section-headline'
-import LoadingIndicator from '../component/loading-indicator'
+import Main from '../component-legacy/main'
+import Button from '../component-legacy/button'
+import Upload from '../component-legacy/upload'
+import Headline from '../component-legacy/headline'
+import SectionHeadline from '../component-legacy/section-headline'
+import Table from '../component-legacy/table'
+import TableHeadCell from '../component-legacy/table-head-cell'
+import TableRow from '../component-legacy/table-row'
+import TableCell from '../component-legacy/table-cell'
 
 import {goToVendor} from '../action/navigation'
 import {selectMaterial} from '../action/material'
-import {upload, modelUploaded} from '../action/model'
+import {uploadFiles} from '../action/model'
+import {selectOffer} from '../action/cart'
+
+import {getPriceAmount} from '../lib/get-total-amount'
 
 const Model = ({
-  onUpload,
-  onUploaded,
-  isUploading,
+  onUploadFiles,
   materials,
+  models,
   onSelectedMaterial,
   selectedMaterial,
-  onGoToVendor,
-  isConfigured
+  location,
+  price,
+  uploadingModels,
+  onSelectOffer
 }) => {
+  const onUpload = (files) => {
+    onUploadFiles(toArray(files))
+  }
+
   const UploadSection = () => (
     <section>
       <SectionHeadline label="1. Upload files" />
-      <Upload label="Upload a model" onUpload={onUpload} onUploaded={onUploaded} />
-      <Loading />
-    </section>
-  )
+      <Upload onUpload={onUpload} multiple>
+        <Button label="upload" />
+      </Upload>
 
-  const Loading = () => (
-    isUploading ? <LoadingIndicator modifiers={['l']} /> : null
+      <pre>{JSON.stringify(uploadingModels, '', 2)}</pre>
+      <pre>{JSON.stringify(models, '', 2)}</pre>
+    </section>
   )
 
   const MaterialSection = () => (
     <section>
       <SectionHeadline label="2. Choose a material" />
-      <MaterialSelect />
+      <select
+        disabled={!materials}
+        onChange={e => onSelectedMaterial(e.target.value)}
+        value={selectedMaterial}
+      >
+        <option>Select material</option>
+        {materials && Object.keys(materials).map((material, index) =>
+          <option value={index} key={index}>{materials[material].name}</option>
+        )}
+      </select>
     </section>
   )
 
-  const MaterialSelect = () => (
-    <select
-      disabled={!materials}
-      onChange={e => onSelectedMaterial(e.target.value)}
-      value={selectedMaterial}
-    >
-      <option>Select material</option>
-      {materials && Object.keys(materials).map(k =>
-        <option value={k} key={k}>{materials[k].name}</option>
-      )}
-    </select>
+  const ShippingSection = () => (
+    <section>
+      <SectionHeadline label="Shipping to" />
+      {location && <pre>{JSON.stringify(location, null, 2)}</pre>}
+    </section>
+  )
+
+  const PriceTable = () => {
+    // TODO: improve server response to avoid this
+    const vendors = Object.keys(price.printingService)
+      .map(name => ({name, ...price.printingService[name]}))
+
+    const offers = chain(vendor =>
+      vendor.shipping.map(shipping => ({
+        name: vendor.name,
+        items: vendor.items,
+        shipping,
+        vatPercentage: vendor.vatPercentage,
+        currency: vendor.currency
+      })), vendors
+    )
+
+    return (
+      <Table
+        head={[
+          <TableHeadCell key={0}>Provider</TableHeadCell>,
+          <TableHeadCell key={1}>Price incl. shipping</TableHeadCell>,
+          <TableHeadCell key={2}>Shipping option</TableHeadCell>
+        ]}
+        rows={offers.map((offer, index) =>
+          <TableRow key={index}>
+            <TableCell>{offer.name}</TableCell>
+            <TableCell>{getPriceAmount(offer)} {offer.currency}</TableCell>
+            <TableCell>{offer.shipping.name}</TableCell>
+            <TableCell classNames={['u-align-right']}>
+              <Button
+                label="Select"
+                onClick={() =>
+                  onSelectOffer({
+                    vendor: offer.name,
+                    shippingName: offer.shipping.name
+                  })
+                }
+              />
+            </TableCell>
+          </TableRow>
+        )}
+      />
+    )
+  }
+
+  const PriceSection = () => (
+    <section>
+      <SectionHeadline label="Prices" />
+      {price && <PriceTable /> }
+    </section>
   )
 
   return (
@@ -60,24 +127,28 @@ const Model = ({
       <Headline label="Model config" modifiers={['xl']} />
       <UploadSection />
       <MaterialSection />
-      <Button label="Continue" disabled={!isConfigured} onClick={onGoToVendor} />
+      <ShippingSection />
+      <PriceSection />
     </Main>
   )
 }
 
 const mapStateToProps = state => ({
-  isUploading: state.model.modelId && !state.model.isUploadFinished,
-  isConfigured: state.model.isUploadFinished && state.material.selected,
   materials: state.material.materials,
-  selectedMaterial: state.material.selected
+  uploadingModels: state.model.uploadingModels,
+  models: state.model.models,
+  selectedMaterial: state.material.selectedMaterial,
+  location: state.user.user.shippingAddress,
+  price: state.price.price
 })
 
 const mapDispatchToProps = {
-  onUpload: upload,
-  onUploaded: modelUploaded,
+  onUploadFiles: uploadFiles,
   onSelectedMaterial: selectMaterial,
-  onGoToVendor: goToVendor
+  onGoToVendor: goToVendor,
+  onSelectOffer: selectOffer
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Model)
-*/
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps)
+)(Model)

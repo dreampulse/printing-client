@@ -5,16 +5,6 @@ import * as printingEngine from '../../../../src/app/lib/printing-engine'
 describe('Price Integration Test', () => {
   let store
 
-  const modelId = '123'
-  const priceId = '456'
-  const userId = '789'
-  const shippingAddress = {
-    city: 'Pittsburgh',
-    zipCode: '15234',
-    stateCode: 'PA',
-    countryCode: 'US'
-  }
-
   beforeEach(() => {
     sinon.stub(printingEngine)
   })
@@ -27,25 +17,56 @@ describe('Price Integration Test', () => {
     it('should work if shipping address is set', async () => {
       store = Store({
         model: {
-          modelId
+          models: {
+            'material-id-model-1': {},
+            'material-id-model-2': {}
+          }
+        },
+        material: {
+          materials: {
+            'some-material-id': 'something',
+            'some-material-other-id': 'something'
+          }
         },
         user: {
+          userId: 'some-user-id',
           user: {
-            shippingAddress
+            shippingAddress: {
+              city: 'Pittsburgh',
+              zipCode: '15234',
+              stateCode: 'PA',
+              countryCode: 'US'
+            }
           }
         }
       })
 
-      printingEngine.createUser.resolves({userId})
-      printingEngine.createPriceRequest.resolves({priceId})
-      printingEngine.listMaterials.resolves({0: {}})
-      printingEngine.getPriceStatus.resolves(true)
+      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
+      printingEngine.getPriceStatus.resolves(true)  // Finished polling
       printingEngine.getPrice.resolves('some-price')
 
       await store.dispatch(createPriceRequest())
 
+      // The cross product of all combinations
+      expect(printingEngine.createPriceRequest, 'was called with', {
+        userId: 'some-user-id',
+        items: [{
+          modelId: 'material-id-model-1',
+          materialId: 'some-material-id'
+        }, {
+          modelId: 'material-id-model-2',
+          materialId: 'some-material-id'
+        }, {
+          modelId: 'material-id-model-1',
+          materialId: 'some-material-other-id'
+        }, {
+          modelId: 'material-id-model-2',
+          materialId: 'some-material-other-id'
+        }]
+      })
+
       expect(store.getState().price, 'to satisfy', {
-        priceId,
+        priceId: 'some-price-id',
         price: 'some-price'
       })
     })
@@ -53,13 +74,15 @@ describe('Price Integration Test', () => {
     it('should not send request if shipping address is not set', async () => {
       store = Store({})
 
-      await store.dispatch(createPriceRequest())
-
-      expect(printingEngine.createUser, 'was not called')
-      expect(store.getState().price, 'to satisfy', {
-        priceId: null,
-        price: null
-      })
+      try {
+        await store.dispatch(createPriceRequest())
+      } catch (e) {
+        expect(printingEngine.createPriceRequest, 'was not called')
+        expect(store.getState().price, 'to equal', {
+          priceId: null,
+          price: null
+        })
+      }
     })
   })
 })

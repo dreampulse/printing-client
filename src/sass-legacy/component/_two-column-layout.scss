@@ -1,0 +1,19 @@
+.two-column-layout {
+  $susy-local-layout: (
+    gutters: $space-xl / $column-width
+  );
+
+  @include with-layout($susy-local-layout) {
+    @include scut-clearfix;
+
+    margin-left: -1 * gutter();
+    margin-right: -1 * gutter();
+
+    & > * {
+      @include span(12);
+      @include respond-to(medium) {
+        @include span(6);
+      }
+    }
+  }
+}

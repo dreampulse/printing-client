@@ -1,28 +1,111 @@
 import {handleActions} from 'redux-actions'
 
 import TYPE from '../type'
+import {update} from '../lib/util'
 
 const initialState = {
-  isUploadFinished: false,
-  modelId: null
+  areAllUploadsFinished: false,
+  numberOfUploads: 0,
+  selectedUnit: 'mm',
+  uploadingModels: [],
+  models: {}
 }
 
-function handleUploadStarted (state, {payload}) {
+function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
   return {
     ...state,
-    modelId: payload
+    numberOfUploads: state.numberOfUploads + 1,
+    uploadingModels: [
+      ...state.models, {
+        fileId,
+        name,
+        size,
+        progress: 0
+      }
+    ]
   }
 }
 
-function handleUploadFinished (state) {
+function handleUploadToBackedProgressed (state, {payload: {fileId, progress}}) {
+  const updateModels = update(state.uploadingModels, model => model.fileId === fileId)
+
   return {
     ...state,
-    isUploadFinished: true
+    uploadingModels: updateModels({
+      progress
+    })
+  }
+}
+
+function handleUploadToBackedFinished (state, {payload: {fileId, modelId, error}}) {
+  // TODO: The backend should return all needed fields Issue: #66
+  const updateModels = update(state.uploadingModels, model => model.fileId === fileId)
+  const uploadingModel = state.uploadingModels
+    .filter(model => model.fileId === fileId)[0]
+  const areAllUploadsFinished = state.numberOfUploads === 1
+
+  if (error) {
+    return {
+      ...state,
+      areAllUploadsFinished,
+      numberOfUploads: state.numberOfUploads - 1,
+      uploadingModels: updateModels({
+        progress: 1,
+        error
+      })
+    }
+  }
+
+  return {
+    ...state,
+    areAllUploadsFinished,
+    numberOfUploads: state.numberOfUploads - 1,
+    uploadingModels: updateModels({
+      progress: 1,
+      uploadFinished: 1,
+      modelId
+    }),
+    models: {
+      ...state.models,
+      [modelId]: {
+        ...uploadingModel,
+        modelId
+      }
+    }
+  }
+}
+
+function handleCheckStatusStarted (state, {payload: {modelId}}) {
+  return {
+    ...state,
+    models: {
+      ...state.models,
+      [modelId]: {
+        ...state.models[modelId],
+        checkStatusFinished: false
+      }
+    }
+  }
+}
+
+function handleCheckStatusFinished (state, {payload: {modelId, error}}) {
+  return {
+    ...state,
+    models: {
+      ...state.models,
+      [modelId]: {
+        ...state.models[modelId],
+        checkStatusFinished: true,
+        error
+      }
+    }
   }
 }
 
 export default handleActions({
-  [TYPE.MODEL.UPLOAD_FINISHED]: handleUploadFinished,
-  [TYPE.MODEL.UPLOAD_STARTED]: handleUploadStarted
+  [TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED]: handleUploadToBackedStarted,
+  [TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED]: handleUploadToBackedProgressed,
+  [TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED]: handleUploadToBackedFinished,
+  [TYPE.MODEL.CHECK_STATUS_STARTED]: handleCheckStatusStarted,
+  [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished
 }, initialState)
-

@@ -1,18 +1,52 @@
 import {createAction} from 'redux-actions'
+import uniqueId from 'lodash/uniqueId'
 
-import TYPE from '../type'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
+import {createPriceRequest} from './price'
 
-export const upload = (files, onProgressChange) => () =>
-  printingEngine.uploadModel(files, onProgressChange)
+import TYPE from '../type'
 
-export const modelUploaded = ({modelId}) => async (dispatch) => {
-  dispatch(createAction(TYPE.MODEL.UPLOAD_STARTED)(modelId))
+export const checkUploadStatus = ({modelId}) => async (dispatch) => {
+  dispatch(createAction(TYPE.MODEL.CHECK_STATUS_STARTED)({modelId}))
+
   try {
     await pollApi(() => printingEngine.getUploadStatus({modelId}))
-    dispatch(createAction(TYPE.MODEL.UPLOAD_FINISHED)())
+    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({modelId}))
   } catch (e) {
-    dispatch(createAction(TYPE.MODEL.UPLOAD_ABORTED)())
+    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({modelId, error: true}))
   }
+}
+
+export const uploadFile = file => async (dispatch, getState) => {
+  const fileId = uniqueId('file-id-')
+  const unit = getState().model.selectedUnit
+
+  dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED)({
+    fileId,
+    name: file.name,
+    size: file.size
+  }))
+
+  const onUploadProgressed = progress =>
+    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED)({progress, fileId}))
+
+  try {
+    const {modelId} = await printingEngine.uploadModel(file, {unit}, onUploadProgressed)
+    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({modelId, fileId}))
+    return {modelId}
+  } catch (e) {
+    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({fileId, error: true}))
+    throw new Error()
+  }
+}
+
+export const uploadFiles = files => async (dispatch) => {
+  await Promise.all(
+    files.map(async (file) => {
+      const {modelId} = await dispatch(uploadFile(file))
+      await dispatch(checkUploadStatus({modelId}))
+      await dispatch(createPriceRequest())
+    })
+  )
 }

@@ -16,22 +16,19 @@ describe('Shopping Cart Integration Test', () => {
     sinon.restore(navigation)
   })
 
-  describe('selectVendor', () => {
+  describe('selectOffer()', () => {
     it('should work', () => {
-      navigation.goToAddress.returns({type: 'foo'})
-
       store = Store({})
-      store.dispatch(cart.selectVendor('some-vendor-id'))
+      navigation.goToAddress.returns({type: 'some-type'})
+
+      store.dispatch(cart.selectOffer({
+        vendor: 'some-vendor-id',
+        shippingName: 'some-shipping-name'
+      }))
+
       expect(store.getState().cart.selectedVendor, 'to equal', 'some-vendor-id')
+      expect(store.getState().cart.selectedShipping, 'to equal', 'some-shipping-name')
       expect(navigation.goToAddress, 'was called once')
-    })
-  })
-
-  describe('selectShipping', () => {
-    it('should work', () => {
-      store = Store({})
-      store.dispatch(cart.selectShipping('some-shipping-id'))
-      expect(store.getState().cart.selectedShipping, 'to equal', 'some-shipping-id')
     })
   })
 
@@ -45,41 +42,65 @@ describe('Shopping Cart Integration Test', () => {
 
   describe('createShoppingCart()', () => {
     it('should work', async () => {
-      const modelId = '123'
-      const priceId = '456'
-      const price = {
-        _id: priceId,
-        printingService: {
-          shapeways: {
-            shipping: [{
-              name: 'USPS First-Class',
-              price: 1.99
-            }]
-          }
-        }
-      }
-
       store = Store({
+        material: {
+          selectedMaterial: 'some-material-id'
+        },
         model: {
-          modelId
+          models: {
+            'some-model-id': {
+              modelId: 'some-model-id'
+            },
+            'some-other-model-id': {
+              modelId: 'some-other-model-id'
+            }
+          }
         },
         price: {
-          priceId,
-          price
+          priceId: 'some-price-id'
         },
         cart: {
-          quantity: 1
+          quantity: 1,
+          selectedVendor: 'some-vendor',
+          selectedShipping: 'some-shipping-method'
         }
       })
 
       printingEngine.createShoppingCart.resolves({cartId: 'some-cart-id'})
       printingEngine.getFinalCartPrice.resolves('final-cart-price')
 
-      await store.dispatch(cart.createShoppingCart({modelId}))
+      await store.dispatch(cart.createShoppingCart())
 
       expect(store.getState().cart, 'to satisfy', {
         cartId: 'some-cart-id',
         cart: 'final-cart-price'
+      })
+
+      expect(printingEngine.createShoppingCart, 'was called with', {
+        userId: null,
+        priceId: 'some-price-id',
+        items: [{
+          modelId: 'some-model-id',
+          vendorId: 'some-vendor',
+          quantity: 1,
+          materialId: 'some-material-id'
+        }, {
+          modelId: 'some-other-model-id',
+          vendorId: 'some-vendor',
+          quantity: 1,
+          materialId: 'some-material-id'
+        }],
+        shipping: [{
+          name: 'some-shipping-method',
+          vendorId: 'some-vendor'
+        }, {
+          name: 'some-shipping-method',
+          vendorId: 'some-vendor'
+        }]
+      })
+
+      expect(printingEngine.getFinalCartPrice, 'was called with', {
+        cartId: 'some-cart-id'
       })
     })
   })

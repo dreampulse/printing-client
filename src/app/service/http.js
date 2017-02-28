@@ -4,11 +4,13 @@ export const fetch = global.fetch
 export const Xhr = global.XMLHttpRequest
 
 function isJSON ({headers}) {
-  return headers.get('content-type').includes('application/json')
+  const contentType = headers.get('content-type')
+  if (contentType) return contentType.indexOf('application/json') >= 0
+  return false
 }
 
 export function checkStatus (response) {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.status >= 200 && response.status < 400) {
     if (isJSON(response)) return response.json()
     return null
   }
@@ -29,13 +31,15 @@ export async function request (url, additionalOptions = {}) {
   return checkStatus(response)
 }
 
-export function upload (url, files, onProgress) {
+export function upload (url, file, params, onProgress) {
   const xhr = new Xhr()
 
   xhr.upload.addEventListener('progress', (event) => {
     if (event.lengthComputable) {
       const progress = event.loaded / event.total
-      onProgress(progress)
+      if (onProgress) {
+        onProgress(progress)
+      }
     }
   })
 
@@ -52,8 +56,10 @@ export function upload (url, files, onProgress) {
   })
 
   const form = new global.FormData()
-  form.append('file', files[0])
-  form.append('unit', 'mm')  // TODO
+  form.append('file', file)
+  Object.keys(params).forEach((param) => {
+    form.append(param, params[param])
+  })
 
   xhr.open('POST', url)
   xhr.send(form)

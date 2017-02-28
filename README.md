@@ -43,7 +43,7 @@ $ npm run start
 - Libs: Libs are our own libraries which contain the core business logic. They can be found in `/src/app/lib`.
 
 ## Dependency Injection
-We use a very explicit dependency injection model in order to be able to write better mocks in our tests and raise coverage. Therefore, modules with dependencies are wrapped in a `create(dependencies, settings)` function. This function returns the interface which the module wants to expose. Every module folder then has an index.js file where the dependencies are imported and the create functions are called. This `index.js` file may only contain simple glue code because it won't be tested in unit tests.
+We don't use a explicit dependency injection model. We use ES6-Module export and `Sinon.stub()` for testing instead.
 
 ## CSS
 SASS is our CSS preprocessor of choice.

@@ -1,22 +1,25 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
+import promiseMiddleware from 'redux-promise'
 import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
 
 import rootReducer from './reducer'
 
 export default (initialState = {}) => {
-  let middleware = compose(
-    applyMiddleware(
-      thunk,
-      routerMiddleware(browserHistory)
-    )
+  let middleware = applyMiddleware(
+    thunk,
+    promiseMiddleware,
+    routerMiddleware(browserHistory)
   )
 
   if (process.env.NODE_ENV !== 'production') {
+    /* eslint global-require: 0 */
+    /* eslint import/no-extraneous-dependencies: 0 */
     // Enable redux dev-tools
     middleware = compose(
       middleware,
+      // applyMiddleware(require('redux-logger')()),
       global.devToolsExtension ? global.devToolsExtension() : f => f
     )
   }

@@ -1,29 +1,43 @@
+import {xprod} from 'ramda'
 import {createAction} from 'redux-actions'
 
 import TYPE from '../type'
-import {createUser} from './user'
 import pollApi from '../lib/poll-api'
 import * as printingEngine from '../lib/printing-engine'
 
+// TODO: what happens if I have multiple concurrent createPriceRequest() calls
+// This would be easy with rxjs
+
+export const getFinalPrice = ({priceId}) => async (dispatch) => {
+  await pollApi(() => printingEngine.getPriceStatus({priceId}))
+
+  const pricePromise = printingEngine.getPrice({priceId})
+  return dispatch(createAction(TYPE.PRICE.RECEIVED)(pricePromise))
+}
+
 export const createPriceRequest = () => async (dispatch, getState) => {
   const sa = getState().user.user.shippingAddress
-  if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) return
+  // TODO: Issue #35
+  if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
+    throw new Error('Shipping Address Invalid')
+  }
 
-  await dispatch(createUser())
+  const materialIds = Object.keys(getState().material.materials)
+  const modelIds = Object.keys(getState().model.models)
+
+  const items = xprod(materialIds, modelIds).map(([materialId, modelId]) => ({
+    modelId,
+    materialId
+  }))
 
   const options = {
     userId: getState().user.userId,
-    modelId: getState().model.modelId,
-    materialId: getState().material.selected
+    items
   }
-  const {priceId} = await printingEngine.createPriceRequest(options)
-  dispatch(createAction(TYPE.PRICE.REQUEST_CREATED)(priceId))
 
-  try {
-    await pollApi(() => printingEngine.getPriceStatus({priceId}))
-    const price = await printingEngine.getPrice({priceId})
-    dispatch(createAction(TYPE.PRICE.RECEIVED)(price))
-  } catch (e) {
-    dispatch(createAction(TYPE.PRICE.ERROR)(e))
-  }
+  const priceRequestPromise = printingEngine.createPriceRequest(options)
+  const {payload: {priceId}} =
+    await dispatch(createAction(TYPE.PRICE.REQUESTED)(priceRequestPromise))
+
+  await dispatch(getFinalPrice({priceId}))
 }
