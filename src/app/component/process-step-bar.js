@@ -1,18 +1,18 @@
 import React, {PropTypes, cloneElement} from 'react'
 
 import propTypes from 'Lib/prop-types'
-import buildClassName from 'Lib/build-class-name'
+import buildClassName, {buildClassArray} from 'Lib/build-class-name'
 
 const ProcessStepBar = ({classNames, modifiers, children, currentStep = 0}) => {
   const modifiedChildren = React.Children.map(children, (child, index) => (
     cloneElement(child, {
       key: child.props.label,
-      modifiers: [{
+      modifiers: buildClassArray({
         first: index === 0,
         last: index === React.Children.count(children) - 1,
         'last-active': currentStep === index,
         inactive: index > currentStep
-      }]
+      })
     })
   ))
 

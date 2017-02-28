@@ -3,7 +3,7 @@ import Portal from 'react-portal'
 import ReactDOM from 'react-dom'
 
 import propTypes from 'Lib/prop-types'
-import buildClassName from 'Lib/build-class-name'
+import buildClassName, {buildClassArray} from 'Lib/build-class-name'
 
 import Tooltip from 'Component/tooltip'
 
@@ -91,9 +91,9 @@ export default class Info extends Component {
             style={this.state.style}
           >
             <Tooltip
-              modifiers={[{
+              modifiers={buildClassArray({
                 right: this.state.openRight
-              }]}
+              })}
             >
               {this.props.children}
             </Tooltip>
