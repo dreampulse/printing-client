@@ -7,7 +7,7 @@
   "scripts": {
     "build": "npm run -s build:clean && npm run -s build:webpack && npm run -s build:assets && npm run -s build:styleguide",
     "build:clean": "rm -rf ./dist",
-    "build:webpack": "webpack --config ./webpack.production.config.js",
+    "build:webpack": "webpack --config ./webpack/production.js",
     "build:assets": "mkdir -p dist/asset && rsync -rtvqL src/asset/ dist/asset",
     "build:styleguide": "build-storybook -c .storybook -o dist/styleguide",
     "start:dev": "PORT=3000 babel-node bin/app-dev-server",
