@@ -5,11 +5,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = ({
-  devServer: devServer = false,
+  devServer = false,
   devServerPort,
-  sourceMaps: sourceMaps = false,
-  nodeEnv: nodeEnv = 'production',
-  optimize: optimize = true
+  extractStyles = false,
+  sourceMaps = false,
+  nodeEnv = 'production',
+  optimize = true
 }) => {
   const styleLoaders = [
     sourceMaps ? 'css?sourceMap' : 'css',
@@ -52,7 +53,7 @@ module.exports = ({
           test: /\.scss$/,
           loaders: [
             'style',
-            ...(devServer ? styleLoaders : [ExtractTextPlugin.extract(styleLoaders)])
+            ...(extractStyles ? [ExtractTextPlugin.extract(styleLoaders)] : styleLoaders)
           ]
         }, {
           test: /\.(ttf|eot|woff|woff2)$/,
@@ -90,9 +91,10 @@ module.exports = ({
       ...(devServer ? [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin() // webpack process will not exit on error
-      ] : [
+      ] : []),
+      ...(extractStyles ? [
         new ExtractTextPlugin('app.css')
-      ]),
+      ] : []),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(nodeEnv)

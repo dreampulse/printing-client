@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000
 const config = webpackConfig({
   devServer: true,
   devServerPort: port,
+  extractStyles: false,
   optimize: false,
   sourceMaps: true,
   nodeEnv: 'development'
