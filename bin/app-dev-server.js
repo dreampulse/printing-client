@@ -1,3 +1,4 @@
+import path from 'path'
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 import open from 'opn'
@@ -17,7 +18,7 @@ new WebpackDevServer(webpack(config), {
   publicPath: '/',
   hot: true,
   historyApiFallback: true,
-  contentBase: 'src',
+  contentBase: path.resolve(__dirname, '../src'),
   stats: {colors: true},
   quiet: false,
   noInfo: false

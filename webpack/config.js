@@ -19,17 +19,17 @@ module.exports = ({
   ]
 
   return {
-    entry: devServer
+    entry: (devServer)
       ? [
-        `webpack-dev-server/client?http://localhost:${devServerPort}`,
-        'webpack/hot/only-dev-server',
+        `webpack-dev-server/client?http://localhost:${devServerPort}/`,
+        'webpack/hot/dev-server',
         path.resolve(__dirname, '../src/app')
       ] : [
         path.resolve(__dirname, '../src/app')
       ],
     output: {
       path: path.resolve(__dirname, '../dist'),
-      publicPath: devServer ? `http://localhost:${devServerPort}/` : '/',
+      publicPath: (devServer) ? `http://localhost:${devServerPort}/` : '/',
       filename: 'bundle.js'
     },
     resolve: {
@@ -52,7 +52,7 @@ module.exports = ({
           test: /\.scss$/,
           loaders: [
             'style',
-            ...(devServer ? ExtractTextPlugin.extract(styleLoaders) : styleLoaders)
+            ...(devServer ? styleLoaders : [ExtractTextPlugin.extract(styleLoaders)])
           ]
         }, {
           test: /\.(ttf|eot|woff|woff2)$/,
