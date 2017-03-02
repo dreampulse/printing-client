@@ -48,7 +48,23 @@ const Model = ({
     </section>
   )
 
+  // The price for each material
+  const pricesForMaterials = price && price.items.reduce((acc, item, index) => ({
+    ...acc,
+    [item.materialId]: Object.keys(price.printingService)
+      .reduce((acc, key) => ({
+        ...acc,
+        [key]: price.printingService[key].items[index]
+      }), {})
+  }), {})
+
+  const getPriceForMaterialId = id => (
+    pricesForMaterials ? pricesForMaterials[id] : null
+  )
+
   // This is just an example of how to traverse the material structure
+  // for a simple drop down
+  // put such logic in the /lib-folder
   const getMaterialConfigs = () => {
     const materialConfigs = []
     if (!materialStructure) return materialConfigs
@@ -56,12 +72,25 @@ const Model = ({
       materialGroup.materials.forEach(material =>
         material.finishGroups.forEach(finishGroup =>
           finishGroup.materialConfigs.forEach(materialConfig =>
-            materialConfigs.push(materialConfig)
+            materialConfigs.push({
+              ...materialConfig,
+              prices: getPriceForMaterialId(materialConfig.id)
+            })
           )
         )
       )
     )
     return materialConfigs
+  }
+
+  // get a string for all the prices of the different vendors
+  const prices = (material) => {
+    if (material.prices) {
+      return Object.keys(material.prices)
+        .map(key => material.prices[key].price)
+        .join(', ')
+    }
+    return ''
   }
 
   const MaterialSection = () => (
@@ -74,7 +103,9 @@ const Model = ({
       >
         <option>Select material</option>
         {getMaterialConfigs().map((material, index) =>
-          <option value={material.id} key={index}>{material.name} ({material.color})</option>
+          <option value={material.id} key={index}>
+            {material.name} ({material.color}) {prices(material)}
+          </option>
         )}
       </select>
     </section>
@@ -100,7 +131,7 @@ const Model = ({
         currency: vendor.currency
       })), vendors
     )
-    console.log('offers', offers)
+
     return (
       <Table
         head={[

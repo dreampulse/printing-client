@@ -13,17 +13,12 @@
     "imaterialise":{
       "items":[
         {
-          "modelId":"87cf7510-4142-4835-98b1-7dc95ea1e5ea",
-          "materialId":"035f4772-da8a-400b-8be4-2dd344b28ddb",
-          "finishId":"dbde41f9-c752-4670-8e5e-72cd4816c328",
           "price":21.99,
           "isPrintable":true
         },
         {
-          "modelId":"87cf7510-4142-4835-98b1-7dc95ea1e5ea",
-          "materialId":"035f4772-da8a-400b-8be4-2dd344b28ddc",
-          "finishId":"dbde41f9-c752-4670-8e5e-72cd4816c329",
-          "isPrintable":false
+          "price":42.23,
+          "isPrintable":true
         }
       ],
       "shipping":[
@@ -45,13 +40,9 @@
     "shapeways":{
       "items":[
         {
-          "modelId":5792366,
-          "materialId":"94",
           "price":22.04,
           "isPrintable":true
         }, {
-          "modelId":5792366,
-          "materialId":"95",
           "isPrintable":false
         }
       ],
