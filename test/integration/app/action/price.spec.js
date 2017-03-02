@@ -24,8 +24,11 @@ describe('Price Integration Test', () => {
         },
         material: {
           materials: {
-            'some-material-id': 'something',
-            'some-material-other-id': 'something'
+            materialConfigs: {
+              'some-material-id': 'something',
+              'some-material-other-id': 'something'
+            },
+            materialStructure: []
           }
         },
         user: {

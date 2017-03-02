@@ -1,4 +1,4 @@
-import * as geolocation from '../../src/app/service/geolocation'
+import * as geolocation from '../src/app/service/geolocation'
 
 geolocation.getLocation = () => Promise.resolve({
   city: 'Munich',

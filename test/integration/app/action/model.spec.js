@@ -140,7 +140,10 @@ describe('Model Integration Test', () => {
       store = Store({
         material: {
           materials: {
-            'some-material-id': 'something'
+            materialConfigs: {
+              'some-material-id': 'something'
+            },
+            materialStructure: []
           }
         },
         user: {

@@ -1,7 +1,7 @@
 import cartResponse from './cart-response.json'
 import priceResponse from './price-response.json'
 import materials from './generated-material-structure.json'
-import * as printingEngine from '../../src/app/lib/printing-engine'
+import * as printingEngine from '../src/app/lib/printing-engine'
 
 printingEngine.uploadModel = () => Promise.resolve({modelId: 'b364bd10-6d64-4515-b832-495d0fdf7d4c'})
 printingEngine.getUploadStatus = () => Promise.resolve(true)
