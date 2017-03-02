@@ -23,7 +23,7 @@ import {getPriceAmount} from '../lib/get-total-amount'
 
 const Model = ({
   onUploadFiles,
-  materials,
+  materialStructure,
   models,
   onSelectedMaterial,
   selectedMaterial,
@@ -48,17 +48,33 @@ const Model = ({
     </section>
   )
 
+  // This is just an example of how to traverse the material structure
+  const getMaterialConfigs = () => {
+    const materialConfigs = []
+    if (!materialStructure) return materialConfigs
+    materialStructure.forEach(materialGroup =>
+      materialGroup.materials.forEach(material =>
+        material.finishGroups.forEach(finishGroup =>
+          finishGroup.materialConfigs.forEach(materialConfig =>
+            materialConfigs.push(materialConfig)
+          )
+        )
+      )
+    )
+    return materialConfigs
+  }
+
   const MaterialSection = () => (
     <section>
       <SectionHeadline label="2. Choose a material" />
       <select
-        disabled={!materials}
+        disabled={!materialStructure}
         onChange={e => onSelectedMaterial(e.target.value)}
         value={selectedMaterial}
       >
         <option>Select material</option>
-        {materials && Object.keys(materials).map((material, index) =>
-          <option value={index} key={index}>{materials[material].name}</option>
+        {getMaterialConfigs().map((material, index) =>
+          <option value={material.id} key={index}>{material.name} ({material.color})</option>
         )}
       </select>
     </section>
@@ -134,7 +150,7 @@ const Model = ({
 }
 
 const mapStateToProps = state => ({
-  materials: state.material.materials,
+  materialStructure: state.material.materials && state.material.materials.materialStructure,
   uploadingModels: state.model.uploadingModels,
   models: state.model.models,
   selectedMaterial: state.material.selectedMaterial,

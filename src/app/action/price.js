@@ -22,7 +22,7 @@ export const createPriceRequest = () => async (dispatch, getState) => {
     throw new Error('Shipping Address Invalid')
   }
 
-  const materialIds = Object.keys(getState().material.materials)
+  const materialIds = Object.keys(getState().material.materials.materialConfigs)
   const modelIds = Object.keys(getState().model.models)
 
   const items = xprod(materialIds, modelIds).map(([materialId, modelId]) => ({
