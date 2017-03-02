@@ -1,5 +1,5 @@
 import React from 'react'
-import {chain} from 'ramda'
+import {chain as flatMap} from 'ramda'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
 import toArray from 'lodash/toArray'
@@ -23,7 +23,7 @@ import {getPriceAmount} from '../lib/get-total-amount'
 
 const Model = ({
   onUploadFiles,
-  materialStructure,
+  materials,
   models,
   onSelectedMaterial,
   selectedMaterial,
@@ -67,8 +67,8 @@ const Model = ({
   // put such logic in the /lib-folder
   const getMaterialConfigs = () => {
     const materialConfigs = []
-    if (!materialStructure) return materialConfigs
-    materialStructure.forEach(materialGroup =>
+    if (!materials && !materials.materialStructure) return materialConfigs
+    materials.materialStructure.forEach(materialGroup =>
       materialGroup.materials.forEach(material =>
         material.finishGroups.forEach(finishGroup =>
           finishGroup.materialConfigs.forEach(materialConfig =>
@@ -84,6 +84,7 @@ const Model = ({
   }
 
   // get a string for all the prices of the different vendors
+  // the stub provides unfortunately only the price for one material
   const prices = (material) => {
     if (material.prices) {
       return Object.keys(material.prices)
@@ -97,7 +98,7 @@ const Model = ({
     <section>
       <SectionHeadline label="2. Choose a material" />
       <select
-        disabled={!materialStructure}
+        disabled={!materials}
         onChange={e => onSelectedMaterial(e.target.value)}
         value={selectedMaterial}
       >
@@ -122,7 +123,7 @@ const Model = ({
     const vendors = Object.keys(price.printingService)
       .map(name => ({name, ...price.printingService[name]}))
 
-    const offers = chain(vendor =>
+    const offers = flatMap(vendor =>
       vendor.shipping.map(shipping => ({
         name: vendor.name,
         items: vendor.items,
@@ -164,7 +165,7 @@ const Model = ({
   const PriceSection = () => (
     <section>
       <SectionHeadline label="Prices" />
-      {price && <PriceTable /> }
+      {selectedMaterial && <PriceTable /> }
     </section>
   )
 
@@ -180,7 +181,7 @@ const Model = ({
 }
 
 const mapStateToProps = state => ({
-  materialStructure: state.material.materials && state.material.materials.materialStructure,
+  materials: state.material.materials,
   uploadingModels: state.model.uploadingModels,
   models: state.model.models,
   selectedMaterial: state.material.selectedMaterial,
