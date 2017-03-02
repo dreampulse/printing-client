@@ -126,7 +126,9 @@ const Model = ({
     const offers = flatMap(vendor =>
       vendor.shipping.map(shipping => ({
         name: vendor.name,
-        items: vendor.items,
+        items: vendor.items.filter((_, index) =>
+          price.items[index].materialId === selectedMaterial
+        ),
         shipping,
         vatPercentage: vendor.vatPercentage,
         currency: vendor.currency
