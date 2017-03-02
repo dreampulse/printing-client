@@ -4,6 +4,9 @@
     {
       "modelId":"b364bd10-6d64-4515-b832-495d0fdf7d4c",
       "materialId":"17"
+    }, {
+      "modelId":"b364bd10-6d64-4515-b832-495d0fdf7d4c",
+      "materialId":"18"
     }
   ],
   "printingService":{
@@ -13,15 +16,14 @@
           "modelId":"87cf7510-4142-4835-98b1-7dc95ea1e5ea",
           "materialId":"035f4772-da8a-400b-8be4-2dd344b28ddb",
           "finishId":"dbde41f9-c752-4670-8e5e-72cd4816c328",
-          "quantity":1,
           "price":21.99,
-          "toolId":"ef7ca896-b8e8-43c1-8651-8d1e62ceb279",
-          "xDimMm":69.8823,
-          "yDimMm":34.52,
-          "zDimMm":34.5269,
-          "volumeCm3":36.7534,
-          "surfaceCm2":69.195,
           "isPrintable":true
+        },
+        {
+          "modelId":"87cf7510-4142-4835-98b1-7dc95ea1e5ea",
+          "materialId":"035f4772-da8a-400b-8be4-2dd344b28ddc",
+          "finishId":"dbde41f9-c752-4670-8e5e-72cd4816c329",
+          "isPrintable":false
         }
       ],
       "shipping":[
@@ -47,6 +49,10 @@
           "materialId":"94",
           "price":22.04,
           "isPrintable":true
+        }, {
+          "modelId":5792366,
+          "materialId":"95",
+          "isPrintable":false
         }
       ],
       "shipping":[
