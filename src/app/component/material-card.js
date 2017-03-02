@@ -1,14 +1,14 @@
 import React, {cloneElement, PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName, {buildClassArray} from 'Lib/build-class-name'
 
-import Button from './button'
-import Headline from './headline'
-import Icon from './icon'
-import Link from './link'
+import Button from 'Component/button'
+import Headline from 'Component/headline'
+import Icon from 'Component/icon'
+import Link from 'Component/link'
 
-import shippingIcon from '../../asset/icon/shipping.svg'
+import shippingIcon from 'Icon/shipping.svg'
 
 const MaterialCard = ({
   classNames,
@@ -27,7 +27,7 @@ const MaterialCard = ({
   onMoreClick = () => {},
   onSelectClick = () => {}
 }) => {
-  const buttonModifiers = ['block', {selected}]
+  const buttonModifiers = buildClassArray(['block', {selected}])
   const selectedLabel = selected ? 'Selected' : 'Select'
   modifiers.push({
     unavailable

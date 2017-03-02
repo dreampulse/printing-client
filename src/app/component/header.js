@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Container from './container'
+import Container from 'Component/container'
 
-import logoImage from '../../asset/image/logo.svg'
+import logoImage from 'Image/logo.svg'
 
 const Header = ({classNames, modifiers, children}) => (
   <header className={buildClassName('header', modifiers, classNames)}>

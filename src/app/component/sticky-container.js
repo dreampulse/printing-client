@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
 // The sticky container wraps a child node and gives it a sticky behaviour.
 class StickyContainer extends React.Component {

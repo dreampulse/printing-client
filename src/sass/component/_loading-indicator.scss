@@ -4,10 +4,11 @@
   vertical-align: middle;
   width: 1em;
   height: 1em;
+  line-height: 1em;
 
   &__spinner {
     position: relative;
-    display: inline-block;
+    display: block;
     width: 1em;
     height: 1em;
     animation: loading-indicator-spin 1s linear infinite;

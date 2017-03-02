@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Button from './button'
-import ProviderImage from './provider-image'
+import Button from 'Component/button'
+import ProviderImage from 'Component/provider-image'
 
-import checkoutIcon from '../../asset/icon/checkout.svg'
+import checkoutIcon from 'Icon/checkout.svg'
 
 const ProviderItem = ({
   classNames,

@@ -2,10 +2,10 @@ import React, {Component, PropTypes} from 'react'
 import Portal from 'react-portal'
 import ReactDOM from 'react-dom'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName, {buildClassArray} from 'Lib/build-class-name'
 
-import Tooltip from './tooltip'
+import Tooltip from 'Component/tooltip'
 
 export default class Info extends Component {
 
@@ -91,9 +91,9 @@ export default class Info extends Component {
             style={this.state.style}
           >
             <Tooltip
-              modifiers={[{
+              modifiers={buildClassArray({
                 right: this.state.openRight
-              }]}
+              })}
             >
               {this.props.children}
             </Tooltip>

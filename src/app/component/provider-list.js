@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
 const ProviderList = ({classNames, modifiers, children, providerInfo}) => (
   <table className={buildClassName('provider-list', modifiers, classNames)}>

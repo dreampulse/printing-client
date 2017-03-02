@@ -1,9 +1,9 @@
 import React from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
-import CheckboxField from './checkbox-field'
+import propTypes from 'Lib/prop-types'
+import buildClassName, {buildClassArray} from 'Lib/build-class-name'
+import CheckboxField from 'Component/checkbox-field'
 
 const LabeledCheckbox = ({
   classNames,
@@ -14,7 +14,7 @@ const LabeledCheckbox = ({
   name = ''
 }) => {
   const id = uniqueId('uid-')
-  const inputModifiers = [{error: modifiers.indexOf('error') > -1}]
+  const inputModifiers = buildClassArray({error: modifiers.indexOf('error') > -1})
   return (
     <div className={buildClassName('labeled-checkbox', modifiers, classNames)}>
       <CheckboxField

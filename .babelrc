@@ -4,5 +4,12 @@
     "transform-class-properties",
     "transform-async-to-generator",
     "react-hot-loader/babel"
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        [ "babel-plugin-webpack-alias", { "config": "./webpack/production.js" } ]
+      ]
+    }
+  }
 }

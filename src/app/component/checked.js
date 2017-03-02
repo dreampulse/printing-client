@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react'
 
-import propTypes from '../lib/prop-types'
-import buildClassName from '../lib/build-class-name'
+import propTypes from 'Lib/prop-types'
+import buildClassName from 'Lib/build-class-name'
 
-import Icon from './icon'
+import Icon from 'Component/icon'
 
-import checkedIcon from '../../asset/icon/checked.svg'
-import uncheckedIcon from '../../asset/icon/unchecked.svg'
+import checkedIcon from 'Icon/checked.svg'
+import uncheckedIcon from 'Icon/unchecked.svg'
 
 const Checked = ({classNames, modifiers = [], checked = false}) => (
   <span className={buildClassName('checked', [...modifiers, {checked}], classNames)}>

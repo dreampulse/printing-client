@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
-import UploadArea from '../../src/app/component/upload-area'
+import UploadArea from 'Component/upload-area'
 
 storiesOf('Upload Area', module)
   .add('default', () => (

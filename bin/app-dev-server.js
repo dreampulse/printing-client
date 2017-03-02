@@ -1,26 +1,25 @@
-import HtmlWebpackPlugin from 'html-webpack-plugin'
+import path from 'path'
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 import open from 'opn'
 
-import webpackConfig from '../webpack.develop.config'
+import webpackConfig from '../webpack/config'
 
 const port = process.env.PORT || 3000
+const config = webpackConfig({
+  devServer: true,
+  devServerPort: port,
+  extractStyles: false,
+  optimize: false,
+  sourceMaps: true,
+  nodeEnv: 'development'
+})
 
-webpackConfig.entry.push('./src/app')
-
-webpackConfig.plugins.push(
-  new HtmlWebpackPlugin({
-    template: 'src/app/index.html',
-    inject: true
-  })
-)
-
-new WebpackDevServer(webpack(webpackConfig), {
+new WebpackDevServer(webpack(config), {
   publicPath: '/',
   hot: true,
   historyApiFallback: true,
-  contentBase: 'src',
+  contentBase: path.resolve(__dirname, '../src'),
   stats: {colors: true},
   quiet: false,
   noInfo: false

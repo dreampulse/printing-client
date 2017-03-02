@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
-import LocationField from '../../src/app/component/location-field'
+import LocationField from 'Component/location-field'
 import HandleValue from '../util/handle-value'
 import {googleMapsApiKey} from '../util/data'
 
