@@ -1,0 +1,2805 @@
+{
+  "materialStructure": [
+    {
+      "name": "Plastics",
+      "materials": [
+        {
+          "name": "Polyamide",
+          "description": "A great all-round material with great money value. Polyamide is extremely versatile. It is strong and slightly flexible. It can be used for a wide range of applications. Suitable for full functional parts as well as jewelry and many more applications. The surface can be polished and dyed. It's available in many colors. Polyamide is also known as Nylon. Professionally 3D printed using laser sintering (SLS). When thin, it's flexible enough for springs, but when thick, it's strong enough for full functional parts.",
+          "properties": {
+            "printingMethod": "EOS Selective Laser Sintering (SLS)",
+            "materialSpec": "EOS PA 2200 (PA 12)",
+            "flexibility": 4,
+            "levelOfDetail": 3,
+            "freedomOfDesign": 4,
+            "postProcessing": 4,
+            "waterproof": false,
+            "foodSafe": false,
+            "dishwasherSafe": true,
+            "interlockingAndEnclosedParts": true,
+            "recyclable": false
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, raw",
+              "summary": "Solid white polyamide, raw surface",
+              "featuredImage": "material-sf.jpg",
+              "materialConfigs": [
+                {
+                  "id": 0,
+                  "name": "Strong & Flexible White Plastic",
+                  "color": "White",
+                  "colorCode": "#ffffff"
+                },
+                {
+                  "id": 0,
+                  "name": "Natural White Polyamide",
+                  "color": "White",
+                  "colorCode": "#ffffff"
+                },
+                {
+                  "id": 0,
+                  "name": "White Plastic",
+                  "color": "White",
+                  "colorCode": "#EFEFED"
+                }
+              ]
+            },
+            {
+              "name": "Solid, polished",
+              "summary": "Solid white polyamide, polished smooth surface",
+              "featuredImage": "material-sf.jpg",
+              "materialConfigs": [
+                {
+                  "id": 1,
+                  "name": "White Plastic, Polished",
+                  "color": "White",
+                  "colorCode": "#EFEFED"
+                },
+                {
+                  "id": 1,
+                  "name": "Natural White Polished Polyamide",
+                  "color": "White",
+                  "colorCode": "#ffffff"
+                },
+                {
+                  "id": 1,
+                  "name": "White Strong & Flexible Polished Plastic",
+                  "color": "White",
+                  "colorCode": "#ffffff"
+                }
+              ]
+            },
+            {
+              "name": "Dyed, raw",
+              "summary": "Solid white polyamide, dyed raw surface",
+              "featuredImage": "material-sf.jpg",
+              "materialConfigs": [
+                {
+                  "id": 2,
+                  "name": "Strong & Flexible Plastic Black",
+                  "color": "Black",
+                  "colorCode": "#000000"
+                },
+                {
+                  "id": 2,
+                  "name": "Dyed Polyamide",
+                  "color": "Black",
+                  "colorCode": "#121212"
+                },
+                {
+                  "id": 3,
+                  "name": "Dyed Polyamide",
+                  "color": "Blue",
+                  "colorCode": "#243C94"
+                },
+                {
+                  "id": 4,
+                  "name": "Dyed Polyamide",
+                  "color": "Red",
+                  "colorCode": "#A8262A"
+                },
+                {
+                  "id": 5,
+                  "name": "Dyed Polyamide",
+                  "color": "Green",
+                  "colorCode": "#3A8733"
+                },
+                {
+                  "id": 6,
+                  "name": "Dyed Polyamide",
+                  "color": "Orange",
+                  "colorCode": "#E5601E"
+                },
+                {
+                  "id": 7,
+                  "name": "Dyed Polyamide",
+                  "color": "Purple",
+                  "colorCode": "#6258CC"
+                },
+                {
+                  "id": 8,
+                  "name": "Dyed Polyamide",
+                  "color": "Yellow",
+                  "colorCode": "#CDD032"
+                },
+                {
+                  "id": 2,
+                  "name": "Plastic, Dyed",
+                  "color": "Black",
+                  "colorCode": "#424242"
+                },
+                {
+                  "id": 3,
+                  "name": "Plastic, Dyed",
+                  "color": "Blue",
+                  "colorCode": "#46B3F0"
+                },
+                {
+                  "id": 8,
+                  "name": "Plastic, Dyed",
+                  "color": "Yellow",
+                  "colorCode": "#FDF636"
+                },
+                {
+                  "id": 4,
+                  "name": "Plastic, Dyed",
+                  "color": "Red",
+                  "colorCode": "#EA4A44"
+                },
+                {
+                  "id": 5,
+                  "name": "Plastic, Dyed",
+                  "color": "Green",
+                  "colorCode": "#7ACD3C"
+                },
+                {
+                  "id": 9,
+                  "name": "Plastic, Dyed",
+                  "color": "Beige",
+                  "colorCode": "#D2CB95"
+                },
+                {
+                  "id": 10,
+                  "name": "Plastic, Dyed",
+                  "color": "Brown",
+                  "colorCode": "#6E5238"
+                },
+                {
+                  "id": 11,
+                  "name": "Plastic, Dyed",
+                  "color": "Pink",
+                  "colorCode": "#EF5B8F"
+                },
+                {
+                  "id": 6,
+                  "name": "Plastic, Dyed",
+                  "color": "Orange",
+                  "colorCode": "#FC6135"
+                },
+                {
+                  "id": 12,
+                  "name": "Plastic, Dyed",
+                  "color": "Gray",
+                  "colorCode": "#606068"
+                }
+              ]
+            },
+            {
+              "name": "Dyed, polished",
+              "summary": "Solid white polyamide, dyed polished smooth surface",
+              "featuredImage": "material-sf.jpg",
+              "materialConfigs": [
+                {
+                  "id": 13,
+                  "name": "Strong & Flexible Polished Plastic",
+                  "color": "Pink",
+                  "colorCode": "#B02B6A"
+                },
+                {
+                  "id": 14,
+                  "name": "Strong & Flexible Polished Plastic",
+                  "color": "Red",
+                  "colorCode": "#FB0F16"
+                },
+                {
+                  "id": 15,
+                  "name": "Strong & Flexible Polished Plastic",
+                  "color": "Orange",
+                  "colorCode": "#F99600"
+                },
+                {
+                  "id": 16,
+                  "name": "Strong & Flexible Polished Plastic",
+                  "color": "Yellow",
+                  "colorCode": "#F7C33F"
+                },
+                {
+                  "id": 17,
+                  "name": "Strong & Flexible Polished Plastic",
+                  "color": "Green",
+                  "colorCode": "#3C603E"
+                },
+                {
+                  "id": 18,
+                  "name": "Strong & Flexible Polished Plastic",
+                  "color": "Blue",
+                  "colorCode": "#508DEF"
+                },
+                {
+                  "id": 19,
+                  "name": "Strong & Flexible Polished Plastic",
+                  "color": "Purple",
+                  "colorCode": "#AA32B2"
+                },
+                {
+                  "id": 20,
+                  "name": "Polished Dyed Polyamide",
+                  "color": "Black",
+                  "colorCode": "#1E1E1E"
+                },
+                {
+                  "id": 18,
+                  "name": "Polished Dyed Polyamide",
+                  "color": "Blue",
+                  "colorCode": "#3855AB"
+                },
+                {
+                  "id": 14,
+                  "name": "Polished Dyed Polyamide",
+                  "color": "Red",
+                  "colorCode": "#C62F35"
+                },
+                {
+                  "id": 17,
+                  "name": "Polished Dyed Polyamide",
+                  "color": "Green",
+                  "colorCode": "#50B84F"
+                },
+                {
+                  "id": 15,
+                  "name": "Polished Dyed Polyamide",
+                  "color": "Orange",
+                  "colorCode": "#DD6122"
+                },
+                {
+                  "id": 19,
+                  "name": "Polished Dyed Polyamide",
+                  "color": "Purple",
+                  "colorCode": "#4E4CA5"
+                },
+                {
+                  "id": 16,
+                  "name": "Polished Dyed Polyamide",
+                  "color": "Yellow",
+                  "colorCode": "E0EE35"
+                },
+                {
+                  "id": 20,
+                  "name": "Plastic, Polished, Dyed",
+                  "color": "Black",
+                  "colorCode": "#424242"
+                },
+                {
+                  "id": 18,
+                  "name": "Plastic, Polished, Dyed",
+                  "color": "Blue",
+                  "colorCode": "#46B3F0"
+                },
+                {
+                  "id": 16,
+                  "name": "Plastic, Polished, Dyed",
+                  "color": "Yellow",
+                  "colorCode": "#FDF636"
+                },
+                {
+                  "id": 14,
+                  "name": "Plastic, Polished, Dyed",
+                  "color": "Red",
+                  "colorCode": "#EA4A44"
+                },
+                {
+                  "id": 17,
+                  "name": "Plastic, Polished, Dyed",
+                  "color": "Green",
+                  "colorCode": "#7ACD3C"
+                },
+                {
+                  "id": 21,
+                  "name": "Plastic, Polished, Dyed",
+                  "color": "Beige",
+                  "colorCode": "#D2CB95"
+                },
+                {
+                  "id": 22,
+                  "name": "Plastic, Polished, Dyed",
+                  "color": "Brown",
+                  "colorCode": "#6E5238"
+                },
+                {
+                  "id": 13,
+                  "name": "Plastic, Polished, Dyed",
+                  "color": "Pink",
+                  "colorCode": "#EF5B8F"
+                },
+                {
+                  "id": 15,
+                  "name": "Plastic, Polished, Dyed",
+                  "color": "Orange",
+                  "colorCode": "#FC6135"
+                },
+                {
+                  "id": 23,
+                  "name": "Plastic, Polished, Dyed",
+                  "color": "Gray",
+                  "colorCode": "#606068"
+                }
+              ]
+            },
+            {
+              "name": "Dyed, velvet",
+              "summary": "Solid white polyamide, dyed velvety soft surface",
+              "featuredImage": "material-sf.jpg",
+              "materialConfigs": [
+                {
+                  "id": 24,
+                  "name": "Polyamide Velvet Dyed",
+                  "color": "Pink",
+                  "colorCode": "#FF36D2"
+                },
+                {
+                  "id": 25,
+                  "name": "Polyamide Velvet Dyed",
+                  "color": "Yellow",
+                  "colorCode": "#F6FF0A"
+                },
+                {
+                  "id": 26,
+                  "name": "Polyamide Velvet Dyed",
+                  "color": "Blue",
+                  "colorCode": "#002E7B"
+                },
+                {
+                  "id": 27,
+                  "name": "Polyamide Velvet Dyed",
+                  "color": "Green",
+                  "colorCode": "#17593A"
+                },
+                {
+                  "id": 28,
+                  "name": "Polyamide Velvet Dyed",
+                  "color": "Black",
+                  "colorCode": "#000000"
+                },
+                {
+                  "id": 29,
+                  "name": "Polyamide Velvet Dyed",
+                  "color": "Red",
+                  "colorCode": "#8D2130"
+                },
+                {
+                  "id": 30,
+                  "name": "Polyamide Velvet Dyed",
+                  "color": "Ochre",
+                  "colorCode": "#FBB500"
+                },
+                {
+                  "id": 26,
+                  "name": "Polyamide Velvet Dyed",
+                  "color": "Blue",
+                  "colorCode": "#279BC0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Alumide",
+          "description": "Alumide is polyamide filled with aluminum particles. It is as strong and almost as flexible as standard polyamide. It has a nice sparkling effect. 3D printed using Selective Laser Sintering (SLS)",
+          "properties": {
+            "printingMethod": "Selective Laser Sintering (SLS)",
+            "strength": 4,
+            "flexibility": 4,
+            "levelOfDetail": 3,
+            "freedomOfDesign": 4,
+            "postProcessing": 4,
+            "fragile": false,
+            "waterproof": false,
+            "foodSafe": false,
+            "dishwasherSafe": true
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, raw",
+              "summary": "Solid grey alumide, raw surface",
+              "featuredImage": "alu-movable.jpg",
+              "materialConfigs": [
+                {
+                  "id": 31,
+                  "name": "Alumide",
+                  "color": "Gray",
+                  "colorCode": "#98A0A3"
+                },
+                {
+                  "id": 31,
+                  "name": "Metallic Plastic",
+                  "color": "Gray",
+                  "colorCode": "#AFADAE"
+                },
+                {
+                  "id": 31,
+                  "name": "Alumide, natural",
+                  "color": "Gray",
+                  "colorCode": "#AFB1B0"
+                }
+              ]
+            },
+            {
+              "name": "Solid, polished",
+              "summary": "Solid grey alumide, polished smooth surface",
+              "featuredImage": "alu-movable.jpg",
+              "materialConfigs": [
+                {
+                  "id": 32,
+                  "name": "Polished Metal Plastic",
+                  "color": "Gray",
+                  "colorCode": "#8B8F90"
+                },
+                {
+                  "id": 32,
+                  "name": "Alumide, Polished",
+                  "color": "Gray",
+                  "colorCode": "#8B8F90"
+                }
+              ]
+            },
+            {
+              "name": "Dyed, raw",
+              "summary": "Solid grey alumide, dyed raw surface",
+              "featuredImage": "alu-movable.jpg",
+              "materialConfigs": [
+                {
+                  "id": 33,
+                  "name": "Dyed Alumide",
+                  "color": "Black",
+                  "colorCode": "#453b25"
+                },
+                {
+                  "id": 34,
+                  "name": "Dyed Alumide",
+                  "color": "Blue",
+                  "colorCode": "#3b4e77"
+                },
+                {
+                  "id": 35,
+                  "name": "Dyed Alumide",
+                  "color": "Green",
+                  "colorCode": "#aeb530"
+                },
+                {
+                  "id": 36,
+                  "name": "Dyed Alumide",
+                  "color": "Red",
+                  "colorCode": "#893b2b"
+                },
+                {
+                  "id": 33,
+                  "name": "Alumide, dyed",
+                  "color": "Black",
+                  "colorCode": "#393A2D"
+                },
+                {
+                  "id": 36,
+                  "name": "Alumide, dyed",
+                  "color": "Red",
+                  "colorCode": "#8A251B"
+                },
+                {
+                  "id": 37,
+                  "name": "Alumide, dyed",
+                  "color": "Orange",
+                  "colorCode": "#C9A14A"
+                },
+                {
+                  "id": 34,
+                  "name": "Alumide, dyed",
+                  "color": "Blue",
+                  "colorCode": "#3B416B"
+                },
+                {
+                  "id": 35,
+                  "name": "Alumide, dyed",
+                  "color": "Green",
+                  "colorCode": "#ABAE29"
+                }
+              ]
+            },
+            {
+              "name": "Dyed, polished",
+              "summary": "Solid grey alumide, dyed polished smooth surface",
+              "featuredImage": "alu-movable.jpg",
+              "materialConfigs": [
+                {
+                  "id": 38,
+                  "name": "Alumide, Polished, Dyed",
+                  "color": "Black",
+                  "colorCode": "#453b25"
+                },
+                {
+                  "id": 39,
+                  "name": "Alumide, Polished, Dyed",
+                  "color": "Blue",
+                  "colorCode": "#3b4e77"
+                },
+                {
+                  "id": 40,
+                  "name": "Alumide, Polished, Dyed",
+                  "color": "Green",
+                  "colorCode": "#aeb530"
+                },
+                {
+                  "id": 41,
+                  "name": "Alumide, Polished, Dyed",
+                  "color": "Red",
+                  "colorCode": "#893b2b"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Resin",
+          "description": "This material is good for presentation prototypes and figurines. Resin allows fine details and has a smooth surface. It's slightly fragile when thin. It is easily paintable. Resin is a liquid polymer 3D printed using Stereolithography (SLA).",
+          "properties": {
+            "printingMethod": "Stereolithography (SLA)",
+            "strength": 2,
+            "flexibility": 2,
+            "levelOfDetail": 4,
+            "freedomOfDesign": 5,
+            "postProcessing": 4,
+            "fragile": true,
+            "waterproof": true,
+            "foodSafe": false,
+            "dishwasherSafe": false,
+            "paintable": true
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, opaque",
+              "summary": "Solid opaque white resin, smooth surface",
+              "featuredImage": "acceuil_detail_large_2.jpg",
+              "materialConfigs": [
+                {
+                  "id": 42,
+                  "name": "Acrylic Plastic",
+                  "color": "White",
+                  "colorCode": "#DBD8D1"
+                },
+                {
+                  "id": 43,
+                  "name": "Acrylic Plastic",
+                  "color": "Black",
+                  "colorCode": "#393937"
+                },
+                {
+                  "id": 42,
+                  "name": "Detail Resin Opaque",
+                  "color": "White",
+                  "colorCode": "FAF9F1"
+                },
+                {
+                  "id": 42,
+                  "name": "Paintable Resin",
+                  "color": "White",
+                  "colorCode": "#D3D0B1"
+                },
+                {
+                  "id": 44,
+                  "name": "Paintable Resin",
+                  "color": "Gray",
+                  "colorCode": "#a6a8a5"
+                }
+              ]
+            },
+            {
+              "name": "Solid, dyed",
+              "summary": "Solid opaque white resin, dyed smooth surface",
+              "featuredImage": "acceuil_detail_large_2.jpg",
+              "materialConfigs": [
+                {
+                  "id": 45,
+                  "name": "Detail Resin",
+                  "color": "Black",
+                  "colorCode": "0A080C"
+                },
+                {
+                  "id": 46,
+                  "name": "Detail Resin",
+                  "color": "Yellow",
+                  "colorCode": "#FFF752"
+                },
+                {
+                  "id": 47,
+                  "name": "Detail Resin",
+                  "color": "Orange",
+                  "colorCode": "FE3C4A"
+                },
+                {
+                  "id": 48,
+                  "name": "Detail Resin",
+                  "color": "Pink",
+                  "colorCode": "#F61B5F"
+                },
+                {
+                  "id": 49,
+                  "name": "Detail Resin",
+                  "color": "Red",
+                  "colorCode": "#B40D0D"
+                },
+                {
+                  "id": 47,
+                  "name": "Detail Resin",
+                  "color": "Orange",
+                  "colorCode": "#BF3410"
+                },
+                {
+                  "id": 50,
+                  "name": "Detail Resin",
+                  "color": "N/A",
+                  "colorCode": "611D0D"
+                },
+                {
+                  "id": 51,
+                  "name": "Detail Resin",
+                  "color": "Gray",
+                  "colorCode": "#77726F"
+                },
+                {
+                  "id": 52,
+                  "name": "Detail Resin",
+                  "color": "Blue",
+                  "colorCode": "#8CA7BA"
+                },
+                {
+                  "id": 53,
+                  "name": "Detail Resin",
+                  "color": "Green",
+                  "colorCode": "52903A"
+                },
+                {
+                  "id": 46,
+                  "name": "Detail Resin",
+                  "color": "Yellow",
+                  "colorCode": "#EBE516"
+                },
+                {
+                  "id": 54,
+                  "name": "Spray Painted Resin",
+                  "color": "White",
+                  "colorCode": "#FFFFFF"
+                },
+                {
+                  "id": 45,
+                  "name": "Spray Painted Resin",
+                  "color": "Black",
+                  "colorCode": "#000000"
+                },
+                {
+                  "id": 52,
+                  "name": "Spray Painted Resin",
+                  "color": "Blue",
+                  "colorCode": "#002E7B"
+                },
+                {
+                  "id": 53,
+                  "name": "Spray Painted Resin",
+                  "color": "Green",
+                  "colorCode": "#008047"
+                },
+                {
+                  "id": 46,
+                  "name": "Spray Painted Resin",
+                  "color": "Yellow",
+                  "colorCode": "#F8F335"
+                },
+                {
+                  "id": 51,
+                  "name": "Spray Painted Resin",
+                  "color": "Gray",
+                  "colorCode": "#919089"
+                },
+                {
+                  "id": 49,
+                  "name": "Spray Painted Resin",
+                  "color": "Red",
+                  "colorCode": "#C81915"
+                },
+                {
+                  "id": 47,
+                  "name": "Spray Painted Resin",
+                  "color": "Orange",
+                  "colorCode": "#FF5C20"
+                },
+                {
+                  "id": 55,
+                  "name": "Spray Painted Resin",
+                  "color": "Brown",
+                  "colorCode": "#603F30"
+                }
+              ]
+            },
+            {
+              "name": "Solid, translucent",
+              "summary": "Solid translucent white resin, smooth surface",
+              "featuredImage": "acceuil_detail_large_2.jpg",
+              "materialConfigs": [
+                {
+                  "id": 56,
+                  "name": "Detail Resin Translucent",
+                  "color": "N/A",
+                  "colorCode": "#e3e3e4"
+                },
+                {
+                  "id": 56,
+                  "name": "Transparent Acrylic Plastic",
+                  "color": "N/A",
+                  "colorCode": "#E8E0CB"
+                }
+              ]
+            },
+            {
+              "name": "Solid, transparent",
+              "summary": "Solid transparent colored resin, smooth surface",
+              "featuredImage": "acceuil_detail_large_2.jpg",
+              "materialConfigs": [
+                {
+                  "id": 57,
+                  "name": "Transparent Resin",
+                  "color": "White",
+                  "colorCode": "#DFEBE1"
+                },
+                {
+                  "id": 57,
+                  "name": "Transparent Resin",
+                  "color": "White",
+                  "colorCode": "#FFFFFF"
+                },
+                {
+                  "id": 58,
+                  "name": "Transparent Resin",
+                  "color": "Black",
+                  "colorCode": "#000000"
+                },
+                {
+                  "id": 59,
+                  "name": "Transparent Resin",
+                  "color": "Blue",
+                  "colorCode": "#002E7B"
+                },
+                {
+                  "id": 60,
+                  "name": "Transparent Resin",
+                  "color": "Green",
+                  "colorCode": "#008047"
+                },
+                {
+                  "id": 61,
+                  "name": "Transparent Resin",
+                  "color": "Yellow",
+                  "colorCode": "#F8F335"
+                },
+                {
+                  "id": 62,
+                  "name": "Transparent Resin",
+                  "color": "Gray",
+                  "colorCode": "#919089"
+                },
+                {
+                  "id": 63,
+                  "name": "Transparent Resin",
+                  "color": "Red",
+                  "colorCode": "#C81915"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "High Detail Resin",
+          "description": "High Detail Resin is great for presentation models, prototypes and miniatures. This material allows very fine details. It's slightly fragile when thin. It is easily paintable. It is a liquid polymer 3D printed via Stereolithography (SLA).",
+          "properties": {
+            "printingMethod": "Stereolithography",
+            "strength": 2,
+            "flexibility": 2,
+            "levelOfDetail": 5,
+            "freedomOfDesign": 5,
+            "postProcessing": 4,
+            "fragile": true,
+            "waterproof": true,
+            "foodSafe": false,
+            "dishwasherSafe": false,
+            "paintable": true
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, opaque",
+              "summary": "Solid opaque white high detail resin, smooth surface",
+              "featuredImage": "fxd-diver.jpg",
+              "materialConfigs": [
+                {
+                  "id": 64,
+                  "name": "High Detail Resin",
+                  "color": "White",
+                  "colorCode": "#D3D0B1"
+                }
+              ]
+            },
+            {
+              "name": "Solid, translucent",
+              "summary": "Solid translucent white high detail resin, smooth surface",
+              "featuredImage": "fxd-diver.jpg",
+              "materialConfigs": [
+                {
+                  "id": 65,
+                  "name": "Frosted Ultra Detail Plastic",
+                  "color": "White",
+                  "colorCode": "#C1D1D5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Extreme Detail Resin",
+          "description": "Extreme Detail Resin is perfect for presentation models, prototypes and miniatures, because it allows ultra fine details. It is naturally Translucent. It is a liquid polymer 3D printed via Stereolithography (SLA).",
+          "properties": {
+            "printingMethod": "Stereolithography",
+            "strength": 2,
+            "flexibility": 2,
+            "levelOfDetail": 5,
+            "freedomOfDesign": 5,
+            "postProcessing": 4,
+            "fragile": true,
+            "waterproof": true,
+            "foodSafe": false,
+            "dishwasherSafe": false,
+            "paintable": true
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, translucent",
+              "summary": "Solid translucent white extreme detail resin, smooth surface",
+              "featuredImage": "fxd-hero-forge.jpg",
+              "materialConfigs": [
+                {
+                  "id": 66,
+                  "name": "Frosted Extreme Detail Plastic",
+                  "color": "N/A",
+                  "colorCode": "#C1D1D5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ABS",
+          "description": "Great for full functional parts. Rigid but not flexible. A lot of freedom of design. Intermediate level of details. Difficult to post-process. 3D printed using Fused Deposition Modeling (FDM). Matches approximately 80% of the properties of the injection molded products. The surface of the model is a little bit rough.",
+          "properties": {
+            "printingMethod": "Fused Deposition Modeling (FDM)",
+            "strength": 4,
+            "flexibility": 1,
+            "levelOfDetail": 2,
+            "postProcessing": 1,
+            "waterproof": false,
+            "uvResistant": true
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, raw",
+              "summary": "Solid ABS, raw surface",
+              "featuredImage": "abs-img1_b.jpg",
+              "materialConfigs": [
+                {
+                  "id": 67,
+                  "name": "ABS",
+                  "color": "White",
+                  "colorCode": "#ffffff"
+                },
+                {
+                  "id": 68,
+                  "name": "ABS",
+                  "color": "Red",
+                  "colorCode": "#d71b10"
+                },
+                {
+                  "id": 69,
+                  "name": "ABS",
+                  "color": "N/A",
+                  "colorCode": "#747b85"
+                },
+                {
+                  "id": 70,
+                  "name": "ABS",
+                  "color": "Black",
+                  "colorCode": "#000000"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Metals",
+      "materials": [
+        {
+          "name": "Stainless Steel",
+          "description": "Stainless steel is the best all-round metal for the best value price. It is very robust. It can be used for a wide range of applications including functional parts, jewelry and sculptures. It is 3D printed in multiple steps: first, steel powder is inkjet printed using liquid binder, than infused with bronze, afterwards sintered.",
+          "properties": {
+            "printingMethod": "Inkjet, Bronze Infusion",
+            "strength": 5,
+            "flexibility": 1,
+            "levelOfDetail": 4,
+            "freedomOfDesign": 4,
+            "postProcessing": 4,
+            "waterproof": true,
+            "foodSafe": false,
+            "paintable": true,
+            "interlockingAndEnclosedParts": false,
+            "recyclable": false
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, raw",
+              "summary": "Solid stainless steel, raw matte surface",
+              "featuredImage": "625x465_1052255_956543_1429687247.jpg",
+              "materialConfigs": [
+                {
+                  "id": 71,
+                  "name": "Stainless Steel",
+                  "color": "Gray",
+                  "colorCode": "#9C969B"
+                },
+                {
+                  "id": 72,
+                  "name": "Stainless Steel",
+                  "color": "Black",
+                  "colorCode": "#2F2B2D"
+                },
+                {
+                  "id": 71,
+                  "name": "Stainless Steel",
+                  "color": "Gray",
+                  "colorCode": "#cac3a5"
+                },
+                {
+                  "id": 72,
+                  "name": "Stainless Steel",
+                  "color": "Black",
+                  "colorCode": "#555243"
+                }
+              ]
+            },
+            {
+              "name": "Solid, polished",
+              "summary": "Solid stainless steel, polished shiny surface",
+              "featuredImage": "625x465_1052255_956543_1429687247.jpg",
+              "materialConfigs": [
+                {
+                  "id": 73,
+                  "name": "Polished Steel",
+                  "color": "Gray",
+                  "colorCode": "#7B6F7"
+                },
+                {
+                  "id": 73,
+                  "name": "Stainless Steel, Polished",
+                  "color": "Gray",
+                  "colorCode": "#C0AB91"
+                },
+                {
+                  "id": 74,
+                  "name": "Stainless Steel, Polished",
+                  "color": "Black",
+                  "colorCode": "#545347"
+                },
+                {
+                  "id": 75,
+                  "name": "Stainless Steel, Polished",
+                  "color": "Brown",
+                  "colorCode": "#C0AB91"
+                }
+              ]
+            },
+            {
+              "name": "Plated, raw",
+              "summary": "Solid stainless steel, plated raw matte surface",
+              "featuredImage": "625x465_1052255_956543_1429687247.jpg",
+              "materialConfigs": [
+                {
+                  "id": 76,
+                  "name": "Gold Plated Stainless Steel",
+                  "color": "Gold",
+                  "colorCode": "#B9813F"
+                },
+                {
+                  "id": 77,
+                  "name": "Plated Steel",
+                  "color": "Bronze",
+                  "colorCode": "644B34"
+                },
+                {
+                  "id": 76,
+                  "name": "Plated Steel",
+                  "color": "Gold",
+                  "colorCode": "#CE964C"
+                }
+              ]
+            },
+            {
+              "name": "Plated, polished",
+              "summary": "Solid stainless steel, plated polished shiny surface",
+              "featuredImage": "625x465_1052255_956543_1429687247.jpg",
+              "materialConfigs": [
+                {
+                  "id": 78,
+                  "name": "Gold Plated Polished Stainless Steel",
+                  "color": "Gold",
+                  "colorCode": "#E8CA5C"
+                },
+                {
+                  "id": 79,
+                  "name": "Plated Steel, Polished",
+                  "color": "Bronze",
+                  "colorCode": "#C4B29E"
+                },
+                {
+                  "id": 80,
+                  "name": "Plated Steel, Polished",
+                  "color": "Nickel",
+                  "colorCode": "#E1DBE2"
+                },
+                {
+                  "id": 78,
+                  "name": "Plated Steel, Polished",
+                  "color": "Gold",
+                  "colorCode": "#FADC79"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "High Detail Stainless Steel",
+          "description": "High detail stainless steel is perfect for small and very detailed objects like board game miniatures and jewelry. 3D printed in multiple steps: First, steel powder is inkjet printed using liquid binder, afterwards sintered. Only suitible for small objects. Bounding Box: 4 x 4 x 4cm",
+          "properties": {
+            "printingMethod": "Inkjet",
+            "materialSpec": "316L",
+            "strength": 5,
+            "flexibility": 1,
+            "levelOfDetail": 5,
+            "freedomOfDesign": 4,
+            "postProcessing": 4,
+            "waterproof": true,
+            "foodSafe": false,
+            "paintable": true
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, raw",
+              "summary": "Solid high detail stainless steel, raw matte surface",
+              "featuredImage": "detailedsteel-img1_b.jpg",
+              "materialConfigs": [
+                {
+                  "id": 81,
+                  "name": "High Detail Stainless Steel, raw",
+                  "color": "N/A",
+                  "colorCode": "#D1C9CB"
+                }
+              ]
+            },
+            {
+              "name": "Solid, polished",
+              "summary": "Solid high detail stainless steel, polished shiny surface, less details due to polishing",
+              "featuredImage": "detailedsteel-img1_b.jpg",
+              "materialConfigs": [
+                {
+                  "id": 82,
+                  "name": "High Detail Stainless Steel, Satin",
+                  "color": "N/A",
+                  "colorCode": "#C2C1B2"
+                }
+              ]
+            },
+            {
+              "name": "Solid, mirror polished",
+              "summary": "Solid high detail stainless steel, strong polished reflecting surface, few details due to polishing",
+              "featuredImage": "detailedsteel-img1_b.jpg",
+              "materialConfigs": [
+                {
+                  "id": 83,
+                  "name": "High Detail Stainless Steel, Glossy",
+                  "color": "N/A",
+                  "colorCode": "#B9B7BA"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Brass",
+          "description": "Good for jewelry and jewelry prototypes. When polished, brass is smooth and shiny. When unpolished, it is matte, rough and looks antique. Objects will tarnish over time and may need to be polished. It is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded",
+          "properties": {
+            "printingMethod": "Wax, Injection Molding",
+            "strength": 4,
+            "flexibility": 1,
+            "levelOfDetail": 4,
+            "freedomOfDesign": 3,
+            "interlockingAndEnclosedParts": false
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, raw",
+              "summary": "Solid brass, rough antique looking raw surface",
+              "featuredImage": "brass-top-morph-bangle-20150218.jpg",
+              "materialConfigs": [
+                {
+                  "id": 84,
+                  "name": "Solid Raw Brass",
+                  "color": "N/A",
+                  "colorCode": "E9D0A2"
+                }
+              ]
+            },
+            {
+              "name": "Solid, raw, PU coated",
+              "summary": "Solid brass, raw matte surface, PU coated to slow down oxidation",
+              "featuredImage": "brass-top-morph-bangle-20150218.jpg",
+              "materialConfigs": [
+                {
+                  "id": 85,
+                  "name": "Natural Brass, PU coated",
+                  "color": "N/A",
+                  "colorCode": "DEC77E"
+                }
+              ]
+            },
+            {
+              "name": "Solid, polished",
+              "summary": "Solid brass, polished shiny surface",
+              "featuredImage": "brass-top-morph-bangle-20150218.jpg",
+              "materialConfigs": [
+                {
+                  "id": 86,
+                  "name": "Polished Brass",
+                  "color": "N/A",
+                  "colorCode": "#F2D471"
+                }
+              ]
+            },
+            {
+              "name": "Plated, polished",
+              "summary": "Solid brass, plated polished shiny surface",
+              "featuredImage": "brass-top-morph-bangle-20150218.jpg",
+              "materialConfigs": [
+                {
+                  "id": 87,
+                  "name": "Rhodium Plated Brass",
+                  "color": "N/A",
+                  "colorCode": "#C7C9C1"
+                },
+                {
+                  "id": 88,
+                  "name": "Plated brass, polished",
+                  "color": "Black",
+                  "colorCode": "#3e3e3e"
+                },
+                {
+                  "id": 89,
+                  "name": "Plated brass, polished",
+                  "color": "Gold",
+                  "colorCode": "#eec34f"
+                },
+                {
+                  "id": 87,
+                  "name": "Plated brass, polished",
+                  "color": "N/A",
+                  "colorCode": "#f1d2a5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Copper",
+          "description": "Good for robust and decorative models like coins, medals, keys, connectors, statues. Copper corrodes with a greenish hue if the part is not varnished or coated. The varnish or coating will slow down the oxidation but won’t prevent it in the long term. It is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded.",
+          "properties": {
+            "printingMethod": "Wax, Injection Molding",
+            "strength": 4,
+            "flexibility": 2,
+            "levelOfDetail": 4,
+            "freedomOfDesign": 3,
+            "interlockingAndEnclosedParts": false
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, raw",
+              "summary": "Solid copper, raw matte surface",
+              "featuredImage": "img1_b.jpg",
+              "materialConfigs": [
+                {
+                  "id": 90,
+                  "name": "Copper",
+                  "color": "N/A",
+                  "colorCode": "#E0976A"
+                }
+              ]
+            },
+            {
+              "name": "Solid, raw, PU coated",
+              "summary": "Solid copper, raw matte surface, PU coated to slow down oxidation",
+              "featuredImage": "img1_b.jpg",
+              "materialConfigs": [
+                {
+                  "id": 91,
+                  "name": "Copper, PU coated",
+                  "color": "N/A",
+                  "colorCode": "#E0976A"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Bronze",
+          "description": "When raw bronze is great for antique-looking objects, vintage jewelry and functional parts. It has a rustic matte look. The color is similar to rose gold, but whith a marbling effect. When polished it is smooth and shiny, and good for miniatures and jewelry but less detailed. Bronze is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded.",
+          "properties": {
+            "printingMethod": "Wax, Injection Molding",
+            "strength": 4,
+            "flexibility": 1,
+            "levelOfDetail": 4,
+            "freedomOfDesign": 3,
+            "interlockingAndEnclosedParts": false
+          },
+          "finishGroups": [
+            {
+              "name": "Plated, raw",
+              "summary": "Solid stainless steel, bronze plated raw matte surface",
+              "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
+              "materialConfigs": [
+                {
+                  "id": 92,
+                  "name": "Matte Bronze Steel",
+                  "color": "Bronze",
+                  "colorCode": "#836A54"
+                }
+              ]
+            },
+            {
+              "name": "Plated, polished",
+              "summary": "Solid stainless steel, bronze plated polished shiny surface",
+              "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
+              "materialConfigs": [
+                {
+                  "id": 93,
+                  "name": "Polished Bronze Steel",
+                  "color": "Bronze",
+                  "colorCode": "#9B89752"
+                }
+              ]
+            },
+            {
+              "name": "Solid, raw",
+              "summary": "Solid bronze, raw matte surface",
+              "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
+              "materialConfigs": [
+                {
+                  "id": 94,
+                  "name": "Natural Uncoated Bronze",
+                  "color": "N/A",
+                  "colorCode": "#DFA862"
+                }
+              ]
+            },
+            {
+              "name": "Solid, raw, PU coated",
+              "summary": "Solid bronze, raw matte surface, PU coated to slow down oxidation",
+              "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
+              "materialConfigs": [
+                {
+                  "id": 95,
+                  "name": "Natural Bronze, PU coated",
+                  "color": "N/A",
+                  "colorCode": "#9F7D49"
+                }
+              ]
+            },
+            {
+              "name": "Solid, polished",
+              "summary": "Solid bronze, polished shiny surface",
+              "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
+              "materialConfigs": [
+                {
+                  "id": 96,
+                  "name": "Polished Bronze",
+                  "color": "Bronze",
+                  "colorCode": "#785730"
+                }
+              ]
+            },
+            {
+              "name": "Solid, raw, PU coated",
+              "summary": "Solid bronze, polished shiny surface, PU coated to slow down oxidation",
+              "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
+              "materialConfigs": [
+                {
+                  "id": 95,
+                  "name": "Natural Bronze, PU coated",
+                  "color": "N/A",
+                  "colorCode": "#9F7D49"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Sterling Silver",
+          "description": "The perfect material for jewelry. It can be polished for more shine, but with fewer details. Malleable if thin. Thicken fragile areas to avoid distortions. It is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded",
+          "properties": {
+            "printingMethod": "Wax, Injection Molding",
+            "strength": 4,
+            "flexibility": 2,
+            "levelOfDetail": 4,
+            "freedomOfDesign": 3,
+            "interlockingAndEnclosedParts": false
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, raw",
+              "summary": "Solid sterling silver, raw sandblasted matte surface",
+              "featuredImage": "625x465_482033_161787_1429673543.jpg",
+              "materialConfigs": [
+                {
+                  "id": 97,
+                  "name": "Sterling Silver, Sandblasted",
+                  "color": "N/A",
+                  "colorCode": "#C6C6BC"
+                },
+                {
+                  "id": 97,
+                  "name": "Silver, Sandblasted",
+                  "color": "N/A",
+                  "colorCode": "#DBD4C4"
+                }
+              ]
+            },
+            {
+              "name": "Solid, polished",
+              "summary": "Solid sterling silver, polished shiny surface",
+              "featuredImage": "625x465_482033_161787_1429673543.jpg",
+              "materialConfigs": [
+                {
+                  "id": 98,
+                  "name": "Silver Gloss",
+                  "color": "N/A",
+                  "colorCode": "#CFCFCF"
+                },
+                {
+                  "id": 98,
+                  "name": "Polished Silver",
+                  "color": "N/A",
+                  "colorCode": "#FFFBFD"
+                }
+              ]
+            },
+            {
+              "name": "Solid, mirror polished",
+              "summary": "Solid sterling silver, mirror polished reflecting surface",
+              "featuredImage": "625x465_482033_161787_1429673543.jpg",
+              "materialConfigs": [
+                {
+                  "id": 99,
+                  "name": "Sterling Silver Mirror Polished",
+                  "color": "N/A",
+                  "colorCode": "#F3EFE3"
+                },
+                {
+                  "id": 99,
+                  "name": "Silver High Gloss",
+                  "color": "N/A",
+                  "colorCode": "FCFCFC"
+                },
+                {
+                  "id": 99,
+                  "name": "Premium Silver",
+                  "color": "N/A",
+                  "colorCode": "#FDFDFD"
+                }
+              ]
+            },
+            {
+              "name": "Solid, satin",
+              "summary": "Solid sterling silver, surface with a satin look.",
+              "featuredImage": "625x465_482033_161787_1429673543.jpg",
+              "materialConfigs": [
+                {
+                  "id": 100,
+                  "name": "Silver, Satin",
+                  "color": "N/A",
+                  "colorCode": "#F3EFE1"
+                }
+              ]
+            },
+            {
+              "name": "Solid, antique",
+              "summary": "Solid sterling silver, polished shiny smooth outer surface, recessed areas dark and rough",
+              "featuredImage": "625x465_482033_161787_1429673543.jpg",
+              "materialConfigs": [
+                {
+                  "id": 101,
+                  "name": "Silver, Antique",
+                  "color": "N/A",
+                  "colorCode": "#8A7F73"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Gold",
+          "description": "The perfect material for precious jewelry like ear rings, pendants & bracelets. It is hand polished. Gold is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded",
+          "properties": {
+            "printingMethod": "Wax, Injection Molding",
+            "strength": 4,
+            "flexibility": 2,
+            "levelOfDetail": 4,
+            "freedomOfDesign": 3,
+            "interlockingAndEnclosedParts": false
+          },
+          "finishGroups": [
+            {
+              "name": "Gold plated, raw",
+              "summary": "Solid stainless steel, gold plated raw matte surface",
+              "featuredImage": "gold-detail-lost.jpg",
+              "materialConfigs": [
+                {
+                  "id": 102,
+                  "name": "Gold Plated Stainless Steel",
+                  "color": "Gold",
+                  "colorCode": "#FCD994"
+                }
+              ]
+            },
+            {
+              "name": "Gold plated, polished",
+              "summary": "Solid stainless steel, gold plated polished shiny surface",
+              "featuredImage": "gold-detail-lost.jpg",
+              "materialConfigs": [
+                {
+                  "id": 103,
+                  "name": "Gold Plated Polished Stainless Steel",
+                  "color": "Gold",
+                  "colorCode": "#F3BF7C"
+                },
+                {
+                  "id": 103,
+                  "name": "Polished Gold Steel",
+                  "color": "Gold",
+                  "colorCode": "#F7DBA8"
+                }
+              ]
+            },
+            {
+              "name": "Solid 14k gold",
+              "summary": "Solid 14k gold",
+              "featuredImage": "gold-detail-lost.jpg",
+              "materialConfigs": [
+                {
+                  "id": 104,
+                  "name": "14k Gold",
+                  "color": "Gold",
+                  "colorCode": "#FEE6AD"
+                },
+                {
+                  "id": 104,
+                  "name": "14k Gold",
+                  "color": "Gold",
+                  "colorCode": "#DADED1"
+                },
+                {
+                  "id": 104,
+                  "name": "14k Gold",
+                  "color": "Gold",
+                  "colorCode": "#FFF1D8"
+                },
+                {
+                  "id": 104,
+                  "name": "14k Gold",
+                  "color": "Gold",
+                  "colorCode": "#FEE6AD"
+                },
+                {
+                  "id": 104,
+                  "name": "14k Gold",
+                  "color": "Gold",
+                  "colorCode": "#DADED1"
+                },
+                {
+                  "id": 104,
+                  "name": "14k Gold",
+                  "color": "Gold",
+                  "colorCode": "#DADED1"
+                }
+              ]
+            },
+            {
+              "name": "Solid 18k gold",
+              "summary": "Solid 18k gold",
+              "featuredImage": "gold-detail-lost.jpg",
+              "materialConfigs": [
+                {
+                  "id": 105,
+                  "name": "Solid 18k gold",
+                  "color": "Gold",
+                  "colorCode": "#FEE6AD"
+                },
+                {
+                  "id": 105,
+                  "name": "Solid 18k gold",
+                  "color": "Gold",
+                  "colorCode": "#EEF0E7"
+                },
+                {
+                  "id": 105,
+                  "name": "Solid 18k gold",
+                  "color": "Gold",
+                  "colorCode": "#FFF1D8"
+                },
+                {
+                  "id": 105,
+                  "name": "Solid 18k gold",
+                  "color": "Gold",
+                  "colorCode": "#FEE6AD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Platinum",
+          "description": "Platiunum is the most valuable 3D printable material overall. It is produced in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded",
+          "properties": {
+            "printingMethod": "Wax, Injection Molding",
+            "strength": 4,
+            "flexibility": 2,
+            "levelOfDetail": 4,
+            "freedomOfDesign": 3,
+            "interlockingAndEnclosedParts": false
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, polished",
+              "summary": "Solid platinum, polished shiny surface",
+              "featuredImage": "platinum-top-arrow-ring.jpg",
+              "materialConfigs": [
+                {
+                  "id": 106,
+                  "name": "Platinum",
+                  "color": "N/A",
+                  "colorCode": "#F9FAF7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Titanium",
+          "description": "This is strongest 3D printable material. Titanium is good for full functional parts as well as jewelry. It is very precise. Titanium is 3D printed using Direct Metal Laser Sintering (DMLS)",
+          "properties": {
+            "printingMethod": "Direct Metal Laser Sintering",
+            "strength": 5,
+            "flexibility": 1,
+            "levelOfDetail": 4,
+            "freedomOfDesign": 4,
+            "interlockingAndEnclosedParts": false
+          },
+          "finishGroups": [
+            {
+              "name": "Solid, raw",
+              "summary": "Solid titanium, raw matte surface",
+              "featuredImage": "titanium-img1_b.jpg",
+              "materialConfigs": [
+                {
+                  "id": 107,
+                  "name": "Light Gray Titanium",
+                  "color": "N/A",
+                  "colorCode": "#CCC9C3"
+                }
+              ]
+            },
+            {
+              "name": "Solid, polished",
+              "summary": "Solid titanium, polished shiny surface",
+              "featuredImage": "titanium-img1_b.jpg",
+              "materialConfigs": [
+                {
+                  "id": 108,
+                  "name": "Light Gray Polished Titanium",
+                  "color": "N/A",
+                  "colorCode": "#B2B8B7"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Other",
+      "materials": [
+        {
+          "name": "Ceramics",
+          "description": "This material is great for tableware. The level of detail is low due to glazing. The big advantage is that it is foodsafe. Ceramics are 3D printed using a multistep process.",
+          "properties": {
+            "printingMethod": "Multistep",
+            "strength": 3,
+            "flexibility": 1,
+            "levelOfDetail": 1,
+            "freedomOfDesign": 2,
+            "interlockingAndEnclosedParts": false
+          },
+          "finishGroups": [
+            {
+              "name": "Glazed, raw",
+              "summary": "Solid ceramics, raw glazed smooth surface",
+              "featuredImage": "vase-all-colors-625x416.jpg",
+              "materialConfigs": [
+                {
+                  "id": 109,
+                  "name": "Black Matte Porcelain",
+                  "color": "Black",
+                  "colorCode": "#393939"
+                }
+              ]
+            },
+            {
+              "name": "Glazed, glossy",
+              "summary": "Solid ceramics, glossy glazed smooth surface",
+              "featuredImage": "vase-all-colors-625x416.jpg",
+              "materialConfigs": [
+                {
+                  "id": 110,
+                  "name": "Porcelain",
+                  "color": "White",
+                  "colorCode": ""
+                },
+                {
+                  "id": 111,
+                  "name": "Porcelain",
+                  "color": "Black",
+                  "colorCode": ""
+                },
+                {
+                  "id": 112,
+                  "name": "Porcelain",
+                  "color": "Green",
+                  "colorCode": ""
+                },
+                {
+                  "id": 112,
+                  "name": "Porcelain",
+                  "color": "Green",
+                  "colorCode": ""
+                },
+                {
+                  "id": 113,
+                  "name": "Porcelain",
+                  "color": "Yellow",
+                  "colorCode": ""
+                },
+                {
+                  "id": 114,
+                  "name": "Porcelain",
+                  "color": "Blue",
+                  "colorCode": ""
+                },
+                {
+                  "id": 115,
+                  "name": "Porcelain",
+                  "color": "Red",
+                  "colorCode": "#ff0000"
+                },
+                {
+                  "id": 110,
+                  "name": "Ceramics",
+                  "color": "White",
+                  "colorCode": "#FFFFFF"
+                },
+                {
+                  "id": 111,
+                  "name": "Ceramics",
+                  "color": "Black",
+                  "colorCode": "#000000"
+                },
+                {
+                  "id": 113,
+                  "name": "Ceramics",
+                  "color": "Yellow",
+                  "colorCode": "#FCEB00"
+                },
+                {
+                  "id": 112,
+                  "name": "Ceramics",
+                  "color": "Green",
+                  "colorCode": "#81BF38"
+                },
+                {
+                  "id": 114,
+                  "name": "Ceramics",
+                  "color": "Blue",
+                  "colorCode": "#224190"
+                },
+                {
+                  "id": 116,
+                  "name": "Ceramics",
+                  "color": "Orange",
+                  "colorCode": "#E45125"
+                },
+                {
+                  "id": 115,
+                  "name": "Ceramics",
+                  "color": "Red",
+                  "colorCode": "#EA1D25"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "materialConfigs": {
+    "0": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "6"
+        },
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "bba2bebb-8895-4049-aeb0-ab651cee2597"
+        },
+        "sculpteo": {
+          "materialId": "white_plastic"
+        }
+      }
+    },
+    "1": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "plastic_polished_white"
+        },
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "fc2793e6-89a7-469a-893e-678e69824a6d"
+        },
+        "shapeways": {
+          "materialId": "62"
+        }
+      }
+    },
+    "2": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "25"
+        },
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "f70095ee-a5b6-4b99-be9d-989d3fb3aa85"
+        },
+        "sculpteo": {
+          "materialId": "black_plastic"
+        }
+      }
+    },
+    "3": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "62b17b11-1212-4729-bb5b-bddf06cded77"
+        },
+        "sculpteo": {
+          "materialId": "navy_blue_plastic"
+        }
+      }
+    },
+    "4": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "6839ba37-05bb-410e-8819-809b45d37a63"
+        },
+        "sculpteo": {
+          "materialId": "red_plastic"
+        }
+      }
+    },
+    "5": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "43e60336-5a57-43e1-b9be-922c9a0e6879"
+        },
+        "sculpteo": {
+          "materialId": "green_plastic"
+        }
+      }
+    },
+    "6": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "8be72f65-fa5e-4620-a139-050b18ec3c5c"
+        },
+        "sculpteo": {
+          "materialId": "orange_plastic"
+        }
+      }
+    },
+    "7": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "c54dcaf6-1e1c-4152-9931-17c0da8d4f52"
+        }
+      }
+    },
+    "8": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "fc608cc9-3929-43a0-9fdd-cecb0e17b258"
+        },
+        "sculpteo": {
+          "materialId": "yellow_plastic"
+        }
+      }
+    },
+    "9": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "beige_plastic"
+        }
+      }
+    },
+    "10": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "brown_plastic"
+        }
+      }
+    },
+    "11": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "pink_plastic"
+        }
+      }
+    },
+    "12": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "grey_plastic"
+        }
+      }
+    },
+    "13": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "77"
+        },
+        "sculpteo": {
+          "materialId": "plastic_polished_pink"
+        }
+      }
+    },
+    "14": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "76"
+        },
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "83d0e80e-0f65-42b7-a50f-2719a4c7701b"
+        },
+        "sculpteo": {
+          "materialId": "plastic_polished_red"
+        }
+      }
+    },
+    "15": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "95"
+        },
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "9442fb83-2668-4be5-9aa5-78948691b1ed"
+        },
+        "sculpteo": {
+          "materialId": "plastic_polished_orange"
+        }
+      }
+    },
+    "16": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "93"
+        },
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "54e10dec-1c3c-4fc0-892b-8adb9f416952"
+        },
+        "sculpteo": {
+          "materialId": "plastic_polished_yellow"
+        }
+      }
+    },
+    "17": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "94"
+        },
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "dbde41f9-c752-4670-8e5e-72cd4816c328"
+        },
+        "sculpteo": {
+          "materialId": "plastic_polished_green"
+        }
+      }
+    },
+    "18": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "78"
+        },
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "c44cc82c-fd87-46dd-8233-8c65ae73ea20"
+        },
+        "sculpteo": {
+          "materialId": "plastic_polished_blue"
+        }
+      }
+    },
+    "19": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "75"
+        },
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "b69da903-39a4-4bd1-ae5e-5f5e97b16cf5"
+        }
+      }
+    },
+    "20": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "5398bc61-4864-4699-8038-804245e16704"
+        },
+        "sculpteo": {
+          "materialId": "plastic_polished_black"
+        }
+      }
+    },
+    "21": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "plastic_polished_beige"
+        }
+      }
+    },
+    "22": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "plastic_polished_brown"
+        }
+      }
+    },
+    "23": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "plastic_polished_grey"
+        }
+      }
+    },
+    "24": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "699761e4-c8ba-4d3b-93c7-0f19d22aea64"
+        }
+      }
+    },
+    "25": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "a59a3c41-fb87-42b8-9c6c-17f65ebd62f7"
+        }
+      }
+    },
+    "26": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "219c861c-5a3c-412e-9e1f-7093f8c613a0"
+        }
+      }
+    },
+    "27": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "2af4a282-af51-443e-ba48-f39a0630dfb7"
+        }
+      }
+    },
+    "28": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "377c8a58-9a6b-4fbb-968e-ace7b4157e9a"
+        }
+      }
+    },
+    "29": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "02ec5e75-833d-4c93-bbf1-6b579ef49b16"
+        }
+      }
+    },
+    "30": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "035f4772-da8a-400b-8be4-2dd344b28ddb",
+          "finishId": "e8a3a92a-9151-4937-ae85-f2a0e496bc5c"
+        }
+      }
+    },
+    "31": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "alumide"
+        },
+        "shapeways": {
+          "materialId": "28"
+        },
+        "imaterialise": {
+          "materialId": "d1500518-da4d-4618-adc9-af40859d4d40",
+          "finishId": "3a9188a6-ccae-4e57-bb24-e6200f3c803d"
+        }
+      }
+    },
+    "32": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "66"
+        },
+        "sculpteo": {
+          "materialId": "alumide_grey_polished"
+        }
+      }
+    },
+    "33": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "alumide_black_raw"
+        },
+        "imaterialise": {
+          "materialId": "d1500518-da4d-4618-adc9-af40859d4d40",
+          "finishId": "d06c15d3-1ed6-4d05-9439-a508d99a050c"
+        }
+      }
+    },
+    "34": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "alumide_blue_raw"
+        },
+        "imaterialise": {
+          "materialId": "d1500518-da4d-4618-adc9-af40859d4d40",
+          "finishId": "d8b4ffc9-e53e-4bc7-9ebb-0fc4d75abdf1"
+        }
+      }
+    },
+    "35": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "alumide_green_raw"
+        },
+        "imaterialise": {
+          "materialId": "d1500518-da4d-4618-adc9-af40859d4d40",
+          "finishId": "491eb6a2-40e6-43cf-b998-f1f0dcff6251"
+        }
+      }
+    },
+    "36": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "alumide_red_raw"
+        },
+        "imaterialise": {
+          "materialId": "d1500518-da4d-4618-adc9-af40859d4d40",
+          "finishId": "a915cf6e-52e1-42eb-9551-99387a35b64f"
+        }
+      }
+    },
+    "37": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "d1500518-da4d-4618-adc9-af40859d4d40",
+          "finishId": "dfe6a39c-29e5-4c76-bfa7-cff315117832"
+        }
+      }
+    },
+    "38": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "alumide_black_polished"
+        }
+      }
+    },
+    "39": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "alumide_blue_polished"
+        }
+      }
+    },
+    "40": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "alumide_green_polished"
+        }
+      }
+    },
+    "41": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "alumide_red_polished"
+        }
+      }
+    },
+    "42": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "5"
+        },
+        "sculpteo": {
+          "materialId": "high_detailed_resin"
+        }
+      }
+    },
+    "43": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "7"
+        }
+      }
+    },
+    "44": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "2e7b80e9-634b-485a-bc40-5e4324078b54",
+          "finishId": "0261af53-8fed-4854-a248-4b111d759f8d"
+        }
+      }
+    },
+    "45": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "black_high_detailed_resin"
+        }
+      }
+    },
+    "46": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "resin_painted_light_yellow"
+        }
+      }
+    },
+    "47": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "resin_painted_orange"
+        }
+      }
+    },
+    "48": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "resin_painted_neon_pink"
+        }
+      }
+    },
+    "49": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "resin_painted_intense_red"
+        }
+      }
+    },
+    "50": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "resin_painted_marron_glace"
+        }
+      }
+    },
+    "51": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "resin_painted_pearl_gray"
+        }
+      }
+    },
+    "52": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "resin_painted_odyssey_blue"
+        }
+      }
+    },
+    "53": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "resin_painted_valley_green"
+        }
+      }
+    },
+    "54": {
+      "printingService": {}
+    },
+    "55": {
+      "printingService": {}
+    },
+    "56": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "clear_high_detailed_resin"
+        },
+        "shapeways": {
+          "materialId": "4"
+        }
+      }
+    },
+    "57": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
+          "finishId": "9b530695-16b4-4cd6-9576-179188412837"
+        }
+      }
+    },
+    "58": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
+          "finishId": "0a2ec08d-e664-41a3-8b38-59fefa9499e9"
+        }
+      }
+    },
+    "59": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
+          "finishId": "f7fcc397-5f84-407b-ac61-2566c8cba9ef"
+        }
+      }
+    },
+    "60": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
+          "finishId": "ad18f5f7-28ac-46cc-b729-fbf987f468bd"
+        }
+      }
+    },
+    "61": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
+          "finishId": "08d03489-eafd-480a-8085-93778d288828"
+        }
+      }
+    },
+    "62": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
+          "finishId": "ade745f2-1d90-4230-a9c4-335155023f18"
+        }
+      }
+    },
+    "63": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
+          "finishId": "2fd1fcd5-9677-4e31-835d-0eb8e60630a4"
+        }
+      }
+    },
+    "64": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "22af8b12-16c7-4058-8f0f-2a441dc4d795",
+          "finishId": "15dae799-22ef-4d45-b6b9-2654a3ba44dd"
+        }
+      }
+    },
+    "65": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "61"
+        }
+      }
+    },
+    "66": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "114"
+        }
+      }
+    },
+    "67": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "3f0b5d1d-1398-440c-b10a-842d465cdd7a",
+          "finishId": "900eb1fa-80b0-4861-ba8c-847f30154ba1"
+        }
+      }
+    },
+    "68": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "3f0b5d1d-1398-440c-b10a-842d465cdd7a",
+          "finishId": "10a06d56-f29a-4640-8aa7-7a4219328105"
+        }
+      }
+    },
+    "69": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "3f0b5d1d-1398-440c-b10a-842d465cdd7a",
+          "finishId": "776440d6-4c7c-4f7d-93b9-d68bd07831a9"
+        }
+      }
+    },
+    "70": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "3f0b5d1d-1398-440c-b10a-842d465cdd7a",
+          "finishId": "5a17e3c2-a71f-4a75-ba4c-b6972a23b22f"
+        }
+      }
+    },
+    "71": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "23"
+        },
+        "imaterialise": {
+          "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
+          "finishId": "f526f45b-927f-41e9-9f55-476dce4a970e"
+        }
+      }
+    },
+    "72": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "89"
+        },
+        "imaterialise": {
+          "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
+          "finishId": "ed0f9e0e-6972-4104-bd9f-7277150a2f8e"
+        }
+      }
+    },
+    "73": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "90"
+        },
+        "imaterialise": {
+          "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
+          "finishId": "d0f8451a-de62-4a73-87d3-d31d3d09c25c"
+        }
+      }
+    },
+    "74": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
+          "finishId": "8111e78a-dbee-4351-8d98-e70911efcef2"
+        }
+      }
+    },
+    "75": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
+          "finishId": "1ecdfab2-1613-407c-9837-f6af1be05027"
+        }
+      }
+    },
+    "76": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
+          "finishId": "1d4f7377-9e35-46b4-9f55-9173371a9db2"
+        },
+        "shapeways": {
+          "materialId": "31"
+        }
+      }
+    },
+    "77": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "37"
+        }
+      }
+    },
+    "78": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
+          "finishId": "2badf252-40e8-4a21-8e34-e5850e49701c"
+        },
+        "shapeways": {
+          "materialId": "39"
+        }
+      }
+    },
+    "79": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "38"
+        }
+      }
+    },
+    "80": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "88"
+        }
+      }
+    },
+    "81": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "0a3824ae-259b-483e-967d-1635886c8b97",
+          "finishId": "059d6469-9d5e-4e22-815d-90b0ce0dc5b1"
+        }
+      }
+    },
+    "82": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "0a3824ae-259b-483e-967d-1635886c8b97",
+          "finishId": "6a7f4ef5-c193-4256-acb5-2d34ce900671"
+        }
+      }
+    },
+    "83": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "0a3824ae-259b-483e-967d-1635886c8b97",
+          "finishId": "6c43659f-5098-4113-95ae-f524674fa754"
+        }
+      }
+    },
+    "84": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "84"
+        }
+      }
+    },
+    "85": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "170d6e35-8f0d-4f92-8408-2d3e095c256e",
+          "finishId": "9c31bfc6-dba0-40c1-8cc0-048d9df487af"
+        }
+      }
+    },
+    "86": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "85"
+        }
+      }
+    },
+    "87": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "113"
+        },
+        "imaterialise": {
+          "materialId": "170d6e35-8f0d-4f92-8408-2d3e095c256e",
+          "finishId": "febc74a8-bf8b-449c-8772-15d18063b10d"
+        }
+      }
+    },
+    "88": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "170d6e35-8f0d-4f92-8408-2d3e095c256e",
+          "finishId": "e2b22206-b7cc-4afd-b6a6-933950d67100"
+        }
+      }
+    },
+    "89": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "170d6e35-8f0d-4f92-8408-2d3e095c256e",
+          "finishId": "53248ecd-b95e-43f4-9c6f-74fa9ba9f9a4"
+        }
+      }
+    },
+    "90": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "8f7cc303-69fe-4634-b0af-8f7f9613a4c1",
+          "finishId": "7b930801-5586-4cf1-9f70-63aa37b1ca7d"
+        }
+      }
+    },
+    "91": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "8f7cc303-69fe-4634-b0af-8f7f9613a4c1",
+          "finishId": "3c2012dd-8f42-4c50-92a5-a7ea3a927132"
+        }
+      }
+    },
+    "92": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "37"
+        }
+      }
+    },
+    "93": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "38"
+        }
+      }
+    },
+    "94": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "68f8b1de-8288-43df-b8f7-6f638ca5e64f",
+          "finishId": "422f68ae-629e-4773-baab-58e3f2b0b72c"
+        }
+      }
+    },
+    "95": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "68f8b1de-8288-43df-b8f7-6f638ca5e64f",
+          "finishId": "4bc80689-6755-4b80-b8aa-3d58c8ce0975"
+        }
+      }
+    },
+    "96": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "87"
+        }
+      }
+    },
+    "97": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "metal_cast_silver_sanded"
+        },
+        "imaterialise": {
+          "materialId": "c8461d87-2fd6-46de-8aae-f853763e5f9e",
+          "finishId": "0ad7b2a4-f0b4-4259-8f75-7804808e3bf3"
+        }
+      }
+    },
+    "98": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "c8461d87-2fd6-46de-8aae-f853763e5f9e",
+          "finishId": "f450ff0a-850b-4520-9cf2-af7babf6044a"
+        },
+        "shapeways": {
+          "materialId": "54"
+        }
+      }
+    },
+    "99": {
+      "printingService": {
+        "sculpteo": {
+          "materialId": "metal_cast_silver_mirror_polished"
+        },
+        "imaterialise": {
+          "materialId": "c8461d87-2fd6-46de-8aae-f853763e5f9e",
+          "finishId": "ea4ec3d1-d22d-4b9f-b2bd-44a158b568cc"
+        },
+        "shapeways": {
+          "materialId": "54"
+        }
+      }
+    },
+    "100": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "c8461d87-2fd6-46de-8aae-f853763e5f9e",
+          "finishId": "1c673226-c15b-474a-b67b-fb0d56887271"
+        }
+      }
+    },
+    "101": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "c8461d87-2fd6-46de-8aae-f853763e5f9e",
+          "finishId": "2c565146-745e-405c-be3e-0eb10be900e3"
+        }
+      }
+    },
+    "102": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
+          "finishId": "1d4f7377-9e35-46b4-9f55-9173371a9db2"
+        }
+      }
+    },
+    "103": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
+          "finishId": "2badf252-40e8-4a21-8e34-e5850e49701c"
+        },
+        "shapeways": {
+          "materialId": "39"
+        }
+      }
+    },
+    "104": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "d01a95ab-aaba-44f0-a4b6-8f72b66655b1",
+          "finishId": "a9962d5c-04d7-4f29-93d1-56dc43c8d766"
+        },
+        "shapeways": {
+          "materialId": "97"
+        }
+      }
+    },
+    "105": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "d01a95ab-aaba-44f0-a4b6-8f72b66655b1",
+          "finishId": "0acff209-4318-4db7-b2a8-390340808158"
+        },
+        "shapeways": {
+          "materialId": "98"
+        }
+      }
+    },
+    "106": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "99"
+        }
+      }
+    },
+    "107": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "12a65a42-df49-47a9-8828-0efaf84c5509",
+          "finishId": "c9c27ce3-eee4-47e4-a896-a9010a7971fd"
+        }
+      }
+    },
+    "108": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "12a65a42-df49-47a9-8828-0efaf84c5509",
+          "finishId": "7fbdfe5d-4f92-4038-99bd-42009ff9a4b4"
+        }
+      }
+    },
+    "109": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "101"
+        }
+      }
+    },
+    "110": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "103"
+        },
+        "imaterialise": {
+          "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
+          "finishId": "8d0cad42-b1d5-4815-9cee-a28f8d8f0191"
+        }
+      }
+    },
+    "111": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "102"
+        },
+        "imaterialise": {
+          "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
+          "finishId": "f0d48084-bbce-47d8-a2e5-7e85fb10e143"
+        }
+      }
+    },
+    "112": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "105"
+        },
+        "imaterialise": {
+          "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
+          "finishId": "ca518750-0878-4558-87ea-f6cb74475f09"
+        }
+      }
+    },
+    "113": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "108"
+        },
+        "imaterialise": {
+          "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
+          "finishId": "b7cd1d1a-bba4-4ccf-9e87-258da402cb53"
+        }
+      }
+    },
+    "114": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
+          "finishId": "9ad33698-513d-4a2f-9d6e-ea83b6bd3ef2"
+        }
+      }
+    },
+    "115": {
+      "printingService": {
+        "shapeways": {
+          "materialId": "109"
+        },
+        "imaterialise": {
+          "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
+          "finishId": "9c9003a3-1646-4232-939a-58f926b9d8f2"
+        }
+      }
+    },
+    "116": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
+          "finishId": "b1a45d76-bf35-4e53-bd15-5c32e0e1e6f2"
+        }
+      }
+    }
+  }
+}

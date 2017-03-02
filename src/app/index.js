@@ -12,8 +12,10 @@ import '../sass-legacy/main.scss'
 
 import init from './action/init'
 
-const store = Store()
+// Stub printing engine backend during development. Webpack will remove this in production
+if (process.env.NODE_ENV !== 'production') require('../../test/test-data/printing-engine-stub') // eslint-disable-line
 
+const store = Store()
 store.dispatch(init()).then(() => {
   render(
     <Provider store={store}>
