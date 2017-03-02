@@ -88,7 +88,6 @@ const Model = ({
   )
 
   const PriceTable = () => {
-    // TODO: improve server response to avoid this
     const vendors = Object.keys(price.printingService)
       .map(name => ({name, ...price.printingService[name]}))
 
@@ -101,7 +100,7 @@ const Model = ({
         currency: vendor.currency
       })), vendors
     )
-
+    console.log('offers', offers)
     return (
       <Table
         head={[
