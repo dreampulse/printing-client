@@ -5,11 +5,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = ({
-  devServer: devServer = false,
+  devServer = false,
   devServerPort,
-  sourceMaps: sourceMaps = false,
-  nodeEnv: nodeEnv = 'production',
-  optimize: optimize = true
+  extractStyles = false,
+  sourceMaps = false,
+  nodeEnv = 'production',
+  optimize = true
 }) => {
   const styleLoaders = [
     sourceMaps ? 'css?sourceMap' : 'css',
@@ -19,17 +20,17 @@ module.exports = ({
   ]
 
   return {
-    entry: devServer
+    entry: (devServer)
       ? [
-        `webpack-dev-server/client?http://localhost:${devServerPort}`,
-        'webpack/hot/only-dev-server',
+        `webpack-dev-server/client?http://localhost:${devServerPort}/`,
+        'webpack/hot/dev-server',
         path.resolve(__dirname, '../src/app')
       ] : [
         path.resolve(__dirname, '../src/app')
       ],
     output: {
       path: path.resolve(__dirname, '../dist'),
-      publicPath: devServer ? `http://localhost:${devServerPort}/` : '/',
+      publicPath: (devServer) ? `http://localhost:${devServerPort}/` : '/',
       filename: 'bundle.js'
     },
     resolve: {
@@ -52,7 +53,7 @@ module.exports = ({
           test: /\.scss$/,
           loaders: [
             'style',
-            ...(devServer ? ExtractTextPlugin.extract(styleLoaders) : styleLoaders)
+            ...(extractStyles ? [ExtractTextPlugin.extract(styleLoaders)] : styleLoaders)
           ]
         }, {
           test: /\.(ttf|eot|woff|woff2)$/,
@@ -90,9 +91,10 @@ module.exports = ({
       ...(devServer ? [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin() // webpack process will not exit on error
-      ] : [
+      ] : []),
+      ...(extractStyles ? [
         new ExtractTextPlugin('app.css')
-      ]),
+      ] : []),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(nodeEnv)

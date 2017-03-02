@@ -1,6 +1,7 @@
 const webpackConfig = require('../webpack/config')
 
 const config = webpackConfig({
+  extractStyles: false,
   optimize: false,
   nodeEnv: 'development'
 })

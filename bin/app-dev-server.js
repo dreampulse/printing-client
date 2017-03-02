@@ -1,3 +1,4 @@
+import path from 'path'
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 import open from 'opn'
@@ -8,6 +9,7 @@ const port = process.env.PORT || 3000
 const config = webpackConfig({
   devServer: true,
   devServerPort: port,
+  extractStyles: false,
   optimize: false,
   sourceMaps: true,
   nodeEnv: 'development'
@@ -17,7 +19,7 @@ new WebpackDevServer(webpack(config), {
   publicPath: '/',
   hot: true,
   historyApiFallback: true,
-  contentBase: 'src',
+  contentBase: path.resolve(__dirname, '../src'),
   stats: {colors: true},
   quiet: false,
   noInfo: false
