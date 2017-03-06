@@ -32,7 +32,7 @@ const RadioButton = ({
         checked={checked}
         disabled={disabled}
       />
-      {label}
+      {label !== undefined ? label : value}
     </label>
   )
 }
@@ -40,7 +40,7 @@ const RadioButton = ({
 RadioButton.propTypes = {
   ...propTypes.component,
   name: PropTypes.string,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number

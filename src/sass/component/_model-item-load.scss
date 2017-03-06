@@ -48,6 +48,7 @@
   &__delete {
     z-index: z($stacking, delete);
     position: relative;
+    outline: 0;
   }
 
   &__progress {
