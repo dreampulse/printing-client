@@ -1,9 +1,9 @@
 import {createAction} from 'redux-actions'
+import {getLocation} from 'Lib/geolocation'
+import * as printingEngine from 'Lib/printing-engine'
 
 import TYPE from '../type'
 import {goToCart} from './navigation'
-import {getLocation} from '../service/geolocation'
-import * as printingEngine from '../lib/printing-engine'
 import {createShoppingCart} from './cart'
 
 export const detectAddress = () =>

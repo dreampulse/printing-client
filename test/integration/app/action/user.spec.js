@@ -1,7 +1,7 @@
-import {detectAddress, createUser, updateUser} from '../../../../src/app/action/user'
+import {detectAddress, createUser, updateUser} from 'Action/user'
+import * as printingEngine from 'Lib/printing-engine'
+import * as geolocation from 'Lib/geolocation'
 import Store from '../../../../src/app/store'
-import * as printingEngine from '../../../../src/app/lib/printing-engine'
-import * as geolocation from '../../../../src/app/service/geolocation'
 
 describe('User Integration Test', () => {
   let store

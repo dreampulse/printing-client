@@ -1,4 +1,4 @@
-import {getLocation} from '../../../../src/app/service/geolocation'
+import {getLocation} from 'Lib/geolocation'
 
 describe('Geolocation Integration Test', function test () {
   this.timeout(20000)
