@@ -67,7 +67,8 @@ const Model = ({
   // put such logic in the /lib-folder
   const getMaterialConfigs = () => {
     const materialConfigs = []
-    if (!materials && !materials.materialStructure) return materialConfigs
+
+    if (!materials || !materials.materialStructure) return materialConfigs
     materials.materialStructure.forEach(materialGroup =>
       materialGroup.materials.forEach(material =>
         material.finishGroups.forEach(finishGroup =>

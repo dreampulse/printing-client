@@ -12,7 +12,7 @@ const config = webpackConfig({
   extractStyles: false,
   optimize: false,
   sourceMaps: true,
-  nodeEnv: 'development'
+  nodeEnv: process.env.NODE_ENV
 })
 
 new WebpackDevServer(webpack(config), {

@@ -1,10 +1,11 @@
 import developmentSettings from './development'
 import productionSettings from './production'
 
-let config = developmentSettings
-
-if (process.env.NODE_ENV === 'production') {
-  config = productionSettings
+function chooseConfig () {
+  if (process.env.NODE_ENV === 'production') {
+    return productionSettings
+  }
+  return developmentSettings
 }
 
-export default config
+export default chooseConfig()

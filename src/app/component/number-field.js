@@ -9,7 +9,8 @@ import buildClassName from 'Lib/build-class-name'
 
 import Icon from 'Component/icon'
 
-import placeholderIcon from 'Icon/placeholder.svg'
+import plusIcon from 'Icon/plus.svg'
+import minusIcon from 'Icon/minus.svg'
 
 const NumberField = ({
   classNames,
@@ -69,7 +70,7 @@ const NumberField = ({
         onClick={handleLessClick}
         disabled={disabled || hasLowerLimit}
       >
-        <Icon source={placeholderIcon} />
+        <Icon source={minusIcon} />
       </button>
       <input
         type="number"
@@ -86,7 +87,7 @@ const NumberField = ({
         onClick={handleMoreClick}
         disabled={disabled || hasUpperLimit}
       >
-        <Icon source={placeholderIcon} />
+        <Icon source={plusIcon} />
       </button>
     </div>
   )
