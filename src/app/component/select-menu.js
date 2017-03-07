@@ -57,7 +57,7 @@ SelectMenu.propTypes = {
       price: PropTypes.string // Only if type is material
     }))
   })).isRequired,
-  selectedValue: PropTypes.any,
+  selectedValue: PropTypes.any, // eslint-disable-line react/forbid-prop-types
   onClick: PropTypes.func
 }
 
