@@ -1,9 +1,8 @@
 import React, {createElement} from 'react'
 import {connect} from 'react-redux'
+import Portal from 'react-portal'
 
 import {close} from '../../action/modal'
-
-import Portal from 'react-portal'
 
 // import Portal from '../../component-legacy/portal'
 // import ModalComponent from '../../component-legacy/modal'
