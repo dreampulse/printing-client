@@ -3,7 +3,12 @@
   $modal-l-width: 1000px;
   $close-button-size: 20px;
 
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: z($global-stacking, overlay);
 
   &__mask {
     position: fixed;
