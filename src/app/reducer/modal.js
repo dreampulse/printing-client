@@ -28,4 +28,3 @@ export default handleActions({
   [TYPE.MODAL.OPEN]: handleOpen,
   [TYPE.MODAL.CLOSE]: handleClose
 }, initialState)
-
