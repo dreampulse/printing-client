@@ -2,11 +2,15 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
+import {buildClassArray} from 'Lib/build-class-name'
+
 import Section from 'Component/section'
 import Grid from 'Component/grid'
 import Column from 'Component/column'
 import Headline from 'Component/headline'
 import ProviderProgressBar from 'Component/provider-progress-bar'
+import SelectMenu from 'Component/select-menu'
+import SelectField from 'Component/select-field'
 
 import {selectMaterial} from 'Action/material'
 
@@ -64,29 +68,44 @@ const MaterialSection = ({
     return ''
   }
 
+  const headlineModifiers = buildClassArray({
+    xl: true,
+    disabled: !materials
+  })
+
+  const materialMenuValues = getMaterialConfigs().map(material => ({
+    type: 'material',
+    value: material.id,
+    label: material.name,
+    hasColor: Boolean(material.color),
+    price: prices(material)
+  }))
+  const materialMenu = (
+    <SelectMenu modifiers={['l']} values={materialMenuValues} />
+  )
+  const selectedValue = selectedMaterial
+    ? {value: selectedMaterial, label: 'TODO'}
+    : undefined
+
   return (
     <Section>
-      <Headline label="2. Choose a material" modifiers={['xl']} />
-      <Grid>
-        <Column md={8}>
-          <select
-            disabled={!materials}
-            onChange={e => onSelectedMaterial(e.target.value)}
-            value={selectedMaterial}
-          >
-            <option>Select material</option>
-            {getMaterialConfigs().map((material, index) =>
-              <option value={material.id} key={index}>
-                {material.name} ({material.color}) {prices(material)}
-              </option>
-            )}
-          </select>
-        </Column>
-        <Column md={4} classNames={['u-margin-bottom']}>
-          {/* TODO: implement progress bar steps */}
-          <ProviderProgressBar currentStep={1} totalSteps={3} />
-        </Column>
-      </Grid>
+      <Headline label="2. Choose a material" modifiers={headlineModifiers} />
+      {Boolean(materials) && (
+        <Grid>
+          <Column md={8}>
+            <SelectField
+              placeholder="Placeholder"
+              menu={materialMenu}
+              value={selectedValue}
+              onChange={({value}) => onSelectedMaterial(value)}
+            />
+          </Column>
+          <Column md={4} classNames={['u-margin-bottom']}>
+            {/* TODO: implement progress bar steps */}
+            <ProviderProgressBar currentStep={1} totalSteps={3} />
+          </Column>
+        </Grid>
+      )}
     </Section>
   )
 }

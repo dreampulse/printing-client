@@ -15,7 +15,7 @@ export default class SelectField extends Component {
     ...propTypes.component,
     placeholder: PropTypes.string,
     value: PropTypes.shape({
-      value: PropTypes.string.isRequired,
+      value: PropTypes.any.isRequired,
       label: PropTypes.string // When not provided value will be shown
     }),
     isOpen: PropTypes.bool,
