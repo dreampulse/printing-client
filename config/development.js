@@ -10,5 +10,6 @@ export default defaultsDeep({
     client: {
       sandbox: 'AVNqaTFWs0Rbq3tKKF7kJN_D3vlAAmbpv9XnFtajnokdINqj-TLLXpc8JqfpIygjqs0Du6dBYYQR48T9'
     }
-  }
+  },
+  googleMapsApiKey: 'AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo'
 }, defaultConfig)

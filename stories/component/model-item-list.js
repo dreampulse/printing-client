@@ -24,10 +24,8 @@ storiesOf('Model Item List', module)
       <ModelItemError
         title="Upload failed"
         subline="This is why"
-        modifiers={['error']}
       />
       <ModelItemLoad
-        modifiers={['load']}
         status={0.4}
         title="Uploading"
         subline="model_item_title.stl"

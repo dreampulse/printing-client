@@ -2,9 +2,9 @@ import React from 'react'
 import {syncHistoryWithStore} from 'react-router-redux'
 import {Router, Route, browserHistory, Redirect} from 'react-router'
 
-import Cart from './container/cart'
-import Model from './container/model'
-import Address from './container/address'
+import CartPage from 'Container/cart-page'
+import ModelPage from 'Container/model-page'
+import AddressPage from 'Container/address-page'
 
 /* eslint-disable react/prop-types */
 export default ({store}) => {
@@ -15,9 +15,9 @@ export default ({store}) => {
     <Router history={history}>
       <Redirect from="/" to="/model" />
 
-      <Route component={Model} path="/model" />
-      <Route component={Address} path="/address" />
-      <Route component={Cart} path="/cart" />
+      <Route component={ModelPage} path="/model" />
+      <Route component={AddressPage} path="/address" />
+      <Route component={CartPage} path="/cart" />
     </Router>
   )
 }

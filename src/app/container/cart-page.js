@@ -17,7 +17,7 @@ import {goBack} from '../action/navigation'
 import {changeQuantity, createShoppingCart} from '../action/cart'
 import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from '../action/order'
 
-const Cart = ({
+const CartPage = ({
   cartItems,
   cart,
   user,
@@ -128,4 +128,4 @@ const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps)
 )
 
-export default enhance(Cart)
+export default enhance(CartPage)

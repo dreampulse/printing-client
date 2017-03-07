@@ -41,7 +41,7 @@ module.exports = ({
         Icon: path.resolve(__dirname, '../src/asset/icon'),
         Action: path.resolve(__dirname, '../src/app/action'),
         Component: path.resolve(__dirname, '../src/app/component'),
-        Containter: path.resolve(__dirname, '../src/app/container'),
+        Container: path.resolve(__dirname, '../src/app/container'),
         Lib: path.resolve(__dirname, '../src/app/lib'),
         Reducer: path.resolve(__dirname, '../src/app/reducer'),
         Service: path.resolve(__dirname, '../src/app/service')

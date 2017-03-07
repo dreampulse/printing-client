@@ -13,7 +13,7 @@
 
   &__provider,
   &__price,
-  &__delivery-time,
+  &__shipping,
   &__checkout {
     width: 25%;
     padding: $space-base $space-xl;
@@ -28,6 +28,6 @@
   }
 
   &__checkout {
-    width: 250px;
+    width: 270px;
   }
 }
