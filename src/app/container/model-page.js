@@ -22,7 +22,6 @@ const ModelPage = ({
       <LabeledField label="Shipping:" modifiers={['block']}>
         <LocationField
           value={`${location.zipCode} ${location.city}, ${location.stateCode}, ${location.countryCode}`}
-          onChange={value => console.log('TODO', value)}
           googleMapsApiKey={config.googleMapsApiKey}
         />
       </LabeledField>

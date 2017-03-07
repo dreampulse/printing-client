@@ -20,7 +20,7 @@ import {uploadFiles} from 'Action/model'
 
 const UploadSection = ({
   onUploadFiles,
-  uploadingModels
+  uploadedModels
 }) => {
   const onUpload = (files) => {
     onUploadFiles(toArray(files))
@@ -48,9 +48,9 @@ const UploadSection = ({
         accept=".stl"
         onChange={onUpload}
       />
-      {uploadingModels.length > 0 && (
+      {uploadedModels.length > 0 && (
         <ModelItemList>
-          {uploadingModels.map((model) => {
+          {uploadedModels.map((model) => {
             if (!model.uploadFinished) {
               // TODO: on delete handler
               return (
@@ -64,12 +64,11 @@ const UploadSection = ({
             }
 
             if (model.error) {
-              // TODO: subline
               // TODO: on delete handler
               return (
                 <ModelItemError
                   title="Upload failed"
-                  subline="TODO"
+                  subline={model.error}
                 />
               )
             }
@@ -95,7 +94,7 @@ const UploadSection = ({
 }
 
 const mapStateToProps = state => ({
-  uploadingModels: state.model.uploadingModels
+  uploadedModels: state.model.uploadingModels
 })
 
 const mapDispatchToProps = {

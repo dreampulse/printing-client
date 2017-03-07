@@ -39,7 +39,7 @@ const ProviderSection = ({
       key={index}
       provider={offer.name}
       price={`${getPriceAmount(offer)} ${offer.currency}`}
-      deliveryTime={`${offer.shipping.deliveryTime} Days`}
+      shipping={`${offer.shipping.name} (${offer.shipping.deliveryTime} Days)`}
       onCheckoutClick={() =>
         onSelectOffer({
           vendor: offer.name,
