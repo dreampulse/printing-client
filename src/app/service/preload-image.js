@@ -1,3 +1,5 @@
+import config from '../../../config'
+
 function pollImage (url, onLoad, onError) {
   const image = new global.Image()
   image.onload = onLoad
@@ -5,7 +7,10 @@ function pollImage (url, onLoad, onError) {
   image.src = url
 }
 
-export default function preloadImage (url, retries = 5) {
+export default function preloadImage (url) {
+  const retries = config.imagePollingRetries
+  const interval = config.imagePollingInverval
+
   return new Promise((resolve, reject) => {
     let tries = 0
     const poll = () => pollImage(url, resolve, () => {
@@ -16,7 +21,7 @@ export default function preloadImage (url, retries = 5) {
         return
       }
 
-      setTimeout(poll, 1000)
+      setTimeout(poll, interval)
     })
 
     poll()
