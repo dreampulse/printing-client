@@ -1,6 +1,6 @@
 import * as geolocation from '../src/app/lib/geolocation'
 
-geolocation.getLocation = () =>
+geolocation.default = () =>
   Promise.resolve({
     city: 'Munich',
     zipCode: '80333',

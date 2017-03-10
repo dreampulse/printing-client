@@ -4,7 +4,7 @@ import config from '../../../config'
 
 const URL = 'http://ip-api.com/json'
 
-export const getLocation = async () => {
+export default async () => {
   const {
     city,
     zip,

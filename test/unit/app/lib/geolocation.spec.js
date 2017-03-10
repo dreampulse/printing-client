@@ -1,4 +1,4 @@
-import {getLocation} from 'Lib/geolocation'
+import getLocation from 'Lib/geolocation'
 import * as http from 'Service/http'
 import config from '../../../../config'
 

@@ -1,11 +1,12 @@
 .radio-button {
-  @include scut-truncate();
   display: block;
   background-color: $color-white;
   height: $field-height;
   line-height: $field-height;
-  padding: 0 15px;
+  font-size: $font-size-l;
+  padding: 0 0.5em;
   text-align: center;
+  min-width: 3.5em;
 
   &:hover {
     background-color: $color-gray-4;

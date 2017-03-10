@@ -16,7 +16,7 @@ import {renderField} from './util/form'
 import {reviewOrder} from '../action/user'
 import {goBack} from '../action/navigation'
 
-const Address = ({
+const AddressPage = ({
   handleSubmit,
   onGoBack,
   formValues,
@@ -171,4 +171,4 @@ const enhance = compose(
   reduxForm({form: 'address'})
 )
 
-export default enhance(Address)
+export default enhance(AddressPage)

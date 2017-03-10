@@ -1,15 +1,15 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
+import SelectMenu from 'Component/select-menu'
+import SelectField from 'Component/select-field'
+
 import HandleValue from '../util/handle-value'
 import {
   selectMenuValues,
   selectMenuColorValues,
   selectMenuMaterialValues
 } from '../util/data'
-
-import SelectMenu from 'Component/select-menu'
-import SelectField from 'Component/select-field'
 
 const menu = <SelectMenu values={selectMenuValues} />
 const colorMenu = <SelectMenu values={selectMenuColorValues} />

@@ -41,7 +41,7 @@ SelectMenu.propTypes = {
   ...propTypes.component,
   values: PropTypes.arrayOf(PropTypes.shape({
     type: PropTypes.oneOf(['regular', 'group', 'material']), // Default is regular
-    value: PropTypes.string,
+    value: PropTypes.any,
     label: PropTypes.string, // When not provided value will be shown
     colorValue: propTypes.string, // Optional color square
     colorImage: PropTypes.string, // Optional color image URL
@@ -57,7 +57,7 @@ SelectMenu.propTypes = {
       price: PropTypes.string // Only if type is material
     }))
   })).isRequired,
-  selectedValue: PropTypes.string,
+  selectedValue: PropTypes.any, // eslint-disable-line react/forbid-prop-types
   onClick: PropTypes.func
 }
 

@@ -12,7 +12,7 @@ const ProviderList = ({classNames, modifiers, children, providerInfo}) => (
           {providerInfo}
         </th>
         <th className="provider-list__price">Price incl. Shipping</th>
-        <th className="provider-list__delivery-time">Delivery Time</th>
+        <th className="provider-list__shipping">Shipping Partner</th>
         <th className="provider-list__checkout" />
       </tr>
     </thead>

@@ -13,7 +13,7 @@ const ProviderItem = ({
   modifiers,
   provider,
   price,
-  deliveryTime,
+  shipping,
   onCheckoutClick = () => {}
 }) => (
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
@@ -21,7 +21,7 @@ const ProviderItem = ({
       <ProviderImage name={provider} />
     </td>
     <td className="provider-item__price">{price}</td>
-    <td className="provider-item__delivery-time">{deliveryTime}</td>
+    <td className="provider-item__shipping">{shipping}</td>
     <td className="provider-item__checkout">
       <Button icon={checkoutIcon} modifiers={['block']} label="Checkout" onClick={onCheckoutClick} />
     </td>
@@ -32,7 +32,7 @@ ProviderItem.propTypes = {
   ...propTypes.component,
   provider: PropTypes.string.isRequired,
   price: PropTypes.string,
-  deliveryTime: PropTypes.string,
+  shipping: PropTypes.string,
   onCheckoutClick: PropTypes.func
 }
 
