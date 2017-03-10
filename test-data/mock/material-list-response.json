@@ -29,19 +29,8 @@
                   "id": 0,
                   "name": "Strong & Flexible White Plastic",
                   "color": "White",
+                  "colorImage": "plastic_wsf_white.jpg",
                   "colorCode": "#ffffff"
-                },
-                {
-                  "id": 0,
-                  "name": "Natural White Polyamide",
-                  "color": "White",
-                  "colorCode": "#ffffff"
-                },
-                {
-                  "id": 0,
-                  "name": "White Plastic",
-                  "color": "White",
-                  "colorCode": "#EFEFED"
                 }
               ]
             },
@@ -54,19 +43,8 @@
                   "id": 1,
                   "name": "White Plastic, Polished",
                   "color": "White",
+                  "colorImage": "white_plastic.png",
                   "colorCode": "#EFEFED"
-                },
-                {
-                  "id": 1,
-                  "name": "Natural White Polished Polyamide",
-                  "color": "White",
-                  "colorCode": "#ffffff"
-                },
-                {
-                  "id": 1,
-                  "name": "White Strong & Flexible Polished Plastic",
-                  "color": "White",
-                  "colorCode": "#ffffff"
                 }
               ]
             },
@@ -79,108 +57,77 @@
                   "id": 2,
                   "name": "Strong & Flexible Plastic Black",
                   "color": "Black",
+                  "colorImage": "plastic_wsf_black.jpg",
                   "colorCode": "#000000"
-                },
-                {
-                  "id": 2,
-                  "name": "Dyed Polyamide",
-                  "color": "Black",
-                  "colorCode": "#121212"
                 },
                 {
                   "id": 3,
                   "name": "Dyed Polyamide",
                   "color": "Blue",
+                  "colorImage": "PA-color-dyed-blue.jpg",
                   "colorCode": "#243C94"
                 },
                 {
                   "id": 4,
                   "name": "Dyed Polyamide",
                   "color": "Red",
+                  "colorImage": "PA-color-dyed-red.jpg",
                   "colorCode": "#A8262A"
                 },
                 {
                   "id": 5,
                   "name": "Dyed Polyamide",
                   "color": "Green",
+                  "colorImage": "PA-color-dyed-green.jpg",
                   "colorCode": "#3A8733"
                 },
                 {
                   "id": 6,
                   "name": "Dyed Polyamide",
                   "color": "Orange",
+                  "colorImage": "PA-color-dyed-orange.jpg",
                   "colorCode": "#E5601E"
                 },
                 {
                   "id": 7,
                   "name": "Dyed Polyamide",
                   "color": "Purple",
+                  "colorImage": "PA-color-dyed-purple.jpg",
                   "colorCode": "#6258CC"
                 },
                 {
                   "id": 8,
                   "name": "Dyed Polyamide",
                   "color": "Yellow",
+                  "colorImage": "PA-color-dyed-yellow.jpg",
                   "colorCode": "#CDD032"
-                },
-                {
-                  "id": 2,
-                  "name": "Plastic, Dyed",
-                  "color": "Black",
-                  "colorCode": "#424242"
-                },
-                {
-                  "id": 3,
-                  "name": "Plastic, Dyed",
-                  "color": "Blue",
-                  "colorCode": "#46B3F0"
-                },
-                {
-                  "id": 8,
-                  "name": "Plastic, Dyed",
-                  "color": "Yellow",
-                  "colorCode": "#FDF636"
-                },
-                {
-                  "id": 4,
-                  "name": "Plastic, Dyed",
-                  "color": "Red",
-                  "colorCode": "#EA4A44"
-                },
-                {
-                  "id": 5,
-                  "name": "Plastic, Dyed",
-                  "color": "Green",
-                  "colorCode": "#7ACD3C"
                 },
                 {
                   "id": 9,
                   "name": "Plastic, Dyed",
                   "color": "Beige",
+                  "colorImage": "beige_plastic.png",
                   "colorCode": "#D2CB95"
                 },
                 {
                   "id": 10,
                   "name": "Plastic, Dyed",
                   "color": "Brown",
+                  "colorImage": "brown_plastic.png",
                   "colorCode": "#6E5238"
                 },
                 {
                   "id": 11,
                   "name": "Plastic, Dyed",
                   "color": "Pink",
+                  "colorImage": "pink_plastic.png",
                   "colorCode": "#EF5B8F"
-                },
-                {
-                  "id": 6,
-                  "name": "Plastic, Dyed",
-                  "color": "Orange",
-                  "colorCode": "#FC6135"
                 },
                 {
                   "id": 12,
                   "name": "Plastic, Dyed",
                   "color": "Gray",
+                  "colorImage": "black_plastic.png",
                   "colorCode": "#606068"
                 }
               ]
@@ -194,144 +141,77 @@
                   "id": 13,
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Pink",
+                  "colorImage": "swatch-pink-20140702.png",
                   "colorCode": "#B02B6A"
                 },
                 {
                   "id": 14,
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Red",
+                  "colorImage": "swatch-coral-red.jpg",
                   "colorCode": "#FB0F16"
                 },
                 {
                   "id": 15,
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Orange",
+                  "colorImage": "swatch-orange.png",
                   "colorCode": "#F99600"
                 },
                 {
                   "id": 16,
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Yellow",
+                  "colorImage": "swatch-yellow.png",
                   "colorCode": "#F7C33F"
                 },
                 {
                   "id": 17,
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Green",
+                  "colorImage": "swatch-green.png",
                   "colorCode": "#3C603E"
                 },
                 {
                   "id": 18,
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Blue",
+                  "colorImage": "swatch-royal-blue.jpg",
                   "colorCode": "#508DEF"
                 },
                 {
                   "id": 19,
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Purple",
+                  "colorImage": "swatch-violet-purple.jpg",
                   "colorCode": "#AA32B2"
                 },
                 {
                   "id": 20,
                   "name": "Polished Dyed Polyamide",
                   "color": "Black",
+                  "colorImage": "PA-color-polished-dyed-black.jpg",
                   "colorCode": "#1E1E1E"
-                },
-                {
-                  "id": 18,
-                  "name": "Polished Dyed Polyamide",
-                  "color": "Blue",
-                  "colorCode": "#3855AB"
-                },
-                {
-                  "id": 14,
-                  "name": "Polished Dyed Polyamide",
-                  "color": "Red",
-                  "colorCode": "#C62F35"
-                },
-                {
-                  "id": 17,
-                  "name": "Polished Dyed Polyamide",
-                  "color": "Green",
-                  "colorCode": "#50B84F"
-                },
-                {
-                  "id": 15,
-                  "name": "Polished Dyed Polyamide",
-                  "color": "Orange",
-                  "colorCode": "#DD6122"
-                },
-                {
-                  "id": 19,
-                  "name": "Polished Dyed Polyamide",
-                  "color": "Purple",
-                  "colorCode": "#4E4CA5"
-                },
-                {
-                  "id": 16,
-                  "name": "Polished Dyed Polyamide",
-                  "color": "Yellow",
-                  "colorCode": "E0EE35"
-                },
-                {
-                  "id": 20,
-                  "name": "Plastic, Polished, Dyed",
-                  "color": "Black",
-                  "colorCode": "#424242"
-                },
-                {
-                  "id": 18,
-                  "name": "Plastic, Polished, Dyed",
-                  "color": "Blue",
-                  "colorCode": "#46B3F0"
-                },
-                {
-                  "id": 16,
-                  "name": "Plastic, Polished, Dyed",
-                  "color": "Yellow",
-                  "colorCode": "#FDF636"
-                },
-                {
-                  "id": 14,
-                  "name": "Plastic, Polished, Dyed",
-                  "color": "Red",
-                  "colorCode": "#EA4A44"
-                },
-                {
-                  "id": 17,
-                  "name": "Plastic, Polished, Dyed",
-                  "color": "Green",
-                  "colorCode": "#7ACD3C"
                 },
                 {
                   "id": 21,
                   "name": "Plastic, Polished, Dyed",
                   "color": "Beige",
+                  "colorImage": "beige_plastic.png",
                   "colorCode": "#D2CB95"
                 },
                 {
                   "id": 22,
                   "name": "Plastic, Polished, Dyed",
                   "color": "Brown",
+                  "colorImage": "brown_plastic.png",
                   "colorCode": "#6E5238"
-                },
-                {
-                  "id": 13,
-                  "name": "Plastic, Polished, Dyed",
-                  "color": "Pink",
-                  "colorCode": "#EF5B8F"
-                },
-                {
-                  "id": 15,
-                  "name": "Plastic, Polished, Dyed",
-                  "color": "Orange",
-                  "colorCode": "#FC6135"
                 },
                 {
                   "id": 23,
                   "name": "Plastic, Polished, Dyed",
                   "color": "Gray",
+                  "colorImage": "black_plastic.png",
                   "colorCode": "#606068"
                 }
               ]
@@ -382,12 +262,6 @@
                   "name": "Polyamide Velvet Dyed",
                   "color": "Ochre",
                   "colorCode": "#FBB500"
-                },
-                {
-                  "id": 26,
-                  "name": "Polyamide Velvet Dyed",
-                  "color": "Blue",
-                  "colorCode": "#279BC0"
                 }
               ]
             }
@@ -418,19 +292,8 @@
                   "id": 31,
                   "name": "Alumide",
                   "color": "Gray",
+                  "colorImage": "alumide.png",
                   "colorCode": "#98A0A3"
-                },
-                {
-                  "id": 31,
-                  "name": "Metallic Plastic",
-                  "color": "Gray",
-                  "colorCode": "#AFADAE"
-                },
-                {
-                  "id": 31,
-                  "name": "Alumide, natural",
-                  "color": "Gray",
-                  "colorCode": "#AFB1B0"
                 }
               ]
             },
@@ -443,12 +306,7 @@
                   "id": 32,
                   "name": "Polished Metal Plastic",
                   "color": "Gray",
-                  "colorCode": "#8B8F90"
-                },
-                {
-                  "id": 32,
-                  "name": "Alumide, Polished",
-                  "color": "Gray",
+                  "colorImage": "polished_plastic_alumide.jpg",
                   "colorCode": "#8B8F90"
                 }
               ]
@@ -462,55 +320,36 @@
                   "id": 33,
                   "name": "Dyed Alumide",
                   "color": "Black",
+                  "colorImage": "sculpteo_alumide_black.jpg",
                   "colorCode": "#453b25"
                 },
                 {
                   "id": 34,
                   "name": "Dyed Alumide",
                   "color": "Blue",
+                  "colorImage": "sculpteo_alumide_blue.jpg",
                   "colorCode": "#3b4e77"
                 },
                 {
                   "id": 35,
                   "name": "Dyed Alumide",
                   "color": "Green",
+                  "colorImage": "sculpteo_alumide_green.jpg",
                   "colorCode": "#aeb530"
                 },
                 {
                   "id": 36,
                   "name": "Dyed Alumide",
                   "color": "Red",
+                  "colorImage": "sculpteo_alumide_red.jpg",
                   "colorCode": "#893b2b"
-                },
-                {
-                  "id": 33,
-                  "name": "Alumide, dyed",
-                  "color": "Black",
-                  "colorCode": "#393A2D"
-                },
-                {
-                  "id": 36,
-                  "name": "Alumide, dyed",
-                  "color": "Red",
-                  "colorCode": "#8A251B"
                 },
                 {
                   "id": 37,
                   "name": "Alumide, dyed",
                   "color": "Orange",
+                  "colorImage": "rusty-orange_alumide.png",
                   "colorCode": "#C9A14A"
-                },
-                {
-                  "id": 34,
-                  "name": "Alumide, dyed",
-                  "color": "Blue",
-                  "colorCode": "#3B416B"
-                },
-                {
-                  "id": 35,
-                  "name": "Alumide, dyed",
-                  "color": "Green",
-                  "colorCode": "#ABAE29"
                 }
               ]
             },
@@ -523,24 +362,28 @@
                   "id": 38,
                   "name": "Alumide, Polished, Dyed",
                   "color": "Black",
+                  "colorImage": "sculpteo_alumide_black.jpg",
                   "colorCode": "#453b25"
                 },
                 {
                   "id": 39,
                   "name": "Alumide, Polished, Dyed",
                   "color": "Blue",
+                  "colorImage": "sculpteo_alumide_blue.jpg",
                   "colorCode": "#3b4e77"
                 },
                 {
                   "id": 40,
                   "name": "Alumide, Polished, Dyed",
                   "color": "Green",
+                  "colorImage": "sculpteo_alumide_green.jpg",
                   "colorCode": "#aeb530"
                 },
                 {
                   "id": 41,
                   "name": "Alumide, Polished, Dyed",
                   "color": "Red",
+                  "colorImage": "sculpteo_alumide_red.jpg",
                   "colorCode": "#893b2b"
                 }
               ]
@@ -573,25 +416,15 @@
                   "id": 42,
                   "name": "Acrylic Plastic",
                   "color": "White",
+                  "colorImage": "plastic_detail_white.jpg",
                   "colorCode": "#DBD8D1"
                 },
                 {
                   "id": 43,
                   "name": "Acrylic Plastic",
                   "color": "Black",
+                  "colorImage": "plastic_detail_black.jpg",
                   "colorCode": "#393937"
-                },
-                {
-                  "id": 42,
-                  "name": "Detail Resin Opaque",
-                  "color": "White",
-                  "colorCode": "FAF9F1"
-                },
-                {
-                  "id": 42,
-                  "name": "Paintable Resin",
-                  "color": "White",
-                  "colorCode": "#D3D0B1"
                 },
                 {
                   "id": 44,
@@ -610,118 +443,87 @@
                   "id": 45,
                   "name": "Detail Resin",
                   "color": "Black",
+                  "colorImage": "black_resin.png",
                   "colorCode": "0A080C"
                 },
                 {
                   "id": 46,
                   "name": "Detail Resin",
-                  "color": "Yellow",
+                  "color": "Neon Yellow",
+                  "colorImage": "neon_yellow_resin.png",
                   "colorCode": "#FFF752"
                 },
                 {
                   "id": 47,
                   "name": "Detail Resin",
-                  "color": "Orange",
+                  "color": "Neon Orange",
+                  "colorImage": "neon_orange_resin.png",
                   "colorCode": "FE3C4A"
                 },
                 {
                   "id": 48,
                   "name": "Detail Resin",
-                  "color": "Pink",
+                  "color": "Neon Pink",
+                  "colorImage": "neon_pink_resin.png",
                   "colorCode": "#F61B5F"
                 },
                 {
                   "id": 49,
                   "name": "Detail Resin",
                   "color": "Red",
+                  "colorImage": "intense_red_resin.png",
                   "colorCode": "#B40D0D"
-                },
-                {
-                  "id": 47,
-                  "name": "Detail Resin",
-                  "color": "Orange",
-                  "colorCode": "#BF3410"
                 },
                 {
                   "id": 50,
                   "name": "Detail Resin",
-                  "color": "N/A",
-                  "colorCode": "611D0D"
+                  "color": "Orange",
+                  "colorImage": "orange_resin.png",
+                  "colorCode": "#BF3410"
                 },
                 {
                   "id": 51,
                   "name": "Detail Resin",
-                  "color": "Gray",
-                  "colorCode": "#77726F"
+                  "color": "N/A",
+                  "colorImage": "brown_resin.png",
+                  "colorCode": "611D0D"
                 },
                 {
                   "id": 52,
                   "name": "Detail Resin",
-                  "color": "Blue",
-                  "colorCode": "#8CA7BA"
+                  "color": "Gray",
+                  "colorImage": "gray_resin.png",
+                  "colorCode": "#77726F"
                 },
                 {
                   "id": 53,
                   "name": "Detail Resin",
-                  "color": "Green",
-                  "colorCode": "52903A"
-                },
-                {
-                  "id": 46,
-                  "name": "Detail Resin",
-                  "color": "Yellow",
-                  "colorCode": "#EBE516"
+                  "color": "Blue",
+                  "colorImage": "blue_resin.png",
+                  "colorCode": "#8CA7BA"
                 },
                 {
                   "id": 54,
+                  "name": "Detail Resin",
+                  "color": "Green",
+                  "colorImage": "green_resin.png",
+                  "colorCode": "52903A"
+                },
+                {
+                  "id": 55,
+                  "name": "Detail Resin",
+                  "color": "Yellow",
+                  "colorImage": "light_yellow_resin.png",
+                  "colorCode": "#EBE516"
+                },
+                {
+                  "id": 56,
                   "name": "Spray Painted Resin",
                   "color": "White",
                   "colorCode": "#FFFFFF"
                 },
                 {
-                  "id": 45,
-                  "name": "Spray Painted Resin",
-                  "color": "Black",
-                  "colorCode": "#000000"
-                },
-                {
-                  "id": 52,
-                  "name": "Spray Painted Resin",
-                  "color": "Blue",
-                  "colorCode": "#002E7B"
-                },
-                {
-                  "id": 53,
-                  "name": "Spray Painted Resin",
-                  "color": "Green",
-                  "colorCode": "#008047"
-                },
-                {
-                  "id": 46,
-                  "name": "Spray Painted Resin",
-                  "color": "Yellow",
-                  "colorCode": "#F8F335"
-                },
-                {
-                  "id": 51,
-                  "name": "Spray Painted Resin",
-                  "color": "Gray",
-                  "colorCode": "#919089"
-                },
-                {
-                  "id": 49,
-                  "name": "Spray Painted Resin",
-                  "color": "Red",
-                  "colorCode": "#C81915"
-                },
-                {
-                  "id": 47,
-                  "name": "Spray Painted Resin",
-                  "color": "Orange",
-                  "colorCode": "#FF5C20"
-                },
-                {
-                  "id": 55,
+                  "id": 57,
                   "name": "Spray Painted Resin",
                   "color": "Brown",
                   "colorCode": "#603F30"
@@ -734,16 +536,11 @@
               "featuredImage": "acceuil_detail_large_2.jpg",
               "materialConfigs": [
                 {
-                  "id": 56,
+                  "id": 58,
                   "name": "Detail Resin Translucent",
-                  "color": "N/A",
+                  "color": "Translucent",
+                  "colorImage": "translucent_resin.png",
                   "colorCode": "#e3e3e4"
-                },
-                {
-                  "id": 56,
-                  "name": "Transparent Acrylic Plastic",
-                  "color": "N/A",
-                  "colorCode": "#E8E0CB"
                 }
               ]
             },
@@ -753,49 +550,43 @@
               "featuredImage": "acceuil_detail_large_2.jpg",
               "materialConfigs": [
                 {
-                  "id": 57,
+                  "id": 59,
                   "name": "Transparent Resin",
                   "color": "White",
                   "colorCode": "#DFEBE1"
                 },
                 {
-                  "id": 57,
-                  "name": "Transparent Resin",
-                  "color": "White",
-                  "colorCode": "#FFFFFF"
-                },
-                {
-                  "id": 58,
+                  "id": 60,
                   "name": "Transparent Resin",
                   "color": "Black",
                   "colorCode": "#000000"
                 },
                 {
-                  "id": 59,
+                  "id": 61,
                   "name": "Transparent Resin",
                   "color": "Blue",
                   "colorCode": "#002E7B"
                 },
                 {
-                  "id": 60,
+                  "id": 62,
                   "name": "Transparent Resin",
                   "color": "Green",
                   "colorCode": "#008047"
                 },
                 {
-                  "id": 61,
+                  "id": 63,
                   "name": "Transparent Resin",
                   "color": "Yellow",
                   "colorCode": "#F8F335"
                 },
                 {
-                  "id": 62,
+                  "id": 64,
                   "name": "Transparent Resin",
                   "color": "Gray",
                   "colorCode": "#919089"
                 },
                 {
-                  "id": 63,
+                  "id": 65,
                   "name": "Transparent Resin",
                   "color": "Red",
                   "colorCode": "#C81915"
@@ -827,7 +618,7 @@
               "featuredImage": "fxd-diver.jpg",
               "materialConfigs": [
                 {
-                  "id": 64,
+                  "id": 66,
                   "name": "High Detail Resin",
                   "color": "White",
                   "colorCode": "#D3D0B1"
@@ -840,9 +631,10 @@
               "featuredImage": "fxd-diver.jpg",
               "materialConfigs": [
                 {
-                  "id": 65,
+                  "id": 67,
                   "name": "Frosted Ultra Detail Plastic",
                   "color": "White",
+                  "colorImage": "swatch-fud-20150310.png",
                   "colorCode": "#C1D1D5"
                 }
               ]
@@ -872,9 +664,10 @@
               "featuredImage": "fxd-hero-forge.jpg",
               "materialConfigs": [
                 {
-                  "id": 66,
+                  "id": 68,
                   "name": "Frosted Extreme Detail Plastic",
-                  "color": "N/A",
+                  "color": "Translucent",
+                  "colorImage": "swatch-fxd-20150310.png",
                   "colorCode": "#C1D1D5"
                 }
               ]
@@ -900,25 +693,25 @@
               "featuredImage": "abs-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 67,
+                  "id": 69,
                   "name": "ABS",
                   "color": "White",
                   "colorCode": "#ffffff"
                 },
                 {
-                  "id": 68,
+                  "id": 70,
                   "name": "ABS",
                   "color": "Red",
                   "colorCode": "#d71b10"
                 },
                 {
-                  "id": 69,
+                  "id": 71,
                   "name": "ABS",
                   "color": "N/A",
                   "colorCode": "#747b85"
                 },
                 {
-                  "id": 70,
+                  "id": 72,
                   "name": "ABS",
                   "color": "Black",
                   "colorCode": "#000000"
@@ -955,28 +748,18 @@
               "featuredImage": "625x465_1052255_956543_1429687247.jpg",
               "materialConfigs": [
                 {
-                  "id": 71,
+                  "id": 73,
                   "name": "Stainless Steel",
-                  "color": "Gray",
+                  "color": "Gray steel, raw",
+                  "colorImage": "metal_stainless_steel.jpg",
                   "colorCode": "#9C969B"
                 },
                 {
-                  "id": 72,
+                  "id": 74,
                   "name": "Stainless Steel",
                   "color": "Black",
+                  "colorImage": "swatch-steel-matte-black-20131023.png",
                   "colorCode": "#2F2B2D"
-                },
-                {
-                  "id": 71,
-                  "name": "Stainless Steel",
-                  "color": "Gray",
-                  "colorCode": "#cac3a5"
-                },
-                {
-                  "id": 72,
-                  "name": "Stainless Steel",
-                  "color": "Black",
-                  "colorCode": "#555243"
                 }
               ]
             },
@@ -986,27 +769,23 @@
               "featuredImage": "625x465_1052255_956543_1429687247.jpg",
               "materialConfigs": [
                 {
-                  "id": 73,
+                  "id": 75,
                   "name": "Polished Steel",
-                  "color": "Gray",
+                  "color": "Gray steel, polished",
+                  "colorImage": "swatch-steel-polished-gray-20131023.png",
                   "colorCode": "#7B6F7"
                 },
                 {
-                  "id": 73,
-                  "name": "Stainless Steel, Polished",
-                  "color": "Gray",
-                  "colorCode": "#C0AB91"
-                },
-                {
-                  "id": 74,
+                  "id": 76,
                   "name": "Stainless Steel, Polished",
                   "color": "Black",
                   "colorCode": "#545347"
                 },
                 {
-                  "id": 75,
+                  "id": 77,
                   "name": "Stainless Steel, Polished",
-                  "color": "Brown",
+                  "color": "Brown steel, polished",
+                  "colorImage": "Wheat_Penny.png",
                   "colorCode": "#C0AB91"
                 }
               ]
@@ -1017,22 +796,18 @@
               "featuredImage": "625x465_1052255_956543_1429687247.jpg",
               "materialConfigs": [
                 {
-                  "id": 76,
+                  "id": 78,
                   "name": "Gold Plated Stainless Steel",
-                  "color": "Gold",
+                  "color": "Gold plated, raw",
+                  "colorImage": "Gold_Plated.png",
                   "colorCode": "#B9813F"
                 },
                 {
-                  "id": 77,
+                  "id": 79,
                   "name": "Plated Steel",
-                  "color": "Bronze",
+                  "color": "Bronze plated, raw",
+                  "colorImage": "metal_bronze_matte.jpg",
                   "colorCode": "644B34"
-                },
-                {
-                  "id": 76,
-                  "name": "Plated Steel",
-                  "color": "Gold",
-                  "colorCode": "#CE964C"
                 }
               ]
             },
@@ -1042,28 +817,25 @@
               "featuredImage": "625x465_1052255_956543_1429687247.jpg",
               "materialConfigs": [
                 {
-                  "id": 78,
+                  "id": 80,
                   "name": "Gold Plated Polished Stainless Steel",
-                  "color": "Gold",
+                  "color": "Gold plated, polished",
+                  "colorImage": "Gold_Plated.png",
                   "colorCode": "#E8CA5C"
                 },
                 {
-                  "id": 79,
+                  "id": 81,
                   "name": "Plated Steel, Polished",
-                  "color": "Bronze",
+                  "color": "Bronze plated, polished",
+                  "colorImage": "metal_bronze_shiny.jpg",
                   "colorCode": "#C4B29E"
                 },
                 {
-                  "id": 80,
+                  "id": 82,
                   "name": "Plated Steel, Polished",
                   "color": "Nickel",
+                  "colorImage": "swatch-steel-polished-nickel-20131023.png",
                   "colorCode": "#E1DBE2"
-                },
-                {
-                  "id": 78,
-                  "name": "Plated Steel, Polished",
-                  "color": "Gold",
-                  "colorCode": "#FADC79"
                 }
               ]
             }
@@ -1091,9 +863,10 @@
               "featuredImage": "detailedsteel-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 81,
+                  "id": 83,
                   "name": "High Detail Stainless Steel, raw",
-                  "color": "N/A",
+                  "color": "Raw",
+                  "colorImage": "matt.jpg",
                   "colorCode": "#D1C9CB"
                 }
               ]
@@ -1104,9 +877,10 @@
               "featuredImage": "detailedsteel-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 82,
+                  "id": 84,
                   "name": "High Detail Stainless Steel, Satin",
-                  "color": "N/A",
+                  "color": "Polished",
+                  "colorImage": "metalic.jpg",
                   "colorCode": "#C2C1B2"
                 }
               ]
@@ -1117,9 +891,10 @@
               "featuredImage": "detailedsteel-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 83,
+                  "id": 85,
                   "name": "High Detail Stainless Steel, Glossy",
                   "color": "N/A",
+                  "colorImage": "polished.jpg",
                   "colorCode": "#B9B7BA"
                 }
               ]
@@ -1144,9 +919,10 @@
               "featuredImage": "brass-top-morph-bangle-20150218.jpg",
               "materialConfigs": [
                 {
-                  "id": 84,
+                  "id": 86,
                   "name": "Solid Raw Brass",
-                  "color": "N/A",
+                  "color": "Raw",
+                  "colorImage": "swatch-raw-brass-20140116.png",
                   "colorCode": "E9D0A2"
                 }
               ]
@@ -1157,9 +933,10 @@
               "featuredImage": "brass-top-morph-bangle-20150218.jpg",
               "materialConfigs": [
                 {
-                  "id": 85,
+                  "id": 87,
                   "name": "Natural Brass, PU coated",
-                  "color": "N/A",
+                  "color": "Raw, PU coated",
+                  "colorImage": "BS-finish-natural-PU-coated.jpg",
                   "colorCode": "DEC77E"
                 }
               ]
@@ -1170,9 +947,10 @@
               "featuredImage": "brass-top-morph-bangle-20150218.jpg",
               "materialConfigs": [
                 {
-                  "id": 86,
+                  "id": 88,
                   "name": "Polished Brass",
-                  "color": "N/A",
+                  "color": "Polished",
+                  "colorImage": "swatch-polished-brass-20140116.png",
                   "colorCode": "#F2D471"
                 }
               ]
@@ -1183,27 +961,27 @@
               "featuredImage": "brass-top-morph-bangle-20150218.jpg",
               "materialConfigs": [
                 {
-                  "id": 87,
+                  "id": 89,
                   "name": "Rhodium Plated Brass",
-                  "color": "N/A",
+                  "color": "Rhodium plated polished brass",
                   "colorCode": "#C7C9C1"
                 },
                 {
-                  "id": 88,
+                  "id": 90,
                   "name": "Plated brass, polished",
                   "color": "Black",
                   "colorCode": "#3e3e3e"
                 },
                 {
-                  "id": 89,
+                  "id": 91,
                   "name": "Plated brass, polished",
-                  "color": "Gold",
+                  "color": "Gold plated polished brass",
                   "colorCode": "#eec34f"
                 },
                 {
-                  "id": 87,
+                  "id": 92,
                   "name": "Plated brass, polished",
-                  "color": "N/A",
+                  "color": "Rose gold plated polished brass",
                   "colorCode": "#f1d2a5"
                 }
               ]
@@ -1228,9 +1006,10 @@
               "featuredImage": "img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 90,
+                  "id": 93,
                   "name": "Copper",
-                  "color": "N/A",
+                  "color": "Raw",
+                  "colorImage": "natural_color_3dprintlab.jpg",
                   "colorCode": "#E0976A"
                 }
               ]
@@ -1241,9 +1020,10 @@
               "featuredImage": "img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 91,
+                  "id": 94,
                   "name": "Copper, PU coated",
-                  "color": "N/A",
+                  "color": "Raw, PU coated",
+                  "colorImage": "natural_color_3dprintlab.jpg",
                   "colorCode": "#E0976A"
                 }
               ]
@@ -1268,9 +1048,10 @@
               "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
               "materialConfigs": [
                 {
-                  "id": 92,
+                  "id": 95,
                   "name": "Matte Bronze Steel",
-                  "color": "Bronze",
+                  "color": "Bronze plated steel, raw",
+                  "colorImage": "metal_bronze_matte.jpg",
                   "colorCode": "#836A54"
                 }
               ]
@@ -1281,9 +1062,10 @@
               "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
               "materialConfigs": [
                 {
-                  "id": 93,
+                  "id": 96,
                   "name": "Polished Bronze Steel",
-                  "color": "Bronze",
+                  "color": "Bronze plated steel, polished",
+                  "colorImage": "metal_bronze_shiny.jpg",
                   "colorCode": "#9B89752"
                 }
               ]
@@ -1294,9 +1076,10 @@
               "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
               "materialConfigs": [
                 {
-                  "id": 94,
+                  "id": 97,
                   "name": "Natural Uncoated Bronze",
-                  "color": "N/A",
+                  "color": "Raw",
+                  "colorImage": "unpolished-uncoated.png",
                   "colorCode": "#DFA862"
                 }
               ]
@@ -1307,9 +1090,10 @@
               "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
               "materialConfigs": [
                 {
-                  "id": 95,
+                  "id": 98,
                   "name": "Natural Bronze, PU coated",
-                  "color": "N/A",
+                  "color": "Raw, PU coated",
+                  "colorImage": "unpolished-coated.png",
                   "colorCode": "#9F7D49"
                 }
               ]
@@ -1320,9 +1104,10 @@
               "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
               "materialConfigs": [
                 {
-                  "id": 96,
+                  "id": 99,
                   "name": "Polished Bronze",
-                  "color": "Bronze",
+                  "color": "Solid polished shiny bronze",
+                  "colorImage": "swatch-polished-bronze-20140702.png",
                   "colorCode": "#785730"
                 }
               ]
@@ -1331,14 +1116,7 @@
               "name": "Solid, raw, PU coated",
               "summary": "Solid bronze, polished shiny surface, PU coated to slow down oxidation",
               "featuredImage": "625x465_1265767_1504248_1431706432.jpg",
-              "materialConfigs": [
-                {
-                  "id": 95,
-                  "name": "Natural Bronze, PU coated",
-                  "color": "N/A",
-                  "colorCode": "#9F7D49"
-                }
-              ]
+              "materialConfigs": []
             }
           ]
         },
@@ -1360,16 +1138,11 @@
               "featuredImage": "625x465_482033_161787_1429673543.jpg",
               "materialConfigs": [
                 {
-                  "id": 97,
+                  "id": 100,
                   "name": "Sterling Silver, Sandblasted",
-                  "color": "N/A",
+                  "color": "Raw",
+                  "colorImage": "sanded_silver.png",
                   "colorCode": "#C6C6BC"
-                },
-                {
-                  "id": 97,
-                  "name": "Silver, Sandblasted",
-                  "color": "N/A",
-                  "colorCode": "#DBD4C4"
                 }
               ]
             },
@@ -1379,16 +1152,11 @@
               "featuredImage": "625x465_482033_161787_1429673543.jpg",
               "materialConfigs": [
                 {
-                  "id": 98,
+                  "id": 101,
                   "name": "Silver Gloss",
-                  "color": "N/A",
+                  "color": "Polished",
+                  "colorImage": "gloss.png",
                   "colorCode": "#CFCFCF"
-                },
-                {
-                  "id": 98,
-                  "name": "Polished Silver",
-                  "color": "N/A",
-                  "colorCode": "#FFFBFD"
                 }
               ]
             },
@@ -1398,22 +1166,11 @@
               "featuredImage": "625x465_482033_161787_1429673543.jpg",
               "materialConfigs": [
                 {
-                  "id": 99,
+                  "id": 102,
                   "name": "Sterling Silver Mirror Polished",
                   "color": "N/A",
+                  "colorImage": "mirror_polished_silver.png",
                   "colorCode": "#F3EFE3"
-                },
-                {
-                  "id": 99,
-                  "name": "Silver High Gloss",
-                  "color": "N/A",
-                  "colorCode": "FCFCFC"
-                },
-                {
-                  "id": 99,
-                  "name": "Premium Silver",
-                  "color": "N/A",
-                  "colorCode": "#FDFDFD"
                 }
               ]
             },
@@ -1423,7 +1180,7 @@
               "featuredImage": "625x465_482033_161787_1429673543.jpg",
               "materialConfigs": [
                 {
-                  "id": 100,
+                  "id": 103,
                   "name": "Silver, Satin",
                   "color": "N/A",
                   "colorCode": "#F3EFE1"
@@ -1436,9 +1193,10 @@
               "featuredImage": "625x465_482033_161787_1429673543.jpg",
               "materialConfigs": [
                 {
-                  "id": 101,
+                  "id": 104,
                   "name": "Silver, Antique",
-                  "color": "N/A",
+                  "color": "Antique",
+                  "colorImage": "Antique.png",
                   "colorCode": "#8A7F73"
                 }
               ]
@@ -1463,9 +1221,10 @@
               "featuredImage": "gold-detail-lost.jpg",
               "materialConfigs": [
                 {
-                  "id": 102,
+                  "id": 105,
                   "name": "Gold Plated Stainless Steel",
-                  "color": "Gold",
+                  "color": "Gold plated steel, raw",
+                  "colorImage": "Gold_Plated.png",
                   "colorCode": "#FCD994"
                 }
               ]
@@ -1476,16 +1235,11 @@
               "featuredImage": "gold-detail-lost.jpg",
               "materialConfigs": [
                 {
-                  "id": 103,
+                  "id": 106,
                   "name": "Gold Plated Polished Stainless Steel",
-                  "color": "Gold",
+                  "color": "Gold plated steel, polished",
+                  "colorImage": "Gold_Plated.png",
                   "colorCode": "#F3BF7C"
-                },
-                {
-                  "id": 103,
-                  "name": "Polished Gold Steel",
-                  "color": "Gold",
-                  "colorCode": "#F7DBA8"
                 }
               ]
             },
@@ -1495,40 +1249,11 @@
               "featuredImage": "gold-detail-lost.jpg",
               "materialConfigs": [
                 {
-                  "id": 104,
+                  "id": 107,
                   "name": "14k Gold",
                   "color": "Gold",
+                  "colorImage": "14K-yellow-gold_3Dprintlab.jpg",
                   "colorCode": "#FEE6AD"
-                },
-                {
-                  "id": 104,
-                  "name": "14k Gold",
-                  "color": "Gold",
-                  "colorCode": "#DADED1"
-                },
-                {
-                  "id": 104,
-                  "name": "14k Gold",
-                  "color": "Gold",
-                  "colorCode": "#FFF1D8"
-                },
-                {
-                  "id": 104,
-                  "name": "14k Gold",
-                  "color": "Gold",
-                  "colorCode": "#FEE6AD"
-                },
-                {
-                  "id": 104,
-                  "name": "14k Gold",
-                  "color": "Gold",
-                  "colorCode": "#DADED1"
-                },
-                {
-                  "id": 104,
-                  "name": "14k Gold",
-                  "color": "Gold",
-                  "colorCode": "#DADED1"
                 }
               ]
             },
@@ -1538,27 +1263,10 @@
               "featuredImage": "gold-detail-lost.jpg",
               "materialConfigs": [
                 {
-                  "id": 105,
+                  "id": 108,
                   "name": "Solid 18k gold",
                   "color": "Gold",
-                  "colorCode": "#FEE6AD"
-                },
-                {
-                  "id": 105,
-                  "name": "Solid 18k gold",
-                  "color": "Gold",
-                  "colorCode": "#EEF0E7"
-                },
-                {
-                  "id": 105,
-                  "name": "Solid 18k gold",
-                  "color": "Gold",
-                  "colorCode": "#FFF1D8"
-                },
-                {
-                  "id": 105,
-                  "name": "Solid 18k gold",
-                  "color": "Gold",
+                  "colorImage": "18K-yellow-gold_3Dprintlab.jpg",
                   "colorCode": "#FEE6AD"
                 }
               ]
@@ -1583,9 +1291,10 @@
               "featuredImage": "platinum-top-arrow-ring.jpg",
               "materialConfigs": [
                 {
-                  "id": 106,
+                  "id": 109,
                   "name": "Platinum",
-                  "color": "N/A",
+                  "color": "Polished",
+                  "colorImage": "swatch-platinum-20140702.png",
                   "colorCode": "#F9FAF7"
                 }
               ]
@@ -1610,9 +1319,9 @@
               "featuredImage": "titanium-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 107,
+                  "id": 110,
                   "name": "Light Gray Titanium",
-                  "color": "N/A",
+                  "color": "Raw",
                   "colorCode": "#CCC9C3"
                 }
               ]
@@ -1623,9 +1332,9 @@
               "featuredImage": "titanium-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 108,
+                  "id": 111,
                   "name": "Light Gray Polished Titanium",
-                  "color": "N/A",
+                  "color": "Polished",
                   "colorCode": "#B2B8B7"
                 }
               ]
@@ -1655,9 +1364,10 @@
               "featuredImage": "vase-all-colors-625x416.jpg",
               "materialConfigs": [
                 {
-                  "id": 109,
+                  "id": 112,
                   "name": "Black Matte Porcelain",
                   "color": "Black",
+                  "colorImage": "th_sbc.jpg",
                   "colorCode": "#393939"
                 }
               ]
@@ -1668,87 +1378,56 @@
               "featuredImage": "vase-all-colors-625x416.jpg",
               "materialConfigs": [
                 {
-                  "id": 110,
-                  "name": "Porcelain",
-                  "color": "White",
-                  "colorCode": ""
-                },
-                {
-                  "id": 111,
-                  "name": "Porcelain",
-                  "color": "Black",
-                  "colorCode": ""
-                },
-                {
-                  "id": 112,
-                  "name": "Porcelain",
-                  "color": "Green",
-                  "colorCode": ""
-                },
-                {
-                  "id": 112,
-                  "name": "Porcelain",
-                  "color": "Green",
-                  "colorCode": ""
-                },
-                {
                   "id": 113,
                   "name": "Porcelain",
-                  "color": "Yellow",
+                  "color": "White",
+                  "colorImage": "ceramics-thumb.jpg",
                   "colorCode": ""
                 },
                 {
                   "id": 114,
                   "name": "Porcelain",
-                  "color": "Blue",
+                  "color": "Black",
+                  "colorImage": "blackceramics_thumbnail.jpg",
                   "colorCode": ""
                 },
                 {
                   "id": 115,
+                  "name": "Porcelain",
+                  "color": "Green, glossy",
+                  "colorImage": "th_sbc.jpg",
+                  "colorCode": ""
+                },
+                {
+                  "id": 116,
+                  "name": "Porcelain",
+                  "color": "Yellow, glossy",
+                  "colorImage": "th_pyc.jpg",
+                  "colorCode": ""
+                },
+                {
+                  "id": 117,
+                  "name": "Porcelain",
+                  "color": "Blue, glossy",
+                  "colorImage": "th_ebc.jpg",
+                  "colorCode": ""
+                },
+                {
+                  "id": 118,
                   "name": "Porcelain",
                   "color": "Red",
                   "colorCode": "#ff0000"
                 },
                 {
-                  "id": 110,
+                  "id": 119,
                   "name": "Ceramics",
-                  "color": "White",
-                  "colorCode": "#FFFFFF"
-                },
-                {
-                  "id": 111,
-                  "name": "Ceramics",
-                  "color": "Black",
-                  "colorCode": "#000000"
-                },
-                {
-                  "id": 113,
-                  "name": "Ceramics",
-                  "color": "Yellow",
-                  "colorCode": "#FCEB00"
-                },
-                {
-                  "id": 112,
-                  "name": "Ceramics",
-                  "color": "Green",
-                  "colorCode": "#81BF38"
-                },
-                {
-                  "id": 114,
-                  "name": "Ceramics",
-                  "color": "Blue",
-                  "colorCode": "#224190"
-                },
-                {
-                  "id": 116,
-                  "name": "Ceramics",
-                  "color": "Orange",
+                  "color": "Orange, glossy",
                   "colorCode": "#E45125"
                 },
                 {
-                  "id": 115,
+                  "id": 120,
                   "name": "Ceramics",
-                  "color": "Red",
+                  "color": "Red, glossy",
                   "colorCode": "#EA1D25"
                 }
               ]
@@ -2210,14 +1889,14 @@
     "46": {
       "printingService": {
         "sculpteo": {
-          "materialId": "resin_painted_light_yellow"
+          "materialId": "resin_painted_neon_yellow"
         }
       }
     },
     "47": {
       "printingService": {
         "sculpteo": {
-          "materialId": "resin_painted_orange"
+          "materialId": "resin_painted_neon_orange"
         }
       }
     },
@@ -2238,38 +1917,52 @@
     "50": {
       "printingService": {
         "sculpteo": {
-          "materialId": "resin_painted_marron_glace"
+          "materialId": "resin_painted_orange"
         }
       }
     },
     "51": {
       "printingService": {
         "sculpteo": {
-          "materialId": "resin_painted_pearl_gray"
+          "materialId": "resin_painted_marron_glace"
         }
       }
     },
     "52": {
       "printingService": {
         "sculpteo": {
-          "materialId": "resin_painted_odyssey_blue"
+          "materialId": "resin_painted_pearl_gray"
         }
       }
     },
     "53": {
       "printingService": {
         "sculpteo": {
-          "materialId": "resin_painted_valley_green"
+          "materialId": "resin_painted_odyssey_blue"
         }
       }
     },
     "54": {
-      "printingService": {}
+      "printingService": {
+        "sculpteo": {
+          "materialId": "resin_painted_valley_green"
+        }
+      }
     },
     "55": {
-      "printingService": {}
+      "printingService": {
+        "sculpteo": {
+          "materialId": "resin_painted_light_yellow"
+        }
+      }
     },
     "56": {
+      "printingService": {}
+    },
+    "57": {
+      "printingService": {}
+    },
+    "58": {
       "printingService": {
         "sculpteo": {
           "materialId": "clear_high_detailed_resin"
@@ -2279,7 +1972,7 @@
         }
       }
     },
-    "57": {
+    "59": {
       "printingService": {
         "imaterialise": {
           "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
@@ -2287,7 +1980,7 @@
         }
       }
     },
-    "58": {
+    "60": {
       "printingService": {
         "imaterialise": {
           "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
@@ -2295,7 +1988,7 @@
         }
       }
     },
-    "59": {
+    "61": {
       "printingService": {
         "imaterialise": {
           "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
@@ -2303,7 +1996,7 @@
         }
       }
     },
-    "60": {
+    "62": {
       "printingService": {
         "imaterialise": {
           "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
@@ -2311,7 +2004,7 @@
         }
       }
     },
-    "61": {
+    "63": {
       "printingService": {
         "imaterialise": {
           "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
@@ -2319,7 +2012,7 @@
         }
       }
     },
-    "62": {
+    "64": {
       "printingService": {
         "imaterialise": {
           "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
@@ -2327,7 +2020,7 @@
         }
       }
     },
-    "63": {
+    "65": {
       "printingService": {
         "imaterialise": {
           "materialId": "7bd84076-b86d-45c5-b498-766484b02ad9",
@@ -2335,7 +2028,7 @@
         }
       }
     },
-    "64": {
+    "66": {
       "printingService": {
         "imaterialise": {
           "materialId": "22af8b12-16c7-4058-8f0f-2a441dc4d795",
@@ -2343,33 +2036,17 @@
         }
       }
     },
-    "65": {
+    "67": {
       "printingService": {
         "shapeways": {
           "materialId": "61"
         }
       }
     },
-    "66": {
+    "68": {
       "printingService": {
         "shapeways": {
           "materialId": "114"
-        }
-      }
-    },
-    "67": {
-      "printingService": {
-        "imaterialise": {
-          "materialId": "3f0b5d1d-1398-440c-b10a-842d465cdd7a",
-          "finishId": "900eb1fa-80b0-4861-ba8c-847f30154ba1"
-        }
-      }
-    },
-    "68": {
-      "printingService": {
-        "imaterialise": {
-          "materialId": "3f0b5d1d-1398-440c-b10a-842d465cdd7a",
-          "finishId": "10a06d56-f29a-4640-8aa7-7a4219328105"
         }
       }
     },
@@ -2377,7 +2054,7 @@
       "printingService": {
         "imaterialise": {
           "materialId": "3f0b5d1d-1398-440c-b10a-842d465cdd7a",
-          "finishId": "776440d6-4c7c-4f7d-93b9-d68bd07831a9"
+          "finishId": "900eb1fa-80b0-4861-ba8c-847f30154ba1"
         }
       }
     },
@@ -2385,11 +2062,27 @@
       "printingService": {
         "imaterialise": {
           "materialId": "3f0b5d1d-1398-440c-b10a-842d465cdd7a",
-          "finishId": "5a17e3c2-a71f-4a75-ba4c-b6972a23b22f"
+          "finishId": "10a06d56-f29a-4640-8aa7-7a4219328105"
         }
       }
     },
     "71": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "3f0b5d1d-1398-440c-b10a-842d465cdd7a",
+          "finishId": "776440d6-4c7c-4f7d-93b9-d68bd07831a9"
+        }
+      }
+    },
+    "72": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "3f0b5d1d-1398-440c-b10a-842d465cdd7a",
+          "finishId": "5a17e3c2-a71f-4a75-ba4c-b6972a23b22f"
+        }
+      }
+    },
+    "73": {
       "printingService": {
         "shapeways": {
           "materialId": "23"
@@ -2400,7 +2093,7 @@
         }
       }
     },
-    "72": {
+    "74": {
       "printingService": {
         "shapeways": {
           "materialId": "89"
@@ -2411,7 +2104,7 @@
         }
       }
     },
-    "73": {
+    "75": {
       "printingService": {
         "shapeways": {
           "materialId": "90"
@@ -2422,7 +2115,7 @@
         }
       }
     },
-    "74": {
+    "76": {
       "printingService": {
         "imaterialise": {
           "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
@@ -2430,7 +2123,7 @@
         }
       }
     },
-    "75": {
+    "77": {
       "printingService": {
         "imaterialise": {
           "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
@@ -2438,7 +2131,7 @@
         }
       }
     },
-    "76": {
+    "78": {
       "printingService": {
         "imaterialise": {
           "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
@@ -2449,14 +2142,14 @@
         }
       }
     },
-    "77": {
+    "79": {
       "printingService": {
         "shapeways": {
           "materialId": "37"
         }
       }
     },
-    "78": {
+    "80": {
       "printingService": {
         "imaterialise": {
           "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
@@ -2467,33 +2160,17 @@
         }
       }
     },
-    "79": {
+    "81": {
       "printingService": {
         "shapeways": {
           "materialId": "38"
         }
       }
     },
-    "80": {
+    "82": {
       "printingService": {
         "shapeways": {
           "materialId": "88"
-        }
-      }
-    },
-    "81": {
-      "printingService": {
-        "imaterialise": {
-          "materialId": "0a3824ae-259b-483e-967d-1635886c8b97",
-          "finishId": "059d6469-9d5e-4e22-815d-90b0ce0dc5b1"
-        }
-      }
-    },
-    "82": {
-      "printingService": {
-        "imaterialise": {
-          "materialId": "0a3824ae-259b-483e-967d-1635886c8b97",
-          "finishId": "6a7f4ef5-c193-4256-acb5-2d34ce900671"
         }
       }
     },
@@ -2501,18 +2178,34 @@
       "printingService": {
         "imaterialise": {
           "materialId": "0a3824ae-259b-483e-967d-1635886c8b97",
-          "finishId": "6c43659f-5098-4113-95ae-f524674fa754"
+          "finishId": "059d6469-9d5e-4e22-815d-90b0ce0dc5b1"
         }
       }
     },
     "84": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "0a3824ae-259b-483e-967d-1635886c8b97",
+          "finishId": "6a7f4ef5-c193-4256-acb5-2d34ce900671"
+        }
+      }
+    },
+    "85": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "0a3824ae-259b-483e-967d-1635886c8b97",
+          "finishId": "6c43659f-5098-4113-95ae-f524674fa754"
+        }
+      }
+    },
+    "86": {
       "printingService": {
         "shapeways": {
           "materialId": "84"
         }
       }
     },
-    "85": {
+    "87": {
       "printingService": {
         "imaterialise": {
           "materialId": "170d6e35-8f0d-4f92-8408-2d3e095c256e",
@@ -2520,25 +2213,21 @@
         }
       }
     },
-    "86": {
+    "88": {
       "printingService": {
         "shapeways": {
           "materialId": "85"
         }
       }
     },
-    "87": {
+    "89": {
       "printingService": {
         "shapeways": {
           "materialId": "113"
-        },
-        "imaterialise": {
-          "materialId": "170d6e35-8f0d-4f92-8408-2d3e095c256e",
-          "finishId": "febc74a8-bf8b-449c-8772-15d18063b10d"
         }
       }
     },
-    "88": {
+    "90": {
       "printingService": {
         "imaterialise": {
           "materialId": "170d6e35-8f0d-4f92-8408-2d3e095c256e",
@@ -2546,7 +2235,7 @@
         }
       }
     },
-    "89": {
+    "91": {
       "printingService": {
         "imaterialise": {
           "materialId": "170d6e35-8f0d-4f92-8408-2d3e095c256e",
@@ -2554,7 +2243,15 @@
         }
       }
     },
-    "90": {
+    "92": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "170d6e35-8f0d-4f92-8408-2d3e095c256e",
+          "finishId": "febc74a8-bf8b-449c-8772-15d18063b10d"
+        }
+      }
+    },
+    "93": {
       "printingService": {
         "imaterialise": {
           "materialId": "8f7cc303-69fe-4634-b0af-8f7f9613a4c1",
@@ -2562,7 +2259,7 @@
         }
       }
     },
-    "91": {
+    "94": {
       "printingService": {
         "imaterialise": {
           "materialId": "8f7cc303-69fe-4634-b0af-8f7f9613a4c1",
@@ -2570,21 +2267,21 @@
         }
       }
     },
-    "92": {
+    "95": {
       "printingService": {
         "shapeways": {
           "materialId": "37"
         }
       }
     },
-    "93": {
+    "96": {
       "printingService": {
         "shapeways": {
           "materialId": "38"
         }
       }
     },
-    "94": {
+    "97": {
       "printingService": {
         "imaterialise": {
           "materialId": "68f8b1de-8288-43df-b8f7-6f638ca5e64f",
@@ -2592,7 +2289,7 @@
         }
       }
     },
-    "95": {
+    "98": {
       "printingService": {
         "imaterialise": {
           "materialId": "68f8b1de-8288-43df-b8f7-6f638ca5e64f",
@@ -2600,14 +2297,14 @@
         }
       }
     },
-    "96": {
+    "99": {
       "printingService": {
         "shapeways": {
           "materialId": "87"
         }
       }
     },
-    "97": {
+    "100": {
       "printingService": {
         "sculpteo": {
           "materialId": "metal_cast_silver_sanded"
@@ -2618,7 +2315,7 @@
         }
       }
     },
-    "98": {
+    "101": {
       "printingService": {
         "imaterialise": {
           "materialId": "c8461d87-2fd6-46de-8aae-f853763e5f9e",
@@ -2629,7 +2326,7 @@
         }
       }
     },
-    "99": {
+    "102": {
       "printingService": {
         "sculpteo": {
           "materialId": "metal_cast_silver_mirror_polished"
@@ -2643,7 +2340,7 @@
         }
       }
     },
-    "100": {
+    "103": {
       "printingService": {
         "imaterialise": {
           "materialId": "c8461d87-2fd6-46de-8aae-f853763e5f9e",
@@ -2651,7 +2348,7 @@
         }
       }
     },
-    "101": {
+    "104": {
       "printingService": {
         "imaterialise": {
           "materialId": "c8461d87-2fd6-46de-8aae-f853763e5f9e",
@@ -2659,7 +2356,7 @@
         }
       }
     },
-    "102": {
+    "105": {
       "printingService": {
         "imaterialise": {
           "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
@@ -2667,7 +2364,7 @@
         }
       }
     },
-    "103": {
+    "106": {
       "printingService": {
         "imaterialise": {
           "materialId": "1ff61659-a26b-4ee6-97b7-de642dfe1263",
@@ -2678,7 +2375,7 @@
         }
       }
     },
-    "104": {
+    "107": {
       "printingService": {
         "imaterialise": {
           "materialId": "d01a95ab-aaba-44f0-a4b6-8f72b66655b1",
@@ -2689,7 +2386,7 @@
         }
       }
     },
-    "105": {
+    "108": {
       "printingService": {
         "imaterialise": {
           "materialId": "d01a95ab-aaba-44f0-a4b6-8f72b66655b1",
@@ -2700,14 +2397,14 @@
         }
       }
     },
-    "106": {
+    "109": {
       "printingService": {
         "shapeways": {
           "materialId": "99"
         }
       }
     },
-    "107": {
+    "110": {
       "printingService": {
         "imaterialise": {
           "materialId": "12a65a42-df49-47a9-8828-0efaf84c5509",
@@ -2715,7 +2412,7 @@
         }
       }
     },
-    "108": {
+    "111": {
       "printingService": {
         "imaterialise": {
           "materialId": "12a65a42-df49-47a9-8828-0efaf84c5509",
@@ -2723,14 +2420,14 @@
         }
       }
     },
-    "109": {
+    "112": {
       "printingService": {
         "shapeways": {
           "materialId": "101"
         }
       }
     },
-    "110": {
+    "113": {
       "printingService": {
         "shapeways": {
           "materialId": "103"
@@ -2741,7 +2438,7 @@
         }
       }
     },
-    "111": {
+    "114": {
       "printingService": {
         "shapeways": {
           "materialId": "102"
@@ -2752,7 +2449,7 @@
         }
       }
     },
-    "112": {
+    "115": {
       "printingService": {
         "shapeways": {
           "materialId": "105"
@@ -2763,7 +2460,7 @@
         }
       }
     },
-    "113": {
+    "116": {
       "printingService": {
         "shapeways": {
           "materialId": "108"
@@ -2774,7 +2471,7 @@
         }
       }
     },
-    "114": {
+    "117": {
       "printingService": {
         "imaterialise": {
           "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
@@ -2782,22 +2479,26 @@
         }
       }
     },
-    "115": {
+    "118": {
       "printingService": {
         "shapeways": {
           "materialId": "109"
-        },
-        "imaterialise": {
-          "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
-          "finishId": "9c9003a3-1646-4232-939a-58f926b9d8f2"
         }
       }
     },
-    "116": {
+    "119": {
       "printingService": {
         "imaterialise": {
           "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
           "finishId": "b1a45d76-bf35-4e53-bd15-5c32e0e1e6f2"
+        }
+      }
+    },
+    "120": {
+      "printingService": {
+        "imaterialise": {
+          "materialId": "4b4ad96f-6152-4742-9199-a5d0711e2e81",
+          "finishId": "9c9003a3-1646-4232-939a-58f926b9d8f2"
         }
       }
     }
