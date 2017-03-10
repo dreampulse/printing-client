@@ -22,7 +22,7 @@ describe('poll api lib', () => {
 
   it('retries if api returns false', () => {
     config.pollingRetries = 10
-    config.pollingInvervall = 1
+    config.pollingInverval = 1
 
     const api = sinon.stub().resolves(false)
 

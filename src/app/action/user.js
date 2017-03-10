@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions'
-import {getLocation} from 'Lib/geolocation'
+import getLocation from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
 
 import ShippingAddressModal from '../container/modal/shipping-address'

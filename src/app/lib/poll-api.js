@@ -2,7 +2,7 @@ import config from '../../../config'
 
 export default (api) => {
   let retries = config.pollingRetries
-  const interval = config.pollingInvervall
+  const interval = config.pollingInverval
 
   return new Promise((resolve, reject) => {
     const poll = async () => {
