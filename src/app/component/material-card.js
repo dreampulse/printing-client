@@ -56,7 +56,7 @@ const MaterialCard = ({
   )
 
   const imageStyle = {
-    'background-image': `url(${image})`
+    backgroundImage: `url(${image})`
   }
 
   return (

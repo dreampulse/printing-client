@@ -22,15 +22,20 @@ import Price from 'Component/price'
 import Paragraph from 'Component/paragraph'
 import Info from 'Component/info'
 
-import {selectMaterial} from 'Action/material'
+import {
+  selectMaterial,
+  selectMaterialConfig
+} from 'Action/material'
 
 const MaterialSection = ({
   areAllUploadsFinished,
   materials,
-  onSelectedMaterial,
   price,
   materialMenuValues,
-  selectedMaterial
+  selectedMaterial,
+  selectedMaterialConfigs,
+  onSelectMaterial,
+  onSelectMaterialConfig
 }) => {
   // TODO: put all the business logic in this container into its own lib
 
@@ -103,17 +108,25 @@ const MaterialSection = ({
         </Paragraph>
       </Info>
     )
-    const colorValues = [
-      {value: 'value1', colorValue: 'ffffff', label: 'Color 1'},
-      {value: 'value2', colorValue: 'ff0000', label: 'Color 2'},
-      {value: 'value3', colorValue: '00ff00', label: 'Color 3'},
-      {value: 'value4', colorValue: '0000ff', label: 'Color 4'},
-      {value: 'value5', colorImage: 'http://placehold.it/40x40', label: 'Color 5'}
-    ]
-    const colorMenu = <SelectMenu values={colorValues} />
+    const colorValues = finishGroup.materialConfigs.map(({id, color, colorCode}) => ({
+      value: id,
+      colorValue: colorCode,
+      label: color
+      /* TODO: colorImage */
+    }))
+    const selectedColorValue = colorValues.filter(({value}) => (
+      value === selectedMaterialConfigs[finishGroup.id]
+    ))[0]
+
+    const colorMenu = colorValues.length > 1 ? (<SelectMenu values={colorValues} />) : undefined
     const materialPrice = <Price value="$19.99" meta="incl. tax & shipping" />
     const colorSelect = (
-      <SelectField modifiers={['compact']} placeholder="Placeholder" menu={colorMenu} />
+      <SelectField
+        modifiers={['compact']}
+        menu={colorMenu}
+        value={selectedColorValue}
+        onChange={({value}) => onSelectMaterialConfig(finishGroup.id, value)}
+      />
     )
 
     return (
@@ -141,7 +154,7 @@ const MaterialSection = ({
               placeholder="Placeholder"
               menu={materialMenu}
               value={selectedValue}
-              onChange={({value}) => onSelectedMaterial(value)}
+              onChange={({value}) => onSelectMaterial(value)}
             />
           </Column>
           <Column lg={4} classNames={['u-margin-bottom-xl']}>
@@ -164,11 +177,13 @@ const mapStateToProps = state => ({
   materials: state.material.materials,
   price: state.price.price,
   materialMenuValues: selectMaterialMenuValues(state),
-  selectedMaterial: selectCurrentMaterial(state)
+  selectedMaterial: selectCurrentMaterial(state),
+  selectedMaterialConfigs: state.material.selectedMaterialConfigs
 })
 
 const mapDispatchToProps = {
-  onSelectedMaterial: selectMaterial
+  onSelectMaterial: selectMaterial,
+  onSelectMaterialConfig: selectMaterialConfig
 }
 
 export default compose(
