@@ -12,7 +12,7 @@ export const detectAddress = () =>
   createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(getLocation())
 
 export const openAddressModal = () =>
-  open({title: 'Shipping Address', contentFactory: ShippingAddressModal})
+  open({contentFactory: ShippingAddressModal})
 
 export const createUser = () => (dispatch, getState) => {
   const user = getState().user.user

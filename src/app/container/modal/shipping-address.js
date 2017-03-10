@@ -3,16 +3,23 @@ import React from 'react'
 import Button from 'Component/button'
 import Overlay from 'Component/overlay'
 import Headline from 'Component/headline'
+import Paragraph from 'Component/paragraph'
+import LocationField from 'Component/location-field'
 
-const headline = <Headline label="Warning Headline" modifiers={['l']} />
+import config from '../../../../config'
+
+const headline = <Headline label="Shipping address required" modifiers={['l']} />
 const buttons = [
-  <Button label="Cancel" modifiers={['text']} />,
-  <Button label="OK" />
+  <Button label="OK" disabled />
 ]
 
 const ShippingAddressModal = () => (
-  <Overlay headline={headline} buttons={buttons} closePortal={() => { console.log('close') }}>
-    Please enter your shipping address
+  <Overlay headline={headline} buttons={buttons} closeable={false}>
+    <Paragraph>We need your address to calculate the shipping prices</Paragraph>
+    <LocationField
+      value=""
+      googleMapsApiKey={config.googleMapsApiKey}
+    />
   </Overlay>
 )
 

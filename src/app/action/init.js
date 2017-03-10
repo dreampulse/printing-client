@@ -3,6 +3,7 @@ import {getMaterials} from './material'
 
 export default () => async (dispatch) => {
   dispatch(getMaterials())
+
   try {
     await dispatch(detectAddress())
     dispatch(createUser())

@@ -4,10 +4,8 @@ import TYPE from '../type'
 
 const initialState = {
   isOpen: false,
-  title: null,
   contentFactory: null,
-  contentProps: {},
-  contentModifiers: []
+  contentProps: {}
 }
 
 function handleClose () {
@@ -17,10 +15,8 @@ function handleClose () {
 function handleOpen (state, action) {
   return {
     isOpen: true,
-    title: action.payload.title,
     contentFactory: action.payload.contentFactory,
-    contentProps: action.payload.contentProps || {},
-    contentModifiers: action.payload.contentModifiers || []
+    contentProps: action.payload.contentProps || {}
   }
 }
 

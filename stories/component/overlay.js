@@ -41,6 +41,11 @@ storiesOf('Overlay', module)
       <div>Overlay content</div>
     </Overlay>
   ))
+  .add('not closeable', () => (
+    <Overlay headline={headlineOther} buttons={buttons} closeable={false}>
+      <div>Overlay content</div>
+    </Overlay>
+  ))
   .add('Prices changed', () => {
     const pricesChangedHeadline = <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
     return (
