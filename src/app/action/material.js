@@ -9,11 +9,12 @@ import TYPE from '../type'
 
 // Sync actions
 export const selectMaterial = createAction(TYPE.MATERIAL.SELECTED)
-export const selectMaterialConfig = (finishGroupId, materialConfigId) => (
-  createAction(TYPE.MATERIAL.CONFIG_SELECTED)({
+export const selectMaterialConfigForFinishGroup = (materialConfigId, finishGroupId) => (
+  createAction(TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED)({
     [finishGroupId]: materialConfigId
   })
 )
+export const selectMaterialConfig = createAction(TYPE.MATERIAL.CONFIG_SELECTED)
 
 // Async actions
 export const getMaterials = () => async (dispatch) => {
@@ -23,5 +24,5 @@ export const getMaterials = () => async (dispatch) => {
   dispatch(createAction(TYPE.MATERIAL.RECEIVED)(materials))
 
   const selectedDefaultConfigs = getDefaultMaterialConfigs(materials)
-  dispatch(createAction(TYPE.MATERIAL.CONFIG_SELECTED)(selectedDefaultConfigs))
+  dispatch(createAction(TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED)(selectedDefaultConfigs))
 }

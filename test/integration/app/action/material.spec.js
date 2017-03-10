@@ -1,7 +1,8 @@
 import {
   getMaterials,
   selectMaterial,
-  selectMaterialConfig
+  selectMaterialConfig,
+  selectMaterialConfigForFinishGroup
 } from 'Action/material'
 import * as printingEngine from 'Lib/printing-engine'
 import * as materialLib from 'Lib/material'
@@ -48,15 +49,32 @@ describe('Material Integration Test', () => {
     })
   })
 
-  describe('selectMaterialConfig()', () => {
+  describe('selectMaterialConfigForFinishGroup()', () => {
     it('should work', () => {
-      store.dispatch(selectMaterialConfig('some-finish-group-id', 'some-config-id'))
+      store = Store({
+        material: {
+          selectedMaterialConfig: 'some-config-id'
+        }
+      })
+
+      store.dispatch(selectMaterialConfigForFinishGroup('some-config-id', 'some-finish-group-id'))
+
       expect(
         store.getState().material.selectedMaterialConfigs,
         'to have own property',
         'some-finish-group-id',
         'some-config-id'
       )
+
+      // Has to reset selectedMaterialConfig
+      expect(store.getState().material.selectedMaterialConfig, 'to be undefined')
+    })
+  })
+
+  describe('selectMaterialConfig()', () => {
+    it('should work', () => {
+      store.dispatch(selectMaterialConfig('some-config-id'))
+      expect(store.getState().material.selectedMaterialConfig, 'to equal', 'some-config-id')
     })
   })
 })

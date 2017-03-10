@@ -24,22 +24,25 @@ import Info from 'Component/info'
 
 import {
   selectMaterial,
-  selectMaterialConfig
+  selectMaterialConfig,
+  selectMaterialConfigForFinishGroup
 } from 'Action/material'
 
 const MaterialSection = ({
   areAllUploadsFinished,
-  materials,
-  price,
+  // price,
   materialMenuValues,
   selectedMaterial,
   selectedMaterialConfigs,
+  selectedMaterialConfig,
   onSelectMaterial,
-  onSelectMaterialConfig
+  onSelectMaterialConfig,
+  onSelectMaterialConfigForFinishGroup
 }) => {
   // TODO: put all the business logic in this container into its own lib
 
-  /* // The price for each material
+  // The price for each material
+  /*
   const pricesForMaterials = price && price.items.reduce((acc, item, index) => ({
     ...acc,
     [item.materialId]: Object.keys(price.printingService)
@@ -83,7 +86,7 @@ const MaterialSection = ({
         .join(', ')
     }
     return ''
-  }*/
+  } */
 
   const headlineModifiers = buildClassArray({
     xl: true,
@@ -99,7 +102,6 @@ const MaterialSection = ({
     : undefined
 
   function renderMaterialCard (finishGroup) {
-    console.log(finishGroup)
     const info = (
       <Info>
         <Headline modifiers={['s']} label="TODO Headline" />
@@ -125,10 +127,12 @@ const MaterialSection = ({
         modifiers={['compact']}
         menu={colorMenu}
         value={selectedColorValue}
-        onChange={({value}) => onSelectMaterialConfig(finishGroup.id, value)}
+        onChange={({value}) => onSelectMaterialConfigForFinishGroup(value, finishGroup.id)}
       />
     )
 
+    // TODO: different card states are not implemented yet
+    // TODO: onMoreClick handling
     return (
       <MaterialCard
         key={finishGroup.name}
@@ -140,6 +144,8 @@ const MaterialSection = ({
         info={info}
         image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
         colorSelect={colorSelect}
+        selected={selectedColorValue.value === selectedMaterialConfig}
+        onSelectClick={() => onSelectMaterialConfig(selectedColorValue.value)}
       />
     )
   }
@@ -174,16 +180,17 @@ const MaterialSection = ({
 
 const mapStateToProps = state => ({
   areAllUploadsFinished: state.model.areAllUploadsFinished,
-  materials: state.material.materials,
   price: state.price.price,
   materialMenuValues: selectMaterialMenuValues(state),
   selectedMaterial: selectCurrentMaterial(state),
-  selectedMaterialConfigs: state.material.selectedMaterialConfigs
+  selectedMaterialConfigs: state.material.selectedMaterialConfigs,
+  selectedMaterialConfig: state.material.selectedMaterialConfig
 })
 
 const mapDispatchToProps = {
   onSelectMaterial: selectMaterial,
-  onSelectMaterialConfig: selectMaterialConfig
+  onSelectMaterialConfig: selectMaterialConfig,
+  onSelectMaterialConfigForFinishGroup: selectMaterialConfigForFinishGroup
 }
 
 export default compose(
