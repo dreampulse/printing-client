@@ -24,7 +24,7 @@ describe('poll api lib', () => {
 
   it('retries if api returns false', () => {
     sandbox.stub(config, 'pollingRetries', 10)
-    sandbox.stub(config, 'pollingInvervall', 1)
+    sandbox.stub(config, 'pollingInverval', 1)
 
     const api = sinon.stub().resolves(false)
 
