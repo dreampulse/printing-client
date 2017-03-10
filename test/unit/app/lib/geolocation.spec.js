@@ -3,14 +3,16 @@ import * as http from 'Service/http'
 import config from '../../../../config'
 
 describe('geolocation lib', () => {
+  let configSandbox
+
   beforeEach(() => {
     sinon.stub(http)
-    sinon.stub(config)
+    configSandbox = sinon.sandbox.create()
   })
 
   afterEach(() => {
     sinon.restore(http)
-    sinon.restore(config)
+    configSandbox.restore()
   })
 
   it('works for the success case', async () => {
@@ -34,7 +36,7 @@ describe('geolocation lib', () => {
   it('aborts request after a configured timeout', () => {
     const endlessPromise = new Promise(() => {})
     http.request.resolves(endlessPromise)
-    config.fetchTimout = 1  // faster timeout
+    configSandbox.stub(config, 'fetchTimout', 1)  // Faster timeout
 
     return getLocation()
       .catch((result) => {
