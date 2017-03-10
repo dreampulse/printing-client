@@ -4,7 +4,7 @@ import Portal from 'react-portal'
 
 import {close} from '../../action/modal'
 
-const Modal = ({title, isOpen, onModalClose, contentFactory, contentProps, contentModifiers}) => (
+const Modal = ({isOpen, onModalClose, contentFactory, contentProps}) => (
   <Portal
     closeOnEsc
     isOpened={isOpen}
@@ -18,7 +18,6 @@ const mapStateToProps = state => ({
   isOpen: state.modal.isOpen,
   contentFactory: state.modal.contentFactory,
   contentProps: state.modal.contentProps,
-  title: state.modal.title,
   contentModifiers: state.modal.contentModifiers
 })
 
