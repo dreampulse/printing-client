@@ -12,34 +12,27 @@ describe('Modal Integration Test', () => {
     it('works with all parameters set', async () => {
       store.dispatch(
         open({
-          title: 'some-title',
           contentFactory: 'some-contentFactory',
-          contentProps: 'some-contentProps',
-          contentModifiers: 'some-contentModifiers'
+          contentProps: 'some-contentProps'
         })
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
-        title: 'some-title',
         contentFactory: 'some-contentFactory',
-        contentProps: 'some-contentProps',
-        contentModifiers: 'some-contentModifiers'
+        contentProps: 'some-contentProps'
       })
     })
 
     it('works with default parameters', async () => {
       store.dispatch(
         open({
-          title: 'some-title',
           contentFactory: 'some-contentFactory'
         })
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
-        title: 'some-title',
         contentFactory: 'some-contentFactory',
-        contentProps: {},
-        contentModifiers: []
+        contentProps: {}
       })
     })
   })
@@ -49,10 +42,8 @@ describe('Modal Integration Test', () => {
       store.dispatch(close())
       expect(store.getState().modal, 'to equal', {
         isOpen: false,
-        title: null,
         contentFactory: null,
-        contentProps: {},
-        contentModifiers: []
+        contentProps: {}
       })
     })
   })
