@@ -50,7 +50,7 @@ const ProviderSection = ({
   ))
 
   return (
-    <Section>
+    <Section id="section-provider">
       <Headline label="3. Choose a provider and shipping option" modifiers={headlineModifiers} />
       {Boolean(selectedMaterial) && (
         <ProviderList providerInfo={providerInfo}>

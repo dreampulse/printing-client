@@ -1,4 +1,6 @@
 export default {
   pollingRetries: 100,
-  pollingInvervall: 1000
+  pollingInvervall: 1000,
+  cloudinaryUrl: '//res.cloudinary.com/all3dp/image/upload',
+  cloudinaryDefaultParams: ['q_90', 'f_auto']
 }

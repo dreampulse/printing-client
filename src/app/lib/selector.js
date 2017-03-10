@@ -1,3 +1,6 @@
+import {
+  hasMaterialMultipleConfigs
+} from 'Lib/material'
 
 export const selectCartItems = state =>
   state.cart.cart.items.map(cartItem => ({
@@ -30,4 +33,54 @@ export const selectCart = (state) => {
     vatTotal: vatTotal(),
     totalPrice: totalPrice()
   }
+}
+
+export const selectMaterialMenuValues = (state) => {
+  const {
+    material: {
+      materials
+    }
+  } = state
+
+  if (!materials || !materials.materialStructure) {
+    return []
+  }
+
+  return materials.materialStructure.map(materialGroup => ({
+    type: 'group',
+    label: materialGroup.name,
+    children: materialGroup.materials.map(material => ({
+      type: 'material',
+      value: material.id,
+      label: material.name,
+      hasColor: hasMaterialMultipleConfigs(material),
+      price: 'TODO'
+    }))
+  }))
+}
+
+export const selectCurrentMaterial = (state) => {
+  const {
+    material: {
+      materials,
+      selectedMaterial
+    }
+  } = state
+
+  if (!materials || !materials.materialStructure) {
+    return []
+  }
+
+  // Search for material by name
+  let currentMaterial = null
+
+  materials.materialStructure.forEach((materialGroup) => {
+    materialGroup.materials.forEach((material) => {
+      if (material.id === selectedMaterial) {
+        currentMaterial = material
+      }
+    })
+  })
+
+  return currentMaterial
 }
