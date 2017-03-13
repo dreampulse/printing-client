@@ -35,7 +35,7 @@ const AddressPage = ({
 }) => {
   const CountrySelect = ({onChange, value, ...props}) => {
     const change = val => onChange(val.value)
-    const val = !value && value === '' ? null : {value, label: getCountryName(value)}
+    const val = !value || value === '' ? undefined : {value, label: getCountryName(value)}
     const countryMenu = <SelectMenu values={getCountriesMenu()} />
     return (<SelectField menu={countryMenu} value={val} onChange={change} {...props} />)
   }
@@ -44,10 +44,7 @@ const AddressPage = ({
     const change = val => onChange(val.value)
     const usStateMenu = <SelectMenu values={getUsStates()} />
     const isDisabled = !countryCode || (countryCode && countryCode !== 'US')
-    let actualValue = {value, label: getUsStateName(value)}
-    if (isDisabled) {
-      actualValue = null
-    }
+    const actualValue = !value || value === '' || isDisabled ? undefined : {value, label: getUsStateName(value)}
     return (
       <SelectField
         menu={usStateMenu}
