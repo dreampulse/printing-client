@@ -110,11 +110,11 @@ const MaterialSection = ({
         </Paragraph>
       </Info>
     )
-    const colorValues = finishGroup.materialConfigs.map(({id, color, colorCode}) => ({
+    const colorValues = finishGroup.materialConfigs.map(({id, color, colorCode, colorImage}) => ({
       value: id,
       colorValue: colorCode,
-      label: color
-      /* TODO: colorImage */
+      label: color,
+      colorImage: colorImage ? getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']) : undefined
     }))
     const selectedColorValue = colorValues.filter(({value}) => (
       value === selectedMaterialConfigs[finishGroup.id]
