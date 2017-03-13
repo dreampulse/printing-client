@@ -3,10 +3,10 @@
   "items":[
     {
       "modelId":"b364bd10-6d64-4515-b832-495d0fdf7d4c",
-      "materialId":"17"
+      "materialConfigId":"17"
     }, {
       "modelId":"b364bd10-6d64-4515-b832-495d0fdf7d4c",
-      "materialId":"18"
+      "materialConfigId":"18"
     }
   ],
   "printingService":{
