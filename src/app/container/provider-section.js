@@ -1,10 +1,10 @@
 import React from 'react'
-import {chain as flatMap} from 'ramda'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
 import {buildClassArray} from 'Lib/build-class-name'
 import {getPriceAmount} from 'Lib/get-total-amount'
+import {selectOffers} from 'Lib/selector'
 
 import Section from 'Component/section'
 import Headline from 'Component/headline'
@@ -61,33 +61,9 @@ const ProviderSection = ({
   )
 }
 
-// TODO: put this into a lib
-function getOffers (price, materialConfigId) {
-  if (!price) {
-    return []
-  }
-
-  const vendors = Object.keys(price.printingService)
-    .map(name => ({name, ...price.printingService[name]}))
-
-  const offers = flatMap(vendor =>
-    vendor.shipping.map(shipping => ({
-      name: vendor.name,
-      items: vendor.items.filter((_, index) =>
-        price.items[index].materialId === materialConfigId
-      ),
-      shipping,
-      vatPercentage: vendor.vatPercentage,
-      currency: vendor.currency
-    })), vendors
-  )
-
-  return offers
-}
-
 const mapStateToProps = state => ({
   selectedMaterialConfig: state.material.selectedMaterialConfig,
-  offers: getOffers(state.price.price, state.material.selectedMaterialConfig)
+  offers: selectOffers(state)
 })
 
 const mapDispatchToProps = {

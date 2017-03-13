@@ -85,7 +85,16 @@ export const selectCurrentMaterial = (state) => {
   return currentMaterial
 }
 
-export const selectOffers = (price, materialConfigId) => {
+export const selectOffers = (state) => {
+  const {
+    price: {
+      price
+    },
+    material: {
+      selectedMaterialConfig
+    }
+  } = state
+
   if (!price) {
     return []
   }
@@ -95,10 +104,10 @@ export const selectOffers = (price, materialConfigId) => {
 
   const offers = vendors.reduce((acc, vendor) => ([
     ...acc,
-    vendor.shipping.map(shipping => ({
+    ...vendor.shipping.map(shipping => ({
       name: vendor.name,
       items: vendor.items.filter((_, index) =>
-        price.items[index].materialId === materialConfigId
+        price.items[index].materialId === selectedMaterialConfig
       ),
       shipping,
       vatPercentage: vendor.vatPercentage,
