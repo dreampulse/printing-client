@@ -14,9 +14,9 @@
     }
 
     &--s-l {
-      @include span(12);
-
       .form-row__column {
+        @include span(12);
+
         &:first-child {
           @include respond-to(medium) {
             @include span(3);
@@ -32,9 +32,9 @@
     }
 
     &--l-s {
-      @include span(12);
-
       .form-row__column {
+        @include span(12);
+
         &:first-child {
           @include respond-to(medium) {
             @include span(9);

@@ -73,3 +73,12 @@ storiesOf('Select Field', module)
       />
     </HandleValue>
   ))
+  .add('disabled', () => (
+    <HandleValue>
+      <SelectField
+        placeholder="Placeholder"
+        menu={menu}
+        disabled
+      />
+    </HandleValue>
+  ))

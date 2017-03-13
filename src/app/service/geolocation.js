@@ -20,8 +20,7 @@ export const getLocation = async () => {
   return {
     city,
     zipCode: zip,
-    stateCode: region,
+    stateCode: countryCode === 'US' ? region : '',
     countryCode
   }
 }
-
