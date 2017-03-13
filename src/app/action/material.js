@@ -9,7 +9,7 @@ import TYPE from '../type'
 
 // Sync actions
 export const selectMaterial = createAction(TYPE.MATERIAL.SELECTED)
-export const selectMaterialConfigForFinishGroup = (materialConfigId, finishGroupId) => (
+export const selectMaterialConfigForFinishGroup = ({materialConfigId, finishGroupId}) => (
   createAction(TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED)({
     [finishGroupId]: materialConfigId
   })

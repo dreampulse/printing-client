@@ -110,15 +110,15 @@ const MaterialSection = ({
         </Paragraph>
       </Info>
     )
-    const colorValues = finishGroup.materialConfigs.map(({id, color, colorCode}) => ({
+    const colorValues = finishGroup.materialConfigs.map(({id, color, colorCode, colorImage}) => ({
       value: id,
       colorValue: colorCode,
-      label: color
-      /* TODO: colorImage */
+      label: color,
+      colorImage: colorImage ? getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']) : undefined
     }))
-    const selectedColorValue = colorValues.filter(({value}) => (
+    const selectedColorValue = colorValues.find(({value}) => (
       value === selectedMaterialConfigs[finishGroup.id]
-    ))[0]
+    ))
 
     const colorMenu = colorValues.length > 1 ? (<SelectMenu values={colorValues} />) : undefined
     const materialPrice = <Price value="$19.99" meta="incl. tax & shipping" />
@@ -127,7 +127,10 @@ const MaterialSection = ({
         modifiers={['compact']}
         menu={colorMenu}
         value={selectedColorValue}
-        onChange={({value}) => onSelectMaterialConfigForFinishGroup(value, finishGroup.id)}
+        onChange={({value}) => onSelectMaterialConfigForFinishGroup({
+          materialConfigId: value,
+          finishGroupId: finishGroup.id
+        })}
       />
     )
 
