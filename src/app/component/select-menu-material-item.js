@@ -47,7 +47,7 @@ SelectMenuMaterialItem.propTypes = {
   ...propTypes.component,
   value: PropTypes.shape({
     type: PropTypes.oneOf(['material']),
-    value: PropTypes.string.isRequired,
+    value: PropTypes.any.isRequired,
     label: PropTypes.string, // When not provided value will be shown
     hasColor: PropTypes.bool,
     price: PropTypes.string

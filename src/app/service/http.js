@@ -21,12 +21,17 @@ export function checkStatus (response) {
   throw error
 }
 
-export async function request (url, additionalOptions = {}) {
+export async function requestJson (url, additionalOptions = {}) {
   const options = {
     ...additionalOptions
   }
   options.headers = {'Content-Type': 'application/json'}
   if (options.body) options.body = JSON.stringify(options.body)
+  const response = await fetch(url, options)
+  return checkStatus(response)
+}
+
+export async function request (url, options) {
   const response = await fetch(url, options)
   return checkStatus(response)
 }

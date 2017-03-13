@@ -45,7 +45,7 @@ const SelectMenuItem = ({
 SelectMenuItem.propTypes = {
   ...propTypes.component,
   value: PropTypes.shape({
-    value: PropTypes.string.isRequired,
+    value: PropTypes.any.isRequired,
     label: PropTypes.string, // When not provided value will be shown
     colorValue: propTypes.string, // Optional color square
     colorImage: PropTypes.string // Optional color image URL

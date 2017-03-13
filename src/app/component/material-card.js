@@ -55,11 +55,13 @@ const MaterialCard = ({
     </footer>
   )
 
+  const imageStyle = {
+    backgroundImage: `url(${image})`
+  }
+
   return (
     <article className={buildClassName('material-card', modifiers, classNames)}>
-      <figure className="material-card__figure">
-        <img src={image} className="material-card__image" alt="" />
-      </figure>
+      <div className="material-card__image" style={imageStyle} />
       <div className="material-card__content">
         <header className="material-card__header">
           <Headline label={title} tag="h3" classNames={['u-margin-bottom-s']} />

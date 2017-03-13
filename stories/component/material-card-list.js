@@ -21,8 +21,7 @@ const colorValues = [
 ]
 
 const colorMenu = <SelectMenu values={colorValues} />
-
-const price = (<Price value="$19.99" meta="incl. tax & shipping" />)
+const price = <Price value="$19.99" meta="incl. tax & shipping" />
 const colorSelect = (
   <HandleValue>
     <SelectField modifiers={['compact']} placeholder="Placeholder" menu={colorMenu} />
