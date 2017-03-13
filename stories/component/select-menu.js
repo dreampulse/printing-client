@@ -1,13 +1,13 @@
 import React from 'react'
 import {storiesOf, action} from '@kadira/storybook'
 
+import SelectMenu from 'Component/select-menu'
+
 import {
   selectMenuValues,
   selectMenuColorValues,
   selectMenuMaterialValues
 } from '../util/data'
-
-import SelectMenu from 'Component/select-menu'
 
 storiesOf('Select Menu', module)
   .add('default', () => (

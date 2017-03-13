@@ -2,12 +2,14 @@ import pollApi from 'Lib/poll-api'
 import config from '../../../../config'
 
 describe('poll api lib', () => {
+  let sandbox
+
   beforeEach(() => {
-    sinon.stub(config)
+    sandbox = sinon.sandbox.create()
   })
 
   afterEach(() => {
-    sinon.restore(config)
+    sandbox.restore()
   })
 
   it('resolves if the inner promise resolves', (done) => {
@@ -21,8 +23,8 @@ describe('poll api lib', () => {
   })
 
   it('retries if api returns false', () => {
-    config.pollingRetries = 10
-    config.pollingInverval = 1
+    sandbox.stub(config, 'pollingRetries', 10)
+    sandbox.stub(config, 'pollingInverval', 1)
 
     const api = sinon.stub().resolves(false)
 

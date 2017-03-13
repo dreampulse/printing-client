@@ -3,6 +3,11 @@ import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
 import {buildClassArray} from 'Lib/build-class-name'
+import {
+  selectMaterialMenuValues,
+  selectCurrentMaterial
+} from 'Lib/selector'
+import getCloudinaryUrl from 'Lib/cloudinary'
 
 import Section from 'Component/section'
 import Grid from 'Component/grid'
@@ -11,18 +16,33 @@ import Headline from 'Component/headline'
 import ProviderProgressBar from 'Component/provider-progress-bar'
 import SelectMenu from 'Component/select-menu'
 import SelectField from 'Component/select-field'
+import MaterialCardList from 'Component/material-card-list'
+import MaterialCard from 'Component/material-card'
+import Price from 'Component/price'
+import Paragraph from 'Component/paragraph'
+import Info from 'Component/info'
 
-import {selectMaterial} from 'Action/material'
+import {
+  selectMaterial,
+  selectMaterialConfig,
+  selectMaterialConfigForFinishGroup
+} from 'Action/material'
 
 const MaterialSection = ({
-  materials,
-  onSelectedMaterial,
+  areAllUploadsFinished,
+  // price,
+  materialMenuValues,
   selectedMaterial,
-  price
+  selectedMaterialConfigs,
+  selectedMaterialConfig,
+  onSelectMaterial,
+  onSelectMaterialConfig,
+  onSelectMaterialConfigForFinishGroup
 }) => {
   // TODO: put all the business logic in this container into its own lib
 
   // The price for each material
+  /*
   const pricesForMaterials = price && price.items.reduce((acc, item, index) => ({
     ...acc,
     [item.materialId]: Object.keys(price.printingService)
@@ -66,58 +86,114 @@ const MaterialSection = ({
         .join(', ')
     }
     return ''
-  }
+  } */
 
   const headlineModifiers = buildClassArray({
     xl: true,
-    disabled: !materials
+    disabled: !areAllUploadsFinished
   })
 
-  const materialMenuValues = getMaterialConfigs().map(material => ({
-    type: 'material',
-    value: material.id,
-    label: material.name,
-    hasColor: Boolean(material.color),
-    price: prices(material)
-  }))
   const materialMenu = (
     <SelectMenu modifiers={['l']} values={materialMenuValues} />
   )
+
   const selectedValue = selectedMaterial
-    ? {value: selectedMaterial, label: 'TODO'}
+    ? {value: selectedMaterial.id, label: selectedMaterial.name}
     : undefined
 
+  function renderMaterialCard (finishGroup) {
+    const info = (
+      <Info>
+        <Headline modifiers={['s']} label="TODO Headline" />
+        <Paragraph>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit
+        </Paragraph>
+      </Info>
+    )
+    const colorValues = finishGroup.materialConfigs.map(({id, color, colorCode, colorImage}) => ({
+      value: id,
+      colorValue: colorCode,
+      label: color,
+      colorImage: colorImage ? getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']) : undefined
+    }))
+    const selectedColorValue = colorValues.find(({value}) => (
+      value === selectedMaterialConfigs[finishGroup.id]
+    ))
+
+    const colorMenu = colorValues.length > 1 ? (<SelectMenu values={colorValues} />) : undefined
+    const materialPrice = <Price value="$19.99" meta="incl. tax & shipping" />
+    const colorSelect = (
+      <SelectField
+        modifiers={['compact']}
+        menu={colorMenu}
+        value={selectedColorValue}
+        onChange={({value}) => onSelectMaterialConfigForFinishGroup({
+          materialConfigId: value,
+          finishGroupId: finishGroup.id
+        })}
+      />
+    )
+
+    // TODO: different card states are not implemented yet
+    // TODO: onMoreClick handling
+    return (
+      <MaterialCard
+        key={finishGroup.name}
+        title={finishGroup.materialName}
+        shipping="TODO 2-5 days, no express"
+        subline={finishGroup.name}
+        description={finishGroup.summary}
+        price={materialPrice}
+        info={info}
+        image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
+        colorSelect={colorSelect}
+        selected={selectedColorValue.value === selectedMaterialConfig}
+        onSelectClick={() => onSelectMaterialConfig(selectedColorValue.value)}
+      />
+    )
+  }
+
   return (
-    <Section>
+    <Section id="section-material">
       <Headline label="2. Choose a material" modifiers={headlineModifiers} />
-      {Boolean(materials) && (
+      {areAllUploadsFinished && (
         <Grid>
-          <Column md={8}>
+          <Column lg={8} classNames={['u-margin-bottom']}>
             <SelectField
               placeholder="Placeholder"
               menu={materialMenu}
               value={selectedValue}
-              onChange={({value}) => onSelectedMaterial(value)}
+              onChange={({value}) => onSelectMaterial(value)}
             />
           </Column>
-          <Column md={4} classNames={['u-margin-bottom']}>
+          <Column lg={4} classNames={['u-margin-bottom-xl']}>
             {/* TODO: implement progress bar steps */}
             <ProviderProgressBar currentStep={1} totalSteps={3} />
           </Column>
         </Grid>
+      )}
+      {areAllUploadsFinished && selectedMaterial && selectedMaterial.finishGroups.length > 0 && (
+        <MaterialCardList>
+          {selectedMaterial.finishGroups.map(renderMaterialCard)}
+        </MaterialCardList>
       )}
     </Section>
   )
 }
 
 const mapStateToProps = state => ({
-  materials: state.material.materials,
-  selectedMaterial: state.material.selectedMaterial,
-  price: state.price.price
+  areAllUploadsFinished: state.model.areAllUploadsFinished,
+  price: state.price.price,
+  materialMenuValues: selectMaterialMenuValues(state),
+  selectedMaterial: selectCurrentMaterial(state),
+  selectedMaterialConfigs: state.material.selectedMaterialConfigs,
+  selectedMaterialConfig: state.material.selectedMaterialConfig
 })
 
 const mapDispatchToProps = {
-  onSelectedMaterial: selectMaterial
+  onSelectMaterial: selectMaterial,
+  onSelectMaterialConfig: selectMaterialConfig,
+  onSelectMaterialConfigForFinishGroup: selectMaterialConfigForFinishGroup
 }
 
 export default compose(

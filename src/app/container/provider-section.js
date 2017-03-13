@@ -16,13 +16,13 @@ import ProviderItem from 'Component/provider-item'
 import {selectOffer} from 'Action/cart'
 
 const ProviderSection = ({
-  selectedMaterial,
+  selectedMaterialConfig,
   offers,
   onSelectOffer
 }) => {
   const headlineModifiers = buildClassArray({
     xl: true,
-    disabled: !selectedMaterial
+    disabled: !selectedMaterialConfig
   })
 
   const providerInfo = (
@@ -50,9 +50,9 @@ const ProviderSection = ({
   ))
 
   return (
-    <Section>
+    <Section id="section-provider">
       <Headline label="3. Choose a provider and shipping option" modifiers={headlineModifiers} />
-      {Boolean(selectedMaterial) && (
+      {Boolean(selectedMaterialConfig) && (
         <ProviderList providerInfo={providerInfo}>
           {providers}
         </ProviderList>
@@ -62,7 +62,7 @@ const ProviderSection = ({
 }
 
 // TODO: put this into a lib
-function getOffers (price, selectedMaterial) {
+function getOffers (price, materialConfigId) {
   if (!price) {
     return []
   }
@@ -74,7 +74,7 @@ function getOffers (price, selectedMaterial) {
     vendor.shipping.map(shipping => ({
       name: vendor.name,
       items: vendor.items.filter((_, index) =>
-        price.items[index].materialId === selectedMaterial
+        price.items[index].materialId === materialConfigId
       ),
       shipping,
       vatPercentage: vendor.vatPercentage,
@@ -86,8 +86,8 @@ function getOffers (price, selectedMaterial) {
 }
 
 const mapStateToProps = state => ({
-  selectedMaterial: state.material.selectedMaterial,
-  offers: getOffers(state.price.price, state.material.selectedMaterial)
+  selectedMaterialConfig: state.material.selectedMaterialConfig,
+  offers: getOffers(state.price.price, state.material.selectedMaterialConfig)
 })
 
 const mapDispatchToProps = {

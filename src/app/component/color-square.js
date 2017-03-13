@@ -3,9 +3,9 @@ import React, {PropTypes} from 'react'
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
-const ColorSquare = ({classNames, modifiers, color = 'ffffff', image}) => {
+const ColorSquare = ({classNames, modifiers, color = '#ffffff', image}) => {
   const style = {
-    backgroundColor: `#${color}`
+    backgroundColor: color
   }
 
   if (image) {

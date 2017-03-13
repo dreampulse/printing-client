@@ -27,7 +27,7 @@ const UploadSection = ({
   }
 
   return (
-    <Section>
+    <Section id="section-upload">
       <Grid>
         <Column md={8}>
           <Headline label="1. Upload files" modifiers={['xl']} />
