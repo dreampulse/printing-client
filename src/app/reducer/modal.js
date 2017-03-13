@@ -4,7 +4,7 @@ import TYPE from '../type'
 
 const initialState = {
   isOpen: false,
-  contentFactory: null,
+  contentType: null,
   contentProps: {}
 }
 
@@ -15,7 +15,7 @@ function handleClose () {
 function handleOpen (state, action) {
   return {
     isOpen: true,
-    contentFactory: action.payload.contentFactory,
+    contentType: action.payload.contentType,
     contentProps: action.payload.contentProps || {}
   }
 }

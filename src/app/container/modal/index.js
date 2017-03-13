@@ -1,22 +1,34 @@
-import React, {createElement} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import Portal from 'react-portal'
 
-import {close} from '../../action/modal'
+import {close} from 'Action/modal'
 
-const Modal = ({isOpen, onModalClose, contentFactory, contentProps}) => (
+import {MODAL_TYPE} from '../../type'
+import ShippingAddressModal from './shipping-address'
+
+const getContent = (contentType, contentProps) => {
+  switch (contentType) {
+    case MODAL_TYPE.SHIPPING_ADDRESS:
+      return <ShippingAddressModal {...contentProps} />
+    default:
+      return <div />
+  }
+}
+
+const Modal = ({isOpen, onModalClose, contentType, contentProps}) => (
   <Portal
-    closeOnEsc
+    closeOnEsc={Boolean(onModalClose)}
     isOpened={isOpen}
     onClose={onModalClose}
   >
-    {createElement(contentFactory || 'div', contentProps)}
+    {getContent(contentType, contentProps)}
   </Portal>
 )
 
 const mapStateToProps = state => ({
   isOpen: state.modal.isOpen,
-  contentFactory: state.modal.contentFactory,
+  contentType: state.modal.contentType,
   contentProps: state.modal.contentProps,
   contentModifiers: state.modal.contentModifiers
 })

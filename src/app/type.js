@@ -40,3 +40,7 @@ export default {
     ORDERED: 'ORDER.ORDERED'
   }
 }
+
+export const MODAL_TYPE = {
+  SHIPPING_ADDRESS: 'MODAL.SHIPPING_ADDRESS'
+}

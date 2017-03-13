@@ -5,16 +5,9 @@ import * as printingEngine from 'Lib/printing-engine'
 import TYPE from '../type'
 import {goToCart} from './navigation'
 import {createShoppingCart} from './cart'
-import {open} from './modal'
 
 export const detectAddress = () =>
   createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(getLocation())
-
-export const openAddressModal = () => (dispatch) => {
-  // eslint-disable-next-line
-  const ShippingAddressModal = require('Container/modal/shipping-address').default
-  dispatch(open({contentFactory: ShippingAddressModal}))
-}
 
 export const createUser = () => (dispatch, getState) => {
   const user = getState().user.user
