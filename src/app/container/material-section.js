@@ -127,7 +127,10 @@ const MaterialSection = ({
         modifiers={['compact']}
         menu={colorMenu}
         value={selectedColorValue}
-        onChange={({value}) => onSelectMaterialConfigForFinishGroup(value, finishGroup.id)}
+        onChange={({value}) => onSelectMaterialConfigForFinishGroup({
+          materialConfigId: value,
+          finishGroupId: finishGroup.id
+        })}
       />
     )
 
