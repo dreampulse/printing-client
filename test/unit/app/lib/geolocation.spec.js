@@ -44,12 +44,12 @@ describe('geolocation lib', () => {
       })
   })
 
-  it('handels missing keys in response', async () => {
+  it('handels a missing keys in response', async () => {
     const geolocationResponse = {
-      city: null,
-      zip: null,
-      region: null,
-      countryCode: null
+      city: 'something',
+      zip: 'something',
+      region: 'something',
+      countryCode: null  // A key is missing
     }
     http.request.resolves(geolocationResponse)
 

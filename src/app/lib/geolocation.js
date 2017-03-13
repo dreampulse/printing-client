@@ -12,6 +12,7 @@ export default async () => {
     countryCode
   } = await timeout(request(URL), config.fetchTimout)
 
+  /* istanbul ignore next */
   if (!city || !zip || !region || !countryCode) {
     throw new Error('Location detection failed')
   }
