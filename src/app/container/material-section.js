@@ -116,9 +116,9 @@ const MaterialSection = ({
       label: color,
       colorImage: colorImage ? getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']) : undefined
     }))
-    const selectedColorValue = colorValues.filter(({value}) => (
+    const selectedColorValue = colorValues.find(({value}) => (
       value === selectedMaterialConfigs[finishGroup.id]
-    ))[0]
+    ))
 
     const colorMenu = colorValues.length > 1 ? (<SelectMenu values={colorValues} />) : undefined
     const materialPrice = <Price value="$19.99" meta="incl. tax & shipping" />
