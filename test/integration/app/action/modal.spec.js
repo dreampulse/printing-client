@@ -1,5 +1,11 @@
-import {open, close} from '../../../../src/app/action/modal'
+import {
+  open,
+  close,
+  openAddressModal
+} from '../../../../src/app/action/modal'
 import Store from '../../../../src/app/store'
+
+import {MODAL_TYPE} from '../../../../src/app/type'
 
 describe('Modal Integration Test', () => {
   let store
@@ -12,26 +18,26 @@ describe('Modal Integration Test', () => {
     it('works with all parameters set', async () => {
       store.dispatch(
         open({
-          contentFactory: 'some-contentFactory',
-          contentProps: 'some-contentProps'
+          contentType: 'some-content-type',
+          contentProps: 'some-content-props'
         })
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
-        contentFactory: 'some-contentFactory',
-        contentProps: 'some-contentProps'
+        contentType: 'some-content-type',
+        contentProps: 'some-content-props'
       })
     })
 
     it('works with default parameters', async () => {
       store.dispatch(
         open({
-          contentFactory: 'some-contentFactory'
+          contentType: 'some-content-type'
         })
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
-        contentFactory: 'some-contentFactory',
+        contentType: 'some-content-type',
         contentProps: {}
       })
     })
@@ -42,7 +48,18 @@ describe('Modal Integration Test', () => {
       store.dispatch(close())
       expect(store.getState().modal, 'to equal', {
         isOpen: false,
-        contentFactory: null,
+        contentType: null,
+        contentProps: {}
+      })
+    })
+  })
+
+  describe('opens individual modal', () => {
+    it('opens address modal', () => {
+      store.dispatch(openAddressModal())
+      expect(store.getState().modal, 'to equal', {
+        isOpen: true,
+        contentType: MODAL_TYPE.SHIPPING_ADDRESS,
         contentProps: {}
       })
     })
