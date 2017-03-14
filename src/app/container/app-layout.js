@@ -11,6 +11,8 @@ import ProcessStep from 'Component/process-step'
 import Footer from 'Component/footer'
 import Link from 'Component/link'
 
+import Modal from './modal'
+
 const AppLayout = ({
   children,
   configurationHeader,
@@ -45,6 +47,7 @@ const AppLayout = ({
       ]}
       footer={footer}
     >
+      <Modal />
       <Container>
         {children}
       </Container>

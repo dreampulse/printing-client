@@ -14,7 +14,6 @@ export default ({store}) => {
   return (
     <Router history={history}>
       <Redirect from="/" to="/model" />
-
       <Route component={ModelPage} path="/model" />
       <Route component={AddressPage} path="/address" />
       <Route component={CartPage} path="/cart" />
