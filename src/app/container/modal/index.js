@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {createElement} from 'react'
 import {connect} from 'react-redux'
 import Portal from 'react-portal'
 
@@ -7,13 +7,15 @@ import {close} from 'Action/modal'
 import {MODAL_TYPE} from '../../type'
 import ShippingAddressModal from './shipping-address'
 
+const modals = {
+  [MODAL_TYPE.SHIPPING_ADDRESS]: ShippingAddressModal
+}
+
 const getContent = (contentType, contentProps) => {
-  switch (contentType) {
-    case MODAL_TYPE.SHIPPING_ADDRESS:
-      return <ShippingAddressModal {...contentProps} />
-    default:
-      return <div />
+  if (modals[contentType]) {
+    return createElement(modals[contentType], contentProps)
   }
+  return <div />
 }
 
 const Modal = ({isOpen, onModalClose, contentType, contentProps}) => (
