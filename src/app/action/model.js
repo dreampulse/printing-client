@@ -7,6 +7,12 @@ import {createPriceRequest} from './price'
 
 import TYPE from '../type'
 
+export const changeQuantity = ({quantity}) =>
+  createAction(TYPE.MODEL.QUANTITIY_CHANGED)({quantity})
+
+export const changeIndividualQuantity = ({quantity, modelId}) =>
+  createAction(TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED)({quantity, modelId})
+
 export const checkUploadStatus = ({modelId}) => async (dispatch) => {
   dispatch(createAction(TYPE.MODEL.CHECK_STATUS_STARTED)({modelId}))
 

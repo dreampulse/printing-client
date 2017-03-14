@@ -1,7 +1,9 @@
 import {
   uploadFile,
   uploadFiles,
-  checkUploadStatus
+  checkUploadStatus,
+  changeQuantity,
+  changeIndividualQuantity
 } from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
@@ -56,7 +58,8 @@ describe('Model Integration Test', () => {
       expect(store.getState().model.models['some-mode-id'], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
-        modelId: 'some-mode-id'
+        modelId: 'some-mode-id',
+        quantity: 1
       })
     })
 
@@ -172,6 +175,45 @@ describe('Model Integration Test', () => {
         size: 42,
         modelId: 'some-model-id',
         checkStatusFinished: true
+      })
+    })
+  })
+
+  describe('handleQuantityChanged()', () => {
+    it('works for the default case', () => {
+      store = Store({
+        model: {
+          models: {
+            'some-model-id': {
+              modelId: 'some-model-id'
+            }
+          }
+        }
+      })
+
+      store.dispatch(changeQuantity({quantity: 42}))
+      expect(store.getState().model.quantity, 'to equal', 42)
+      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+        quantity: 42
+      })
+    })
+  })
+
+  describe('handleIndividualQuantityChanged()', () => {
+    it('works for the default case', () => {
+      store = Store({
+        model: {
+          models: {
+            'some-model-id': {
+              modelId: 'some-model-id'
+            }
+          }
+        }
+      })
+
+      store.dispatch(changeQuantity({quantity: 42, modelId: 'some-model-id'}))
+      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+        quantity: 42
       })
     })
   })

@@ -8,7 +8,37 @@ const initialState = {
   numberOfUploads: 0,
   selectedUnit: 'mm',
   uploadingModels: [],
-  models: {}
+  models: {},
+  quantity: 1
+}
+
+function handleIndividualQuantityChanged (state, {payload: {quantity, modelId}}) {
+  return {
+    ...state,
+    models: {
+      ...state.models,
+      [modelId]: {
+        ...state.model[modelId],
+        quantity
+      }
+    }
+  }
+}
+
+function handleQuantityChanged (state, {payload: {quantity}}) {
+  const modelsArray = Object.keys(state.models).map(modelId => ({
+    ...state.models[modelId],
+    quantity
+  }))
+
+  const models = modelsArray.reduce((acc, next) =>
+    ({...acc, [next.modelId]: next}), {})
+
+  return {
+    ...state,
+    quantity,
+    models
+  }
 }
 
 function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
@@ -69,7 +99,8 @@ function handleUploadToBackedFinished (state, {payload: {fileId, modelId, error}
       ...state.models,
       [modelId]: {
         ...uploadingModel,
-        modelId
+        modelId,
+        quantity: 1
       }
     }
   }
@@ -107,5 +138,7 @@ export default handleActions({
   [TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED]: handleUploadToBackedProgressed,
   [TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED]: handleUploadToBackedFinished,
   [TYPE.MODEL.CHECK_STATUS_STARTED]: handleCheckStatusStarted,
-  [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished
+  [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished,
+  [TYPE.MODEL.QUANTITIY_CHANGED]: handleQuantityChanged,
+  [TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED]: handleIndividualQuantityChanged
 }, initialState)
