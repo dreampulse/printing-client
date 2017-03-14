@@ -1138,6 +1138,12 @@
                   "colorCode": "#785730"
                 }
               ]
+            },
+            {
+              "name": "Solid, raw, PU coated",
+              "summary": "Solid bronze, polished shiny surface, PU coated to slow down oxidation",
+              "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
+              "materialConfigs": []
             }
           ]
         },
