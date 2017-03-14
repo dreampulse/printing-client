@@ -2,8 +2,7 @@ import {createAction} from 'redux-actions'
 
 import * as printingEngine from 'Lib/printing-engine'
 import {
-  generateMaterialIds,
-  getDefaultMaterialConfigs
+  generateMaterialIds
 } from 'Lib/material'
 import TYPE from '../type'
 
@@ -22,7 +21,4 @@ export const getMaterials = () => async (dispatch) => {
   generateMaterialIds(materials)
 
   dispatch(createAction(TYPE.MATERIAL.RECEIVED)(materials))
-
-  const selectedDefaultConfigs = getDefaultMaterialConfigs(materials)
-  dispatch(createAction(TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED)(selectedDefaultConfigs))
 }

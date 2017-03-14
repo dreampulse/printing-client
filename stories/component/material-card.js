@@ -61,7 +61,6 @@ storiesOf('Material Card', module)
   ))
   .add('loading', () => (
     <MaterialCard
-      selected
       loading
       shipping="2-5 days"
       title="Polyamide"
@@ -73,6 +72,20 @@ storiesOf('Material Card', module)
       onMoreClick={action('onMoreClick')}
       colorSelect={colorSelect}
       onSelectClick={action('onSelectClick')}
+    />
+  ))
+  .add('disabled button', () => (
+    <MaterialCard
+      loading
+      shipping="2-5 days"
+      title="Polyamide"
+      subline="Solid, raw"
+      description="Best all-round material"
+      price={price}
+      info={info}
+      image="http://placehold.it/260x170/ff0000"
+      colorSelect={colorSelect}
+      onMoreClick={action('onMoreClick')}
     />
   ))
   .add('single color', () => {

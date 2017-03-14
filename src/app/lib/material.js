@@ -1,3 +1,7 @@
+import {
+  getPriceAmount
+} from 'Lib/get-total-amount'
+
 export function generateMaterialIds (materials) {
   materials.materialStructure.forEach((materialGroup, groupIndex) => {
     materialGroup.id = `group-${groupIndex}`
@@ -18,17 +22,61 @@ export function hasMaterialMultipleConfigs (material) {
   )
 }
 
-export function getDefaultMaterialConfigs (materials) {
-  const defaultConfigs = {}
+export function getOffersForMaterialConfig (materialConfigId, price) {
+  if (!price) {
+    return []
+  }
 
-  materials.materialStructure.forEach((materialGroup) => {
-    materialGroup.materials.forEach((material) => {
-      material.finishGroups.forEach((finishGroup) => {
-        // Always pick the first config as default
-        defaultConfigs[finishGroup.id] = finishGroup.materialConfigs[0].id
-      })
+  const vendors = Object.keys(price.printingService)
+    .map(name => ({name, ...price.printingService[name]}))
+
+  const offers = vendors.reduce((acc, vendor) => ([
+    ...acc,
+    ...vendor.shipping.map(shipping => ({
+      name: vendor.name,
+      items: vendor.items.filter((_, index) =>
+        // TODO: at least the test data mixes up numbers and strings for ids
+        String(price.items[index].materialConfigId) === String(materialConfigId)
+      ),
+      shipping,
+      vatPercentage: vendor.vatPercentage,
+      currency: vendor.currency
+    }))
+  ]), [])
+
+  // Filter for complete offers
+  return offers.filter((offer) => {
+    const isCompletelyPrintable = offer.items.reduce((last, cur) => last && cur.isPrintable, true)
+    return isCompletelyPrintable && offer.items.length > 0
+  })
+}
+
+export function getBestOfferForMaterialConfig (materialConfigId, price) {
+  let bestOffer = null
+  const offers = getOffersForMaterialConfig(materialConfigId, price)
+  offers.forEach((offer) => {
+    const offerPrice = getPriceAmount(offer)
+    if (!bestOffer || bestOffer.price > offerPrice) {
+      bestOffer = {
+        offer,
+        price: offerPrice
+      }
+    }
+  })
+
+  return bestOffer
+}
+
+export function getBestOfferForMaterial (material, price) {
+  let bestOffer = null
+  material.finishGroups.forEach((finishGroup) => {
+    finishGroup.materialConfigs.forEach((materialConfig) => {
+      const offer = getBestOfferForMaterialConfig(materialConfig.id, price)
+      if (offer !== null && (!bestOffer || bestOffer.price > offer.price)) {
+        bestOffer = offer
+      }
     })
   })
 
-  return defaultConfigs
+  return bestOffer
 }

@@ -47,7 +47,7 @@ describe('Model Integration Test', () => {
         numberOfUploads: 0
       })
 
-      expect(store.getState().model.uploadingModels[0], 'to satisfy', {
+      expect(store.getState().model.uploadedModels[0], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
         progress: 1,
@@ -76,7 +76,7 @@ describe('Model Integration Test', () => {
         numberOfUploads: 0
       })
 
-      expect(store.getState().model.uploadingModels[0], 'to satisfy', {
+      expect(store.getState().model.uploadedModels[0], 'to satisfy', {
         error: true
       })
     })

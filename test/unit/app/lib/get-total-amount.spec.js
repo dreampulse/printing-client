@@ -18,12 +18,14 @@ describe('getCartAmount()', () => {
 })
 
 describe('getPriceAmount()', () => {
-  it('works as expected', () => {
+  it('returns expected price', () => {
     const offer = {
       items: [{
-        price: 10
+        price: 10,
+        isPrintable: true
       }, {
-        price: 15
+        price: 15,
+        isPrintable: true
       }],
       shipping: {
         price: 5
