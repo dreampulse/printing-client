@@ -9,8 +9,7 @@ const initialState = {
   numberOfUploads: 0,
   selectedUnit: 'mm',
   uploadingModels: [],
-  models: {},
-  quantity: 1
+  models: {}
 }
 
 function handleIndividualQuantityChanged (state, {payload: {quantity, modelId}}) {
@@ -34,7 +33,6 @@ function handleQuantityChanged (state, {payload: {quantity}}) {
 
   return {
     ...state,
-    quantity,
     models
   }
 }

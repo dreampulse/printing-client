@@ -58,8 +58,7 @@ describe('Model Integration Test', () => {
       expect(store.getState().model.models['some-mode-id'], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
-        modelId: 'some-mode-id',
-        quantity: 1
+        modelId: 'some-mode-id'
       })
     })
 
@@ -192,7 +191,6 @@ describe('Model Integration Test', () => {
       })
 
       store.dispatch(changeQuantity({quantity: 42}))
-      expect(store.getState().model.quantity, 'to equal', 42)
       expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         quantity: 42
       })
