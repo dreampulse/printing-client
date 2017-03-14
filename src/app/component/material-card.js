@@ -25,7 +25,7 @@ const MaterialCard = ({
   image,
   shipping,
   onMoreClick = () => {},
-  onSelectClick = () => {}
+  onSelectClick
 }) => {
   const buttonModifiers = buildClassArray(['block', {selected}])
   const selectedLabel = selected ? 'Selected' : 'Select'
@@ -43,6 +43,7 @@ const MaterialCard = ({
       <div className="material-card__color">{colorSelect}</div>
       <Button
         modifiers={buttonModifiers}
+        disabled={!onSelectClick}
         onClick={onSelectClick}
         label={selectedLabel}
       />

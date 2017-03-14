@@ -141,7 +141,10 @@ const MaterialSection = ({
           printingServiceRequests &&
           printingServiceRequests.complete === printingServiceRequests.total
         }
-        onSelectClick={() => selectedColorValue && onSelectMaterialConfig(selectedColorValue.value)}
+        onSelectClick={
+          selectedColorValue &&
+          (() => onSelectMaterialConfig(selectedColorValue.value))
+        }
       />
     )
   }
