@@ -211,7 +211,7 @@ describe('Model Integration Test', () => {
         }
       })
 
-      store.dispatch(changeQuantity({quantity: 42, modelId: 'some-model-id'}))
+      store.dispatch(changeIndividualQuantity({quantity: 42, modelId: 'some-model-id'}))
       expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         quantity: 42
       })
