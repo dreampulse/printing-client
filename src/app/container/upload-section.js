@@ -94,7 +94,7 @@ const UploadSection = ({
 }
 
 const mapStateToProps = state => ({
-  uploadedModels: state.model.uploadingModels
+  uploadedModels: state.model.uploadedModels
 })
 
 const mapDispatchToProps = {
