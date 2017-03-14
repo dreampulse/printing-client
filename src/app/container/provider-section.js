@@ -5,6 +5,7 @@ import {compose} from 'recompose'
 import {buildClassArray} from 'Lib/build-class-name'
 import {getPriceAmount} from 'Lib/get-total-amount'
 import {selectOffers} from 'Lib/selector'
+import {formatPrice} from 'Lib/formatter'
 
 import Section from 'Component/section'
 import Headline from 'Component/headline'
@@ -38,7 +39,7 @@ const ProviderSection = ({
     <ProviderItem
       key={index}
       provider={offer.name}
-      price={`${getPriceAmount(offer)} ${offer.currency}`}
+      price={formatPrice(getPriceAmount(offer), offer.currency)}
       shipping={`${offer.shipping.name} (${offer.shipping.deliveryTime} Days)`}
       onCheckoutClick={() =>
         onSelectOffer({

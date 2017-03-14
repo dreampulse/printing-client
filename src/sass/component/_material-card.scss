@@ -72,7 +72,7 @@
     max-width: 100%;
     display: inline-block;
     position: relative;
-    padding: 0 $font-size-base + $space-s;
+    padding: 0 $font-size-base + $space-base 0 $font-size-base + $space-s;
     line-height: $line-height-base;
     height: $shipping-height;
     margin-bottom: $space-base;

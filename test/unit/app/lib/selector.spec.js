@@ -1,7 +1,8 @@
 import {
   selectMaterialMenuValues,
   selectCurrentMaterial,
-  selectOffers
+  selectOffers,
+  selectPrintingServiceRequests
 } from 'Lib/selector'
 
 describe('selectOffers()', () => {
@@ -11,10 +12,10 @@ describe('selectOffers()', () => {
   beforeEach(() => {
     price = {
       items: [{
-        materialId: 'some-config-id',
+        materialConfigId: 'some-config-id',
         modelId: 'some-model-id'
       }, {
-        materialId: 'some-other-config-id',
+        materialConfigId: 'some-other-config-id',
         modelId: 'some-other-model-id'
       }],
       printingService: {
@@ -22,13 +23,21 @@ describe('selectOffers()', () => {
           currency: 'USD',
           shipping: [{some: 'shipping-1'}, {some: 'shipping-2'}],
           vatPercentage: 0.19,
-          items: [{}, {}]
+          items: [{
+            isPrintable: true
+          }, {
+            isPrintable: true
+          }]
         },
         shapeways: {
           currency: 'USD',
           shipping: [{some: 'shipping-1'}],
           vatPercentage: 0.19,
-          items: [{}, {}]
+          items: [{
+            isPrintable: true
+          }, {
+            isPrintable: true
+          }]
         }
       }
     }
@@ -46,19 +55,19 @@ describe('selectOffers()', () => {
   it('returns expected offers', () => {
     expect(selectOffers(state), 'to equal', [{
       name: 'imaterialize',
-      items: [{}],
+      items: [{isPrintable: true}],
       shipping: {some: 'shipping-1'},
       vatPercentage: 0.19,
       currency: 'USD'
     }, {
       name: 'imaterialize',
-      items: [{}],
+      items: [{isPrintable: true}],
       shipping: {some: 'shipping-2'},
       vatPercentage: 0.19,
       currency: 'USD'
     }, {
       name: 'shapeways',
-      items: [{}],
+      items: [{isPrintable: true}],
       shipping: {some: 'shipping-1'},
       vatPercentage: 0.19,
       currency: 'USD'
@@ -70,3 +79,40 @@ describe('selectOffers()', () => {
     expect(selectOffers(state), 'to equal', [])
   })
 })
+
+describe('selectPrintingServiceRequests()', () => {
+  let price
+  let state
+
+  beforeEach(() => {
+    price = {
+      printingService: {
+        imaterialize: {
+          requestComplete: false
+        },
+        shapeways: {
+          requestComplete: true
+        }
+      }
+    }
+
+    state = {
+      price: {
+        price
+      }
+    }
+  })
+
+  it('returns expected counts', () => {
+    expect(selectPrintingServiceRequests(state), 'to equal', {
+      complete: 1,
+      total: 2
+    })
+  })
+
+  it('returns null if price object is missing', () => {
+    state.price.price = null
+    expect(selectPrintingServiceRequests(state), 'to equal', null)
+  })
+})
+

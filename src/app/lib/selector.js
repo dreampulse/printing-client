@@ -1,6 +1,11 @@
 import {
-  hasMaterialMultipleConfigs
+  hasMaterialMultipleConfigs,
+  getOffersForMaterialConfig,
+  getBestOfferForMaterial
 } from 'Lib/material'
+import {
+  formatPrice
+} from 'Lib/formatter'
 
 export const selectCartItems = state =>
   state.cart.cart.items.map(cartItem => ({
@@ -37,6 +42,9 @@ export const selectCart = (state) => {
 
 export const selectMaterialMenuValues = (state) => {
   const {
+    price: {
+      price
+    },
     material: {
       materials
     }
@@ -49,13 +57,16 @@ export const selectMaterialMenuValues = (state) => {
   return materials.materialStructure.map(materialGroup => ({
     type: 'group',
     label: materialGroup.name,
-    children: materialGroup.materials.map(material => ({
-      type: 'material',
-      value: material.id,
-      label: material.name,
-      hasColor: hasMaterialMultipleConfigs(material),
-      price: 'TODO'
-    }))
+    children: materialGroup.materials.map((material) => {
+      const offer = getBestOfferForMaterial(material, price)
+      return {
+        type: 'material',
+        value: material.id,
+        label: material.name,
+        hasColor: hasMaterialMultipleConfigs(material),
+        price: offer ? `From ${formatPrice(offer.price, offer.offer.currency)}` : undefined
+      }
+    })
   }))
 }
 
@@ -95,25 +106,26 @@ export const selectOffers = (state) => {
     }
   } = state
 
+  return getOffersForMaterialConfig(selectedMaterialConfig, price)
+}
+
+export const selectPrintingServiceRequests = (state) => {
+  const {
+    price: {
+      price
+    }
+  } = state
+
   if (!price) {
-    return []
+    return null
   }
 
-  const vendors = Object.keys(price.printingService)
-    .map(name => ({name, ...price.printingService[name]}))
-
-  const offers = vendors.reduce((acc, vendor) => ([
-    ...acc,
-    ...vendor.shipping.map(shipping => ({
-      name: vendor.name,
-      items: vendor.items.filter((_, index) =>
-        price.items[index].materialId === selectedMaterialConfig
-      ),
-      shipping,
-      vatPercentage: vendor.vatPercentage,
-      currency: vendor.currency
-    }))
-  ]), [])
-
-  return offers
+  return Object.keys(price.printingService)
+    .reduce((acc, name) => ({
+      complete: acc.complete + (price.printingService[name].requestComplete ? 1 : 0),
+      total: acc.total + 1
+    }), {
+      complete: 0,
+      total: 0
+    })
 }

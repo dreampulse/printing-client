@@ -23,6 +23,7 @@
   &__value {
     font-size: $font-size-l;
     font-weight: $font-weight-bold;
+    white-space: nowrap;
   }
 
   &__meta {
