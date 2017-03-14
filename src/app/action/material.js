@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions'
 
 import * as printingEngine from 'Lib/printing-engine'
 import {
-  generateMaterialIds,
+  generateMaterialIds
 } from 'Lib/material'
 import TYPE from '../type'
 

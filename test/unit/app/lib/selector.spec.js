@@ -102,6 +102,33 @@ describe('selectMaterialMenuValues()', () => {
       }]
     }])
   })
+
+  it('returns empty array if there are no materials in state', () => {
+    const state = {
+      price: {
+        price
+      },
+      material: {
+        materials: undefined
+      }
+    }
+
+    expect(selectMaterialMenuValues(state), 'to equal', [])
+  })
+
+  it('returns empty array if materialStructure is undefined', () => {
+    materials.materialStructure = undefined
+    const state = {
+      price: {
+        price
+      },
+      material: {
+        materials
+      }
+    }
+
+    expect(selectMaterialMenuValues(state), 'to equal', [])
+  })
 })
 
 describe('selectCurrentMaterial()', () => {
