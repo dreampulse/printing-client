@@ -79,10 +79,10 @@ export const selectCurrentMaterial = (state) => {
   } = state
 
   if (!materials || !materials.materialStructure) {
-    return []
+    return null
   }
 
-  // Search for material by name
+  // Search for material by id
   let currentMaterial = null
 
   materials.materialStructure.forEach((materialGroup) => {

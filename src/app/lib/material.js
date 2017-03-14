@@ -22,21 +22,6 @@ export function hasMaterialMultipleConfigs (material) {
   )
 }
 
-export function getDefaultMaterialConfigs (materials) {
-  const defaultConfigs = {}
-
-  materials.materialStructure.forEach((materialGroup) => {
-    materialGroup.materials.forEach((material) => {
-      material.finishGroups.forEach((finishGroup) => {
-        // Always pick the first config as default
-        defaultConfigs[finishGroup.id] = finishGroup.materialConfigs[0].id
-      })
-    })
-  })
-
-  return defaultConfigs
-}
-
 export function getOffersForMaterialConfig (materialConfigId, price) {
   if (!price) {
     return []

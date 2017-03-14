@@ -104,6 +104,8 @@
 
   &--unavailable {
     color: $color-minor;
+    opacity: 0.6;
+
     .material-card__image {
       filter: grayscale(100%);
     }

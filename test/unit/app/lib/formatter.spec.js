@@ -1,5 +1,6 @@
 import {
   formatPrice,
+  formatDeliveryTime,
   formatShipping
 } from 'Lib/formatter'
 
@@ -21,12 +22,18 @@ describe('formatPrice()', () => {
   })
 })
 
-describe('formatShipping()', () => {
+describe('formatDeliveryTime()', () => {
   it('returns formatted string for single day delivery', () => {
-    expect(formatShipping({deliveryTime: '1'}), 'to equal', '1 day')
+    expect(formatDeliveryTime('1'), 'to equal', '1 day')
   })
 
   it('returns formatted string for other than single day delivery', () => {
-    expect(formatShipping({deliveryTime: '2-5'}), 'to equal', '2-5 days')
+    expect(formatDeliveryTime('2-5'), 'to equal', '2-5 days')
+  })
+})
+
+describe('formatShipping()', () => {
+  it('returns formatted string', () => {
+    expect(formatShipping({name: 'Standard', deliveryTime: '2-5'}), 'to equal', 'Standard (2-5 days)')
   })
 })
