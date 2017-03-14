@@ -5,8 +5,16 @@ import {compose} from 'recompose'
 import {buildClassArray} from 'Lib/build-class-name'
 import {
   selectMaterialMenuValues,
-  selectCurrentMaterial
+  selectCurrentMaterial,
+  selectPrintingServiceRequests
 } from 'Lib/selector'
+import {
+  getBestOfferForMaterialConfig
+} from 'Lib/material'
+import {
+  formatPrice,
+  formatDeliveryTime
+} from 'Lib/formatter'
 import getCloudinaryUrl from 'Lib/cloudinary'
 
 import Section from 'Component/section'
@@ -30,64 +38,16 @@ import {
 
 const MaterialSection = ({
   areAllUploadsFinished,
-  // price,
+  price,
   materialMenuValues,
   selectedMaterial,
+  printingServiceRequests,
   selectedMaterialConfigs,
   selectedMaterialConfig,
   onSelectMaterial,
   onSelectMaterialConfig,
   onSelectMaterialConfigForFinishGroup
 }) => {
-  // TODO: put all the business logic in this container into its own lib
-
-  // The price for each material
-  /*
-  const pricesForMaterials = price && price.items.reduce((acc, item, index) => ({
-    ...acc,
-    [item.materialId]: Object.keys(price.printingService)
-      .reduce((acc2, key) => ({
-        ...acc2,
-        [key]: price.printingService[key].items[index]
-      }), {})
-  }), {})
-
-  const getPriceForMaterialId = id => (
-    pricesForMaterials ? pricesForMaterials[id] : null
-  )
-
-  // This is just an example of how to traverse the material structure
-  // for a simple drop down
-  // put such logic in the /lib-folder
-  const getMaterialConfigs = () => {
-    const materialConfigs = []
-    if (!materials || !materials.materialStructure) return materialConfigs
-    materials.materialStructure.forEach(materialGroup =>
-      materialGroup.materials.forEach(material =>
-        material.finishGroups.forEach(finishGroup =>
-          finishGroup.materialConfigs.forEach(materialConfig =>
-            materialConfigs.push({
-              ...materialConfig,
-              prices: getPriceForMaterialId(materialConfig.id)
-            })
-          )
-        )
-      )
-    )
-    return materialConfigs
-  }
-
-  // get a string for all the prices of the different vendors
-  // the stub provides unfortunately only the price for one material
-  const prices = (material) => {
-    if (material.prices) {
-      return Object.keys(material.prices)
-        .map(key => material.prices[key].price)
-        .join(', ')
-    }
-    return ''
-  } */
-
   const headlineModifiers = buildClassArray({
     xl: true,
     disabled: !areAllUploadsFinished
@@ -102,26 +62,46 @@ const MaterialSection = ({
     : undefined
 
   function renderMaterialCard (finishGroup) {
-    const info = (
-      <Info>
-        <Headline modifiers={['s']} label="TODO Headline" />
-        <Paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit
-        </Paragraph>
-      </Info>
+    const colorValues = finishGroup.materialConfigs
+      // Filter out material configs which do not have an offer
+      .filter(materialConfig => (
+        Boolean(getBestOfferForMaterialConfig(materialConfig.id, price))
+      ))
+      .map(({id, color, colorCode, colorImage}) => ({
+        value: id,
+        colorValue: colorCode,
+        label: color,
+        colorImage: colorImage ? getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']) : undefined
+      }))
+
+    let bestOffer = getBestOfferForMaterialConfig(
+      selectedMaterialConfigs[finishGroup.id],
+      price
     )
-    const colorValues = finishGroup.materialConfigs.map(({id, color, colorCode, colorImage}) => ({
-      value: id,
-      colorValue: colorCode,
-      label: color,
-      colorImage: colorImage ? getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']) : undefined
-    }))
-    const selectedColorValue = colorValues.find(({value}) => (
+    let selectedColorValue = colorValues.find(({value}) => (
+      selectedMaterialConfigs[finishGroup.id] !== undefined &&
       value === selectedMaterialConfigs[finishGroup.id]
     ))
 
+    // If selected config does not have an offer
+    // try to select first config which has an offer
+    if (!selectedColorValue) {
+      selectedColorValue = colorValues.length > 0 ? colorValues[0] : undefined
+      if (selectedColorValue) {
+        bestOffer = getBestOfferForMaterialConfig(
+          selectedColorValue.value,
+          price
+        )
+      }
+    }
+
     const colorMenu = colorValues.length > 1 ? (<SelectMenu values={colorValues} />) : undefined
-    const materialPrice = <Price value="$19.99" meta="incl. tax & shipping" />
+    const materialPrice = (
+      <Price
+        value={bestOffer ? formatPrice(bestOffer.price, bestOffer.offer.currency) : undefined}
+        meta="incl. tax & shipping"
+      />
+    )
     const colorSelect = (
       <SelectField
         modifiers={['compact']}
@@ -133,22 +113,38 @@ const MaterialSection = ({
         })}
       />
     )
+    const info = (
+      <Info>
+        <Headline modifiers={['s']} label="TODO Headline" />
+        <Paragraph>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit
+        </Paragraph>
+      </Info>
+    )
 
-    // TODO: different card states are not implemented yet
     // TODO: onMoreClick handling
     return (
       <MaterialCard
         key={finishGroup.name}
         title={finishGroup.materialName}
-        shipping="TODO 2-5 days, no express"
+        shipping={bestOffer && formatDeliveryTime(bestOffer.offer.shipping.deliveryTime)}
         subline={finishGroup.name}
         description={finishGroup.summary}
         price={materialPrice}
         info={info}
         image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
         colorSelect={colorSelect}
-        selected={selectedColorValue.value === selectedMaterialConfig}
-        onSelectClick={() => onSelectMaterialConfig(selectedColorValue.value)}
+        selected={selectedColorValue && selectedColorValue.value === selectedMaterialConfig}
+        loading={!bestOffer}
+        unavailable={
+          !bestOffer &&
+          printingServiceRequests &&
+          printingServiceRequests.complete === printingServiceRequests.total
+        }
+        onSelectClick={
+          selectedColorValue &&
+          (() => onSelectMaterialConfig(selectedColorValue.value))
+        }
       />
     )
   }
@@ -167,8 +163,12 @@ const MaterialSection = ({
             />
           </Column>
           <Column lg={4} classNames={['u-margin-bottom-xl']}>
-            {/* TODO: implement progress bar steps */}
-            <ProviderProgressBar currentStep={1} totalSteps={3} />
+            {Boolean(printingServiceRequests) && (
+              <ProviderProgressBar
+                currentStep={printingServiceRequests.complete}
+                totalSteps={printingServiceRequests.total}
+              />
+            )}
           </Column>
         </Grid>
       )}
@@ -187,7 +187,8 @@ const mapStateToProps = state => ({
   materialMenuValues: selectMaterialMenuValues(state),
   selectedMaterial: selectCurrentMaterial(state),
   selectedMaterialConfigs: state.material.selectedMaterialConfigs,
-  selectedMaterialConfig: state.material.selectedMaterialConfig
+  selectedMaterialConfig: state.material.selectedMaterialConfig,
+  printingServiceRequests: selectPrintingServiceRequests(state)
 })
 
 const mapDispatchToProps = {
