@@ -5,9 +5,6 @@ import TYPE from '../type'
 import {goToAddress} from '../action/navigation'
 import * as printingEngine from '../lib/printing-engine'
 
-// Sync actions
-export const changeQuantity = createAction(TYPE.CART.QUANTITY_CHANGED)
-
 // Async actions
 export const createShoppingCart = () => async (dispatch, getState) => {
   const items = Object.keys(getState().model.models)
@@ -15,7 +12,7 @@ export const createShoppingCart = () => async (dispatch, getState) => {
   .map(model => ({
     modelId: model.modelId,
     vendorId: getState().cart.selectedVendor,
-    quantity: getState().cart.quantity,
+    quantity: getState().model.models[model.modelId].quantity,
     materialId: getState().material.selectedMaterial
   }))
 
