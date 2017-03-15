@@ -15,7 +15,7 @@ import minusIcon from 'Icon/minus.svg'
 const NumberField = ({
   classNames,
   modifiers = [],
-  value,
+  value = '',
   onChange = () => {},
   lowerLimit = 1,
   upperLimit = 999,
@@ -95,7 +95,7 @@ const NumberField = ({
 
 NumberField.propTypes = {
   ...propTypes.component,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
   onChange: PropTypes.func,
   lowerLimit: PropTypes.number,
   upperLimit: PropTypes.number,

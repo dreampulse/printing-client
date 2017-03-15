@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
 import {buildClassArray} from 'Lib/build-class-name'
-import {getPriceAmount} from 'Lib/get-total-amount'
+import {getOfferAmount} from 'Lib/price'
 import {selectOffers} from 'Lib/selector'
 import {
   formatPrice,
@@ -42,7 +42,7 @@ const ProviderSection = ({
     <ProviderItem
       key={index}
       provider={offer.name}
-      price={formatPrice(getPriceAmount(offer), offer.currency)}
+      price={formatPrice(getOfferAmount(offer), offer.currency)}
       shipping={formatShipping(offer.shipping)}
       onCheckoutClick={() =>
         onSelectOffer({

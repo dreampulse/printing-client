@@ -16,11 +16,16 @@ import ModelItemError from 'Component/model-item-error'
 import ModelItemList from 'Component/model-item-list'
 import LabeledField from 'Component/labeled-field'
 
-import {uploadFiles} from 'Action/model'
+import {
+  uploadFiles,
+  changeIndividualQuantity
+} from 'Action/model'
 
 const UploadSection = ({
+  models,
   onUploadFiles,
-  uploadedModels
+  uploadedModels,
+  onChangeIndividualQuantity
 }) => {
   const onUpload = (files) => {
     onUploadFiles(toArray(files))
@@ -73,7 +78,6 @@ const UploadSection = ({
               )
             }
 
-            // TODO: quantity management
             // TODO: on delete handler
             // TODO: image
             // TODO: subline
@@ -81,9 +85,15 @@ const UploadSection = ({
               <ModelItem
                 key={model.fileId}
                 imageSource="http://placehold.it/130x98"
-                quantity={1}
+                quantity={models[model.modelId].quantity}
                 title={model.name}
                 subline="TODO"
+                onQuantityChange={
+                  value => onChangeIndividualQuantity({
+                    quantity: value,
+                    modelId: model.modelId
+                  })
+                }
               />
             )
           })}
@@ -94,11 +104,13 @@ const UploadSection = ({
 }
 
 const mapStateToProps = state => ({
-  uploadedModels: state.model.uploadedModels
+  uploadedModels: state.model.uploadedModels,
+  models: state.model.models
 })
 
 const mapDispatchToProps = {
-  onUploadFiles: uploadFiles
+  onUploadFiles: uploadFiles,
+  onChangeIndividualQuantity: changeIndividualQuantity
 }
 
 export default compose(

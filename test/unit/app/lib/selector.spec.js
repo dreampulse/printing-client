@@ -1,4 +1,5 @@
 import {
+  selectCommonQuantity,
   selectMaterialMenuValues,
   selectCurrentMaterial,
   selectOffers,
@@ -6,8 +7,47 @@ import {
 } from 'Lib/selector'
 import * as materialLib from 'Lib/material'
 
+describe('selectCommonQuantity', () => {
+  it('returns common quantity if all individual model quantities are the same', () => {
+    const state = {
+      model: {
+        models: {
+          1: {quantity: 2},
+          2: {quantity: 2}
+        }
+      }
+    }
+
+    expect(selectCommonQuantity(state), 'to equal', 2)
+  })
+
+  it('returns undefined if not all individual model quantities are the same', () => {
+    const state = {
+      model: {
+        models: {
+          1: {quantity: 2},
+          2: {quantity: 1}
+        }
+      }
+    }
+
+    expect(selectCommonQuantity(state), 'to be', undefined)
+  })
+
+  it('returns undefined if there are no models', () => {
+    const state = {
+      model: {
+        models: {}
+      }
+    }
+
+    expect(selectCommonQuantity(state), 'to be', undefined)
+  })
+})
+
 describe('selectMaterialMenuValues()', () => {
   let price
+  let models
   let materials
   let material1
   let material2
@@ -30,6 +70,7 @@ describe('selectMaterialMenuValues()', () => {
     }
 
     price = {some: 'price'}
+    models = {some: 'models'}
     materials = {
       materialStructure: [{
         name: 'Group 1',
@@ -47,16 +88,16 @@ describe('selectMaterialMenuValues()', () => {
 
   it('returns expected material menu values', () => {
     materialLib.getBestOfferForMaterial
-      .withArgs(material1, price)
+      .withArgs(material1, price, models)
       .returns({
         price: 10,
         offer: {currency: 'USD'}
       })
     materialLib.getBestOfferForMaterial
-      .withArgs(material2, price)
+      .withArgs(material2, price, models)
       .returns(null)
     materialLib.getBestOfferForMaterial
-      .withArgs(material3, price)
+      .withArgs(material3, price, models)
       .returns(null)
 
     materialLib.hasMaterialMultipleConfigs.withArgs(material1).returns(true)
@@ -69,6 +110,9 @@ describe('selectMaterialMenuValues()', () => {
       },
       material: {
         materials
+      },
+      model: {
+        models
       }
     }
 
@@ -110,6 +154,9 @@ describe('selectMaterialMenuValues()', () => {
       },
       material: {
         materials: undefined
+      },
+      model: {
+        models
       }
     }
 
@@ -124,6 +171,9 @@ describe('selectMaterialMenuValues()', () => {
       },
       material: {
         materials
+      },
+      model: {
+        models
       }
     }
 
@@ -185,18 +235,23 @@ describe('selectCurrentMaterial()', () => {
 
 describe('selectOffers()', () => {
   let price
+  let models
   let state
 
   beforeEach(() => {
     sinon.stub(materialLib)
 
     price = {some: 'price'}
+    models = {some: 'models'}
     state = {
       price: {
         price
       },
       material: {
         selectedMaterialConfig: 'some-config-id'
+      },
+      model: {
+        models
       }
     }
   })
@@ -207,7 +262,7 @@ describe('selectOffers()', () => {
 
   it('returns expected offers', () => {
     materialLib.getOffersForMaterialConfig
-      .withArgs('some-config-id', price)
+      .withArgs('some-config-id', price, models)
       .returns(['some-offers'])
 
     expect(selectOffers(state), 'to equal', ['some-offers'])

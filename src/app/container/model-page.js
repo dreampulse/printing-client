@@ -7,15 +7,25 @@ import LabeledField from 'Component/labeled-field'
 import LocationField from 'Component/location-field'
 import NumberField from 'Component/number-field'
 
+import AppLayout from 'Container/app-layout'
+import UploadSection from 'Container/upload-section'
+import MaterialSection from 'Container/material-section'
+import ProviderSection from 'Container/provider-section'
+
+import {
+  changeQuantity
+} from 'Action/model'
+
+import {
+  selectCommonQuantity
+} from 'Lib/selector'
+
 import config from '../../../config'
 
-import AppLayout from './app-layout'
-import UploadSection from './upload-section'
-import MaterialSection from './material-section'
-import ProviderSection from './provider-section'
-
 const ModelPage = ({
-  location
+  location,
+  commonQuantity,
+  onChangeQuantity
 }) => {
   const configurationHeader = (
     <ConfigurationHeader>
@@ -26,7 +36,11 @@ const ModelPage = ({
         />
       </LabeledField>
       <LabeledField label="Quantity:">
-        <NumberField value={1} />
+        <NumberField
+          disabled={commonQuantity === undefined}
+          value={commonQuantity}
+          onChange={value => onChangeQuantity({quantity: value})}
+        />
       </LabeledField>
     </ConfigurationHeader>
   )
@@ -41,10 +55,13 @@ const ModelPage = ({
 }
 
 const mapStateToProps = state => ({
-  location: state.user.user.shippingAddress
+  location: state.user.user.shippingAddress,
+  commonQuantity: selectCommonQuantity(state)
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  onChangeQuantity: changeQuantity
+}
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps)
