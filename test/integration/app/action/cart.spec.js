@@ -32,14 +32,6 @@ describe('Shopping Cart Integration Test', () => {
     })
   })
 
-  describe('changeQuantity', () => {
-    it('should work', () => {
-      store = Store({})
-      store.dispatch(cart.changeQuantity(2))
-      expect(store.getState().cart.quantity, 'to equal', 2)
-    })
-  })
-
   describe('createShoppingCart()', () => {
     it('should work', async () => {
       store = Store({
@@ -49,10 +41,12 @@ describe('Shopping Cart Integration Test', () => {
         model: {
           models: {
             'some-model-id': {
-              modelId: 'some-model-id'
+              modelId: 'some-model-id',
+              quantity: 23
             },
             'some-other-model-id': {
-              modelId: 'some-other-model-id'
+              modelId: 'some-other-model-id',
+              quantity: 42
             }
           }
         },
@@ -60,7 +54,6 @@ describe('Shopping Cart Integration Test', () => {
           priceId: 'some-price-id'
         },
         cart: {
-          quantity: 1,
           selectedVendor: 'some-vendor',
           selectedShipping: 'some-shipping-method'
         }
@@ -82,12 +75,12 @@ describe('Shopping Cart Integration Test', () => {
         items: [{
           modelId: 'some-model-id',
           vendorId: 'some-vendor',
-          quantity: 1,
+          quantity: 23,
           materialId: 'some-material-id'
         }, {
           modelId: 'some-other-model-id',
           vendorId: 'some-vendor',
-          quantity: 1,
+          quantity: 42,
           materialId: 'some-material-id'
         }],
         shipping: [{

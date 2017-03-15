@@ -25,7 +25,7 @@ describe('User Integration Test', () => {
         stateCode: 'PA',
         countryCode: 'US'
       }
-      geolocation.default.resolves(location)
+      geolocation.getLocation.resolves(location)
 
       await store.dispatch(detectAddress())
 

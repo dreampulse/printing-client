@@ -11,6 +11,7 @@ class Overlay extends Component {
   static propTypes = {
     ...propTypes.component,
     closePortal: PropTypes.func.isRequired,
+    closeable: PropTypes.bool,
     children: PropTypes.node,
     headline: PropTypes.node.isRequired,
     buttons: PropTypes.arrayOf(
@@ -19,7 +20,8 @@ class Overlay extends Component {
   }
 
   static defaultProps = {
-    closePortal: () => {}
+    closePortal: () => {},
+    closeable: true
   }
 
   componentDidMount () {
@@ -39,9 +41,11 @@ class Overlay extends Component {
             <header className="overlay__header">
               <div className="overlay__headline">
                 {this.props.headline}
-                <button onClick={this.props.closePortal} className="overlay__close">
-                  <Icon source={closeIcon} />
-                </button>
+                {this.props.closeable &&
+                  <button onClick={this.props.closePortal} className="overlay__close">
+                    <Icon source={closeIcon} />
+                  </button>
+                }
               </div>
             </header>
 
