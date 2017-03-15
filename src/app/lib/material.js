@@ -45,10 +45,9 @@ export function getOffersForMaterialConfig (materialConfigId, price) {
   ]), [])
 
   // Filter for complete offers
-  return offers.filter((offer) => {
-    const isCompletelyPrintable = offer.items.reduce((last, cur) => last && cur.isPrintable, true)
-    return isCompletelyPrintable && offer.items.length > 0
-  })
+  return offers.filter(offer => (
+    offer.items.reduce((last, cur) => last && cur.isPrintable, true)
+  ))
 }
 
 export function getBestOfferForMaterialConfig (materialConfigId, price) {

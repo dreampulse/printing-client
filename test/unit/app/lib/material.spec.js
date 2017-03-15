@@ -145,15 +145,20 @@ describe('getOffersForMaterialConfig()', () => {
     }])
   })
 
-  it('filters out not printable and empty offers', () => {
+  it('filters out not printable offers', () => {
     price.printingService.imaterialize.items = [{
       isPrintable: false
     }, {
       isPrintable: true
     }]
-    price.printingService.shapeways.items = []
 
-    expect(getOffersForMaterialConfig('config-1', price), 'to equal', [])
+    expect(getOffersForMaterialConfig('config-1', price), 'to equal', [{
+      name: 'shapeways',
+      items: [{isPrintable: true}],
+      shipping: {some: 'shipping-1'},
+      vatPercentage: 0.19,
+      currency: 'USD'
+    }])
   })
 })
 
