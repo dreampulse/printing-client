@@ -35,8 +35,7 @@ export function getOffersForMaterialConfig (materialConfigId, price) {
     ...vendor.shipping.map(shipping => ({
       name: vendor.name,
       items: vendor.items.filter((_, index) =>
-        // TODO: at least the test data mixes up numbers and strings for ids
-        String(price.items[index].materialConfigId) === String(materialConfigId)
+        price.items[index].materialConfigId === materialConfigId
       ),
       shipping,
       vatPercentage: vendor.vatPercentage,
