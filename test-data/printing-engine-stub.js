@@ -4,7 +4,10 @@ import materialResponse from './mock/material-list-response.json'
 import * as printingEngine from '../src/app/lib/printing-engine'
 
 printingEngine.uploadModel = () =>
-  Promise.resolve({modelId: 'b364bd10-6d64-4515-b832-495d0fdf7d4c'})
+  Promise.resolve({
+    modelId: 'b364bd10-6d64-4515-b832-495d0fdf7d4c',
+    thumbnailUrl: 'https://api.example.com/v1/model/some-model-id/thumbnail'
+  })
 
 printingEngine.getUploadStatus = () =>
   Promise.resolve(true)
