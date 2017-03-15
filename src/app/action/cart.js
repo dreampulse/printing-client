@@ -2,7 +2,6 @@ import {createAction} from 'redux-actions'
 
 import TYPE from '../type'
 
-import {goToAddress} from '../action/navigation'
 import * as printingEngine from '../lib/printing-engine'
 
 // Async actions
@@ -35,8 +34,4 @@ export const createShoppingCart = () => async (dispatch, getState) => {
   return await dispatch(createAction(TYPE.CART.RECEIVED_FINAL_PRICE)(finalCartPricePromise))
 }
 
-export const selectOffer = ({vendor, shippingName}) => (dispatch) => {
-  dispatch(createAction(TYPE.CART.VENDOR_SELECTED)(vendor))
-  dispatch(createAction(TYPE.CART.SHIPPING_SELECTED)(shippingName))
-  dispatch(goToAddress())
-}
+export const selectOffer = ({offer}) => createAction(TYPE.CART.OFFER_SELECTED)({offer})
