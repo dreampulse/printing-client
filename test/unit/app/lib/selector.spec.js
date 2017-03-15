@@ -1,10 +1,49 @@
 import {
+  selectCommonQuantity,
   selectMaterialMenuValues,
   selectCurrentMaterial,
   selectOffers,
   selectPrintingServiceRequests
 } from 'Lib/selector'
 import * as materialLib from 'Lib/material'
+
+describe('selectCommonQuantity', () => {
+  it('returns common quantity if all individual model quantities are the same', () => {
+    const state = {
+      model: {
+        models: {
+          1: {quantity: 2},
+          2: {quantity: 2}
+        }
+      }
+    }
+
+    expect(selectCommonQuantity(state), 'to equal', 2)
+  })
+
+  it('returns undefined if not all individual model quantities are the same', () => {
+    const state = {
+      model: {
+        models: {
+          1: {quantity: 2},
+          2: {quantity: 1}
+        }
+      }
+    }
+
+    expect(selectCommonQuantity(state), 'to be', undefined)
+  })
+
+  it('returns undefined if there are no models', () => {
+    const state = {
+      model: {
+        models: {}
+      }
+    }
+
+    expect(selectCommonQuantity(state), 'to be', undefined)
+  })
+})
 
 describe('selectMaterialMenuValues()', () => {
   let price

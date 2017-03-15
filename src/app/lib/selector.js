@@ -40,6 +40,31 @@ export const selectCart = (state) => {
   }
 }
 
+export const selectCommonQuantity = (state) => {
+  // Common quantity exists only if all models have the same individual quantity
+  const {
+    model: {
+      models
+    }
+  } = state
+
+  const keys = Object.keys(models)
+  if (keys.length === 0) {
+    return undefined
+  }
+
+  return keys.reduce((quantity, modelId) => {
+    const modelQuantity = models[modelId].quantity
+    if (quantity === null) {
+      return modelQuantity
+    }
+    if (quantity === modelQuantity) {
+      return quantity
+    }
+    return undefined
+  }, null)
+}
+
 export const selectMaterialMenuValues = (state) => {
   const {
     price: {
