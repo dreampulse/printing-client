@@ -1,7 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {compose} from 'recompose'
+import {compose, lifecycle} from 'recompose'
 
+import scrollTo from 'Service/scroll-to'
 import {buildClassArray} from 'Lib/build-class-name'
 import {
   selectMaterialMenuValues,
@@ -143,7 +144,10 @@ const MaterialSection = ({
         }
         onSelectClick={
           selectedColorValue &&
-          (() => onSelectMaterialConfig(selectedColorValue.value))
+          (() => {
+            onSelectMaterialConfig(selectedColorValue.value)
+            scrollTo('#section-provider')
+          })
         }
       />
     )
@@ -198,5 +202,12 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  lifecycle({
+    componentDidUpdate (prevProps) {
+      if (!prevProps.areAllUploadsFinished && this.props.areAllUploadsFinished) {
+        scrollTo('#section-material')
+      }
+    }
+  })
 )(MaterialSection)
