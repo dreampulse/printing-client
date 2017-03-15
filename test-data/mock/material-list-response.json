@@ -21,254 +21,259 @@
           },
           "finishGroups": [
             {
+              "materialname": "Plastics",
               "name": "Solid, raw",
               "summary": "Solid white polyamide, raw surface",
               "featuredImage": "gallery/material-sf.jpg",
               "materialConfigs": [
                 {
-                  "id": 0,
+                  "id": "0",
                   "name": "Strong & Flexible White Plastic",
                   "color": "White",
-                  "colorImage": "color_images/plastic_wsf_white.jpg",
-                  "colorCode": "#ffffff"
+                  "colorCode": "#ffffff",
+                  "colorImage": "color_images/plastic_wsf_white.jpg"
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Solid, polished",
               "summary": "Solid white polyamide, polished smooth surface",
               "featuredImage": "gallery/material-sf.jpg",
               "materialConfigs": [
                 {
-                  "id": 1,
+                  "id": "1",
                   "name": "White Plastic, Polished",
                   "color": "White",
-                  "colorImage": "color_images/white_plastic.png",
-                  "colorCode": "#EFEFED"
+                  "colorCode": "#EFEFED",
+                  "colorImage": "color_images/white_plastic.png"
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Dyed, raw",
               "summary": "Solid white polyamide, dyed raw surface",
               "featuredImage": "gallery/material-sf.jpg",
               "materialConfigs": [
                 {
-                  "id": 2,
+                  "id": "2",
                   "name": "Strong & Flexible Plastic Black",
                   "color": "Black",
-                  "colorImage": "color_images/plastic_wsf_black.jpg",
-                  "colorCode": "#000000"
+                  "colorCode": "#000000",
+                  "colorImage": "color_images/plastic_wsf_black.jpg"
                 },
                 {
-                  "id": 3,
+                  "id": "3",
                   "name": "Dyed Polyamide",
                   "color": "Blue",
-                  "colorImage": "color_images/PA-color-dyed-blue.jpg",
-                  "colorCode": "#243C94"
+                  "colorCode": "#243C94",
+                  "colorImage": "color_images/PA-color-dyed-blue.jpg"
                 },
                 {
-                  "id": 4,
+                  "id": "4",
                   "name": "Dyed Polyamide",
                   "color": "Red",
-                  "colorImage": "color_images/PA-color-dyed-red.jpg",
-                  "colorCode": "#A8262A"
+                  "colorCode": "#A8262A",
+                  "colorImage": "color_images/PA-color-dyed-red.jpg"
                 },
                 {
-                  "id": 5,
+                  "id": "5",
                   "name": "Dyed Polyamide",
                   "color": "Green",
-                  "colorImage": "color_images/PA-color-dyed-green.jpg",
-                  "colorCode": "#3A8733"
+                  "colorCode": "#3A8733",
+                  "colorImage": "color_images/PA-color-dyed-green.jpg"
                 },
                 {
-                  "id": 6,
+                  "id": "6",
                   "name": "Dyed Polyamide",
                   "color": "Orange",
-                  "colorImage": "color_images/PA-color-dyed-orange.jpg",
-                  "colorCode": "#E5601E"
+                  "colorCode": "#E5601E",
+                  "colorImage": "color_images/PA-color-dyed-orange.jpg"
                 },
                 {
-                  "id": 7,
+                  "id": "7",
                   "name": "Dyed Polyamide",
                   "color": "Purple",
-                  "colorImage": "color_images/PA-color-dyed-purple.jpg",
-                  "colorCode": "#6258CC"
+                  "colorCode": "#6258CC",
+                  "colorImage": "color_images/PA-color-dyed-purple.jpg"
                 },
                 {
-                  "id": 8,
+                  "id": "8",
                   "name": "Dyed Polyamide",
                   "color": "Yellow",
-                  "colorImage": "color_images/PA-color-dyed-yellow.jpg",
-                  "colorCode": "#CDD032"
+                  "colorCode": "#CDD032",
+                  "colorImage": "color_images/PA-color-dyed-yellow.jpg"
                 },
                 {
-                  "id": 9,
+                  "id": "9",
                   "name": "Plastic, Dyed",
                   "color": "Beige",
-                  "colorImage": "color_images/beige_plastic.png",
-                  "colorCode": "#D2CB95"
+                  "colorCode": "#D2CB95",
+                  "colorImage": "color_images/beige_plastic.png"
                 },
                 {
-                  "id": 10,
+                  "id": "10",
                   "name": "Plastic, Dyed",
                   "color": "Brown",
-                  "colorImage": "color_images/brown_plastic.png",
-                  "colorCode": "#6E5238"
+                  "colorCode": "#6E5238",
+                  "colorImage": "color_images/brown_plastic.png"
                 },
                 {
-                  "id": 11,
+                  "id": "11",
                   "name": "Plastic, Dyed",
                   "color": "Pink",
-                  "colorImage": "color_images/pink_plastic.png",
-                  "colorCode": "#EF5B8F"
+                  "colorCode": "#EF5B8F",
+                  "colorImage": "color_images/pink_plastic.png"
                 },
                 {
-                  "id": 12,
+                  "id": "12",
                   "name": "Plastic, Dyed",
                   "color": "Gray",
-                  "colorImage": "color_images/black_plastic.png",
-                  "colorCode": "#606068"
+                  "colorCode": "#606068",
+                  "colorImage": "color_images/black_plastic.png"
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Dyed, polished",
               "summary": "Solid white polyamide, dyed polished smooth surface",
               "featuredImage": "gallery/material-sf.jpg",
               "materialConfigs": [
                 {
-                  "id": 13,
+                  "id": "13",
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Pink",
-                  "colorImage": "color_images/swatch-pink-20140702.png",
-                  "colorCode": "#B02B6A"
+                  "colorCode": "#B02B6A",
+                  "colorImage": "color_images/swatch-pink-20140702.png"
                 },
                 {
-                  "id": 14,
+                  "id": "14",
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Red",
-                  "colorImage": "color_images/swatch-coral-red.jpg",
-                  "colorCode": "#FB0F16"
+                  "colorCode": "#FB0F16",
+                  "colorImage": "color_images/swatch-coral-red.jpg"
                 },
                 {
-                  "id": 15,
+                  "id": "15",
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Orange",
-                  "colorImage": "color_images/swatch-orange.png",
-                  "colorCode": "#F99600"
+                  "colorCode": "#F99600",
+                  "colorImage": "color_images/swatch-orange.png"
                 },
                 {
-                  "id": 16,
+                  "id": "16",
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Yellow",
-                  "colorImage": "color_images/swatch-yellow.png",
-                  "colorCode": "#F7C33F"
+                  "colorCode": "#F7C33F",
+                  "colorImage": "color_images/swatch-yellow.png"
                 },
                 {
-                  "id": 17,
+                  "id": "17",
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Green",
-                  "colorImage": "color_images/swatch-green.png",
-                  "colorCode": "#3C603E"
+                  "colorCode": "#3C603E",
+                  "colorImage": "color_images/swatch-green.png"
                 },
                 {
-                  "id": 18,
+                  "id": "18",
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Blue",
-                  "colorImage": "color_images/swatch-royal-blue.jpg",
-                  "colorCode": "#508DEF"
+                  "colorCode": "#508DEF",
+                  "colorImage": "color_images/swatch-royal-blue.jpg"
                 },
                 {
-                  "id": 19,
+                  "id": "19",
                   "name": "Strong & Flexible Polished Plastic",
                   "color": "Purple",
-                  "colorImage": "color_images/swatch-violet-purple.jpg",
-                  "colorCode": "#AA32B2"
+                  "colorCode": "#AA32B2",
+                  "colorImage": "color_images/swatch-violet-purple.jpg"
                 },
                 {
-                  "id": 20,
+                  "id": "20",
                   "name": "Polished Dyed Polyamide",
                   "color": "Black",
-                  "colorImage": "color_images/PA-color-polished-dyed-black.jpg",
-                  "colorCode": "#1E1E1E"
+                  "colorCode": "#1E1E1E",
+                  "colorImage": "color_images/PA-color-polished-dyed-black.jpg"
                 },
                 {
-                  "id": 21,
+                  "id": "21",
                   "name": "Plastic, Polished, Dyed",
                   "color": "Beige",
-                  "colorImage": "color_images/beige_plastic.png",
-                  "colorCode": "#D2CB95"
+                  "colorCode": "#D2CB95",
+                  "colorImage": "color_images/beige_plastic.png"
                 },
                 {
-                  "id": 22,
+                  "id": "22",
                   "name": "Plastic, Polished, Dyed",
                   "color": "Brown",
-                  "colorImage": "color_images/brown_plastic.png",
-                  "colorCode": "#6E5238"
+                  "colorCode": "#6E5238",
+                  "colorImage": "color_images/brown_plastic.png"
                 },
                 {
-                  "id": 23,
+                  "id": "23",
                   "name": "Plastic, Polished, Dyed",
                   "color": "Gray",
-                  "colorImage": "color_images/black_plastic.png",
-                  "colorCode": "#606068"
+                  "colorCode": "#606068",
+                  "colorImage": "color_images/black_plastic.png"
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Dyed, velvet",
               "summary": "Solid white polyamide, dyed velvety soft surface",
               "featuredImage": "gallery/material-sf.jpg",
               "materialConfigs": [
                 {
-                  "id": 24,
+                  "id": "24",
                   "name": "Polyamide Velvet Dyed",
                   "color": "Pink",
-                  "colorImage": null,
-                  "colorCode": "#FF36D2"
+                  "colorCode": "#FF36D2",
+                  "colorImage": null
                 },
                 {
-                  "id": 25,
+                  "id": "25",
                   "name": "Polyamide Velvet Dyed",
                   "color": "Yellow",
-                  "colorImage": null,
-                  "colorCode": "#F6FF0A"
+                  "colorCode": "#F6FF0A",
+                  "colorImage": null
                 },
                 {
-                  "id": 26,
+                  "id": "26",
                   "name": "Polyamide Velvet Dyed",
                   "color": "Blue",
-                  "colorImage": null,
-                  "colorCode": "#002E7B"
+                  "colorCode": "#002E7B",
+                  "colorImage": null
                 },
                 {
-                  "id": 27,
+                  "id": "27",
                   "name": "Polyamide Velvet Dyed",
                   "color": "Green",
-                  "colorImage": null,
-                  "colorCode": "#17593A"
+                  "colorCode": "#17593A",
+                  "colorImage": null
                 },
                 {
-                  "id": 28,
+                  "id": "28",
                   "name": "Polyamide Velvet Dyed",
                   "color": "Black",
-                  "colorImage": null,
-                  "colorCode": "#000000"
+                  "colorCode": "#000000",
+                  "colorImage": null
                 },
                 {
-                  "id": 29,
+                  "id": "29",
                   "name": "Polyamide Velvet Dyed",
                   "color": "Red",
-                  "colorImage": null,
-                  "colorCode": "#8D2130"
+                  "colorCode": "#8D2130",
+                  "colorImage": null
                 },
                 {
-                  "id": 30,
+                  "id": "30",
                   "name": "Polyamide Velvet Dyed",
                   "color": "Ochre",
-                  "colorImage": null,
-                  "colorCode": "#FBB500"
+                  "colorCode": "#FBB500",
+                  "colorImage": null
                 }
               ]
             }
@@ -291,107 +296,111 @@
           },
           "finishGroups": [
             {
+              "materialname": "Plastics",
               "name": "Solid, raw",
               "summary": "Solid grey alumide, raw surface",
               "featuredImage": "gallery/alu-movable.jpg",
               "materialConfigs": [
                 {
-                  "id": 31,
+                  "id": "31",
                   "name": "Alumide",
                   "color": "Gray",
-                  "colorImage": "color_images/alumide.png",
-                  "colorCode": "#98A0A3"
+                  "colorCode": "#98A0A3",
+                  "colorImage": "color_images/alumide.png"
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Solid, polished",
               "summary": "Solid grey alumide, polished smooth surface",
               "featuredImage": "gallery/alu-movable.jpg",
               "materialConfigs": [
                 {
-                  "id": 32,
+                  "id": "32",
                   "name": "Polished Metal Plastic",
                   "color": "Gray",
-                  "colorImage": "color_images/polished_plastic_alumide.jpg",
-                  "colorCode": "#8B8F90"
+                  "colorCode": "#8B8F90",
+                  "colorImage": "color_images/polished_plastic_alumide.jpg"
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Dyed, raw",
               "summary": "Solid grey alumide, dyed raw surface",
               "featuredImage": "gallery/alu-movable.jpg",
               "materialConfigs": [
                 {
-                  "id": 33,
+                  "id": "33",
                   "name": "Dyed Alumide",
                   "color": "Black",
-                  "colorImage": "color_images/sculpteo_alumide_black.jpg",
-                  "colorCode": "#453b25"
+                  "colorCode": "#453b25",
+                  "colorImage": "color_images/sculpteo_alumide_black.jpg"
                 },
                 {
-                  "id": 34,
+                  "id": "34",
                   "name": "Dyed Alumide",
                   "color": "Blue",
-                  "colorImage": "color_images/sculpteo_alumide_blue.jpg",
-                  "colorCode": "#3b4e77"
+                  "colorCode": "#3b4e77",
+                  "colorImage": "color_images/sculpteo_alumide_blue.jpg"
                 },
                 {
-                  "id": 35,
+                  "id": "35",
                   "name": "Dyed Alumide",
                   "color": "Green",
-                  "colorImage": "color_images/sculpteo_alumide_green.jpg",
-                  "colorCode": "#aeb530"
+                  "colorCode": "#aeb530",
+                  "colorImage": "color_images/sculpteo_alumide_green.jpg"
                 },
                 {
-                  "id": 36,
+                  "id": "36",
                   "name": "Dyed Alumide",
                   "color": "Red",
-                  "colorImage": "color_images/sculpteo_alumide_red.jpg",
-                  "colorCode": "#893b2b"
+                  "colorCode": "#893b2b",
+                  "colorImage": "color_images/sculpteo_alumide_red.jpg"
                 },
                 {
-                  "id": 37,
+                  "id": "37",
                   "name": "Alumide, dyed",
                   "color": "Orange",
-                  "colorImage": "color_images/rusty-orange_alumide.png",
-                  "colorCode": "#C9A14A"
+                  "colorCode": "#C9A14A",
+                  "colorImage": "color_images/rusty-orange_alumide.png"
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Dyed, polished",
               "summary": "Solid grey alumide, dyed polished smooth surface",
               "featuredImage": "gallery/alu-movable.jpg",
               "materialConfigs": [
                 {
-                  "id": 38,
+                  "id": "38",
                   "name": "Alumide, Polished, Dyed",
                   "color": "Black",
-                  "colorImage": "color_images/sculpteo_alumide_black.jpg",
-                  "colorCode": "#453b25"
+                  "colorCode": "#453b25",
+                  "colorImage": "color_images/sculpteo_alumide_black.jpg"
                 },
                 {
-                  "id": 39,
+                  "id": "39",
                   "name": "Alumide, Polished, Dyed",
                   "color": "Blue",
-                  "colorImage": "color_images/sculpteo_alumide_blue.jpg",
-                  "colorCode": "#3b4e77"
+                  "colorCode": "#3b4e77",
+                  "colorImage": "color_images/sculpteo_alumide_blue.jpg"
                 },
                 {
-                  "id": 40,
+                  "id": "40",
                   "name": "Alumide, Polished, Dyed",
                   "color": "Green",
-                  "colorImage": "color_images/sculpteo_alumide_green.jpg",
-                  "colorCode": "#aeb530"
+                  "colorCode": "#aeb530",
+                  "colorImage": "color_images/sculpteo_alumide_green.jpg"
                 },
                 {
-                  "id": 41,
+                  "id": "41",
                   "name": "Alumide, Polished, Dyed",
                   "color": "Red",
-                  "colorImage": "color_images/sculpteo_alumide_red.jpg",
-                  "colorCode": "#893b2b"
+                  "colorCode": "#893b2b",
+                  "colorImage": "color_images/sculpteo_alumide_red.jpg"
                 }
               ]
             }
@@ -415,198 +424,202 @@
           },
           "finishGroups": [
             {
+              "materialname": "Plastics",
               "name": "Solid, opaque",
               "summary": "Solid opaque white resin, smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
               "materialConfigs": [
                 {
-                  "id": 42,
+                  "id": "42",
                   "name": "Acrylic Plastic",
                   "color": "White",
-                  "colorImage": "color_images/plastic_detail_white.jpg",
-                  "colorCode": "#DBD8D1"
+                  "colorCode": "#DBD8D1",
+                  "colorImage": "color_images/plastic_detail_white.jpg"
                 },
                 {
-                  "id": 43,
+                  "id": "43",
                   "name": "Acrylic Plastic",
                   "color": "Black",
-                  "colorImage": "color_images/plastic_detail_black.jpg",
-                  "colorCode": "#393937"
+                  "colorCode": "#393937",
+                  "colorImage": "color_images/plastic_detail_black.jpg"
                 },
                 {
-                  "id": 44,
+                  "id": "44",
                   "name": "Paintable Resin",
                   "color": "Gray",
-                  "colorImage": null,
-                  "colorCode": "#a6a8a5"
+                  "colorCode": "#a6a8a5",
+                  "colorImage": null
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Solid, dyed",
               "summary": "Solid opaque white resin, dyed smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
               "materialConfigs": [
                 {
-                  "id": 45,
+                  "id": "45",
                   "name": "Detail Resin",
                   "color": "Black",
-                  "colorImage": "color_images/black_resin.png",
-                  "colorCode": "0A080C"
+                  "colorCode": "0A080C",
+                  "colorImage": "color_images/black_resin.png"
                 },
                 {
-                  "id": 46,
+                  "id": "46",
                   "name": "Detail Resin",
                   "color": "Neon Yellow",
-                  "colorImage": "color_images/neon_yellow_resin.png",
-                  "colorCode": "#FFF752"
+                  "colorCode": "#FFF752",
+                  "colorImage": "color_images/neon_yellow_resin.png"
                 },
                 {
-                  "id": 47,
+                  "id": "47",
                   "name": "Detail Resin",
                   "color": "Neon Orange",
-                  "colorImage": "color_images/neon_orange_resin.png",
-                  "colorCode": "FE3C4A"
+                  "colorCode": "FE3C4A",
+                  "colorImage": "color_images/neon_orange_resin.png"
                 },
                 {
-                  "id": 48,
+                  "id": "48",
                   "name": "Detail Resin",
                   "color": "Neon Pink",
-                  "colorImage": "color_images/neon_pink_resin.png",
-                  "colorCode": "#F61B5F"
+                  "colorCode": "#F61B5F",
+                  "colorImage": "color_images/neon_pink_resin.png"
                 },
                 {
-                  "id": 49,
+                  "id": "49",
                   "name": "Detail Resin",
                   "color": "Red",
-                  "colorImage": "color_images/intense_red_resin.png",
-                  "colorCode": "#B40D0D"
+                  "colorCode": "#B40D0D",
+                  "colorImage": "color_images/intense_red_resin.png"
                 },
                 {
-                  "id": 50,
+                  "id": "50",
                   "name": "Detail Resin",
                   "color": "Orange",
-                  "colorImage": "color_images/orange_resin.png",
-                  "colorCode": "#BF3410"
+                  "colorCode": "#BF3410",
+                  "colorImage": "color_images/orange_resin.png"
                 },
                 {
-                  "id": 51,
+                  "id": "51",
                   "name": "Detail Resin",
                   "color": "N/A",
-                  "colorImage": "color_images/brown_resin.png",
-                  "colorCode": "611D0D"
+                  "colorCode": "611D0D",
+                  "colorImage": "color_images/brown_resin.png"
                 },
                 {
-                  "id": 52,
+                  "id": "52",
                   "name": "Detail Resin",
                   "color": "Gray",
-                  "colorImage": "color_images/gray_resin.png",
-                  "colorCode": "#77726F"
+                  "colorCode": "#77726F",
+                  "colorImage": "color_images/gray_resin.png"
                 },
                 {
-                  "id": 53,
+                  "id": "53",
                   "name": "Detail Resin",
                   "color": "Blue",
-                  "colorImage": "color_images/blue_resin.png",
-                  "colorCode": "#8CA7BA"
+                  "colorCode": "#8CA7BA",
+                  "colorImage": "color_images/blue_resin.png"
                 },
                 {
-                  "id": 54,
+                  "id": "54",
                   "name": "Detail Resin",
                   "color": "Green",
-                  "colorImage": "color_images/green_resin.png",
-                  "colorCode": "52903A"
+                  "colorCode": "52903A",
+                  "colorImage": "color_images/green_resin.png"
                 },
                 {
-                  "id": 55,
+                  "id": "55",
                   "name": "Detail Resin",
                   "color": "Yellow",
-                  "colorImage": "color_images/light_yellow_resin.png",
-                  "colorCode": "#EBE516"
+                  "colorCode": "#EBE516",
+                  "colorImage": "color_images/light_yellow_resin.png"
                 },
                 {
-                  "id": 56,
+                  "id": "56",
                   "name": "Spray Painted Resin",
                   "color": "White",
-                  "colorImage": null,
-                  "colorCode": "#FFFFFF"
+                  "colorCode": "#FFFFFF",
+                  "colorImage": null
                 },
                 {
-                  "id": 57,
+                  "id": "57",
                   "name": "Spray Painted Resin",
                   "color": "Brown",
-                  "colorImage": null,
-                  "colorCode": "#603F30"
+                  "colorCode": "#603F30",
+                  "colorImage": null
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Solid, translucent",
               "summary": "Solid translucent white resin, smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
               "materialConfigs": [
                 {
-                  "id": 58,
+                  "id": "58",
                   "name": "Detail Resin Translucent",
                   "color": "Translucent",
-                  "colorImage": "color_images/translucent_resin.png",
-                  "colorCode": "#e3e3e4"
+                  "colorCode": "#e3e3e4",
+                  "colorImage": "color_images/translucent_resin.png"
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Solid, transparent",
               "summary": "Solid transparent colored resin, smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
               "materialConfigs": [
                 {
-                  "id": 59,
+                  "id": "59",
                   "name": "Transparent Resin",
                   "color": "White",
-                  "colorImage": null,
-                  "colorCode": "#DFEBE1"
+                  "colorCode": "#DFEBE1",
+                  "colorImage": null
                 },
                 {
-                  "id": 60,
+                  "id": "60",
                   "name": "Transparent Resin",
                   "color": "Black",
-                  "colorImage": null,
-                  "colorCode": "#000000"
+                  "colorCode": "#000000",
+                  "colorImage": null
                 },
                 {
-                  "id": 61,
+                  "id": "61",
                   "name": "Transparent Resin",
                   "color": "Blue",
-                  "colorImage": null,
-                  "colorCode": "#002E7B"
+                  "colorCode": "#002E7B",
+                  "colorImage": null
                 },
                 {
-                  "id": 62,
+                  "id": "62",
                   "name": "Transparent Resin",
                   "color": "Green",
-                  "colorImage": null,
-                  "colorCode": "#008047"
+                  "colorCode": "#008047",
+                  "colorImage": null
                 },
                 {
-                  "id": 63,
+                  "id": "63",
                   "name": "Transparent Resin",
                   "color": "Yellow",
-                  "colorImage": null,
-                  "colorCode": "#F8F335"
+                  "colorCode": "#F8F335",
+                  "colorImage": null
                 },
                 {
-                  "id": 64,
+                  "id": "64",
                   "name": "Transparent Resin",
                   "color": "Gray",
-                  "colorImage": null,
-                  "colorCode": "#919089"
+                  "colorCode": "#919089",
+                  "colorImage": null
                 },
                 {
-                  "id": 65,
+                  "id": "65",
                   "name": "Transparent Resin",
                   "color": "Red",
-                  "colorImage": null,
-                  "colorCode": "#C81915"
+                  "colorCode": "#C81915",
+                  "colorImage": null
                 }
               ]
             }
@@ -630,30 +643,32 @@
           },
           "finishGroups": [
             {
+              "materialname": "Plastics",
               "name": "Solid, opaque",
               "summary": "Solid opaque white high detail resin, smooth surface",
               "featuredImage": "gallery/fxd-diver.jpg",
               "materialConfigs": [
                 {
-                  "id": 66,
+                  "id": "66",
                   "name": "High Detail Resin",
                   "color": "White",
-                  "colorImage": null,
-                  "colorCode": "#D3D0B1"
+                  "colorCode": "#D3D0B1",
+                  "colorImage": null
                 }
               ]
             },
             {
+              "materialname": "Plastics",
               "name": "Solid, translucent",
               "summary": "Solid translucent white high detail resin, smooth surface",
               "featuredImage": "gallery/fxd-diver.jpg",
               "materialConfigs": [
                 {
-                  "id": 67,
+                  "id": "67",
                   "name": "Frosted Ultra Detail Plastic",
                   "color": "White",
-                  "colorImage": "color_images/swatch-fud-20150310.png",
-                  "colorCode": "#C1D1D5"
+                  "colorCode": "#C1D1D5",
+                  "colorImage": "color_images/swatch-fud-20150310.png"
                 }
               ]
             }
@@ -677,16 +692,17 @@
           },
           "finishGroups": [
             {
+              "materialname": "Plastics",
               "name": "Solid, translucent",
               "summary": "Solid translucent white extreme detail resin, smooth surface",
               "featuredImage": "gallery/fxd-hero-forge.jpg",
               "materialConfigs": [
                 {
-                  "id": 68,
+                  "id": "68",
                   "name": "Frosted Extreme Detail Plastic",
                   "color": "Translucent",
-                  "colorImage": "color_images/swatch-fxd-20150310.png",
-                  "colorCode": "#C1D1D5"
+                  "colorCode": "#C1D1D5",
+                  "colorImage": "color_images/swatch-fxd-20150310.png"
                 }
               ]
             }
@@ -706,37 +722,38 @@
           },
           "finishGroups": [
             {
+              "materialname": "Plastics",
               "name": "Solid, raw",
               "summary": "Solid ABS, raw surface",
               "featuredImage": "gallery/abs-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 69,
+                  "id": "69",
                   "name": "ABS",
                   "color": "White",
-                  "colorImage": null,
-                  "colorCode": "#ffffff"
+                  "colorCode": "#ffffff",
+                  "colorImage": null
                 },
                 {
-                  "id": 70,
+                  "id": "70",
                   "name": "ABS",
                   "color": "Red",
-                  "colorImage": null,
-                  "colorCode": "#d71b10"
+                  "colorCode": "#d71b10",
+                  "colorImage": null
                 },
                 {
-                  "id": 71,
+                  "id": "71",
                   "name": "ABS",
                   "color": "N/A",
-                  "colorImage": null,
-                  "colorCode": "#747b85"
+                  "colorCode": "#747b85",
+                  "colorImage": null
                 },
                 {
-                  "id": 72,
+                  "id": "72",
                   "name": "ABS",
                   "color": "Black",
-                  "colorImage": null,
-                  "colorCode": "#000000"
+                  "colorCode": "#000000",
+                  "colorImage": null
                 }
               ]
             }
@@ -765,100 +782,104 @@
           },
           "finishGroups": [
             {
+              "materialname": "Metals",
               "name": "Solid, raw",
               "summary": "Solid stainless steel, raw matte surface",
               "featuredImage": "gallery/625x465_1052255_956543_1429687247.jpg",
               "materialConfigs": [
                 {
-                  "id": 73,
+                  "id": "73",
                   "name": "Stainless Steel",
                   "color": "Gray steel, raw",
-                  "colorImage": "color_images/metal_stainless_steel.jpg",
-                  "colorCode": "#9C969B"
+                  "colorCode": "#9C969B",
+                  "colorImage": "color_images/metal_stainless_steel.jpg"
                 },
                 {
-                  "id": 74,
+                  "id": "74",
                   "name": "Stainless Steel",
                   "color": "Black",
-                  "colorImage": "color_images/swatch-steel-matte-black-20131023.png",
-                  "colorCode": "#2F2B2D"
+                  "colorCode": "#2F2B2D",
+                  "colorImage": "color_images/swatch-steel-matte-black-20131023.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, polished",
               "summary": "Solid stainless steel, polished shiny surface",
               "featuredImage": "gallery/625x465_1052255_956543_1429687247.jpg",
               "materialConfigs": [
                 {
-                  "id": 75,
+                  "id": "75",
                   "name": "Polished Steel",
                   "color": "Gray steel, polished",
-                  "colorImage": "color_images/swatch-steel-polished-gray-20131023.png",
-                  "colorCode": "#7B6F7"
+                  "colorCode": "#7B6F7",
+                  "colorImage": "color_images/swatch-steel-polished-gray-20131023.png"
                 },
                 {
-                  "id": 76,
+                  "id": "76",
                   "name": "Stainless Steel, Polished",
                   "color": "Black",
-                  "colorImage": null,
-                  "colorCode": "#545347"
+                  "colorCode": "#545347",
+                  "colorImage": null
                 },
                 {
-                  "id": 77,
+                  "id": "77",
                   "name": "Stainless Steel, Polished",
                   "color": "Brown steel, polished",
-                  "colorImage": "color_images/Wheat_Penny.png",
-                  "colorCode": "#C0AB91"
+                  "colorCode": "#C0AB91",
+                  "colorImage": "color_images/Wheat_Penny.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Plated, raw",
               "summary": "Solid stainless steel, plated raw matte surface",
               "featuredImage": "gallery/625x465_1052255_956543_1429687247.jpg",
               "materialConfigs": [
                 {
-                  "id": 78,
+                  "id": "78",
                   "name": "Gold Plated Stainless Steel",
                   "color": "Gold plated, raw",
-                  "colorImage": "color_images/Gold_Plated.png",
-                  "colorCode": "#B9813F"
+                  "colorCode": "#B9813F",
+                  "colorImage": "color_images/Gold_Plated.png"
                 },
                 {
-                  "id": 79,
+                  "id": "79",
                   "name": "Plated Steel",
                   "color": "Bronze plated, raw",
-                  "colorImage": "color_images/metal_bronze_matte.jpg",
-                  "colorCode": "644B34"
+                  "colorCode": "644B34",
+                  "colorImage": "color_images/metal_bronze_matte.jpg"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Plated, polished",
               "summary": "Solid stainless steel, plated polished shiny surface",
               "featuredImage": "gallery/625x465_1052255_956543_1429687247.jpg",
               "materialConfigs": [
                 {
-                  "id": 80,
+                  "id": "80",
                   "name": "Gold Plated Polished Stainless Steel",
                   "color": "Gold plated, polished",
-                  "colorImage": "color_images/Gold_Plated.png",
-                  "colorCode": "#E8CA5C"
+                  "colorCode": "#E8CA5C",
+                  "colorImage": "color_images/Gold_Plated.png"
                 },
                 {
-                  "id": 81,
+                  "id": "81",
                   "name": "Plated Steel, Polished",
                   "color": "Bronze plated, polished",
-                  "colorImage": "color_images/metal_bronze_shiny.jpg",
-                  "colorCode": "#C4B29E"
+                  "colorCode": "#C4B29E",
+                  "colorImage": "color_images/metal_bronze_shiny.jpg"
                 },
                 {
-                  "id": 82,
+                  "id": "82",
                   "name": "Plated Steel, Polished",
                   "color": "Nickel",
-                  "colorImage": "color_images/swatch-steel-polished-nickel-20131023.png",
-                  "colorCode": "#E1DBE2"
+                  "colorCode": "#E1DBE2",
+                  "colorImage": "color_images/swatch-steel-polished-nickel-20131023.png"
                 }
               ]
             }
@@ -881,44 +902,47 @@
           },
           "finishGroups": [
             {
+              "materialname": "Metals",
               "name": "Solid, raw",
               "summary": "Solid high detail stainless steel, raw matte surface",
               "featuredImage": "gallery/detailedsteel-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 83,
+                  "id": "83",
                   "name": "High Detail Stainless Steel, raw",
                   "color": "Raw",
-                  "colorImage": "color_images/matt.jpg",
-                  "colorCode": "#D1C9CB"
+                  "colorCode": "#D1C9CB",
+                  "colorImage": "color_images/matt.jpg"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, polished",
               "summary": "Solid high detail stainless steel, polished shiny surface, less details due to polishing",
               "featuredImage": "gallery/detailedsteel-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 84,
+                  "id": "84",
                   "name": "High Detail Stainless Steel, Satin",
                   "color": "Polished",
-                  "colorImage": "color_images/metalic.jpg",
-                  "colorCode": "#C2C1B2"
+                  "colorCode": "#C2C1B2",
+                  "colorImage": "color_images/metalic.jpg"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, mirror polished",
               "summary": "Solid high detail stainless steel, strong polished reflecting surface, few details due to polishing",
               "featuredImage": "gallery/detailedsteel-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 85,
+                  "id": "85",
                   "name": "High Detail Stainless Steel, Glossy",
                   "color": "N/A",
-                  "colorImage": "color_images/polished.jpg",
-                  "colorCode": "#B9B7BA"
+                  "colorCode": "#B9B7BA",
+                  "colorImage": "color_images/polished.jpg"
                 }
               ]
             }
@@ -937,79 +961,83 @@
           },
           "finishGroups": [
             {
+              "materialname": "Metals",
               "name": "Solid, raw",
               "summary": "Solid brass, rough antique looking raw surface",
               "featuredImage": "gallery/brass-top-morph-bangle-20150218.jpg",
               "materialConfigs": [
                 {
-                  "id": 86,
+                  "id": "86",
                   "name": "Solid Raw Brass",
                   "color": "Raw",
-                  "colorImage": "color_images/swatch-raw-brass-20140116.png",
-                  "colorCode": "E9D0A2"
+                  "colorCode": "E9D0A2",
+                  "colorImage": "color_images/swatch-raw-brass-20140116.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, raw, PU coated",
               "summary": "Solid brass, raw matte surface, PU coated to slow down oxidation",
               "featuredImage": "gallery/brass-top-morph-bangle-20150218.jpg",
               "materialConfigs": [
                 {
-                  "id": 87,
+                  "id": "87",
                   "name": "Natural Brass, PU coated",
                   "color": "Raw, PU coated",
-                  "colorImage": "color_images/BS-finish-natural-PU-coated.jpg",
-                  "colorCode": "DEC77E"
+                  "colorCode": "DEC77E",
+                  "colorImage": "color_images/BS-finish-natural-PU-coated.jpg"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, polished",
               "summary": "Solid brass, polished shiny surface",
               "featuredImage": "gallery/brass-top-morph-bangle-20150218.jpg",
               "materialConfigs": [
                 {
-                  "id": 88,
+                  "id": "88",
                   "name": "Polished Brass",
                   "color": "Polished",
-                  "colorImage": "color_images/swatch-polished-brass-20140116.png",
-                  "colorCode": "#F2D471"
+                  "colorCode": "#F2D471",
+                  "colorImage": "color_images/swatch-polished-brass-20140116.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Plated, polished",
               "summary": "Solid brass, plated polished shiny surface",
               "featuredImage": "gallery/brass-top-morph-bangle-20150218.jpg",
               "materialConfigs": [
                 {
-                  "id": 89,
+                  "id": "89",
                   "name": "Rhodium Plated Brass",
                   "color": "Rhodium plated polished brass",
-                  "colorImage": null,
-                  "colorCode": "#C7C9C1"
+                  "colorCode": "#C7C9C1",
+                  "colorImage": null
                 },
                 {
-                  "id": 90,
+                  "id": "90",
                   "name": "Plated brass, polished",
                   "color": "Black",
-                  "colorImage": null,
-                  "colorCode": "#3e3e3e"
+                  "colorCode": "#3e3e3e",
+                  "colorImage": null
                 },
                 {
-                  "id": 91,
+                  "id": "91",
                   "name": "Plated brass, polished",
                   "color": "Gold plated polished brass",
-                  "colorImage": null,
-                  "colorCode": "#eec34f"
+                  "colorCode": "#eec34f",
+                  "colorImage": null
                 },
                 {
-                  "id": 92,
+                  "id": "92",
                   "name": "Plated brass, polished",
                   "color": "Rose gold plated polished brass",
-                  "colorImage": null,
-                  "colorCode": "#f1d2a5"
+                  "colorCode": "#f1d2a5",
+                  "colorImage": null
                 }
               ]
             }
@@ -1028,30 +1056,32 @@
           },
           "finishGroups": [
             {
+              "materialname": "Metals",
               "name": "Solid, raw",
               "summary": "Solid copper, raw matte surface",
               "featuredImage": "gallery/img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 93,
+                  "id": "93",
                   "name": "Copper",
                   "color": "Raw",
-                  "colorImage": "color_images/natural_color_3dprintlab.jpg",
-                  "colorCode": "#E0976A"
+                  "colorCode": "#E0976A",
+                  "colorImage": "color_images/natural_color_3dprintlab.jpg"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, raw, PU coated",
               "summary": "Solid copper, raw matte surface, PU coated to slow down oxidation",
               "featuredImage": "gallery/img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 94,
+                  "id": "94",
                   "name": "Copper, PU coated",
                   "color": "Raw, PU coated",
-                  "colorImage": "color_images/natural_color_3dprintlab.jpg",
-                  "colorCode": "#E0976A"
+                  "colorCode": "#E0976A",
+                  "colorImage": "color_images/natural_color_3dprintlab.jpg"
                 }
               ]
             }
@@ -1070,72 +1100,77 @@
           },
           "finishGroups": [
             {
+              "materialname": "Metals",
               "name": "Plated, raw",
               "summary": "Solid stainless steel, bronze plated raw matte surface",
               "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
               "materialConfigs": [
                 {
-                  "id": 95,
+                  "id": "95",
                   "name": "Matte Bronze Steel",
                   "color": "Bronze plated steel, raw",
-                  "colorImage": "color_images/metal_bronze_matte.jpg",
-                  "colorCode": "#836A54"
+                  "colorCode": "#836A54",
+                  "colorImage": "color_images/metal_bronze_matte.jpg"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Plated, polished",
               "summary": "Solid stainless steel, bronze plated polished shiny surface",
               "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
               "materialConfigs": [
                 {
-                  "id": 96,
+                  "id": "96",
                   "name": "Polished Bronze Steel",
                   "color": "Bronze plated steel, polished",
-                  "colorImage": "color_images/metal_bronze_shiny.jpg",
-                  "colorCode": "#9B89752"
+                  "colorCode": "#9B89752",
+                  "colorImage": "color_images/metal_bronze_shiny.jpg"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, raw",
               "summary": "Solid bronze, raw matte surface",
               "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
               "materialConfigs": [
                 {
-                  "id": 97,
+                  "id": "97",
                   "name": "Natural Uncoated Bronze",
                   "color": "Raw",
-                  "colorImage": "color_images/unpolished-uncoated.png",
-                  "colorCode": "#DFA862"
+                  "colorCode": "#DFA862",
+                  "colorImage": "color_images/unpolished-uncoated.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, raw, PU coated",
               "summary": "Solid bronze, raw matte surface, PU coated to slow down oxidation",
               "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
               "materialConfigs": [
                 {
-                  "id": 98,
+                  "id": "98",
                   "name": "Natural Bronze, PU coated",
                   "color": "Raw, PU coated",
-                  "colorImage": "color_images/unpolished-coated.png",
-                  "colorCode": "#9F7D49"
+                  "colorCode": "#9F7D49",
+                  "colorImage": "color_images/unpolished-coated.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, polished",
               "summary": "Solid bronze, polished shiny surface",
               "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
               "materialConfigs": [
                 {
-                  "id": 99,
+                  "id": "99",
                   "name": "Polished Bronze",
                   "color": "Solid polished shiny bronze",
-                  "colorImage": "color_images/swatch-polished-bronze-20140702.png",
-                  "colorCode": "#785730"
+                  "colorCode": "#785730",
+                  "colorImage": "color_images/swatch-polished-bronze-20140702.png"
                 }
               ]
             }
@@ -1154,72 +1189,77 @@
           },
           "finishGroups": [
             {
+              "materialname": "Metals",
               "name": "Solid, raw",
               "summary": "Solid sterling silver, raw sandblasted matte surface",
               "featuredImage": "gallery/625x465_482033_161787_1429673543.jpg",
               "materialConfigs": [
                 {
-                  "id": 100,
+                  "id": "100",
                   "name": "Sterling Silver, Sandblasted",
                   "color": "Raw",
-                  "colorImage": "color_images/sanded_silver.png",
-                  "colorCode": "#C6C6BC"
+                  "colorCode": "#C6C6BC",
+                  "colorImage": "color_images/sanded_silver.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, polished",
               "summary": "Solid sterling silver, polished shiny surface",
               "featuredImage": "gallery/625x465_482033_161787_1429673543.jpg",
               "materialConfigs": [
                 {
-                  "id": 101,
+                  "id": "101",
                   "name": "Silver Gloss",
                   "color": "Polished",
-                  "colorImage": "color_images/gloss.png",
-                  "colorCode": "#CFCFCF"
+                  "colorCode": "#CFCFCF",
+                  "colorImage": "color_images/gloss.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, mirror polished",
               "summary": "Solid sterling silver, mirror polished reflecting surface",
               "featuredImage": "gallery/625x465_482033_161787_1429673543.jpg",
               "materialConfigs": [
                 {
-                  "id": 102,
+                  "id": "102",
                   "name": "Sterling Silver Mirror Polished",
                   "color": "N/A",
-                  "colorImage": "color_images/mirror_polished_silver.png",
-                  "colorCode": "#F3EFE3"
+                  "colorCode": "#F3EFE3",
+                  "colorImage": "color_images/mirror_polished_silver.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, satin",
               "summary": "Solid sterling silver, surface with a satin look.",
               "featuredImage": "gallery/625x465_482033_161787_1429673543.jpg",
               "materialConfigs": [
                 {
-                  "id": 103,
+                  "id": "103",
                   "name": "Silver, Satin",
                   "color": "N/A",
-                  "colorImage": null,
-                  "colorCode": "#F3EFE1"
+                  "colorCode": "#F3EFE1",
+                  "colorImage": null
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, antique",
               "summary": "Solid sterling silver, polished shiny smooth outer surface, recessed areas dark and rough",
               "featuredImage": "gallery/625x465_482033_161787_1429673543.jpg",
               "materialConfigs": [
                 {
-                  "id": 104,
+                  "id": "104",
                   "name": "Silver, Antique",
                   "color": "Antique",
-                  "colorImage": "color_images/Antique.png",
-                  "colorCode": "#8A7F73"
+                  "colorCode": "#8A7F73",
+                  "colorImage": "color_images/Antique.png"
                 }
               ]
             }
@@ -1238,58 +1278,62 @@
           },
           "finishGroups": [
             {
+              "materialname": "Metals",
               "name": "Gold plated, raw",
               "summary": "Solid stainless steel, gold plated raw matte surface",
               "featuredImage": "gallery/gold-detail-lost.jpg",
               "materialConfigs": [
                 {
-                  "id": 105,
+                  "id": "105",
                   "name": "Gold Plated Stainless Steel",
                   "color": "Gold plated steel, raw",
-                  "colorImage": "color_images/Gold_Plated.png",
-                  "colorCode": "#FCD994"
+                  "colorCode": "#FCD994",
+                  "colorImage": "color_images/Gold_Plated.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Gold plated, polished",
               "summary": "Solid stainless steel, gold plated polished shiny surface",
               "featuredImage": "gallery/gold-detail-lost.jpg",
               "materialConfigs": [
                 {
-                  "id": 106,
+                  "id": "106",
                   "name": "Gold Plated Polished Stainless Steel",
                   "color": "Gold plated steel, polished",
-                  "colorImage": "color_images/Gold_Plated.png",
-                  "colorCode": "#F3BF7C"
+                  "colorCode": "#F3BF7C",
+                  "colorImage": "color_images/Gold_Plated.png"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid 14k gold",
               "summary": "Solid 14k gold",
               "featuredImage": "gallery/gold-detail-lost.jpg",
               "materialConfigs": [
                 {
-                  "id": 107,
+                  "id": "107",
                   "name": "14k Gold",
                   "color": "Gold",
-                  "colorImage": "color_images/14K-yellow-gold_3Dprintlab.jpg",
-                  "colorCode": "#FEE6AD"
+                  "colorCode": "#FEE6AD",
+                  "colorImage": "color_images/14K-yellow-gold_3Dprintlab.jpg"
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid 18k gold",
               "summary": "Solid 18k gold",
               "featuredImage": "gallery/gold-detail-lost.jpg",
               "materialConfigs": [
                 {
-                  "id": 108,
+                  "id": "108",
                   "name": "Solid 18k gold",
                   "color": "Gold",
-                  "colorImage": "color_images/18K-yellow-gold_3Dprintlab.jpg",
-                  "colorCode": "#FEE6AD"
+                  "colorCode": "#FEE6AD",
+                  "colorImage": "color_images/18K-yellow-gold_3Dprintlab.jpg"
                 }
               ]
             }
@@ -1308,16 +1352,17 @@
           },
           "finishGroups": [
             {
+              "materialname": "Metals",
               "name": "Solid, polished",
               "summary": "Solid platinum, polished shiny surface",
               "featuredImage": "gallery/platinum-top-arrow-ring.jpg",
               "materialConfigs": [
                 {
-                  "id": 109,
+                  "id": "109",
                   "name": "Platinum",
                   "color": "Polished",
-                  "colorImage": "color_images/swatch-platinum-20140702.png",
-                  "colorCode": "#F9FAF7"
+                  "colorCode": "#F9FAF7",
+                  "colorImage": "color_images/swatch-platinum-20140702.png"
                 }
               ]
             }
@@ -1336,30 +1381,32 @@
           },
           "finishGroups": [
             {
+              "materialname": "Metals",
               "name": "Solid, raw",
               "summary": "Solid titanium, raw matte surface",
               "featuredImage": "gallery/titanium-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 110,
+                  "id": "110",
                   "name": "Light Gray Titanium",
                   "color": "Raw",
-                  "colorImage": null,
-                  "colorCode": "#CCC9C3"
+                  "colorCode": "#CCC9C3",
+                  "colorImage": null
                 }
               ]
             },
             {
+              "materialname": "Metals",
               "name": "Solid, polished",
               "summary": "Solid titanium, polished shiny surface",
               "featuredImage": "gallery/titanium-img1_b.jpg",
               "materialConfigs": [
                 {
-                  "id": 111,
+                  "id": "111",
                   "name": "Light Gray Polished Titanium",
                   "color": "Polished",
-                  "colorImage": null,
-                  "colorCode": "#B2B8B7"
+                  "colorCode": "#B2B8B7",
+                  "colorImage": null
                 }
               ]
             }
@@ -1383,79 +1430,81 @@
           },
           "finishGroups": [
             {
+              "materialname": "Other",
               "name": "Glazed, raw",
               "summary": "Solid ceramics, raw glazed smooth surface",
               "featuredImage": "gallery/vase-all-colors-625x416.jpg",
               "materialConfigs": [
                 {
-                  "id": 112,
+                  "id": "112",
                   "name": "Black Matte Porcelain",
                   "color": "Black",
-                  "colorImage": "color_images/th_sbc.jpg",
-                  "colorCode": "#393939"
+                  "colorCode": "#393939",
+                  "colorImage": "color_images/th_sbc.jpg"
                 }
               ]
             },
             {
+              "materialname": "Other",
               "name": "Glazed, glossy",
               "summary": "Solid ceramics, glossy glazed smooth surface",
               "featuredImage": "gallery/vase-all-colors-625x416.jpg",
               "materialConfigs": [
                 {
-                  "id": 113,
+                  "id": "113",
                   "name": "Porcelain",
                   "color": "White",
-                  "colorImage": "color_images/ceramics-thumb.jpg",
-                  "colorCode": ""
+                  "colorCode": "",
+                  "colorImage": "color_images/ceramics-thumb.jpg"
                 },
                 {
-                  "id": 114,
+                  "id": "114",
                   "name": "Porcelain",
                   "color": "Black",
-                  "colorImage": "color_images/blackceramics_thumbnail.jpg",
-                  "colorCode": ""
+                  "colorCode": "",
+                  "colorImage": "color_images/blackceramics_thumbnail.jpg"
                 },
                 {
-                  "id": 115,
+                  "id": "115",
                   "name": "Porcelain",
                   "color": "Green, glossy",
-                  "colorImage": "color_images/th_sbc.jpg",
-                  "colorCode": ""
+                  "colorCode": "",
+                  "colorImage": "color_images/th_sbc.jpg"
                 },
                 {
-                  "id": 116,
+                  "id": "116",
                   "name": "Porcelain",
                   "color": "Yellow, glossy",
-                  "colorImage": "color_images/th_pyc.jpg",
-                  "colorCode": ""
+                  "colorCode": "",
+                  "colorImage": "color_images/th_pyc.jpg"
                 },
                 {
-                  "id": 117,
+                  "id": "117",
                   "name": "Porcelain",
                   "color": "Blue, glossy",
-                  "colorImage": "color_images/th_ebc.jpg",
-                  "colorCode": ""
+                  "colorCode": "",
+                  "colorImage": "color_images/th_ebc.jpg"
                 },
                 {
-                  "id": 118,
+                  "id": "118",
                   "name": "Porcelain",
                   "color": "Red",
-                  "colorImage": null,
-                  "colorCode": "#ff0000"
+                  "colorCode": "#ff0000",
+                  "colorImage": null
                 },
                 {
-                  "id": 119,
+                  "id": "119",
                   "name": "Ceramics",
                   "color": "Orange, glossy",
-                  "colorImage": null,
-                  "colorCode": "#E45125"
+                  "colorCode": "#E45125",
+                  "colorImage": null
                 },
                 {
-                  "id": 120,
+                  "id": "120",
                   "name": "Ceramics",
                   "color": "Red, glossy",
-                  "colorImage": null,
-                  "colorCode": "#EA1D25"
+                  "colorCode": "#EA1D25",
+                  "colorImage": null
                 }
               ]
             }
