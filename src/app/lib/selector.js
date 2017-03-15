@@ -72,6 +72,9 @@ export const selectMaterialMenuValues = (state) => {
     },
     material: {
       materials
+    },
+    model: {
+      models
     }
   } = state
 
@@ -83,7 +86,7 @@ export const selectMaterialMenuValues = (state) => {
     type: 'group',
     label: materialGroup.name,
     children: materialGroup.materials.map((material) => {
-      const offer = getBestOfferForMaterial(material, price)
+      const offer = getBestOfferForMaterial(material, price, models)
       return {
         type: 'material',
         value: material.id,
@@ -128,10 +131,13 @@ export const selectOffers = (state) => {
     },
     material: {
       selectedMaterialConfig
+    },
+    model: {
+      models
     }
   } = state
 
-  return getOffersForMaterialConfig(selectedMaterialConfig, price)
+  return getOffersForMaterialConfig(selectedMaterialConfig, price, models)
 }
 
 export const selectPrintingServiceRequests = (state) => {

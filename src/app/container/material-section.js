@@ -39,6 +39,7 @@ import {
 const MaterialSection = ({
   areAllUploadsFinished,
   price,
+  models,
   materialMenuValues,
   selectedMaterial,
   printingServiceRequests,
@@ -65,7 +66,7 @@ const MaterialSection = ({
     const colorValues = finishGroup.materialConfigs
       // Filter out material configs which do not have an offer
       .filter(materialConfig => (
-        Boolean(getBestOfferForMaterialConfig(materialConfig.id, price))
+        Boolean(getBestOfferForMaterialConfig(materialConfig.id, price, models))
       ))
       .map(({id, color, colorCode, colorImage}) => ({
         value: id,
@@ -76,7 +77,8 @@ const MaterialSection = ({
 
     let bestOffer = getBestOfferForMaterialConfig(
       selectedMaterialConfigs[finishGroup.id],
-      price
+      price,
+      models
     )
     let selectedColorValue = colorValues.find(({value}) => (
       selectedMaterialConfigs[finishGroup.id] !== undefined &&
@@ -90,7 +92,8 @@ const MaterialSection = ({
       if (selectedColorValue) {
         bestOffer = getBestOfferForMaterialConfig(
           selectedColorValue.value,
-          price
+          price,
+          models
         )
       }
     }
@@ -184,6 +187,7 @@ const MaterialSection = ({
 const mapStateToProps = state => ({
   areAllUploadsFinished: state.model.areAllUploadsFinished,
   price: state.price.price,
+  models: state.model.models,
   materialMenuValues: selectMaterialMenuValues(state),
   selectedMaterial: selectCurrentMaterial(state),
   selectedMaterialConfigs: state.material.selectedMaterialConfigs,

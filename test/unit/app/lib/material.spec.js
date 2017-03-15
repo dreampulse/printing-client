@@ -84,6 +84,7 @@ describe('hasMaterialMultipleConfigs()', () => {
 
 describe('getOffersForMaterialConfig()', () => {
   let price
+  let models
 
   beforeEach(() => {
     price = {
@@ -117,6 +118,15 @@ describe('getOffersForMaterialConfig()', () => {
         }
       }
     }
+
+    models = {
+      'model-1': {
+        quantity: 1
+      },
+      'model-2': {
+        quantity: 2
+      }
+    }
   })
 
   it('returns empty array if price is not given', () => {
@@ -124,21 +134,21 @@ describe('getOffersForMaterialConfig()', () => {
   })
 
   it('returns expected offers', () => {
-    expect(getOffersForMaterialConfig('config-1', price), 'to equal', [{
+    expect(getOffersForMaterialConfig('config-1', price, models), 'to equal', [{
       name: 'imaterialize',
-      items: [{isPrintable: true}],
+      items: [{isPrintable: true, quantity: 1}],
       shipping: {some: 'shipping-1'},
       vatPercentage: 0.19,
       currency: 'USD'
     }, {
       name: 'imaterialize',
-      items: [{isPrintable: true}],
+      items: [{isPrintable: true, quantity: 1}],
       shipping: {some: 'shipping-2'},
       vatPercentage: 0.19,
       currency: 'USD'
     }, {
       name: 'shapeways',
-      items: [{isPrintable: true}],
+      items: [{isPrintable: true, quantity: 1}],
       shipping: {some: 'shipping-1'},
       vatPercentage: 0.19,
       currency: 'USD'
@@ -152,9 +162,9 @@ describe('getOffersForMaterialConfig()', () => {
       isPrintable: true
     }]
 
-    expect(getOffersForMaterialConfig('config-1', price), 'to equal', [{
+    expect(getOffersForMaterialConfig('config-1', price, models), 'to equal', [{
       name: 'shapeways',
-      items: [{isPrintable: true}],
+      items: [{isPrintable: true, quantity: 1}],
       shipping: {some: 'shipping-1'},
       vatPercentage: 0.19,
       currency: 'USD'
@@ -164,6 +174,7 @@ describe('getOffersForMaterialConfig()', () => {
 
 describe('getBestOfferForMaterialConfig()', () => {
   let price
+  let models
 
   beforeEach(() => {
     price = {
@@ -201,25 +212,36 @@ describe('getBestOfferForMaterialConfig()', () => {
         }
       }
     }
+
+    models = {
+      'model-1': {
+        quantity: 1
+      },
+      'model-2': {
+        quantity: 2
+      }
+    }
   })
 
   it('returns cheapest offer for given material config', () => {
-    const bestOffer = getBestOfferForMaterialConfig('config-1', price)
+    const bestOffer = getBestOfferForMaterialConfig('config-1', price, models)
     expect(bestOffer, 'to equal', {
       offer: {
         name: 'imaterialize',
         items: [{
           isPrintable: true,
-          price: 10
+          price: 10,
+          quantity: 1
         }, {
           isPrintable: true,
-          price: 10
+          price: 10,
+          quantity: 2
         }],
         shipping: {price: 10},
         vatPercentage: 0.1,
         currency: 'USD'
       },
-      price: 33
+      price: 44
     })
   })
 })
@@ -227,6 +249,7 @@ describe('getBestOfferForMaterialConfig()', () => {
 describe('getBestOfferForMaterial()', () => {
   let price
   let material
+  let models
 
   beforeEach(() => {
     price = {
@@ -314,25 +337,36 @@ describe('getBestOfferForMaterial()', () => {
         }]
       }]
     }
+
+    models = {
+      'model-1': {
+        quantity: 1
+      },
+      'model-2': {
+        quantity: 2
+      }
+    }
   })
 
   it('returns cheapest offer for given material', () => {
-    const bestOffer = getBestOfferForMaterial(material, price)
+    const bestOffer = getBestOfferForMaterial(material, price, models)
     expect(bestOffer, 'to equal', {
       offer: {
         name: 'imaterialize',
         items: [{
           isPrintable: true,
-          price: 10
+          price: 10,
+          quantity: 1
         }, {
           isPrintable: true,
-          price: 10
+          price: 10,
+          quantity: 2
         }],
         shipping: {price: 10},
         vatPercentage: 0.1,
         currency: 'USD'
       },
-      price: 33
+      price: 44
     })
   })
 })

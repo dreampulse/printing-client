@@ -47,6 +47,7 @@ describe('selectCommonQuantity', () => {
 
 describe('selectMaterialMenuValues()', () => {
   let price
+  let models
   let materials
   let material1
   let material2
@@ -69,6 +70,7 @@ describe('selectMaterialMenuValues()', () => {
     }
 
     price = {some: 'price'}
+    models = {some: 'models'}
     materials = {
       materialStructure: [{
         name: 'Group 1',
@@ -86,16 +88,16 @@ describe('selectMaterialMenuValues()', () => {
 
   it('returns expected material menu values', () => {
     materialLib.getBestOfferForMaterial
-      .withArgs(material1, price)
+      .withArgs(material1, price, models)
       .returns({
         price: 10,
         offer: {currency: 'USD'}
       })
     materialLib.getBestOfferForMaterial
-      .withArgs(material2, price)
+      .withArgs(material2, price, models)
       .returns(null)
     materialLib.getBestOfferForMaterial
-      .withArgs(material3, price)
+      .withArgs(material3, price, models)
       .returns(null)
 
     materialLib.hasMaterialMultipleConfigs.withArgs(material1).returns(true)
@@ -108,6 +110,9 @@ describe('selectMaterialMenuValues()', () => {
       },
       material: {
         materials
+      },
+      model: {
+        models
       }
     }
 
@@ -149,6 +154,9 @@ describe('selectMaterialMenuValues()', () => {
       },
       material: {
         materials: undefined
+      },
+      model: {
+        models
       }
     }
 
@@ -163,6 +171,9 @@ describe('selectMaterialMenuValues()', () => {
       },
       material: {
         materials
+      },
+      model: {
+        models
       }
     }
 
@@ -224,18 +235,23 @@ describe('selectCurrentMaterial()', () => {
 
 describe('selectOffers()', () => {
   let price
+  let models
   let state
 
   beforeEach(() => {
     sinon.stub(materialLib)
 
     price = {some: 'price'}
+    models = {some: 'models'}
     state = {
       price: {
         price
       },
       material: {
         selectedMaterialConfig: 'some-config-id'
+      },
+      model: {
+        models
       }
     }
   })
@@ -246,7 +262,7 @@ describe('selectOffers()', () => {
 
   it('returns expected offers', () => {
     materialLib.getOffersForMaterialConfig
-      .withArgs('some-config-id', price)
+      .withArgs('some-config-id', price, models)
       .returns(['some-offers'])
 
     expect(selectOffers(state), 'to equal', ['some-offers'])
