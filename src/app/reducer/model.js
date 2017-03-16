@@ -12,6 +12,13 @@ const initialState = {
   models: {}
 }
 
+function handleUnitChanged (state, {payload: {unit}}) {
+  return {
+    ...state,
+    selectedUnit: unit
+  }
+}
+
 function handleIndividualQuantityChanged (state, {payload: {quantity, modelId}}) {
   return {
     ...state,
@@ -136,5 +143,6 @@ export default handleActions({
   [TYPE.MODEL.CHECK_STATUS_STARTED]: handleCheckStatusStarted,
   [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished,
   [TYPE.MODEL.QUANTITIY_CHANGED]: handleQuantityChanged,
-  [TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED]: handleIndividualQuantityChanged
+  [TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED]: handleIndividualQuantityChanged,
+  [TYPE.MODEL.UNIT_CHANGED]: handleUnitChanged
 }, initialState)

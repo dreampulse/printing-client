@@ -3,7 +3,8 @@ import {
   uploadFiles,
   checkUploadStatus,
   changeQuantity,
-  changeIndividualQuantity
+  changeIndividualQuantity,
+  changeUnit
 } from '../../../../src/app/action/model'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
@@ -213,6 +214,13 @@ describe('Model Integration Test', () => {
       expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         quantity: 42
       })
+    })
+  })
+
+  describe('changeUnit()', () => {
+    it('updates the current selected unit state', () => {
+      store.dispatch(changeUnit({unit: 'some-unit'}))
+      expect(store.getState().model.selectedUnit, 'to equal', 'some-unit')
     })
   })
 })

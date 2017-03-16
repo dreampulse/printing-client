@@ -13,6 +13,9 @@ export const changeQuantity = ({quantity}) =>
 export const changeIndividualQuantity = ({quantity, modelId}) =>
   createAction(TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED)({quantity, modelId})
 
+export const changeUnit = ({unit}) =>
+  createAction(TYPE.MODEL.UNIT_CHANGED)({unit})
+
 export const checkUploadStatus = ({modelId}) => async (dispatch) => {
   dispatch(createAction(TYPE.MODEL.CHECK_STATUS_STARTED)({modelId}))
 
