@@ -1,11 +1,19 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
+
+import PageHeader from 'Component/page-header'
+import Link from 'Component/link'
+import SidebarLayout from 'Component/sidebar-layout'
+import Section from 'Component/section'
+
+import backIcon from 'Icon/back.svg'
+
+import AppLayout from './app-layout'
+
 import {selectCartItems, selectCart} from '../lib/selector'
 
-import Main from '../component-legacy/main'
 import Button from '../component-legacy/button'
-import Headline from '../component-legacy/headline'
 import PaypalButton from '../component-legacy/paypal-button'
 import SectionHeadline from '../component-legacy/section-headline'
 import Table from '../component-legacy/table'
@@ -89,20 +97,30 @@ const CartPage = ({
     </section>
   )
 
-  return (
-    <Main>
-      <Button label="Back" onClick={onGoBack} />
-      <Headline label="Order summary" modifiers={['xl']} />
-      <CartPreviewSection />
-      <ul>
-        <li>Selected Vendor: {selectedVendor}</li>
-        <li>Selected Shipping Method: {selectedShipping}</li>
-        <li>Selected Material-Id: {selectedMaterial}</li>
-      </ul>
-      <AddressSection />
-      <TotalPriceSection />
+  const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
+  const paymentSection = (
+    <div>
       <PaymentSection />
-    </Main>
+      <TotalPriceSection />
+    </div>
+  )
+  return (
+    <AppLayout currentStep={2}>
+      <PageHeader label="Order Summary" backLink={backLink} />
+      <SidebarLayout sidebar={paymentSection}>
+        <Section modifiers={['highlight']}>
+          <AddressSection />
+        </Section>
+        <Section modifiers={['highlight']}>
+          <ul>
+            <li>Selected Vendor: {selectedVendor}</li>
+            <li>Selected Shipping Method: {selectedShipping}</li>
+            <li>Selected Material-Id: {selectedMaterial}</li>
+          </ul>
+        </Section>
+        <CartPreviewSection />
+      </SidebarLayout>
+    </AppLayout>
   )
 }
 
