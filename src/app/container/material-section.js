@@ -1,7 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {compose} from 'recompose'
+import {compose, lifecycle} from 'recompose'
 
+import scrollTo from 'Service/scroll-to'
 import {buildClassArray} from 'Lib/build-class-name'
 import {
   selectMaterialMenuValues,
@@ -39,6 +40,7 @@ import {
 const MaterialSection = ({
   areAllUploadsFinished,
   price,
+  models,
   materialMenuValues,
   selectedMaterial,
   printingServiceRequests,
@@ -65,7 +67,7 @@ const MaterialSection = ({
     const colorValues = finishGroup.materialConfigs
       // Filter out material configs which do not have an offer
       .filter(materialConfig => (
-        Boolean(getBestOfferForMaterialConfig(materialConfig.id, price))
+        Boolean(getBestOfferForMaterialConfig(materialConfig.id, price, models))
       ))
       .map(({id, color, colorCode, colorImage}) => ({
         value: id,
@@ -76,7 +78,8 @@ const MaterialSection = ({
 
     let bestOffer = getBestOfferForMaterialConfig(
       selectedMaterialConfigs[finishGroup.id],
-      price
+      price,
+      models
     )
     let selectedColorValue = colorValues.find(({value}) => (
       selectedMaterialConfigs[finishGroup.id] !== undefined &&
@@ -90,7 +93,8 @@ const MaterialSection = ({
       if (selectedColorValue) {
         bestOffer = getBestOfferForMaterialConfig(
           selectedColorValue.value,
-          price
+          price,
+          models
         )
       }
     }
@@ -126,7 +130,7 @@ const MaterialSection = ({
     return (
       <MaterialCard
         key={finishGroup.name}
-        title={finishGroup.materialName}
+        title={finishGroup.materialname}
         shipping={bestOffer && formatDeliveryTime(bestOffer.offer.shipping.deliveryTime)}
         subline={finishGroup.name}
         description={finishGroup.summary}
@@ -143,7 +147,10 @@ const MaterialSection = ({
         }
         onSelectClick={
           selectedColorValue &&
-          (() => onSelectMaterialConfig(selectedColorValue.value))
+          (() => {
+            onSelectMaterialConfig(selectedColorValue.value)
+            scrollTo('#section-provider')
+          })
         }
       />
     )
@@ -184,6 +191,7 @@ const MaterialSection = ({
 const mapStateToProps = state => ({
   areAllUploadsFinished: state.model.areAllUploadsFinished,
   price: state.price.price,
+  models: state.model.models,
   materialMenuValues: selectMaterialMenuValues(state),
   selectedMaterial: selectCurrentMaterial(state),
   selectedMaterialConfigs: state.material.selectedMaterialConfigs,
@@ -198,5 +206,12 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  lifecycle({
+    componentDidUpdate (prevProps) {
+      if (!prevProps.areAllUploadsFinished && this.props.areAllUploadsFinished) {
+        scrollTo('#section-material')
+      }
+    }
+  })
 )(MaterialSection)

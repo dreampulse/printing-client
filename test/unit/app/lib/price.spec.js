@@ -1,7 +1,10 @@
-import {getCartAmount, getPriceAmount} from 'Lib/get-total-amount'
+import {
+  getCartAmount,
+  getOfferAmount
+} from 'Lib/price'
 
 describe('getCartAmount()', () => {
-  it('works as expected', () => {
+  it('returns expected amount', () => {
     const cart = {
       items: [{
         price: 10,
@@ -17,22 +20,22 @@ describe('getCartAmount()', () => {
   })
 })
 
-describe('getPriceAmount()', () => {
-  it('returns expected price', () => {
+describe('getOfferAmount()', () => {
+  it('returns expected amount', () => {
     const offer = {
       items: [{
         price: 10,
-        isPrintable: true
+        quantity: 1
       }, {
-        price: 15,
-        isPrintable: true
+        price: 20,
+        quantity: 2
       }],
       shipping: {
-        price: 5
+        price: 10
       },
-      vatPercentage: 0.19
+      vatPercentage: 0.1
     }
 
-    expect(getPriceAmount(offer), 'to equal', 35.7)
+    expect(getOfferAmount(offer), 'to equal', 66)
   })
 })

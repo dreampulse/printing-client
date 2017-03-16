@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
 import {buildClassArray} from 'Lib/build-class-name'
-import {getPriceAmount} from 'Lib/get-total-amount'
+import {getOfferAmount} from 'Lib/price'
 import {selectOffers} from 'Lib/selector'
 import {
   formatPrice,
@@ -18,11 +18,13 @@ import ProviderList from 'Component/provider-list'
 import ProviderItem from 'Component/provider-item'
 
 import {selectOffer} from 'Action/cart'
+import {goToAddress} from 'Action/navigation'
 
 const ProviderSection = ({
   selectedMaterialConfig,
   offers,
-  onSelectOffer
+  onSelectOffer,
+  onGoToAddress
 }) => {
   const headlineModifiers = buildClassArray({
     xl: true,
@@ -42,14 +44,12 @@ const ProviderSection = ({
     <ProviderItem
       key={index}
       provider={offer.name}
-      price={formatPrice(getPriceAmount(offer), offer.currency)}
+      price={formatPrice(getOfferAmount(offer), offer.currency)}
       shipping={formatShipping(offer.shipping)}
-      onCheckoutClick={() =>
-        onSelectOffer({
-          vendor: offer.name,
-          shippingName: offer.shipping.name
-        })
-      }
+      onCheckoutClick={() => {
+        onSelectOffer({offer})
+        onGoToAddress()
+      }}
     />
   ))
 
@@ -71,7 +71,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onSelectOffer: selectOffer
+  onSelectOffer: selectOffer,
+  onGoToAddress: goToAddress
 }
 
 export default compose(

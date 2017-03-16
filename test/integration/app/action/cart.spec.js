@@ -1,34 +1,27 @@
 import * as cart from '../../../../src/app/action/cart'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
-import * as navigation from '../../../../src/app/action/navigation'
 
 describe('Shopping Cart Integration Test', () => {
   let store
 
   beforeEach(() => {
     sinon.stub(printingEngine)
-    sinon.stub(navigation)
   })
 
   afterEach(() => {
     sinon.restore(printingEngine)
-    sinon.restore(navigation)
   })
 
   describe('selectOffer()', () => {
     it('should work', () => {
       store = Store({})
-      navigation.goToAddress.returns({type: 'some-type'})
 
-      store.dispatch(cart.selectOffer({
-        vendor: 'some-vendor-id',
-        shippingName: 'some-shipping-name'
-      }))
+      store.dispatch(cart.selectOffer({offer: {
+        some: 'offer'
+      }}))
 
-      expect(store.getState().cart.selectedVendor, 'to equal', 'some-vendor-id')
-      expect(store.getState().cart.selectedShipping, 'to equal', 'some-shipping-name')
-      expect(navigation.goToAddress, 'was called once')
+      expect(store.getState().cart.selectedOffer, 'to equal', {some: 'offer'})
     })
   })
 

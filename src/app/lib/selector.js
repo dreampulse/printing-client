@@ -40,6 +40,31 @@ export const selectCart = (state) => {
   }
 }
 
+export const selectCommonQuantity = (state) => {
+  // Common quantity exists only if all models have the same individual quantity
+  const {
+    model: {
+      models
+    }
+  } = state
+
+  const keys = Object.keys(models)
+  if (keys.length === 0) {
+    return undefined
+  }
+
+  return keys.reduce((quantity, modelId) => {
+    const modelQuantity = models[modelId].quantity
+    if (quantity === null) {
+      return modelQuantity
+    }
+    if (quantity === modelQuantity) {
+      return quantity
+    }
+    return undefined
+  }, null)
+}
+
 export const selectMaterialMenuValues = (state) => {
   const {
     price: {
@@ -47,6 +72,9 @@ export const selectMaterialMenuValues = (state) => {
     },
     material: {
       materials
+    },
+    model: {
+      models
     }
   } = state
 
@@ -58,7 +86,7 @@ export const selectMaterialMenuValues = (state) => {
     type: 'group',
     label: materialGroup.name,
     children: materialGroup.materials.map((material) => {
-      const offer = getBestOfferForMaterial(material, price)
+      const offer = getBestOfferForMaterial(material, price, models)
       return {
         type: 'material',
         value: material.id,
@@ -103,10 +131,13 @@ export const selectOffers = (state) => {
     },
     material: {
       selectedMaterialConfig
+    },
+    model: {
+      models
     }
   } = state
 
-  return getOffersForMaterialConfig(selectedMaterialConfig, price)
+  return getOffersForMaterialConfig(selectedMaterialConfig, price, models)
 }
 
 export const selectPrintingServiceRequests = (state) => {

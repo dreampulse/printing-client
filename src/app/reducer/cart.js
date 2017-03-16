@@ -3,23 +3,15 @@ import {handleActions} from 'redux-actions'
 import TYPE from '../type'
 
 const initialState = {
-  selectedVendor: null,
-  selectedShipping: null,
+  selectedOffer: null,
   cartId: null,
   cart: null
 }
 
-function handleVendorSelected (state, {payload}) {
+function handleOfferSelected (state, {payload: {offer}}) {
   return {
     ...state,
-    selectedVendor: payload
-  }
-}
-
-function handleShippingSelected (state, {payload}) {
-  return {
-    ...state,
-    selectedShipping: payload
+    selectedOffer: offer
   }
 }
 
@@ -38,8 +30,7 @@ function handleReceiveFinalPrice (state, {payload}) {
 }
 
 export default handleActions({
-  [TYPE.CART.VENDOR_SELECTED]: handleVendorSelected,
-  [TYPE.CART.SHIPPING_SELECTED]: handleShippingSelected,
+  [TYPE.CART.OFFER_SELECTED]: handleOfferSelected,
   [TYPE.CART.CREATED]: handleCartCreated,
   [TYPE.CART.RECEIVED_FINAL_PRICE]: handleReceiveFinalPrice
 }, initialState)

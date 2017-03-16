@@ -1,6 +1,6 @@
 import {
-  getPriceAmount
-} from 'Lib/get-total-amount'
+  getOfferAmount
+} from 'Lib/price'
 
 export function generateMaterialIds (materials) {
   materials.materialStructure.forEach((materialGroup, groupIndex) => {
@@ -22,7 +22,7 @@ export function hasMaterialMultipleConfigs (material) {
   )
 }
 
-export function getOffersForMaterialConfig (materialConfigId, price) {
+export function getOffersForMaterialConfig (materialConfigId, price, models) {
   if (!price) {
     return []
   }
@@ -34,9 +34,12 @@ export function getOffersForMaterialConfig (materialConfigId, price) {
     ...acc,
     ...vendor.shipping.map(shipping => ({
       name: vendor.name,
-      items: vendor.items.filter((_, index) =>
-        // TODO: at least the test data mixes up numbers and strings for ids
-        String(price.items[index].materialConfigId) === String(materialConfigId)
+      items: vendor.items.map((item, index) => ({
+        ...item,
+        quantity: models[price.items[index].modelId].quantity
+      }))
+      .filter((_, index) =>
+        price.items[index].materialConfigId === materialConfigId
       ),
       shipping,
       vatPercentage: vendor.vatPercentage,
@@ -51,11 +54,11 @@ export function getOffersForMaterialConfig (materialConfigId, price) {
   })
 }
 
-export function getBestOfferForMaterialConfig (materialConfigId, price) {
+export function getBestOfferForMaterialConfig (materialConfigId, price, models) {
   let bestOffer = null
-  const offers = getOffersForMaterialConfig(materialConfigId, price)
+  const offers = getOffersForMaterialConfig(materialConfigId, price, models)
   offers.forEach((offer) => {
-    const offerPrice = getPriceAmount(offer)
+    const offerPrice = getOfferAmount(offer)
     if (!bestOffer || bestOffer.price > offerPrice) {
       bestOffer = {
         offer,
@@ -67,11 +70,11 @@ export function getBestOfferForMaterialConfig (materialConfigId, price) {
   return bestOffer
 }
 
-export function getBestOfferForMaterial (material, price) {
+export function getBestOfferForMaterial (material, price, models) {
   let bestOffer = null
   material.finishGroups.forEach((finishGroup) => {
     finishGroup.materialConfigs.forEach((materialConfig) => {
-      const offer = getBestOfferForMaterialConfig(materialConfig.id, price)
+      const offer = getBestOfferForMaterialConfig(materialConfig.id, price, models)
       if (offer !== null && (!bestOffer || bestOffer.price > offer.price)) {
         bestOffer = offer
       }
