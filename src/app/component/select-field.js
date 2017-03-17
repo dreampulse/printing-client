@@ -21,7 +21,8 @@ export default class SelectField extends Component {
     isOpen: PropTypes.bool,
     setOpen: PropTypes.func,
     onChange: PropTypes.func,
-    menu: PropTypes.node // When not provided select field will be in constant mode
+    menu: PropTypes.node, // When not provided select field will be in constant mode
+    disabled: PropTypes.bool
   }
 
   state = {
@@ -91,7 +92,8 @@ export default class SelectField extends Component {
       ...modifiers,
       {
         selected: Boolean(value),
-        constant: !menu
+        constant: !menu,
+        disabled: this.props.disabled
       }
     ]
 
@@ -100,7 +102,7 @@ export default class SelectField extends Component {
         type="button"
         className={buildClassName('select-field', finalModifiers, classNames)}
         onClick={this.handleSelectClick}
-        disabled={!menu}
+        disabled={!menu || this.props.disabled}
       >
         {Boolean(value) && (value.colorValue || value.colorImage) && (
           <ColorSquare color={value.colorValue} image={value.colorImage} />
