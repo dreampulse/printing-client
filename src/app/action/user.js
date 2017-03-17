@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions'
-import {getLocation} from 'Lib/geolocation'
+import {getLocationByIp} from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
 
 import TYPE from '../type'
@@ -7,7 +7,7 @@ import {goToCart} from './navigation'
 import {createShoppingCart} from './cart'
 
 export const detectAddress = () =>
-  createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(getLocation())
+  createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(getLocationByIp())
 
 export const createUser = () => (dispatch, getState) => {
   const user = getState().user.user
@@ -17,8 +17,17 @@ export const createUser = () => (dispatch, getState) => {
 
 export const updateUser = user => async (dispatch, getState) => {
   const userId = getState().user.userId
-  await printingEngine.updateUser({userId, user})
+  await printingEngine.updateUser({userId, user})  // TODO
   return dispatch(createAction(TYPE.USER.UPDATED)(user))
+}
+
+export const updateLocation = location => (dispatch) => {
+  dispatch(createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(location))
+
+  // TODO:
+  // - If addess is not complete -> open addess modal
+  // - Update user
+  // - If there are completed price requests, start a new one
 }
 
 export const reviewOrder = form => async (dispatch) => {

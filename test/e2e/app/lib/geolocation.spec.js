@@ -1,11 +1,11 @@
-import {getLocation} from 'Lib/geolocation'
+import {getLocationByIp} from 'Lib/geolocation'
 
 describe('Geolocation e2e Test', function test () {
   this.timeout(20000)
 
   describe('getLocation()', () => {
     it('should work', async () => {
-      const location = await getLocation()
+      const location = await getLocationByIp()
       expect(location.city, 'to be ok')
       expect(location.zipCode, 'to be ok')
       expect(location.stateCode, 'to be ok')
