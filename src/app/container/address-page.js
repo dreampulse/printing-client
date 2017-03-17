@@ -36,8 +36,7 @@ const AddressPage = ({
   submitting,
   useDifferentBillingAddress,
   billingAddressCountryCode,
-  shippingAddressCountryCode,
-  valid
+  shippingAddressCountryCode
 }) => {
   const required = value => (value ? undefined : 'Required')
   const email = value => (
