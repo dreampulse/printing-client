@@ -11,6 +11,7 @@ import Headline from 'Component/headline'
 import Grid from 'Component/grid'
 import Column from 'Component/column'
 import Paragraph from 'Component/paragraph'
+import ProviderImage from 'Component/provider-image'
 
 import backIcon from 'Icon/back.svg'
 
@@ -35,7 +36,7 @@ const CartPage = ({
   cart,
   user,
   selectedShipping,
-  selectedVendor,
+  offer,
   selectedMaterial,
   onGoBack,
   onOrderWithStripe,
@@ -96,7 +97,7 @@ const CartPage = ({
   const AddressSection = () => (
     <Section modifiers={['highlight']}>
       <Grid>
-        <Column md="6">
+        <Column md={6}>
           <Headline modifiers={['disabled', 's']} label="Shipping Address" />
           <Paragraph modifiers={['l']}>
             {user.shippingAddress.firstName} {user.shippingAddress.lastName}<br />
@@ -111,7 +112,7 @@ const CartPage = ({
             {getCountryName(user.shippingAddress.countryCode)}
           </Paragraph>
         </Column>
-        <Column md="6">
+        <Column md={6}>
           <Headline modifiers={['disabled', 's']} label="Billing Address" />
           <Paragraph modifiers={['l']}>
             {user.billingAddress.firstName ||
@@ -143,6 +144,20 @@ const CartPage = ({
     </Section>
   )
 
+  const VendorSection = () => (
+    <Section modifiers={['highlight']}>
+      <Grid>
+        <Column md={6}>
+          <Headline modifiers={['disabled', 's']} label="Provider" />
+          <ProviderImage name={offer.name} />
+        </Column>
+        <Column md={6}>
+          <Headline modifiers={['disabled', 's']} label="Material" />
+        </Column>
+      </Grid>
+    </Section>
+  )
+
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
   const paymentSection = (
     <div>
@@ -155,13 +170,7 @@ const CartPage = ({
       <PageHeader label="Order Summary" backLink={backLink} />
       <SidebarLayout sidebar={paymentSection}>
         <AddressSection />
-        <Section modifiers={['highlight']}>
-          <ul>
-            <li>Selected Vendor: {selectedVendor}</li>
-            <li>Selected Shipping Method: {selectedShipping}</li>
-            <li>Selected Material-Id: {selectedMaterial}</li>
-          </ul>
-        </Section>
+        <VendorSection />
         <CartPreviewSection />
       </SidebarLayout>
     </AppLayout>
@@ -171,7 +180,7 @@ const CartPage = ({
 const mapStateToProps = state => ({
   cartItems: selectCartItems(state),
   cart: selectCart(state),  // TODO: change this to: state.cart.cart
-  selectedVendor: state.cart.selectedVendor,
+  offer: state.cart.selectedOffer,
   selectedShipping: state.cart.selectedShipping,
   selectedMaterial: state.material.selectedMaterial,
   user: state.user.user
