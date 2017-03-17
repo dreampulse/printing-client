@@ -80,4 +80,9 @@
       box-shadow: $box-shadow-focus;
     }
   }
+
+  &--disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
 }

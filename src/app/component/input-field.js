@@ -16,7 +16,8 @@ export default class InputField extends Component {
     name: PropTypes.string,
     type: PropTypes.string,
     onChange: PropTypes.func,
-    id: PropTypes.string
+    id: PropTypes.string,
+    disabled: PropTypes.bool
   }
 
   static defaultProps = {
@@ -33,11 +34,13 @@ export default class InputField extends Component {
     const inputId = this.props.id || this.id
     const finalModifiers = [
       ...this.props.modifiers,
-      {empty: !this.props.value}
+      {empty: !this.props.value},
+      {disabled: this.props.disabled}
     ]
     return (
       <div className={buildClassName('input-field', finalModifiers, this.props.classNames)}>
         <input
+          disabled={this.props.disabled}
           name={this.props.name}
           id={inputId}
           className="input-field__input"

@@ -14,6 +14,7 @@ const SelectField = ({
   label,
   children,
   value,
+  onChange = () => {},
   initValue,  // eslint-disable-line no-unused-vars-rest/no-unused-vars
   ...params
 }) => {
@@ -37,7 +38,7 @@ const SelectField = ({
         classNames)
       }
     >
-      <select id={id} value={value} selected={value} className="select-field__input" {...params}>
+      <select id={id} value={value} selected={value} className="select-field__input" onChange={onChange} {...params}>
         {children}
       </select>
       <label htmlFor={id} className="select-field__label">{label}</label>
@@ -52,7 +53,8 @@ SelectField.propTypes = {
   selected: React.PropTypes.string,
   label: React.PropTypes.string.isRequired,
   children: React.PropTypes.node.isRequired,
-  value: React.PropTypes.string
+  value: React.PropTypes.string,
+  onChange: React.PropTypes.func
 }
 
 // Add initValue property
