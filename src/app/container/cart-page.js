@@ -1,31 +1,38 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
-import {getUsStateName, getUsStates, getCountryName} from 'Service/country'
+import {getUsStateName, getCountryName} from 'Service/country'
+import {
+  selectCurrentMaterial,
+  selectCartItems,
+  selectCart
+} from 'Lib/selector'
+
+import {
+  formatPrice
+} from 'Lib/formatter'
 
 import PageHeader from 'Component/page-header'
 import Link from 'Component/link'
 import SidebarLayout from 'Component/sidebar-layout'
 import Section from 'Component/section'
 import Headline from 'Component/headline'
+import Button from 'Component/button'
 import Grid from 'Component/grid'
 import Column from 'Component/column'
 import Paragraph from 'Component/paragraph'
 import ProviderImage from 'Component/provider-image'
+import PaymentSection from 'Component/payment-section'
+import ModelQuantityItem from 'Component/model-quantity-item'
+import ModelQuantityItemList from 'Component/model-quantity-item-list'
+import LabeledField from 'Component/labeled-field'
+import NumberField from 'Component/number-field'
 
 import backIcon from 'Icon/back.svg'
+import creditCardIcon from 'Icon/credit-card.svg'
+import paypalIcon from 'Icon/paypal.svg'
 
 import AppLayout from './app-layout'
-
-import {selectCartItems, selectCart} from '../lib/selector'
-
-import Button from '../component-legacy/button'
-import PaypalButton from '../component-legacy/paypal-button'
-import SectionHeadline from '../component-legacy/section-headline'
-import Table from '../component-legacy/table'
-import TableHeadCell from '../component-legacy/table-head-cell'
-import TableRow from '../component-legacy/table-row'
-import TableCell from '../component-legacy/table-cell'
 
 import {goBack} from '../action/navigation'
 import {changeQuantity, createShoppingCart} from '../action/cart'
@@ -35,64 +42,38 @@ const CartPage = ({
   cartItems,
   cart,
   user,
-  selectedShipping,
   offer,
   selectedMaterial,
   onGoBack,
   onOrderWithStripe,
-  onPayWithPaypal,
-  onOrderWithPaypal
+  onOrderWithPaypal,
+  onItemQuantityChange,
+  onItemDelete,
+  onTotalQuantityChange,
+  totalQuantity
 }) => {
-  const CartPreviewSection = () => (
-    <Table
-      head={[
-        <TableHeadCell key={0}>Model Name</TableHeadCell>,
-        <TableHeadCell key={1}>Price excl. shipping</TableHeadCell>,
-        <TableHeadCell key={2}>Quantity</TableHeadCell>,
-        <TableHeadCell key={3}>Raw</TableHeadCell>
-      ]}
-      rows={cartItems.map(item =>
-        <TableRow key={item.modelId}>
-          <TableCell>{item.name}</TableCell>
-          <TableCell>{item.price} {cart.currency}</TableCell>
-          <TableCell>{item.quantity}</TableCell>
-          <TableCell><pre>{JSON.stringify(item, '', 2)}</pre></TableCell>
-        </TableRow>
-      )}
-    />
-  )
-
-  const TotalPriceSection = () => (
-    <Table
-      head={[
-        <TableHeadCell key={0}>Sub Total</TableHeadCell>,
-        <TableHeadCell key={1}>Shipping</TableHeadCell>,
-        <TableHeadCell key={2}>VAT</TableHeadCell>,
-        <TableHeadCell key={3}>Total</TableHeadCell>
-      ]}
-      rows={[
-        <TableRow key={0}>
-          <TableCell>{cart.subTotal}</TableCell>
-          <TableCell>{cart.shippingTotal}</TableCell>
-          <TableCell>{cart.vatTotal}</TableCell>
-          <TableCell>{cart.totalPrice}</TableCell>
-        </TableRow>
-      ]}
-    />
-  )
-
-  const PaymentSection = () => (
-    <section>
-      <SectionHeadline label="Payment" />
-      <Button label="Pay with Stripe" onClick={onOrderWithStripe} />
-      <PaypalButton
-        onPayment={onPayWithPaypal}
-        onAuthorize={onOrderWithPaypal}
-        onCancel={() => {}}
-        onError={() => {}}
+  // TODO: most item information is missing in the selectedOffer
+  // so I used the cartItems
+  // TODO: how do I get the image
+  const CartQantityList = () => {
+    const items = cartItems.map(item => (
+      <ModelQuantityItem
+        imageSource={''}
+        key={item.modelId}
+        quantity={item.quantity}
+        title={item.name}
+        subtitle={JSON.stringify(item, '', 2)}
+        price={formatPrice(item.price, cart.currency)}
+        onQuantityChange={onItemQuantityChange}
+        onDelete={onItemDelete}
       />
-    </section>
-  )
+    ))
+    return (
+      <ModelQuantityItemList>
+        {items}
+      </ModelQuantityItemList>
+    )
+  }
 
   const AddressSection = () => (
     <Section modifiers={['highlight']}>
@@ -106,7 +87,7 @@ const CartPage = ({
             {user.shippingAddress.zipCode} {user.shippingAddress.city}<br />
             {
               user.shippingAddress.countryCode === 'US'
-              ? <span>getUsStateName(user.shippingAddress.stateCode)<br /></span>
+              ? <span>{getUsStateName(user.shippingAddress.stateCode)}<br /></span>
               : null
             }
             {getCountryName(user.shippingAddress.countryCode)}
@@ -127,7 +108,7 @@ const CartPage = ({
               user.shippingAddress.city}<br />
             {
                user.billingAddress.countryCode && user.billingAddress.countryCode === 'US'
-              ? <span>getUsStateName(user.billingAddress.stateCode)<br /></span>
+              ? <span>{getUsStateName(user.billingAddress.stateCode)}<br /></span>
               : null
             }
             {
@@ -144,6 +125,7 @@ const CartPage = ({
     </Section>
   )
 
+  // TODO: how can I get the selected coler?
   const VendorSection = () => (
     <Section modifiers={['highlight']}>
       <Grid>
@@ -153,25 +135,41 @@ const CartPage = ({
         </Column>
         <Column md={6}>
           <Headline modifiers={['disabled', 's']} label="Material" />
+          <Paragraph modifiers={['l']}>
+            {selectedMaterial.name}, {selectedMaterial.properties.printingMethod}<br />
+          </Paragraph>
         </Column>
       </Grid>
     </Section>
   )
 
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
+
+  // TODO: connect payment buttons
   const paymentSection = (
-    <div>
-      <PaymentSection />
-      <TotalPriceSection />
-    </div>
+    <PaymentSection
+      subtotal={formatPrice(cart.subTotal, offer.currency)}
+      shipping={formatPrice(cart.shippingTotal, offer.currency)}
+      vat={formatPrice(cart.vatTotal, offer.currency)}
+      total={formatPrice(cart.totalPrice, offer.currency)}
+    >
+      <Button modifiers={['block']} icon={creditCardIcon} label="Pay with Stripe" onClick={onOrderWithStripe} />
+      <Button icon={paypalIcon} modifiers={['block']} label="Pay with Paypal" onClick={onOrderWithPaypal} />
+    </PaymentSection>
   )
+
   return (
     <AppLayout currentStep={2}>
       <PageHeader label="Order Summary" backLink={backLink} />
       <SidebarLayout sidebar={paymentSection}>
         <AddressSection />
         <VendorSection />
-        <CartPreviewSection />
+        <Section>
+          <LabeledField label="Quantity:">
+            <NumberField onChange={onTotalQuantityChange} value={totalQuantity} />
+          </LabeledField>
+        </Section>
+        <CartQantityList />
       </SidebarLayout>
     </AppLayout>
   )
@@ -182,8 +180,9 @@ const mapStateToProps = state => ({
   cart: selectCart(state),  // TODO: change this to: state.cart.cart
   offer: state.cart.selectedOffer,
   selectedShipping: state.cart.selectedShipping,
-  selectedMaterial: state.material.selectedMaterial,
-  user: state.user.user
+  selectedMaterial: selectCurrentMaterial(state),
+  user: state.user.user,
+  totalQuantity: 0 // TODO: where do I get the total quantity
 })
 
 const mapDispatchToProps = {
@@ -192,7 +191,10 @@ const mapDispatchToProps = {
   onOrderWithStripe: createOrderWithStripe,
   onOrderWithPaypal: createOrderWithPaypal,
   onPayWithPaypal: initPaymentWithPaypal,
-  onCreateShoppingCart: createShoppingCart
+  onCreateShoppingCart: createShoppingCart,
+  onItemQuantityChange: () => {}, // TODO: add action
+  onItemDelete: () => {}, // TODO: add action
+  onTotalQuantityChange: () => {} // TODO: add action
 }
 
 const enhance = compose(

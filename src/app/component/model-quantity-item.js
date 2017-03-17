@@ -16,6 +16,7 @@ const ModelQuantityItem = ({
   imageSource,
   quantity,
   title,
+  price,
   onQuantityChange = () => {},
   onDelete = () => {}
 }) => {
@@ -33,7 +34,7 @@ const ModelQuantityItem = ({
         </div>
         <NumberField modifiers={['compact']} value={quantity} onChange={onQuantityChange} />
       </div>
-      <Price value="$29.33" />
+      <Price value={price} />
       <button type="button" className="model-quantity-item__delete" onClick={handleDeleteClick}>
         <Icon source={deleteIcon} />
       </button>
@@ -48,7 +49,8 @@ ModelQuantityItem.propTypes = {
   title: PropTypes.string,
   subline: PropTypes.string,
   onQuantityChange: PropTypes.func,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  price: PropTypes.string
 }
 
 export default ModelQuantityItem
