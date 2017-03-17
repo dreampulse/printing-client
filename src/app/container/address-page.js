@@ -36,8 +36,7 @@ const AddressPage = ({
   submitting,
   useDifferentBillingAddress,
   billingAddressCountryCode,
-  shippingAddressCountryCode,
-  valid
+  shippingAddressCountryCode
 }) => {
   const required = value => (value ? undefined : 'Required')
   const email = value => (
@@ -187,7 +186,7 @@ const AddressPage = ({
         <Button
           type="submit"
           label={submitting ? 'Reviewing…' : 'Review Order'}
-          disabled={submitting || !valid}
+          disabled={submitting}
         />
       </form>
     </AppLayout>
