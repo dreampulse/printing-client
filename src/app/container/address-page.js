@@ -187,7 +187,7 @@ const AddressPage = ({
         <Button
           type="submit"
           label={submitting ? 'Reviewing…' : 'Review Order'}
-          disabled={submitting || !valid}
+          disabled={submitting}
         />
       </form>
     </AppLayout>
