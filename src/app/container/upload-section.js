@@ -18,14 +18,17 @@ import LabeledField from 'Component/labeled-field'
 
 import {
   uploadFiles,
-  changeIndividualQuantity
+  changeIndividualQuantity,
+  changeUnit
 } from 'Action/model'
 
 const UploadSection = ({
   models,
   onUploadFiles,
   uploadedModels,
-  onChangeIndividualQuantity
+  selectedUnit,
+  onChangeIndividualQuantity,
+  onChangeUnit
 }) => {
   const onUpload = (files) => {
     onUploadFiles(toArray(files))
@@ -39,7 +42,11 @@ const UploadSection = ({
         </Column>
         <Column md={4} classNames={['u-margin-bottom']}>
           <LabeledField label="Unit:" classNames={['u-float-right']}>
-            <RadioButtonGroup name="unit">
+            <RadioButtonGroup
+              name="unit"
+              value={selectedUnit}
+              onChange={unit => onChangeUnit({unit})}
+            >
               <RadioButton value="mm" />
               <RadioButton value="cm" />
               <RadioButton value="in" />
@@ -105,12 +112,14 @@ const UploadSection = ({
 
 const mapStateToProps = state => ({
   uploadedModels: state.model.uploadedModels,
-  models: state.model.models
+  models: state.model.models,
+  selectedUnit: state.model.selectedUnit
 })
 
 const mapDispatchToProps = {
   onUploadFiles: uploadFiles,
-  onChangeIndividualQuantity: changeIndividualQuantity
+  onChangeIndividualQuantity: changeIndividualQuantity,
+  onChangeUnit: changeUnit
 }
 
 export default compose(
