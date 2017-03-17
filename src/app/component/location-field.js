@@ -73,6 +73,7 @@ export default class LocationField extends Component {
       })
       .then((places) => {
         // The first place is the one with the highest granularity
+        this.setState({value: places[0].formatted_address})
         this.props.onChange(places[0])
         this.setState({loading: false})
       })
@@ -101,6 +102,7 @@ export default class LocationField extends Component {
     this.autocomplete = new googleMaps.places.Autocomplete(this.inputDom, {types: ['geocode']})
     this.autocomplete.addListener('place_changed', () => {
       const place = this.autocomplete.getPlace()
+      this.setState({value: place.formatted_address})
       this.props.onChange(place)
     })
     this.setState({autocompleteReady: true})

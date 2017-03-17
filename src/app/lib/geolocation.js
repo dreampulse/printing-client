@@ -43,3 +43,7 @@ export const convertPlaceToLocation = (place) => {
     countryCode: findType('country')
   }
 }
+
+export const isAddressValid = address => (
+  address.countryCode && address.zipCode && address.city
+)

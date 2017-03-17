@@ -16,5 +16,9 @@ export function formatShipping (shipping) {
 }
 
 export function formatAddress (address) {
-  return `${address.city}, ${getCountryName(address.countryCode)}`
+  if (address.city && address.countryCode) {
+    return `${address.city}, ${getCountryName(address.countryCode)}`
+  }
+
+  return ''
 }

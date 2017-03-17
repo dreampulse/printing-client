@@ -45,4 +45,10 @@ describe('formatAddress', () => {
       city: 'Ulm', countryCode: 'DE', something: 'else'
     }), 'to equal', 'Ulm, Germany')
   })
+
+  it('returns an empty string if some key is missing', () => {
+    expect(formatAddress({
+      countryCode: 'DE'
+    }), 'to equal', '')
+  })
 })

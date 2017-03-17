@@ -1,6 +1,7 @@
 import {
   getLocationByIp,
-  convertPlaceToLocation
+  convertPlaceToLocation,
+  isAddressValid
 } from 'Lib/geolocation'
 import * as http from 'Service/http'
 import config from '../../../../config'
@@ -167,6 +168,28 @@ describe('geolocation lib', () => {
         stateCode: 'BW',
         countryCode: 'DE'
       })
+    })
+  })
+
+  describe('isAddressValid()', () => {
+    it('checks that all necessary keys exists', () => {
+      const address = {
+        city: 'some-city',
+        zipCode: 'some-zip-code'
+        // countryCode is missing
+      }
+
+      expect(isAddressValid(address), 'to be falsy')
+    })
+
+    it('returns true if all necessary keys are there', () => {
+      const address = {
+        city: 'some-city',
+        zipCode: 'some-zip-code',
+        countryCode: 'DE'
+      }
+
+      expect(isAddressValid(address), 'to be truthy')
     })
   })
 })

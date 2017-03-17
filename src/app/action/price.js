@@ -17,7 +17,6 @@ export const getFinalPrice = ({priceId}) => async (dispatch) => {
 
 export const createPriceRequest = () => async (dispatch, getState) => {
   const sa = getState().user.user.shippingAddress
-  // TODO: Issue #35
   if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
     throw new Error('Shipping Address Invalid')
   }
@@ -25,6 +24,7 @@ export const createPriceRequest = () => async (dispatch, getState) => {
   const materialIds = Object.keys(getState().material.materials.materialConfigs)
   const modelIds = Object.keys(getState().model.models)
 
+  // TODO: change this, when backend support offers
   const items = xprod(materialIds, modelIds).map(([materialId, modelId]) => ({
     modelId,
     materialId
