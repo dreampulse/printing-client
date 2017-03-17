@@ -6,6 +6,9 @@ import PageHeader from 'Component/page-header'
 import Link from 'Component/link'
 import SidebarLayout from 'Component/sidebar-layout'
 import Section from 'Component/section'
+import Headline from 'Component/headline'
+import Grid from 'Component/grid'
+import Column from 'Component/column'
 
 import backIcon from 'Icon/back.svg'
 
@@ -89,12 +92,18 @@ const CartPage = ({
   )
 
   const AddressSection = () => (
-    <section>
-      <SectionHeadline label="Shipping Address" />
-      <pre>{JSON.stringify(user.shippingAddress, '', 2)}</pre>
-      <SectionHeadline label="Billing Address" />
-      <pre>{JSON.stringify(user.billingAddress, '', 2)}</pre>
-    </section>
+    <Section modifiers={['highlight']}>
+      <Grid>
+        <Column md="6">
+          <Headline modifiers={['disabled', 'xs']} label="Shipping Address" />
+          <pre>{JSON.stringify(user.shippingAddress, '', 2)}</pre>
+        </Column>
+        <Column md="6">
+          <Headline modifiers={['disabled', 'xs']} label="Billing Address" />
+          <pre>{JSON.stringify(user.billingAddress, '', 2)}</pre>
+        </Column>
+      </Grid>
+    </Section>
   )
 
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
@@ -108,9 +117,7 @@ const CartPage = ({
     <AppLayout currentStep={2}>
       <PageHeader label="Order Summary" backLink={backLink} />
       <SidebarLayout sidebar={paymentSection}>
-        <Section modifiers={['highlight']}>
-          <AddressSection />
-        </Section>
+        <AddressSection />
         <Section modifiers={['highlight']}>
           <ul>
             <li>Selected Vendor: {selectedVendor}</li>
