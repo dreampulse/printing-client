@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
+import {getUsStateName, getUsStates, getCountryName} from 'Service/country'
 
 import PageHeader from 'Component/page-header'
 import Link from 'Component/link'
@@ -9,6 +10,7 @@ import Section from 'Component/section'
 import Headline from 'Component/headline'
 import Grid from 'Component/grid'
 import Column from 'Component/column'
+import Paragraph from 'Component/paragraph'
 
 import backIcon from 'Icon/back.svg'
 
@@ -95,12 +97,47 @@ const CartPage = ({
     <Section modifiers={['highlight']}>
       <Grid>
         <Column md="6">
-          <Headline modifiers={['disabled', 'xs']} label="Shipping Address" />
-          <pre>{JSON.stringify(user.shippingAddress, '', 2)}</pre>
+          <Headline modifiers={['disabled', 's']} label="Shipping Address" />
+          <Paragraph modifiers={['l']}>
+            {user.shippingAddress.firstName} {user.shippingAddress.lastName}<br />
+            {user.shippingAddress.street} {user.shippingAddress.houseNumber}<br />
+            {user.shippingAddress.addressLine2}<br />
+            {user.shippingAddress.zipCode} {user.shippingAddress.city}<br />
+            {
+              user.shippingAddress.countryCode === 'US'
+              ? <span>getUsStateName(user.shippingAddress.stateCode)<br /></span>
+              : null
+            }
+            {getCountryName(user.shippingAddress.countryCode)}
+          </Paragraph>
         </Column>
         <Column md="6">
-          <Headline modifiers={['disabled', 'xs']} label="Billing Address" />
-          <pre>{JSON.stringify(user.billingAddress, '', 2)}</pre>
+          <Headline modifiers={['disabled', 's']} label="Billing Address" />
+          <Paragraph modifiers={['l']}>
+            {user.billingAddress.firstName ||
+              user.shippingAddress.firstName} {user.billingAddress.lastName ||
+              user.shippingAddress.lastName}<br />
+            {user.billingAddress.street ||
+              user.shippingAddress.street} {user.billingAddress.houseNumber ||
+              user.shippingAddress.houseNumber}<br />
+            {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}<br />
+            {user.billingAddress.zipCode ||
+              user.shippingAddress.zipCode} {user.billingAddress.city ||
+              user.shippingAddress.city}<br />
+            {
+               user.billingAddress.countryCode && user.billingAddress.countryCode === 'US'
+              ? <span>getUsStateName(user.billingAddress.stateCode)<br /></span>
+              : null
+            }
+            {
+               !user.billingAddress.countryCode && user.shippingAddress.countryCode === 'US'
+              ? <span>getUsStateName(user.shippingAddress.stateCode)<br /></span>
+              : null
+            }
+            {user.billingAddress.countryCode
+              ? getCountryName(user.billingAddress.countryCode)
+              : getCountryName(user.shippingAddress.countryCode)}
+          </Paragraph>
         </Column>
       </Grid>
     </Section>
