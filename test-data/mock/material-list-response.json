@@ -21,7 +21,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, raw",
               "summary": "Solid white polyamide, raw surface",
               "featuredImage": "gallery/material-sf.jpg",
@@ -36,7 +36,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, polished",
               "summary": "Solid white polyamide, polished smooth surface",
               "featuredImage": "gallery/material-sf.jpg",
@@ -51,7 +51,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Dyed, raw",
               "summary": "Solid white polyamide, dyed raw surface",
               "featuredImage": "gallery/material-sf.jpg",
@@ -136,7 +136,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Dyed, polished",
               "summary": "Solid white polyamide, dyed polished smooth surface",
               "featuredImage": "gallery/material-sf.jpg",
@@ -221,7 +221,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Dyed, velvet",
               "summary": "Solid white polyamide, dyed velvety soft surface",
               "featuredImage": "gallery/material-sf.jpg",
@@ -296,7 +296,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, raw",
               "summary": "Solid grey alumide, raw surface",
               "featuredImage": "gallery/alu-movable.jpg",
@@ -311,7 +311,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, polished",
               "summary": "Solid grey alumide, polished smooth surface",
               "featuredImage": "gallery/alu-movable.jpg",
@@ -326,7 +326,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Dyed, raw",
               "summary": "Solid grey alumide, dyed raw surface",
               "featuredImage": "gallery/alu-movable.jpg",
@@ -369,7 +369,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Dyed, polished",
               "summary": "Solid grey alumide, dyed polished smooth surface",
               "featuredImage": "gallery/alu-movable.jpg",
@@ -424,7 +424,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, opaque",
               "summary": "Solid opaque white resin, smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
@@ -453,7 +453,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, dyed",
               "summary": "Solid opaque white resin, dyed smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
@@ -552,7 +552,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, translucent",
               "summary": "Solid translucent white resin, smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
@@ -567,7 +567,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, transparent",
               "summary": "Solid transparent colored resin, smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
@@ -643,7 +643,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, opaque",
               "summary": "Solid opaque white high detail resin, smooth surface",
               "featuredImage": "gallery/fxd-diver.jpg",
@@ -658,7 +658,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, translucent",
               "summary": "Solid translucent white high detail resin, smooth surface",
               "featuredImage": "gallery/fxd-diver.jpg",
@@ -692,7 +692,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, translucent",
               "summary": "Solid translucent white extreme detail resin, smooth surface",
               "featuredImage": "gallery/fxd-hero-forge.jpg",
@@ -722,7 +722,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialname": "Polyamide",
               "name": "Solid, raw",
               "summary": "Solid ABS, raw surface",
               "featuredImage": "gallery/abs-img1_b.jpg",

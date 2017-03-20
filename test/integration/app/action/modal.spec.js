@@ -1,7 +1,8 @@
 import {
   open,
   close,
-  openAddressModal
+  openAddressModal,
+  openMaterialModal
 } from '../../../../src/app/action/modal'
 import Store from '../../../../src/app/store'
 
@@ -54,13 +55,26 @@ describe('Modal Integration Test', () => {
     })
   })
 
-  describe('opens individual modal', () => {
+  describe('openAddressModal()', () => {
     it('opens address modal', () => {
       store.dispatch(openAddressModal())
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
         contentType: MODAL_TYPE.SHIPPING_ADDRESS,
         contentProps: {}
+      })
+    })
+  })
+
+  describe('openMaterialModal()', () => {
+    it('opens material modal', () => {
+      store.dispatch(openMaterialModal({materialId: 'some-material'}))
+      expect(store.getState().modal, 'to equal', {
+        isOpen: true,
+        contentType: MODAL_TYPE.MATERIAL,
+        contentProps: {
+          materialId: 'some-material'
+        }
       })
     })
   })

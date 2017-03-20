@@ -1,6 +1,7 @@
 import {
   selectCommonQuantity,
   selectMaterialMenuValues,
+  selectMaterial,
   selectCurrentMaterial,
   selectOffers,
   selectPrintingServiceRequests
@@ -178,6 +179,51 @@ describe('selectMaterialMenuValues()', () => {
     }
 
     expect(selectMaterialMenuValues(state), 'to equal', [])
+  })
+})
+
+describe('selectMaterial()', () => {
+  let materials
+
+  beforeEach(() => {
+    materials = {
+      materialStructure: [{
+        materials: []
+      }, {
+        materials: [{
+          id: 'material-1'
+        }, {
+          id: 'material-2'
+        }]
+      }]
+    }
+  })
+
+  it('returns expected material', () => {
+    const state = {
+      material: {materials}
+    }
+
+    expect(selectMaterial(state, 'material-2'), 'to equal', {id: 'material-2'})
+  })
+
+  it('returns null if there are no materials in state', () => {
+    const state = {
+      material: {
+        materials: undefined
+      }
+    }
+
+    expect(selectMaterial(state, 'material-2'), 'to be', null)
+  })
+
+  it('returns null if materialStructure is undefined', () => {
+    materials.materialStructure = undefined
+    const state = {
+      material: {materials}
+    }
+
+    expect(selectMaterial(state, 'material-2'), 'to be', null)
   })
 })
 

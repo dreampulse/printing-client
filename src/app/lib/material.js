@@ -83,3 +83,17 @@ export function getBestOfferForMaterial (material, price, models) {
 
   return bestOffer
 }
+
+export function getMaterialByName (materials, name) {
+  let foundMaterial = null
+
+  materials.materialStructure.forEach((materialGroup) => {
+    materialGroup.materials.forEach((material) => {
+      if (material.name === name) {
+        foundMaterial = material
+      }
+    })
+  })
+
+  return foundMaterial
+}

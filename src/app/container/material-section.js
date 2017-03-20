@@ -10,7 +10,8 @@ import {
   selectPrintingServiceRequests
 } from 'Lib/selector'
 import {
-  getBestOfferForMaterialConfig
+  getBestOfferForMaterialConfig,
+  getMaterialByName
 } from 'Lib/material'
 import {
   formatPrice,
@@ -36,11 +37,15 @@ import {
   selectMaterialConfig,
   selectMaterialConfigForFinishGroup
 } from 'Action/material'
+import {
+  openMaterialModal
+} from 'Action/modal'
 
 const MaterialSection = ({
   areAllUploadsFinished,
   price,
   models,
+  materials,
   materialMenuValues,
   selectedMaterial,
   printingServiceRequests,
@@ -48,7 +53,8 @@ const MaterialSection = ({
   selectedMaterialConfig,
   onSelectMaterial,
   onSelectMaterialConfig,
-  onSelectMaterialConfigForFinishGroup
+  onSelectMaterialConfigForFinishGroup,
+  onOpenMaterialModal
 }) => {
   const headlineModifiers = buildClassArray({
     xl: true,
@@ -126,7 +132,6 @@ const MaterialSection = ({
       </Info>
     )
 
-    // TODO: onMoreClick handling
     return (
       <MaterialCard
         key={finishGroup.name}
@@ -152,6 +157,12 @@ const MaterialSection = ({
             scrollTo('#section-provider')
           })
         }
+        onMoreClick={() => {
+          const material = getMaterialByName(materials, finishGroup.materialname)
+          if (material) {
+            onOpenMaterialModal({materialId: material.id})
+          }
+        }}
       />
     )
   }
@@ -192,6 +203,7 @@ const mapStateToProps = state => ({
   areAllUploadsFinished: state.model.areAllUploadsFinished,
   price: state.price.price,
   models: state.model.models,
+  materials: state.material.materials,
   materialMenuValues: selectMaterialMenuValues(state),
   selectedMaterial: selectCurrentMaterial(state),
   selectedMaterialConfigs: state.material.selectedMaterialConfigs,
@@ -202,7 +214,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onSelectMaterial: selectMaterial,
   onSelectMaterialConfig: selectMaterialConfig,
-  onSelectMaterialConfigForFinishGroup: selectMaterialConfigForFinishGroup
+  onSelectMaterialConfigForFinishGroup: selectMaterialConfigForFinishGroup,
+  onOpenMaterialModal: openMaterialModal
 }
 
 export default compose(

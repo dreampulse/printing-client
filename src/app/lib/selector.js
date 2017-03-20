@@ -98,11 +98,10 @@ export const selectMaterialMenuValues = (state) => {
   }))
 }
 
-export const selectCurrentMaterial = (state) => {
+export const selectMaterial = (state, materialId) => {
   const {
     material: {
-      materials,
-      selectedMaterial
+      materials
     }
   } = state
 
@@ -111,17 +110,27 @@ export const selectCurrentMaterial = (state) => {
   }
 
   // Search for material by id
-  let currentMaterial = null
+  let material = null
 
   materials.materialStructure.forEach((materialGroup) => {
-    materialGroup.materials.forEach((material) => {
-      if (material.id === selectedMaterial) {
-        currentMaterial = material
+    materialGroup.materials.forEach((item) => {
+      if (item.id === materialId) {
+        material = item
       }
     })
   })
 
-  return currentMaterial
+  return material
+}
+
+export const selectCurrentMaterial = (state) => {
+  const {
+    material: {
+      selectedMaterial
+    }
+  } = state
+
+  return selectMaterial(state, selectedMaterial)
 }
 
 export const selectOffers = (state) => {
