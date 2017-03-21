@@ -1,4 +1,5 @@
 import {createAction} from 'redux-actions'
+import isEqual from 'lodash/isEqual'
 import {
   getLocationByIp,
   isAddressValid
@@ -8,7 +9,10 @@ import * as printingEngine from 'Lib/printing-engine'
 import TYPE from '../type'
 import {goToCart} from './navigation'
 import {createShoppingCart} from './cart'
-import {openAddressModal} from './modal'
+import {
+  openAddressModal,
+  openPriceChangedModal
+} from './modal'
 import {createPriceRequest} from './price'
 
 export const detectAddress = () =>
@@ -38,8 +42,16 @@ export const updateLocation = location => (dispatch) => {
   }
 }
 
-export const reviewOrder = form => async (dispatch) => {
+export const reviewOrder = form => async (dispatch, getState) => {
+  // const oldShippingAddress = getState().user.user.shippingAddress
+  // const newShippingAddress = form.shippingAddress
+
+  // if (!isEqual(oldShippingAddress, newShippingAddress)) {
+  //   dispatch(openPriceChangedModal({oldShippingAddress, newShippingAddress}))
+  // }
+
   await dispatch(updateUser(form))
+  // The `createShoppingCart()` uses the updated address
   await dispatch(createShoppingCart())  // TODO: create shopping cart later
   return dispatch(goToCart())
 }

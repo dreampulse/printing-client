@@ -6,9 +6,11 @@ import {close} from 'Action/modal'
 
 import {MODAL_TYPE} from '../../type'
 import ShippingAddressModal from './shipping-address'
+import FetchingPriceModal from './fetching-price'
 
 const modals = {
-  [MODAL_TYPE.SHIPPING_ADDRESS]: ShippingAddressModal
+  [MODAL_TYPE.SHIPPING_ADDRESS]: ShippingAddressModal,
+  [MODAL_TYPE.FETCHING_PRICE]: FetchingPriceModal
 }
 
 const getContent = (contentType, contentProps) => {
@@ -18,9 +20,9 @@ const getContent = (contentType, contentProps) => {
   return <div />
 }
 
-const Modal = ({isOpen, onModalClose, contentType, contentProps}) => (
+const Modal = ({isOpen, onModalClose, contentType, contentProps, isClosable}) => (
   <Portal
-    closeOnEsc={Boolean(onModalClose)}
+    closeOnEsc={isClosable}
     isOpened={isOpen}
     onClose={onModalClose}
   >
@@ -30,6 +32,7 @@ const Modal = ({isOpen, onModalClose, contentType, contentProps}) => (
 
 const mapStateToProps = state => ({
   isOpen: state.modal.isOpen,
+  isClosable: state.modal.isClosable,
   contentType: state.modal.contentType,
   contentProps: state.modal.contentProps,
   contentModifiers: state.modal.contentModifiers

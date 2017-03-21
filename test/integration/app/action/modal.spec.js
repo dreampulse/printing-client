@@ -1,7 +1,8 @@
 import {
   open,
   close,
-  openAddressModal
+  openAddressModal,
+  openFetchingPriceModal
 } from '../../../../src/app/action/modal'
 import Store from '../../../../src/app/store'
 
@@ -19,11 +20,13 @@ describe('Modal Integration Test', () => {
       store.dispatch(
         open({
           contentType: 'some-content-type',
-          contentProps: 'some-content-props'
+          contentProps: 'some-content-props',
+          isClosable: false
         })
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
+        isClosable: false,
         contentType: 'some-content-type',
         contentProps: 'some-content-props'
       })
@@ -37,6 +40,7 @@ describe('Modal Integration Test', () => {
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
+        isClosable: true,
         contentType: 'some-content-type',
         contentProps: {}
       })
@@ -48,6 +52,7 @@ describe('Modal Integration Test', () => {
       store.dispatch(close())
       expect(store.getState().modal, 'to equal', {
         isOpen: false,
+        isClosable: true,
         contentType: null,
         contentProps: {}
       })
@@ -59,7 +64,18 @@ describe('Modal Integration Test', () => {
       store.dispatch(openAddressModal())
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
+        isClosable: false,
         contentType: MODAL_TYPE.SHIPPING_ADDRESS,
+        contentProps: {}
+      })
+    })
+
+    it('opens fetch price modal', () => {
+      store.dispatch(openFetchingPriceModal())
+      expect(store.getState().modal, 'to equal', {
+        isOpen: true,
+        isClosable: false,
+        contentType: MODAL_TYPE.FETCHING_PRICE,
         contentProps: {}
       })
     })
