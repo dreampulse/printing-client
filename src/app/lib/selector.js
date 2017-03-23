@@ -123,6 +123,24 @@ export const selectMaterial = (state, materialId) => {
   return material
 }
 
+export const selectFinishGroup = (state, materialId, finishGroupId) => {
+  const material = selectMaterial(state, materialId)
+  if (!material) {
+    return null
+  }
+
+  // Search for finish group by id
+  let finishGroup = null
+
+  material.finishGroups.forEach((item) => {
+    if (item.id === finishGroupId) {
+      finishGroup = item
+    }
+  })
+
+  return finishGroup
+}
+
 export const selectCurrentMaterial = (state) => {
   const {
     material: {

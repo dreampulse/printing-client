@@ -2,6 +2,7 @@ import {
   selectCommonQuantity,
   selectMaterialMenuValues,
   selectMaterial,
+  selectFinishGroup,
   selectCurrentMaterial,
   selectOffers,
   selectPrintingServiceRequests
@@ -224,6 +225,56 @@ describe('selectMaterial()', () => {
     }
 
     expect(selectMaterial(state, 'material-2'), 'to be', null)
+  })
+})
+
+describe('selectFinishGroup()', () => {
+  let materials
+
+  beforeEach(() => {
+    materials = {
+      materialStructure: [{
+        materials: []
+      }, {
+        materials: [{
+          id: 'material-1',
+          finishGroups: [{
+            id: 'finish-group-1'
+          }]
+        }, {
+          id: 'material-2',
+          finishGroups: [{
+            id: 'finish-group-2'
+          }, {
+            id: 'finish-group-3'
+          }]
+        }]
+      }]
+    }
+  })
+
+  it('returns expected finish group', () => {
+    const state = {
+      material: {materials}
+    }
+
+    expect(selectFinishGroup(state, 'material-2', 'finish-group-2'), 'to equal', {id: 'finish-group-2'})
+  })
+
+  it('returns null if material does not exist', () => {
+    const state = {
+      material: {materials}
+    }
+
+    expect(selectFinishGroup(state, 'some-other-material', 'finish-group-2'), 'to be', null)
+  })
+
+  it('returns null if finish group does not exist', () => {
+    const state = {
+      material: {materials}
+    }
+
+    expect(selectFinishGroup(state, 'material-2', 'some-other-finish-group'), 'to be', null)
   })
 })
 

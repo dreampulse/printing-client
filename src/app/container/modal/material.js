@@ -2,8 +2,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {
-  selectMaterial
+  selectMaterial,
+  selectFinishGroup
 } from 'Lib/selector'
+import getCloudinaryUrl from 'Lib/cloudinary'
 
 import Button from 'Component/button'
 import Overlay from 'Component/overlay'
@@ -17,7 +19,7 @@ import Grid from 'Component/grid'
 import Column from 'Component/column'
 import Image from 'Component/image'
 
-const MaterialModal = ({material}) => {
+const MaterialModal = ({material, finishGroup}) => {
   const headline = <Headline label={material.name} modifiers={['l']} />
   const buttons = [
     <Button label="Close" />
@@ -75,8 +77,10 @@ const MaterialModal = ({material}) => {
           </Grid>
         </Column>
         <Column sm={12} md={4} lg={5}>
-          {/* TODO image for material missing in data */}
-          <Image src="http://placehold.it/360x270" alt="Image of material" />
+          <Image
+            src={getCloudinaryUrl(finishGroup.featuredImage, ['w_360', 'h_270', 'c_limit'])}
+            alt="Image of material"
+          />
         </Column>
       </Grid>
     </Overlay>
@@ -84,7 +88,8 @@ const MaterialModal = ({material}) => {
 }
 
 const mapStateToProps = (state, props) => ({
-  material: selectMaterial(state, props.materialId)
+  material: selectMaterial(state, props.materialId),
+  finishGroup: selectFinishGroup(state, props.materialId, props.finishGroupId)
 })
 
 const mapDispatchToProps = {}

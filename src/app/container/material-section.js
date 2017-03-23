@@ -135,7 +135,7 @@ const MaterialSection = ({
     return (
       <MaterialCard
         key={finishGroup.name}
-        title={finishGroup.materialname}
+        title={finishGroup.materialName}
         shipping={bestOffer && formatDeliveryTime(bestOffer.offer.shipping.deliveryTime)}
         subline={finishGroup.name}
         description={finishGroup.summary}
@@ -158,9 +158,9 @@ const MaterialSection = ({
           })
         }
         onMoreClick={() => {
-          const material = getMaterialByName(materials, finishGroup.materialname)
+          const material = getMaterialByName(materials, finishGroup.materialName)
           if (material) {
-            onOpenMaterialModal({materialId: material.id})
+            onOpenMaterialModal({materialId: material.id, finishGroupId: finishGroup.id})
           }
         }}
       />
