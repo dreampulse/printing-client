@@ -13,9 +13,8 @@ export const openAddressModal = () =>
 export const openFetchingPriceModal = () =>
   open({contentType: MODAL_TYPE.FETCHING_PRICE, isClosable: false})
 
-export const openPriceChangedModal = props => (dispatch) => {
-  dispatch(open({contentType: MODAL_TYPE.PRICE_CHANGED, contentProps: props}))
-}
+export const openPriceChangedModal = props =>
+  open({contentType: MODAL_TYPE.PRICE_CHANGED, contentProps: props})
 
 export const openMaterialModal = ({materialId, finishGroupId}) =>
   open({

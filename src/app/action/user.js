@@ -6,12 +6,15 @@ import {
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
 
+import {delay} from 'Lib/timeout'  // TODO: just for testing
+
 import TYPE from '../type'
 import {goToCart} from './navigation'
 import {createShoppingCart} from './cart'
 import {
   openAddressModal,
-  openPriceChangedModal
+  openPriceChangedModal,
+  openFetchingPriceModal
 } from './modal'
 import {createPriceRequest} from './price'
 
@@ -46,14 +49,22 @@ export const reviewOrder = form => async (dispatch, getState) => {
   const oldShippingAddress = getState().user.user.shippingAddress
   const newShippingAddress = form.shippingAddress
 
+  await dispatch(updateUser(form))
+
   if (!isEqual(oldShippingAddress, newShippingAddress)) {
-    // TODO: get new price and show `fetching-prices` in parallel
-    // - check whether prices has changed, and if:
-    dispatch(openPriceChangedModal({oldShippingAddress, newShippingAddress}))
+    dispatch(openFetchingPriceModal())
+    await dispatch(createPriceRequest())
+    await delay(1000)  // Just for testing
+    await dispatch(createShoppingCart())  // TODO: create shopping cart later
+    const hasPriceChanged = true  // TODO: check if prices has changed
+    if (hasPriceChanged) {
+      dispatch(openPriceChangedModal({oldShippingAddress, newShippingAddress}))
+    } else {
+      dispatch(goToCart())
+    }
   } else {
     // No change to the shipping address
-    await dispatch(updateUser(form))
     await dispatch(createShoppingCart())  // TODO: create shopping cart later
-    await dispatch(goToCart())
+    dispatch(goToCart())
   }
 }
