@@ -1,12 +1,11 @@
-import cartResponse from './mock/cart-response.json'
 import priceResponse from './mock/price-response.json'
 import materialResponse from './mock/material-list-response.json'
 import * as printingEngine from '../src/app/lib/printing-engine'
 
 printingEngine.uploadModel = () =>
   Promise.resolve({
-    modelId: 'b364bd10-6d64-4515-b832-495d0fdf7d4c',
-    thumbnailUrl: 'https://api.example.com/v1/model/some-model-id/thumbnail'
+    modelId: 'f390d85f-71b9-493d-833c-d3c0d78a5351',
+    thumbnailUrl: 'http://localhost:8000/v1/model/f390d85f-71b9-493d-833c-d3c0d78a5351/thumbnail'
   })
 
 printingEngine.getUploadStatus = () =>
@@ -16,13 +15,13 @@ printingEngine.listMaterials = () =>
   Promise.resolve(materialResponse)
 
 printingEngine.createUser = () =>
-  Promise.resolve({userId: 'c6807f8c-a1a1-44ed-85cf-9f34784e8d9f'})
+  Promise.resolve({userId: 'a3dd5898-eb6a-4028-a494-3ffc414d254f'})
 
 printingEngine.updateUser = () =>
   Promise.resolve()
 
 printingEngine.createPriceRequest = () =>
-  Promise.resolve({priceId: '2baf30a1-3208-4f4f-bbb2-8f7b4fdccc7e'})
+  Promise.resolve({priceId: 'e0817235-ff34-49fb-9178-ba1558809cf0'})
 
 printingEngine.getPriceStatus = () =>
   Promise.resolve(true)
@@ -31,10 +30,10 @@ printingEngine.getPrice = () =>
   Promise.resolve(priceResponse)
 
 printingEngine.createShoppingCart = () =>
-  Promise.resolve({cartId: '2e7e6852-0c4f-43af-980a-427bbb0dae05'})
+  Promise.resolve({cartId: 'a3992c96-22b3-4698-afab-dc4bddf76e13'})
 
 printingEngine.getFinalCartPrice = () =>
-  Promise.resolve(cartResponse)
+  Promise.resolve({cartId: 'a3992c96-22b3-4698-afab-dc4bddf76e13'})
 
 printingEngine.order = () =>
   Promise.resolve({orderId: '6f4f7685-185a-48de-8e5b-fdf497c9acf7'})
