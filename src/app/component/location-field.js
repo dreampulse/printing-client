@@ -73,9 +73,11 @@ export default class LocationField extends Component {
       })
       .then((places) => {
         // The first place is the one with the highest granularity
-        this.setState({value: places[0].formatted_address})
+        this.setState({
+          value: places[0].formatted_address,
+          loading: false
+        })
         this.props.onChange(places[0])
-        this.setState({loading: false})
       })
       .catch(() => {
         this.setState({loading: false})
