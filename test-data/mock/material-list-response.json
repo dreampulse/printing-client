@@ -21,7 +21,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialName": "Polyamide",
               "name": "Solid, raw",
               "summary": "Solid white polyamide, raw surface",
               "featuredImage": "gallery/material-sf.jpg",
@@ -36,7 +36,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "Polyamide",
               "name": "Solid, polished",
               "summary": "Solid white polyamide, polished smooth surface",
               "featuredImage": "gallery/material-sf.jpg",
@@ -51,7 +51,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "Polyamide",
               "name": "Dyed, raw",
               "summary": "Solid white polyamide, dyed raw surface",
               "featuredImage": "gallery/material-sf.jpg",
@@ -136,7 +136,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "Polyamide",
               "name": "Dyed, polished",
               "summary": "Solid white polyamide, dyed polished smooth surface",
               "featuredImage": "gallery/material-sf.jpg",
@@ -221,7 +221,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "Polyamide",
               "name": "Dyed, velvet",
               "summary": "Solid white polyamide, dyed velvety soft surface",
               "featuredImage": "gallery/material-sf.jpg",
@@ -296,7 +296,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialName": "Alumide",
               "name": "Solid, raw",
               "summary": "Solid grey alumide, raw surface",
               "featuredImage": "gallery/alu-movable.jpg",
@@ -311,7 +311,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "Alumide",
               "name": "Solid, polished",
               "summary": "Solid grey alumide, polished smooth surface",
               "featuredImage": "gallery/alu-movable.jpg",
@@ -326,7 +326,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "Alumide",
               "name": "Dyed, raw",
               "summary": "Solid grey alumide, dyed raw surface",
               "featuredImage": "gallery/alu-movable.jpg",
@@ -369,7 +369,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "Alumide",
               "name": "Dyed, polished",
               "summary": "Solid grey alumide, dyed polished smooth surface",
               "featuredImage": "gallery/alu-movable.jpg",
@@ -424,7 +424,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialName": "Resin",
               "name": "Solid, opaque",
               "summary": "Solid opaque white resin, smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
@@ -453,7 +453,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "Resin",
               "name": "Solid, dyed",
               "summary": "Solid opaque white resin, dyed smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
@@ -552,7 +552,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "Resin",
               "name": "Solid, translucent",
               "summary": "Solid translucent white resin, smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
@@ -567,7 +567,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "Resin",
               "name": "Solid, transparent",
               "summary": "Solid transparent colored resin, smooth surface",
               "featuredImage": "gallery/acceuil_detail_large_2.jpg",
@@ -643,7 +643,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialName": "High Detail Resin",
               "name": "Solid, opaque",
               "summary": "Solid opaque white high detail resin, smooth surface",
               "featuredImage": "gallery/fxd-diver.jpg",
@@ -658,7 +658,7 @@
               ]
             },
             {
-              "materialname": "Plastics",
+              "materialName": "High Detail Resin",
               "name": "Solid, translucent",
               "summary": "Solid translucent white high detail resin, smooth surface",
               "featuredImage": "gallery/fxd-diver.jpg",
@@ -692,7 +692,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialName": "Extreme Detail Resin",
               "name": "Solid, translucent",
               "summary": "Solid translucent white extreme detail resin, smooth surface",
               "featuredImage": "gallery/fxd-hero-forge.jpg",
@@ -722,7 +722,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Plastics",
+              "materialName": "ABS",
               "name": "Solid, raw",
               "summary": "Solid ABS, raw surface",
               "featuredImage": "gallery/abs-img1_b.jpg",
@@ -782,7 +782,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Metals",
+              "materialName": "Stainless Steel",
               "name": "Solid, raw",
               "summary": "Solid stainless steel, raw matte surface",
               "featuredImage": "gallery/625x465_1052255_956543_1429687247.jpg",
@@ -804,7 +804,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Stainless Steel",
               "name": "Solid, polished",
               "summary": "Solid stainless steel, polished shiny surface",
               "featuredImage": "gallery/625x465_1052255_956543_1429687247.jpg",
@@ -833,7 +833,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Stainless Steel",
               "name": "Plated, raw",
               "summary": "Solid stainless steel, plated raw matte surface",
               "featuredImage": "gallery/625x465_1052255_956543_1429687247.jpg",
@@ -855,7 +855,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Stainless Steel",
               "name": "Plated, polished",
               "summary": "Solid stainless steel, plated polished shiny surface",
               "featuredImage": "gallery/625x465_1052255_956543_1429687247.jpg",
@@ -902,7 +902,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Metals",
+              "materialName": "High Detail Stainless Steel",
               "name": "Solid, raw",
               "summary": "Solid high detail stainless steel, raw matte surface",
               "featuredImage": "gallery/detailedsteel-img1_b.jpg",
@@ -917,7 +917,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "High Detail Stainless Steel",
               "name": "Solid, polished",
               "summary": "Solid high detail stainless steel, polished shiny surface, less details due to polishing",
               "featuredImage": "gallery/detailedsteel-img1_b.jpg",
@@ -932,7 +932,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "High Detail Stainless Steel",
               "name": "Solid, mirror polished",
               "summary": "Solid high detail stainless steel, strong polished reflecting surface, few details due to polishing",
               "featuredImage": "gallery/detailedsteel-img1_b.jpg",
@@ -961,7 +961,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Metals",
+              "materialName": "Brass",
               "name": "Solid, raw",
               "summary": "Solid brass, rough antique looking raw surface",
               "featuredImage": "gallery/brass-top-morph-bangle-20150218.jpg",
@@ -976,7 +976,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Brass",
               "name": "Solid, raw, PU coated",
               "summary": "Solid brass, raw matte surface, PU coated to slow down oxidation",
               "featuredImage": "gallery/brass-top-morph-bangle-20150218.jpg",
@@ -991,7 +991,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Brass",
               "name": "Solid, polished",
               "summary": "Solid brass, polished shiny surface",
               "featuredImage": "gallery/brass-top-morph-bangle-20150218.jpg",
@@ -1006,7 +1006,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Brass",
               "name": "Plated, polished",
               "summary": "Solid brass, plated polished shiny surface",
               "featuredImage": "gallery/brass-top-morph-bangle-20150218.jpg",
@@ -1056,7 +1056,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Metals",
+              "materialName": "Copper",
               "name": "Solid, raw",
               "summary": "Solid copper, raw matte surface",
               "featuredImage": "gallery/img1_b.jpg",
@@ -1071,7 +1071,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Copper",
               "name": "Solid, raw, PU coated",
               "summary": "Solid copper, raw matte surface, PU coated to slow down oxidation",
               "featuredImage": "gallery/img1_b.jpg",
@@ -1100,7 +1100,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Metals",
+              "materialName": "Bronze",
               "name": "Plated, raw",
               "summary": "Solid stainless steel, bronze plated raw matte surface",
               "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
@@ -1115,7 +1115,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Bronze",
               "name": "Plated, polished",
               "summary": "Solid stainless steel, bronze plated polished shiny surface",
               "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
@@ -1130,7 +1130,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Bronze",
               "name": "Solid, raw",
               "summary": "Solid bronze, raw matte surface",
               "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
@@ -1145,7 +1145,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Bronze",
               "name": "Solid, raw, PU coated",
               "summary": "Solid bronze, raw matte surface, PU coated to slow down oxidation",
               "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
@@ -1160,7 +1160,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Bronze",
               "name": "Solid, polished",
               "summary": "Solid bronze, polished shiny surface",
               "featuredImage": "gallery/625x465_1265767_1504248_1431706432.jpg",
@@ -1189,7 +1189,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Metals",
+              "materialName": "Sterling Silver",
               "name": "Solid, raw",
               "summary": "Solid sterling silver, raw sandblasted matte surface",
               "featuredImage": "gallery/625x465_482033_161787_1429673543.jpg",
@@ -1204,7 +1204,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Sterling Silver",
               "name": "Solid, polished",
               "summary": "Solid sterling silver, polished shiny surface",
               "featuredImage": "gallery/625x465_482033_161787_1429673543.jpg",
@@ -1219,7 +1219,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Sterling Silver",
               "name": "Solid, mirror polished",
               "summary": "Solid sterling silver, mirror polished reflecting surface",
               "featuredImage": "gallery/625x465_482033_161787_1429673543.jpg",
@@ -1234,7 +1234,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Sterling Silver",
               "name": "Solid, satin",
               "summary": "Solid sterling silver, surface with a satin look.",
               "featuredImage": "gallery/625x465_482033_161787_1429673543.jpg",
@@ -1249,7 +1249,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Sterling Silver",
               "name": "Solid, antique",
               "summary": "Solid sterling silver, polished shiny smooth outer surface, recessed areas dark and rough",
               "featuredImage": "gallery/625x465_482033_161787_1429673543.jpg",
@@ -1278,7 +1278,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Metals",
+              "materialName": "Gold",
               "name": "Gold plated, raw",
               "summary": "Solid stainless steel, gold plated raw matte surface",
               "featuredImage": "gallery/gold-detail-lost.jpg",
@@ -1293,7 +1293,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Gold",
               "name": "Gold plated, polished",
               "summary": "Solid stainless steel, gold plated polished shiny surface",
               "featuredImage": "gallery/gold-detail-lost.jpg",
@@ -1308,7 +1308,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Gold",
               "name": "Solid 14k gold",
               "summary": "Solid 14k gold",
               "featuredImage": "gallery/gold-detail-lost.jpg",
@@ -1323,7 +1323,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Gold",
               "name": "Solid 18k gold",
               "summary": "Solid 18k gold",
               "featuredImage": "gallery/gold-detail-lost.jpg",
@@ -1352,7 +1352,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Metals",
+              "materialName": "Platinum",
               "name": "Solid, polished",
               "summary": "Solid platinum, polished shiny surface",
               "featuredImage": "gallery/platinum-top-arrow-ring.jpg",
@@ -1381,7 +1381,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Metals",
+              "materialName": "Titanium",
               "name": "Solid, raw",
               "summary": "Solid titanium, raw matte surface",
               "featuredImage": "gallery/titanium-img1_b.jpg",
@@ -1396,7 +1396,7 @@
               ]
             },
             {
-              "materialname": "Metals",
+              "materialName": "Titanium",
               "name": "Solid, polished",
               "summary": "Solid titanium, polished shiny surface",
               "featuredImage": "gallery/titanium-img1_b.jpg",
@@ -1430,7 +1430,7 @@
           },
           "finishGroups": [
             {
-              "materialname": "Other",
+              "materialName": "Ceramics",
               "name": "Glazed, raw",
               "summary": "Solid ceramics, raw glazed smooth surface",
               "featuredImage": "gallery/vase-all-colors-625x416.jpg",
@@ -1445,7 +1445,7 @@
               ]
             },
             {
-              "materialname": "Other",
+              "materialName": "Ceramics",
               "name": "Glazed, glossy",
               "summary": "Solid ceramics, glossy glazed smooth surface",
               "featuredImage": "gallery/vase-all-colors-625x416.jpg",

@@ -2,7 +2,8 @@ import {
   open,
   close,
   openAddressModal,
-  openFetchingPriceModal
+  openFetchingPriceModal,
+  openMaterialModal
 } from '../../../../src/app/action/modal'
 import Store from '../../../../src/app/store'
 
@@ -59,7 +60,7 @@ describe('Modal Integration Test', () => {
     })
   })
 
-  describe('opens individual modal', () => {
+  describe('openAddressModal()', () => {
     it('opens address modal', () => {
       store.dispatch(openAddressModal())
       expect(store.getState().modal, 'to equal', {
@@ -77,6 +78,23 @@ describe('Modal Integration Test', () => {
         isClosable: false,
         contentType: MODAL_TYPE.FETCHING_PRICE,
         contentProps: {}
+      })
+    })
+  })
+
+  describe('openMaterialModal()', () => {
+    it('opens material modal', () => {
+      store.dispatch(openMaterialModal({
+        materialId: 'some-material',
+        finishGroupId: 'some-finish-group'
+      }))
+      expect(store.getState().modal, 'to equal', {
+        isOpen: true,
+        contentType: MODAL_TYPE.MATERIAL,
+        contentProps: {
+          materialId: 'some-material',
+          finishGroupId: 'some-finish-group'
+        }
       })
     })
   })
