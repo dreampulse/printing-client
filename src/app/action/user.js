@@ -43,15 +43,17 @@ export const updateLocation = location => (dispatch) => {
 }
 
 export const reviewOrder = form => async (dispatch, getState) => {
-  // const oldShippingAddress = getState().user.user.shippingAddress
-  // const newShippingAddress = form.shippingAddress
+  const oldShippingAddress = getState().user.user.shippingAddress
+  const newShippingAddress = form.shippingAddress
 
-  // if (!isEqual(oldShippingAddress, newShippingAddress)) {
-  //   dispatch(openPriceChangedModal({oldShippingAddress, newShippingAddress}))
-  // }
-
-  await dispatch(updateUser(form))
-  // The `createShoppingCart()` uses the updated address
-  await dispatch(createShoppingCart())  // TODO: create shopping cart later
-  return dispatch(goToCart())
+  if (!isEqual(oldShippingAddress, newShippingAddress)) {
+    // TODO: get new price and show `fetching-prices` in parallel
+    // - check whether prices has changed, and if:
+    dispatch(openPriceChangedModal({oldShippingAddress, newShippingAddress}))
+  } else {
+    // No change to the shipping address
+    await dispatch(updateUser(form))
+    await dispatch(createShoppingCart())  // TODO: create shopping cart later
+    await dispatch(goToCart())
+  }
 }
