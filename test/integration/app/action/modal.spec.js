@@ -90,6 +90,7 @@ describe('Modal Integration Test', () => {
       }))
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
+        isClosable: true,
         contentType: MODAL_TYPE.MATERIAL,
         contentProps: {
           materialId: 'some-material',

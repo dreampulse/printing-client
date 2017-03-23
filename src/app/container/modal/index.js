@@ -11,7 +11,7 @@ import FetchingPriceModal from './fetching-price'
 
 const modals = {
   [MODAL_TYPE.SHIPPING_ADDRESS]: ShippingAddressModal,
-  [MODAL_TYPE.MATERIAL]: MaterialModal
+  [MODAL_TYPE.MATERIAL]: MaterialModal,
   [MODAL_TYPE.FETCHING_PRICE]: FetchingPriceModal
 }
 
