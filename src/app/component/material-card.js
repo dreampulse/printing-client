@@ -69,7 +69,13 @@ const MaterialCard = ({
           <small className="material-card__subline">{subline}</small>
         </header>
         <div className="material-card__body">
-          {description} <Link onClick={onMoreClick} label="Learn more" />
+          {description} <Link
+            onClick={(event) => {
+              event.preventDefault()
+              onMoreClick()
+            }}
+            label="Learn more"
+          />
         </div>
         {unavailable ? unavailableFooter : availableFooter}
       </div>
