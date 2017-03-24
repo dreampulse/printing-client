@@ -9,15 +9,16 @@ import * as printingEngine from '../lib/printing-engine'
 // This would be easy with rxjs
 
 export const getFinalPrice = ({priceId}) => async (dispatch) => {
-  await pollApi(() => printingEngine.getPriceStatus({priceId}))
-
-  const pricePromise = printingEngine.getPrice({priceId})
-  return dispatch(createAction(TYPE.PRICE.RECEIVED)(pricePromise))
+  await pollApi(async () => {
+    const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
+    dispatch(createAction(TYPE.PRICE.RECEIVED)(price))
+    return isComplete
+  })
+  // TODO: handle failed case
 }
 
 export const createPriceRequest = () => async (dispatch, getState) => {
   const sa = getState().user.user.shippingAddress
-  // TODO: Issue #35
   if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
     throw new Error('Shipping Address Invalid')
   }
@@ -25,6 +26,7 @@ export const createPriceRequest = () => async (dispatch, getState) => {
   const materialIds = Object.keys(getState().material.materials.materialConfigs)
   const modelIds = Object.keys(getState().model.models)
 
+  // TODO: change this, when backend support offers
   const items = xprod(materialIds, modelIds).map(([materialId, modelId]) => ({
     modelId,
     materialId

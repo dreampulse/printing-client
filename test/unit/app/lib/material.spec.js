@@ -4,7 +4,8 @@ import {
   hasMaterialMultipleConfigs,
   getOffersForMaterialConfig,
   getBestOfferForMaterialConfig,
-  getBestOfferForMaterial
+  getBestOfferForMaterial,
+  getMaterialByName
 } from 'Lib/material'
 import materialResponse from '../../../../test-data/mock/material-list-response.json'
 
@@ -362,6 +363,42 @@ describe('getBestOfferForMaterial()', () => {
         currency: 'USD'
       },
       price: 44
+    })
+  })
+})
+
+describe('getMaterialByName()', () => {
+  let materials
+
+  beforeEach(() => {
+    materials = {
+      materialStructure: [{
+        name: 'Group 1',
+        materials: [{
+          id: 'material-1',
+          name: 'Material 1'
+        }]
+      }, {
+        name: 'Group 2',
+        materials: [{
+          id: 'material-2',
+          name: 'Material 2'
+        }, {
+          id: 'material-3',
+          name: 'Material 3'
+        }]
+      }]
+    }
+  })
+
+  it('returns null if material cannot be found', () => {
+    expect(getMaterialByName(materials, 'some-other-material'), 'to be', null)
+  })
+
+  it('returns expected material', () => {
+    expect(getMaterialByName(materials, 'Material 3'), 'to equal', {
+      id: 'material-3',
+      name: 'Material 3'
     })
   })
 })

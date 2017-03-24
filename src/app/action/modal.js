@@ -9,3 +9,9 @@ export const close = createAction(TYPE.MODAL.CLOSE)
 
 export const openAddressModal = () =>
   open({contentType: MODAL_TYPE.SHIPPING_ADDRESS})
+
+export const openMaterialModal = ({materialId, finishGroupId}) =>
+  open({
+    contentType: MODAL_TYPE.MATERIAL,
+    contentProps: {materialId, finishGroupId}
+  })

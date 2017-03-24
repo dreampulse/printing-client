@@ -1,5 +1,5 @@
 import config from '../../../config'
-import {upload, requestJson, fetch} from '../service/http'
+import {upload, requestJson, requestWithResponse, fetch} from '../service/http'
 
 const baseUrl = config.printingEngineBaseUrl
 
@@ -28,6 +28,14 @@ export const getPrice = ({priceId}) => requestJson(`${baseUrl}/price/${priceId}`
 export const getPriceStatus = async ({priceId}) => {
   const response = await fetch(`${baseUrl}/price/${priceId}`)
   return response.status === 200
+}
+
+export const getPriceWithStatus = async ({priceId}) => {
+  const response = await requestWithResponse(`${baseUrl}/price/${priceId}`)
+  return {
+    price: response.data,
+    isComplete: response.rawResponse.status === 200
+  }
 }
 
 export const createShoppingCart = ({userId, priceId, items, shipping}) =>
