@@ -6,6 +6,8 @@ import Headline from 'Component/headline'
 import RichText from 'Component/rich-text'
 import Button from 'Component/button'
 
+import {getCountryName} from 'Service/country'
+
 import {goToCart} from 'Action/navigation'
 
 const PriceChangedModal = ({oldShippingAddress, newShippingAddress, onClose}) => {
@@ -19,9 +21,13 @@ const PriceChangedModal = ({oldShippingAddress, newShippingAddress, onClose}) =>
       <RichText>
         <p>
           We used the location
-          <strong> {oldShippingAddress.city}, {oldShippingAddress.countryCode} </strong>
+          <strong>
+            {' '}{oldShippingAddress.city}, {getCountryName(oldShippingAddress.countryCode)}{' '}
+          </strong>
           to calculate prices. You have entered
-          <strong> {newShippingAddress.city}, {oldShippingAddress.countryCode} </strong>
+          <strong>
+            {' '}{newShippingAddress.city}, {getCountryName(oldShippingAddress.countryCode)}{' '}
+          </strong>
           as your shipping address.
         </p>
       </RichText>
