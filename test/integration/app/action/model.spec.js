@@ -137,8 +137,10 @@ describe('Model Integration Test', () => {
       printingEngine.uploadModel.resolves(apiResponse)
       printingEngine.getUploadStatus.resolves(true)
       printingEngine.createPriceRequest.resolves({priceId: '123'})
-      printingEngine.getPriceStatus.resolves(true)  // Finished polling
-      printingEngine.getPrice.resolves('some-price')
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: true,
+        price: 'some-price'
+      }) // Finished polling
 
       store = Store({
         material: {
