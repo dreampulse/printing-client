@@ -36,6 +36,14 @@ export async function request (url, options) {
   return checkStatus(response)
 }
 
+export async function requestWithResponse (url, options) {
+  const response = await fetch(url, options)
+  return {
+    data: checkStatus(response),
+    rawResponse: response
+  }
+}
+
 export function upload (url, file, params, onProgress) {
   const xhr = new Xhr()
 

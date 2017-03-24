@@ -45,8 +45,10 @@ describe('Price Integration Test', () => {
       })
 
       printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
-      printingEngine.getPriceStatus.resolves(true)  // Finished polling
-      printingEngine.getPrice.resolves('some-price')
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: true,
+        price: 'some-price'
+      })  // Finished polling
 
       await store.dispatch(createPriceRequest())
 
