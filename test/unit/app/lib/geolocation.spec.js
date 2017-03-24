@@ -169,6 +169,17 @@ describe('geolocation lib', () => {
         countryCode: 'DE'
       })
     })
+
+    it('handels empty object', () => {
+      expect(convertPlaceToLocation({}), 'to equal', {
+        street: null,
+        houseNumber: null,
+        city: null,
+        zipCode: null,
+        stateCode: null,
+        countryCode: null
+      })
+    })
   })
 
   describe('isAddressValid()', () => {
