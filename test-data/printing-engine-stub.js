@@ -30,6 +30,12 @@ printingEngine.getPriceStatus = () =>
 printingEngine.getPrice = () =>
   Promise.resolve(priceResponse)
 
+printingEngine.getPriceWithStatus = () =>
+  Promise.resolve({
+    price: priceResponse,
+    isComplete: true
+  })
+
 printingEngine.createShoppingCart = () =>
   Promise.resolve({cartId: '2e7e6852-0c4f-43af-980a-427bbb0dae05'})
 

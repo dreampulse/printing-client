@@ -9,10 +9,12 @@ import * as printingEngine from '../lib/printing-engine'
 // This would be easy with rxjs
 
 export const getFinalPrice = ({priceId}) => async (dispatch) => {
-  await pollApi(() => printingEngine.getPriceStatus({priceId}))
-
-  const pricePromise = printingEngine.getPrice({priceId})
-  return dispatch(createAction(TYPE.PRICE.RECEIVED)(pricePromise))
+  await pollApi(async () => {
+    const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
+    dispatch(createAction(TYPE.PRICE.RECEIVED)(price))
+    return isComplete
+  })
+  // TODO: handle failed case
 }
 
 export const createPriceRequest = () => async (dispatch, getState) => {
