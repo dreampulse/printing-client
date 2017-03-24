@@ -17,22 +17,36 @@ import {
 } from 'Action/model'
 
 import {
+  updateLocation
+} from 'Action/user'
+
+import {
   selectCommonQuantity
 } from 'Lib/selector'
+
+import {
+  formatAddress
+} from 'Lib/formatter'
+
+import {
+  convertPlaceToLocation
+} from 'Lib/geolocation'
 
 import config from '../../../config'
 
 const ModelPage = ({
-  location,
+  address,
   commonQuantity,
-  onChangeQuantity
+  onChangeQuantity,
+  onUpdateLocation
 }) => {
   const configurationHeader = (
     <ConfigurationHeader>
       <LabeledField label="Shipping:" modifiers={['block']}>
         <LocationField
-          value={`${location.zipCode} ${location.city}, ${location.stateCode}, ${location.countryCode}`}
+          value={formatAddress(address)}
           googleMapsApiKey={config.googleMapsApiKey}
+          onChange={place => onUpdateLocation(convertPlaceToLocation(place))}
         />
       </LabeledField>
       <LabeledField label="Quantity:">
@@ -55,12 +69,13 @@ const ModelPage = ({
 }
 
 const mapStateToProps = state => ({
-  location: state.user.user.shippingAddress,
+  address: state.user.user.shippingAddress,
   commonQuantity: selectCommonQuantity(state)
 })
 
 const mapDispatchToProps = {
-  onChangeQuantity: changeQuantity
+  onChangeQuantity: changeQuantity,
+  onUpdateLocation: updateLocation
 }
 
 export default compose(
