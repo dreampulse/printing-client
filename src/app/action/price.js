@@ -1,4 +1,3 @@
-import {xprod} from 'ramda'
 import {createAction} from 'redux-actions'
 
 import TYPE from '../type'
@@ -23,13 +22,22 @@ export const createPriceRequest = () => async (dispatch, getState) => {
     throw new Error('Shipping Address Invalid')
   }
 
-  const materialIds = Object.keys(getState().material.materials.materialConfigs)
-  const modelIds = Object.keys(getState().model.models)
+  const {
+    material: {
+      materials: {
+        materialConfigs
+      }
+    },
+    model: {
+      models
+    }
+  } = getState()
 
-  // TODO: change this, when backend support offers
-  const items = xprod(materialIds, modelIds).map(([materialId, modelId]) => ({
+  const materialConfigIds = Object.keys(materialConfigs)
+  const items = Object.keys(models).map(modelId => ({
     modelId,
-    materialId
+    materialConfigIds,
+    quantity: models[modelId].quantity
   }))
 
   const options = {

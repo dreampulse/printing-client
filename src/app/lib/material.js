@@ -54,34 +54,33 @@ export function getOffersForMaterialConfig (materialConfigId, price, models) {
   })
 }
 
-export function getBestOfferForMaterialConfig (materialConfigId, price, models) {
-  let bestOffer = null
-  const offers = getOffersForMaterialConfig(materialConfigId, price, models)
-  offers.forEach((offer) => {
-    const offerPrice = getOfferAmount(offer)
-    if (!bestOffer || bestOffer.price > offerPrice) {
-      bestOffer = {
-        offer,
-        price: offerPrice
-      }
+export function getBestOfferForMaterialConfig (offers, materialConfigId) {
+  return offers
+  .filter(offer => offer.materialConfigId === materialConfigId)
+  .reduce((bestOffer, offer) => {
+    if (!bestOffer || bestOffer.totalPrice > offer.totalPrice) {
+      return offer
     }
-  })
-
-  return bestOffer
+    return bestOffer
+  }, null)
 }
 
-export function getBestOfferForMaterial (material, price, models) {
-  let bestOffer = null
+export function getBestOfferForMaterial (offers, material) {
+  const materialConfigs = {}
   material.finishGroups.forEach((finishGroup) => {
     finishGroup.materialConfigs.forEach((materialConfig) => {
-      const offer = getBestOfferForMaterialConfig(materialConfig.id, price, models)
-      if (offer !== null && (!bestOffer || bestOffer.price > offer.price)) {
-        bestOffer = offer
-      }
+      materialConfigs[materialConfig.id] = true
     })
   })
 
-  return bestOffer
+  return offers
+  .filter(offer => materialConfigs[offer.materialConfigId])
+  .reduce((bestOffer, offer) => {
+    if (!bestOffer || bestOffer.totalPrice > offer.totalPrice) {
+      return offer
+    }
+    return bestOffer
+  }, null)
 }
 
 export function getMaterialByName (materials, name) {

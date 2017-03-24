@@ -3,8 +3,7 @@ import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
 import {buildClassArray} from 'Lib/build-class-name'
-import {getOfferAmount} from 'Lib/price'
-import {selectOffers} from 'Lib/selector'
+import {selectOffersForSelectedMaterialConfig} from 'Lib/selector'
 import {
   formatPrice,
   formatShipping
@@ -40,34 +39,36 @@ const ProviderSection = ({
     </Info>
   )
 
-  const providers = offers.map((offer, index) => (
-    <ProviderItem
-      key={index}
-      provider={offer.name}
-      price={formatPrice(getOfferAmount(offer), offer.currency)}
-      shipping={formatShipping(offer.shipping)}
-      onCheckoutClick={() => {
-        onSelectOffer({offer})
-        onGoToAddress()
-      }}
-    />
-  ))
+  const renderProviderList = () => (
+    <ProviderList providerInfo={providerInfo}>
+      {
+        offers.map((offer, index) => (
+          <ProviderItem
+            key={index}
+            provider={offer.printingService}
+            price={formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}
+            shipping={formatShipping(offer.shipping)}
+            onCheckoutClick={() => {
+              onSelectOffer({offer})
+              onGoToAddress()
+            }}
+          />
+        ))
+      }
+    </ProviderList>
+  )
 
   return (
     <Section id="section-provider">
       <Headline label="3. Choose a provider and shipping option" modifiers={headlineModifiers} />
-      {Boolean(selectedMaterialConfig) && (
-        <ProviderList providerInfo={providerInfo}>
-          {providers}
-        </ProviderList>
-      )}
+      {Boolean(selectedMaterialConfig) && renderProviderList()}
     </Section>
   )
 }
 
 const mapStateToProps = state => ({
   selectedMaterialConfig: state.material.selectedMaterialConfig,
-  offers: selectOffers(state)
+  offers: selectOffersForSelectedMaterialConfig(state)
 })
 
 const mapDispatchToProps = {

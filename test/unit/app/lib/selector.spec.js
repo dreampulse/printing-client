@@ -367,24 +367,15 @@ describe('selectOffers()', () => {
 })
 
 describe('selectPrintingServiceRequests()', () => {
-  let price
   let state
 
   beforeEach(() => {
-    price = {
-      printingService: {
-        imaterialize: {
-          requestComplete: false
-        },
-        shapeways: {
-          requestComplete: true
-        }
-      }
-    }
-
     state = {
       price: {
-        price
+        printingServiceComplete: {
+          imaterialize: false,
+          shapeways: true
+        }
       }
     }
   })
@@ -396,8 +387,8 @@ describe('selectPrintingServiceRequests()', () => {
     })
   })
 
-  it('returns null if price object is missing', () => {
-    state.price.price = null
+  it('returns null if printingServiceComplete object is missing', () => {
+    state.price.printingServiceComplete = null
     expect(selectPrintingServiceRequests(state), 'to equal', null)
   })
 })
