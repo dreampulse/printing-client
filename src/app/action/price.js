@@ -7,7 +7,7 @@ import * as printingEngine from '../lib/printing-engine'
 // TODO: what happens if I have multiple concurrent createPriceRequest() calls
 // This would be easy with rxjs
 
-export const getFinalPrice = ({priceId}) => async (dispatch) => {
+const getFinalPrice = ({priceId}) => async (dispatch) => {
   await pollApi(async () => {
     const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
     dispatch(createAction(TYPE.PRICE.RECEIVED)(price))

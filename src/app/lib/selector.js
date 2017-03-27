@@ -1,6 +1,5 @@
 import {
   hasMaterialMultipleConfigs,
-  getOffersForMaterialConfig,
   getBestOfferForMaterial
 } from 'Lib/material'
 import {

@@ -22,38 +22,6 @@ export function hasMaterialMultipleConfigs (material) {
   )
 }
 
-export function getOffersForMaterialConfig (materialConfigId, price, models) {
-  if (!price) {
-    return []
-  }
-
-  const vendors = Object.keys(price.printingService)
-    .map(name => ({name, ...price.printingService[name]}))
-
-  const offers = vendors.reduce((acc, vendor) => ([
-    ...acc,
-    ...vendor.shipping.map(shipping => ({
-      name: vendor.name,
-      items: vendor.items.map((item, index) => ({
-        ...item,
-        quantity: models[price.items[index].modelId].quantity
-      }))
-      .filter((_, index) =>
-        price.items[index].materialConfigId === materialConfigId
-      ),
-      shipping,
-      vatPercentage: vendor.vatPercentage,
-      currency: vendor.currency
-    }))
-  ]), [])
-
-  // Filter for complete offers
-  return offers.filter((offer) => {
-    const isCompletelyPrintable = offer.items.reduce((last, cur) => last && cur.isPrintable, true)
-    return isCompletelyPrintable && offer.items.length > 0
-  })
-}
-
 export function getBestOfferForMaterialConfig (offers, materialConfigId) {
   return offers
   .filter(offer => offer.materialConfigId === materialConfigId)

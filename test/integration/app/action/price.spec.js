@@ -18,8 +18,12 @@ describe('Price Integration Test', () => {
       store = Store({
         model: {
           models: {
-            'material-id-model-1': {},
-            'material-id-model-2': {}
+            'material-id-model-1': {
+              quantity: 1
+            },
+            'material-id-model-2': {
+              quantity: 2
+            }
           }
         },
         material: {
@@ -47,32 +51,37 @@ describe('Price Integration Test', () => {
       printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
       printingEngine.getPriceWithStatus.resolves({
         isComplete: true,
-        price: 'some-price'
+        price: {
+          offers: ['some-offer-1', 'some-offer-2'],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          }
+        }
       })  // Finished polling
 
       await store.dispatch(createPriceRequest())
 
-      // The cross product of all combinations
       expect(printingEngine.createPriceRequest, 'was called with', {
         userId: 'some-user-id',
         items: [{
           modelId: 'material-id-model-1',
-          materialId: 'some-material-id'
+          materialConfigIds: ['some-material-id', 'some-material-other-id'],
+          quantity: 1
         }, {
           modelId: 'material-id-model-2',
-          materialId: 'some-material-id'
-        }, {
-          modelId: 'material-id-model-1',
-          materialId: 'some-material-other-id'
-        }, {
-          modelId: 'material-id-model-2',
-          materialId: 'some-material-other-id'
+          materialConfigIds: ['some-material-id', 'some-material-other-id'],
+          quantity: 2
         }]
       })
 
       expect(store.getState().price, 'to satisfy', {
         priceId: 'some-price-id',
-        price: 'some-price'
+        offers: ['some-offer-1', 'some-offer-2'],
+        printingServiceComplete: {
+          shapeways: true,
+          imaterialize: true
+        }
       })
     })
 
@@ -85,7 +94,8 @@ describe('Price Integration Test', () => {
         expect(printingEngine.createPriceRequest, 'was not called')
         expect(store.getState().price, 'to equal', {
           priceId: null,
-          price: null
+          offers: null,
+          printingServiceComplete: null
         })
       }
     })

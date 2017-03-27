@@ -2,7 +2,6 @@ import cloneDeep from 'lodash/cloneDeep'
 import {
   generateMaterialIds,
   hasMaterialMultipleConfigs,
-  getOffersForMaterialConfig,
   getBestOfferForMaterialConfig,
   getBestOfferForMaterial,
   getMaterialByName
@@ -83,242 +82,55 @@ describe('hasMaterialMultipleConfigs()', () => {
   })
 })
 
-describe('getOffersForMaterialConfig()', () => {
-  let price
-  let models
-
-  beforeEach(() => {
-    price = {
-      items: [{
-        materialConfigId: 'config-1',
-        modelId: 'model-1'
-      }, {
-        materialConfigId: 'config-2',
-        modelId: 'model-2'
-      }],
-      printingService: {
-        imaterialize: {
-          currency: 'USD',
-          shipping: [{some: 'shipping-1'}, {some: 'shipping-2'}],
-          vatPercentage: 0.19,
-          items: [{
-            isPrintable: true
-          }, {
-            isPrintable: true
-          }]
-        },
-        shapeways: {
-          currency: 'USD',
-          shipping: [{some: 'shipping-1'}],
-          vatPercentage: 0.19,
-          items: [{
-            isPrintable: true
-          }, {
-            isPrintable: true
-          }]
-        }
-      }
-    }
-
-    models = {
-      'model-1': {
-        quantity: 1
-      },
-      'model-2': {
-        quantity: 2
-      }
-    }
-  })
-
-  it('returns empty array if price is not given', () => {
-    expect(getOffersForMaterialConfig('config-1', null), 'to equal', [])
-  })
-
-  it('returns expected offers', () => {
-    expect(getOffersForMaterialConfig('config-1', price, models), 'to equal', [{
-      name: 'imaterialize',
-      items: [{isPrintable: true, quantity: 1}],
-      shipping: {some: 'shipping-1'},
-      vatPercentage: 0.19,
-      currency: 'USD'
-    }, {
-      name: 'imaterialize',
-      items: [{isPrintable: true, quantity: 1}],
-      shipping: {some: 'shipping-2'},
-      vatPercentage: 0.19,
-      currency: 'USD'
-    }, {
-      name: 'shapeways',
-      items: [{isPrintable: true, quantity: 1}],
-      shipping: {some: 'shipping-1'},
-      vatPercentage: 0.19,
-      currency: 'USD'
-    }])
-  })
-
-  it('filters out not printable and empty offers', () => {
-    price.printingService.imaterialize.items = [{
-      isPrintable: false
-    }, {
-      isPrintable: true
-    }]
-    price.printingService.shapeways.items = []
-
-    expect(getOffersForMaterialConfig('config-1', price, models), 'to equal', [])
-  })
-})
-
 describe('getBestOfferForMaterialConfig()', () => {
-  let price
-  let models
+  let offers
 
   beforeEach(() => {
-    price = {
-      items: [{
-        materialConfigId: 'config-1',
-        modelId: 'model-1'
-      }, {
-        materialConfigId: 'config-1',
-        modelId: 'model-2'
-      }],
-      printingService: {
-        imaterialize: {
-          currency: 'USD',
-          shipping: [{price: 10}, {price: 20}],
-          vatPercentage: 0.1,
-          items: [{
-            isPrintable: true,
-            price: 10
-          }, {
-            isPrintable: true,
-            price: 10
-          }]
-        },
-        shapeways: {
-          currency: 'USD',
-          shipping: [{price: 20}],
-          vatPercentage: 0.1,
-          items: [{
-            isPrintable: true,
-            price: 20
-          }, {
-            isPrintable: true,
-            price: 20
-          }]
-        }
-      }
-    }
-
-    models = {
-      'model-1': {
-        quantity: 1
-      },
-      'model-2': {
-        quantity: 2
-      }
-    }
+    offers = [{
+      materialConfigId: 'config-1',
+      totalPrice: 20
+    }, {
+      materialConfigId: 'config-2',
+      totalPrice: 10
+    }, {
+      materialConfigId: 'config-1',
+      totalPrice: 10
+    }, {
+      materialConfigId: 'config-1',
+      totalPrice: 30
+    }]
   })
 
   it('returns cheapest offer for given material config', () => {
-    const bestOffer = getBestOfferForMaterialConfig('config-1', price, models)
+    const bestOffer = getBestOfferForMaterialConfig(offers, 'config-1')
     expect(bestOffer, 'to equal', {
-      offer: {
-        name: 'imaterialize',
-        items: [{
-          isPrintable: true,
-          price: 10,
-          quantity: 1
-        }, {
-          isPrintable: true,
-          price: 10,
-          quantity: 2
-        }],
-        shipping: {price: 10},
-        vatPercentage: 0.1,
-        currency: 'USD'
-      },
-      price: 44
+      materialConfigId: 'config-1',
+      totalPrice: 10
     })
   })
 })
 
 describe('getBestOfferForMaterial()', () => {
-  let price
+  let offers
   let material
-  let models
 
   beforeEach(() => {
-    price = {
-      items: [{
-        materialConfigId: 'config-1',
-        modelId: 'model-1'
-      }, {
-        materialConfigId: 'config-1',
-        modelId: 'model-2'
-      }, {
-        materialConfigId: 'config-2',
-        modelId: 'model-1'
-      }, {
-        materialConfigId: 'config-2',
-        modelId: 'model-2'
-      }, {
-        materialConfigId: 'config-3',
-        modelId: 'model-1'
-      }, {
-        materialConfigId: 'config-3',
-        modelId: 'model-2'
-      }],
-      printingService: {
-        imaterialize: {
-          currency: 'USD',
-          shipping: [{price: 10}, {price: 20}],
-          vatPercentage: 0.1,
-          items: [{
-            isPrintable: true,
-            price: 20
-          }, {
-            isPrintable: true,
-            price: 20
-          }, {
-            isPrintable: true,
-            price: 10
-          }, {
-            isPrintable: true,
-            price: 10
-          }, {
-            isPrintable: true,
-            price: 10
-          }, {
-            isPrintable: false,
-            price: 10
-          }]
-        },
-        shapeways: {
-          currency: 'USD',
-          shipping: [{price: 20}],
-          vatPercentage: 0.1,
-          items: [{
-            isPrintable: true,
-            price: 20
-          }, {
-            isPrintable: true,
-            price: 20
-          }, {
-            isPrintable: false,
-            price: 30
-          }, {
-            isPrintable: true,
-            price: 30
-          }, {
-            isPrintable: false,
-            price: 40
-          }, {
-            isPrintable: true,
-            price: 40
-          }]
-        }
-      }
-    }
+    offers = [{
+      materialConfigId: 'config-1',
+      totalPrice: 40
+    }, {
+      materialConfigId: 'config-2',
+      totalPrice: 30
+    }, {
+      materialConfigId: 'config-3',
+      totalPrice: 20
+    }, {
+      materialConfigId: 'config-4',
+      totalPrice: 10
+    }, {
+      materialConfigId: 'config-1',
+      totalPrice: 30
+    }]
 
     material = {
       finishGroups: [{
@@ -333,36 +145,13 @@ describe('getBestOfferForMaterial()', () => {
         }]
       }]
     }
-
-    models = {
-      'model-1': {
-        quantity: 1
-      },
-      'model-2': {
-        quantity: 2
-      }
-    }
   })
 
   it('returns cheapest offer for given material', () => {
-    const bestOffer = getBestOfferForMaterial(material, price, models)
+    const bestOffer = getBestOfferForMaterial(offers, material)
     expect(bestOffer, 'to equal', {
-      offer: {
-        name: 'imaterialize',
-        items: [{
-          isPrintable: true,
-          price: 10,
-          quantity: 1
-        }, {
-          isPrintable: true,
-          price: 10,
-          quantity: 2
-        }],
-        shipping: {price: 10},
-        vatPercentage: 0.1,
-        currency: 'USD'
-      },
-      price: 44
+      materialConfigId: 'config-3',
+      totalPrice: 20
     })
   })
 })
