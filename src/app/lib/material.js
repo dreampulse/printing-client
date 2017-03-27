@@ -1,7 +1,3 @@
-import {
-  getOfferAmount
-} from 'Lib/price'
-
 export function generateMaterialIds (materials) {
   materials.materialStructure.forEach((materialGroup, groupIndex) => {
     materialGroup.id = `group-${groupIndex}`
