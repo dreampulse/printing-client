@@ -2,6 +2,7 @@ import {
   open,
   close,
   openAddressModal,
+  openFetchingPriceModal,
   openMaterialModal
 } from '../../../../src/app/action/modal'
 import Store from '../../../../src/app/store'
@@ -20,11 +21,13 @@ describe('Modal Integration Test', () => {
       store.dispatch(
         open({
           contentType: 'some-content-type',
-          contentProps: 'some-content-props'
+          contentProps: 'some-content-props',
+          isCloseable: false
         })
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
+        isCloseable: false,
         contentType: 'some-content-type',
         contentProps: 'some-content-props'
       })
@@ -38,6 +41,7 @@ describe('Modal Integration Test', () => {
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
+        isCloseable: true,
         contentType: 'some-content-type',
         contentProps: {}
       })
@@ -49,6 +53,7 @@ describe('Modal Integration Test', () => {
       store.dispatch(close())
       expect(store.getState().modal, 'to equal', {
         isOpen: false,
+        isCloseable: true,
         contentType: null,
         contentProps: {}
       })
@@ -60,7 +65,18 @@ describe('Modal Integration Test', () => {
       store.dispatch(openAddressModal())
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
+        isCloseable: false,
         contentType: MODAL_TYPE.SHIPPING_ADDRESS,
+        contentProps: {}
+      })
+    })
+
+    it('opens fetch price modal', () => {
+      store.dispatch(openFetchingPriceModal())
+      expect(store.getState().modal, 'to equal', {
+        isOpen: true,
+        isCloseable: true,
+        contentType: MODAL_TYPE.FETCHING_PRICE,
         contentProps: {}
       })
     })
@@ -74,6 +90,7 @@ describe('Modal Integration Test', () => {
       }))
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
+        isCloseable: true,
         contentType: MODAL_TYPE.MATERIAL,
         contentProps: {
           materialId: 'some-material',

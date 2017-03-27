@@ -17,8 +17,8 @@ printingEngine.listMaterials = () =>
 printingEngine.createUser = () =>
   Promise.resolve({userId: 'a3dd5898-eb6a-4028-a494-3ffc414d254f'})
 
-printingEngine.updateUser = () =>
-  Promise.resolve()
+printingEngine.updateUser = ({user}) =>
+  Promise.resolve(user)
 
 printingEngine.createPriceRequest = () =>
   Promise.resolve({priceId: 'a788de06-c7e0-46ca-a5fa-0e46086b7530'})

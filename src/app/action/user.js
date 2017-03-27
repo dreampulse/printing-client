@@ -1,14 +1,21 @@
 import {createAction} from 'redux-actions'
+import isEqual from 'lodash/isEqual'
 import {
   getLocationByIp,
   isAddressValid
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
 
+import {delay} from 'Lib/timeout'  // TODO: just for testing
+
 import TYPE from '../type'
 import {goToCart} from './navigation'
 import {createShoppingCart} from './cart'
-import {openAddressModal} from './modal'
+import {
+  openAddressModal,
+  openPriceChangedModal,
+  openFetchingPriceModal
+} from './modal'
 import {createPriceRequest} from './price'
 
 export const detectAddress = () =>
@@ -38,8 +45,26 @@ export const updateLocation = location => (dispatch) => {
   }
 }
 
-export const reviewOrder = form => async (dispatch) => {
+export const reviewOrder = form => async (dispatch, getState) => {
+  const oldShippingAddress = getState().user.user.shippingAddress
+  const newShippingAddress = form.shippingAddress
+
   await dispatch(updateUser(form))
-  await dispatch(createShoppingCart())  // TODO: create shopping cart later
-  return dispatch(goToCart())
+
+  if (!isEqual(oldShippingAddress, newShippingAddress)) {
+    dispatch(openFetchingPriceModal())
+    await dispatch(createPriceRequest())
+    await delay(1000)  // Just for testing
+    await dispatch(createShoppingCart())  // TODO: create shopping cart later
+    const hasPriceChanged = true  // TODO: check if prices has changed
+    if (hasPriceChanged) {
+      dispatch(openPriceChangedModal({oldShippingAddress, newShippingAddress}))
+    } else {
+      dispatch(goToCart())
+    }
+  } else {
+    // No change to the shipping address
+    await dispatch(createShoppingCart())  // TODO: create shopping cart later
+    dispatch(goToCart())
+  }
 }
