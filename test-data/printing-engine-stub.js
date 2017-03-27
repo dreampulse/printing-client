@@ -4,8 +4,8 @@ import * as printingEngine from '../src/app/lib/printing-engine'
 
 printingEngine.uploadModel = () =>
   Promise.resolve({
-    modelId: 'f390d85f-71b9-493d-833c-d3c0d78a5351',
-    thumbnailUrl: 'http://localhost:8000/v1/model/f390d85f-71b9-493d-833c-d3c0d78a5351/thumbnail'
+    modelId: 'da4b474e-a98a-4708-be09-612ce3cdbaa3',
+    thumbnailUrl: 'http://localhost:8000/v1/model/da4b474e-a98a-4708-be09-612ce3cdbaa3/thumbnail'
   })
 
 printingEngine.getUploadStatus = () =>
@@ -21,7 +21,7 @@ printingEngine.updateUser = () =>
   Promise.resolve()
 
 printingEngine.createPriceRequest = () =>
-  Promise.resolve({priceId: 'e0817235-ff34-49fb-9178-ba1558809cf0'})
+  Promise.resolve({priceId: 'a788de06-c7e0-46ca-a5fa-0e46086b7530'})
 
 printingEngine.getPriceStatus = () =>
   Promise.resolve(true)
