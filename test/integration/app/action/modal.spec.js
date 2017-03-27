@@ -22,12 +22,12 @@ describe('Modal Integration Test', () => {
         open({
           contentType: 'some-content-type',
           contentProps: 'some-content-props',
-          isClosable: false
+          isCloseable: false
         })
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
-        isClosable: false,
+        isCloseable: false,
         contentType: 'some-content-type',
         contentProps: 'some-content-props'
       })
@@ -41,7 +41,7 @@ describe('Modal Integration Test', () => {
       )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
-        isClosable: true,
+        isCloseable: true,
         contentType: 'some-content-type',
         contentProps: {}
       })
@@ -53,7 +53,7 @@ describe('Modal Integration Test', () => {
       store.dispatch(close())
       expect(store.getState().modal, 'to equal', {
         isOpen: false,
-        isClosable: true,
+        isCloseable: true,
         contentType: null,
         contentProps: {}
       })
@@ -65,7 +65,7 @@ describe('Modal Integration Test', () => {
       store.dispatch(openAddressModal())
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
-        isClosable: false,
+        isCloseable: false,
         contentType: MODAL_TYPE.SHIPPING_ADDRESS,
         contentProps: {}
       })
@@ -75,7 +75,7 @@ describe('Modal Integration Test', () => {
       store.dispatch(openFetchingPriceModal())
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
-        isClosable: false,
+        isCloseable: true,
         contentType: MODAL_TYPE.FETCHING_PRICE,
         contentProps: {}
       })
@@ -90,7 +90,7 @@ describe('Modal Integration Test', () => {
       }))
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
-        isClosable: true,
+        isCloseable: true,
         contentType: MODAL_TYPE.MATERIAL,
         contentProps: {
           materialId: 'some-material',

@@ -17,7 +17,7 @@ const PriceChangedModal = ({oldShippingAddress, newShippingAddress, onClose}) =>
   ]
 
   return (
-    <Overlay headline={headline} buttons={buttons} closeable={false}>
+    <Overlay headline={headline} buttons={buttons} closePortal={onClose}>
       <RichText>
         <p>
           We used the location
