@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
 import {getUsStateName, getCountryName} from 'Service/country'
+import getCloudinaryUrl from 'Lib/cloudinary'
 import {
   selectCurrentMaterial,
   selectCartItems,
@@ -62,7 +63,6 @@ const CartPage = ({
         key={item.modelId}
         quantity={item.quantity}
         title={item.name}
-        subtitle={JSON.stringify(item, '', 2)}
         price={formatPrice(item.price, cart.currency)}
         onQuantityChange={onItemQuantityChange}
         onDelete={onItemDelete}
