@@ -4,7 +4,7 @@ import {
   selectMaterial,
   selectFinishGroup,
   selectCurrentMaterial,
-  selectOffers,
+  selectOffersForSelectedMaterialConfig,
   selectPrintingServiceRequests
 } from 'Lib/selector'
 import * as materialLib from 'Lib/material'
@@ -48,7 +48,7 @@ describe('selectCommonQuantity', () => {
 })
 
 describe('selectMaterialMenuValues()', () => {
-  let price
+  let offers
   let models
   let materials
   let material1
@@ -71,8 +71,7 @@ describe('selectMaterialMenuValues()', () => {
       name: 'Material 3'
     }
 
-    price = {some: 'price'}
-    models = {some: 'models'}
+    offers = ['some', 'offers']
     materials = {
       materialStructure: [{
         name: 'Group 1',
@@ -90,16 +89,16 @@ describe('selectMaterialMenuValues()', () => {
 
   it('returns expected material menu values', () => {
     materialLib.getBestOfferForMaterial
-      .withArgs(material1, price, models)
+      .withArgs(offers, material1)
       .returns({
-        price: 10,
-        offer: {currency: 'USD'}
+        totalPrice: 10,
+        currency: 'USD'
       })
     materialLib.getBestOfferForMaterial
-      .withArgs(material2, price, models)
+      .withArgs(offers, material2)
       .returns(null)
     materialLib.getBestOfferForMaterial
-      .withArgs(material3, price, models)
+      .withArgs(offers, material3)
       .returns(null)
 
     materialLib.hasMaterialMultipleConfigs.withArgs(material1).returns(true)
@@ -108,13 +107,10 @@ describe('selectMaterialMenuValues()', () => {
 
     const state = {
       price: {
-        price
+        offers
       },
       material: {
         materials
-      },
-      model: {
-        models
       }
     }
 
@@ -149,10 +145,53 @@ describe('selectMaterialMenuValues()', () => {
     }])
   })
 
+  it('returns material menu values without price when offers are null', () => {
+    materialLib.hasMaterialMultipleConfigs.returns(false)
+
+    const state = {
+      price: {
+        offers: null
+      },
+      material: {
+        materials
+      }
+    }
+
+    const menuValues = selectMaterialMenuValues(state)
+
+    expect(menuValues, 'to equal', [{
+      type: 'group',
+      label: 'Group 1',
+      children: [{
+        type: 'material',
+        value: 'material-1',
+        label: 'Material 1',
+        hasColor: false,
+        price: undefined
+      }]
+    }, {
+      type: 'group',
+      label: 'Group 2',
+      children: [{
+        type: 'material',
+        value: 'material-2',
+        label: 'Material 2',
+        hasColor: false,
+        price: undefined
+      }, {
+        type: 'material',
+        value: 'material-3',
+        label: 'Material 3',
+        hasColor: false,
+        price: undefined
+      }]
+    }])
+  })
+
   it('returns empty array if there are no materials in state', () => {
     const state = {
       price: {
-        price
+        offers
       },
       material: {
         materials: undefined
@@ -169,7 +208,7 @@ describe('selectMaterialMenuValues()', () => {
     materials.materialStructure = undefined
     const state = {
       price: {
-        price
+        offers
       },
       material: {
         materials
@@ -330,61 +369,16 @@ describe('selectCurrentMaterial()', () => {
   })
 })
 
-describe('selectOffers()', () => {
-  let price
-  let models
-  let state
-
-  beforeEach(() => {
-    sinon.stub(materialLib)
-
-    price = {some: 'price'}
-    models = {some: 'models'}
-    state = {
-      price: {
-        price
-      },
-      material: {
-        selectedMaterialConfig: 'some-config-id'
-      },
-      model: {
-        models
-      }
-    }
-  })
-
-  afterEach(() => {
-    sinon.restore(materialLib)
-  })
-
-  it('returns expected offers', () => {
-    materialLib.getOffersForMaterialConfig
-      .withArgs('some-config-id', price, models)
-      .returns(['some-offers'])
-
-    expect(selectOffers(state), 'to equal', ['some-offers'])
-  })
-})
-
 describe('selectPrintingServiceRequests()', () => {
-  let price
   let state
 
   beforeEach(() => {
-    price = {
-      printingService: {
-        imaterialize: {
-          requestComplete: false
-        },
-        shapeways: {
-          requestComplete: true
-        }
-      }
-    }
-
     state = {
       price: {
-        price
+        printingServiceComplete: {
+          imaterialize: false,
+          shapeways: true
+        }
       }
     }
   })
@@ -396,9 +390,47 @@ describe('selectPrintingServiceRequests()', () => {
     })
   })
 
-  it('returns null if price object is missing', () => {
-    state.price.price = null
+  it('returns null if printingServiceComplete object is missing', () => {
+    state.price.printingServiceComplete = null
     expect(selectPrintingServiceRequests(state), 'to equal', null)
   })
 })
 
+describe('selectOffersForSelectedMaterialConfig', () => {
+  let state
+
+  beforeEach(() => {
+    state = {
+      price: {
+        offers: [{
+          materialConfigId: 'config-1',
+          totalPrice: 10
+        }, {
+          materialConfigId: 'config-2',
+          totalPrice: 10
+        }, {
+          materialConfigId: 'config-1',
+          totalPrice: 20
+        }]
+      },
+      material: {
+        selectedMaterialConfig: 'config-1'
+      }
+    }
+  })
+
+  it('returns expected offers', () => {
+    expect(selectOffersForSelectedMaterialConfig(state), 'to equal', [{
+      materialConfigId: 'config-1',
+      totalPrice: 10
+    }, {
+      materialConfigId: 'config-1',
+      totalPrice: 20
+    }])
+  })
+
+  it('returns null if offers is null', () => {
+    state.price.offers = null
+    expect(selectOffersForSelectedMaterialConfig(state), 'to equal', null)
+  })
+})

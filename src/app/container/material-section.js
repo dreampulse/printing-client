@@ -43,8 +43,7 @@ import {
 
 const MaterialSection = ({
   areAllUploadsFinished,
-  price,
-  models,
+  offers,
   materials,
   materialMenuValues,
   selectedMaterial,
@@ -73,7 +72,7 @@ const MaterialSection = ({
     const colorValues = finishGroup.materialConfigs
       // Filter out material configs which do not have an offer
       .filter(materialConfig => (
-        Boolean(getBestOfferForMaterialConfig(materialConfig.id, price, models))
+        Boolean(getBestOfferForMaterialConfig(offers, materialConfig.id))
       ))
       .map(({id, color, colorCode, colorImage}) => ({
         value: id,
@@ -83,9 +82,8 @@ const MaterialSection = ({
       }))
 
     let bestOffer = getBestOfferForMaterialConfig(
-      selectedMaterialConfigs[finishGroup.id],
-      price,
-      models
+      offers,
+      selectedMaterialConfigs[finishGroup.id]
     )
     let selectedColorValue = colorValues.find(({value}) => (
       selectedMaterialConfigs[finishGroup.id] !== undefined &&
@@ -97,18 +95,18 @@ const MaterialSection = ({
     if (!selectedColorValue) {
       selectedColorValue = colorValues.length > 0 ? colorValues[0] : undefined
       if (selectedColorValue) {
-        bestOffer = getBestOfferForMaterialConfig(
-          selectedColorValue.value,
-          price,
-          models
-        )
+        bestOffer = getBestOfferForMaterialConfig(offers, selectedColorValue.value)
       }
     }
 
     const colorMenu = colorValues.length > 1 ? (<SelectMenu values={colorValues} />) : undefined
     const materialPrice = (
       <Price
-        value={bestOffer ? formatPrice(bestOffer.price, bestOffer.offer.currency) : undefined}
+        value={
+          bestOffer
+          ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
+          : undefined
+        }
         meta="incl. tax & shipping"
       />
     )
@@ -136,7 +134,7 @@ const MaterialSection = ({
       <MaterialCard
         key={finishGroup.name}
         title={finishGroup.materialName}
-        shipping={bestOffer && formatDeliveryTime(bestOffer.offer.shipping.deliveryTime)}
+        shipping={bestOffer && formatDeliveryTime(bestOffer.shipping.deliveryTime)}
         subline={finishGroup.name}
         description={finishGroup.summary}
         price={materialPrice}
@@ -201,8 +199,7 @@ const MaterialSection = ({
 
 const mapStateToProps = state => ({
   areAllUploadsFinished: state.model.areAllUploadsFinished,
-  price: state.price.price,
-  models: state.model.models,
+  offers: state.price.offers || [],
   materials: state.material.materials,
   materialMenuValues: selectMaterialMenuValues(state),
   selectedMaterial: selectCurrentMaterial(state),

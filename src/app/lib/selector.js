@@ -1,6 +1,5 @@
 import {
   hasMaterialMultipleConfigs,
-  getOffersForMaterialConfig,
   getBestOfferForMaterial
 } from 'Lib/material'
 import {
@@ -68,13 +67,10 @@ export const selectCommonQuantity = (state) => {
 export const selectMaterialMenuValues = (state) => {
   const {
     price: {
-      price
+      offers
     },
     material: {
       materials
-    },
-    model: {
-      models
     }
   } = state
 
@@ -86,13 +82,13 @@ export const selectMaterialMenuValues = (state) => {
     type: 'group',
     label: materialGroup.name,
     children: materialGroup.materials.map((material) => {
-      const offer = getBestOfferForMaterial(material, price, models)
+      const offer = offers && getBestOfferForMaterial(offers, material)
       return {
         type: 'material',
         value: material.id,
         label: material.name,
         hasColor: hasMaterialMultipleConfigs(material),
-        price: offer ? `From ${formatPrice(offer.price, offer.offer.currency)}` : undefined
+        price: offer ? `From ${formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}` : undefined
       }
     })
   }))
@@ -151,39 +147,37 @@ export const selectCurrentMaterial = (state) => {
   return selectMaterial(state, selectedMaterial)
 }
 
-export const selectOffers = (state) => {
+export const selectOffersForSelectedMaterialConfig = (state) => {
   const {
     price: {
-      price
+      offers
     },
     material: {
       selectedMaterialConfig
-    },
-    model: {
-      models
     }
   } = state
 
-  return getOffersForMaterialConfig(selectedMaterialConfig, price, models)
+  if (!offers) {
+    return null
+  }
+
+  return offers.filter(offer => offer.materialConfigId === selectedMaterialConfig)
 }
 
 export const selectPrintingServiceRequests = (state) => {
   const {
     price: {
-      price
+      printingServiceComplete
     }
   } = state
 
-  if (!price) {
+  if (!printingServiceComplete) {
     return null
   }
 
-  return Object.keys(price.printingService)
-    .reduce((acc, name) => ({
-      complete: acc.complete + (price.printingService[name].requestComplete ? 1 : 0),
-      total: acc.total + 1
-    }), {
-      complete: 0,
-      total: 0
-    })
+  const printingServices = Object.keys(printingServiceComplete)
+  return {
+    complete: printingServices.filter(key => printingServiceComplete[key]).length,
+    total: printingServices.length
+  }
 }

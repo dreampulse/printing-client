@@ -4,7 +4,8 @@ import TYPE from '../type'
 
 const initialState = {
   priceId: null,
-  price: null
+  offers: null,
+  printingServiceComplete: null
 }
 
 function handlePriceRequested (state, {payload: {priceId}, error}) {
@@ -15,10 +16,11 @@ function handlePriceRequested (state, {payload: {priceId}, error}) {
   }
 }
 
-function handlePriceReceived (state, {payload, error}) {
+function handlePriceReceived (state, {payload: {offers, printingServiceComplete}, error}) {
   return {
     ...state,
-    price: payload,
+    offers,
+    printingServiceComplete,
     error: !!error
   }
 }

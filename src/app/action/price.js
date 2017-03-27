@@ -1,4 +1,3 @@
-import {xprod} from 'ramda'
 import {createAction} from 'redux-actions'
 
 import TYPE from '../type'
@@ -8,7 +7,7 @@ import * as printingEngine from '../lib/printing-engine'
 // TODO: what happens if I have multiple concurrent createPriceRequest() calls
 // This would be easy with rxjs
 
-export const getFinalPrice = ({priceId}) => async (dispatch) => {
+const getFinalPrice = ({priceId}) => async (dispatch) => {
   await pollApi(async () => {
     const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
     dispatch(createAction(TYPE.PRICE.RECEIVED)(price))
@@ -23,13 +22,22 @@ export const createPriceRequest = () => async (dispatch, getState) => {
     throw new Error('Shipping Address Invalid')
   }
 
-  const materialIds = Object.keys(getState().material.materials.materialConfigs)
-  const modelIds = Object.keys(getState().model.models)
+  const {
+    material: {
+      materials: {
+        materialConfigs
+      }
+    },
+    model: {
+      models
+    }
+  } = getState()
 
-  // TODO: change this, when backend support offers
-  const items = xprod(materialIds, modelIds).map(([materialId, modelId]) => ({
+  const materialConfigIds = Object.keys(materialConfigs)
+  const items = Object.keys(models).map(modelId => ({
     modelId,
-    materialId
+    materialConfigIds,
+    quantity: models[modelId].quantity
   }))
 
   const options = {
