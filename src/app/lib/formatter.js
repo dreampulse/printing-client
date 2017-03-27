@@ -1,7 +1,7 @@
 import {getCountryName} from 'Service/country'
 
-export function formatPrice (value, currency) {
-  return `${value.toFixed(2)} ${currency}`
+export function formatPrice (value, currency, estimated = false) {
+  return `${estimated ? '~' : ''}${value.toFixed(2)} ${currency}`
 }
 
 export function formatDeliveryTime (deliveryTime) {

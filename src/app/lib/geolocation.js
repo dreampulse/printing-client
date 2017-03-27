@@ -28,6 +28,7 @@ export const getLocationByIp = async () => {
 export const convertPlaceToLocation = (place) => {
   const findType = (query) => {
     const addressComponents = place.address_components
+    if (!addressComponents) return null
     const components = addressComponents
       .filter(c => c.types.find(t => t === query))
     if (components.length > 0) return components[0].short_name
