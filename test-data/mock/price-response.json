@@ -1,66 +1,44 @@
 {
-  "_id":"2baf30a1-3208-4f4f-bbb2-8f7b4fdccc7e",
-  "items":[
-    {
-      "modelId":"b364bd10-6d64-4515-b832-495d0fdf7d4c",
-      "materialConfigId":"17"
-    }, {
-      "modelId":"b364bd10-6d64-4515-b832-495d0fdf7d4c",
-      "materialConfigId":"18"
-    }
-  ],
-  "printingService":{
-    "imaterialise":{
-      "items":[
-        {
-          "price":21.99,
-          "isPrintable":true
-        },
-        {
-          "price":42.23,
-          "isPrintable":true
-        }
-      ],
-      "shipping":[
-        {
-          "name":"Express",
-          "deliveryTime":"1",
-          "price":12.25
-        },
-        {
-          "name":"Standard",
-          "deliveryTime":"1",
-          "price":7.01
-        }
-      ],
-      "vatPercentage":0.19,
-      "currency":"USD",
-      "requestComplete":true
+  "_id": "a788de06-c7e0-46ca-a5fa-0e46086b7530",
+  "offers": [{
+    "materialConfigId": "0",
+    "printingService": "imaterialise",
+    "items": [{
+      "modelId": "da4b474e-a98a-4708-be09-612ce3cdbaa3",
+      "price": 14.19,
+      "quantity": 1
+    }],
+    "vatPercentage": 0.19,
+    "currency": "USD",
+    "priceEstimated": false,
+    "shipping": {
+      "name": "Express",
+      "deliveryTime": "1",
+      "price": 12.25
     },
-    "shapeways":{
-      "items":[
-        {
-          "price":22.04,
-          "isPrintable":true
-        }, {
-          "isPrintable":false
-        }
-      ],
-      "shipping":[
-        {
-          "name":"DHL Europaket",
-          "deliveryTime":"1-2",
-          "price":6.5
-        },
-        {
-          "name":"UPS",
-          "deliveryTime":"2-3",
-          "price":11.5
-        }
-      ],
-      "vatPercentage":0.19,
-      "currency":"USD",
-      "requestComplete":true
-    }
+    "offerId": "6ab213c3-fd86-47f7-88fd-b2285a976b65",
+    "totalPrice": 31.46
+  }, {
+    "materialConfigId": "0",
+    "printingService": "imaterialise",
+    "items": [{
+      "modelId": "da4b474e-a98a-4708-be09-612ce3cdbaa3",
+      "price": 14.19,
+      "quantity": 1
+    }],
+    "vatPercentage": 0.19,
+    "currency": "USD",
+    "priceEstimated": false,
+    "shipping": {
+      "name": "Standard",
+      "deliveryTime": "2",
+      "price": 7.01
+    },
+    "offerId": "b7ed2068-f46b-4fa7-810a-86d21d02653f",
+    "totalPrice": 25.23
+  }],
+  "printingServiceComplete": {
+    "imaterialise": true,
+    "shapeways": true
   }
 }
