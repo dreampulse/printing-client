@@ -25,10 +25,10 @@ export const createUser = () => (dispatch, getState) => {
   return dispatch(createAction(TYPE.USER.CREATED)(userPromise))
 }
 
-export const updateUser = user => (dispatch, getState) => {
+export const updateUser = user => async (dispatch, getState) => {
   const userId = getState().user.userId
-  const updatedPromise = printingEngine.updateUser({userId, user})
-  return dispatch(createAction(TYPE.USER.UPDATED)(updatedPromise))
+  await printingEngine.updateUser({userId, user})
+  return dispatch(createAction(TYPE.USER.UPDATED)(user))
 }
 
 export const updateLocation = location => (dispatch) => {

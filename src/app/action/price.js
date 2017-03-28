@@ -1,8 +1,12 @@
 import {createAction} from 'redux-actions'
 
+import * as printingEngine from 'Lib/printing-engine'
+import {getUpdatedOffer} from 'Lib/offer'
+
 import config from '../../../config'
 import TYPE from '../type'
-import * as printingEngine from '../lib/printing-engine'
+
+import {selectOffer} from './cart'
 
 export const pollFinalPrice = () => (dispatch, getState) => {
   const interval = config.pollingInverval
@@ -67,5 +71,11 @@ export const createPriceRequest = () => async (dispatch, getState) => {
   await dispatch(createAction(TYPE.PRICE.REQUESTED)(priceRequestPromise))
   await dispatch(pollFinalPrice())
 
-  // TODO: updated selectedOffer if possible
+  // We need to update the selectedOffer if applicable
+  if (getState().cart.selectedOffer) {
+    const offer = getUpdatedOffer(getState().cart.selectedOffer, getState().price.offers)
+
+    // if (!offer) // TODO: show that offer is no longer available
+    dispatch(selectOffer({offer}))
+  }
 }
