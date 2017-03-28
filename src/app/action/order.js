@@ -1,19 +1,21 @@
 import {createAction} from 'redux-actions'
 
+import * as stripe from 'Service/stripe'
+// import * as paypal from '../service/paypal'
+import * as printingEngine from 'Lib/printing-engine'
+
+import {createShoppingCart} from './cart'
+
 import TYPE from '../type'
-import * as stripe from '../service/stripe'
-import * as paypal from '../service/paypal'
-import * as printingEngine from '../lib/printing-engine'
-import {getCartAmount} from '../lib/price'
 
 export const createOrderWithStripe = () => async (dispatch, getState) => {
-  const cart = getState().cart.cart
-  const cartId = getState().cart.cartId
+  await dispatch(createShoppingCart())
 
-  const {currency} = cart
+  const offer = getState().cart.selectedOffer
+  const cartId = getState().cart.cartId
+  const currency = offer.currency
+  const amount = offer.totalPrice
   const email = getState().user.user.emailAddress
-   // TODO: The cart should provide the total amount
-  const amount = getCartAmount(cart)
 
   const tokenObject = await stripe.checkout({amount, currency, email})
   const token = tokenObject.id
@@ -22,6 +24,8 @@ export const createOrderWithStripe = () => async (dispatch, getState) => {
   return dispatch(createAction(TYPE.ORDER.ORDERED)(orderPromise))
 }
 
+// TODO: implement Paypal
+/*
 export const initPaymentWithPaypal = () => (dispatch, getState) => {
   const cart = getState().cart.cart
   const cartId = getState().cart.cartId
@@ -41,3 +45,4 @@ export const createOrderWithPaypal = (data, actions) => async (dispatch, getStat
   const orderPromise = printingEngine.order({cartId, type: 'paypal', token})
   return dispatch(createAction(TYPE.ORDER.ORDERED)(orderPromise))
 }
+*/

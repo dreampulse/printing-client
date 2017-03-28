@@ -66,4 +66,6 @@ export const createPriceRequest = () => async (dispatch, getState) => {
 
   await dispatch(createAction(TYPE.PRICE.REQUESTED)(priceRequestPromise))
   await dispatch(pollFinalPrice())
+
+  // TODO: updated selectedOffer if possible
 }
