@@ -167,7 +167,7 @@ describe('Price Integration Test', () => {
           error: true
         })
 
-        expect(printingEngine.getPriceWithStatus, `was called times`, 10)
+        expect(printingEngine.getPriceWithStatus, 'was called times', 10)
       }
     })
   })
