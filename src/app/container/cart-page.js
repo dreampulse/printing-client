@@ -5,7 +5,8 @@ import {getUsStateName, getCountryName} from 'Service/country'
 import getCloudinaryUrl from 'Lib/cloudinary'
 import {
   selectedOfferMaterial,
-  selectOfferItems
+  selectOfferItems,
+  selectCommonQuantity
 } from 'Lib/selector'
 
 import {
@@ -46,6 +47,7 @@ const CartPage = ({
   offerItems,
   selectedMaterial,
   onGoBack,
+  totalQuantity,
   onOrderWithStripe,
   onOrderWithPaypal,
   onItemQuantityChange,
@@ -167,7 +169,7 @@ const CartPage = ({
         <VendorSection />
         <Section>
           <LabeledField label="Quantity:">
-            <NumberField onChange={value => onTotalQuantityChange(value)} value={0} />
+            <NumberField onChange={value => onTotalQuantityChange(value)} value={totalQuantity} />
           </LabeledField>
         </Section>
         <CartQantityList />
@@ -180,7 +182,8 @@ const mapStateToProps = state => ({
   offer: state.cart.selectedOffer,
   user: state.user.user,
   offerItems: selectOfferItems(state),
-  selectedMaterial: selectedOfferMaterial(state)
+  selectedMaterial: selectedOfferMaterial(state),
+  totalQuantity: selectCommonQuantity(state)
 })
 
 const mapDispatchToProps = {
