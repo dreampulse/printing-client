@@ -16,8 +16,10 @@ describe('Price Integration Test', () => {
   })
 
   describe('createPriceRequest()', () => {
-    it('should work if shipping address is set', async () => {
-      store = Store({
+    let state
+
+    beforeEach(() => {
+      state = {
         model: {
           models: {
             'material-id-model-1': {
@@ -48,7 +50,7 @@ describe('Price Integration Test', () => {
             }
           }
         }
-      })
+      }
 
       printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
       printingEngine.getPriceWithStatus.resolves({
@@ -61,7 +63,10 @@ describe('Price Integration Test', () => {
           }
         }
       })
+    })
 
+    it('works if shipping address is set', async () => {
+      store = Store(state)
       await store.dispatch(createPriceRequest())
 
       expect(printingEngine.createPriceRequest, 'was called with', {
@@ -88,7 +93,51 @@ describe('Price Integration Test', () => {
       })
     })
 
-    it('should not send request if shipping address is not set', async () => {
+    it('updates offer if applicable', async () => {
+      store = Store({
+        ...state,
+        cart: {
+          selectedOffer: {
+            materialConfigId: 'some-config-id',
+            printingService: 'some-printing-service',
+            shipping: {
+              name: 'some-shipping'
+            }
+          }
+        }
+      })
+
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: true,
+        price: {
+          offers: [{
+            THIS_IS_A_OFFER: 'A',
+            materialConfigId: 'some-config-id',
+            printingService: 'some-printing-service',
+            shipping: {
+              name: 'some-shipping'
+            }
+          }],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          }
+        }
+      })
+
+      await store.dispatch(createPriceRequest())
+
+      expect(store.getState().cart.selectedOffer, 'to equal', {
+        THIS_IS_A_OFFER: 'A',
+        materialConfigId: 'some-config-id',
+        printingService: 'some-printing-service',
+        shipping: {
+          name: 'some-shipping'
+        }
+      })
+    })
+
+    it('does not send request if shipping address is not set', async () => {
       store = Store({})
 
       try {
