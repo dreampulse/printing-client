@@ -33,11 +33,12 @@ import backIcon from 'Icon/back.svg'
 import creditCardIcon from 'Icon/credit-card.svg'
 import paypalIcon from 'Icon/paypal.svg'
 
-import AppLayout from './app-layout'
+import {goBack} from 'Action/navigation'
+import {changeIndividualQuantity, changeQuantity} from 'Action/model'
+import {createShoppingCart} from 'Action/cart'
+import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from 'Action/order'
 
-import {goBack} from '../action/navigation'
-import {changeQuantity, createShoppingCart} from '../action/cart'
-import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from '../action/order'
+import AppLayout from './app-layout'
 
 const CartPage = ({
   user,
@@ -58,7 +59,7 @@ const CartPage = ({
         key={item.modelId}
         quantity={item.quantity}
         price={formatPrice(item.price, offer.currency)}
-        onQuantityChange={onItemQuantityChange}
+        onQuantityChange={quantity => onItemQuantityChange(quantity, item.modelId)}
         onDelete={onItemDelete}
       />
     ))
@@ -157,6 +158,7 @@ const CartPage = ({
     </PaymentSection>
   )
 
+  // TODO: Where can I get the total quantity, cant find a selector
   return (
     <AppLayout currentStep={2}>
       <PageHeader label="Order Summary" backLink={backLink} />
@@ -165,7 +167,7 @@ const CartPage = ({
         <VendorSection />
         <Section>
           <LabeledField label="Quantity:">
-            <NumberField onChange={onTotalQuantityChange} value={0} />
+            <NumberField onChange={value => onTotalQuantityChange(value)} value={0} />
           </LabeledField>
         </Section>
         <CartQantityList />
@@ -188,9 +190,9 @@ const mapDispatchToProps = {
   onOrderWithPaypal: createOrderWithPaypal,
   onPayWithPaypal: initPaymentWithPaypal,
   onCreateShoppingCart: createShoppingCart,
-  onItemQuantityChange: () => {}, // TODO: add action
+  onItemQuantityChange: changeIndividualQuantity,
   onItemDelete: () => {}, // TODO: add action
-  onTotalQuantityChange: () => {} // TODO: add action
+  onTotalQuantityChange: changeQuantity
 }
 
 const enhance = compose(
