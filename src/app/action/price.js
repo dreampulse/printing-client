@@ -74,8 +74,7 @@ export const createPriceRequest = () => async (dispatch, getState) => {
   // We need to update the selectedOffer if applicable
   if (getState().cart.selectedOffer) {
     const offer = getUpdatedOffer(getState().cart.selectedOffer, getState().price.offers)
-
     // if (!offer) // TODO: show that offer is no longer available
-    dispatch(selectOffer({offer}))
+    await dispatch(selectOffer({offer}))
   }
 }
