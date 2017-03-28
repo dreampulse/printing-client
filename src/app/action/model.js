@@ -41,9 +41,10 @@ export const uploadFile = file => async (dispatch, getState) => {
     dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED)({progress, fileId}))
 
   try {
-    const {modelId} = await printingEngine.uploadModel(file, {unit}, onUploadProgressed)
-    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({modelId, fileId}))
-    return {modelId}
+    const {modelId, thumbnailUrl} =
+      await printingEngine.uploadModel(file, {unit}, onUploadProgressed)
+    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({modelId, fileId, thumbnailUrl}))
+    return {modelId, thumbnailUrl}
   } catch (e) {
     dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({fileId, error: true}))
     throw new Error()

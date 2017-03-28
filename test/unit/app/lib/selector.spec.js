@@ -5,7 +5,11 @@ import {
   selectFinishGroup,
   selectCurrentMaterial,
   selectOffersForSelectedMaterialConfig,
-  selectPrintingServiceRequests
+  selectPrintingServiceRequests,
+  selectMaterialByMaterialConfigId,
+  selectedOfferMaterial,
+  selectThumbnailUrlByModelId,
+  selectOfferItems
 } from 'Lib/selector'
 import * as materialLib from 'Lib/material'
 
@@ -432,5 +436,146 @@ describe('selectOffersForSelectedMaterialConfig', () => {
   it('returns null if offers is null', () => {
     state.price.offers = null
     expect(selectOffersForSelectedMaterialConfig(state), 'to equal', null)
+  })
+})
+
+describe('selectMaterialByMaterialConfigId', () => {
+  let state
+  let material
+  let materialConfig
+
+  beforeEach(() => {
+    materialConfig = {
+      id: 'some-material-config-id'
+    }
+    material = {
+      finishGroups: [{
+        materialConfigs: [materialConfig]
+      }]
+    }
+    state = {
+      material: {
+        materials: {
+          materialStructure: [{
+            materials: [material]
+          }]
+        }
+      }
+    }
+  })
+
+  it('selects the material by id and returns it together with the config', () => {
+    expect(selectMaterialByMaterialConfigId(state, 'some-material-config-id'), 'to equal', {
+      material,
+      materialConfig
+    })
+  })
+
+  it('returns empty object if it does not find a materialConfig', () => {
+    expect(selectMaterialByMaterialConfigId(state, 'some-other-material-config-id'), 'to equal', {})
+  })
+})
+
+describe('selectedOfferMaterial', () => {
+  let state
+  let material
+  let materialConfig
+
+  beforeEach(() => {
+    materialConfig = {
+      id: 'some-material-config-id'
+    }
+    material = {
+      finishGroups: [{
+        materialConfigs: [materialConfig]
+      }]
+    }
+    state = {
+      cart: {
+        selectedOffer: {
+          materialConfigId: 'some-material-config-id'
+        }
+      },
+      material: {
+        materials: {
+          materialStructure: [{
+            materials: [material]
+          }]
+        }
+      }
+    }
+  })
+
+  it('selects the material defined in the selectedOffer', () => {
+    expect(selectedOfferMaterial(state), 'to equal', {
+      material,
+      materialConfig
+    })
+  })
+})
+
+describe('selectThumbnailUrlByModelId', () => {
+  let state
+
+  beforeEach(() => {
+    state = {
+      model: {
+        models: {
+          'some-model-id': {
+            thumbnailUrl: 'some-thumbnail-url'
+          }
+        }
+      }
+    }
+  })
+
+  it('returns the thumbnailUrl of a model', () => {
+    expect(selectThumbnailUrlByModelId(state, 'some-model-id'), 'to equal', 'some-thumbnail-url')
+  })
+
+  it('returns null if the model does not exist', () => {
+    expect(selectThumbnailUrlByModelId(state, 'some-other-model-id'), 'to be', null)
+  })
+})
+
+describe('selectOfferItems', () => {
+  let state
+
+  beforeEach(() => {
+    state = {
+      cart: {
+        selectedOffer: {
+          items: [{
+            modelId: 'some-model-id'
+          },
+          {
+            modelId: 'some-other-model-id'
+          }]
+        }
+      },
+      model: {
+        models: {
+          'some-model-id': {
+            thumbnailUrl: 'some-thumbnail-url'
+          },
+          'some-other-model-id': {
+            thumbnailUrl: 'some-other-thumbnail-url'
+          }
+        }
+      }
+    }
+  })
+
+  it('returns selectedOffer items with thumbnailUrl', () => {
+    expect(selectOfferItems(state), 'to equal', [
+      {
+        modelId: 'some-model-id',
+        thumbnailUrl: 'some-thumbnail-url'
+      },
+      {
+        modelId: 'some-other-model-id',
+        thumbnailUrl: 'some-other-thumbnail-url'
+      }
+    ])
   })
 })
