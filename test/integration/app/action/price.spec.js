@@ -1,6 +1,8 @@
-import {createPriceRequest} from '../../../../src/app/action/price'
+import {createPriceRequest, pollFinalPrice} from '../../../../src/app/action/price'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
+
+import config from '../../../../config'
 
 describe('Price Integration Test', () => {
   let store
@@ -58,7 +60,7 @@ describe('Price Integration Test', () => {
             imaterialize: true
           }
         }
-      })  // Finished polling
+      })
 
       await store.dispatch(createPriceRequest())
 
@@ -81,7 +83,8 @@ describe('Price Integration Test', () => {
         printingServiceComplete: {
           shapeways: true,
           imaterialize: true
-        }
+        },
+        pollCountdown: 100  // Expect that the poll count will be reset
       })
     })
 
@@ -95,8 +98,76 @@ describe('Price Integration Test', () => {
         expect(store.getState().price, 'to equal', {
           priceId: null,
           offers: null,
+          pollCountdown: 100,
           printingServiceComplete: null
         })
+      }
+    })
+  })
+
+  describe('pollFinalPrice()', () => {
+    let sandbox
+    let somePrice
+
+    beforeEach(() => {
+      sandbox = sinon.sandbox.create()
+      sandbox.stub(config, 'pollingInverval', 1)  // Faster polling
+
+      store = Store({
+        price: {
+          priceId: 'some-price-id',
+          pollCountdown: 10
+        }
+      })
+
+      somePrice = {
+        offers: ['some-offer'],
+        printingServiceComplete: {
+          shapeways: true,
+          imaterialize: true
+        }
+      }
+    })
+
+    afterEach(() => {
+      sandbox.restore()
+    })
+
+    it('works if getPrice is completed', async () => {
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: true,
+        price: somePrice
+      })
+
+      await store.dispatch(pollFinalPrice())
+      expect(store.getState().price, 'to equal', {
+        priceId: 'some-price-id',
+        pollCountdown: 10,
+        offers: ['some-offer'],
+        printingServiceComplete: {
+          shapeways: true,
+          imaterialize: true
+        },
+        error: false
+      })
+    })
+
+    it('polls 10 times until the countdown is 0', async () => {
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: false,
+        price: somePrice
+      })
+
+      try {
+        await store.dispatch(pollFinalPrice())
+      } catch (e) {
+        expect(store.getState().price, 'to equal', {
+          priceId: 'some-price-id',
+          pollCountdown: 0,  // Reduced to 0
+          error: true
+        })
+
+        expect(printingEngine.getPriceWithStatus, `was called times`, 10)
       }
     })
   })
