@@ -9,10 +9,7 @@ import {createShoppingCart} from './cart'
 import TYPE from '../type'
 
 export const createOrderWithStripe = () => async (dispatch, getState) => {
-  console.log('a')
   await dispatch(createShoppingCart())
-
-  console.log('b')
 
   const offer = getState().cart.selectedOffer
   const cartId = getState().cart.cartId
