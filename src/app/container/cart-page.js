@@ -36,7 +36,7 @@ import creditCardIcon from 'Icon/credit-card.svg'
 
 import {goBack} from 'Action/navigation'
 import {changeIndividualQuantity, changeQuantity} from 'Action/model'
-import {createOrderWithStripe /* , initPaymentWithPaypal, createOrderWithPaypal */} from 'Action/order'
+import {createOrderWithStripe /* , initPaymentWithPaypal, createOrderWithPaypal */ } from 'Action/order'
 
 import AppLayout from './app-layout'
 
@@ -131,8 +131,8 @@ const CartPage = ({
         <Column md={6}>
           <Headline modifiers={['disabled', 's']} label="Material" />
           <Paragraph modifiers={['l']}>
-            {selectedMaterial.material && selectedMaterial.material.name},&nbsp;
-            {selectedMaterial.material && selectedMaterial.material.properties.printingMethod}<br />
+            {selectedMaterial.material.name},&nbsp;
+            {selectedMaterial.material.properties.printingMethod}<br />
             <ColorSquare
               color={selectedMaterial.materialConfig.colorCode}
               image={getCloudinaryUrl(selectedMaterial.materialConfig.colorImage, ['w_40', 'h_40', 'c_fill'])}

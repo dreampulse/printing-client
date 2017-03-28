@@ -9,7 +9,10 @@ import {createShoppingCart} from './cart'
 import TYPE from '../type'
 
 export const createOrderWithStripe = () => async (dispatch, getState) => {
+  console.log('a')
   await dispatch(createShoppingCart())
+
+  console.log('b')
 
   const offer = getState().cart.selectedOffer
   const cartId = getState().cart.cartId
@@ -21,6 +24,7 @@ export const createOrderWithStripe = () => async (dispatch, getState) => {
   const token = tokenObject.id
 
   const orderPromise = printingEngine.order({cartId, type: 'stripe', token})
+
   return dispatch(createAction(TYPE.ORDER.ORDERED)(orderPromise))
 }
 
