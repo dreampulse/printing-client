@@ -55,9 +55,7 @@ const AppLayout = ({
   )
 }
 
-const mapStateToProps = () => ({
-  currentStep: 0 // TODO
-})
+const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {}
 
