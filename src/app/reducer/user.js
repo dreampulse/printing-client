@@ -61,8 +61,19 @@ function handleUserUpdated (state, {payload}) {
   }
 }
 
+function handleSetBillingAddress (state, {payload}) {
+  const nextState = {
+    ...state
+  }
+  nextState.user.billingAddress = {
+    ...payload
+  }
+  return nextState
+}
+
 export default handleActions({
   [TYPE.USER.SHIPPING_ADDRESS_CHANGED]: handleShippingAddressChange,
   [TYPE.USER.CREATED]: handleUserCreated,
-  [TYPE.USER.UPDATED]: handleUserUpdated
+  [TYPE.USER.UPDATED]: handleUserUpdated,
+  [TYPE.USER.SET_BILLING_ADDRESS]: handleSetBillingAddress
 }, initialState)

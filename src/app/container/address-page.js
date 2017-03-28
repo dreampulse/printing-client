@@ -24,7 +24,7 @@ import backIcon from 'Icon/back.svg'
 
 import {renderField} from 'Container/util/form'
 
-import {reviewOrder} from 'Action/user'
+import {reviewOrder, setBillingAddress} from 'Action/user'
 import {goBack} from 'Action/navigation'
 
 import AppLayout from './app-layout'
@@ -36,7 +36,10 @@ const AddressPage = ({
   submitting,
   useDifferentBillingAddress,
   billingAddressCountryCode,
-  shippingAddressCountryCode
+  updateBillingAddress,
+  billingAddress,
+  shippingAddressCountryCode,
+  shippingAddress
 }) => {
   const required = value => (value ? undefined : 'Required')
   const email = value => (
@@ -120,6 +123,9 @@ const AddressPage = ({
   )
 
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
+  if (useDifferentBillingAddress && (!billingAddress.firstName)) {
+    updateBillingAddress(shippingAddress)
+  }
 
   return (
     <AppLayout currentStep={1}>
@@ -202,12 +208,21 @@ const mapStateToProps = state => ({
   shippingAddressCountryCode: selector(state, 'shippingAddress.countryCode'),
   billingAddressCountryCode: selector(state, 'billingAddress.countryCode'),
   useDifferentBillingAddress: selector(state, 'useDifferentBillingAddress'),
-  valid: isValid(FORM_NAME)(state)
+  valid: isValid(FORM_NAME)(state),
+  billingAddress: {
+    firstName: selector(state, 'billingAddress.firstName'),
+    countryCode: selector(state, 'billingAddress.countryCode')
+  },
+  shippingAddress: {
+    firstName: selector(state, 'shippingAddress.firstName'),
+    countryCode: selector(state, 'shippingAddress.countryCode')
+  }
 })
 
 const mapDispatchToProps = {
   onGoBack: goBack,
-  onSubmit: reviewOrder
+  onSubmit: reviewOrder,
+  updateBillingAddress: setBillingAddress
 }
 
 const enhance = compose(

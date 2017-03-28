@@ -68,3 +68,6 @@ export const reviewOrder = form => async (dispatch, getState) => {
     dispatch(goToCart())
   }
 }
+
+export const setBillingAddress = billingAddress => dispatch =>
+  dispatch(createAction(TYPE.USER.SET_BILLING_ADDRESS)(billingAddress))
