@@ -4,9 +4,8 @@ import {compose} from 'recompose'
 import {getUsStateName, getCountryName} from 'Service/country'
 import getCloudinaryUrl from 'Lib/cloudinary'
 import {
-  selectCurrentMaterial,
-  selectCartItems,
-  selectCart
+  selectedOfferMaterial,
+  selectOfferItems
 } from 'Lib/selector'
 
 import {
@@ -28,6 +27,7 @@ import ModelQuantityItem from 'Component/model-quantity-item'
 import ModelQuantityItemList from 'Component/model-quantity-item-list'
 import LabeledField from 'Component/labeled-field'
 import NumberField from 'Component/number-field'
+import ColorSquare from 'Component/color-square'
 
 import backIcon from 'Icon/back.svg'
 import creditCardIcon from 'Icon/credit-card.svg'
@@ -40,30 +40,24 @@ import {changeQuantity, createShoppingCart} from '../action/cart'
 import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from '../action/order'
 
 const CartPage = ({
-  cartItems,
-  cart,
   user,
   offer,
+  offerItems,
   selectedMaterial,
   onGoBack,
   onOrderWithStripe,
   onOrderWithPaypal,
   onItemQuantityChange,
   onItemDelete,
-  onTotalQuantityChange,
-  totalQuantity
+  onTotalQuantityChange
 }) => {
-  // TODO: most item information is missing in the selectedOffer
-  // so I used the cartItems
-  // TODO: how do I get the image
   const CartQantityList = () => {
-    const items = cartItems.map(item => (
+    const items = offerItems.map(item => (
       <ModelQuantityItem
-        imageSource={''}
+        imageSource={item.thumbnailUrl}
         key={item.modelId}
         quantity={item.quantity}
-        title={item.name}
-        price={formatPrice(item.price, cart.currency)}
+        price={formatPrice(item.price, offer.currency)}
         onQuantityChange={onItemQuantityChange}
         onDelete={onItemDelete}
       />
@@ -125,18 +119,22 @@ const CartPage = ({
     </Section>
   )
 
-  // TODO: how can I get the selected coler?
   const VendorSection = () => (
     <Section modifiers={['highlight']}>
       <Grid>
         <Column md={6}>
           <Headline modifiers={['disabled', 's']} label="Provider" />
-          <ProviderImage name={offer.name} />
+          <ProviderImage name={offer.printingService} />
         </Column>
         <Column md={6}>
           <Headline modifiers={['disabled', 's']} label="Material" />
           <Paragraph modifiers={['l']}>
-            {selectedMaterial.name}, {selectedMaterial.properties.printingMethod}<br />
+            {selectedMaterial.material.name},&nbsp;
+            {selectedMaterial.material.properties.printingMethod}<br />
+            <ColorSquare
+              color={selectedMaterial.materialConfig.colorCode}
+              image={getCloudinaryUrl(selectedMaterial.materialConfig.colorImage, ['w_40', 'h_40', 'c_fill'])}
+            /> {selectedMaterial.materialConfig.color}
           </Paragraph>
         </Column>
       </Grid>
@@ -146,12 +144,13 @@ const CartPage = ({
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
 
   // TODO: connect payment buttons
+  // TODO: update prices
   const paymentSection = (
     <PaymentSection
-      subtotal={formatPrice(cart.subTotal, offer.currency)}
-      shipping={formatPrice(cart.shippingTotal, offer.currency)}
-      vat={formatPrice(cart.vatTotal, offer.currency)}
-      total={formatPrice(cart.totalPrice, offer.currency)}
+      subtotal={formatPrice(0, offer.currency)}
+      shipping={formatPrice(offer.shipping.price, offer.currency)}
+      vat={formatPrice(offer.vatPercentage, offer.currency)}
+      total={formatPrice(offer.totalPrice, offer.currency)}
     >
       <Button modifiers={['block']} icon={creditCardIcon} label="Pay with Stripe" onClick={onOrderWithStripe} />
       <Button icon={paypalIcon} modifiers={['block']} label="Pay with Paypal" onClick={onOrderWithPaypal} />
@@ -166,7 +165,7 @@ const CartPage = ({
         <VendorSection />
         <Section>
           <LabeledField label="Quantity:">
-            <NumberField onChange={onTotalQuantityChange} value={totalQuantity} />
+            <NumberField onChange={onTotalQuantityChange} value={0} />
           </LabeledField>
         </Section>
         <CartQantityList />
@@ -176,13 +175,10 @@ const CartPage = ({
 }
 
 const mapStateToProps = state => ({
-  cartItems: selectCartItems(state),
-  cart: selectCart(state),  // TODO: change this to: state.cart.cart
   offer: state.cart.selectedOffer,
-  selectedShipping: state.cart.selectedShipping,
-  selectedMaterial: selectCurrentMaterial(state),
   user: state.user.user,
-  totalQuantity: 0 // TODO: where do I get the total quantity
+  offerItems: selectOfferItems(state),
+  selectedMaterial: selectedOfferMaterial(state)
 })
 
 const mapDispatchToProps = {
