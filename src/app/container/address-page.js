@@ -5,7 +5,8 @@ import {
   Field,
   reduxForm,
   formValueSelector,
-  isValid
+  isValid,
+  change
 } from 'redux-form'
 import {getCountriesMenu, getUsStateName, getUsStates, getCountryName} from 'Service/country'
 
@@ -35,8 +36,9 @@ const AddressPage = ({
   isCompany,
   submitting,
   useDifferentBillingAddress,
-  billingAddressCountryCode,
-  shippingAddressCountryCode
+  handleBillingChange,
+  billingAddress,
+  shippingAddress
 }) => {
   const required = value => (value ? undefined : 'Required')
   const email = value => (
@@ -46,14 +48,14 @@ const AddressPage = ({
   )
 
   const CountrySelect = ({onChange, value, ...props}) => {
-    const change = val => onChange(val.value)
+    const changeCountry = val => onChange(val.value)
     const val = !value || value === '' ? undefined : {value, label: getCountryName(value)}
     const countryMenu = <SelectMenu values={getCountriesMenu()} />
-    return (<SelectField menu={countryMenu} value={val} onChange={change} {...props} />)
+    return (<SelectField menu={countryMenu} value={val} onChange={changeCountry} {...props} />)
   }
 
   const UsStateSelect = ({onChange, countryCode, value, ...props}) => {
-    const change = val => onChange(val.value)
+    const changeState = val => onChange(val.value)
     const usStateMenu = <SelectMenu values={getUsStates()} />
     const isDisabled = !countryCode || (countryCode && countryCode !== 'US')
     const actualValue = !value || value === '' || isDisabled ? undefined : {value, label: getUsStateName(value)}
@@ -62,7 +64,7 @@ const AddressPage = ({
         validate={!isDisabled ? required : undefined}
         menu={usStateMenu}
         value={actualValue}
-        onChange={change}
+        onChange={changeState}
         disabled={isDisabled}
         {...props}
       />
@@ -112,7 +114,7 @@ const AddressPage = ({
           placeholder="State"
           name="billingAddress.stateCode"
           type="select"
-          countryCode={billingAddressCountryCode}
+          countryCode={billingAddress.countryCode}
         />
         <Field validate={required} component={renderField(CountrySelect)} label="Country" name="billingAddress.countryCode" />
       </FormRow>
@@ -170,13 +172,13 @@ const AddressPage = ({
               placeholder="State"
               name="shippingAddress.stateCode"
               type="select"
-              countryCode={shippingAddressCountryCode}
+              countryCode={shippingAddress.countryCode}
             />
             <Field validate={required} component={renderField(CountrySelect)} label="Country" name="shippingAddress.countryCode" type="select" />
           </FormRow>
 
           <FormRow>
-            <Field name="useDifferentBillingAddress" component={renderField(LabeledCheckbox)} label="Use different billing address" type="checkbox" />
+            <Field onChangeValue={handleBillingChange} name="useDifferentBillingAddress" component={renderField(LabeledCheckbox)} label="Use different billing address" type="checkbox" />
           </FormRow>
 
           {useDifferentBillingAddress && billingAddressSection}
@@ -199,15 +201,53 @@ const selector = formValueSelector(FORM_NAME)
 const mapStateToProps = state => ({
   initialValues: state.user.user,
   isCompany: selector(state, 'isCompany'),
-  shippingAddressCountryCode: selector(state, 'shippingAddress.countryCode'),
-  billingAddressCountryCode: selector(state, 'billingAddress.countryCode'),
   useDifferentBillingAddress: selector(state, 'useDifferentBillingAddress'),
-  valid: isValid(FORM_NAME)(state)
+  valid: isValid(FORM_NAME)(state),
+  billingAddress: {
+    countryCode: selector(state, 'billingAddress.countryCode')
+  },
+  shippingAddress: {
+    firstName: selector(state, 'shippingAddress.firstName'),
+    lastName: selector(state, 'shippingAddress.lastName'),
+    street: selector(state, 'shippingAddress.street'),
+    houseNumber: selector(state, 'shippingAddress.houseNumber'),
+    addressLine2: selector(state, 'shippingAddress.addressLine2'),
+    city: selector(state, 'shippingAddress.city'),
+    zipCode: selector(state, 'shippingAddress.zipCode'),
+    stateCode: selector(state, 'shippingAddress.stateCode'),
+    countryCode: selector(state, 'shippingAddress.countryCode')
+  }
 })
 
 const mapDispatchToProps = {
   onGoBack: goBack,
-  onSubmit: reviewOrder
+  onSubmit: reviewOrder,
+  clearBillingAddress: () => {},
+  handleBillingChange: () => (dispatch, getState) => {
+    const state = getState()
+    const useDifferentBillingAddress = selector(state, 'useDifferentBillingAddress')
+    if (useDifferentBillingAddress === false) {
+      dispatch(change(FORM_NAME, 'billingAddress.firstName', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.lastName', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.street', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.houseNumber', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.addressLine2', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.city', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.zipCode', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.stateCode', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.countryCode', ''))
+    } else {
+      dispatch(change(FORM_NAME, 'billingAddress.firstName', selector(state, 'shippingAddress.firstName')))
+      dispatch(change(FORM_NAME, 'billingAddress.lastName', selector(state, 'shippingAddress.lastName')))
+      dispatch(change(FORM_NAME, 'billingAddress.street', selector(state, 'shippingAddress.street')))
+      dispatch(change(FORM_NAME, 'billingAddress.houseNumber', selector(state, 'shippingAddress.houseNumber')))
+      dispatch(change(FORM_NAME, 'billingAddress.addressLine2', selector(state, 'shippingAddress.addressLine2')))
+      dispatch(change(FORM_NAME, 'billingAddress.city', selector(state, 'shippingAddress.city')))
+      dispatch(change(FORM_NAME, 'billingAddress.zipCode', selector(state, 'shippingAddress.zipCode')))
+      dispatch(change(FORM_NAME, 'billingAddress.stateCode', selector(state, 'shippingAddress.stateCode')))
+      dispatch(change(FORM_NAME, 'billingAddress.countryCode', selector(state, 'shippingAddress.countryCode')))
+    }
+  }
 }
 
 const enhance = compose(
