@@ -25,7 +25,7 @@ import backIcon from 'Icon/back.svg'
 
 import {renderField} from 'Container/util/form'
 
-import {reviewOrder, copyShippingAddressToBillingAddress} from 'Action/user'
+import {reviewOrder} from 'Action/user'
 import {goBack} from 'Action/navigation'
 
 import AppLayout from './app-layout'
@@ -48,14 +48,14 @@ const AddressPage = ({
   )
 
   const CountrySelect = ({onChange, value, ...props}) => {
-    const change = val => onChange(val.value)
+    const changeCountry = val => onChange(val.value)
     const val = !value || value === '' ? undefined : {value, label: getCountryName(value)}
     const countryMenu = <SelectMenu values={getCountriesMenu()} />
-    return (<SelectField menu={countryMenu} value={val} onChange={change} {...props} />)
+    return (<SelectField menu={countryMenu} value={val} onChange={changeCountry} {...props} />)
   }
 
   const UsStateSelect = ({onChange, countryCode, value, ...props}) => {
-    const change = val => onChange(val.value)
+    const changeState = val => onChange(val.value)
     const usStateMenu = <SelectMenu values={getUsStates()} />
     const isDisabled = !countryCode || (countryCode && countryCode !== 'US')
     const actualValue = !value || value === '' || isDisabled ? undefined : {value, label: getUsStateName(value)}
@@ -64,7 +64,7 @@ const AddressPage = ({
         validate={!isDisabled ? required : undefined}
         menu={usStateMenu}
         value={actualValue}
-        onChange={change}
+        onChange={changeState}
         disabled={isDisabled}
         {...props}
       />
