@@ -224,29 +224,28 @@ const mapDispatchToProps = {
   onSubmit: reviewOrder,
   clearBillingAddress: () => {},
   handleBillingChange: () => (dispatch, getState) => {
-    const addressFormName = 'address'
     const state = getState()
     const useDifferentBillingAddress = selector(state, 'useDifferentBillingAddress')
     if (useDifferentBillingAddress === false) {
-      dispatch(change(addressFormName, 'billingAddress.firstName', ''))
-      dispatch(change(addressFormName, 'billingAddress.lastName', ''))
-      dispatch(change(addressFormName, 'billingAddress.street', ''))
-      dispatch(change(addressFormName, 'billingAddress.houseNumber', ''))
-      dispatch(change(addressFormName, 'billingAddress.addressLine2', ''))
-      dispatch(change(addressFormName, 'billingAddress.city', ''))
-      dispatch(change(addressFormName, 'billingAddress.zipCode', ''))
-      dispatch(change(addressFormName, 'billingAddress.stateCode', ''))
-      dispatch(change(addressFormName, 'billingAddress.countryCode', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.firstName', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.lastName', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.street', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.houseNumber', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.addressLine2', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.city', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.zipCode', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.stateCode', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.countryCode', ''))
     } else {
-      dispatch(change(addressFormName, 'billingAddress.firstName', selector(state, 'shippingAddress.firstName')))
-      dispatch(change(addressFormName, 'billingAddress.lastName', selector(state, 'shippingAddress.lastName')))
-      dispatch(change(addressFormName, 'billingAddress.street', selector(state, 'shippingAddress.street')))
-      dispatch(change(addressFormName, 'billingAddress.houseNumber', selector(state, 'shippingAddress.houseNumber')))
-      dispatch(change(addressFormName, 'billingAddress.addressLine2', selector(state, 'shippingAddress.addressLine2')))
-      dispatch(change(addressFormName, 'billingAddress.city', selector(state, 'shippingAddress.city')))
-      dispatch(change(addressFormName, 'billingAddress.zipCode', selector(state, 'shippingAddress.zipCode')))
-      dispatch(change(addressFormName, 'billingAddress.stateCode', selector(state, 'shippingAddress.stateCode')))
-      dispatch(change(addressFormName, 'billingAddress.countryCode', selector(state, 'shippingAddress.countryCode')))
+      dispatch(change(FORM_NAME, 'billingAddress.firstName', selector(state, 'shippingAddress.firstName')))
+      dispatch(change(FORM_NAME, 'billingAddress.lastName', selector(state, 'shippingAddress.lastName')))
+      dispatch(change(FORM_NAME, 'billingAddress.street', selector(state, 'shippingAddress.street')))
+      dispatch(change(FORM_NAME, 'billingAddress.houseNumber', selector(state, 'shippingAddress.houseNumber')))
+      dispatch(change(FORM_NAME, 'billingAddress.addressLine2', selector(state, 'shippingAddress.addressLine2')))
+      dispatch(change(FORM_NAME, 'billingAddress.city', selector(state, 'shippingAddress.city')))
+      dispatch(change(FORM_NAME, 'billingAddress.zipCode', selector(state, 'shippingAddress.zipCode')))
+      dispatch(change(FORM_NAME, 'billingAddress.stateCode', selector(state, 'shippingAddress.stateCode')))
+      dispatch(change(FORM_NAME, 'billingAddress.countryCode', selector(state, 'shippingAddress.countryCode')))
     }
   }
 }
