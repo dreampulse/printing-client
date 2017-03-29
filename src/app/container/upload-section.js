@@ -86,12 +86,11 @@ const UploadSection = ({
             }
 
             // TODO: on delete handler
-            // TODO: image
             // TODO: subline
             return (
               <ModelItem
                 key={model.fileId}
-                imageSource="http://placehold.it/130x98"
+                imageSource={model.thumbnailUrl}
                 quantity={models[model.modelId].quantity}
                 title={model.name}
                 subline="TODO"
