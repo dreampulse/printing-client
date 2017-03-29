@@ -1,4 +1,10 @@
 import {createAction} from 'redux-actions'
+
+import {
+  formValueSelector,
+  change
+} from 'redux-form'
+
 import isEqual from 'lodash/isEqual'
 import {
   getLocationByIp,
@@ -69,5 +75,30 @@ export const reviewOrder = form => async (dispatch, getState) => {
   }
 }
 
-export const setBillingAddress = billingAddress => dispatch =>
-  dispatch(createAction(TYPE.USER.SET_BILLING_ADDRESS)(billingAddress))
+export const copyShippingAddressToBillingAddress = () => (dispatch, getState) => {
+  const addressFormName = 'address'
+  const state = getState()
+  const selector = formValueSelector(addressFormName)
+  const useDifferentBillingAddress = selector(state, 'useDifferentBillingAddress')
+  if (useDifferentBillingAddress === false) {
+    dispatch(change(addressFormName, 'billingAddress.firstName', ''))
+    dispatch(change(addressFormName, 'billingAddress.lastName', ''))
+    dispatch(change(addressFormName, 'billingAddress.street', ''))
+    dispatch(change(addressFormName, 'billingAddress.houseNumber', ''))
+    dispatch(change(addressFormName, 'billingAddress.addressLine2', ''))
+    dispatch(change(addressFormName, 'billingAddress.city', ''))
+    dispatch(change(addressFormName, 'billingAddress.zipCode', ''))
+    dispatch(change(addressFormName, 'billingAddress.stateCode', ''))
+    dispatch(change(addressFormName, 'billingAddress.countryCode', ''))
+  } else {
+    dispatch(change(addressFormName, 'billingAddress.firstName', selector(state, 'shippingAddress.firstName')))
+    dispatch(change(addressFormName, 'billingAddress.lastName', selector(state, 'shippingAddress.lastName')))
+    dispatch(change(addressFormName, 'billingAddress.street', selector(state, 'shippingAddress.street')))
+    dispatch(change(addressFormName, 'billingAddress.houseNumber', selector(state, 'shippingAddress.houseNumber')))
+    dispatch(change(addressFormName, 'billingAddress.addressLine2', selector(state, 'shippingAddress.addressLine2')))
+    dispatch(change(addressFormName, 'billingAddress.city', selector(state, 'shippingAddress.city')))
+    dispatch(change(addressFormName, 'billingAddress.zipCode', selector(state, 'shippingAddress.zipCode')))
+    dispatch(change(addressFormName, 'billingAddress.stateCode', selector(state, 'shippingAddress.stateCode')))
+    dispatch(change(addressFormName, 'billingAddress.countryCode', selector(state, 'shippingAddress.countryCode')))
+  }
+}

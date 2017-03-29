@@ -5,7 +5,8 @@ import {
   Field,
   reduxForm,
   formValueSelector,
-  isValid
+  isValid,
+  change
 } from 'redux-form'
 import {getCountriesMenu, getUsStateName, getUsStates, getCountryName} from 'Service/country'
 
@@ -24,7 +25,7 @@ import backIcon from 'Icon/back.svg'
 
 import {renderField} from 'Container/util/form'
 
-import {reviewOrder, setBillingAddress} from 'Action/user'
+import {reviewOrder, copyShippingAddressToBillingAddress} from 'Action/user'
 import {goBack} from 'Action/navigation'
 
 import AppLayout from './app-layout'
@@ -35,10 +36,8 @@ const AddressPage = ({
   isCompany,
   submitting,
   useDifferentBillingAddress,
-  billingAddressCountryCode,
-  updateBillingAddress,
+  handleBillingChange,
   billingAddress,
-  shippingAddressCountryCode,
   shippingAddress
 }) => {
   const required = value => (value ? undefined : 'Required')
@@ -115,7 +114,7 @@ const AddressPage = ({
           placeholder="State"
           name="billingAddress.stateCode"
           type="select"
-          countryCode={billingAddressCountryCode}
+          countryCode={billingAddress.countryCode}
         />
         <Field validate={required} component={renderField(CountrySelect)} label="Country" name="billingAddress.countryCode" />
       </FormRow>
@@ -123,9 +122,6 @@ const AddressPage = ({
   )
 
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
-  if (useDifferentBillingAddress && (!billingAddress.firstName)) {
-    updateBillingAddress(shippingAddress)
-  }
 
   return (
     <AppLayout currentStep={1}>
@@ -176,13 +172,13 @@ const AddressPage = ({
               placeholder="State"
               name="shippingAddress.stateCode"
               type="select"
-              countryCode={shippingAddressCountryCode}
+              countryCode={shippingAddress.countryCode}
             />
             <Field validate={required} component={renderField(CountrySelect)} label="Country" name="shippingAddress.countryCode" type="select" />
           </FormRow>
 
           <FormRow>
-            <Field name="useDifferentBillingAddress" component={renderField(LabeledCheckbox)} label="Use different billing address" type="checkbox" />
+            <Field onChangeValue={handleBillingChange} name="useDifferentBillingAddress" component={renderField(LabeledCheckbox)} label="Use different billing address" type="checkbox" />
           </FormRow>
 
           {useDifferentBillingAddress && billingAddressSection}
@@ -205,16 +201,20 @@ const selector = formValueSelector(FORM_NAME)
 const mapStateToProps = state => ({
   initialValues: state.user.user,
   isCompany: selector(state, 'isCompany'),
-  shippingAddressCountryCode: selector(state, 'shippingAddress.countryCode'),
-  billingAddressCountryCode: selector(state, 'billingAddress.countryCode'),
   useDifferentBillingAddress: selector(state, 'useDifferentBillingAddress'),
   valid: isValid(FORM_NAME)(state),
   billingAddress: {
-    firstName: selector(state, 'billingAddress.firstName'),
     countryCode: selector(state, 'billingAddress.countryCode')
   },
   shippingAddress: {
     firstName: selector(state, 'shippingAddress.firstName'),
+    lastName: selector(state, 'shippingAddress.lastName'),
+    street: selector(state, 'shippingAddress.street'),
+    houseNumber: selector(state, 'shippingAddress.houseNumber'),
+    addressLine2: selector(state, 'shippingAddress.addressLine2'),
+    city: selector(state, 'shippingAddress.city'),
+    zipCode: selector(state, 'shippingAddress.zipCode'),
+    stateCode: selector(state, 'shippingAddress.stateCode'),
     countryCode: selector(state, 'shippingAddress.countryCode')
   }
 })
@@ -222,7 +222,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onGoBack: goBack,
   onSubmit: reviewOrder,
-  updateBillingAddress: setBillingAddress
+  clearBillingAddress: () => {},
+  handleBillingChange: copyShippingAddressToBillingAddress
 }
 
 const enhance = compose(
