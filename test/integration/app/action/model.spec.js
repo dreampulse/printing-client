@@ -27,7 +27,8 @@ describe('Model Integration Test', () => {
 
     beforeEach(() => {
       apiResponse = {
-        modelId: 'some-mode-id'
+        modelId: 'some-mode-id',
+        thumbnailUrl: 'some-thumbnail-url'
       }
       file = {
         name: 'some-file-name',
@@ -53,13 +54,15 @@ describe('Model Integration Test', () => {
         size: 42,
         progress: 1,
         uploadFinished: 1,
-        modelId: 'some-mode-id'
+        modelId: 'some-mode-id',
+        thumbnailUrl: 'some-thumbnail-url'
       })
 
       expect(store.getState().model.models['some-mode-id'], 'to satisfy', {
         name: 'some-file-name',
         size: 42,
-        modelId: 'some-mode-id'
+        modelId: 'some-mode-id',
+        thumbnailUrl: 'some-thumbnail-url'
       })
     })
 
@@ -127,7 +130,8 @@ describe('Model Integration Test', () => {
   describe('uploadFiles()', () => {
     it('works for the success case', async () => {
       const apiResponse = {
-        modelId: 'some-model-id'
+        modelId: 'some-model-id',
+        thumbnailUrl: 'some-thumbnail-url'
       }
       const files = [{
         name: 'some-file-name',
@@ -174,6 +178,7 @@ describe('Model Integration Test', () => {
 
       expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         name: 'some-file-name',
+        thumbnailUrl: 'some-thumbnail-url',
         size: 42,
         modelId: 'some-model-id',
         checkStatusFinished: true

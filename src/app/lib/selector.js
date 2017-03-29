@@ -119,6 +119,49 @@ export const selectMaterial = (state, materialId) => {
   return material
 }
 
+export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
+  const {
+    material: {
+      materials
+    }
+  } = state
+
+  let selectedMaterial
+  let selectedMaterialConfig
+  materials.materialStructure.every((materialGroup) => {
+    materialGroup.materials.every((material) => {
+      material.finishGroups.every((finishGroup) => {
+        finishGroup.materialConfigs.every((materialConfig) => {
+          if (materialConfig.id === materialConfigId) {
+            selectedMaterial = material
+            selectedMaterialConfig = materialConfig
+          }
+          return Boolean(selectedMaterial)
+        })
+        return Boolean(selectedMaterial)
+      })
+      return Boolean(selectedMaterial)
+    })
+    return Boolean(selectedMaterial)
+  })
+
+  return {
+    material: selectedMaterial,
+    materialConfig: selectedMaterialConfig
+  }
+}
+
+export const selectedOfferMaterial = (state) => {
+  const {
+    cart: {
+      selectedOffer: {
+        materialConfigId
+      }
+    }
+  } = state
+  return selectMaterialByMaterialConfigId(state, materialConfigId)
+}
+
 export const selectFinishGroup = (state, materialId, finishGroupId) => {
   const material = selectMaterial(state, materialId)
   if (!material) {
@@ -145,6 +188,26 @@ export const selectCurrentMaterial = (state) => {
   } = state
 
   return selectMaterial(state, selectedMaterial)
+}
+
+export const selectThumbnailUrlByModelId = (state, modelId) => {
+  const {
+    model: {models}
+  } = state
+  return models[modelId] ? models[modelId].thumbnailUrl : null
+}
+
+export const selectOfferItems = (state) => {
+  const {
+    cart: {
+      selectedOffer: {items}
+    }
+  } = state
+
+  return items.map(item => ({
+    ...item,
+    thumbnailUrl: selectThumbnailUrlByModelId(state, item.modelId)
+  }))
 }
 
 export const selectOffersForSelectedMaterialConfig = (state) => {
