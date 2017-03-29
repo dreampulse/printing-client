@@ -28,65 +28,31 @@ describe('Shopping Cart Integration Test', () => {
   describe('createShoppingCart()', () => {
     it('should work', async () => {
       store = Store({
-        material: {
-          selectedMaterial: 'some-material-id'
-        },
-        model: {
-          models: {
-            'some-model-id': {
-              modelId: 'some-model-id',
-              quantity: 23
-            },
-            'some-other-model-id': {
-              modelId: 'some-other-model-id',
-              quantity: 42
-            }
-          }
+        user: {
+          userId: 'some-user-id'
         },
         price: {
           priceId: 'some-price-id'
         },
         cart: {
-          selectedVendor: 'some-vendor',
-          selectedShipping: 'some-shipping-method'
+          selectedOffer: {
+            offerId: 'some-offer-id'
+          }
         }
       })
 
       printingEngine.createShoppingCart.resolves({cartId: 'some-cart-id'})
-      printingEngine.getFinalCartPrice.resolves('final-cart-price')
 
       await store.dispatch(cart.createShoppingCart())
 
       expect(store.getState().cart, 'to satisfy', {
-        cartId: 'some-cart-id',
-        cart: 'final-cart-price'
+        cartId: 'some-cart-id'
       })
 
       expect(printingEngine.createShoppingCart, 'was called with', {
-        userId: null,
+        userId: 'some-user-id',
         priceId: 'some-price-id',
-        items: [{
-          modelId: 'some-model-id',
-          vendorId: 'some-vendor',
-          quantity: 23,
-          materialId: 'some-material-id'
-        }, {
-          modelId: 'some-other-model-id',
-          vendorId: 'some-vendor',
-          quantity: 42,
-          materialId: 'some-material-id'
-        }],
-        shipping: [{
-          name: 'some-shipping-method',
-          vendorId: 'some-vendor'
-        }, {
-          name: 'some-shipping-method',
-          vendorId: 'some-vendor'
-        }]
-      })
-
-      expect(printingEngine.getFinalCartPrice, 'was called with', {
-        cartId: 'some-cart-id'
+        offerId: 'some-offer-id'
       })
     })
   })

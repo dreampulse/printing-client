@@ -32,12 +32,12 @@ import ColorSquare from 'Component/color-square'
 
 import backIcon from 'Icon/back.svg'
 import creditCardIcon from 'Icon/credit-card.svg'
-import paypalIcon from 'Icon/paypal.svg'
+// import paypalIcon from 'Icon/paypal.svg'
 
 import {goBack} from 'Action/navigation'
 import {changeIndividualQuantity, changeQuantity} from 'Action/model'
-import {createShoppingCart} from 'Action/cart'
-import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from 'Action/order'
+// import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from 'Action/order'
+import {createOrderWithStripe} from 'Action/order'
 
 import AppLayout from './app-layout'
 
@@ -49,7 +49,7 @@ const CartPage = ({
   onGoBack,
   totalQuantity,
   onOrderWithStripe,
-  onOrderWithPaypal,
+  // onOrderWithPaypal,
   onItemQuantityChange,
   onItemDelete,
   onTotalQuantityChange
@@ -146,7 +146,6 @@ const CartPage = ({
 
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
 
-  // TODO: connect payment buttons
   // TODO: update prices
   const paymentSection = (
     <PaymentSection
@@ -156,7 +155,10 @@ const CartPage = ({
       total={formatPrice(offer.totalPrice, offer.currency)}
     >
       <Button modifiers={['block']} icon={creditCardIcon} label="Pay with Stripe" onClick={onOrderWithStripe} />
-      <Button icon={paypalIcon} modifiers={['block']} label="Pay with Paypal" onClick={onOrderWithPaypal} />
+      {/*
+        <Button icon={paypalIcon} modifiers={['block']}
+          label="Pay with Paypal" onClick={onOrderWithPaypal} />
+      */}
     </PaymentSection>
   )
 
@@ -190,9 +192,8 @@ const mapDispatchToProps = {
   onGoBack: goBack,
   onChangeQuantity: changeQuantity,
   onOrderWithStripe: createOrderWithStripe,
-  onOrderWithPaypal: createOrderWithPaypal,
-  onPayWithPaypal: initPaymentWithPaypal,
-  onCreateShoppingCart: createShoppingCart,
+  // onOrderWithPaypal: createOrderWithPaypal,
+  // onPayWithPaypal: initPaymentWithPaypal,
   onItemQuantityChange: changeIndividualQuantity,
   onItemDelete: () => {}, // TODO: add action
   onTotalQuantityChange: changeQuantity

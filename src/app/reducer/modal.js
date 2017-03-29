@@ -14,7 +14,6 @@ function handleClose () {
 }
 
 function handleOpen (state, action) {
-  console.log('action', action)
   return {
     isOpen: true,
     isCloseable: action.payload.isCloseable !== undefined

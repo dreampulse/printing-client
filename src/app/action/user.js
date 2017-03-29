@@ -6,11 +6,9 @@ import {
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
 
-import {delay} from 'Lib/timeout'  // TODO: just for testing
-
 import TYPE from '../type'
 import {goToCart} from './navigation'
-import {createShoppingCart} from './cart'
+
 import {
   openAddressModal,
   openPriceChangedModal,
@@ -27,10 +25,10 @@ export const createUser = () => (dispatch, getState) => {
   return dispatch(createAction(TYPE.USER.CREATED)(userPromise))
 }
 
-export const updateUser = user => (dispatch, getState) => {
+export const updateUser = user => async (dispatch, getState) => {
   const userId = getState().user.userId
-  const updatedPromise = printingEngine.updateUser({userId, user})
-  return dispatch(createAction(TYPE.USER.UPDATED)(updatedPromise))
+  await printingEngine.updateUser({userId, user})
+  return dispatch(createAction(TYPE.USER.UPDATED)(user))
 }
 
 export const updateLocation = location => (dispatch) => {
@@ -53,10 +51,11 @@ export const reviewOrder = form => async (dispatch, getState) => {
 
   if (!isEqual(oldShippingAddress, newShippingAddress)) {
     dispatch(openFetchingPriceModal())
+
+    const oldPrice = getState().cart.selectedOffer.totalPrice
     await dispatch(createPriceRequest())
-    await delay(1000)  // Just for testing
-    await dispatch(createShoppingCart())  // TODO: create shopping cart later
-    const hasPriceChanged = true  // TODO: check if prices has changed
+    const newPrice = getState().cart.selectedOffer.totalPrice
+    const hasPriceChanged = oldPrice !== newPrice
     if (hasPriceChanged) {
       dispatch(openPriceChangedModal({oldShippingAddress, newShippingAddress}))
     } else {
@@ -64,7 +63,6 @@ export const reviewOrder = form => async (dispatch, getState) => {
     }
   } else {
     // No change to the shipping address
-    await dispatch(createShoppingCart())  // TODO: create shopping cart later
     dispatch(goToCart())
   }
 }

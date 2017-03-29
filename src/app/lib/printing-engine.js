@@ -38,10 +38,10 @@ export const getPriceWithStatus = async ({priceId}) => {
   }
 }
 
-export const createShoppingCart = ({userId, priceId, items, shipping}) =>
+export const createShoppingCart = cart =>
   requestJson(`${baseUrl}/cart`, {
     method: 'POST',
-    body: {userId, priceId, items, shipping}
+    body: cart
   })
 
 export const getFinalCartPrice = ({cartId}) =>
