@@ -6,12 +6,6 @@ import {
   formatPrice
 } from 'Lib/formatter'
 
-export const selectCartItems = state =>
-  state.cart.cart.items.map(cartItem => ({
-    ...cartItem,
-    ...state.model.models[cartItem.modelId]
-  }))
-
 export const selectCommonQuantity = (state) => {
   // Common quantity exists only if all models have the same individual quantity
   const {
