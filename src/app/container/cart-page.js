@@ -36,7 +36,8 @@ import creditCardIcon from 'Icon/credit-card.svg'
 
 import {goBack} from 'Action/navigation'
 import {changeIndividualQuantity, changeQuantity} from 'Action/model'
-import {createOrderWithStripe /* , initPaymentWithPaypal, createOrderWithPaypal */ } from 'Action/order'
+// import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from 'Action/order'
+import {createOrderWithStripe} from 'Action/order'
 
 import AppLayout from './app-layout'
 
