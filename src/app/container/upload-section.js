@@ -63,6 +63,17 @@ const UploadSection = ({
       {uploadedModels.length > 0 && (
         <ModelItemList>
           {uploadedModels.map((model) => {
+            if (model.error) {
+              // TODO: on delete handler
+              return (
+                <ModelItemError
+                  key={model.fileId}
+                  title="Upload failed"
+                  subline={model.error}
+                />
+              )
+            }
+
             if (!model.uploadFinished) {
               // TODO: on delete handler
               return (
@@ -75,12 +86,13 @@ const UploadSection = ({
               )
             }
 
-            if (model.error) {
+            if (!models[model.modelId].checkStatusFinished) {
               // TODO: on delete handler
               return (
-                <ModelItemError
-                  title="Upload failed"
-                  subline={model.error}
+                <ModelItemLoad
+                  key={model.fileId}
+                  title="Processing"
+                  subline={model.name}
                 />
               )
             }

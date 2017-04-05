@@ -21,13 +21,15 @@ const ModelItemLoad = ({
   }
 
   const percentage = Math.round(status * 100)
+  const loadTitle = title + (status === undefined ? '…' : ` (${percentage}%)`)
+  const scaleX = `scaleX(${status === undefined ? 1 : status})`
 
   return (
     <div className={buildClassName('model-item-load', modifiers, classNames)}>
 
       <div className="model-item-load__description">
         {Boolean(title) && (
-          <strong className="model-item-load__title">{title} ({percentage}%)</strong>
+          <strong className="model-item-load__title">{loadTitle}</strong>
         )}
         {Boolean(subline) && (
           <span className="model-item-load__subline">{subline}</span>
@@ -38,7 +40,11 @@ const ModelItemLoad = ({
       </button>
       <div
         className="model-item-load__progress"
-        style={{transform: `scaleX(${status})`, WebkitTransform: `scaleX(${status})`}}
+        style={{
+          transform: scaleX,
+          WebkitTransform: scaleX,
+          opacity: status === undefined ? 0.5 : 1
+        }}
       />
     </div>
   )
