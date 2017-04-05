@@ -63,8 +63,11 @@ export const createPriceRequest = () => async (dispatch, getState) => {
     quantity: models[modelId].quantity
   }))
 
+  const lastPriceId = getState().price.priceId
+
   const options = {
     userId: getState().user.userId,
+    lastPriceId,
     items
   }
 
