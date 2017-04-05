@@ -149,9 +149,9 @@ const CartPage = ({
   // TODO: update prices
   const paymentSection = (
     <PaymentSection
-      subtotal={formatPrice(0, offer.currency)}
+      subtotal={formatPrice(offer.subTotalPrice, offer.currency)}
       shipping={formatPrice(offer.shipping.price, offer.currency)}
-      vat={formatPrice(offer.vatPercentage, offer.currency)}
+      vat={formatPrice(offer.vatPrice, offer.currency)}
       total={formatPrice(offer.totalPrice, offer.currency)}
     >
       <Button modifiers={['block']} icon={creditCardIcon} label="Pay with Stripe" onClick={onOrderWithStripe} />
