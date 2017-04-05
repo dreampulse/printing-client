@@ -65,6 +65,14 @@ describe('Price Integration Test', () => {
       })
     })
 
+    it('does not trigger a price request when no models have been uploaded', async () => {
+      state.model.models = {}
+      store = Store(state)
+      await store.dispatch(createPriceRequest())
+
+      expect(printingEngine.createPriceRequest, 'was not called')
+    })
+
     it('works if shipping address is set', async () => {
       store = Store(state)
       await store.dispatch(createPriceRequest())

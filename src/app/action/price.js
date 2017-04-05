@@ -61,6 +61,11 @@ export const createPriceRequest = () => async (dispatch, getState) => {
     quantity: models[modelId].quantity
   }))
 
+  // Abort if user did not upload any models yet
+  if (items.length === 0) {
+    return
+  }
+
   const options = {
     userId: getState().user.userId,
     items
