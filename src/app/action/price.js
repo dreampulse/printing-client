@@ -38,12 +38,12 @@ export const pollFinalPrice = () => (dispatch, getState) => {
 }
 
 export const createPriceRequest = () => async (dispatch, getState) => {
+  dispatch(createAction(TYPE.PRICE.CLEAR_OFFERS)())
+
   const sa = getState().user.user.shippingAddress
   if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
     throw new Error('Shipping Address Invalid')
   }
-
-  dispatch(createAction(TYPE.PRICE.REQUEST_CREATED)())
 
   const {
     material: {

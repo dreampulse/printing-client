@@ -20,6 +20,12 @@ describe('Price Integration Test', () => {
 
     beforeEach(() => {
       state = {
+        price: {
+          offers: ['some', 'offers'],
+          printingServiceComplete: {
+            service1: true
+          }
+        },
         model: {
           models: {
             'material-id-model-1': {
@@ -71,6 +77,11 @@ describe('Price Integration Test', () => {
       await store.dispatch(createPriceRequest())
 
       expect(printingEngine.createPriceRequest, 'was not called')
+      // Still clears offers and printingServiceComplete
+      expect(store.getState().price, 'to satisfy', {
+        offers: null,
+        printingServiceComplete: null
+      })
     })
 
     it('works if shipping address is set', async () => {
