@@ -212,6 +212,11 @@ describe('Price Integration Test', () => {
       } catch (e) {
         expect(store.getState().price, 'to equal', {
           priceId: 'some-price-id',
+          offers: ['some-offer'],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          },
           pollCountdown: 0,  // Reduced to 0
           error: true
         })

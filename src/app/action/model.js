@@ -51,12 +51,12 @@ export const uploadFile = file => async (dispatch, getState) => {
   }
 }
 
-export const uploadFiles = files => async (dispatch) => {
-  await Promise.all(
+export const uploadFiles = files => dispatch => (
+  Promise.all(
     files.map(async (file) => {
       const {modelId} = await dispatch(uploadFile(file))
       await dispatch(checkUploadStatus({modelId}))
       await dispatch(createPriceRequest())
     })
   )
-}
+)
