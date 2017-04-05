@@ -44,19 +44,16 @@ export const uploadFile = file => async (dispatch, getState) => {
     const {modelId, thumbnailUrl} =
       await printingEngine.uploadModel(file, {unit}, onUploadProgressed)
     dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({modelId, fileId, thumbnailUrl}))
-    return {modelId, thumbnailUrl}
+
+    await dispatch(checkUploadStatus({modelId}))
   } catch (e) {
     dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({fileId, error: true}))
-    throw new Error()
   }
 }
 
-export const uploadFiles = files => dispatch => (
-  Promise.all(
-    files.map(async (file) => {
-      const {modelId} = await dispatch(uploadFile(file))
-      await dispatch(checkUploadStatus({modelId}))
-      await dispatch(createPriceRequest())
-    })
+export const uploadFiles = files => async (dispatch) => {
+  await Promise.all(
+    files.map(file => dispatch(uploadFile(file)))
   )
-)
+  await dispatch(createPriceRequest())
+}
