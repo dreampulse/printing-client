@@ -5,6 +5,7 @@ import {Router, Route, browserHistory, Redirect} from 'react-router'
 import CartPage from 'Container/cart-page'
 import ModelPage from 'Container/model-page'
 import AddressPage from 'Container/address-page'
+import SuccessPage from 'Container/success-page'
 
 /* eslint-disable react/prop-types */
 export default ({store}) => {
@@ -17,6 +18,7 @@ export default ({store}) => {
       <Route component={ModelPage} path="/model" />
       <Route component={AddressPage} path="/address" />
       <Route component={CartPage} path="/cart" />
+      <Route component={SuccessPage} path="/success" />
     </Router>
   )
 }
