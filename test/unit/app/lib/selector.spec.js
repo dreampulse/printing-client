@@ -128,7 +128,7 @@ describe('selectMaterialMenuValues()', () => {
         value: 'material-1',
         label: 'Material 1',
         hasColor: true,
-        price: 'From 10.00 USD'
+        price: 'From 10.00 $'
       }]
     }, {
       type: 'group',
