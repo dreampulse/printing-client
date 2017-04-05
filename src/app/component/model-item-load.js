@@ -21,7 +21,7 @@ const ModelItemLoad = ({
   }
 
   const percentage = Math.round(status * 100)
-  const loadTitle = title + (status == undefined ? '…' : ` (${percentage}%)`)
+  const loadTitle = title + (status === undefined ? '…' : ` (${percentage}%)`)
   const scaleX = `scaleX(${status === undefined ? 1 : status})`
 
   return (
