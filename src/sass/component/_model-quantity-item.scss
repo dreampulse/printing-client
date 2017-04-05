@@ -25,6 +25,10 @@
     margin-bottom: $space-base
   }
 
+  &__quantity {
+    font-size: $font-size-base;
+  }
+
   & > .price {
     flex-shrink: 0;
     margin-bottom: 0;

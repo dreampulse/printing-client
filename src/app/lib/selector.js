@@ -103,13 +103,13 @@ export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
             selectedMaterial = material
             selectedMaterialConfig = materialConfig
           }
-          return Boolean(selectedMaterial)
+          return !selectedMaterial
         })
-        return Boolean(selectedMaterial)
+        return !selectedMaterial
       })
-      return Boolean(selectedMaterial)
+      return !selectedMaterial
     })
-    return Boolean(selectedMaterial)
+    return !selectedMaterial
   })
 
   return {
@@ -164,6 +164,13 @@ export const selectThumbnailUrlByModelId = (state, modelId) => {
   return models[modelId] ? models[modelId].thumbnailUrl : null
 }
 
+export const selectNameByModelId = (state, modelId) => {
+  const {
+    model: {models}
+  } = state
+  return models[modelId] ? models[modelId].name : null
+}
+
 export const selectOfferItems = (state) => {
   const {
     cart: {
@@ -173,7 +180,8 @@ export const selectOfferItems = (state) => {
 
   return items.map(item => ({
     ...item,
-    thumbnailUrl: selectThumbnailUrlByModelId(state, item.modelId)
+    thumbnailUrl: selectThumbnailUrlByModelId(state, item.modelId),
+    name: selectNameByModelId(state, item.modelId)
   }))
 }
 
