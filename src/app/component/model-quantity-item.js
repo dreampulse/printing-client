@@ -4,7 +4,7 @@ import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
 import ImageContainer from 'Component/image-container'
-import NumberField from 'Component/number-field'
+import Link from 'Component/link'
 import Icon from 'Component/icon'
 import Price from 'Component/price'
 
@@ -17,7 +17,7 @@ const ModelQuantityItem = ({
   quantity,
   title,
   price,
-  onQuantityChange = () => {},
+  onQuantityChange,
   onDelete = () => {}
 }) => {
   const handleDeleteClick = (event) => {
@@ -32,7 +32,9 @@ const ModelQuantityItem = ({
         <div className="model-quantity-item__title">
           {title}
         </div>
-        <NumberField modifiers={['compact']} value={quantity} onChange={onQuantityChange} />
+        <div className="model-quantity-item__quantity">
+          Quantity: {quantity} <Link label="change quantity" onClick={onQuantityChange} />
+        </div>
       </div>
       <Price value={price} />
       <button type="button" className="model-quantity-item__delete" onClick={handleDeleteClick}>
@@ -48,7 +50,7 @@ ModelQuantityItem.propTypes = {
   quantity: PropTypes.number.isRequired,
   title: PropTypes.string,
   subline: PropTypes.string,
-  onQuantityChange: PropTypes.func,
+  onQuantityChange: PropTypes.func.isRequired,
   onDelete: PropTypes.func,
   price: PropTypes.string
 }

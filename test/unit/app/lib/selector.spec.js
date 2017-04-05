@@ -9,6 +9,7 @@ import {
   selectMaterialByMaterialConfigId,
   selectedOfferMaterial,
   selectThumbnailUrlByModelId,
+  selectNameByModelId,
   selectOfferItems
 } from 'Lib/selector'
 import * as materialLib from 'Lib/material'
@@ -443,14 +444,21 @@ describe('selectMaterialByMaterialConfigId', () => {
   let state
   let material
   let materialConfig
+  let otherMaterialConfig
 
   beforeEach(() => {
     materialConfig = {
       id: 'some-material-config-id'
     }
+    otherMaterialConfig = {
+      id: 'some-other-material-config-id'
+    }
     material = {
       finishGroups: [{
-        materialConfigs: [materialConfig]
+        materialConfigs: [
+          materialConfig,
+          otherMaterialConfig
+        ]
       }]
     }
     state = {
@@ -465,14 +473,14 @@ describe('selectMaterialByMaterialConfigId', () => {
   })
 
   it('selects the material by id and returns it together with the config', () => {
-    expect(selectMaterialByMaterialConfigId(state, 'some-material-config-id'), 'to equal', {
+    expect(selectMaterialByMaterialConfigId(state, 'some-other-material-config-id'), 'to equal', {
       material,
-      materialConfig
+      materialConfig: otherMaterialConfig
     })
   })
 
   it('returns empty object if it does not find a materialConfig', () => {
-    expect(selectMaterialByMaterialConfigId(state, 'some-other-material-config-id'), 'to equal', {})
+    expect(selectMaterialByMaterialConfigId(state, 'some-3rd-material-config-id'), 'to equal', {})
   })
 })
 
@@ -538,6 +546,30 @@ describe('selectThumbnailUrlByModelId', () => {
   })
 })
 
+describe('selectNameByModelId', () => {
+  let state
+
+  beforeEach(() => {
+    state = {
+      model: {
+        models: {
+          'some-model-id': {
+            name: 'some-model-name'
+          }
+        }
+      }
+    }
+  })
+
+  it('returns the name of a model', () => {
+    expect(selectNameByModelId(state, 'some-model-id'), 'to equal', 'some-model-name')
+  })
+
+  it('returns null if the model does not exist', () => {
+    expect(selectNameByModelId(state, 'some-other-model-id'), 'to be', null)
+  })
+})
+
 describe('selectOfferItems', () => {
   let state
 
@@ -556,10 +588,12 @@ describe('selectOfferItems', () => {
       model: {
         models: {
           'some-model-id': {
-            thumbnailUrl: 'some-thumbnail-url'
+            thumbnailUrl: 'some-thumbnail-url',
+            name: 'some-model-name'
           },
           'some-other-model-id': {
-            thumbnailUrl: 'some-other-thumbnail-url'
+            thumbnailUrl: 'some-other-thumbnail-url',
+            name: 'some-other-model-name'
           }
         }
       }
@@ -570,11 +604,13 @@ describe('selectOfferItems', () => {
     expect(selectOfferItems(state), 'to equal', [
       {
         modelId: 'some-model-id',
-        thumbnailUrl: 'some-thumbnail-url'
+        thumbnailUrl: 'some-thumbnail-url',
+        name: 'some-model-name'
       },
       {
         modelId: 'some-other-model-id',
-        thumbnailUrl: 'some-other-thumbnail-url'
+        thumbnailUrl: 'some-other-thumbnail-url',
+        name: 'some-other-model-name'
       }
     ])
   })

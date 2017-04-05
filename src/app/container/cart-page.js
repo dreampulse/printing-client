@@ -5,8 +5,7 @@ import {getUsStateName, getCountryName} from 'Service/country'
 import getCloudinaryUrl from 'Lib/cloudinary'
 import {
   selectedOfferMaterial,
-  selectOfferItems,
-  selectCommonQuantity
+  selectOfferItems
 } from 'Lib/selector'
 
 import {
@@ -26,16 +25,13 @@ import ProviderImage from 'Component/provider-image'
 import PaymentSection from 'Component/payment-section'
 import ModelQuantityItem from 'Component/model-quantity-item'
 import ModelQuantityItemList from 'Component/model-quantity-item-list'
-import LabeledField from 'Component/labeled-field'
-import NumberField from 'Component/number-field'
 import ColorSquare from 'Component/color-square'
 
 import backIcon from 'Icon/back.svg'
 import creditCardIcon from 'Icon/credit-card.svg'
 // import paypalIcon from 'Icon/paypal.svg'
 
-import {goBack} from 'Action/navigation'
-import {changeIndividualQuantity, changeQuantity} from 'Action/model'
+import {goBack, goToHome} from 'Action/navigation'
 // import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from 'Action/order'
 import {createOrderWithStripe} from 'Action/order'
 
@@ -47,12 +43,10 @@ const CartPage = ({
   offerItems,
   selectedMaterial,
   onGoBack,
-  totalQuantity,
   onOrderWithStripe,
+  onGoToHome,
   // onOrderWithPaypal,
-  onItemQuantityChange,
-  onItemDelete,
-  onTotalQuantityChange
+  onItemDelete
 }) => {
   const CartQantityList = () => {
     const items = offerItems.map(item => (
@@ -60,8 +54,9 @@ const CartPage = ({
         imageSource={item.thumbnailUrl}
         key={item.modelId}
         quantity={item.quantity}
+        title={item.name}
+        onQuantityChange={onGoToHome}
         price={formatPrice(item.price, offer.currency)}
-        onQuantityChange={quantity => onItemQuantityChange(quantity, item.modelId)}
         onDelete={onItemDelete}
       />
     ))
@@ -146,7 +141,6 @@ const CartPage = ({
 
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
 
-  // TODO: update prices
   const paymentSection = (
     <PaymentSection
       subtotal={formatPrice(offer.subTotalPrice, offer.currency)}
@@ -162,18 +156,12 @@ const CartPage = ({
     </PaymentSection>
   )
 
-  // TODO: Where can I get the total quantity, cant find a selector
   return (
     <AppLayout currentStep={2}>
       <PageHeader label="Order Summary" backLink={backLink} />
       <SidebarLayout sidebar={paymentSection}>
         <AddressSection />
         <VendorSection />
-        <Section>
-          <LabeledField label="Quantity:">
-            <NumberField onChange={value => onTotalQuantityChange(value)} value={totalQuantity} />
-          </LabeledField>
-        </Section>
         <CartQantityList />
       </SidebarLayout>
     </AppLayout>
@@ -184,19 +172,16 @@ const mapStateToProps = state => ({
   offer: state.cart.selectedOffer,
   user: state.user.user,
   offerItems: selectOfferItems(state),
-  selectedMaterial: selectedOfferMaterial(state),
-  totalQuantity: selectCommonQuantity(state)
+  selectedMaterial: selectedOfferMaterial(state)
 })
 
 const mapDispatchToProps = {
   onGoBack: goBack,
-  onChangeQuantity: changeQuantity,
+  onGoToHome: goToHome,
   onOrderWithStripe: createOrderWithStripe,
   // onOrderWithPaypal: createOrderWithPaypal,
   // onPayWithPaypal: initPaymentWithPaypal,
-  onItemQuantityChange: changeIndividualQuantity,
-  onItemDelete: () => {}, // TODO: add action
-  onTotalQuantityChange: changeQuantity
+  onItemDelete: () => {} // TODO: add action
 }
 
 const enhance = compose(
