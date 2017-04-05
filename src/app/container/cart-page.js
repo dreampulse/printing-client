@@ -153,8 +153,8 @@ const CartPage = ({
         label="Pay with Stripe"
         onClick={async () => {
           await onOrderWithStripe()
+          await doCreateOrder()
           doGoToSuccess()
-          doCreateOrder()
         }}
       />
       {/*
@@ -171,7 +171,10 @@ const CartPage = ({
       vat={formatPrice(offer.vatPrice, offer.currency)}
       total={formatPrice(offer.totalPrice, offer.currency)}
     >
-      {order.orderInProgress ? <LoadingIndicator /> : paymentButtons}
+      {order.orderInProgress
+        ? <div className="u-align-center u-font-size-l "><LoadingIndicator /></div>
+        : paymentButtons
+      }
     </PaymentSection>
   )
 
