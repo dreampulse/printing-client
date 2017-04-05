@@ -18,13 +18,16 @@ const AppLayout = ({
   configurationHeader,
   currentStep
 }) => {
+  const processStepBar = (
+    <ProcessStepBar currentStep={currentStep}>
+      <ProcessStep label="Your Order" />
+      <ProcessStep label="Address" />
+      <ProcessStep label="Review and Pay" />
+    </ProcessStepBar>
+  )
   const header = (
     <Header key="header">
-      <ProcessStepBar currentStep={currentStep}>
-        <ProcessStep label="Your Order" />
-        <ProcessStep label="Address" />
-        <ProcessStep label="Review and Pay" />
-      </ProcessStepBar>
+      {currentStep >= 0 ? processStepBar : <div />}
     </Header>
   )
 
