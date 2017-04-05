@@ -12,12 +12,18 @@ const initialState = {
   printingServiceComplete: null
 }
 
+function handleRequestCreated (state) {
+  return {
+    ...state,
+    offers: null
+  }
+}
+
 function handlePriceRequested (state, {payload: {priceId}, error}) {
   return {
     ...state,
     priceId,
     pollCountdown: initialCountdown,
-    offers: null,
     error: !!error
   }
 }
@@ -46,6 +52,7 @@ function handlePollingFailed (state) {
 }
 
 export default handleActions({
+  [TYPE.PRICE.REQUEST_CREATED]: handleRequestCreated,
   [TYPE.PRICE.REQUESTED]: handlePriceRequested,
   [TYPE.PRICE.RECEIVED]: handlePriceReceived,
   [TYPE.PRICE.POLLING_FAILED]: handlePollingFailed

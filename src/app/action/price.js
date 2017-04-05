@@ -43,6 +43,8 @@ export const createPriceRequest = () => async (dispatch, getState) => {
     throw new Error('Shipping Address Invalid')
   }
 
+  dispatch(createAction(TYPE.PRICE.REQUEST_CREATED)())
+
   const {
     material: {
       materials: {
