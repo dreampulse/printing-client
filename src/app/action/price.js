@@ -17,9 +17,9 @@ export const pollFinalPrice = () => (dispatch, getState) => {
       const shouldContinueWithPolling = getState().price.pollCountdown > 0
       if (shouldContinueWithPolling) {
         const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
+        dispatch(createAction(TYPE.PRICE.RECEIVED)(price))
         if (isComplete) {
           // Done polling
-          dispatch(createAction(TYPE.PRICE.RECEIVED)(price))
           resolve()
         } else {
           // Retry polling
@@ -42,6 +42,8 @@ export const createPriceRequest = () => async (dispatch, getState) => {
   if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
     throw new Error('Shipping Address Invalid')
   }
+
+  dispatch(createAction(TYPE.PRICE.REQUEST_CREATED)())
 
   const {
     material: {
