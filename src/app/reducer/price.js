@@ -17,6 +17,7 @@ function handlePriceRequested (state, {payload: {priceId}, error}) {
     ...state,
     priceId,
     pollCountdown: initialCountdown,
+    offers: null,
     error: !!error
   }
 }
