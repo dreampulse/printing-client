@@ -4,23 +4,27 @@ import * as stripe from 'Service/stripe'
 // import * as paypal from '../service/paypal'
 import * as printingEngine from 'Lib/printing-engine'
 
-import {createShoppingCart} from './cart'
-
 import TYPE from '../type'
 
-export const createOrderWithStripe = () => async (dispatch, getState) => {
-  await dispatch(createShoppingCart())
-
+export const payWithStripe = () => async (dispatch, getState) => {
+  dispatch(createAction(TYPE.ORDER.STARTED)())
   const offer = getState().cart.selectedOffer
-  const cartId = getState().cart.cartId
   const currency = offer.currency
   const amount = offer.totalPrice
   const email = getState().user.user.emailAddress
 
   const tokenObject = await stripe.checkout({amount, currency, email})
-  const token = tokenObject.id
+  const paymentToken = tokenObject.id
 
-  const orderPromise = printingEngine.order({cartId, type: 'stripe', token})
+  return dispatch(createAction(TYPE.ORDER.PAYED)({paymentToken}))
+}
+
+export const createOrder = () => async (dispatch, getState) => {
+  const userId = getState().user.userId
+  const priceId = getState().price.priceId
+  const offerId = getState().cart.selectedOffer.offerId
+  const token = getState().order.paymentToken
+  const orderPromise = printingEngine.order({userId, priceId, offerId, type: 'stripe', token})
 
   return dispatch(createAction(TYPE.ORDER.ORDERED)(orderPromise))
 }

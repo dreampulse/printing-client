@@ -26,14 +26,15 @@ import PaymentSection from 'Component/payment-section'
 import ModelQuantityItem from 'Component/model-quantity-item'
 import ModelQuantityItemList from 'Component/model-quantity-item-list'
 import ColorSquare from 'Component/color-square'
+import LoadingIndicator from 'Component/loading-indicator'
 
 import backIcon from 'Icon/back.svg'
 import creditCardIcon from 'Icon/credit-card.svg'
 // import paypalIcon from 'Icon/paypal.svg'
 
-import {goBack, goToHome} from 'Action/navigation'
+import {goBack, goToHome, goToSuccess} from 'Action/navigation'
 // import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from 'Action/order'
-import {createOrderWithStripe} from 'Action/order'
+import {payWithStripe, createOrder} from 'Action/order'
 
 import AppLayout from './app-layout'
 
@@ -45,6 +46,9 @@ const CartPage = ({
   onGoBack,
   onOrderWithStripe,
   onGoToHome,
+  doCreateOrder,
+  doGoToSuccess,
+  order,
   // onOrderWithPaypal,
   onItemDelete
 }) => {
@@ -141,6 +145,25 @@ const CartPage = ({
 
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
 
+  const paymentButtons = (
+    <div>
+      <Button
+        modifiers={['block']}
+        icon={creditCardIcon}
+        label="Pay with Stripe"
+        onClick={async () => {
+          await onOrderWithStripe()
+          await doCreateOrder()
+          doGoToSuccess()
+        }}
+      />
+      {/*
+        <Button icon={paypalIcon} modifiers={['block']}
+          label="Pay with Paypal" onClick={onOrderWithPaypal} />
+      */}
+    </div>
+  )
+
   const paymentSection = (
     <PaymentSection
       subtotal={formatPrice(offer.subTotalPrice, offer.currency)}
@@ -148,11 +171,10 @@ const CartPage = ({
       vat={formatPrice(offer.vatPrice, offer.currency)}
       total={formatPrice(offer.totalPrice, offer.currency)}
     >
-      <Button modifiers={['block']} icon={creditCardIcon} label="Pay with Stripe" onClick={onOrderWithStripe} />
-      {/*
-        <Button icon={paypalIcon} modifiers={['block']}
-          label="Pay with Paypal" onClick={onOrderWithPaypal} />
-      */}
+      {order.orderInProgress
+        ? <div className="u-align-center u-font-size-l "><LoadingIndicator /></div>
+        : paymentButtons
+      }
     </PaymentSection>
   )
 
@@ -169,6 +191,7 @@ const CartPage = ({
 }
 
 const mapStateToProps = state => ({
+  order: state.order,
   offer: state.cart.selectedOffer,
   user: state.user.user,
   offerItems: selectOfferItems(state),
@@ -178,7 +201,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onGoBack: goBack,
   onGoToHome: goToHome,
-  onOrderWithStripe: createOrderWithStripe,
+  doGoToSuccess: goToSuccess,
+  onOrderWithStripe: payWithStripe,
+  doCreateOrder: createOrder,
   // onOrderWithPaypal: createOrderWithPaypal,
   // onPayWithPaypal: initPaymentWithPaypal,
   onItemDelete: () => {} // TODO: add action
