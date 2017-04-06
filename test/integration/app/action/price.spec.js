@@ -20,6 +20,12 @@ describe('Price Integration Test', () => {
 
     beforeEach(() => {
       state = {
+        price: {
+          offers: ['some', 'offers'],
+          printingServiceComplete: {
+            service1: true
+          }
+        },
         model: {
           models: {
             'material-id-model-1': {
@@ -65,6 +71,19 @@ describe('Price Integration Test', () => {
             imaterialize: true
           }
         }
+      })
+    })
+
+    it('does not trigger a price request when no models have been uploaded', async () => {
+      state.model.models = {}
+      store = Store(state)
+      await store.dispatch(createPriceRequest())
+
+      expect(printingEngine.createPriceRequest, 'was not called')
+      // Still clears offers and printingServiceComplete
+      expect(store.getState().price, 'to satisfy', {
+        offers: null,
+        printingServiceComplete: null
       })
     })
 

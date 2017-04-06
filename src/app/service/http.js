@@ -39,7 +39,7 @@ export async function request (url, options) {
 export async function requestWithResponse (url, options) {
   const response = await fetch(url, options)
   return {
-    data: checkStatus(response),
+    data: await checkStatus(response),
     rawResponse: response
   }
 }

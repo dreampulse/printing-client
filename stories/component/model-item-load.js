@@ -9,7 +9,14 @@ storiesOf('Model Item Load', module)
       status={0.7}
       title="Uploading"
       subline="model_item_title.stl"
-      onStatusChange={action('Status change')}
+      onDelete={action('delete')}
+    />
+  ))
+  .add('no status', () => (
+    <ModelItemLoad
+      modifiers={['processing']}
+      title="Processing"
+      subline="model_item_title.stl"
       onDelete={action('delete')}
     />
   ))

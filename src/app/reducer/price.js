@@ -12,10 +12,11 @@ const initialState = {
   printingServiceComplete: null
 }
 
-function handleRequestCreated (state) {
+function handleClearOffers (state) {
   return {
     ...state,
-    offers: null
+    offers: null,
+    printingServiceComplete: null
   }
 }
 
@@ -52,7 +53,7 @@ function handlePollingFailed (state) {
 }
 
 export default handleActions({
-  [TYPE.PRICE.REQUEST_CREATED]: handleRequestCreated,
+  [TYPE.PRICE.CLEAR_OFFERS]: handleClearOffers,
   [TYPE.PRICE.REQUESTED]: handlePriceRequested,
   [TYPE.PRICE.RECEIVED]: handlePriceReceived,
   [TYPE.PRICE.POLLING_FAILED]: handlePollingFailed

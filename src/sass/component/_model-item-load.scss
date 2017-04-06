@@ -59,7 +59,7 @@
     left: 0;
     background-color: $color-blue-very-light;
     transform-origin: 0 0;
-    transition: transform $transition-duration-fast ease-in-out;
+    transition: opacity $transition-duration-fast linear, transform $transition-duration-fast ease-in-out;
     width: 100%;
   }
 }

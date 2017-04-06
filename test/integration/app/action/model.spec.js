@@ -183,11 +183,15 @@ describe('Model Integration Test', () => {
         modelId: 'some-model-id',
         checkStatusFinished: true
       })
+
+      expect(store.getState().price, 'to satisfy', {
+        priceId: '123'
+      })
     })
   })
 
   describe('handleQuantityChanged()', () => {
-    it('works for the default case', () => {
+    it('works for the default case', async () => {
       store = Store({
         model: {
           models: {
@@ -195,10 +199,36 @@ describe('Model Integration Test', () => {
               modelId: 'some-model-id'
             }
           }
+        },
+        material: {
+          materials: {
+            materialConfigs: {
+              'some-material-id': 'something'
+            },
+            materialStructure: []
+          }
+        },
+        user: {
+          userId: 'some-user-id',
+          user: {
+            shippingAddress: {
+              city: 'Pittsburgh',
+              zipCode: '15234',
+              stateCode: 'PA',
+              countryCode: 'US'
+            }
+          }
         }
       })
 
-      store.dispatch(changeQuantity({quantity: 42}))
+      printingEngine.createPriceRequest.resolves({priceId: '123'})
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: true,
+        price: 'some-price'
+      }) // Finished polling
+
+      await store.dispatch(changeQuantity({quantity: 42}))
+
       expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         quantity: 42
       })
@@ -206,7 +236,7 @@ describe('Model Integration Test', () => {
   })
 
   describe('handleIndividualQuantityChanged()', () => {
-    it('works for the default case', () => {
+    it('works for the default case', async () => {
       store = Store({
         model: {
           models: {
@@ -214,10 +244,36 @@ describe('Model Integration Test', () => {
               modelId: 'some-model-id'
             }
           }
+        },
+        material: {
+          materials: {
+            materialConfigs: {
+              'some-material-id': 'something'
+            },
+            materialStructure: []
+          }
+        },
+        user: {
+          userId: 'some-user-id',
+          user: {
+            shippingAddress: {
+              city: 'Pittsburgh',
+              zipCode: '15234',
+              stateCode: 'PA',
+              countryCode: 'US'
+            }
+          }
         }
       })
 
-      store.dispatch(changeIndividualQuantity({quantity: 42, modelId: 'some-model-id'}))
+      printingEngine.createPriceRequest.resolves({priceId: '123'})
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: true,
+        price: 'some-price'
+      }) // Finished polling
+
+      await store.dispatch(changeIndividualQuantity({quantity: 42, modelId: 'some-model-id'}))
+
       expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         quantity: 42
       })
