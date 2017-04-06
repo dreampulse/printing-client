@@ -1,4 +1,5 @@
 import {createAction} from 'redux-actions'
+import debounce from 'lodash/debounce'
 
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
@@ -37,7 +38,7 @@ export const pollFinalPrice = () => (dispatch, getState) => {
   })
 }
 
-export const createPriceRequest = () => async (dispatch, getState) => {
+const priceRequest = async (dispatch, getState) => {
   dispatch(createAction(TYPE.PRICE.CLEAR_OFFERS)())
 
   const sa = getState().user.user.shippingAddress
@@ -85,3 +86,10 @@ export const createPriceRequest = () => async (dispatch, getState) => {
     await dispatch(selectOffer({offer}))
   }
 }
+const debouncedPriceRequest = debounce(
+  priceRequest,
+  config.debouncePriceRequestWait
+)
+
+export const createPriceRequest = () => priceRequest
+export const createDebouncedPriceRequest = () => debouncedPriceRequest

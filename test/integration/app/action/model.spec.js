@@ -232,10 +232,6 @@ describe('Model Integration Test', () => {
       expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         quantity: 42
       })
-
-      expect(store.getState().price, 'to satisfy', {
-        priceId: '123'
-      })
     })
   })
 
@@ -280,10 +276,6 @@ describe('Model Integration Test', () => {
 
       expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         quantity: 42
-      })
-
-      expect(store.getState().price, 'to satisfy', {
-        priceId: '123'
       })
     })
   })
