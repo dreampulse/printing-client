@@ -64,6 +64,8 @@ const priceRequest = async (dispatch, getState) => {
     quantity: models[modelId].quantity
   }))
 
+  const lastPriceId = getState().price.priceId
+
   // Abort if user did not upload any models yet
   if (items.length === 0) {
     return
@@ -71,6 +73,7 @@ const priceRequest = async (dispatch, getState) => {
 
   const options = {
     userId: getState().user.userId,
+    lastPriceId,
     items
   }
 
