@@ -75,10 +75,7 @@ const priceRequest = async (dispatch, getState) => {
     userId: getState().user.userId,
     items
   }
-
-  if (lastPriceId) {
-    options.lastPriceId = lastPriceId
-  }
+  if (lastPriceId) options.lastPriceId = lastPriceId
 
   const priceRequestPromise = printingEngine.createPriceRequest(options)
 
