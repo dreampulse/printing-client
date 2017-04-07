@@ -24,7 +24,8 @@ describe('Price Integration Test', () => {
           offers: ['some', 'offers'],
           printingServiceComplete: {
             service1: true
-          }
+          },
+          priceId: 'some-old-price-id'
         },
         model: {
           models: {
@@ -55,9 +56,6 @@ describe('Price Integration Test', () => {
               countryCode: 'US'
             }
           }
-        },
-        price: {
-          priceId: 'some-old-price-id'
         }
       }
 
