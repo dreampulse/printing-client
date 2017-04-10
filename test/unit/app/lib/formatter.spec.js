@@ -36,6 +36,10 @@ describe('formatPrice()', () => {
   it('rounds value up', () => {
     expect(formatPrice(19.995, 'USD'), 'to equal', '20.00 $')
   })
+
+  it('returns estimated price', () => {
+    expect(formatPrice(19.99, 'USD', true), 'to equal', '~19.99 $')
+  })
 })
 
 describe('formatDeliveryTime()', () => {
