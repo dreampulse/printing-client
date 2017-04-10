@@ -6,6 +6,8 @@ import {
   formatPrice
 } from 'Lib/formatter'
 
+import config from '../../../config'
+
 export const selectCommonQuantity = (state) => {
   // Common quantity exists only if all models have the same individual quantity
   const {
@@ -86,6 +88,31 @@ export const selectMaterial = (state, materialId) => {
   return material
 }
 
+export const selectMaterialByName = (state, name) => {
+  const {
+    material: {
+      materials
+    }
+  } = state
+
+  if (!materials || !materials.materialStructure) {
+    return null
+  }
+
+  // Search for material by name
+  let material = null
+
+  materials.materialStructure.forEach((materialGroup) => {
+    materialGroup.materials.forEach((item) => {
+      if (item.name === name) {
+        material = item
+      }
+    })
+  })
+
+  return material
+}
+
 export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
   const {
     material: {
@@ -154,7 +181,8 @@ export const selectCurrentMaterial = (state) => {
     }
   } = state
 
-  return selectMaterial(state, selectedMaterial)
+  return selectMaterial(state, selectedMaterial) ||
+    selectMaterialByName(state, config.defaultSelectedMaterial)
 }
 
 export const selectThumbnailUrlByModelId = (state, modelId) => {

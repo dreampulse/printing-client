@@ -2,6 +2,7 @@ import {
   selectCommonQuantity,
   selectMaterialMenuValues,
   selectMaterial,
+  selectMaterialByName,
   selectFinishGroup,
   selectCurrentMaterial,
   selectOffersForSelectedMaterialConfig,
@@ -13,6 +14,7 @@ import {
   selectOfferItems
 } from 'Lib/selector'
 import * as materialLib from 'Lib/material'
+import config from '../../../../config'
 
 describe('selectCommonQuantity', () => {
   it('returns common quantity if all individual model quantities are the same', () => {
@@ -272,6 +274,56 @@ describe('selectMaterial()', () => {
   })
 })
 
+describe('selectMaterialByName()', () => {
+  let materials
+
+  beforeEach(() => {
+    materials = {
+      materialStructure: [{
+        materials: []
+      }, {
+        materials: [{
+          id: 'material-1',
+          name: 'Material 1'
+        }, {
+          id: 'material-2',
+          name: 'Material 2'
+        }]
+      }]
+    }
+  })
+
+  it('returns expected material', () => {
+    const state = {
+      material: {materials}
+    }
+
+    expect(selectMaterialByName(state, 'Material 2'), 'to equal', {
+      id: 'material-2',
+      name: 'Material 2'
+    })
+  })
+
+  it('returns null if there are no materials in state', () => {
+    const state = {
+      material: {
+        materials: undefined
+      }
+    }
+
+    expect(selectMaterialByName(state, 'Material 2'), 'to be', null)
+  })
+
+  it('returns null if materialStructure is undefined', () => {
+    materials.materialStructure = undefined
+    const state = {
+      material: {materials}
+    }
+
+    expect(selectMaterialByName(state, 'Material 2'), 'to be', null)
+  })
+})
+
 describe('selectFinishGroup()', () => {
   let materials
 
@@ -324,19 +376,28 @@ describe('selectFinishGroup()', () => {
 
 describe('selectCurrentMaterial()', () => {
   let materials
+  let sandbox
 
   beforeEach(() => {
+    sandbox = sinon.sandbox.create()
+
     materials = {
       materialStructure: [{
         materials: []
       }, {
         materials: [{
-          id: 'material-1'
+          id: 'material-1',
+          name: 'Material 1'
         }, {
-          id: 'material-2'
+          id: 'material-2',
+          name: 'Material 2'
         }]
       }]
     }
+  })
+
+  afterEach(() => {
+    sandbox.restore()
   })
 
   it('returns expected material', () => {
@@ -347,7 +408,10 @@ describe('selectCurrentMaterial()', () => {
       }
     }
 
-    expect(selectCurrentMaterial(state), 'to equal', {id: 'material-2'})
+    expect(selectCurrentMaterial(state), 'to equal', {
+      id: 'material-2',
+      name: 'Material 2'
+    })
   })
 
   it('returns null if there are no materials in state', () => {
@@ -371,6 +435,21 @@ describe('selectCurrentMaterial()', () => {
     }
 
     expect(selectCurrentMaterial(state), 'to be', null)
+  })
+
+  it('returns default material from config if selected material is undefined', () => {
+    sandbox.stub(config, 'defaultSelectedMaterial', 'Material 1')
+    const state = {
+      material: {
+        materials,
+        selectedMaterial: undefined
+      }
+    }
+
+    expect(selectCurrentMaterial(state), 'to equal', {
+      id: 'material-1',
+      name: 'Material 1'
+    })
   })
 })
 
