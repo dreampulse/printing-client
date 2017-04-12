@@ -11,7 +11,8 @@ import {
   selectedOfferMaterial,
   selectThumbnailUrlByModelId,
   selectNameByModelId,
-  selectOfferItems
+  selectOfferItems,
+  selectAreAllUploadsFinished
 } from 'Lib/selector'
 import * as materialLib from 'Lib/material'
 import config from '../../../../config'
@@ -692,5 +693,64 @@ describe('selectOfferItems', () => {
         name: 'some-other-model-name'
       }
     ])
+  })
+
+  describe('selectAreAllUploadsFinished()', () => {
+    it('returns true if all uploads are finished', () => {
+      expect(selectAreAllUploadsFinished({
+        model: {
+          numberOfUploads: 0,
+          models: {
+            'some-model-id': {
+              checkStatusFinished: true
+            },
+            'some-model-id-2': {
+              checkStatusFinished: true
+            }
+          }
+        }
+      }), 'to be true')
+    })
+
+    it('returns false if all uploads are not finished', () => {
+      expect(selectAreAllUploadsFinished({
+        model: {
+          numberOfUploads: 0,
+          models: {
+            'some-model-id': {
+              checkStatusFinished: false
+            },
+            'some-model-id-2': {
+              checkStatusFinished: true
+            }
+          }
+        }
+      }), 'to be false')
+    })
+
+    it('returns false there are no models uploaded', () => {
+      expect(selectAreAllUploadsFinished({
+        model: {
+          numberOfUploads: 0,
+          models: {}
+        }
+      }), 'to be false')
+    })
+
+    it('returns false if there are still a number of uploads in progress', () => {
+      expect(selectAreAllUploadsFinished({
+        model: {
+          numberOfUploads: 1,
+          models: {
+            'some-model-id': {
+              checkStatusFinished: true
+            },
+            'some-model-id-2': {
+              checkStatusFinished: true
+            }
+          }
+        }
+      }), 'to be false')
+    })
   })
 })

@@ -49,7 +49,7 @@ function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
     ...state,
     numberOfUploads: state.numberOfUploads + 1,
     uploadedModels: [
-      ...state.models, {
+      ...state.uploadedModels, {
         fileId,
         name,
         size,
@@ -71,7 +71,6 @@ function handleUploadToBackedProgressed (state, {payload: {fileId, progress}}) {
 }
 
 function handleUploadToBackedFinished (state, {payload: {fileId, modelId, thumbnailUrl, error}}) {
-  // TODO: The backend should return all needed fields Issue: #66
   const updateModels = update(state.uploadedModels, model => model.fileId === fileId)
   const uploadingModel = state.uploadedModels
     .filter(model => model.fileId === fileId)[0]
@@ -81,7 +80,6 @@ function handleUploadToBackedFinished (state, {payload: {fileId, modelId, thumbn
     return {
       ...state,
       areAllUploadsFinished,
-      numberOfUploads: state.numberOfUploads - 1,
       uploadedModels: updateModels({
         progress: 1,
         error
@@ -91,7 +89,6 @@ function handleUploadToBackedFinished (state, {payload: {fileId, modelId, thumbn
 
   return {
     ...state,
-    areAllUploadsFinished,
     numberOfUploads: state.numberOfUploads - 1,
     uploadedModels: updateModels({
       progress: 1,
