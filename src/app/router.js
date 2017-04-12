@@ -7,6 +7,14 @@ import ModelPage from 'Container/model-page'
 import AddressPage from 'Container/address-page'
 import SuccessPage from 'Container/success-page'
 
+const preventDeepLinking = store => (nextState, replace) => {
+  // It is only possible to reach other routes than the model page
+  // if an offer has been selected
+  if (!store.getState().cart.selectedOffer) {
+    replace('/')
+  }
+}
+
 /* eslint-disable react/prop-types */
 export default ({store}) => {
   // Create an enhanced history that syncs navigation events with the store
@@ -15,9 +23,9 @@ export default ({store}) => {
   return (
     <Router history={history}>
       <Route component={ModelPage} path="/" />
-      <Route component={AddressPage} path="/address" />
-      <Route component={CartPage} path="/cart" />
-      <Route component={SuccessPage} path="/success" />
+      <Route component={AddressPage} path="/address" onEnter={preventDeepLinking(store)} />
+      <Route component={CartPage} path="/cart" onEnter={preventDeepLinking(store)} />
+      <Route component={SuccessPage} path="/success" onEnter={preventDeepLinking(store)} />
     </Router>
   )
 }
