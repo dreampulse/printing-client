@@ -45,7 +45,6 @@ describe('Model Integration Test', () => {
       await store.dispatch(uploadFile(file, 'some-callback'))
 
       expect(store.getState().model, 'to satisfy', {
-        areAllUploadsFinished: true,
         numberOfUploads: 0
       })
 
@@ -76,8 +75,7 @@ describe('Model Integration Test', () => {
       }
 
       expect(store.getState().model, 'to satisfy', {
-        areAllUploadsFinished: true,
-        numberOfUploads: 0
+        numberOfUploads: 1
       })
 
       expect(store.getState().model.uploadedModels[0], 'to satisfy', {
@@ -171,8 +169,6 @@ describe('Model Integration Test', () => {
       await store.dispatch(uploadFiles(files, 'some-callback'))
 
       expect(store.getState().model, 'to satisfy', {
-        areAllUploadsFinished: true,
-        numberOfUploads: 0,
         selectedUnit: 'mm'
       })
 

@@ -247,3 +247,12 @@ export const selectPrintingServiceRequests = (state) => {
     total: printingServices.length
   }
 }
+
+export const selectAreAllUploadsFinished = (state) => {
+  if (state.model.numberOfUploads > 0) return false
+  if (Object.keys(state.model.models).length < 1) return false
+  return Object.keys(state.model.models)
+    .map(modelId => state.model.models[modelId])
+    .map(model => model.checkStatusFinished)
+    .reduce((acc, checkStatusFinished) => acc && checkStatusFinished, true)
+}

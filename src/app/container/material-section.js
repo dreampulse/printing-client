@@ -7,7 +7,8 @@ import {buildClassArray} from 'Lib/build-class-name'
 import {
   selectMaterialMenuValues,
   selectCurrentMaterial,
-  selectPrintingServiceRequests
+  selectPrintingServiceRequests,
+  selectAreAllUploadsFinished
 } from 'Lib/selector'
 import {
   getBestOfferForMaterialConfig,
@@ -198,7 +199,7 @@ const MaterialSection = ({
 }
 
 const mapStateToProps = state => ({
-  areAllUploadsFinished: state.model.areAllUploadsFinished,
+  areAllUploadsFinished: selectAreAllUploadsFinished(state),
   offers: state.price.offers || [],
   materials: state.material.materials,
   materialMenuValues: selectMaterialMenuValues(state),

@@ -40,6 +40,8 @@ export const uploadFile = file => async (dispatch, getState) => {
   const fileId = uniqueId('file-id-')
   const unit = getState().model.selectedUnit
 
+  dispatch(createAction(TYPE.PRICE.CLEAR_OFFERS)())
+  dispatch(createAction(TYPE.MATERIAL.CONFIG_SELECTED)())  // Resets current selection
   dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED)({
     fileId,
     name: file.name,
@@ -57,6 +59,7 @@ export const uploadFile = file => async (dispatch, getState) => {
     await dispatch(checkUploadStatus({modelId}))
   } catch (e) {
     dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({fileId, error: true}))
+    throw new Error('Upload failed')  // Prevent to create a price request if upload failed
   }
 }
 
