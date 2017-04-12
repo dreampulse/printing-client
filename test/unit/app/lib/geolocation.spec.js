@@ -54,7 +54,7 @@ describe('geolocation lib', () => {
         city: 'something',
         zip: 'something',
         region: 'something',
-        countryCode: null  // A key is missing
+        countryCode: ''  // A key is missing
       }
       http.request.resolves(geolocationResponse)
 
@@ -161,10 +161,10 @@ describe('geolocation lib', () => {
       }
 
       expect(convertPlaceToLocation(exampleResponse), 'to equal', {
-        street: null,
-        houseNumber: null,
+        street: '',
+        houseNumber: '',
         city: 'Ulm',
-        zipCode: null,
+        zipCode: '',
         stateCode: 'BW',
         countryCode: 'DE'
       })
@@ -172,12 +172,12 @@ describe('geolocation lib', () => {
 
     it('handels empty object', () => {
       expect(convertPlaceToLocation({}), 'to equal', {
-        street: null,
-        houseNumber: null,
-        city: null,
-        zipCode: null,
-        stateCode: null,
-        countryCode: null
+        street: '',
+        houseNumber: '',
+        city: '',
+        zipCode: '',
+        stateCode: '',
+        countryCode: ''
       })
     })
   })

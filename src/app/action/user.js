@@ -31,13 +31,16 @@ export const updateUser = user => async (dispatch, getState) => {
   return dispatch(createAction(TYPE.USER.UPDATED)(user))
 }
 
-export const updateLocation = location => (dispatch) => {
+export const updateLocation = location => async (dispatch, getState) => {
   dispatch(createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(location))
 
   if (!isAddressValid(location)) {
     // Open address modal if location is not valid
     dispatch(openAddressModal())
   } else {
+    if (!getState().user.userId) {  // No user created so far
+      await dispatch(createUser())
+    }
     // Update prices
     dispatch(createPriceRequest())
   }
