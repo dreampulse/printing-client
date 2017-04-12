@@ -10,7 +10,7 @@ class Overlay extends Component {
 
   static propTypes = {
     ...propTypes.component,
-    closePortal: PropTypes.func.isRequired,
+    closePortal: PropTypes.func,
     closeable: PropTypes.bool,
     children: PropTypes.node,
     headline: PropTypes.node.isRequired,

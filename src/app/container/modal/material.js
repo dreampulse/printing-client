@@ -7,6 +7,8 @@ import {
 } from 'Lib/selector'
 import getCloudinaryUrl from 'Lib/cloudinary'
 
+import {close} from 'Action/modal'
+
 import Button from 'Component/button'
 import Overlay from 'Component/overlay'
 import Headline from 'Component/headline'
@@ -19,14 +21,14 @@ import Grid from 'Component/grid'
 import Column from 'Component/column'
 import Image from 'Component/image'
 
-const MaterialModal = ({material, finishGroup}) => {
+const MaterialModal = ({material, finishGroup, onClose}) => {
   const headline = <Headline label={material.name} modifiers={['l']} />
   const buttons = [
-    <Button label="Close" />
+    <Button label="Close" onClick={onClose} />
   ]
 
   return (
-    <Overlay modifiers={['l']} headline={headline} buttons={buttons}>
+    <Overlay modifiers={['l']} headline={headline} buttons={buttons} closePortal={onClose}>
       <Grid>
         <Column sm={12} md={8} lg={7}>
           <Paragraph classNames={['u-margin-bottom-xl']}>
@@ -92,6 +94,8 @@ const mapStateToProps = (state, props) => ({
   finishGroup: selectFinishGroup(state, props.materialId, props.finishGroupId)
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  onClose: close
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(MaterialModal)
