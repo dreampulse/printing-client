@@ -25,9 +25,10 @@ const ProviderSection = ({
   onSelectOffer,
   onGoToAddress
 }) => {
+  const disabled = !selectedMaterialConfig || !offers
   const headlineModifiers = buildClassArray({
     xl: true,
-    disabled: !selectedMaterialConfig
+    disabled
   })
 
   const providerInfo = (
@@ -42,7 +43,9 @@ const ProviderSection = ({
   const renderProviderList = () => (
     <ProviderList providerInfo={providerInfo}>
       {
-        offers.map((offer, index) => (
+        offers
+        .sort((a, b) => a.totalPrice > b.totalPrice)
+        .map((offer, index) => (
           <ProviderItem
             key={index}
             provider={offer.printingService}
@@ -61,7 +64,7 @@ const ProviderSection = ({
   return (
     <Section id="section-provider">
       <Headline label="3. Choose a provider and shipping option" modifiers={headlineModifiers} />
-      {Boolean(selectedMaterialConfig) && renderProviderList()}
+      {!disabled && renderProviderList()}
     </Section>
   )
 }
