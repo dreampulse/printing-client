@@ -28,6 +28,10 @@ export default class ImageContainer extends Component {
     }
   }
 
+  componentWillUnmount () {
+    this.unmounted = true
+  }
+
   loadImage (source) {
     this.setState({
       imageLoading: true,
@@ -37,15 +41,19 @@ export default class ImageContainer extends Component {
 
     if (source) {
       preloadImage(source).then(() => {
-        this.setState({
-          imageLoading: false,
-          imageLoaded: true
-        })
+        if (!this.unmounted) {
+          this.setState({
+            imageLoading: false,
+            imageLoaded: true
+          })
+        }
       }).catch(() => {
-        this.setState({
-          imageLoading: false,
-          imageError: true
-        })
+        if (!this.unmounted) {
+          this.setState({
+            imageLoading: false,
+            imageError: true
+          })
+        }
       })
     }
   }

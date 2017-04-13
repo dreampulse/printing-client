@@ -17,6 +17,7 @@
     @include scut-clearfix;
     margin-bottom: $space-l;
     text-align: center;
+    outline: 0;
 
     @include respond-to(large) {
       @include span(6);
