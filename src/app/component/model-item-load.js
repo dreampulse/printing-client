@@ -4,6 +4,7 @@ import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
 import Icon from 'Component/icon'
+import LoadingIndicator from 'Component/loading-indicator'
 
 import deleteIcon from 'Icon/delete.svg'
 
@@ -29,7 +30,10 @@ const ModelItemLoad = ({
 
       <div className="model-item-load__description">
         {Boolean(title) && (
-          <strong className="model-item-load__title">{loadTitle}</strong>
+          <strong className="model-item-load__title">
+            {status === undefined && <LoadingIndicator />}
+            {loadTitle}
+          </strong>
         )}
         {Boolean(subline) && (
           <span className="model-item-load__subline">{subline}</span>

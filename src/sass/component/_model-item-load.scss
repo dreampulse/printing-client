@@ -36,6 +36,13 @@
     color: $color-text;
     font-weight: $font-weight-regular;
     text-align: center;
+
+    & > .loading-indicator {
+      position: relative;
+      top: -0.1em; // Better vertical alignment
+      vertical-align: middle;
+      margin-right: $space-base;
+    }
   }
 
   &__subline {

@@ -712,7 +712,7 @@ describe('selectOfferItems', () => {
       }), 'to be true')
     })
 
-    it('returns false if all uploads are not finished', () => {
+    it('returns false if not all uploads are finished', () => {
       expect(selectAreAllUploadsFinished({
         model: {
           numberOfUploads: 0,
@@ -728,7 +728,7 @@ describe('selectOfferItems', () => {
       }), 'to be false')
     })
 
-    it('returns false there are no models uploaded', () => {
+    it('returns false if no models are uploaded', () => {
       expect(selectAreAllUploadsFinished({
         model: {
           numberOfUploads: 0,

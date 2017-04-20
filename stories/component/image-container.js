@@ -10,3 +10,6 @@ storiesOf('Image Container', module)
   .add('empty', () => (
     <ImageContainer />
   ))
+  .add('model', () => (
+    <ImageContainer modifiers={['model']} source="http://placehold.it/500x500/000000/ffffff" />
+  ))

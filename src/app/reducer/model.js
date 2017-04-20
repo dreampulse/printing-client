@@ -5,7 +5,6 @@ import TYPE from '../type'
 import {update} from '../lib/util'
 
 const initialState = {
-  areAllUploadsFinished: false,
   numberOfUploads: 0,
   selectedUnit: 'mm',
   uploadedModels: [],
@@ -74,12 +73,10 @@ function handleUploadToBackedFinished (state, {payload: {fileId, modelId, thumbn
   const updateModels = update(state.uploadedModels, model => model.fileId === fileId)
   const uploadingModel = state.uploadedModels
     .filter(model => model.fileId === fileId)[0]
-  const areAllUploadsFinished = state.numberOfUploads === 1
 
   if (error) {
     return {
       ...state,
-      areAllUploadsFinished,
       uploadedModels: updateModels({
         progress: 1,
         error
