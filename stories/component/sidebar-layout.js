@@ -15,7 +15,7 @@ storiesOf('Sidebar Layout', module)
           quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
         </Paragraph>
       </Section>
-    );
+    )
 
     return (
       <SidebarLayout sidebar={sidebar}>
@@ -62,5 +62,5 @@ storiesOf('Sidebar Layout', module)
           </Paragraph>
         </Section>
       </SidebarLayout>
-    );
+    )
   })

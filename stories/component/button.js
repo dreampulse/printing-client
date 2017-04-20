@@ -25,5 +25,5 @@ storiesOf('Button', module)
     <Button label="Selected Button" modifiers={['selected']} onClick={action('click')} />
   ))
   .add('disabled', () => (
-      <Button label="Default Button" onClick={action('click')} disabled />
+    <Button label="Default Button" onClick={action('click')} disabled />
   ))

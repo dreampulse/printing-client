@@ -15,7 +15,7 @@
     "start:styleguide": "start-storybook --dont-track -p 3001 -s src",
     "start": "babel-node bin/app-server",
     "test": "npm run test:lint && npm run test:coverage",
-    "test:lint": "eslint src test bin .storybook ./*.js",
+    "test:lint": "eslint src test bin stories .storybook ./*.js",
     "test:dev": "NODE_ENV=test mocha --opts test/mocha.opts ./test/unit/ ./test/integration",
     "test:dev:watch": "NODE_ENV=test mocha --opts test/mocha.opts ./test/unit/ ./test/integration/ --watch",
     "test:coverage": "NODE_ENV=test babel-node node_modules/isparta/bin/isparta cover _mocha -- --opts test/mocha.opts",

@@ -1,9 +1,14 @@
 import {routerActions} from 'react-router-redux'
 
+import {
+  goToCart,
+  goToSuccess,
+  goToAddress,
+  goToHome
+} from 'Action/navigation'
 import Store from '../../../../src/app/store'
-import {goToCart, goToSuccess, goToHome} from '../../../../src/app/action/navigation'
 
-describe('Navigation Integration Test', () => {
+describe('Navigation actions', () => {
   let store
 
   beforeEach(() => {
@@ -22,6 +27,13 @@ describe('Navigation Integration Test', () => {
     })
   })
 
+  describe('goToAddress()', () => {
+    it('should got to vendor', () => {
+      store.dispatch(goToAddress())
+      expect(routerActions.push, 'was called with', '/address')
+    })
+  })
+
   describe('goToSuccess()', () => {
     it('should got to vendor', () => {
       store.dispatch(goToSuccess())
@@ -32,7 +44,7 @@ describe('Navigation Integration Test', () => {
   describe('goToHome()', () => {
     it('should got to vendor', () => {
       store.dispatch(goToHome())
-      expect(routerActions.push, 'was called with', '/model')
+      expect(routerActions.push, 'was called with', '/')
     })
   })
 })
