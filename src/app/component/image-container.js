@@ -28,6 +28,12 @@ export default class ImageContainer extends Component {
     }
   }
 
+  getGradient = (element) => {
+    if (element) {
+      this.gradient = global.getComputedStyle(element, null).getPropertyValue('background-image')
+    }
+  }
+
   loadImage (source) {
     this.setState({
       imageLoading: true,
@@ -62,8 +68,9 @@ export default class ImageContainer extends Component {
     } = this.state
 
     const style = {}
-    if (imageLoaded) {
-      style.backgroundImage = `url(${source})`
+    if (this.gradient && imageLoaded) {
+      // Add gradient so that we can use css blend modes
+      style.backgroundImage = `url(${source}), ${this.gradient}`
     }
 
     const finalModifiers = [
@@ -74,7 +81,10 @@ export default class ImageContainer extends Component {
     ]
 
     return (
-      <div className={buildClassName('image-container', finalModifiers, classNames)}>
+      <div
+        className={buildClassName('image-container', finalModifiers, classNames)}
+        ref={this.getGradient}
+      >
         <div className="image-container__content">
           <div className="image-container__image" style={style} />
           {imageLoading && <LoadingIndicator modifiers={['invert']} />}
