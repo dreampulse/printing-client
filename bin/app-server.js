@@ -12,7 +12,7 @@ const app = express()
 app.use(compression())
 
 app.use(favicon(
-    resolve(`${__dirname}/../src/asset/favicon.ico`
+    resolve(`${__dirname}/../src/asset/favicon.png`
   ))
 )
 
@@ -59,7 +59,7 @@ app.get('*', (req, res) =>
     .sendFile(resolve(`${__dirname}/../dist/index.html`))
 )
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8888
 app.listen(port, () => {
   console.log(`Listening on port ${port}`) // eslint-disable-line no-console
 })
