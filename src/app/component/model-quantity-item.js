@@ -27,7 +27,7 @@ const ModelQuantityItem = ({
 
   return (
     <div className={buildClassName('model-quantity-item', modifiers, classNames)}>
-      <ImageContainer source={imageSource} />
+      <ImageContainer modifiers={['model']} source={imageSource} />
       <div className="model-quantity-item__body">
         <div className="model-quantity-item__title">
           {title}
