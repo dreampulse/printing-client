@@ -21,6 +21,7 @@ import {
   changeIndividualQuantity,
   changeUnit
 } from 'Action/model'
+import {formatDimensions} from 'Lib/formatter'
 
 const UploadSection = ({
   models,
@@ -63,7 +64,8 @@ const UploadSection = ({
       {uploadedModels.length > 0 && (
         <ModelItemList>
           {uploadedModels.map((model) => {
-            if (model.error) {
+            // TODO: the state for models is seriously fucked up
+            if (model.error || (models[model.modelId] && models[model.modelId].error)) {
               // TODO: on delete handler
               return (
                 <ModelItemError
@@ -98,14 +100,16 @@ const UploadSection = ({
             }
 
             // TODO: on delete handler
-            // TODO: subline
             return (
               <ModelItem
                 key={model.fileId}
                 imageSource={model.thumbnailUrl}
                 quantity={models[model.modelId].quantity}
-                title={model.name}
-                subline="TODO"
+                title={models[model.modelId].fileName}
+                subline={formatDimensions(
+                  models[model.modelId].dimensions,
+                  models[model.modelId].fileUnit
+                )}
                 onQuantityChange={
                   value => onChangeIndividualQuantity({
                     quantity: value,

@@ -118,15 +118,19 @@ function handleCheckStatusStarted (state, {payload: {modelId}}) {
   }
 }
 
-function handleCheckStatusFinished (state, {payload: {modelId, error}}) {
+function handleCheckStatusFinished (state, {payload}) {
+  const {modelId, dimensions, fileName, fileUnit, error} = payload
   return {
     ...state,
     models: {
       ...state.models,
       [modelId]: {
         ...state.models[modelId],
-        checkStatusFinished: true,
-        error
+        dimensions,
+        fileName,
+        fileUnit,
+        error,
+        checkStatusFinished: true
       }
     }
   }
