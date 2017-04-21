@@ -45,7 +45,8 @@ export default {
   ORDER: {
     ORDERED: 'ORDER.ORDERED',
     PAYED: 'ORDER.PAYED',
-    STARTED: 'ORDER:STARTED'
+    STARTED: 'ORDER:STARTED',
+    ABORTED: 'ORDER:ABORTED'
   }
 }
 
