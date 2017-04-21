@@ -22,6 +22,9 @@ storiesOf('Headline', module)
   .add('disabled', () => (
     <Headline label="Disabled Headline" modifiers={['xl', 'disabled']} />
   ))
+  .add('minor', () => (
+    <Headline label="Minor Headline" modifiers={['s', 'minor']} />
+  ))
   .add('warning', () => (
     <Headline label="Warning Headline" modifiers={['l', 'warning']} />
   ))
