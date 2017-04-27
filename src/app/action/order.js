@@ -28,6 +28,7 @@ export const createOrder = () => (dispatch, getState) => {
   const priceId = getState().price.priceId
   const offerId = getState().cart.selectedOffer.offerId
   const token = getState().order.paymentToken
+  // TODO: error handling
   const orderPromise = printingEngine.order({userId, priceId, offerId, type: 'stripe', token})
 
   return dispatch(createAction(TYPE.ORDER.ORDERED)(orderPromise))

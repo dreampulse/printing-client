@@ -16,4 +16,5 @@ export const createShoppingCart = () => async (dispatch, getState) => {
   await dispatch(createAction(TYPE.CART.CREATED)(shoppingCartPromise))
 }
 
+// TODO: move to price actions and remove this file completely
 export const selectOffer = ({offer}) => createAction(TYPE.CART.OFFER_SELECTED)({offer})
