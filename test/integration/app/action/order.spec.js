@@ -68,6 +68,23 @@ describe('Shopping Cart Integration Test', () => {
         email: 'some-email-address'
       })
     })
+
+    it('resets orderInProgress if user aborts', async () => {
+      const error = new Error()
+      stripe.checkout.rejects(error)
+
+      try {
+        await store.dispatch(payWithStripe())
+        throw new Error('We should not get here!')
+      } catch (e) {
+        expect(e, 'to be', error)
+
+        expect(store.getState().order, 'to equal', {
+          paymentToken: null,
+          orderInProgress: false
+        })
+      }
+    })
   })
 
   describe('createOrder()', () => {

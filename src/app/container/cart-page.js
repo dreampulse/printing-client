@@ -46,8 +46,8 @@ const CartPage = ({
   onGoBack,
   onOrderWithStripe,
   onGoToHome,
-  doCreateOrder,
-  doGoToSuccess,
+  onCreateOrder,
+  onGoToSuccess,
   order,
   // onOrderWithPaypal,
   onItemDelete
@@ -75,7 +75,7 @@ const CartPage = ({
     <Section modifiers={['highlight']}>
       <Grid>
         <Column md={6}>
-          <Headline modifiers={['disabled', 's']} label="Shipping Address" />
+          <Headline modifiers={['minor', 's']} label="Shipping Address" />
           <Paragraph modifiers={['l']}>
             {user.shippingAddress.firstName} {user.shippingAddress.lastName}<br />
             {user.shippingAddress.street} {user.shippingAddress.houseNumber}<br />
@@ -90,7 +90,7 @@ const CartPage = ({
           </Paragraph>
         </Column>
         <Column md={6}>
-          <Headline modifiers={['disabled', 's']} label="Billing Address" />
+          <Headline modifiers={['minor', 's']} label="Billing Address" />
           <Paragraph modifiers={['l']}>
             {user.billingAddress.firstName ||
               user.shippingAddress.firstName} {user.billingAddress.lastName ||
@@ -125,11 +125,11 @@ const CartPage = ({
     <Section modifiers={['highlight']}>
       <Grid>
         <Column md={6}>
-          <Headline modifiers={['disabled', 's']} label="Provider" />
+          <Headline modifiers={['minor', 's']} label="Provider" />
           <ProviderImage name={offer.printingService} />
         </Column>
         <Column md={6}>
-          <Headline modifiers={['disabled', 's']} label="Material" />
+          <Headline modifiers={['minor', 's']} label="Material" />
           <Paragraph modifiers={['l']}>
             {selectedMaterial.material.name},&nbsp;
             {selectedMaterial.material.properties.printingMethod}<br />
@@ -152,9 +152,15 @@ const CartPage = ({
         icon={creditCardIcon}
         label="Pay with Stripe"
         onClick={async () => {
-          await onOrderWithStripe()
-          await doCreateOrder()
-          doGoToSuccess()
+          try {
+            await onOrderWithStripe()
+          } catch (error) {
+            // Early return if user aborted payment
+            return
+          }
+
+          await onCreateOrder()
+          onGoToSuccess()
         }}
       />
       {/*
@@ -201,9 +207,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onGoBack: goBack,
   onGoToHome: goToHome,
-  doGoToSuccess: goToSuccess,
+  onGoToSuccess: goToSuccess,
   onOrderWithStripe: payWithStripe,
-  doCreateOrder: createOrder,
+  onCreateOrder: createOrder,
   // onOrderWithPaypal: createOrderWithPaypal,
   // onPayWithPaypal: initPaymentWithPaypal,
   onItemDelete: () => {} // TODO: add action
