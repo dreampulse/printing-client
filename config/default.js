@@ -9,5 +9,5 @@ export default {
   scrollToOffset: 100, // Height of sticky header in pixels plus spacing
   debouncePriceRequestWait: 1000,
   defaultSelectedMaterial: 'Polyamide',
-  stripCheckoutImage: 'asset/image/checkout-logo.png'
+  stripeCheckoutImage: 'asset/image/checkout-logo.png'
 }
