@@ -4,9 +4,9 @@ export function checkout ({amount, currency, email}) {
   return new Promise((resolve) => {
     const checkoutHandler = global.StripeCheckout.configure({
       key: config.stripePublicKey,
-      // image: config.stripePublicKey,
+      image: config.stripCheckoutImage,
       name: 'All3DP',
-      bitcoin: true,
+      bitcoin: false,
       token: token => resolve(token)
     })
 

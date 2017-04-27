@@ -8,5 +8,6 @@ export default {
   cloudinaryDefaultParams: ['q_90', 'f_auto'],
   scrollToOffset: 100, // Height of sticky header in pixels plus spacing
   debouncePriceRequestWait: 1000,
-  defaultSelectedMaterial: 'Polyamide'
+  defaultSelectedMaterial: 'Polyamide',
+  stripCheckoutImage: 'asset/image/checkout-logo.png'
 }
