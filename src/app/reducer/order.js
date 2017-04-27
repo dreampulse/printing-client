@@ -30,8 +30,16 @@ function handleOrderStarted (state) {
   }
 }
 
+function handleOrderAborted (state) {
+  return {
+    ...state,
+    orderInProgress: false
+  }
+}
+
 export default handleActions({
   [TYPE.ORDER.ORDERED]: handleOrderOrdered,
   [TYPE.ORDER.PAYED]: handleOrderPayed,
-  [TYPE.ORDER.STARTED]: handleOrderStarted
+  [TYPE.ORDER.STARTED]: handleOrderStarted,
+  [TYPE.ORDER.ABORTED]: handleOrderAborted
 }, initialState)
