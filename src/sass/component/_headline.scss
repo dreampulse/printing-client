@@ -18,7 +18,7 @@
 
   &--s {
     font-size: $font-size-l;
-    font-weight: $font-weight-bold;
+    font-weight: $font-weight-regular;
   }
 
   &--l {
@@ -36,6 +36,10 @@
 
   &--disabled {
     color: $color-disabled;
+  }
+
+  &--minor {
+    color: $color-gray-2;
   }
 
   &--warning {
