@@ -20,5 +20,5 @@ export const getMaterials = () => async (dispatch) => {
   const materials = await printingEngine.listMaterials()
   generateMaterialIds(materials)
 
-  dispatch(createAction(TYPE.MATERIAL.RECEIVED)(materials))
+  return dispatch(createAction(TYPE.MATERIAL.RECEIVED)(materials))
 }

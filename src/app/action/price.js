@@ -41,6 +41,7 @@ export const pollFinalPrice = () => (dispatch, getState) => {
 const priceRequest = async (dispatch, getState) => {
   dispatch(createAction(TYPE.PRICE.CLEAR_OFFERS)())
 
+  // TODO remove this check, duplicated check
   const sa = getState().user.user.shippingAddress
   if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
     throw new Error('Shipping Address Invalid')

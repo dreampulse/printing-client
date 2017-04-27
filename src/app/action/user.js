@@ -21,12 +21,14 @@ export const detectAddress = () =>
 
 export const createUser = () => (dispatch, getState) => {
   const user = getState().user.user
+  // TODO handle error
   const userPromise = printingEngine.createUser({user})
   return dispatch(createAction(TYPE.USER.CREATED)(userPromise))
 }
 
 export const updateUser = user => async (dispatch, getState) => {
   const userId = getState().user.userId
+  // TODO handle error
   await printingEngine.updateUser({userId, user})
   return dispatch(createAction(TYPE.USER.UPDATED)(user))
 }
@@ -41,6 +43,7 @@ export const updateLocation = location => async (dispatch, getState) => {
     if (!getState().user.userId) {  // No user created so far
       await dispatch(createUser())
     }
+    // TODO: check if there are any uploaded models
     // Update prices
     dispatch(createPriceRequest())
   }
@@ -52,6 +55,7 @@ export const reviewOrder = form => async (dispatch, getState) => {
 
   await dispatch(updateUser(form))
 
+  // TODO: remove this check, just always open fetching price modal
   if (!isEqual(oldShippingAddress, newShippingAddress)) {
     dispatch(openFetchingPriceModal())
 

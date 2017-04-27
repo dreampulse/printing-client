@@ -5380,9 +5380,9 @@ redux-logger@^2.8.1:
   dependencies:
     deep-diff "0.3.4"
 
-redux-mock-store@^1.2.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/redux-mock-store/-/redux-mock-store-1.2.1.tgz#630c0e2642927d1417c844d935266b501f2fc231"
+redux-mock-store@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/redux-mock-store/-/redux-mock-store-1.2.3.tgz#1b3ad299da91cb41ba30d68e3b6f024475fb9e1b"
 
 redux-promise@dreampulse/redux-promise:
   version "0.5.3"

@@ -13,6 +13,7 @@ export const payWithStripe = () => async (dispatch, getState) => {
   const amount = offer.totalPrice
   const email = getState().user.user.emailAddress
 
+  // TODO: error handling with error modal
   const tokenObject = await stripe.checkout({amount, currency, email})
   const paymentToken = tokenObject.id
 
@@ -24,6 +25,7 @@ export const createOrder = () => async (dispatch, getState) => {
   const priceId = getState().price.priceId
   const offerId = getState().cart.selectedOffer.offerId
   const token = getState().order.paymentToken
+  // TODO: error handling
   const orderPromise = printingEngine.order({userId, priceId, offerId, type: 'stripe', token})
 
   return dispatch(createAction(TYPE.ORDER.ORDERED)(orderPromise))

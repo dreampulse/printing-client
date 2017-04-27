@@ -43,7 +43,7 @@ function handleQuantityChanged (state, {payload: {quantity}}) {
   }
 }
 
-function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
+function handleUploadToBackendStarted (state, {payload: {fileId, name, size}}) {
   return {
     ...state,
     numberOfUploads: state.numberOfUploads + 1,
@@ -58,7 +58,7 @@ function handleUploadToBackedStarted (state, {payload: {fileId, name, size}}) {
   }
 }
 
-function handleUploadToBackedProgressed (state, {payload: {fileId, progress}}) {
+function handleUploadToBackendProgressed (state, {payload: {fileId, progress}}) {
   const updateModels = update(state.uploadedModels, model => model.fileId === fileId)
 
   return {
@@ -69,7 +69,7 @@ function handleUploadToBackedProgressed (state, {payload: {fileId, progress}}) {
   }
 }
 
-function handleUploadToBackedFinished (state, {payload: {fileId, modelId, thumbnailUrl, error}}) {
+function handleUploadToBackendFinished (state, {payload: {fileId, modelId, thumbnailUrl, error}}) {
   const updateModels = update(state.uploadedModels, model => model.fileId === fileId)
   const uploadingModel = state.uploadedModels
     .filter(model => model.fileId === fileId)[0]
@@ -133,9 +133,9 @@ function handleCheckStatusFinished (state, {payload: {modelId, error}}) {
 }
 
 export default handleActions({
-  [TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED]: handleUploadToBackedStarted,
-  [TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED]: handleUploadToBackedProgressed,
-  [TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED]: handleUploadToBackedFinished,
+  [TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED]: handleUploadToBackendStarted,
+  [TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED]: handleUploadToBackendProgressed,
+  [TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED]: handleUploadToBackendFinished,
   [TYPE.MODEL.CHECK_STATUS_STARTED]: handleCheckStatusStarted,
   [TYPE.MODEL.CHECK_STATUS_FINISHED]: handleCheckStatusFinished,
   [TYPE.MODEL.QUANTITIY_CHANGED]: handleQuantityChanged,
