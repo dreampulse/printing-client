@@ -93,8 +93,10 @@ describe('poll lib', () => {
     })
   })
 
-  describe.only('debouncedPoll', () => {
+  describe('debouncedPoll', () => {
     it('starts poll only once if called multiple times in a row', async () => {
+      sandbox.stub(config, 'pollingDebouncedWait', 1)
+
       const pollCallback = sinon.stub()
         .withArgs()
         .resolves(true)

@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce'
+import debounce from 'debounce-promise'
 import uniqueId from 'lodash/uniqueId'
 
 import config from '../../../config'
@@ -65,7 +65,6 @@ export const stopPoll = (name) => {
   deleteState(name)
 }
 
-// TODO write our own debounce function which supports promises
 export const debouncedPoll = (name, pollCallback) => {
   if (debouncedPolls[name]) {
     return debouncedPolls[name](name, pollCallback)
