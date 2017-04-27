@@ -13,14 +13,17 @@ export const payWithStripe = () => async (dispatch, getState) => {
   const amount = offer.totalPrice
   const email = getState().user.user.emailAddress
 
-  // TODO: error handling with error modal
-  const tokenObject = await stripe.checkout({amount, currency, email})
-  const paymentToken = tokenObject.id
-
-  return dispatch(createAction(TYPE.ORDER.PAYED)({paymentToken}))
+  try {
+    const tokenObject = await stripe.checkout({amount, currency, email})
+    const paymentToken = tokenObject.id
+    dispatch(createAction(TYPE.ORDER.PAYED)({paymentToken}))
+  } catch (error) {
+    dispatch(createAction(TYPE.ORDER.ABORTED)())
+    throw error // Reject to inform callee about the result
+  }
 }
 
-export const createOrder = () => async (dispatch, getState) => {
+export const createOrder = () => (dispatch, getState) => {
   const userId = getState().user.userId
   const priceId = getState().price.priceId
   const offerId = getState().cart.selectedOffer.offerId
