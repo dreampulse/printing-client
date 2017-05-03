@@ -22,12 +22,16 @@ const deleteState = (name) => {
   delete polls[name]
 }
 
-export const poll = (name, pollCallback) => {
+export const poll = (
+  name,
+  pollCallback,
+  initPollCallback = () => Promise.resolve()
+) => {
   const callId = uniqueId()
   initState(name, callId)
 
   return new Promise((resolve, reject) => {
-    const runPoll = async () => {
+    const runPoll = async (initPayload) => {
       const state = getState(name)
 
       if (!state) {
@@ -44,12 +48,17 @@ export const poll = (name, pollCallback) => {
       const shouldContinueWithPolling = state.countdown >= 0
       if (shouldContinueWithPolling) {
         state.countdown -= 1
-        const isComplete = await pollCallback()
-        if (isComplete) {
-          // Done polling
-          resolve()
-        } else {
-          setTimeout(runPoll, config.pollingInverval)
+
+        try {
+          const isComplete = await pollCallback(initPayload)
+          if (isComplete) {
+            // Done polling
+            resolve()
+          } else {
+            setTimeout(() => runPoll(initPayload), config.pollingInverval)
+          }
+        } catch (error) {
+          reject(error)
         }
       } else {
         // Give up polling
@@ -57,7 +66,9 @@ export const poll = (name, pollCallback) => {
       }
     }
 
-    runPoll()  // Start initial polling
+    initPollCallback()
+      .then(runPoll) // Start initial polling
+      .catch(reject)
   })
 }
 
@@ -65,9 +76,9 @@ export const stopPoll = (name) => {
   deleteState(name)
 }
 
-export const debouncedPoll = (name, pollCallback) => {
+export const debouncedPoll = (name, pollCallback, initPollCallback) => {
   if (debouncedPolls[name]) {
-    return debouncedPolls[name](name, pollCallback)
+    return debouncedPolls[name](name, pollCallback, initPollCallback)
   }
 
   const debouncedFunc = debounce(

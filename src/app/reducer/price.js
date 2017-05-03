@@ -1,22 +1,20 @@
 import {handleActions} from 'redux-actions'
 
 import TYPE from '../type'
-import config from '../../../config'
-
-const initialCountdown = config.pollingRetries
 
 const initialState = {
   priceId: null,
   offers: null,
-  pollCountdown: initialCountdown,
-  printingServiceComplete: null
+  printingServiceComplete: null,
+  error: null
 }
 
 function handleClearOffers (state) {
   return {
     ...state,
     offers: null,
-    printingServiceComplete: null
+    printingServiceComplete: null,
+    error: null
   }
 }
 
@@ -24,12 +22,11 @@ function handlePriceRequested (state, {payload: {priceId}, error}) {
   return {
     ...state,
     priceId,
-    pollCountdown: initialCountdown,
     error: !!error
   }
 }
 
-function handlePriceReceived (state, {payload: {offers, printingServiceComplete, error}}) {
+function handlePriceReceived (state, {payload: {price: {offers, printingServiceComplete, error}}}) {
   if (error) {
     return {
       ...state,
@@ -41,20 +38,12 @@ function handlePriceReceived (state, {payload: {offers, printingServiceComplete,
     ...state,
     offers,
     printingServiceComplete,
-    error: false
-  }
-}
-
-function handlePollingFailed (state) {
-  return {
-    ...state,
-    pollCountdown: state.pollCountdown - 1
+    error: null
   }
 }
 
 export default handleActions({
   [TYPE.PRICE.CLEAR_OFFERS]: handleClearOffers,
   [TYPE.PRICE.REQUESTED]: handlePriceRequested,
-  [TYPE.PRICE.RECEIVED]: handlePriceReceived,
-  [TYPE.PRICE.POLLING_FAILED]: handlePollingFailed
+  [TYPE.PRICE.RECEIVED]: handlePriceReceived
 }, initialState)

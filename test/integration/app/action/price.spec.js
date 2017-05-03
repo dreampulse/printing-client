@@ -45,17 +45,6 @@ describe('Price Integration Test', () => {
             },
             materialStructure: []
           }
-        },
-        user: {
-          userId: 'some-user-id',
-          user: {
-            shippingAddress: {
-              city: 'Pittsburgh',
-              zipCode: '15234',
-              stateCode: 'PA',
-              countryCode: 'US'
-            }
-          }
         }
       }
 
@@ -85,7 +74,7 @@ describe('Price Integration Test', () => {
       })
     })
 
-    it('works if shipping address is set', async () => {
+    it('works', async () => {
       store = Store(state)
       await store.dispatch(createPriceRequest())
 
@@ -156,22 +145,6 @@ describe('Price Integration Test', () => {
           name: 'some-shipping'
         }
       })
-    })
-
-    it('does not send request if shipping address is not set', async () => {
-      store = Store({})
-
-      try {
-        await store.dispatch(createPriceRequest())
-      } catch (e) {
-        expect(printingEngine.createPriceRequest, 'was not called')
-        expect(store.getState().price, 'to equal', {
-          priceId: null,
-          offers: null,
-          pollCountdown: 100,
-          printingServiceComplete: null
-        })
-      }
     })
   })
 

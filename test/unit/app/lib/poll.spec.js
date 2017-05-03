@@ -76,6 +76,36 @@ describe('poll lib', () => {
       return expect(promise, 'to be rejected with error satisfying',
         new Error('Polling loop overwritten by another call with the same name some-poll!'))
     })
+
+    it('rejects when poll callback rejects', async () => {
+      const error = new Error('some-error')
+      const pollCallback = sinon.stub().withArgs().rejects(error)
+
+      const promise = poll('some-poll', pollCallback)
+
+      return expect(promise, 'to be rejected with error satisfying', error)
+    })
+
+    it('forwards return value of initial poll callback to poll callback', async () => {
+      const response = 'some-response'
+      const initPollCallback = sinon.stub().withArgs().resolves(response)
+      const pollCallback = sinon.stub()
+      pollCallback.withArgs(response).onCall(0).resolves(false)
+      pollCallback.withArgs(response).onCall(1).resolves(true)
+
+      await poll('some-poll', pollCallback, initPollCallback)
+
+      expect(pollCallback, 'was called times', 2)
+    })
+
+    it('rejects when init poll callback rejects', async () => {
+      const error = new Error('some-error')
+      const initPollCallback = sinon.stub().withArgs().rejects(error)
+
+      const promise = poll('some-poll', () => {}, initPollCallback)
+
+      return expect(promise, 'to be rejected with error satisfying', error)
+    })
   })
 
   describe('stopPoll()', () => {
