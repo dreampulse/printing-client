@@ -1,11 +1,13 @@
 import {handleActions} from 'redux-actions'
 
+import {getUpdatedOffer} from 'Lib/offer'
 import TYPE from '../type'
 
 const initialState = {
   priceId: null,
   offers: null,
   printingServiceComplete: null,
+  selectedOffer: null,
   error: null
 }
 
@@ -18,21 +20,34 @@ function handleClearOffers (state) {
   }
 }
 
-function handlePriceRequested (state, {payload: {priceId}, error}) {
+function handleSelectOffer (state, {payload: {offer}}) {
   return {
     ...state,
-    priceId,
-    error: !!error
+    selectedOffer: offer
   }
 }
 
-function handlePriceReceived (state, {payload: {price: {offers, printingServiceComplete, error}}}) {
+function handlePriceRequested (state, {payload: {priceId}}) {
+  return {
+    ...state,
+    priceId
+  }
+}
+
+function handlePriceReceived (state, {payload, error}) {
   if (error) {
+    // TODO: Handle special error when price request was overwritten
     return {
       ...state,
-      error
+      selectedOffer: null,
+      error: payload
     }
   }
+
+  const {
+    offers,
+    printingServiceComplete
+  } = payload.price
 
   return {
     ...state,
@@ -44,6 +59,7 @@ function handlePriceReceived (state, {payload: {price: {offers, printingServiceC
 
 export default handleActions({
   [TYPE.PRICE.CLEAR_OFFERS]: handleClearOffers,
+  [TYPE.PRICE.SELECT_OFFER]: handleSelectOffer,
   [TYPE.PRICE.REQUESTED]: handlePriceRequested,
   [TYPE.PRICE.RECEIVED]: handlePriceReceived
 }, initialState)

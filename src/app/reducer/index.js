@@ -8,7 +8,6 @@ import modal from './modal'
 import model from './model'
 import material from './material'
 import price from './price'
-import cart from './cart'
 import order from './order'
 
 const rootReducer = combineReducers({
@@ -18,7 +17,6 @@ const rootReducer = combineReducers({
   model,
   material,
   price,
-  cart,
   order,
   routing: routerReducer,
   form: formReducer

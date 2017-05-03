@@ -43,7 +43,7 @@ const CartPage = ({
 }
 
 const mapStateToProps = state => ({
-  offer: state.cart.selectedOffer,
+  offer: state.price.selectedOffer,
   order: state.order
 })
 

@@ -59,9 +59,9 @@ export const reviewOrder = form => async (dispatch, getState) => {
   if (!isEqual(oldShippingAddress, newShippingAddress)) {
     dispatch(openFetchingPriceModal())
 
-    const oldPrice = getState().cart.selectedOffer.totalPrice
+    const oldPrice = getState().price.selectedOffer.totalPrice
     await dispatch(createPriceRequest())
-    const newPrice = getState().cart.selectedOffer.totalPrice
+    const newPrice = getState().price.selectedOffer.totalPrice
     const hasPriceChanged = oldPrice !== newPrice
     if (hasPriceChanged) {
       dispatch(openPriceChangedModal({oldShippingAddress, newShippingAddress}))

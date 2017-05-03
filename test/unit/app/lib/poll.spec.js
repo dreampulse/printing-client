@@ -6,7 +6,7 @@ import {
 } from 'Lib/poll'
 import config from '../../../../config'
 
-describe('poll lib', () => {
+describe('Poll lib', () => {
   let sandbox
 
   beforeEach(() => {

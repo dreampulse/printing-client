@@ -147,7 +147,7 @@ export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
 
 export const selectedOfferMaterial = (state) => {
   const {
-    cart: {
+    price: {
       selectedOffer: {
         materialConfigId
       }
@@ -201,7 +201,7 @@ export const selectNameByModelId = (state, modelId) => {
 
 export const selectOfferItems = (state) => {
   const {
-    cart: {
+    price: {
       selectedOffer: {items}
     }
   } = state

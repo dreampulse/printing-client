@@ -92,9 +92,9 @@ describe('User Integration Test', () => {
             shippingAddress: 'some-address'
           }
         },
-        cart: {
+        price: {
           selectedOffer: {
-            totoalPrice: 23.42
+            totalPrice: 23.42
           }
         }
       }
@@ -147,7 +147,7 @@ describe('User Integration Test', () => {
       modal.openFetchingPriceModal.returns({type: 'some-action'})
       modal.openPriceChangedModal.returns({type: 'some-action'})
       price.createPriceRequest.resolves({  // updates selected offer
-        type: TYPE.CART.OFFER_SELECTED,
+        type: TYPE.PRICE.SELECT_OFFER,
         payload: {offer: {
           totalPrice: 11.5
         }}

@@ -3,10 +3,7 @@ import {createAction} from 'redux-actions'
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll} from 'Lib/poll'
-
 import TYPE from '../type'
-
-import {selectOffer} from './cart'
 
 // Private actions
 
@@ -17,12 +14,17 @@ const priceRequested = createAction(
 )
 const priceReceived = createAction(
   TYPE.PRICE.RECEIVED,
-  price => ({price})
+  (price, isComplete) => ({price, isComplete})
 )
 
 // Public actions
 
-export const createPriceRequest = (debounce = false) => async (dispatch, getState) => {
+export const selectOffer = createAction(
+  TYPE.PRICE.SELECT_OFFER,
+  offer => ({offer})
+)
+
+export const createPriceRequest = (debounce = false) => (dispatch, getState) => {
   dispatch(clearOffers())
 
   const {
@@ -51,7 +53,7 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
 
   // Abort if user did not upload any models yet
   if (items.length === 0) {
-    return
+    return Promise.resolve()
   }
 
   const options = {
@@ -64,7 +66,7 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
 
   const usePoll = debounce ? debouncedPoll : poll
 
-  await usePoll('price', async (priceId) => {
+  return usePoll('price', async (priceId) => {
     const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
     dispatch(priceReceived(price))
     return isComplete
@@ -72,12 +74,13 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
     const {priceId} = await printingEngine.createPriceRequest(options)
     dispatch(priceRequested(priceId))
     return priceId
+  }).catch((error) => {
+    dispatch(priceReceived(error))
   })
-  // TODO: handle error
-  // Handle special error when price request was overwritten
 
+  // TODO: ADD THIS AGAIN
   // We need to update the selectedOffer if applicable
-  const {
+  /*const {
     cart: {
       selectedOffer
     },
@@ -88,8 +91,8 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
   if (selectedOffer) {
     const offer = getUpdatedOffer(selectedOffer, offers)
     // if (!offer) // TODO: show that offer is no longer available
-    await dispatch(selectOffer({offer}))
-  }
+    await dispatch(selectOffer(offer))
+  }*/
 }
 
 export const createDebouncedPriceRequest = () => createPriceRequest(true)
