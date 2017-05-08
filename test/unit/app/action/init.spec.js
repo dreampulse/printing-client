@@ -5,7 +5,7 @@ import * as modalActions from 'Action/modal'
 
 import {resolveAsyncThunk, rejectAsyncThunk} from '../../../helper'
 
-import AppError from '../../../../src/app/error'
+import AppError from '../../../../src/app/lib/error'
 import {ERROR_TYPE} from '../../../../src/app/type'
 
 describe('Model actions', () => {
