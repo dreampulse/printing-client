@@ -21,3 +21,10 @@ export const openMaterialModal = ({materialId, finishGroupId}) =>
     contentType: MODAL_TYPE.MATERIAL,
     contentProps: {materialId, finishGroupId}
   })
+
+export const openFatalErrorModal = error =>
+  open({
+    contentType: MODAL_TYPE.FATAL_ERROR,
+    contentProps: {error},
+    isCloseable: false
+  })

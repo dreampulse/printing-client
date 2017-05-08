@@ -90,6 +90,7 @@
     "compression": "^1.6.2",
     "country-list": "^1.1.0",
     "debounce-promise": "^3.0.1",
+    "deep-freeze": "^0.0.1",
     "express": "^4.14.0",
     "http-proxy-middleware": "^0.17.2",
     "invariant": "^2.2.2",

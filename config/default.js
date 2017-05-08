@@ -8,5 +8,7 @@ export default {
   cloudinaryUrl: '//res.cloudinary.com/all3dp/image/upload',
   cloudinaryDefaultParams: ['q_90', 'f_auto'],
   scrollToOffset: 100, // Height of sticky header in pixels plus spacing
-  defaultSelectedMaterial: 'Polyamide'
+  debouncePriceRequestWait: 1000,
+  defaultSelectedMaterial: 'Polyamide',
+  stripeCheckoutImage: 'asset/image/checkout-logo.png'
 }
