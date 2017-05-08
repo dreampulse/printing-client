@@ -4,7 +4,7 @@ import {
 } from 'Action/model'
 import * as priceActions from 'Action/price'
 import TYPE from '../../../../src/app/type'
-import {createAsyncThunk} from '../../../helper'
+import {resolveAsyncThunk} from '../../../helper'
 
 describe('Model actions', () => {
   let initialStoreData
@@ -26,7 +26,7 @@ describe('Model actions', () => {
     it('dispatches expected actions', async () => {
       priceActions.createDebouncedPriceRequest
         .withArgs()
-        .returns(createAsyncThunk('some-create-debounced-price-request'))
+        .returns(resolveAsyncThunk('some-create-debounced-price-request'))
 
       await store.dispatch(changeQuantity({quantity: 123}))
       expect(store.getActions(), 'to equal', [{
@@ -42,7 +42,7 @@ describe('Model actions', () => {
     it('dispatches expected actions', async () => {
       priceActions.createDebouncedPriceRequest
         .withArgs()
-        .returns(createAsyncThunk('some-create-debounced-price-request'))
+        .returns(resolveAsyncThunk('some-create-debounced-price-request'))
 
       await store.dispatch(changeIndividualQuantity({modelId: 'some-id', quantity: 123}))
       expect(store.getActions(), 'to equal', [{

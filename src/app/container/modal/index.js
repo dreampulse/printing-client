@@ -9,12 +9,14 @@ import ShippingAddressModal from './shipping-address'
 import MaterialModal from './material'
 import FetchingPriceModal from './fetching-price'
 import PriceChangedModal from './price-changed'
+import FatalErrorModal from './fatal-error'
 
 const modals = {
   [MODAL_TYPE.SHIPPING_ADDRESS]: ShippingAddressModal,
   [MODAL_TYPE.MATERIAL]: MaterialModal,
   [MODAL_TYPE.FETCHING_PRICE]: FetchingPriceModal,
-  [MODAL_TYPE.PRICE_CHANGED]: PriceChangedModal
+  [MODAL_TYPE.PRICE_CHANGED]: PriceChangedModal,
+  [MODAL_TYPE.FATAL_ERROR]: FatalErrorModal
 }
 
 const getContent = (contentType, contentProps) => {
