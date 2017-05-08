@@ -1,4 +1,4 @@
-import AppError from 'Lib/error'
+import {AppError} from 'Lib/error'
 
 describe('Error lib', () => {
   it('sets some type', () => {

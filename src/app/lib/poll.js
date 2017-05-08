@@ -1,6 +1,8 @@
 import debounce from 'debounce-promise'
 import uniqueId from 'lodash/uniqueId'
 
+import {AppError} from 'Lib/error'
+import {ERROR_TYPE} from '../type'
 import config from '../../../config'
 
 // State
@@ -35,13 +37,18 @@ export const poll = (
       const state = getState(name)
 
       if (!state) {
-        reject(new Error(`Polling loop stopped with name ${name}!`))
+        reject(new AppError(ERROR_TYPE.POLL_STOPPED, `Polling loop stopped with name ${name}!`))
         return
       }
 
       // When callId changed stop this polling loop
       if (callId !== state.callId) {
-        reject(new Error(`Polling loop overwritten by another call with the same name ${name}!`))
+        reject(
+          new AppError(
+            ERROR_TYPE.POLL_OVERWRITTEN,
+            `Polling loop overwritten by another call with the same name ${name}!`
+          )
+        )
         return
       }
 
@@ -62,7 +69,7 @@ export const poll = (
         }
       } else {
         // Give up polling
-        reject(new Error(`Polling timeout reached with name ${name}!`))
+        reject(new AppError(ERROR_TYPE.POLL_TIMEOUT, `Polling timeout reached with name ${name}!`))
       }
     }
 

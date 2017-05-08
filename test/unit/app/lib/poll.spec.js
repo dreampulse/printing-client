@@ -4,6 +4,7 @@ import {
   debouncedPoll,
   stopPoll
 } from 'Lib/poll'
+import {ERROR_TYPE} from '../../../../src/app/type'
 import config from '../../../../config'
 
 describe('Poll lib', () => {
@@ -52,7 +53,7 @@ describe('Poll lib', () => {
       const promise = poll('some-poll', pollCallback)
 
       return expect(promise, 'to be rejected with error satisfying',
-        new Error('Polling timeout reached with name some-poll!'))
+        {type: ERROR_TYPE.POLL_TIMEOUT})
     })
 
     it('calls pollCallback with a maximum of pollingRetries plus one', async () => {
@@ -74,7 +75,7 @@ describe('Poll lib', () => {
       poll('some-poll', pollCallbackTrue)
 
       return expect(promise, 'to be rejected with error satisfying',
-        new Error('Polling loop overwritten by another call with the same name some-poll!'))
+        {type: ERROR_TYPE.POLL_OVERWRITTEN})
     })
 
     it('rejects when poll callback rejects', async () => {
@@ -119,7 +120,7 @@ describe('Poll lib', () => {
       stopPoll('some-poll')
 
       return expect(promise, 'to be rejected with error satisfying',
-        new Error('Polling loop stopped with name some-poll!'))
+        {type: ERROR_TYPE.POLL_STOPPED})
     })
   })
 

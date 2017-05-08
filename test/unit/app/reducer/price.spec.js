@@ -1,5 +1,6 @@
 import reducer from 'Reducer/price'
-import TYPE from '../../../../src/app/type'
+import {AppError} from 'Lib/error'
+import TYPE, {ERROR_TYPE} from '../../../../src/app/type'
 
 describe('Price reducer', () => {
   it('returns the initial state', () => {
@@ -114,6 +115,14 @@ describe('Price reducer', () => {
         printingServiceComplete: {some: 'printing-services'},
         error: null
       })
+    })
+
+    it('ignores POLL_OVERWRITTEN error', () => {
+      const error = new AppError(ERROR_TYPE.POLL_OVERWRITTEN)
+      action.payload = error
+      action.error = true
+
+      expect(reducer(stateBefore, action), 'to equal', stateBefore)
     })
 
     it('sets error', () => {

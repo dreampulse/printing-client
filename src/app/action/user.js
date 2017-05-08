@@ -5,7 +5,7 @@ import {
   isAddressValid
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
-import AppError from 'Lib/error'
+import {AppError} from 'Lib/error'
 
 import TYPE, {ERROR_TYPE} from '../type'
 import {goToCart} from './navigation'
