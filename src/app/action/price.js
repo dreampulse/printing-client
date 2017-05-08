@@ -24,7 +24,22 @@ export const selectOffer = createAction(
   offer => ({offer})
 )
 
-export const createPriceRequest = (debounce = false) => (dispatch, getState) => {
+export const refreshSelectedOffer = () => (dispatch, getState) => {
+  const {
+    price: {
+      offers,
+      selectedOffer
+    }
+  } = getState()
+
+  if (selectedOffer) {
+    const offer = offers ? getUpdatedOffer(selectedOffer, offers) : null
+    // if (!offer) // TODO: show that offer is no longer available
+    dispatch(selectOffer(offer))
+  }
+}
+
+export const createPriceRequest = (debounce = false) => async (dispatch, getState) => {
   dispatch(clearOffers())
 
   const {
@@ -53,7 +68,7 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
 
   // Abort if user did not upload any models yet
   if (items.length === 0) {
-    return Promise.resolve()
+    return
   }
 
   const options = {
@@ -65,8 +80,7 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
   }
 
   const usePoll = debounce ? debouncedPoll : poll
-
-  return usePoll('price', async (priceId) => {
+  await usePoll('price', async (priceId) => {
     const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
     dispatch(priceReceived(price))
     return isComplete
@@ -78,21 +92,8 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
     dispatch(priceReceived(error))
   })
 
-  // TODO: ADD THIS AGAIN
   // We need to update the selectedOffer if applicable
-  /*const {
-    cart: {
-      selectedOffer
-    },
-    price: {
-      offers
-    }
-  } = getState()
-  if (selectedOffer) {
-    const offer = getUpdatedOffer(selectedOffer, offers)
-    // if (!offer) // TODO: show that offer is no longer available
-    await dispatch(selectOffer(offer))
-  }*/
+  dispatch(refreshSelectedOffer())
 }
 
 export const createDebouncedPriceRequest = () => createPriceRequest(true)

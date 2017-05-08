@@ -3,4 +3,4 @@ export const getUpdatedOffer = (selectedOffer, offers) =>
     offer.materialConfigId === selectedOffer.materialConfigId &&
     offer.printingService === selectedOffer.printingService &&
     offer.shipping.name === selectedOffer.shipping.name
-  )
+  ) || null

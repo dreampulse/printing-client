@@ -87,7 +87,7 @@ export const debouncedPoll = (name, pollCallback, initPollCallback) => {
   )
   debouncedPolls[name] = debouncedFunc
 
-  return debouncedFunc(name, pollCallback)
+  return debouncedFunc(name, pollCallback, initPollCallback)
 }
 
 export const resetPollState = () => {

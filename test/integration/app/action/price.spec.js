@@ -1,6 +1,10 @@
-import {createPriceRequest, pollFinalPrice} from '../../../../src/app/action/price'
+import {
+  createPriceRequest,
+  createDebouncedPriceRequest,
+  refreshSelectedOffer
+} from 'Action/price'
+import * as printingEngine from 'Lib/printing-engine'
 import Store from '../../../../src/app/store'
-import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
 import config from '../../../../config'
 
@@ -15,17 +19,54 @@ describe('Price Integration Test', () => {
     sinon.restore(printingEngine)
   })
 
+  describe('refreshSelectedOffer()', () => {
+    let state
+
+    beforeEach(() => {
+      state = {
+        price: {
+          offers: [{
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }],
+          selectedOffer: {
+            materialConfigId: 2,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }
+        }
+      }
+    })
+
+    it('refreshes selected offer', async () => {
+      store = Store(state)
+      await store.dispatch(refreshSelectedOffer())
+
+      expect(store.getState().price, 'to satisfy', {
+        selectedOffer: null
+      })
+    })
+  })
+
   describe('createPriceRequest()', () => {
     let state
 
     beforeEach(() => {
       state = {
         price: {
-          offers: ['some', 'offers'],
-          printingServiceComplete: {
-            service1: true
-          },
-          priceId: 'some-old-price-id'
+          offers: [{
+            materialConfigId: 3,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }],
+          printingServiceComplete: null,
+          priceId: 'some-old-price-id',
+          selectedOffer: {
+            materialConfigId: 3,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }
         },
         model: {
           models: {
@@ -45,6 +86,9 @@ describe('Price Integration Test', () => {
             },
             materialStructure: []
           }
+        },
+        user: {
+          userId: 'some-user-id'
         }
       }
 
@@ -52,7 +96,15 @@ describe('Price Integration Test', () => {
       printingEngine.getPriceWithStatus.resolves({
         isComplete: true,
         price: {
-          offers: ['some-offer-1', 'some-offer-2'],
+          offers: [{
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }, {
+            materialConfigId: 2,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }],
           printingServiceComplete: {
             shapeways: true,
             imaterialize: true
@@ -61,20 +113,7 @@ describe('Price Integration Test', () => {
       })
     })
 
-    it('does not trigger a price request when no models have been uploaded', async () => {
-      state.model.models = {}
-      store = Store(state)
-      await store.dispatch(createPriceRequest())
-
-      expect(printingEngine.createPriceRequest, 'was not called')
-      // Still clears offers and printingServiceComplete
-      expect(store.getState().price, 'to satisfy', {
-        offers: null,
-        printingServiceComplete: null
-      })
-    })
-
-    it('works', async () => {
+    it('handles price request and updates selected offer', async () => {
       store = Store(state)
       await store.dispatch(createPriceRequest())
 
@@ -94,129 +133,21 @@ describe('Price Integration Test', () => {
 
       expect(store.getState().price, 'to satisfy', {
         priceId: 'some-price-id',
-        offers: ['some-offer-1', 'some-offer-2'],
+        offers: [{
+          materialConfigId: 1,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }, {
+          materialConfigId: 2,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }],
         printingServiceComplete: {
           shapeways: true,
           imaterialize: true
         },
-        pollCountdown: 100  // Expect that the poll count will be reset
+        selectedOffer: null
       })
-    })
-
-    it('updates offer if applicable', async () => {
-      store = Store({
-        ...state,
-        cart: {
-          selectedOffer: {
-            materialConfigId: 'some-config-id',
-            printingService: 'some-printing-service',
-            shipping: {
-              name: 'some-shipping'
-            }
-          }
-        }
-      })
-
-      printingEngine.getPriceWithStatus.resolves({
-        isComplete: true,
-        price: {
-          offers: [{
-            THIS_IS_A_OFFER: 'A',
-            materialConfigId: 'some-config-id',
-            printingService: 'some-printing-service',
-            shipping: {
-              name: 'some-shipping'
-            }
-          }],
-          printingServiceComplete: {
-            shapeways: true,
-            imaterialize: true
-          }
-        }
-      })
-
-      await store.dispatch(createPriceRequest())
-
-      expect(store.getState().cart.selectedOffer, 'to equal', {
-        THIS_IS_A_OFFER: 'A',
-        materialConfigId: 'some-config-id',
-        printingService: 'some-printing-service',
-        shipping: {
-          name: 'some-shipping'
-        }
-      })
-    })
-  })
-
-  describe('pollFinalPrice()', () => {
-    let sandbox
-    let somePrice
-
-    beforeEach(() => {
-      sandbox = sinon.sandbox.create()
-      sandbox.stub(config, 'pollingInverval', 1)  // Faster polling
-
-      store = Store({
-        price: {
-          priceId: 'some-price-id',
-          pollCountdown: 10
-        }
-      })
-
-      somePrice = {
-        offers: ['some-offer'],
-        printingServiceComplete: {
-          shapeways: true,
-          imaterialize: true
-        }
-      }
-    })
-
-    afterEach(() => {
-      sandbox.restore()
-    })
-
-    it('works if getPrice is completed', async () => {
-      printingEngine.getPriceWithStatus.resolves({
-        isComplete: true,
-        price: somePrice
-      })
-
-      await store.dispatch(pollFinalPrice())
-      expect(store.getState().price, 'to equal', {
-        priceId: 'some-price-id',
-        pollCountdown: 10,
-        offers: ['some-offer'],
-        printingServiceComplete: {
-          shapeways: true,
-          imaterialize: true
-        },
-        error: false
-      })
-    })
-
-    it('polls 10 times until the countdown is 0', async () => {
-      printingEngine.getPriceWithStatus.resolves({
-        isComplete: false,
-        price: somePrice
-      })
-
-      try {
-        await store.dispatch(pollFinalPrice())
-      } catch (e) {
-        expect(store.getState().price, 'to equal', {
-          priceId: 'some-price-id',
-          offers: ['some-offer'],
-          printingServiceComplete: {
-            shapeways: true,
-            imaterialize: true
-          },
-          pollCountdown: 0,  // Reduced to 0
-          error: true
-        })
-
-        expect(printingEngine.getPriceWithStatus, 'was called times', 10)
-      }
     })
   })
 })

@@ -1,6 +1,5 @@
 import {handleActions} from 'redux-actions'
 
-import {getUpdatedOffer} from 'Lib/offer'
 import TYPE from '../type'
 
 const initialState = {
@@ -38,8 +37,7 @@ function handlePriceReceived (state, {payload, error}) {
   if (error) {
     // TODO: Handle special error when price request was overwritten
     return {
-      ...state,
-      selectedOffer: null,
+      ...initialState,
       error: payload
     }
   }

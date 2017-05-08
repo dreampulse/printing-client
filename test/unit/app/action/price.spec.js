@@ -1,5 +1,6 @@
 import {
   selectOffer,
+  refreshSelectedOffer,
   createPriceRequest,
   createDebouncedPriceRequest
 } from 'Action/price'
@@ -64,6 +65,101 @@ describe('Price actions', () => {
         type: TYPE.PRICE.SELECT_OFFER,
         payload: {offer}
       }])
+    })
+  })
+
+  describe('refreshSelectedOffer()', () => {
+    it('dispatches expected actions when offer is not available anymore', async () => {
+      initialStoreData.price = {
+        offers: [{
+          materialConfigId: 1,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }, {
+          materialConfigId: 2,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }],
+        selectedOffer: {
+          materialConfigId: 3,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }
+      }
+      store = mockStore(initialStoreData)
+
+      await store.dispatch(refreshSelectedOffer())
+
+      expect(store.getActions(), 'to equal', [{
+        type: TYPE.PRICE.SELECT_OFFER,
+        payload: {offer: null}
+      }])
+    })
+
+    it('dispatches expected actions when no offers are available', async () => {
+      initialStoreData.price = {
+        offers: null,
+        selectedOffer: {
+          materialConfigId: 3,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }
+      }
+      store = mockStore(initialStoreData)
+
+      await store.dispatch(refreshSelectedOffer())
+
+      expect(store.getActions(), 'to equal', [{
+        type: TYPE.PRICE.SELECT_OFFER,
+        payload: {offer: null}
+      }])
+    })
+
+    it('dispatches expected actions when selected offer is still valid', async () => {
+      initialStoreData.price = {
+        offers: [{
+          materialConfigId: 1,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'},
+          some: 'other'
+        }],
+        selectedOffer: {
+          materialConfigId: 1,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }
+      }
+      store = mockStore(initialStoreData)
+
+      await store.dispatch(refreshSelectedOffer())
+
+      expect(store.getActions(), 'to equal', [{
+        type: TYPE.PRICE.SELECT_OFFER,
+        payload: {
+          offer: {
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'},
+            some: 'other'
+          }
+        }
+      }])
+    })
+
+    it('dispatches no action when there is no selected offer', async () => {
+      initialStoreData.price = {
+        offers: [{
+          materialConfigId: 1,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }],
+        selectedOffer: null
+      }
+      store = mockStore(initialStoreData)
+
+      await store.dispatch(refreshSelectedOffer())
+
+      expect(store.getActions(), 'to equal', [])
     })
   })
 
