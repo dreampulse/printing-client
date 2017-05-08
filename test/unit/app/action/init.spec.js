@@ -8,7 +8,7 @@ import {resolveAsyncThunk, rejectAsyncThunk} from '../../../helper'
 import AppError from '../../../../src/app/error'
 import {ERROR_TYPE} from '../../../../src/app/type'
 
-describe.only('Model actions', () => {
+describe('Model actions', () => {
   let initialStoreData
   let store
 
