@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash/cloneDeep'
 import {createAction} from 'redux-actions'
 
 import * as printingEngine from 'Lib/printing-engine'
@@ -17,7 +18,7 @@ export const selectMaterialConfig = createAction(TYPE.MATERIAL.CONFIG_SELECTED)
 
 // Async actions
 export const getMaterials = () => async (dispatch) => {
-  const materials = await printingEngine.listMaterials()
+  const materials = cloneDeep(await printingEngine.listMaterials())
   generateMaterialIds(materials)
 
   return dispatch(createAction(TYPE.MATERIAL.RECEIVED)(materials))
