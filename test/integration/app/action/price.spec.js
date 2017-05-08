@@ -1,12 +1,9 @@
 import {
   createPriceRequest,
-  createDebouncedPriceRequest,
   refreshSelectedOffer
 } from 'Action/price'
 import * as printingEngine from 'Lib/printing-engine'
 import Store from '../../../../src/app/store'
-
-import config from '../../../../config'
 
 describe('Price Integration Test', () => {
   let store
