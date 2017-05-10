@@ -1,7 +1,5 @@
 import {
-  uploadFile,
   uploadFiles,
-  checkUploadStatus,
   changeQuantity,
   changeIndividualQuantity,
   changeUnit
@@ -31,7 +29,7 @@ describe('Model Integration Test', () => {
     sandbox.restore()
   })
 
-  describe('uploadFile()', () => {
+  /* describe('uploadFile()', () => {
     let apiResponse
     let file
 
@@ -92,51 +90,10 @@ describe('Model Integration Test', () => {
         error: true
       })
     })
-  })
-
-  describe('checkUploadStatus()', () => {
-    it('handles the finished case', async () => {
-      printingEngine.getUploadStatus.resolves(true)
-
-      store = Store({
-        model: {
-          models: {
-            'some-model-id': {}
-          }
-        }
-      })
-
-      await store.dispatch(checkUploadStatus({modelId: 'some-model-id'}))
-
-      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
-        checkStatusFinished: true
-      })
-    })
-
-    it('handles the aborted case', async () => {
-      printingEngine.getUploadStatus.rejects(new Error())
-
-      store = Store({
-        model: {
-          models: {
-            'some-model-id': {}
-          }
-        }
-      })
-
-      try {
-        await store.dispatch(checkUploadStatus({modelId: 'some-model-id'}))
-      } catch (e) {
-        expect(store.getState().model.models['some-model-id'], 'to satisfy', {
-          checkStatusFinished: true,
-          error: true
-        })
-      }
-    })
-  })
+  }) */
 
   describe('uploadFiles()', () => {
-    it('works for the success case', async () => {
+    it('uploads a file', async () => {
       const apiResponse = {
         modelId: 'some-model-id',
         thumbnailUrl: 'some-thumbnail-url'
@@ -147,7 +104,6 @@ describe('Model Integration Test', () => {
       }]
 
       printingEngine.uploadModel.resolves(apiResponse)
-      printingEngine.getUploadStatus.resolves(true)
       printingEngine.createPriceRequest.resolves({priceId: '123'})
       printingEngine.getPriceWithStatus.resolves({
         isComplete: true,
@@ -178,16 +134,17 @@ describe('Model Integration Test', () => {
 
       await store.dispatch(uploadFiles(files, 'some-callback'))
 
-      expect(store.getState().model, 'to satisfy', {
-        selectedUnit: 'mm'
-      })
-
-      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+      const models = store.getState().model.models
+      expect(models.length, 'to equal', 1)
+      expect(models[0], 'to satisfy', {
+        fileId: expect.it('to be a string'),
+        modelId: 'some-model-id',
         name: 'some-file-name',
         thumbnailUrl: 'some-thumbnail-url',
         size: 42,
-        modelId: 'some-model-id',
-        checkStatusFinished: true
+        progress: 1,
+        uploadFinished: true,
+        quantity: 1
       })
 
       expect(store.getState().price, 'to satisfy', {

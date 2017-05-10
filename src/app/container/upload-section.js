@@ -25,7 +25,6 @@ import {
 const UploadSection = ({
   models,
   onUploadFiles,
-  uploadedModels,
   selectedUnit,
   onChangeIndividualQuantity,
   onChangeUnit
@@ -60,9 +59,9 @@ const UploadSection = ({
         accept=".stl"
         onChange={onUpload}
       />
-      {uploadedModels.length > 0 && (
+      {models.length > 0 && (
         <ModelItemList>
-          {uploadedModels.map((model) => {
+          {models.map((model) => {
             if (model.error) {
               // TODO: on delete handler
               return (
@@ -74,7 +73,7 @@ const UploadSection = ({
               )
             }
 
-            if (!model.uploadFinished) {
+            if (model.progress < 1) {
               // TODO: on delete handler
               return (
                 <ModelItemLoad
@@ -86,7 +85,7 @@ const UploadSection = ({
               )
             }
 
-            if (!models[model.modelId].checkStatusFinished) {
+            if (!model.uploadFinished) {
               // TODO: on delete handler
               return (
                 <ModelItemLoad
@@ -103,7 +102,7 @@ const UploadSection = ({
               <ModelItem
                 key={model.fileId}
                 imageSource={model.thumbnailUrl}
-                quantity={models[model.modelId].quantity}
+                quantity={model.quantity}
                 title={model.name}
                 subline="TODO"
                 onQuantityChange={
@@ -122,7 +121,6 @@ const UploadSection = ({
 }
 
 const mapStateToProps = state => ({
-  uploadedModels: state.model.uploadedModels,
   models: state.model.models,
   selectedUnit: state.model.selectedUnit
 })

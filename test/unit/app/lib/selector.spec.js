@@ -9,8 +9,7 @@ import {
   selectPrintingServiceRequests,
   selectMaterialByMaterialConfigId,
   selectedOfferMaterial,
-  selectThumbnailUrlByModelId,
-  selectNameByModelId,
+  selectModelByModelId,
   selectOfferItems,
   selectAreAllUploadsFinished
 } from 'Lib/selector'
@@ -22,10 +21,10 @@ describe('Selector lib', () => {
     it('returns common quantity if all individual model quantities are the same', () => {
       const state = {
         model: {
-          models: {
-            1: {quantity: 2},
-            2: {quantity: 2}
-          }
+          models: [
+            {quantity: 2},
+            {quantity: 2}
+          ]
         }
       }
 
@@ -35,10 +34,10 @@ describe('Selector lib', () => {
     it('returns undefined if not all individual model quantities are the same', () => {
       const state = {
         model: {
-          models: {
-            1: {quantity: 2},
-            2: {quantity: 1}
-          }
+          models: [
+            {quantity: 2},
+            {quantity: 1}
+          ]
         }
       }
 
@@ -48,7 +47,7 @@ describe('Selector lib', () => {
     it('returns undefined if there are no models', () => {
       const state = {
         model: {
-          models: {}
+          models: []
         }
       }
 
@@ -58,7 +57,6 @@ describe('Selector lib', () => {
 
   describe('selectMaterialMenuValues()', () => {
     let offers
-    let models
     let materials
     let material1
     let material2
@@ -204,9 +202,6 @@ describe('Selector lib', () => {
         },
         material: {
           materials: undefined
-        },
-        model: {
-          models
         }
       }
 
@@ -221,9 +216,6 @@ describe('Selector lib', () => {
         },
         material: {
           materials
-        },
-        model: {
-          models
         }
       }
 
@@ -603,51 +595,26 @@ describe('Selector lib', () => {
     })
   })
 
-  describe('selectThumbnailUrlByModelId', () => {
+  describe('selectModelByModelId', () => {
     let state
 
     beforeEach(() => {
       state = {
         model: {
-          models: {
-            'some-model-id': {
-              thumbnailUrl: 'some-thumbnail-url'
-            }
-          }
+          models: [
+            {modelId: 'some-model-1'},
+            {modelId: 'some-model-2'}
+          ]
         }
       }
     })
 
-    it('returns the thumbnailUrl of a model', () => {
-      expect(selectThumbnailUrlByModelId(state, 'some-model-id'), 'to equal', 'some-thumbnail-url')
+    it('returns expected model', () => {
+      expect(selectModelByModelId(state, 'some-model-2'), 'to equal', {modelId: 'some-model-2'})
     })
 
     it('returns null if the model does not exist', () => {
-      expect(selectThumbnailUrlByModelId(state, 'some-other-model-id'), 'to be', null)
-    })
-  })
-
-  describe('selectNameByModelId', () => {
-    let state
-
-    beforeEach(() => {
-      state = {
-        model: {
-          models: {
-            'some-model-id': {
-              name: 'some-model-name'
-            }
-          }
-        }
-      }
-    })
-
-    it('returns the name of a model', () => {
-      expect(selectNameByModelId(state, 'some-model-id'), 'to equal', 'some-model-name')
-    })
-
-    it('returns null if the model does not exist', () => {
-      expect(selectNameByModelId(state, 'some-other-model-id'), 'to be', null)
+      expect(selectModelByModelId(state, 'some-other-model-id'), 'to be', null)
     })
   })
 
@@ -667,16 +634,15 @@ describe('Selector lib', () => {
           }
         },
         model: {
-          models: {
-            'some-model-id': {
-              thumbnailUrl: 'some-thumbnail-url',
-              name: 'some-model-name'
-            },
-            'some-other-model-id': {
-              thumbnailUrl: 'some-other-thumbnail-url',
-              name: 'some-other-model-name'
-            }
-          }
+          models: [{
+            modelId: 'some-model-id',
+            thumbnailUrl: 'some-thumbnail-url',
+            name: 'some-model-name'
+          }, {
+            modelId: 'some-other-model-id',
+            thumbnailUrl: 'some-other-thumbnail-url',
+            name: 'some-other-model-name'
+          }]
         }
       }
     })
@@ -695,64 +661,40 @@ describe('Selector lib', () => {
         }
       ])
     })
+  })
 
-    describe('selectAreAllUploadsFinished()', () => {
-      it('returns true if all uploads are finished', () => {
-        expect(selectAreAllUploadsFinished({
-          model: {
-            numberOfUploads: 0,
-            models: {
-              'some-model-id': {
-                checkStatusFinished: true
-              },
-              'some-model-id-2': {
-                checkStatusFinished: true
-              }
-            }
-          }
-        }), 'to be true')
-      })
+  describe('selectAreAllUploadsFinished()', () => {
+    it('returns true if all uploads are finished', () => {
+      expect(selectAreAllUploadsFinished({
+        model: {
+          numberOfUploads: 0,
+          models: [
+            {modelId: 'some-model-1'},
+            {modelId: 'some-model-2'}
+          ]
+        }
+      }), 'to be', true)
+    })
 
-      it('returns false if not all uploads are finished', () => {
-        expect(selectAreAllUploadsFinished({
-          model: {
-            numberOfUploads: 0,
-            models: {
-              'some-model-id': {
-                checkStatusFinished: false
-              },
-              'some-model-id-2': {
-                checkStatusFinished: true
-              }
-            }
-          }
-        }), 'to be false')
-      })
+    it('returns false if not all uploads are finished', () => {
+      expect(selectAreAllUploadsFinished({
+        model: {
+          numberOfUploads: 1,
+          models: [
+            {modelId: 'some-model-1'},
+            {modelId: 'some-model-2'}
+          ]
+        }
+      }), 'to be', false)
+    })
 
-      it('returns false if no models are uploaded', () => {
-        expect(selectAreAllUploadsFinished({
-          model: {
-            numberOfUploads: 0,
-            models: {}
-          }
-        }), 'to be false')
-      })
-
-      it('returns false if there are still a number of uploads in progress', () => {
-        expect(selectAreAllUploadsFinished({
-          model: {
-            numberOfUploads: 1,
-            models: {
-              'some-model-id': {
-                checkStatusFinished: true
-              },
-              'some-model-id-2': {
-                checkStatusFinished: true
-              }
-            }
-          }
-        }), 'to be false')
-      })
+    it('returns false if no models are uploaded', () => {
+      expect(selectAreAllUploadsFinished({
+        model: {
+          numberOfUploads: 0,
+          models: []
+        }
+      }), 'to be', false)
     })
   })
 })
