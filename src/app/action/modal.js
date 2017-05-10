@@ -2,8 +2,10 @@ import {createAction} from 'redux-actions'
 
 import TYPE, {MODAL_TYPE} from '../type'
 
-export const open = ({contentType, contentProps, isCloseable}) =>
-  createAction(TYPE.MODAL.OPEN)({contentType, contentProps, isCloseable})
+export const open = createAction(
+  TYPE.MODAL.OPEN,
+  ({contentType, contentProps, isCloseable}) => ({contentType, contentProps, isCloseable})
+)
 
 export const close = createAction(TYPE.MODAL.CLOSE)
 

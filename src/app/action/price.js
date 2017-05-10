@@ -3,7 +3,8 @@ import {createAction} from 'redux-actions'
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll} from 'Lib/poll'
-import TYPE from '../type'
+import {openFatalErrorModal} from 'Action/modal'
+import TYPE, {ERROR_TYPE} from '../type'
 
 // Private actions
 
@@ -89,7 +90,11 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
     dispatch(priceRequested(priceId))
     return priceId
   }).catch((error) => {
-    dispatch(priceReceived(error))
+    // Ignore special error when price request was overwritten
+    if (error.type !== ERROR_TYPE.POLL_OVERWRITTEN) {
+      dispatch(priceReceived(error))
+      dispatch(openFatalErrorModal(error))
+    }
   })
 
   // We need to update the selectedOffer if applicable

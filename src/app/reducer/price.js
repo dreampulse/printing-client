@@ -1,6 +1,6 @@
 import {handleActions} from 'redux-actions'
 
-import TYPE, {ERROR_TYPE} from '../type'
+import TYPE from '../type'
 
 const initialState = {
   priceId: null,
@@ -34,10 +34,7 @@ function handlePriceRequested (state, {payload: {priceId}}) {
 }
 
 function handlePriceReceived (state, {payload, error}) {
-  // Ignore special error when price request was overwritten
-  if (error && payload.type === ERROR_TYPE.POLL_OVERWRITTEN) {
-    return state
-  } else if (error && error.type !== ERROR_TYPE.POLL_OVERWRITTEN) {
+  if (error) {
     return {
       ...initialState,
       error: payload
