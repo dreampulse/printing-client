@@ -1,4 +1,3 @@
-import {map} from 'ramda'
 import {handleActions} from 'redux-actions'
 
 import TYPE from '../type'
@@ -29,14 +28,13 @@ function handleIndividualQuantityChanged (state, {payload: {quantity, modelId}})
 }
 
 function handleQuantityChanged (state, {payload: {quantity}}) {
-  const models = map(model => ({
-    ...model,
-    quantity
-  }), state.models)
+  const updateModels = updateArrayItems(state.models, () => true)
 
   return {
     ...state,
-    models
+    models: updateModels({
+      quantity
+    })
   }
 }
 
