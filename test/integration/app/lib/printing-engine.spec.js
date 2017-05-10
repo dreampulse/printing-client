@@ -3,12 +3,15 @@ import * as printingEngine from 'Lib/printing-engine'
 
 // TODO: move this to unit tests and write unit tests for printing engine lib
 describe('Printing Engine REST Api Integration Test', () => {
+  let sandbox
+
   beforeEach(() => {
-    sinon.stub(http)
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(http)
   })
 
   afterEach(() => {
-    sinon.restore(http)
+    sandbox.restore()
   })
 
   describe('uploadModel()', () => {

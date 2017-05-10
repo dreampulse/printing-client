@@ -9,15 +9,17 @@ import {
 import Store from '../../../../src/app/store'
 
 describe('Navigation actions', () => {
+  let sandbox
   let store
 
   beforeEach(() => {
-    sinon.stub(routerActions, 'push').returns({type: 'foo'})
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(routerActions, 'push').returns({type: 'foo'})
     store = Store({})
   })
 
   afterEach(() => {
-    sinon.restore(routerActions.push)
+    sandbox.restore()
   })
 
   describe('goToCart()', () => {

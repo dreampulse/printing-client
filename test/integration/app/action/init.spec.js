@@ -11,18 +11,19 @@ import materialList from '../../../../test-data/mock/material-list-response.json
 deepFreeze(materialList)
 
 describe('Init action integration test', () => {
+  let sandbox
   let store
 
   beforeEach(() => {
     store = Store({})
 
-    sinon.stub(printingEngine)
-    sinon.stub(geolocation)
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(printingEngine)
+    sandbox.stub(geolocation)
   })
 
   afterEach(() => {
-    sinon.restore(printingEngine)
-    sinon.restore(geolocation)
+    sandbox.restore()
   })
 
   it('initializes the reducer correctly', async () => {

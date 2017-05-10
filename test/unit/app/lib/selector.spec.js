@@ -56,6 +56,7 @@ describe('Selector lib', () => {
   })
 
   describe('selectMaterialMenuValues()', () => {
+    let sandbox
     let offers
     let materials
     let material1
@@ -63,7 +64,8 @@ describe('Selector lib', () => {
     let material3
 
     beforeEach(() => {
-      sinon.stub(materialLib)
+      sandbox = sinon.sandbox.create()
+      sandbox.stub(materialLib)
 
       material1 = {
         id: 'material-1',
@@ -91,7 +93,7 @@ describe('Selector lib', () => {
     })
 
     afterEach(() => {
-      sinon.restore(materialLib)
+      sandbox.restore()
     })
 
     it('returns expected material menu values', () => {

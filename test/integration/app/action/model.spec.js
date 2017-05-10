@@ -15,17 +15,18 @@ describe('Model Integration Test', () => {
   let sandbox
 
   beforeEach(() => {
-    sinon.stub(printingEngine)
     store = Store({})
 
     resetPollState()
+
     sandbox = sinon.sandbox.create()
     sandbox.stub(config, 'pollingInverval', 0)
     sandbox.stub(config, 'pollingDebouncedWait', 0)
+
+    sandbox.stub(printingEngine)
   })
 
   afterEach(() => {
-    sinon.restore(printingEngine)
     sandbox.restore()
   })
 
@@ -157,11 +158,10 @@ describe('Model Integration Test', () => {
     it('changes quanity and creates a price request', async () => {
       store = Store({
         model: {
-          models: {
-            'some-model-id': {
-              quantity: 1
-            }
-          }
+          models: [{
+            modelId: 'some-model-id',
+            quantity: 1
+          }]
         },
         material: {
           materials: {
@@ -203,7 +203,7 @@ describe('Model Integration Test', () => {
 
       await store.dispatch(changeQuantity({quantity: 42}))
 
-      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+      expect(store.getState().model.models[0], 'to satisfy', {
         quantity: 42
       })
 
@@ -226,11 +226,10 @@ describe('Model Integration Test', () => {
     it('changes quanity and creates a price request', async () => {
       store = Store({
         model: {
-          models: {
-            'some-model-id': {
-              quantity: 1
-            }
-          }
+          models: [{
+            modelId: 'some-model-id',
+            quantity: 1
+          }]
         },
         material: {
           materials: {
@@ -272,7 +271,7 @@ describe('Model Integration Test', () => {
 
       await store.dispatch(changeIndividualQuantity({quantity: 42, modelId: 'some-model-id'}))
 
-      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+      expect(store.getState().model.models[0], 'to satisfy', {
         quantity: 42
       })
 

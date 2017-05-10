@@ -6,14 +6,16 @@ import * as printingEngine from 'Lib/printing-engine'
 import Store from '../../../../src/app/store'
 
 describe('Price Integration Test', () => {
+  let sandbox
   let store
 
   beforeEach(() => {
-    sinon.stub(printingEngine)
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(printingEngine)
   })
 
   afterEach(() => {
-    sinon.restore(printingEngine)
+    sandbox.restore()
   })
 
   describe('refreshSelectedOffer()', () => {
