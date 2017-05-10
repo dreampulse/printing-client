@@ -198,7 +198,7 @@ const CartPage = ({
 
 const mapStateToProps = state => ({
   order: state.order,
-  offer: state.cart.selectedOffer,
+  offer: state.price.selectedOffer,
   user: state.user.user,
   offerItems: selectOfferItems(state),
   selectedMaterial: selectedOfferMaterial(state)

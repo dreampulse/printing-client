@@ -5,20 +5,30 @@ import {
   changeQuantity,
   changeIndividualQuantity,
   changeUnit
-} from '../../../../src/app/action/model'
+} from 'Action/model'
+import * as printingEngine from 'Lib/printing-engine'
+import {resetPollState} from 'Lib/poll'
 import Store from '../../../../src/app/store'
-import * as printingEngine from '../../../../src/app/lib/printing-engine'
+
+import config from '../../../../config'
 
 describe('Model Integration Test', () => {
   let store
+  let sandbox
 
   beforeEach(() => {
     sinon.stub(printingEngine)
     store = Store({})
+
+    resetPollState()
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(config, 'pollingInverval', 0)
+    sandbox.stub(config, 'pollingDebouncedWait', 0)
   })
 
   afterEach(() => {
     sinon.restore(printingEngine)
+    sandbox.restore()
   })
 
   describe('uploadFile()', () => {
@@ -186,20 +196,21 @@ describe('Model Integration Test', () => {
     })
   })
 
-  describe('handleQuantityChanged()', () => {
-    it('works for the default case', async () => {
+  describe('changeQuantity()', () => {
+    it('changes quanity and creates a price request', async () => {
       store = Store({
         model: {
           models: {
             'some-model-id': {
-              modelId: 'some-model-id'
+              quantity: 1
             }
           }
         },
         material: {
           materials: {
             materialConfigs: {
-              'some-material-id': 'something'
+              'some-material-id': 'something',
+              'some-material-other-id': 'something'
             },
             materialStructure: []
           }
@@ -217,34 +228,58 @@ describe('Model Integration Test', () => {
         }
       })
 
-      printingEngine.createPriceRequest.resolves({priceId: '123'})
+      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
       printingEngine.getPriceWithStatus.resolves({
         isComplete: true,
-        price: 'some-price'
-      }) // Finished polling
+        price: {
+          offers: [{
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          }
+        }
+      })
 
       await store.dispatch(changeQuantity({quantity: 42}))
 
       expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         quantity: 42
       })
+
+      expect(store.getState().price, 'to satisfy', {
+        priceId: 'some-price-id',
+        offers: [{
+          materialConfigId: 1,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }],
+        printingServiceComplete: {
+          shapeways: true,
+          imaterialize: true
+        }
+      })
     })
   })
 
-  describe('handleIndividualQuantityChanged()', () => {
-    it('works for the default case', async () => {
+  describe('changeIndividualQuantity()', () => {
+    it('changes quanity and creates a price request', async () => {
       store = Store({
         model: {
           models: {
             'some-model-id': {
-              modelId: 'some-model-id'
+              quantity: 1
             }
           }
         },
         material: {
           materials: {
             materialConfigs: {
-              'some-material-id': 'something'
+              'some-material-id': 'something',
+              'some-material-other-id': 'something'
             },
             materialStructure: []
           }
@@ -262,16 +297,39 @@ describe('Model Integration Test', () => {
         }
       })
 
-      printingEngine.createPriceRequest.resolves({priceId: '123'})
+      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
       printingEngine.getPriceWithStatus.resolves({
         isComplete: true,
-        price: 'some-price'
-      }) // Finished polling
+        price: {
+          offers: [{
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          }
+        }
+      })
 
       await store.dispatch(changeIndividualQuantity({quantity: 42, modelId: 'some-model-id'}))
 
       expect(store.getState().model.models['some-model-id'], 'to satisfy', {
         quantity: 42
+      })
+
+      expect(store.getState().price, 'to satisfy', {
+        priceId: 'some-price-id',
+        offers: [{
+          materialConfigId: 1,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }],
+        printingServiceComplete: {
+          shapeways: true,
+          imaterialize: true
+        }
       })
     })
   })

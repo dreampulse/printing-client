@@ -35,7 +35,7 @@ describe('Offer unit tests', () => {
           name: 'some-shipping'
         }}]
 
-      expect(getUpdatedOffer(selectedOffer, offers), 'to be', undefined)
+      expect(getUpdatedOffer(selectedOffer, offers), 'to be', null)
     })
   })
 })

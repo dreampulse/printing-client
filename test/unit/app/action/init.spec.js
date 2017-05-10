@@ -2,10 +2,10 @@ import {init} from 'Action/init'
 import * as userActions from 'Action/user'
 import * as materialActions from 'Action/material'
 import * as modalActions from 'Action/modal'
+import {AppError} from 'Lib/error'
 
 import {resolveAsyncThunk, rejectAsyncThunk} from '../../../helper'
 
-import AppError from '../../../../src/app/lib/error'
 import {ERROR_TYPE} from '../../../../src/app/type'
 
 describe('Model actions', () => {

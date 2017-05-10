@@ -9,7 +9,7 @@ import * as printingEngine from '../../../../src/app/lib/printing-engine'
 import * as stripe from '../../../../src/app/service/stripe'
 import * as paypal from '../../../../src/app/service/paypal'
 
-describe('Shopping Cart Integration Test', () => {
+describe('Order Integration Test', () => {
   let store
 
   afterEach(() => {
@@ -32,9 +32,7 @@ describe('Shopping Cart Integration Test', () => {
           }
         },
         price: {
-          priceId: 'some-price-id'
-        },
-        cart: {
+          priceId: 'some-price-id',
           selectedOffer: {
             offerId: 'some-offer-id',
             currency: 'some-currency',
@@ -101,9 +99,7 @@ describe('Shopping Cart Integration Test', () => {
           }
         },
         price: {
-          priceId: 'some-price-id'
-        },
-        cart: {
+          priceId: 'some-price-id',
           selectedOffer: {
             offerId: 'some-offer-id',
             currency: 'some-currency',
