@@ -22,7 +22,7 @@ describe('Poll lib', () => {
   })
 
   describe('poll()', () => {
-    it('resolves when poll callback resolves with true', async () => {
+    it('ends polling when callback resolves with true', async () => {
       const pollCallback = sinon.stub()
         .withArgs()
         .resolves(true)

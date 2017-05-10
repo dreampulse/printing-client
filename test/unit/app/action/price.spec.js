@@ -6,7 +6,9 @@ import {
 } from 'Action/price'
 import * as pollLib from 'Lib/poll'
 import * as printingEngine from 'Lib/printing-engine'
-import TYPE from '../../../../src/app/type'
+import * as modalActions from 'Action/modal'
+import {AppError} from 'Lib/error'
+import TYPE, {ERROR_TYPE} from '../../../../src/app/type'
 
 describe('Price actions', () => {
   let initialStoreData
@@ -47,6 +49,8 @@ describe('Price actions', () => {
       isComplete: true,
       price: {some: 'price'}
     })
+
+    sinon.stub(modalActions)
   })
 
   afterEach(() => {
@@ -54,6 +58,7 @@ describe('Price actions', () => {
     pollLib.debouncedPoll.restore()
 
     sinon.restore(printingEngine)
+    sinon.restore(modalActions)
   })
 
   describe('selectOffer()', () => {
@@ -237,10 +242,17 @@ describe('Price actions', () => {
       ])
     })
 
-    it('dispatches expected actions when polling failes', async () => {
+    it('dispatches expected actions when polling failes with fatal error', async () => {
       const error = new Error('some-error')
       pollLib.poll.restore()
       sinon.stub(pollLib, 'poll').rejects(error)
+
+      modalActions.openFatalErrorModal
+        .withArgs(error)
+        .returns({
+          type: 'some-fatal-error-modal',
+          payload: undefined
+        })
 
       await store.dispatch(createPriceRequest())
 
@@ -251,6 +263,22 @@ describe('Price actions', () => {
         type: TYPE.PRICE.RECEIVED,
         payload: error,
         error: true
+      }, {
+        type: 'some-fatal-error-modal',
+        payload: undefined
+      }])
+    })
+
+    it('dispatches expected actions when polling failes with ERROR_TYPE.POLL_OVERWRITTEN', async () => {
+      const error = new AppError(ERROR_TYPE.POLL_OVERWRITTEN, 'some error')
+      pollLib.poll.restore()
+      sinon.stub(pollLib, 'poll').rejects(error)
+
+      await store.dispatch(createPriceRequest())
+
+      expect(store.getActions(), 'to equal', [{
+        type: TYPE.PRICE.CLEAR_OFFERS,
+        payload: undefined
       }])
     })
   })
