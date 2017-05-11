@@ -7,6 +7,7 @@ import {
 import * as printingEngine from 'Lib/printing-engine'
 import {resetPollState} from 'Lib/poll'
 import Store from '../../../../src/app/store'
+import {ERROR_TYPE} from '../../../../src/app/type'
 
 import config from '../../../../config'
 
@@ -94,21 +95,32 @@ describe('Model Integration Test', () => {
   }) */
 
   describe('uploadFiles()', () => {
-    it('uploads a file', async () => {
-      const apiResponse = {
-        modelId: 'some-model-id',
-        thumbnailUrl: 'some-thumbnail-url'
-      }
-      const files = [{
+    let file
+
+    beforeEach(() => {
+      file = {
         name: 'some-file-name',
         size: 42
-      }]
+      }
 
-      printingEngine.uploadModel.resolves(apiResponse)
-      printingEngine.createPriceRequest.resolves({priceId: '123'})
+      printingEngine.uploadModel.resolves({
+        modelId: 'some-model-id',
+        thumbnailUrl: 'some-thumbnail-url'
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
       printingEngine.getPriceWithStatus.resolves({
         isComplete: true,
-        price: 'some-price'
+        price: {
+          offers: [{
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          }
+        }
       }) // Finished polling
 
       store = Store({
@@ -118,7 +130,8 @@ describe('Model Integration Test', () => {
               'some-material-id': 'something'
             },
             materialStructure: []
-          }
+          },
+          selectedMaterialConfig: 'some-material-id'
         },
         user: {
           userId: 'some-user-id',
@@ -132,8 +145,12 @@ describe('Model Integration Test', () => {
           }
         }
       })
+    })
 
-      await store.dispatch(uploadFiles(files, 'some-callback'))
+    it('uploads a file', async () => {
+      await store.dispatch(uploadFiles([file]))
+
+      expect(store.getState().model.numberOfUploads, 'to equal', 0)
 
       const models = store.getState().model.models
       expect(models.length, 'to equal', 1)
@@ -149,7 +166,31 @@ describe('Model Integration Test', () => {
       })
 
       expect(store.getState().price, 'to satisfy', {
-        priceId: '123'
+        priceId: 'some-price-id'
+      })
+
+      expect(store.getState().material.selectedMaterialConfig, 'to be', undefined)
+    })
+
+    it('handles error when upload failes', () => {
+      printingEngine.uploadModel.rejects(new Error('some-error'))
+
+      store.dispatch(uploadFiles([file])).catch((error) => {
+        expect(error, 'to satisfy', {
+          type: ERROR_TYPE.FILE_UPLOAD_FAILED
+        })
+
+        expect(store.getState().model.numberOfUploads, 'to equal', 0)
+
+        const models = store.getState().model.models
+        expect(models.length, 'to equal', 1)
+        expect(models[0], 'to satisfy', {
+          fileId: expect.it('to be a string'),
+          progress: 1,
+          error
+        })
+
+        expect(store.getState().material.selectedMaterialConfig, 'to be', undefined)
       })
     })
   })

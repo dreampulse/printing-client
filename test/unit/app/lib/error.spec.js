@@ -22,7 +22,7 @@ describe('Error lib', () => {
       const error = new FileUploadError('some-file-id')
       expect(error, 'to satisfy', {
         type: ERROR_TYPE.FILE_UPLOAD_FAILED,
-        message: 'File upload failed!',
+        message: expect.it('to be a string'),
         fileId: 'some-file-id'
       })
     })

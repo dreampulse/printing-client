@@ -26,10 +26,13 @@ describe('Price actions', () => {
         }
       },
       model: {
-        models: {
-          model1: {quantity: 1},
-          model2: {quantity: 2}
-        }
+        models: [{
+          modelId: 'model1',
+          quantity: 1
+        }, {
+          modelId: 'model2',
+          quantity: 2
+        }]
       },
       price: {
         priceId: null

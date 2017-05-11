@@ -68,7 +68,7 @@ const UploadSection = ({
                 <ModelItemError
                   key={model.fileId}
                   title="Upload failed"
-                  subline={model.error}
+                  subline={model.error.message}
                 />
               )
             }

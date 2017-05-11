@@ -63,7 +63,7 @@ const uploadFile = file => async (dispatch, getState) => {
 
   // TODO: reduce number of actions here and let multiple reducers listen to the same action
   dispatch(createAction(TYPE.PRICE.CLEAR_OFFERS)())
-  dispatch(createAction(TYPE.MATERIAL.CONFIG_SELECTED)())  // Resets current selection
+  dispatch(createAction(TYPE.MATERIAL.CONFIG_SELECTED)()) // Resets current selection
   dispatch(fileUploadStarted(fileId, file))
 
   const onUploadProgressed = progress => dispatch(fileUploadProgressed(fileId, progress))
