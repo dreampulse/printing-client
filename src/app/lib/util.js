@@ -1,8 +1,7 @@
-import {curry} from 'ramda'
+import curry from 'lodash/curry'
 
-// Update Field
-export const update = curry((field, quantor, changes) =>
-  field.map(element => (quantor(element) ? {
+export const updateArrayItems = curry((array, test, changes) =>
+  array.map(element => (test(element) ? {
     ...element,
     ...changes
   } : element))

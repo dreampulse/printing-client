@@ -60,17 +60,17 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
     }
   } = getState()
 
-  const materialConfigIds = Object.keys(materialConfigs)
-  const items = Object.keys(models).map(modelId => ({
-    modelId,
-    materialConfigIds,
-    quantity: models[modelId].quantity
-  }))
-
   // Abort if user did not upload any models yet
-  if (items.length === 0) {
+  if (models.length === 0) {
     return
   }
+
+  const materialConfigIds = Object.keys(materialConfigs)
+  const items = models.map(({modelId, quantity}) => ({
+    modelId,
+    materialConfigIds,
+    quantity
+  }))
 
   const options = {
     userId,

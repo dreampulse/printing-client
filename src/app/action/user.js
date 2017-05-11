@@ -59,7 +59,7 @@ export const updateLocation = location => async (dispatch, getState) => {
     if (!getState().user.userId) {  // No user created so far
       await dispatch(createUser())
     }
-    // TODO: check if there are any uploaded models
+
     // Update prices
     dispatch(createPriceRequest())
   }

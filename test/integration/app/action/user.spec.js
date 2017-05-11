@@ -9,23 +9,23 @@ import Store from '../../../../src/app/store'
 import TYPE from '../../../../src/app/type'
 
 describe('User Integration Test', () => {
+  let sandbox
   let store
 
   beforeEach(() => {
-    sinon.stub(printingEngine)
-    sinon.stub(geolocation)
-    sinon.stub(navigation)
-    sinon.stub(modal)
-    sinon.stub(price)
+    sandbox = sinon.sandbox.create()
+
+    sandbox.stub(printingEngine)
+    sandbox.stub(geolocation)
+    sandbox.stub(navigation)
+    sandbox.stub(modal)
+    sandbox.stub(price)
+
     store = Store()
   })
 
   afterEach(() => {
-    sinon.restore(printingEngine)
-    sinon.restore(geolocation)
-    sinon.restore(navigation)
-    sinon.restore(modal)
-    sinon.restore(price)
+    sandbox.restore()
   })
 
   describe('detectAddress()', () => {

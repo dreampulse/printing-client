@@ -10,7 +10,7 @@ import SuccessPage from 'Container/success-page'
 const preventDeepLinking = store => (nextState, replace) => {
   // It is only possible to reach other routes than the model page
   // if an offer has been selected
-  if (!store.getState().cart.selectedOffer) {
+  if (!store.getState().price.selectedOffer) {
     replace('/')
   }
 }

@@ -11,6 +11,7 @@ import {AppError} from 'Lib/error'
 import TYPE, {ERROR_TYPE} from '../../../../src/app/type'
 
 describe('Price actions', () => {
+  let sandbox
   let initialStoreData
   let store
 
@@ -25,10 +26,13 @@ describe('Price actions', () => {
         }
       },
       model: {
-        models: {
-          model1: {quantity: 1},
-          model2: {quantity: 2}
-        }
+        models: [{
+          modelId: 'model1',
+          quantity: 1
+        }, {
+          modelId: 'model2',
+          quantity: 2
+        }]
       },
       price: {
         priceId: null
@@ -39,26 +43,23 @@ describe('Price actions', () => {
     }
     store = mockStore(initialStoreData)
 
-    sinon.spy(pollLib, 'poll')
-    sinon.spy(pollLib, 'debouncedPoll')
+    sandbox = sinon.sandbox.create()
+    sandbox.spy(pollLib, 'poll')
+    sandbox.spy(pollLib, 'debouncedPoll')
     pollLib.resetPollState()
 
-    sinon.stub(printingEngine)
+    sandbox.stub(printingEngine)
     printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
     printingEngine.getPriceWithStatus.resolves({
       isComplete: true,
       price: {some: 'price'}
     })
 
-    sinon.stub(modalActions)
+    sandbox.stub(modalActions)
   })
 
   afterEach(() => {
-    pollLib.poll.restore()
-    pollLib.debouncedPoll.restore()
-
-    sinon.restore(printingEngine)
-    sinon.restore(modalActions)
+    sandbox.restore()
   })
 
   describe('selectOffer()', () => {

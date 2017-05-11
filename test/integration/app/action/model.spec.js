@@ -1,7 +1,5 @@
 import {
-  uploadFile,
   uploadFiles,
-  checkUploadStatus,
   changeQuantity,
   changeIndividualQuantity,
   changeUnit
@@ -9,6 +7,7 @@ import {
 import * as printingEngine from 'Lib/printing-engine'
 import {resetPollState} from 'Lib/poll'
 import Store from '../../../../src/app/store'
+import {ERROR_TYPE} from '../../../../src/app/type'
 
 import config from '../../../../config'
 
@@ -17,21 +16,22 @@ describe('Model Integration Test', () => {
   let sandbox
 
   beforeEach(() => {
-    sinon.stub(printingEngine)
     store = Store({})
 
     resetPollState()
+
     sandbox = sinon.sandbox.create()
     sandbox.stub(config, 'pollingInverval', 0)
     sandbox.stub(config, 'pollingDebouncedWait', 0)
+
+    sandbox.stub(printingEngine)
   })
 
   afterEach(() => {
-    sinon.restore(printingEngine)
     sandbox.restore()
   })
 
-  describe('uploadFile()', () => {
+  /* describe('uploadFile()', () => {
     let apiResponse
     let file
 
@@ -92,66 +92,35 @@ describe('Model Integration Test', () => {
         error: true
       })
     })
-  })
-
-  describe('checkUploadStatus()', () => {
-    it('handles the finished case', async () => {
-      printingEngine.getUploadStatus.resolves(true)
-
-      store = Store({
-        model: {
-          models: {
-            'some-model-id': {}
-          }
-        }
-      })
-
-      await store.dispatch(checkUploadStatus({modelId: 'some-model-id'}))
-
-      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
-        checkStatusFinished: true
-      })
-    })
-
-    it('handles the aborted case', async () => {
-      printingEngine.getUploadStatus.rejects(new Error())
-
-      store = Store({
-        model: {
-          models: {
-            'some-model-id': {}
-          }
-        }
-      })
-
-      try {
-        await store.dispatch(checkUploadStatus({modelId: 'some-model-id'}))
-      } catch (e) {
-        expect(store.getState().model.models['some-model-id'], 'to satisfy', {
-          checkStatusFinished: true,
-          error: true
-        })
-      }
-    })
-  })
+  }) */
 
   describe('uploadFiles()', () => {
-    it('works for the success case', async () => {
-      const apiResponse = {
-        modelId: 'some-model-id',
-        thumbnailUrl: 'some-thumbnail-url'
-      }
-      const files = [{
+    let file
+
+    beforeEach(() => {
+      file = {
         name: 'some-file-name',
         size: 42
-      }]
+      }
 
-      printingEngine.uploadModel.resolves(apiResponse)
-      printingEngine.getUploadStatus.resolves(true)
-      printingEngine.createPriceRequest.resolves({priceId: '123'})
+      printingEngine.uploadModel.resolves({
+        modelId: 'some-model-id',
+        thumbnailUrl: 'some-thumbnail-url'
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
       printingEngine.getPriceWithStatus.resolves({
         isComplete: true,
-        price: 'some-price'
+        price: {
+          offers: [{
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          }
+        }
       }) // Finished polling
 
       store = Store({
@@ -161,7 +130,8 @@ describe('Model Integration Test', () => {
               'some-material-id': 'something'
             },
             materialStructure: []
-          }
+          },
+          selectedMaterialConfig: 'some-material-id'
         },
         user: {
           userId: 'some-user-id',
@@ -175,23 +145,52 @@ describe('Model Integration Test', () => {
           }
         }
       })
+    })
 
-      await store.dispatch(uploadFiles(files, 'some-callback'))
+    it('uploads a file', async () => {
+      await store.dispatch(uploadFiles([file]))
 
-      expect(store.getState().model, 'to satisfy', {
-        selectedUnit: 'mm'
-      })
+      expect(store.getState().model.numberOfUploads, 'to equal', 0)
 
-      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+      const models = store.getState().model.models
+      expect(models.length, 'to equal', 1)
+      expect(models[0], 'to satisfy', {
+        fileId: expect.it('to be a string'),
+        modelId: 'some-model-id',
         name: 'some-file-name',
         thumbnailUrl: 'some-thumbnail-url',
         size: 42,
-        modelId: 'some-model-id',
-        checkStatusFinished: true
+        progress: 1,
+        uploadFinished: true,
+        quantity: 1
       })
 
       expect(store.getState().price, 'to satisfy', {
-        priceId: '123'
+        priceId: 'some-price-id'
+      })
+
+      expect(store.getState().material.selectedMaterialConfig, 'to be', undefined)
+    })
+
+    it('handles error when upload failes', () => {
+      printingEngine.uploadModel.rejects(new Error('some-error'))
+
+      store.dispatch(uploadFiles([file])).catch((error) => {
+        expect(error, 'to satisfy', {
+          type: ERROR_TYPE.FILE_UPLOAD_FAILED
+        })
+
+        expect(store.getState().model.numberOfUploads, 'to equal', 0)
+
+        const models = store.getState().model.models
+        expect(models.length, 'to equal', 1)
+        expect(models[0], 'to satisfy', {
+          fileId: expect.it('to be a string'),
+          progress: 1,
+          error
+        })
+
+        expect(store.getState().material.selectedMaterialConfig, 'to be', undefined)
       })
     })
   })
@@ -200,11 +199,10 @@ describe('Model Integration Test', () => {
     it('changes quanity and creates a price request', async () => {
       store = Store({
         model: {
-          models: {
-            'some-model-id': {
-              quantity: 1
-            }
-          }
+          models: [{
+            modelId: 'some-model-id',
+            quantity: 1
+          }]
         },
         material: {
           materials: {
@@ -246,7 +244,7 @@ describe('Model Integration Test', () => {
 
       await store.dispatch(changeQuantity({quantity: 42}))
 
-      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+      expect(store.getState().model.models[0], 'to satisfy', {
         quantity: 42
       })
 
@@ -269,11 +267,10 @@ describe('Model Integration Test', () => {
     it('changes quanity and creates a price request', async () => {
       store = Store({
         model: {
-          models: {
-            'some-model-id': {
-              quantity: 1
-            }
-          }
+          models: [{
+            modelId: 'some-model-id',
+            quantity: 1
+          }]
         },
         material: {
           materials: {
@@ -315,7 +312,7 @@ describe('Model Integration Test', () => {
 
       await store.dispatch(changeIndividualQuantity({quantity: 42, modelId: 'some-model-id'}))
 
-      expect(store.getState().model.models['some-model-id'], 'to satisfy', {
+      expect(store.getState().model.models[0], 'to satisfy', {
         quantity: 42
       })
 

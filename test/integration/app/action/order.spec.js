@@ -10,20 +10,23 @@ import * as stripe from '../../../../src/app/service/stripe'
 import * as paypal from '../../../../src/app/service/paypal'
 
 describe('Order Integration Test', () => {
+  let sandbox
   let store
 
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create()
+
+    sandbox.stub(printingEngine)
+    sandbox.stub(stripe)
+    sandbox.stub(paypal)
+  })
+
   afterEach(() => {
-    sinon.restore(printingEngine)
-    sinon.restore(stripe)
-    sinon.restore(paypal)
+    sandbox.restore()
   })
 
   describe('payWithStripe()', () => {
     beforeEach(() => {
-      sinon.stub(printingEngine)
-      sinon.stub(stripe)
-      sinon.stub(paypal)
-
       store = Store({
         user: {
           userId: 'some-user-id',
@@ -87,10 +90,6 @@ describe('Order Integration Test', () => {
 
   describe('createOrder()', () => {
     beforeEach(() => {
-      sinon.stub(printingEngine)
-      sinon.stub(stripe)
-      sinon.stub(paypal)
-
       store = Store({
         user: {
           userId: 'some-user-id',

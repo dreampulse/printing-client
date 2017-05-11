@@ -8,16 +8,15 @@ import config from '../../../../config'
 
 describe('geolocation lib', () => {
   describe('getLocationByIp()', () => {
-    let configSandbox
+    let sandbox
 
     beforeEach(() => {
-      sinon.stub(http)
-      configSandbox = sinon.sandbox.create()
+      sandbox = sinon.sandbox.create()
+      sandbox.stub(http)
     })
 
     afterEach(() => {
-      sinon.restore(http)
-      configSandbox.restore()
+      sandbox.restore()
     })
 
     it('works for the success case', async () => {
@@ -41,7 +40,7 @@ describe('geolocation lib', () => {
     it('aborts request after a configured timeout', () => {
       const endlessPromise = new Promise(() => {})
       http.request.resolves(endlessPromise)
-      configSandbox.stub(config, 'fetchTimout', 1)  // Faster timeout
+      sandbox.stub(config, 'fetchTimout', 1)  // Faster timeout
 
       return getLocationByIp()
         .catch((result) => {
