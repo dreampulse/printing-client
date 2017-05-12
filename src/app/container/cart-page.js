@@ -48,9 +48,8 @@ const CartPage = ({
   onGoToHome,
   onCreateOrder,
   onGoToSuccess,
-  order,
-  // onOrderWithPaypal,
-  onItemDelete
+  order
+  // onOrderWithPaypal
 }) => {
   const CartQantityList = () => {
     const items = offerItems.map(item => (
@@ -61,7 +60,6 @@ const CartPage = ({
         title={item.name}
         onQuantityChange={onGoToHome}
         price={formatPrice(item.price, offer.currency)}
-        onDelete={onItemDelete}
       />
     ))
     return (
@@ -211,8 +209,7 @@ const mapDispatchToProps = {
   onOrderWithStripe: payWithStripe,
   onCreateOrder: createOrder,
   // onOrderWithPaypal: createOrderWithPaypal,
-  // onPayWithPaypal: initPaymentWithPaypal,
-  onItemDelete: () => {} // TODO: add action
+  // onPayWithPaypal: initPaymentWithPaypal
 }
 
 const enhance = compose(
