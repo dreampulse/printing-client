@@ -18,6 +18,7 @@ import LabeledField from 'Component/labeled-field'
 
 import {
   uploadFiles,
+  deleteFile,
   changeIndividualQuantity,
   changeUnit
 } from 'Action/model'
@@ -25,6 +26,7 @@ import {
 const UploadSection = ({
   models,
   onUploadFiles,
+  onDeleteFile,
   selectedUnit,
   onChangeIndividualQuantity,
   onChangeUnit
@@ -63,40 +65,39 @@ const UploadSection = ({
         <ModelItemList>
           {models.map((model) => {
             if (model.error) {
-              // TODO: on delete handler
               return (
                 <ModelItemError
                   key={model.fileId}
                   title="Upload failed"
                   subline={model.error.message}
+                  onDelete={() => onDeleteFile(model.fileId)}
                 />
               )
             }
 
             if (model.progress < 1) {
-              // TODO: on delete handler
               return (
                 <ModelItemLoad
                   key={model.fileId}
                   status={model.progress}
                   title="Uploading"
                   subline={model.name}
+                  onDelete={() => onDeleteFile(model.fileId)}
                 />
               )
             }
 
             if (!model.uploadFinished) {
-              // TODO: on delete handler
               return (
                 <ModelItemLoad
                   key={model.fileId}
                   title="Processing"
                   subline={model.name}
+                  onDelete={() => onDeleteFile(model.fileId)}
                 />
               )
             }
 
-            // TODO: on delete handler
             // TODO: subline
             return (
               <ModelItem
@@ -105,6 +106,7 @@ const UploadSection = ({
                 quantity={model.quantity}
                 title={model.name}
                 subline="TODO"
+                onDelete={() => onDeleteFile(model.fileId)}
                 onQuantityChange={
                   value => onChangeIndividualQuantity({
                     quantity: value,
@@ -127,6 +129,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onUploadFiles: uploadFiles,
+  onDeleteFile: deleteFile,
   onChangeIndividualQuantity: changeIndividualQuantity,
   onChangeUnit: changeUnit
 }

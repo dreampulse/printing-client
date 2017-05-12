@@ -1,7 +1,8 @@
 import {
   changeQuantity,
   changeIndividualQuantity,
-  uploadFiles
+  uploadFiles,
+  deleteFile
 } from 'Action/model'
 import * as priceActions from 'Action/price'
 import * as printingEngine from 'Lib/printing-engine'
@@ -169,6 +170,22 @@ describe('Model actions', () => {
           }])
         })
       ))
+    })
+  })
+
+  describe('deleteFile()', () => {
+    it('dispatches expected actions', async () => {
+      priceActions.createPriceRequest
+        .withArgs()
+        .returns(resolveAsyncThunk('some-create-price-request'))
+
+      await store.dispatch(deleteFile('some-file-id'))
+      expect(store.getActions(), 'to equal', [{
+        type: TYPE.MODEL.FILE_DELETED,
+        payload: {fileId: 'some-file-id'}
+      }, {
+        type: 'some-create-price-request'
+      }])
     })
   })
 })

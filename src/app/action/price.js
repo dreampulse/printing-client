@@ -2,9 +2,11 @@ import {createAction} from 'redux-actions'
 
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
-import {poll, debouncedPoll} from 'Lib/poll'
+import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
 import {openFatalErrorModal} from 'Action/modal'
 import TYPE, {ERROR_TYPE} from '../type'
+
+const POLL_NAME = 'price'
 
 // Private actions
 
@@ -62,6 +64,8 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
 
   // Abort if user did not upload any models yet
   if (models.length === 0) {
+    // Just to be sure, stop any running price polls
+    stopPoll(POLL_NAME)
     return
   }
 
@@ -81,7 +85,7 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
   }
 
   const usePoll = debounce ? debouncedPoll : poll
-  await usePoll('price', async (priceId) => {
+  await usePoll(POLL_NAME, async (priceId) => {
     const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
     dispatch(priceReceived(price))
     return isComplete
