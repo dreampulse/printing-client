@@ -207,7 +207,7 @@ const mapDispatchToProps = {
   onGoToHome: goToHome,
   onGoToSuccess: goToSuccess,
   onOrderWithStripe: payWithStripe,
-  onCreateOrder: createOrder,
+  onCreateOrder: createOrder
   // onOrderWithPaypal: createOrderWithPaypal,
   // onPayWithPaypal: initPaymentWithPaypal
 }
