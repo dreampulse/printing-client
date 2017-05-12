@@ -31,17 +31,8 @@ const ProviderSection = ({
     disabled
   })
 
-  const providerInfo = (
-    <Info>
-      <Headline modifiers={['s']} label="TODO Headline" />
-      <Paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit
-      </Paragraph>
-    </Info>
-  )
-
   const renderProviderList = () => (
-    <ProviderList providerInfo={providerInfo}>
+    <ProviderList>
       {
         offers
         .sort((a, b) => a.totalPrice > b.totalPrice)
