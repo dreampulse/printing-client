@@ -1,50 +1,47 @@
 import {createAction} from 'redux-actions'
-import debounce from 'lodash/debounce'
 
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
+import {poll, debouncedPoll} from 'Lib/poll'
+import {openFatalErrorModal} from 'Action/modal'
+import TYPE, {ERROR_TYPE} from '../type'
 
-import config from '../../../config'
-import TYPE from '../type'
+// Private actions
 
-import {selectOffer} from './cart'
+const clearOffers = createAction(TYPE.PRICE.CLEAR_OFFERS)
+const priceRequested = createAction(
+  TYPE.PRICE.REQUESTED,
+  priceId => ({priceId})
+)
+const priceReceived = createAction(
+  TYPE.PRICE.RECEIVED,
+  (price, isComplete) => ({price, isComplete})
+)
 
-export const pollFinalPrice = () => (dispatch, getState) => {
-  const interval = config.pollingInverval
+// Public actions
 
-  return new Promise((resolve, reject) => {
-    const pollApi = async () => {
-      const priceId = getState().price.priceId
-      const shouldContinueWithPolling = getState().price.pollCountdown > 0
-      if (shouldContinueWithPolling) {
-        const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
-        dispatch(createAction(TYPE.PRICE.RECEIVED)(price))
-        if (isComplete) {
-          // Done polling
-          resolve()
-        } else {
-          // Retry polling
-          dispatch(createAction(TYPE.PRICE.POLLING_FAILED)())
-          setTimeout(pollApi, interval)
-        }
-      } else {
-        // Give up polling
-        dispatch(createAction(TYPE.PRICE.RECEIVED)({error: true}))
-        reject()
-      }
+export const selectOffer = createAction(
+  TYPE.PRICE.SELECT_OFFER,
+  offer => ({offer})
+)
+
+export const refreshSelectedOffer = () => (dispatch, getState) => {
+  const {
+    price: {
+      offers,
+      selectedOffer
     }
+  } = getState()
 
-    pollApi()  // Start initial polling
-  })
+  if (selectedOffer) {
+    const offer = offers ? getUpdatedOffer(selectedOffer, offers) : null
+    // if (!offer) // TODO: show that offer is no longer available
+    dispatch(selectOffer(offer))
+  }
 }
 
-const priceRequest = async (dispatch, getState) => {
-  dispatch(createAction(TYPE.PRICE.CLEAR_OFFERS)())
-
-  const sa = getState().user.user.shippingAddress
-  if (!sa.city || !sa.zipCode || !sa.stateCode || !sa.countryCode) {
-    throw new Error('Shipping Address Invalid')
-  }
+export const createPriceRequest = (debounce = false) => async (dispatch, getState) => {
+  dispatch(clearOffers())
 
   const {
     material: {
@@ -54,45 +51,54 @@ const priceRequest = async (dispatch, getState) => {
     },
     model: {
       models
+    },
+    price: {
+      priceId: lastPriceId
+    },
+    user: {
+      userId
     }
   } = getState()
 
-  const materialConfigIds = Object.keys(materialConfigs)
-  const items = Object.keys(models).map(modelId => ({
-    modelId,
-    materialConfigIds,
-    quantity: models[modelId].quantity
-  }))
-
-  const lastPriceId = getState().price.priceId
-
   // Abort if user did not upload any models yet
-  if (items.length === 0) {
+  if (models.length === 0) {
     return
   }
 
+  const materialConfigIds = Object.keys(materialConfigs)
+  const items = models.map(({modelId, quantity}) => ({
+    modelId,
+    materialConfigIds,
+    quantity
+  }))
+
   const options = {
-    userId: getState().user.userId,
+    userId,
     items
   }
-  if (lastPriceId) options.lastPriceId = lastPriceId
+  if (lastPriceId) {
+    options.lastPriceId = lastPriceId
+  }
 
-  const priceRequestPromise = printingEngine.createPriceRequest(options)
-
-  await dispatch(createAction(TYPE.PRICE.REQUESTED)(priceRequestPromise))
-  await dispatch(pollFinalPrice())
+  const usePoll = debounce ? debouncedPoll : poll
+  await usePoll('price', async (priceId) => {
+    const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
+    dispatch(priceReceived(price))
+    return isComplete
+  }, async () => {
+    const {priceId} = await printingEngine.createPriceRequest(options)
+    dispatch(priceRequested(priceId))
+    return priceId
+  }).catch((error) => {
+    // Ignore special error when price request was overwritten
+    if (error.type !== ERROR_TYPE.POLL_OVERWRITTEN) {
+      dispatch(priceReceived(error))
+      dispatch(openFatalErrorModal(error))
+    }
+  })
 
   // We need to update the selectedOffer if applicable
-  if (getState().cart.selectedOffer) {
-    const offer = getUpdatedOffer(getState().cart.selectedOffer, getState().price.offers)
-    // if (!offer) // TODO: show that offer is no longer available
-    await dispatch(selectOffer({offer}))
-  }
+  dispatch(refreshSelectedOffer())
 }
-const debouncedPriceRequest = debounce(
-  priceRequest,
-  config.debouncePriceRequestWait
-)
 
-export const createPriceRequest = () => priceRequest
-export const createDebouncedPriceRequest = () => debouncedPriceRequest
+export const createDebouncedPriceRequest = () => createPriceRequest(true)

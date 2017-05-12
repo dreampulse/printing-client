@@ -2,11 +2,13 @@
   $stacking: line, point;
   $point-size: 20px;
 
+  display: block;
   position: relative;
   padding-top: $point-size + $space-s;
   text-align: center;
   font-size: $font-size-l;
   font-weight: $font-weight-light;
+  text-decoration: none;
   color: $color-invert-text;
   transition: color $transition-duration-fast ease-in-out;
 

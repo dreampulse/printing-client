@@ -37,12 +37,12 @@ const initialState = {
   }
 }
 
-function handleShippingAddressChange (state, {payload}) {
+function handleShippingAddressChange (state, {payload: {address}}) {
   return {
     ...state,
     user: {
       ...state.user,
-      shippingAddress: payload
+      shippingAddress: address
     }
   }
 }

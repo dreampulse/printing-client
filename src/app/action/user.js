@@ -5,8 +5,9 @@ import {
   isAddressValid
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
+import {AppError} from 'Lib/error'
 
-import TYPE from '../type'
+import TYPE, {ERROR_TYPE} from '../type'
 import {goToCart} from './navigation'
 
 import {
@@ -16,17 +17,34 @@ import {
 } from './modal'
 import {createPriceRequest} from './price'
 
-export const detectAddress = () =>
-  createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(getLocationByIp())
+// Private actions
+
+const shippingAddressChanged = createAction(
+  TYPE.USER.SHIPPING_ADDRESS_CHANGED,
+  address => ({address})
+)
+
+// Public actions
+
+export const detectAddress = () => async (dispatch) => {
+  try {
+    const address = await getLocationByIp()
+    dispatch(shippingAddressChanged(address))
+  } catch (error) {
+    throw new AppError(ERROR_TYPE.DETECT_ADDRESS_FAILED)
+  }
+}
 
 export const createUser = () => (dispatch, getState) => {
   const user = getState().user.user
+  // TODO handle error
   const userPromise = printingEngine.createUser({user})
   return dispatch(createAction(TYPE.USER.CREATED)(userPromise))
 }
 
 export const updateUser = user => async (dispatch, getState) => {
   const userId = getState().user.userId
+  // TODO handle error
   await printingEngine.updateUser({userId, user})
   return dispatch(createAction(TYPE.USER.UPDATED)(user))
 }
@@ -41,6 +59,7 @@ export const updateLocation = location => async (dispatch, getState) => {
     if (!getState().user.userId) {  // No user created so far
       await dispatch(createUser())
     }
+
     // Update prices
     dispatch(createPriceRequest())
   }
@@ -52,12 +71,13 @@ export const reviewOrder = form => async (dispatch, getState) => {
 
   await dispatch(updateUser(form))
 
+  // TODO: remove this check, just always open fetching price modal
   if (!isEqual(oldShippingAddress, newShippingAddress)) {
     dispatch(openFetchingPriceModal())
 
-    const oldPrice = getState().cart.selectedOffer.totalPrice
+    const oldPrice = getState().price.selectedOffer.totalPrice
     await dispatch(createPriceRequest())
-    const newPrice = getState().cart.selectedOffer.totalPrice
+    const newPrice = getState().price.selectedOffer.totalPrice
     const hasPriceChanged = oldPrice !== newPrice
     if (hasPriceChanged) {
       dispatch(openPriceChangedModal({oldShippingAddress, newShippingAddress}))

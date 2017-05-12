@@ -6,11 +6,6 @@ const baseUrl = config.printingEngineBaseUrl
 export const uploadModel = (file, params, onProgress) =>
   upload(`${baseUrl}/model`, file, params, onProgress)
 
-export const getUploadStatus = async ({modelId}) => {
-  const response = await fetch(`${baseUrl}/model/${modelId}`)
-  return response.status === 200
-}
-
 export const listMaterials = () => requestJson(`${baseUrl}/material`)
 
 export const createUser = ({user}) => requestJson(`${baseUrl}/user`, {method: 'POST', body: user})

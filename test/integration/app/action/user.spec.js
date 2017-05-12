@@ -9,23 +9,23 @@ import Store from '../../../../src/app/store'
 import TYPE from '../../../../src/app/type'
 
 describe('User Integration Test', () => {
+  let sandbox
   let store
 
   beforeEach(() => {
-    sinon.stub(printingEngine)
-    sinon.stub(geolocation)
-    sinon.stub(navigation)
-    sinon.stub(modal)
-    sinon.stub(price)
+    sandbox = sinon.sandbox.create()
+
+    sandbox.stub(printingEngine)
+    sandbox.stub(geolocation)
+    sandbox.stub(navigation)
+    sandbox.stub(modal)
+    sandbox.stub(price)
+
     store = Store()
   })
 
   afterEach(() => {
-    sinon.restore(printingEngine)
-    sinon.restore(geolocation)
-    sinon.restore(navigation)
-    sinon.restore(modal)
-    sinon.restore(price)
+    sandbox.restore()
   })
 
   describe('detectAddress()', () => {
@@ -92,9 +92,9 @@ describe('User Integration Test', () => {
             shippingAddress: 'some-address'
           }
         },
-        cart: {
+        price: {
           selectedOffer: {
-            totoalPrice: 23.42
+            totalPrice: 23.42
           }
         }
       }
@@ -147,7 +147,7 @@ describe('User Integration Test', () => {
       modal.openFetchingPriceModal.returns({type: 'some-action'})
       modal.openPriceChangedModal.returns({type: 'some-action'})
       price.createPriceRequest.resolves({  // updates selected offer
-        type: TYPE.CART.OFFER_SELECTED,
+        type: TYPE.PRICE.SELECT_OFFER,
         payload: {offer: {
           totalPrice: 11.5
         }}

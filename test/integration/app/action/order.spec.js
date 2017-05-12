@@ -9,21 +9,24 @@ import * as printingEngine from '../../../../src/app/lib/printing-engine'
 import * as stripe from '../../../../src/app/service/stripe'
 import * as paypal from '../../../../src/app/service/paypal'
 
-describe('Shopping Cart Integration Test', () => {
+describe('Order Integration Test', () => {
+  let sandbox
   let store
 
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create()
+
+    sandbox.stub(printingEngine)
+    sandbox.stub(stripe)
+    sandbox.stub(paypal)
+  })
+
   afterEach(() => {
-    sinon.restore(printingEngine)
-    sinon.restore(stripe)
-    sinon.restore(paypal)
+    sandbox.restore()
   })
 
   describe('payWithStripe()', () => {
     beforeEach(() => {
-      sinon.stub(printingEngine)
-      sinon.stub(stripe)
-      sinon.stub(paypal)
-
       store = Store({
         user: {
           userId: 'some-user-id',
@@ -32,9 +35,7 @@ describe('Shopping Cart Integration Test', () => {
           }
         },
         price: {
-          priceId: 'some-price-id'
-        },
-        cart: {
+          priceId: 'some-price-id',
           selectedOffer: {
             offerId: 'some-offer-id',
             currency: 'some-currency',
@@ -68,14 +69,27 @@ describe('Shopping Cart Integration Test', () => {
         email: 'some-email-address'
       })
     })
+
+    it('resets orderInProgress if user aborts', async () => {
+      const error = new Error()
+      stripe.checkout.rejects(error)
+
+      try {
+        await store.dispatch(payWithStripe())
+        throw new Error('We should not get here!')
+      } catch (e) {
+        expect(e, 'to be', error)
+
+        expect(store.getState().order, 'to equal', {
+          paymentToken: null,
+          orderInProgress: false
+        })
+      }
+    })
   })
 
   describe('createOrder()', () => {
     beforeEach(() => {
-      sinon.stub(printingEngine)
-      sinon.stub(stripe)
-      sinon.stub(paypal)
-
       store = Store({
         user: {
           userId: 'some-user-id',
@@ -84,9 +98,7 @@ describe('Shopping Cart Integration Test', () => {
           }
         },
         price: {
-          priceId: 'some-price-id'
-        },
-        cart: {
+          priceId: 'some-price-id',
           selectedOffer: {
             offerId: 'some-offer-id',
             currency: 'some-currency',

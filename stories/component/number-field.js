@@ -1,8 +1,8 @@
 import React from 'react'
 import {storiesOf} from '@kadira/storybook'
 
-import HandleValue from '../util/handle-value'
 import NumberField from 'Component/number-field'
+import HandleValue from '../util/handle-value'
 
 storiesOf('Number Field', module)
   .add('default', () => (

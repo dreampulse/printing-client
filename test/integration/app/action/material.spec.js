@@ -9,18 +9,19 @@ import * as materialLib from 'Lib/material'
 import Store from '../../../../src/app/store'
 
 describe('Material Integration Test', () => {
+  let sandbox
   let store
 
   beforeEach(() => {
-    sinon.stub(printingEngine)
-    sinon.stub(materialLib)
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(printingEngine)
+    sandbox.stub(materialLib)
 
     store = Store({})
   })
 
   afterEach(() => {
-    sinon.restore(printingEngine)
-    sinon.restore(materialLib)
+    sandbox.restore()
   })
 
   describe('getMaterials()', () => {

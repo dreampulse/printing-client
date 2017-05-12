@@ -1,8 +1,8 @@
 import {createAction} from 'redux-actions'
 import uniqueId from 'lodash/uniqueId'
 
-import pollApi from '../lib/poll-api'
-import * as printingEngine from '../lib/printing-engine'
+import {uploadModel} from 'Lib/printing-engine'
+import {FileUploadError} from 'Lib/error'
 import {
   createPriceRequest,
   createDebouncedPriceRequest
@@ -10,56 +10,76 @@ import {
 
 import TYPE from '../type'
 
-export const changeQuantity = ({quantity}) => async (dispatch) => {
-  dispatch(createAction(TYPE.MODEL.QUANTITIY_CHANGED)({quantity}))
-  // Update prices
-  await dispatch(createDebouncedPriceRequest())
-}
+// Private actions
 
-export const changeIndividualQuantity = ({quantity, modelId}) => async (dispatch) => {
-  dispatch(createAction(TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED)({quantity, modelId}))
-  // Update prices
-  await dispatch(createDebouncedPriceRequest())
-}
-
-export const changeUnit = ({unit}) =>
-  createAction(TYPE.MODEL.UNIT_CHANGED)({unit})
-
-export const checkUploadStatus = ({modelId}) => async (dispatch) => {
-  dispatch(createAction(TYPE.MODEL.CHECK_STATUS_STARTED)({modelId}))
-
-  try {
-    await pollApi(() => printingEngine.getUploadStatus({modelId}))
-    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({modelId}))
-  } catch (e) {
-    dispatch(createAction(TYPE.MODEL.CHECK_STATUS_FINISHED)({modelId, error: true}))
-  }
-}
-
-export const uploadFile = file => async (dispatch, getState) => {
-  const fileId = uniqueId('file-id-')
-  const unit = getState().model.selectedUnit
-
-  dispatch(createAction(TYPE.PRICE.CLEAR_OFFERS)())
-  dispatch(createAction(TYPE.MATERIAL.CONFIG_SELECTED)())  // Resets current selection
-  dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_STARTED)({
+const quantityChanged = createAction(
+  TYPE.MODEL.QUANTITIY_CHANGED,
+  quantity => ({quantity})
+)
+const individualQuantityChanged = createAction(
+  TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED,
+  (modelId, quantity) => ({modelId, quantity})
+)
+const fileUploadStarted = createAction(
+  TYPE.MODEL.FILE_UPLOAD_STARTED,
+  (fileId, file) => ({
     fileId,
     name: file.name,
     size: file.size
-  }))
+  })
+)
+const fileUploadProgressed = createAction(
+  TYPE.MODEL.FILE_UPLOAD_PROGRESSED,
+  (fileId, progress) => ({fileId, progress})
+)
+const fileUploaded = createAction(
+  TYPE.MODEL.FILE_UPLOADED,
+  (fileId, model) => ({
+    fileId,
+    modelId: model.modelId,
+    thumbnailUrl: model.thumbnailUrl,
+    fileName: model.fileName,
+    fileUnit: model.fileUnit,
+    dimensions: model.dimensions,
+    area: model.area,
+    volume: model.volume
+  })
+)
 
-  const onUploadProgressed = progress =>
-    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_PROGRESSED)({progress, fileId}))
+// Public actions
+
+export const changeQuantity = ({quantity}) => (dispatch) => {
+  dispatch(quantityChanged(quantity))
+  // Update prices
+  return dispatch(createDebouncedPriceRequest())
+}
+
+export const changeIndividualQuantity = ({quantity, modelId}) => (dispatch) => {
+  dispatch(individualQuantityChanged(modelId, quantity))
+  // Update prices
+  return dispatch(createDebouncedPriceRequest())
+}
+
+export const changeUnit = createAction(TYPE.MODEL.UNIT_CHANGED, ({unit}) => ({unit}))
+
+const uploadFile = file => async (dispatch, getState) => {
+  const fileId = uniqueId('file-id-')
+  const unit = getState().model.selectedUnit
+
+  // TODO: reduce number of actions here and let multiple reducers listen to the same action
+  dispatch(createAction(TYPE.PRICE.CLEAR_OFFERS)())
+  dispatch(createAction(TYPE.MATERIAL.CONFIG_SELECTED)()) // Resets current selection
+  dispatch(fileUploadStarted(fileId, file))
+
+  const onUploadProgressed = progress => dispatch(fileUploadProgressed(fileId, progress))
 
   try {
-    const {modelId, thumbnailUrl} =
-      await printingEngine.uploadModel(file, {unit}, onUploadProgressed)
-    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({modelId, fileId, thumbnailUrl}))
-
-    await dispatch(checkUploadStatus({modelId}))
-  } catch (e) {
-    dispatch(createAction(TYPE.MODEL.UPLOAD_TO_BACKEND_FINISHED)({fileId, error: true}))
-    throw new Error('Upload failed')  // Prevent to create a price request if upload failed
+    const modelData = await uploadModel(file, {unit}, onUploadProgressed)
+    dispatch(fileUploaded(fileId, modelData))
+  } catch (error) {
+    const uploadError = new FileUploadError(fileId)
+    dispatch(fileUploaded(uploadError))
+    throw uploadError  // Prevent to create a price request if upload failed
   }
 }
 

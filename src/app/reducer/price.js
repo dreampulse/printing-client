@@ -1,60 +1,62 @@
 import {handleActions} from 'redux-actions'
 
 import TYPE from '../type'
-import config from '../../../config'
-
-const initialCountdown = config.pollingRetries
 
 const initialState = {
   priceId: null,
   offers: null,
-  pollCountdown: initialCountdown,
-  printingServiceComplete: null
+  printingServiceComplete: null,
+  selectedOffer: null,
+  error: null
 }
 
 function handleClearOffers (state) {
   return {
     ...state,
     offers: null,
-    printingServiceComplete: null
+    printingServiceComplete: null,
+    error: null
   }
 }
 
-function handlePriceRequested (state, {payload: {priceId}, error}) {
+function handleSelectOffer (state, {payload: {offer}}) {
   return {
     ...state,
-    priceId,
-    pollCountdown: initialCountdown,
-    error: !!error
+    selectedOffer: offer
   }
 }
 
-function handlePriceReceived (state, {payload: {offers, printingServiceComplete, error}}) {
+function handlePriceRequested (state, {payload: {priceId}}) {
+  return {
+    ...state,
+    priceId
+  }
+}
+
+function handlePriceReceived (state, {payload, error}) {
   if (error) {
     return {
-      ...state,
-      error
+      ...initialState,
+      error: payload
     }
   }
+
+  const {
+    offers,
+    printingServiceComplete
+  } = payload.price
 
   return {
     ...state,
     offers,
     printingServiceComplete,
-    error: false
-  }
-}
-
-function handlePollingFailed (state) {
-  return {
-    ...state,
-    pollCountdown: state.pollCountdown - 1
+    error: null
   }
 }
 
 export default handleActions({
   [TYPE.PRICE.CLEAR_OFFERS]: handleClearOffers,
+  [TYPE.PRICE.SELECT_OFFER]: handleSelectOffer,
   [TYPE.PRICE.REQUESTED]: handlePriceRequested,
-  [TYPE.PRICE.RECEIVED]: handlePriceReceived,
-  [TYPE.PRICE.POLLING_FAILED]: handlePollingFailed
+  [TYPE.PRICE.RECEIVED]: handlePriceReceived
 }, initialState)

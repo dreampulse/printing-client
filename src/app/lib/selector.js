@@ -16,13 +16,12 @@ export const selectCommonQuantity = (state) => {
     }
   } = state
 
-  const keys = Object.keys(models)
-  if (keys.length === 0) {
+  if (models.length === 0) {
     return undefined
   }
 
-  return keys.reduce((quantity, modelId) => {
-    const modelQuantity = models[modelId].quantity
+  return models.reduce((quantity, model) => {
+    const modelQuantity = model.quantity
     if (quantity === null) {
       return modelQuantity
     }
@@ -147,7 +146,7 @@ export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
 
 export const selectedOfferMaterial = (state) => {
   const {
-    cart: {
+    price: {
       selectedOffer: {
         materialConfigId
       }
@@ -185,32 +184,31 @@ export const selectCurrentMaterial = (state) => {
     selectMaterialByName(state, config.defaultSelectedMaterial)
 }
 
-export const selectThumbnailUrlByModelId = (state, modelId) => {
+export const selectModelByModelId = (state, modelId) => {
   const {
     model: {models}
   } = state
-  return models[modelId] ? models[modelId].thumbnailUrl : null
-}
 
-export const selectNameByModelId = (state, modelId) => {
-  const {
-    model: {models}
-  } = state
-  return models[modelId] ? models[modelId].name : null
+  return models
+    .filter(model => model.modelId === modelId)
+    .shift() || null
 }
 
 export const selectOfferItems = (state) => {
   const {
-    cart: {
+    price: {
       selectedOffer: {items}
     }
   } = state
 
-  return items.map(item => ({
-    ...item,
-    thumbnailUrl: selectThumbnailUrlByModelId(state, item.modelId),
-    name: selectNameByModelId(state, item.modelId)
-  }))
+  return items.map((item) => {
+    const model = selectModelByModelId(state, item.modelId)
+    return {
+      ...item,
+      thumbnailUrl: model ? model.thumbnailUrl : null,
+      name: model ? model.name : null
+    }
+  })
 }
 
 export const selectOffersForSelectedMaterialConfig = (state) => {
@@ -249,16 +247,12 @@ export const selectPrintingServiceRequests = (state) => {
 }
 
 export const selectAreAllUploadsFinished = (state) => {
-  if (state.model.numberOfUploads > 0) {
-    return false
-  }
+  const {
+    model: {
+      numberOfUploads,
+      models
+    }
+  } = state
 
-  if (Object.keys(state.model.models).length < 1) {
-    return false
-  }
-
-  return Object.keys(state.model.models)
-    .map(modelId => state.model.models[modelId])
-    .map(model => model.checkStatusFinished)
-    .reduce((acc, checkStatusFinished) => acc && checkStatusFinished, true)
+  return numberOfUploads === 0 && models.length > 0
 }

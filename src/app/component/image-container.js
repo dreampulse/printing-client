@@ -28,6 +28,10 @@ export default class ImageContainer extends Component {
     }
   }
 
+  componentWillUnmount () {
+    this.unmounted = true
+  }
+
   getGradient = (element) => {
     if (element) {
       this.gradient = global.getComputedStyle(element, null).getPropertyValue('background-image')
@@ -43,15 +47,19 @@ export default class ImageContainer extends Component {
 
     if (source) {
       preloadImage(source).then(() => {
-        this.setState({
-          imageLoading: false,
-          imageLoaded: true
-        })
+        if (!this.unmounted) {
+          this.setState({
+            imageLoading: false,
+            imageLoaded: true
+          })
+        }
       }).catch(() => {
-        this.setState({
-          imageLoading: false,
-          imageError: true
-        })
+        if (!this.unmounted) {
+          this.setState({
+            imageLoading: false,
+            imageError: true
+          })
+        }
       })
     }
   }

@@ -16,7 +16,7 @@ import Paragraph from 'Component/paragraph'
 import ProviderList from 'Component/provider-list'
 import ProviderItem from 'Component/provider-item'
 
-import {selectOffer} from 'Action/cart'
+import {selectOffer} from 'Action/price'
 import {goToAddress} from 'Action/navigation'
 
 const ProviderSection = ({
@@ -52,7 +52,7 @@ const ProviderSection = ({
             price={formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}
             shipping={formatShipping(offer.shipping)}
             onCheckoutClick={() => {
-              onSelectOffer({offer})
+              onSelectOffer(offer)
               onGoToAddress()
             }}
           />

@@ -1,14 +1,20 @@
 import {detectAddress, createUser} from './user'
 import {getMaterials} from './material'
-import {openAddressModal} from './modal'
+import {openAddressModal, openFatalErrorModal} from './modal'
 
-export default () => async (dispatch) => {
-  dispatch(getMaterials())
+import {ERROR_TYPE} from '../type'
 
-  try {
-    await dispatch(detectAddress())
-    dispatch(createUser())
-  } catch (e) {
-    dispatch(openAddressModal())
-  }
-}
+export const init = () => dispatch => (
+  Promise.all([
+    dispatch(getMaterials()),
+    dispatch(detectAddress())
+      .then(() => dispatch(createUser()))
+  ])
+  .catch((error) => {
+    if (error.type === ERROR_TYPE.DETECT_ADDRESS_FAILED) {
+      dispatch(openAddressModal())
+    } else {
+      dispatch(openFatalErrorModal(error))
+    }
+  })
+)

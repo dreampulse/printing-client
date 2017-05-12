@@ -2,7 +2,7 @@ import {request} from 'Service/http'
 import timeout from './timeout'
 import config from '../../../config'
 
-const URL = 'http://ip-api.com/json'
+const URL = 'https://pro.ip-api.com/json/?key=CVsxFrDy2yI1Ctu'
 
 export const getLocationByIp = async () => {
   const {

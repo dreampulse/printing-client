@@ -1,24 +1,38 @@
 import {routerActions} from 'react-router-redux'
 
+import {
+  goToCart,
+  goToSuccess,
+  goToAddress,
+  goToHome
+} from 'Action/navigation'
 import Store from '../../../../src/app/store'
-import {goToCart, goToSuccess, goToHome} from '../../../../src/app/action/navigation'
 
-describe('Navigation Integration Test', () => {
+describe('Navigation actions', () => {
+  let sandbox
   let store
 
   beforeEach(() => {
-    sinon.stub(routerActions, 'push').returns({type: 'foo'})
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(routerActions, 'push').returns({type: 'foo'})
     store = Store({})
   })
 
   afterEach(() => {
-    sinon.restore(routerActions.push)
+    sandbox.restore()
   })
 
   describe('goToCart()', () => {
     it('should got to vendor', () => {
       store.dispatch(goToCart())
       expect(routerActions.push, 'was called with', '/cart')
+    })
+  })
+
+  describe('goToAddress()', () => {
+    it('should got to vendor', () => {
+      store.dispatch(goToAddress())
+      expect(routerActions.push, 'was called with', '/address')
     })
   })
 
@@ -32,7 +46,7 @@ describe('Navigation Integration Test', () => {
   describe('goToHome()', () => {
     it('should got to vendor', () => {
       store.dispatch(goToHome())
-      expect(routerActions.push, 'was called with', '/model')
+      expect(routerActions.push, 'was called with', '/')
     })
   })
 })

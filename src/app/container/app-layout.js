@@ -11,22 +11,41 @@ import ProcessStep from 'Component/process-step'
 import Footer from 'Component/footer'
 import Link from 'Component/link'
 
+import {
+  goToHome,
+  goToAddress
+} from 'Action/navigation'
+
 import Modal from './modal'
 
 const AppLayout = ({
   children,
   configurationHeader,
-  currentStep
+  currentStep,
+  onGoToHome,
+  onGoToAddress
 }) => {
   const processStepBar = (
     <ProcessStepBar currentStep={currentStep}>
-      <ProcessStep label="Your Order" />
-      <ProcessStep label="Address" />
+      <ProcessStep
+        label="Your Order"
+        onClick={(event) => {
+          event.preventDefault()
+          onGoToHome()
+        }}
+      />
+      <ProcessStep
+        label="Address"
+        onClick={(event) => {
+          event.preventDefault()
+          onGoToAddress()
+        }}
+      />
       <ProcessStep label="Review and Pay" />
     </ProcessStepBar>
   )
   const header = (
-    <Header key="header">
+    <Header key="header" onClickIdentity={onGoToHome}>
       {currentStep >= 0 ? processStepBar : <div />}
     </Header>
   )
@@ -60,7 +79,10 @@ const AppLayout = ({
 
 const mapStateToProps = () => ({})
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  onGoToHome: goToHome,
+  onGoToAddress: goToAddress
+}
 
 const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps)

@@ -1,13 +1,14 @@
 import config from '../../../config'
 
 export function checkout ({amount, currency, email}) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const checkoutHandler = global.StripeCheckout.configure({
       key: config.stripePublicKey,
-      // image: config.stripePublicKey,
+      image: config.stripeCheckoutImage,
       name: 'All3DP',
-      bitcoin: true,
-      token: token => resolve(token)
+      bitcoin: false,
+      token: token => resolve(token),
+      closed: () => reject(new Error('Payment aborted by user.'))
     })
 
     checkoutHandler.open({

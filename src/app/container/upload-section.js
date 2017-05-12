@@ -26,7 +26,6 @@ import {formatDimensions} from 'Lib/formatter'
 const UploadSection = ({
   models,
   onUploadFiles,
-  uploadedModels,
   selectedUnit,
   onChangeIndividualQuantity,
   onChangeUnit
@@ -61,22 +60,21 @@ const UploadSection = ({
         accept=".stl"
         onChange={onUpload}
       />
-      {uploadedModels.length > 0 && (
+      {models.length > 0 && (
         <ModelItemList>
-          {uploadedModels.map((model) => {
-            // TODO: the state for models is seriously fucked up
-            if (model.error || (models[model.modelId] && models[model.modelId].error)) {
+          {models.map((model) => {
+            if (model.error) {
               // TODO: on delete handler
               return (
                 <ModelItemError
                   key={model.fileId}
                   title="Upload failed"
-                  subline={model.error}
+                  subline={model.error.message}
                 />
               )
             }
 
-            if (!model.uploadFinished) {
+            if (model.progress < 1) {
               // TODO: on delete handler
               return (
                 <ModelItemLoad
@@ -88,7 +86,7 @@ const UploadSection = ({
               )
             }
 
-            if (!models[model.modelId].checkStatusFinished) {
+            if (!model.uploadFinished) {
               // TODO: on delete handler
               return (
                 <ModelItemLoad
@@ -104,11 +102,11 @@ const UploadSection = ({
               <ModelItem
                 key={model.fileId}
                 imageSource={model.thumbnailUrl}
-                quantity={models[model.modelId].quantity}
-                title={models[model.modelId].fileName}
+                quantity={model.quantity}
+                title={model.name}
                 subline={formatDimensions(
-                  models[model.modelId].dimensions,
-                  models[model.modelId].fileUnit
+                  model.dimensions,
+                  model.fileUnit
                 )}
                 onQuantityChange={
                   value => onChangeIndividualQuantity({
@@ -126,7 +124,6 @@ const UploadSection = ({
 }
 
 const mapStateToProps = state => ({
-  uploadedModels: state.model.uploadedModels,
   models: state.model.models,
   selectedUnit: state.model.selectedUnit
 })
