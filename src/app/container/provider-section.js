@@ -11,8 +11,6 @@ import {
 
 import Section from 'Component/section'
 import Headline from 'Component/headline'
-import Info from 'Component/info'
-import Paragraph from 'Component/paragraph'
 import ProviderList from 'Component/provider-list'
 import ProviderItem from 'Component/provider-item'
 
