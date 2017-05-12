@@ -27,14 +27,13 @@ import ModelQuantityItem from 'Component/model-quantity-item'
 import ModelQuantityItemList from 'Component/model-quantity-item-list'
 import ColorSquare from 'Component/color-square'
 import LoadingIndicator from 'Component/loading-indicator'
+import PaypalButton from 'Component/paypal-button'
 
 import backIcon from 'Icon/back.svg'
 import creditCardIcon from 'Icon/credit-card.svg'
-// import paypalIcon from 'Icon/paypal.svg'
 
 import {goBack, goToHome, goToSuccess} from 'Action/navigation'
-// import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from 'Action/order'
-import {payWithStripe, createOrder} from 'Action/order'
+import {payWithStripe, createOrder, initPaymentWithPaypal, createOrderWithPaypal} from 'Action/order'
 
 import AppLayout from './app-layout'
 
@@ -49,7 +48,8 @@ const CartPage = ({
   onCreateOrder,
   onGoToSuccess,
   order,
-  // onOrderWithPaypal,
+  onPayWithPaypal,
+  onOrderWithPaypal,
   onItemDelete
 }) => {
   const CartQantityList = () => {
@@ -150,7 +150,7 @@ const CartPage = ({
       <Button
         modifiers={['block']}
         icon={creditCardIcon}
-        label="Pay with Stripe"
+        label="Pay with Credit Card"
         onClick={async () => {
           try {
             await onOrderWithStripe()
@@ -163,10 +163,13 @@ const CartPage = ({
           onGoToSuccess()
         }}
       />
-      {/*
-        <Button icon={paypalIcon} modifiers={['block']}
-          label="Pay with Paypal" onClick={onOrderWithPaypal} />
-      */}
+      <PaypalButton
+        className="paypal-button"
+        payment={onPayWithPaypal}
+        onAuthorize={onOrderWithPaypal}
+        onCancel={() => global.alert('Payment canceled')}
+        onError={() => global.alert('Payment failed')}
+      />
     </div>
   )
 
@@ -210,8 +213,8 @@ const mapDispatchToProps = {
   onGoToSuccess: goToSuccess,
   onOrderWithStripe: payWithStripe,
   onCreateOrder: createOrder,
-  // onOrderWithPaypal: createOrderWithPaypal,
-  // onPayWithPaypal: initPaymentWithPaypal,
+  onOrderWithPaypal: createOrderWithPaypal,
+  onPayWithPaypal: initPaymentWithPaypal,
   onItemDelete: () => {} // TODO: add action
 }
 

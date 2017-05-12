@@ -1,8 +1,8 @@
 import {
   payWithStripe,
-  createOrder
-  // initPaymentWithPaypal,
-  // createOrderWithPaypal
+  createOrder,
+  initPaymentWithPaypal,
+  createOrderWithPaypal
 } from '../../../../src/app/action/order'
 import Store from '../../../../src/app/store'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
@@ -133,32 +133,36 @@ describe('Order Integration Test', () => {
     })
   })
 
-  // describe('initPaymentWithPaypal', () => {
-  //   it.skip('should work', async () => {
-  //     paypal.createPayment.resolves('some-payment')
-  //
-  //     const payment = await store.dispatch(initPaymentWithPaypal())
-  //     expect(payment, 'to equal', 'some-payment')
-  //
-  //     expect(paypal.createPayment, 'was called with', {
-  //       amount: 52.5,
-  //       currency: 'some-currency',
-  //       cartId: 'some-cart-id'
-  //     })
-  //   })
-  // })
-  //
-  // describe('createOrderWithPaypal', () => {
-  //   it.skip('should work', async () => {
-  //     const data = {foo: 'bar'}
-  //     const actions = {bar: 'baz'}
-  //     paypal.executePayment.withArgs({actions}).resolves({id: 'some-payment-id'})
-  //
-  //     await store.dispatch(createOrderWithPaypal(data, actions))
-  //
-  //     expect(store.getState().order, 'to equal', {
-  //       orderId: 'some-order-id'
-  //     })
-  //   })
-  // })
+  describe('initPaymentWithPaypal', () => {
+    it.skip('should work', async () => {
+      paypal.createPayment.resolves('some-payment')
+
+      const payment = await store.dispatch(initPaymentWithPaypal())
+      expect(payment, 'to equal', 'some-payment')
+
+      expect(paypal.createPayment, 'was called with', {
+        amount: 52.5,
+        currency: 'some-currency',
+        offerId: 'some-offer-id'
+      })
+    })
+  })
+
+  describe('createOrderWithPaypal', () => {
+    it.skip('should work', async () => {
+      const data = {foo: 'bar'}
+      const actions = {bar: 'baz'}
+      paypal.executePayment.withArgs({actions}).resolves({id: 'some-payment-id'})
+
+      await store.dispatch(createOrderWithPaypal(data, actions))
+
+      expect(store.getState().order, 'to equal', {
+        userId: 'some-user-id',
+        offerId: 'some-offer-id',
+        priceId: 'some-price-id',
+        type: 'paypal',
+        token: 'some-payment-id'
+      })
+    })
+  })
 })
