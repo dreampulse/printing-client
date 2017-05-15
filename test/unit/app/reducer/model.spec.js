@@ -176,7 +176,16 @@ describe('Model reducer', () => {
 
       action = {
         type: TYPE.MODEL.FILE_UPLOADED,
-        payload: {fileId: 1, modelId: 'some-model-id', thumbnailUrl: 'some-url'}
+        payload: {
+          fileId: 1,
+          modelId: 'some-model-id',
+          thumbnailUrl: 'some-url',
+          fileName: 'some-file.stl',
+          fileUnit: 'mm',
+          area: 100,
+          volume: 200,
+          dimensions: {x: 1, y: 2, z: 3}
+        }
       }
     })
 
@@ -188,7 +197,12 @@ describe('Model reducer', () => {
           uploadFinished: true,
           quantity: 1,
           modelId: 'some-model-id',
-          thumbnailUrl: 'some-url'
+          thumbnailUrl: 'some-url',
+          fileName: 'some-file.stl',
+          fileUnit: 'mm',
+          area: 100,
+          volume: 200,
+          dimensions: {x: 1, y: 2, z: 3}
         },
         {fileId: 2, progress: 0}
       ])

@@ -78,7 +78,12 @@ describe('Model actions', () => {
           onUploadProgressed(1)
           return Promise.resolve({
             modelId: 'some-model-id',
-            thumbnailUrl: 'some-url'
+            thumbnailUrl: 'some-url',
+            fileName: 'some-file.stl',
+            fileUnit: 'mm',
+            area: 100,
+            volume: 200,
+            dimensions: {x: 1, y: 2, z: 3}
           })
         })
     })
@@ -123,7 +128,12 @@ describe('Model actions', () => {
         payload: {
           fileId,
           modelId: 'some-model-id',
-          thumbnailUrl: 'some-url'
+          thumbnailUrl: 'some-url',
+          fileName: 'some-file.stl',
+          fileUnit: 'mm',
+          area: 100,
+          volume: 200,
+          dimensions: {x: 1, y: 2, z: 3}
         }
       }, {
         type: 'some-create-price-request'

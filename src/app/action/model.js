@@ -37,7 +37,12 @@ const fileUploaded = createAction(
   (fileId, model) => ({
     fileId,
     modelId: model.modelId,
-    thumbnailUrl: model.thumbnailUrl
+    thumbnailUrl: model.thumbnailUrl,
+    fileName: model.fileName,
+    fileUnit: model.fileUnit,
+    dimensions: model.dimensions,
+    area: model.area,
+    volume: model.volume
   })
 )
 

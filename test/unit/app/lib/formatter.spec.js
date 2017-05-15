@@ -3,7 +3,8 @@ import {
   formatPrice,
   formatDeliveryTime,
   formatShipping,
-  formatAddress
+  formatAddress,
+  formatDimensions
 } from 'Lib/formatter'
 
 describe('formatCurrency()', () => {
@@ -69,5 +70,19 @@ describe('formatAddress', () => {
     expect(formatAddress({
       countryCode: 'DE'
     }), 'to equal', '')
+  })
+})
+
+describe('formatDimensions', () => {
+  it('returns string for 2-dimensional object', () => {
+    expect(formatDimensions({x: 1, y: 2}, 'mm'), 'to equal', '1 × 2 mm')
+  })
+
+  it('returns string for 3-dimensional object', () => {
+    expect(formatDimensions({x: 1, y: 2, z: 3}, 'mm'), 'to equal', '1 × 2 × 3 mm')
+  })
+
+  it('rounds to at most 2 decimal places', () => {
+    expect(formatDimensions({x: 1.5, y: 2.05, z: 3.005}, 'mm'), 'to equal', '1.5 × 2.05 × 3.01 mm')
   })
 })
