@@ -22,6 +22,7 @@ import {
   changeIndividualQuantity,
   changeUnit
 } from 'Action/model'
+import {formatDimensions} from 'Lib/formatter'
 
 const UploadSection = ({
   models,
@@ -98,15 +99,19 @@ const UploadSection = ({
               )
             }
 
-            // TODO: subline
             return (
               <ModelItem
                 key={model.fileId}
                 imageSource={model.thumbnailUrl}
                 quantity={model.quantity}
                 title={model.name}
-                subline="TODO"
+
                 onDelete={() => onDeleteFile(model.fileId)}
+                subline={formatDimensions(
+                  model.dimensions,
+                  model.fileUnit
+                )}
+
                 onQuantityChange={
                   value => onChangeIndividualQuantity({
                     quantity: value,

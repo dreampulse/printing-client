@@ -81,7 +81,7 @@ function handleFileUploaded (state, {payload, error}) {
     }
   }
 
-  const {modelId, thumbnailUrl} = payload
+  const {modelId, thumbnailUrl, fileName, fileUnit, dimensions, area, volume} = payload
 
   return {
     ...state,
@@ -91,7 +91,12 @@ function handleFileUploaded (state, {payload, error}) {
       uploadFinished: true,
       quantity: 1,
       modelId,
-      thumbnailUrl
+      thumbnailUrl,
+      fileName,
+      fileUnit,
+      dimensions,
+      area,
+      volume
     })
   }
 }

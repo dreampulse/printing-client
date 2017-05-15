@@ -43,7 +43,12 @@ describe('Model Integration Test', () => {
 
       printingEngine.uploadModel.resolves({
         modelId: 'some-model-id',
-        thumbnailUrl: 'some-thumbnail-url'
+        thumbnailUrl: 'some-thumbnail-url',
+        fileName: 'some-file.stl',
+        fileUnit: 'mm',
+        area: 100,
+        volume: 200,
+        dimensions: {x: 1, y: 2, z: 3}
       })
       printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
       printingEngine.getPriceWithStatus.resolves({
@@ -100,7 +105,12 @@ describe('Model Integration Test', () => {
         size: 42,
         progress: 1,
         uploadFinished: true,
-        quantity: 1
+        quantity: 1,
+        fileName: 'some-file.stl',
+        fileUnit: 'mm',
+        area: 100,
+        volume: 200,
+        dimensions: {x: 1, y: 2, z: 3}
       })
 
       expect(store.getState().price, 'to satisfy', {
