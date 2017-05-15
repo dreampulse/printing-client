@@ -134,9 +134,9 @@ const MaterialSection = ({
     return (
       <MaterialCard
         key={finishGroup.name}
-        title={finishGroup.materialName}
+        title={finishGroup.name}
+        subline={finishGroup.materialName}
         shipping={bestOffer && formatDeliveryTime(bestOffer.shipping.deliveryTime)}
-        subline={finishGroup.name}
         description={finishGroup.summary}
         price={materialPrice}
         info={info}
