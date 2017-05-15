@@ -1,5 +1,6 @@
 import {
   uploadFiles,
+  deleteFile,
   changeQuantity,
   changeIndividualQuantity,
   changeUnit
@@ -282,6 +283,74 @@ describe('Model Integration Test', () => {
     it('updates the current selected unit state', () => {
       store.dispatch(changeUnit({unit: 'some-unit'}))
       expect(store.getState().model.selectedUnit, 'to equal', 'some-unit')
+    })
+  })
+
+  describe('deleteFile()', () => {
+    it('deletes file and creates a price request', async () => {
+      store = Store({
+        model: {
+          models: [
+            {fileId: 1},
+            {fileId: 2}
+          ]
+        },
+        material: {
+          materials: {
+            materialConfigs: {
+              'some-material-id': 'something',
+              'some-material-other-id': 'something'
+            },
+            materialStructure: []
+          }
+        },
+        user: {
+          userId: 'some-user-id',
+          user: {
+            shippingAddress: {
+              city: 'Pittsburgh',
+              zipCode: '15234',
+              stateCode: 'PA',
+              countryCode: 'US'
+            }
+          }
+        }
+      })
+
+      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: true,
+        price: {
+          offers: [{
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          }
+        }
+      })
+
+      await store.dispatch(deleteFile(2))
+
+      expect(store.getState().model.models, 'to equal', [{
+        fileId: 1
+      }])
+
+      expect(store.getState().price, 'to satisfy', {
+        priceId: 'some-price-id',
+        offers: [{
+          materialConfigId: 1,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }],
+        printingServiceComplete: {
+          shapeways: true,
+          imaterialize: true
+        }
+      })
     })
   })
 })

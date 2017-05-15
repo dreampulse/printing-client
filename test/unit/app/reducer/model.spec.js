@@ -238,4 +238,31 @@ describe('Model reducer', () => {
       })
     })
   })
+
+  describe('handles TYPE.MODEL.FILE_DELETED:', () => {
+    let stateBefore
+    let action
+
+    beforeEach(() => {
+      stateBefore = {
+        some: 'thing',
+        models: [
+          {fileId: 1},
+          {fileId: 2}
+        ]
+      }
+
+      action = {
+        type: TYPE.MODEL.FILE_DELETED,
+        payload: {fileId: 2}
+      }
+    })
+
+    it('deletes file in models array', () => {
+      expect(reducer(stateBefore, action), 'to equal', {
+        some: 'thing',
+        models: [{fileId: 1}]
+      })
+    })
+  })
 })

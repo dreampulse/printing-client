@@ -45,6 +45,7 @@ const fileUploaded = createAction(
     volume: model.volume
   })
 )
+const fileDeleted = createAction(TYPE.MODEL.FILE_DELETED, fileId => ({fileId}))
 
 // Public actions
 
@@ -87,5 +88,10 @@ export const uploadFiles = files => async (dispatch) => {
   await Promise.all(
     files.map(file => dispatch(uploadFile(file)))
   )
+  await dispatch(createPriceRequest())
+}
+
+export const deleteFile = fileId => async (dispatch) => {
+  dispatch(fileDeleted(fileId))
   await dispatch(createPriceRequest())
 }
