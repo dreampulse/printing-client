@@ -134,14 +134,14 @@ describe('Order Integration Test', () => {
   })
 
   describe('initPaymentWithPaypal', () => {
-    it.skip('should work', async () => {
+    it('should work', async () => {
       paypal.createPayment.resolves('some-payment')
 
       const payment = await store.dispatch(initPaymentWithPaypal())
       expect(payment, 'to equal', 'some-payment')
 
       expect(paypal.createPayment, 'was called with', {
-        amount: 52.5,
+        amount: 23.5,
         currency: 'some-currency',
         offerId: 'some-offer-id'
       })
@@ -149,7 +149,31 @@ describe('Order Integration Test', () => {
   })
 
   describe('createOrderWithPaypal', () => {
-    it.skip('should work', async () => {
+    beforeEach(() => {
+      store = Store({
+        user: {
+          userId: 'some-user-id',
+          user: {
+            emailAddress: 'some-email-address'
+          }
+        },
+        price: {
+          priceId: 'some-price-id',
+          selectedOffer: {
+            offerId: 'some-offer-id',
+            currency: 'some-currency',
+            totalPrice: 23.5
+          }
+        },
+        order: {
+          orderInProgress: true
+        }
+      })
+
+      printingEngine.order.resolves({orderId: 'some-order-id'})
+    })
+
+    it('should work', async () => {
       const data = {foo: 'bar'}
       const actions = {bar: 'baz'}
       paypal.executePayment.withArgs({actions}).resolves({id: 'some-payment-id'})
@@ -157,11 +181,8 @@ describe('Order Integration Test', () => {
       await store.dispatch(createOrderWithPaypal(data, actions))
 
       expect(store.getState().order, 'to equal', {
-        userId: 'some-user-id',
-        offerId: 'some-offer-id',
-        priceId: 'some-price-id',
-        type: 'paypal',
-        token: 'some-payment-id'
+        orderId: 'some-order-id',
+        orderInProgress: false
       })
     })
   })
