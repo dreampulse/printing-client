@@ -33,7 +33,8 @@ import backIcon from 'Icon/back.svg'
 import creditCardIcon from 'Icon/credit-card.svg'
 
 import {goBack, goToHome, goToSuccess} from 'Action/navigation'
-import {payWithStripe, createOrder, initPaymentWithPaypal, createOrderWithPaypal} from 'Action/order'
+import {payWithStripe, createOrderWithStripe, payWithPaypal, createOrderWithPaypal} from 'Action/order'
+import {openFatalErrorModal} from 'Action/modal'
 
 import AppLayout from './app-layout'
 
@@ -43,14 +44,17 @@ const CartPage = ({
   offerItems,
   selectedMaterial,
   onGoBack,
-  onOrderWithStripe,
   onGoToHome,
-  onCreateOrder,
   onGoToSuccess,
   order,
+  onItemDelete,
+  onOpenFatalErrorModal,
+
+  onPayWithStripe,
+  onCreateOrderWithStripe,
+
   onPayWithPaypal,
-  onOrderWithPaypal,
-  onItemDelete
+  onCreateOrderWithPaypal
 }) => {
   const CartQantityList = () => {
     const items = offerItems.map(item => (
@@ -153,22 +157,23 @@ const CartPage = ({
         label="Pay with Credit Card"
         onClick={async () => {
           try {
-            await onOrderWithStripe()
+            await onPayWithStripe()
           } catch (error) {
             // Early return if user aborted payment
             return
           }
 
-          await onCreateOrder()
+          await onCreateOrderWithStripe()
           onGoToSuccess()
         }}
       />
       <PaypalButton
         className="paypal-button"
-        payment={onPayWithPaypal}
-        onAuthorize={onOrderWithPaypal}
-        onCancel={() => global.alert('Payment canceled')}
-        onError={() => global.alert('Payment failed')}
+        onClick={onPayWithPaypal}
+        onAuthorize={async () => {
+          await onCreateOrderWithPaypal()
+          onGoToSuccess()
+        }}
       />
     </div>
   )
@@ -211,11 +216,13 @@ const mapDispatchToProps = {
   onGoBack: goBack,
   onGoToHome: goToHome,
   onGoToSuccess: goToSuccess,
-  onOrderWithStripe: payWithStripe,
-  onCreateOrder: createOrder,
-  onOrderWithPaypal: createOrderWithPaypal,
-  onPayWithPaypal: initPaymentWithPaypal,
-  onItemDelete: () => {} // TODO: add action
+  onOpenFatalErrorModal: openFatalErrorModal,
+
+  onPayWithStripe: payWithStripe,
+  onCreateOrderWithStripe: createOrderWithStripe,
+
+  onPayWithPaypal: payWithPaypal,
+  onCreateOrderWithPaypal: createOrderWithPaypal
 }
 
 const enhance = compose(

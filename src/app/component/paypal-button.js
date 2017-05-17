@@ -1,20 +1,19 @@
 import React, {Component, PropTypes} from 'react'
 
-import propTypes from 'Lib/prop-types'
 import config from '../../../config'
 
 class PaypalButton extends Component {
 
   componentDidMount () {
-    const {payment, onAuthorize, onCancel, onError} = this.props
+    const {onClick, onAuthorize, onCancel, onError} = this.props
 
     const options = {
       ...config.paypal,
-      payment,
+      payment: onClick,
       onAuthorize,
       onCancel,
       onError,
-      commit: true, // show 'Pay Now' button during checkout
+      commit: true,  // Show 'Pay Now' button during checkout
       style: {size: 'responsive', color: 'gold', shape: 'rect'}
     }
 
@@ -23,16 +22,15 @@ class PaypalButton extends Component {
 
   render () {
     return (
-      <div className={this.props.className} ref={(div) => { this.paypalButton = div }} />
+      <div className="paypal-button" ref={(el) => { this.paypalButton = el }} />
     )
   }
 
 }
 
 PaypalButton.propTypes = {
-  ...propTypes.component,
-  payment: PropTypes.func,
-  onAuthorize: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
+  onAuthorize: PropTypes.func.isRequired,
   onCancel: PropTypes.func,
   onError: PropTypes.func
 }
