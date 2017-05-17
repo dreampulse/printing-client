@@ -47,8 +47,6 @@ const CartPage = ({
   onGoToHome,
   onGoToSuccess,
   order,
-  onItemDelete,
-  onOpenFatalErrorModal,
 
   onPayWithStripe,
   onCreateOrderWithStripe,
@@ -148,34 +146,34 @@ const CartPage = ({
 
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
 
-  const paymentButtons = (
-    <div>
-      <Button
-        modifiers={['block']}
-        icon={creditCardIcon}
-        label="Pay with Credit Card"
-        onClick={async () => {
-          try {
-            await onPayWithStripe()
-          } catch (error) {
-            // Early return if user aborted payment
-            return
-          }
+  const paymentButtons = [
+    <Button
+      key="payment-button-0"
+      modifiers={['block']}
+      icon={creditCardIcon}
+      label="Pay with Credit Card"
+      onClick={async () => {
+        try {
+          await onPayWithStripe()
+        } catch (error) {
+          // Early return if user aborted payment
+          return
+        }
 
-          await onCreateOrderWithStripe()
-          onGoToSuccess()
-        }}
-      />
-      <PaypalButton
-        className="paypal-button"
-        onClick={onPayWithPaypal}
-        onAuthorize={async () => {
-          await onCreateOrderWithPaypal()
-          onGoToSuccess()
-        }}
-      />
-    </div>
-  )
+        await onCreateOrderWithStripe()
+        onGoToSuccess()
+      }}
+    />,
+    <PaypalButton
+      key="payment-button-1"
+      className="paypal-button"
+      onClick={onPayWithPaypal}
+      onAuthorize={async () => {
+        await onCreateOrderWithPaypal()
+        onGoToSuccess()
+      }}
+    />
+  ]
 
   const paymentSection = (
     <PaymentSection

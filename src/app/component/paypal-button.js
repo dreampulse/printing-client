@@ -22,7 +22,7 @@ class PaypalButton extends Component {
 
   render () {
     return (
-      <div className="paypal-button" ref={(el) => { this.paypalButton = el }} />
+      <div ref={(el) => { this.paypalButton = el }} />
     )
   }
 
