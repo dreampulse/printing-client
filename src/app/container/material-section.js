@@ -124,9 +124,9 @@ const MaterialSection = ({
     )
     const info = (
       <Info>
-        <Headline modifiers={['s']} label="TODO Headline" />
+        <Headline modifiers={['s']} label="Delivery Time" />
         <Paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit
+          The delivery time is an approximate summary of  production time and shipping time.
         </Paragraph>
       </Info>
     )

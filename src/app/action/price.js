@@ -99,8 +99,9 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
     dispatch(refreshSelectedOffer())
   })
   .catch((error) => {
-    // Ignore special error when price request was overwritten
-    if (error.type !== ERROR_TYPE.POLL_OVERWRITTEN) {
+    // Ignore special error when price request was overwritten or stopped
+    if (error.type !== ERROR_TYPE.POLL_OVERWRITTEN &&
+      error.type !== ERROR_TYPE.POLL_STOPPED) {
       dispatch(priceReceived(error))
       dispatch(openFatalErrorModal(error))
     }
