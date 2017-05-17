@@ -6,6 +6,7 @@ import {
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
 import {AppError} from 'Lib/error'
+import {identify} from 'Service/mixpanel'
 
 import TYPE, {ERROR_TYPE} from '../type'
 import {goToCart} from './navigation'
@@ -70,8 +71,18 @@ export const updateLocation = address => async (dispatch, getState) => {
 }
 
 export const reviewOrder = form => async (dispatch, getState) => {
-  const oldShippingAddress = getState().user.user.shippingAddress
+  const user = getState().user.user
+  const oldShippingAddress = user.shippingAddress
   const newShippingAddress = form.shippingAddress
+
+  // Send user information to Mixpanel
+  identify({
+    $name: `${user.shippingAddress.firstName} ${user.shippingAddress.lastName}`,
+    $city: user.shippingAddress.city,
+    $country: user.shippingAddress.countryCode,
+    $email: user.emailAddress,
+    raw: user
+  })
 
   await dispatch(updateUser(form))
 
