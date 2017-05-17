@@ -63,11 +63,9 @@ export const payWithStripe = () => async (dispatch, getState) => {
 }
 
 export const payWithPaypal = () => (dispatch, getState) => {
-  const amount = getState().price.selectedOffer.totalPrice
-  const currency = getState().price.selectedOffer.currency
-  const offerId = getState().price.selectedOffer.offerId
+  const {totalPrice, currency, offerId} = getState().price.selectedOffer
 
-  return paypal.createPayment({amount, currency, offerId})
+  return paypal.createPayment({amount: totalPrice, currency, offerId})
 }
 
 export const createOrderWithStripe = () => (dispatch, getState) => {
