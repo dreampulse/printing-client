@@ -15,6 +15,12 @@ export const openAddressModal = () =>
 export const openFetchingPriceModal = () =>
   open({contentType: MODAL_TYPE.FETCHING_PRICE})
 
+export const openPriceLocationChangedModal = (oldShippingAddress, newShippingAddress) =>
+  open({
+    contentType: MODAL_TYPE.PRICE_LOCATION_CHANGED,
+    contentProps: {oldShippingAddress, newShippingAddress}
+  })
+
 export const openPriceChangedModal = props =>
   open({contentType: MODAL_TYPE.PRICE_CHANGED, contentProps: props})
 
