@@ -23,6 +23,10 @@ const shippingAddressChanged = createAction(
   TYPE.USER.SHIPPING_ADDRESS_CHANGED,
   address => ({address})
 )
+const userCreated = createAction(
+  TYPE.USER.CREATED,
+  userId => ({userId})
+)
 
 // Public actions
 
@@ -35,11 +39,11 @@ export const detectAddress = () => async (dispatch) => {
   }
 }
 
-export const createUser = () => (dispatch, getState) => {
+export const createUser = () => async (dispatch, getState) => {
   const user = getState().user.user
   // TODO handle error
-  const userPromise = printingEngine.createUser({user})
-  return dispatch(createAction(TYPE.USER.CREATED)(userPromise))
+  const {userId} = await printingEngine.createUser({user})
+  return dispatch(userCreated(userId))
 }
 
 export const updateUser = user => async (dispatch, getState) => {
@@ -49,11 +53,11 @@ export const updateUser = user => async (dispatch, getState) => {
   return dispatch(createAction(TYPE.USER.UPDATED)(user))
 }
 
-export const updateLocation = location => async (dispatch, getState) => {
-  dispatch(createAction(TYPE.USER.SHIPPING_ADDRESS_CHANGED)(location))
+export const updateLocation = address => async (dispatch, getState) => {
+  dispatch(shippingAddressChanged(address))
 
-  if (!isAddressValid(location)) {
-    // Open address modal if location is not valid
+  if (!isAddressValid(address)) {
+    // Open address modal if address is not valid
     dispatch(openAddressModal())
   } else {
     if (!getState().user.userId) {  // No user created so far

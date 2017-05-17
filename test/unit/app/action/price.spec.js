@@ -290,6 +290,19 @@ describe('Price actions', () => {
         payload: undefined
       }])
     })
+
+    it('dispatches expected actions when polling has been stopped with ERROR_TYPE.POLL_STOPPED', async () => {
+      const error = new AppError(ERROR_TYPE.POLL_STOPPED, 'some error')
+      pollLib.poll.restore()
+      sinon.stub(pollLib, 'poll').rejects(error)
+
+      await store.dispatch(createPriceRequest())
+
+      expect(store.getActions(), 'to equal', [{
+        type: TYPE.PRICE.CLEAR_OFFERS,
+        payload: undefined
+      }])
+    })
   })
 
   describe('createDebouncedPriceRequest()', () => {
