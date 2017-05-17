@@ -81,7 +81,7 @@ function handleFileUploaded (state, {payload, error}) {
     }
   }
 
-  const {modelId, thumbnailUrl} = payload
+  const {modelId, thumbnailUrl, fileName, fileUnit, dimensions, area, volume} = payload
 
   return {
     ...state,
@@ -91,8 +91,20 @@ function handleFileUploaded (state, {payload, error}) {
       uploadFinished: true,
       quantity: 1,
       modelId,
-      thumbnailUrl
+      thumbnailUrl,
+      fileName,
+      fileUnit,
+      dimensions,
+      area,
+      volume
     })
+  }
+}
+
+function handleFileDeleted (state, {payload: {fileId}}) {
+  return {
+    ...state,
+    models: state.models.filter(model => model.fileId !== fileId)
   }
 }
 
@@ -100,6 +112,7 @@ export default handleActions({
   [TYPE.MODEL.FILE_UPLOAD_STARTED]: handleFileUploadStarted,
   [TYPE.MODEL.FILE_UPLOAD_PROGRESSED]: handleFileUploadProgressed,
   [TYPE.MODEL.FILE_UPLOADED]: handleFileUploaded,
+  [TYPE.MODEL.FILE_DELETED]: handleFileDeleted,
   [TYPE.MODEL.QUANTITIY_CHANGED]: handleQuantityChanged,
   [TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED]: handleIndividualQuantityChanged,
   [TYPE.MODEL.UNIT_CHANGED]: handleUnitChanged

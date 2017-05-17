@@ -65,7 +65,6 @@ const CartPage = ({
         title={item.name}
         onQuantityChange={onGoToHome}
         price={formatPrice(item.price, offer.currency)}
-        onDelete={onItemDelete}
       />
     ))
     return (

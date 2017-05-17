@@ -1,7 +1,8 @@
 import {
   changeQuantity,
   changeIndividualQuantity,
-  uploadFiles
+  uploadFiles,
+  deleteFile
 } from 'Action/model'
 import * as priceActions from 'Action/price'
 import * as printingEngine from 'Lib/printing-engine'
@@ -78,7 +79,12 @@ describe('Model actions', () => {
           onUploadProgressed(1)
           return Promise.resolve({
             modelId: 'some-model-id',
-            thumbnailUrl: 'some-url'
+            thumbnailUrl: 'some-url',
+            fileName: 'some-file.stl',
+            fileUnit: 'mm',
+            area: 100,
+            volume: 200,
+            dimensions: {x: 1, y: 2, z: 3}
           })
         })
     })
@@ -123,7 +129,12 @@ describe('Model actions', () => {
         payload: {
           fileId,
           modelId: 'some-model-id',
-          thumbnailUrl: 'some-url'
+          thumbnailUrl: 'some-url',
+          fileName: 'some-file.stl',
+          fileUnit: 'mm',
+          area: 100,
+          volume: 200,
+          dimensions: {x: 1, y: 2, z: 3}
         }
       }, {
         type: 'some-create-price-request'
@@ -169,6 +180,22 @@ describe('Model actions', () => {
           }])
         })
       ))
+    })
+  })
+
+  describe('deleteFile()', () => {
+    it('dispatches expected actions', async () => {
+      priceActions.createPriceRequest
+        .withArgs()
+        .returns(resolveAsyncThunk('some-create-price-request'))
+
+      await store.dispatch(deleteFile('some-file-id'))
+      expect(store.getActions(), 'to equal', [{
+        type: TYPE.MODEL.FILE_DELETED,
+        payload: {fileId: 'some-file-id'}
+      }, {
+        type: 'some-create-price-request'
+      }])
     })
   })
 })

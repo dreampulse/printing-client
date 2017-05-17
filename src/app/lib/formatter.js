@@ -35,3 +35,11 @@ export function formatAddress (address) {
 
   return ''
 }
+
+export function formatDimensions ({x, y, z}, unit) {
+  // Round to at most 2 decimal places but drop 0s
+  const round = n => +(Math.round(n * 100) / 100)
+  const zStr = z !== undefined ? ` × ${round(z)}` : ''
+
+  return `${round(x)} × ${round(y)}${zStr} ${unit}`
+}

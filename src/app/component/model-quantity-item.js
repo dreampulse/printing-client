@@ -18,7 +18,7 @@ const ModelQuantityItem = ({
   title,
   price,
   onQuantityChange,
-  onDelete = () => {}
+  onDelete
 }) => {
   const handleDeleteClick = (event) => {
     event.preventDefault()
@@ -37,9 +37,11 @@ const ModelQuantityItem = ({
         </div>
       </div>
       <Price value={price} />
-      <button type="button" className="model-quantity-item__delete" onClick={handleDeleteClick}>
-        <Icon source={deleteIcon} />
-      </button>
+      {onDelete && (
+        <button type="button" className="model-quantity-item__delete" onClick={handleDeleteClick}>
+          <Icon source={deleteIcon} />
+        </button>
+      )}
     </div>
   )
 }

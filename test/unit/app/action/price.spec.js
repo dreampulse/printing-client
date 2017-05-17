@@ -46,6 +46,7 @@ describe('Price actions', () => {
     sandbox = sinon.sandbox.create()
     sandbox.spy(pollLib, 'poll')
     sandbox.spy(pollLib, 'debouncedPoll')
+    sandbox.spy(pollLib, 'stopPoll')
     pollLib.resetPollState()
 
     sandbox.stub(printingEngine)
@@ -185,7 +186,7 @@ describe('Price actions', () => {
       }])
     })
 
-    it('aborts if there are not uploaded models', async () => {
+    it('aborts if there are no uploaded models', async () => {
       initialStoreData.model.models = []
       await store.dispatch(createPriceRequest())
 
@@ -193,6 +194,13 @@ describe('Price actions', () => {
         type: TYPE.PRICE.CLEAR_OFFERS,
         payload: undefined
       }])
+    })
+
+    it('stops price polling if there are no uploaded models', async () => {
+      initialStoreData.model.models = []
+      await store.dispatch(createPriceRequest())
+
+      expect(pollLib.stopPoll, 'to have a call satisfying', ['price'])
     })
 
     it('calls printingEngine.createPriceRequest() with expected options', async () => {
@@ -272,6 +280,19 @@ describe('Price actions', () => {
 
     it('dispatches expected actions when polling failes with ERROR_TYPE.POLL_OVERWRITTEN', async () => {
       const error = new AppError(ERROR_TYPE.POLL_OVERWRITTEN, 'some error')
+      pollLib.poll.restore()
+      sinon.stub(pollLib, 'poll').rejects(error)
+
+      await store.dispatch(createPriceRequest())
+
+      expect(store.getActions(), 'to equal', [{
+        type: TYPE.PRICE.CLEAR_OFFERS,
+        payload: undefined
+      }])
+    })
+
+    it('dispatches expected actions when polling has been stopped with ERROR_TYPE.POLL_STOPPED', async () => {
+      const error = new AppError(ERROR_TYPE.POLL_STOPPED, 'some error')
       pollLib.poll.restore()
       sinon.stub(pollLib, 'poll').rejects(error)
 

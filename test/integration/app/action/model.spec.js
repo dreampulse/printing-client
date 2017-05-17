@@ -1,5 +1,6 @@
 import {
   uploadFiles,
+  deleteFile,
   changeQuantity,
   changeIndividualQuantity,
   changeUnit
@@ -31,69 +32,6 @@ describe('Model Integration Test', () => {
     sandbox.restore()
   })
 
-  /* describe('uploadFile()', () => {
-    let apiResponse
-    let file
-
-    beforeEach(() => {
-      apiResponse = {
-        modelId: 'some-mode-id',
-        thumbnailUrl: 'some-thumbnail-url'
-      }
-      file = {
-        name: 'some-file-name',
-        size: 42
-      }
-    })
-
-    it('success uploading to the backend', async () => {
-      printingEngine.uploadModel.resolves(apiResponse)
-
-      printingEngine.getUploadStatus.resolves(true)
-      printingEngine.getPriceStatus.resolves(true)  // Finished polling
-
-      await store.dispatch(uploadFile(file, 'some-callback'))
-
-      expect(store.getState().model, 'to satisfy', {
-        numberOfUploads: 0
-      })
-
-      expect(store.getState().model.uploadedModels[0], 'to satisfy', {
-        name: 'some-file-name',
-        size: 42,
-        progress: 1,
-        uploadFinished: 1,
-        modelId: 'some-mode-id',
-        thumbnailUrl: 'some-thumbnail-url'
-      })
-
-      expect(store.getState().model.models['some-mode-id'], 'to satisfy', {
-        name: 'some-file-name',
-        size: 42,
-        modelId: 'some-mode-id',
-        thumbnailUrl: 'some-thumbnail-url'
-      })
-    })
-
-    it('fails uploading to the backend', async () => {
-      printingEngine.uploadModel.rejects(new Error())
-
-      try {
-        await store.dispatch(uploadFile(file, 'some-callback'))
-      } catch (e) {
-        // do nothing
-      }
-
-      expect(store.getState().model, 'to satisfy', {
-        numberOfUploads: 1
-      })
-
-      expect(store.getState().model.uploadedModels[0], 'to satisfy', {
-        error: true
-      })
-    })
-  }) */
-
   describe('uploadFiles()', () => {
     let file
 
@@ -105,7 +43,12 @@ describe('Model Integration Test', () => {
 
       printingEngine.uploadModel.resolves({
         modelId: 'some-model-id',
-        thumbnailUrl: 'some-thumbnail-url'
+        thumbnailUrl: 'some-thumbnail-url',
+        fileName: 'some-file.stl',
+        fileUnit: 'mm',
+        area: 100,
+        volume: 200,
+        dimensions: {x: 1, y: 2, z: 3}
       })
       printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
       printingEngine.getPriceWithStatus.resolves({
@@ -162,7 +105,12 @@ describe('Model Integration Test', () => {
         size: 42,
         progress: 1,
         uploadFinished: true,
-        quantity: 1
+        quantity: 1,
+        fileName: 'some-file.stl',
+        fileUnit: 'mm',
+        area: 100,
+        volume: 200,
+        dimensions: {x: 1, y: 2, z: 3}
       })
 
       expect(store.getState().price, 'to satisfy', {
@@ -335,6 +283,74 @@ describe('Model Integration Test', () => {
     it('updates the current selected unit state', () => {
       store.dispatch(changeUnit({unit: 'some-unit'}))
       expect(store.getState().model.selectedUnit, 'to equal', 'some-unit')
+    })
+  })
+
+  describe('deleteFile()', () => {
+    it('deletes file and creates a price request', async () => {
+      store = Store({
+        model: {
+          models: [
+            {fileId: 1},
+            {fileId: 2}
+          ]
+        },
+        material: {
+          materials: {
+            materialConfigs: {
+              'some-material-id': 'something',
+              'some-material-other-id': 'something'
+            },
+            materialStructure: []
+          }
+        },
+        user: {
+          userId: 'some-user-id',
+          user: {
+            shippingAddress: {
+              city: 'Pittsburgh',
+              zipCode: '15234',
+              stateCode: 'PA',
+              countryCode: 'US'
+            }
+          }
+        }
+      })
+
+      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: true,
+        price: {
+          offers: [{
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          }
+        }
+      })
+
+      await store.dispatch(deleteFile(2))
+
+      expect(store.getState().model.models, 'to equal', [{
+        fileId: 1
+      }])
+
+      expect(store.getState().price, 'to satisfy', {
+        priceId: 'some-price-id',
+        offers: [{
+          materialConfigId: 1,
+          printingService: 'some-service',
+          shipping: {name: 'some-shipping'}
+        }],
+        printingServiceComplete: {
+          shapeways: true,
+          imaterialize: true
+        }
+      })
     })
   })
 })

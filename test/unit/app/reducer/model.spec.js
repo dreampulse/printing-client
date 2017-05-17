@@ -176,7 +176,16 @@ describe('Model reducer', () => {
 
       action = {
         type: TYPE.MODEL.FILE_UPLOADED,
-        payload: {fileId: 1, modelId: 'some-model-id', thumbnailUrl: 'some-url'}
+        payload: {
+          fileId: 1,
+          modelId: 'some-model-id',
+          thumbnailUrl: 'some-url',
+          fileName: 'some-file.stl',
+          fileUnit: 'mm',
+          area: 100,
+          volume: 200,
+          dimensions: {x: 1, y: 2, z: 3}
+        }
       }
     })
 
@@ -188,7 +197,12 @@ describe('Model reducer', () => {
           uploadFinished: true,
           quantity: 1,
           modelId: 'some-model-id',
-          thumbnailUrl: 'some-url'
+          thumbnailUrl: 'some-url',
+          fileName: 'some-file.stl',
+          fileUnit: 'mm',
+          area: 100,
+          volume: 200,
+          dimensions: {x: 1, y: 2, z: 3}
         },
         {fileId: 2, progress: 0}
       ])
@@ -221,6 +235,33 @@ describe('Model reducer', () => {
 
       it('decrements numberOfUploads', () => {
         expect(reducer(stateBefore, action).numberOfUploads, 'to equal', 0)
+      })
+    })
+  })
+
+  describe('handles TYPE.MODEL.FILE_DELETED:', () => {
+    let stateBefore
+    let action
+
+    beforeEach(() => {
+      stateBefore = {
+        some: 'thing',
+        models: [
+          {fileId: 1},
+          {fileId: 2}
+        ]
+      }
+
+      action = {
+        type: TYPE.MODEL.FILE_DELETED,
+        payload: {fileId: 2}
+      }
+    })
+
+    it('deletes file in models array', () => {
+      expect(reducer(stateBefore, action), 'to equal', {
+        some: 'thing',
+        models: [{fileId: 1}]
       })
     })
   })
