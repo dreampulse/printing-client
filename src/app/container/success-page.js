@@ -17,7 +17,13 @@ const CartPage = ({
 }) => {
   const SuccessSection = () => (
     <Section modifiers={['highlight']}>
-      <Headline label={`Order number: ${order.orderId}`} />
+      <Headline
+        label={
+          order.orderId
+            ? `Order number: ${order.orderId}`
+            : 'Order completed'
+        }
+      />
       <Paragraph modifiers={['l']}>
         You should shortly receive an email confirming your order.
       </Paragraph>

@@ -4,7 +4,6 @@ import TYPE from '../type'
 
 const initialState = {
   orderId: null,
-  haveOderId: false,
   paymentToken: null,
   orderInProgress: false
 }
@@ -13,7 +12,7 @@ function handleOrderOrdered (state, {payload: {orderId}, error}) {
   if (error) {
     return {
       ...state,
-      haveOderId: false,
+      orderId: null,
       orderInProgress: false
     }
   }
@@ -21,7 +20,6 @@ function handleOrderOrdered (state, {payload: {orderId}, error}) {
   return {
     ...state,
     orderId,
-    haveOderId: true,
     orderInProgress: false
   }
 }

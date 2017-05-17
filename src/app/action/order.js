@@ -14,7 +14,7 @@ const payed = createAction(
   TYPE.ORDER.PAYED,
   paymentToken => ({paymentToken})
 )
-const abort = createAction(
+const aborted = createAction(
   TYPE.ORDER.ABORTED
 )
 const ordered = createAction(
@@ -23,15 +23,22 @@ const ordered = createAction(
 )
 
 const createOrder = (type, token) => async (dispatch, getState) => {
-  const userId = getState().user.userId
-  const priceId = getState().price.priceId
-  const offerId = getState().price.selectedOffer.offerId
+  const {
+    user: {
+      userId
+    },
+    price: {
+      priceId,
+      selectedOffer: {
+        offerId
+      }
+    }
+  } = getState()
 
   try {
     const {orderId} = await printingEngine.order({userId, priceId, offerId, type, token})
     dispatch(ordered(orderId))
   } catch (error) {
-    // We assume here, that the order sill was successful
     dispatch(ordered(error))
   }
 }
@@ -50,7 +57,7 @@ export const payWithStripe = () => async (dispatch, getState) => {
     const paymentToken = tokenObject.id
     dispatch(payed(paymentToken))
   } catch (error) {
-    dispatch(abort())
+    dispatch(aborted())
     throw error // Reject to inform callee about the result
   }
 }

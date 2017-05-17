@@ -3,7 +3,6 @@ import React, {Component, PropTypes} from 'react'
 import config from '../../../config'
 
 class PaypalButton extends Component {
-
   componentDidMount () {
     const {onClick, onAuthorize, onCancel, onError} = this.props
 
@@ -25,7 +24,6 @@ class PaypalButton extends Component {
       <div ref={(el) => { this.paypalButton = el }} />
     )
   }
-
 }
 
 PaypalButton.propTypes = {

@@ -47,10 +47,8 @@ const CartPage = ({
   onGoToHome,
   onGoToSuccess,
   order,
-
   onPayWithStripe,
   onCreateOrderWithStripe,
-
   onPayWithPaypal,
   onCreateOrderWithPaypal
 }) => {
@@ -166,7 +164,6 @@ const CartPage = ({
     />,
     <PaypalButton
       key="payment-button-1"
-      className="paypal-button"
       onClick={onPayWithPaypal}
       onAuthorize={async () => {
         await onCreateOrderWithPaypal()
@@ -214,10 +211,8 @@ const mapDispatchToProps = {
   onGoToHome: goToHome,
   onGoToSuccess: goToSuccess,
   onOpenFatalErrorModal: openFatalErrorModal,
-
   onPayWithStripe: payWithStripe,
   onCreateOrderWithStripe: createOrderWithStripe,
-
   onPayWithPaypal: payWithPaypal,
   onCreateOrderWithPaypal: createOrderWithPaypal
 }
