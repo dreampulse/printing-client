@@ -146,17 +146,8 @@ describe('Model actions', () => {
         printingEngine.uploadModel.rejects(new Error('some-error'))
       })
 
-      it('rejects with FileUploadError', () => {
-        const promise = store.dispatch(uploadFiles([file]))
-
-        expect(promise, 'to be rejected with error satisfying', {
-          type: ERROR_TYPE.FILE_UPLOAD_FAILED,
-          fileId: expect.it('to be a string')
-        })
-      })
-
       it('dispatches expected actions', () => (
-        store.dispatch(uploadFiles([file])).catch(() => {
+        store.dispatch(uploadFiles([file])).then(() => {
           expect(store.getActions(), 'to satisfy', [{
             type: TYPE.PRICE.CLEAR_OFFERS,
             payload: undefined

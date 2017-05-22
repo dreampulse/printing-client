@@ -8,7 +8,7 @@ import {resolveAsyncThunk, rejectAsyncThunk} from '../../../helper'
 
 import {ERROR_TYPE} from '../../../../src/app/type'
 
-describe('Model actions', () => {
+describe('Init actions', () => {
   let initialStoreData
   let store
 
@@ -53,7 +53,7 @@ describe('Model actions', () => {
       ])
     })
 
-    it('opens address modal, when address detection fails', async () => {
+    it('does not create a user, when address detection fails', () => {
       userActions.detectAddress
         .withArgs()
         .returns(rejectAsyncThunk('some-address-deteced', new AppError(ERROR_TYPE.DETECT_ADDRESS_FAILED)))
@@ -65,47 +65,25 @@ describe('Model actions', () => {
       modalActions.openAddressModal
         .returns({type: 'some-address-modal-opened'})
 
-      await store.dispatch(init())
-      expect(store.getActions(), 'to equal', [
-        {type: 'got-some-materials'},
-        {type: 'some-address-deteced'},
-        {type: 'some-address-modal-opened'}
-      ])
+      return store.dispatch(init()).catch(() => {
+        expect(userActions.createUser, 'was not called')
+      })
     })
 
-    it('does not create a user, when address detection fails', async () => {
-      userActions.detectAddress
-        .withArgs()
-        .returns(rejectAsyncThunk('some-address-deteced', new AppError(ERROR_TYPE.DETECT_ADDRESS_FAILED)))
-
-      materialActions.getMaterials
-        .withArgs()
-        .returns({type: 'got-some-materials'})
-
-      modalActions.openAddressModal
-        .returns({type: 'some-address-modal-opened'})
-
-      await store.dispatch(init())
-      expect(userActions.createUser, 'was not called')
-    })
-
-    it('opens fatal error modal, when an unknown error occures', async () => {
+    it('rejects promise when error occurs', () => {
+      const error = new Error('some-error')
       userActions.detectAddress
         .withArgs()
         .returns(resolveAsyncThunk('some-address-deteced'))
 
       materialActions.getMaterials
-        .returns(rejectAsyncThunk('got-some-materials', new Error('some-error')))
+        .returns(rejectAsyncThunk('got-some-materials', error))
 
       modalActions.openFatalErrorModal
         .returns({type: 'some-fatal-error-modal-opened'})
 
-      await store.dispatch(init())
-      expect(store.getActions(), 'to equal', [
-        {type: 'got-some-materials'},
-        {type: 'some-address-deteced'},
-        {type: 'some-fatal-error-modal-opened'}
-      ])
+      const promise = store.dispatch(init())
+      return expect(promise, 'to be rejected with', error)
     })
   })
 })

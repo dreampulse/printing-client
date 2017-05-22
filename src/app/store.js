@@ -10,9 +10,11 @@ import rootReducer from './reducer'
 const fatalErrorHandler = store => next => (action) => {
   const promise = next(action)
 
-  if (promise.catch) {
-    promise.catch((error) => {
+  if (promise && promise.catch) {
+    return promise.catch((error) => {
       store.dispatch(openFatalErrorModal(error))
+      // Throw error again
+      throw error
     })
   }
 

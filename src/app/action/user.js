@@ -5,9 +5,8 @@ import {
   isAddressValid
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
-import {AppError} from 'Lib/error'
 
-import TYPE, {ERROR_TYPE} from '../type'
+import TYPE from '../type'
 import {goToCart} from './navigation'
 
 import {
@@ -35,7 +34,7 @@ export const detectAddress = () => async (dispatch) => {
     const address = await getLocationByIp()
     dispatch(shippingAddressChanged(address))
   } catch (error) {
-    throw new AppError(ERROR_TYPE.DETECT_ADDRESS_FAILED)
+    dispatch(openAddressModal())
   }
 }
 
