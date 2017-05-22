@@ -303,6 +303,23 @@ describe('Price actions', () => {
         payload: undefined
       }])
     })
+
+    it('dispatches expected actions when polling has been stopped with ERROR_TYPE.POLL_TIMEOUT', async () => {
+      const error = new AppError(ERROR_TYPE.POLL_TIMEOUT, 'some error')
+      pollLib.poll.restore()
+      sinon.stub(pollLib, 'poll').rejects(error)
+
+      await store.dispatch(createPriceRequest())
+
+      expect(store.getActions(), 'to equal', [{
+        type: TYPE.PRICE.CLEAR_OFFERS,
+        payload: undefined
+      }, {
+        type: TYPE.PRICE.TIMEOUT,
+        payload: error,
+        error: true
+      }])
+    })
   })
 
   describe('createDebouncedPriceRequest()', () => {

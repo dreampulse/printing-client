@@ -55,9 +55,33 @@ function handlePriceReceived (state, {payload, error}) {
   }
 }
 
+function handlePriceTimeout (state) {
+  const {offers, printingServiceComplete} = state
+
+  // Remove estimated offers
+  const finalOffers = offers
+    ? offers.filter(offer => !offer.priceEstimated)
+    : null
+
+  const finalPrintingServiceComplete = printingServiceComplete
+    ? Object.keys(printingServiceComplete).reduce((aggr, provider) => {
+      aggr[provider] = true
+      return aggr
+    }, {})
+    : null
+
+  return {
+    ...state,
+    offers: finalOffers,
+    printingServiceComplete: finalPrintingServiceComplete,
+    error: null
+  }
+}
+
 export default handleActions({
   [TYPE.PRICE.CLEAR_OFFERS]: handleClearOffers,
   [TYPE.PRICE.SELECT_OFFER]: handleSelectOffer,
   [TYPE.PRICE.REQUESTED]: handlePriceRequested,
-  [TYPE.PRICE.RECEIVED]: handlePriceReceived
+  [TYPE.PRICE.RECEIVED]: handlePriceReceived,
+  [TYPE.PRICE.TIMEOUT]: handlePriceTimeout
 }, initialState)

@@ -19,6 +19,7 @@ const priceReceived = createAction(
   TYPE.PRICE.RECEIVED,
   (price, isComplete) => ({price, isComplete})
 )
+const priceTimeout = createAction(TYPE.PRICE.TIMEOUT)
 
 // Public actions
 
@@ -99,12 +100,20 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
     dispatch(refreshSelectedOffer())
   })
   .catch((error) => {
-    // Ignore special error when price request was overwritten or stopped
-    if (error.type !== ERROR_TYPE.POLL_OVERWRITTEN &&
-      error.type !== ERROR_TYPE.POLL_STOPPED) {
-      dispatch(priceReceived(error))
-      dispatch(openFatalErrorModal(error))
+    // Handle timeout separately
+    if (error.type === ERROR_TYPE.POLL_TIMEOUT) {
+      dispatch(priceTimeout(error))
+      return
     }
+
+    // Ignore special error when price request was overwritten or stopped
+    if (error.type === ERROR_TYPE.POLL_OVERWRITTEN ||
+      error.type === ERROR_TYPE.POLL_STOPPED) {
+      return
+    }
+
+    dispatch(priceReceived(error))
+    dispatch(openFatalErrorModal(error))
   })
 }
 
