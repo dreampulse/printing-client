@@ -71,7 +71,8 @@ export const updateLocation = address => async (dispatch, getState) => {
 }
 
 export const reviewOrder = form => async (dispatch, getState) => {
-  const oldShippingAddress = getState().user.user.shippingAddress
+  const user = getState().user.user
+  const oldShippingAddress = user.shippingAddress
   const oldOffer = getState().price.selectedOffer
   const newShippingAddress = form.shippingAddress
 
