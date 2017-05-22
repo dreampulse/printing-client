@@ -1,4 +1,3 @@
-
 const mixpanel = global.mixpanel
 
 export const track = (...params) => {
