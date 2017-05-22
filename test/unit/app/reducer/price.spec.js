@@ -134,4 +134,42 @@ describe('Price reducer', () => {
       })
     })
   })
+
+  describe('handles TYPE.PRICE.TIMEOUT:', () => {
+    let stateBefore
+    let action
+
+    beforeEach(() => {
+      stateBefore = {
+        some: 'thing',
+        offers: [{some: 'offer-1'}, {some: 'offer-2', priceEstimated: true}],
+        printingServiceComplete: {imateralize: false, shapeways: true}
+      }
+
+      action = {
+        type: TYPE.PRICE.TIMEOUT
+      }
+    })
+
+    it('sets expected properties', () => {
+      expect(reducer(stateBefore, action), 'to equal', {
+        some: 'thing',
+        offers: [{some: 'offer-1'}],
+        printingServiceComplete: {imateralize: true, shapeways: true},
+        error: null
+      })
+    })
+
+    it('sets expected properties when offers and printingServiceComplete are null', () => {
+      stateBefore.offers = null
+      stateBefore.printingServiceComplete = null
+
+      expect(reducer(stateBefore, action), 'to equal', {
+        some: 'thing',
+        offers: null,
+        printingServiceComplete: null,
+        error: null
+      })
+    })
+  })
 })
