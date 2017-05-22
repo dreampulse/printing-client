@@ -5,7 +5,22 @@ import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
 import {track} from 'Service/mixpanel'
 
+import {openFatalErrorModal} from 'Action/modal'
 import rootReducer from './reducer'
+
+const fatalErrorHandler = store => next => (action) => {
+  const promise = next(action)
+
+  if (promise && promise.catch) {
+    return promise.catch((error) => {
+      store.dispatch(openFatalErrorModal(error))
+      // Throw error again
+      throw error
+    })
+  }
+
+  return promise
+}
 
 function trackingReduxMiddleware () {
   return next => (action) => {
@@ -19,6 +34,7 @@ function trackingReduxMiddleware () {
 
 export default (initialState = {}) => {
   let middleware = applyMiddleware(
+    fatalErrorHandler,
     thunk,
     promiseMiddleware,
     routerMiddleware(browserHistory),
@@ -31,7 +47,6 @@ export default (initialState = {}) => {
     // Enable redux dev-tools
     middleware = compose(
       middleware,
-      // applyMiddleware(require('redux-logger')()),
       global.devToolsExtension ? global.devToolsExtension() : f => f
     )
   }

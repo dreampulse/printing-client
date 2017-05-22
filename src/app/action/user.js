@@ -4,10 +4,9 @@ import {
   isAddressValid
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
-import {AppError} from 'Lib/error'
 import {identify} from 'Service/mixpanel'
 
-import TYPE, {ERROR_TYPE} from '../type'
+import TYPE from '../type'
 import {goToCart} from './navigation'
 
 import {
@@ -36,20 +35,18 @@ export const detectAddress = () => async (dispatch) => {
     const address = await getLocationByIp()
     dispatch(shippingAddressChanged(address))
   } catch (error) {
-    throw new AppError(ERROR_TYPE.DETECT_ADDRESS_FAILED)
+    dispatch(openAddressModal())
   }
 }
 
 export const createUser = () => async (dispatch, getState) => {
   const user = getState().user.user
-  // TODO handle error
   const {userId} = await printingEngine.createUser({user})
   return dispatch(userCreated(userId))
 }
 
 export const updateUser = user => async (dispatch, getState) => {
   const userId = getState().user.userId
-  // TODO handle error
   await printingEngine.updateUser({userId, user})
   return dispatch(createAction(TYPE.USER.UPDATED)(user))
 }
