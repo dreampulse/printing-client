@@ -1,7 +1,7 @@
 import reducer from 'Reducer/order'
 import TYPE from '../../../../src/app/type'
 
-describe.only('Order reducer', () => {
+describe('Order reducer', () => {
   it('returns the initial state', () => {
     expect(reducer(undefined, {}), 'to equal', {
       orderId: null,
