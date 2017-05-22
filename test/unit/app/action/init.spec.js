@@ -11,24 +11,22 @@ import {ERROR_TYPE} from '../../../../src/app/type'
 describe('Init actions', () => {
   let initialStoreData
   let store
+  let sandbox
 
   beforeEach(() => {
     initialStoreData = {}
     store = mockStore(initialStoreData)
 
-    sinon.stub(userActions, 'detectAddress')
-    sinon.stub(userActions, 'createUser')
-    sinon.stub(materialActions, 'getMaterials')
-    sinon.stub(modalActions, 'openAddressModal')
-    sinon.stub(modalActions, 'openFatalErrorModal')
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(userActions, 'detectAddress')
+    sandbox.stub(userActions, 'createUser')
+    sandbox.stub(materialActions, 'getMaterials')
+    sandbox.stub(modalActions, 'openAddressModal')
+    sandbox.stub(modalActions, 'openFatalErrorModal')
   })
 
   afterEach(() => {
-    userActions.detectAddress.restore()
-    userActions.createUser.restore()
-    materialActions.getMaterials.restore()
-    modalActions.openAddressModal.restore()
-    modalActions.openFatalErrorModal.restore()
+    sandbox.restore()
   })
 
   describe('init()', () => {

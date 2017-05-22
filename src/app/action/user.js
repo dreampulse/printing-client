@@ -1,10 +1,10 @@
 import {createAction} from 'redux-actions'
-import isEqual from 'lodash/isEqual'
 import {
   getLocationByIp,
   isAddressValid
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
+import {identify} from 'Service/mixpanel'
 
 import TYPE from '../type'
 import {goToCart} from './navigation'
@@ -12,6 +12,7 @@ import {goToCart} from './navigation'
 import {
   openAddressModal,
   openPriceChangedModal,
+  openPriceLocationChangedModal,
   openFetchingPriceModal
 } from './modal'
 import {createPriceRequest} from './price'
@@ -69,26 +70,33 @@ export const updateLocation = address => async (dispatch, getState) => {
 }
 
 export const reviewOrder = form => async (dispatch, getState) => {
-  const oldShippingAddress = getState().user.user.shippingAddress
+  const user = getState().user.user
+  const oldShippingAddress = user.shippingAddress
+  const oldOffer = getState().price.selectedOffer
   const newShippingAddress = form.shippingAddress
 
+  // Send user information to Mixpanel
+  identify({
+    $name: `${user.shippingAddress.firstName} ${user.shippingAddress.lastName}`,
+    $city: user.shippingAddress.city,
+    $country: user.shippingAddress.countryCode,
+    $email: user.emailAddress,
+    raw: user
+  })
+
+  dispatch(openFetchingPriceModal())
   await dispatch(updateUser(form))
+  await dispatch(createPriceRequest())
 
-  // TODO: remove this check, just always open fetching price modal
-  if (!isEqual(oldShippingAddress, newShippingAddress)) {
-    dispatch(openFetchingPriceModal())
+  const newOffer = getState().price.selectedOffer
+  const hasPriceChanged = oldOffer.totalPrice !== newOffer.totalPrice
+  const wasEstimatedPrice = oldOffer.priceEstimated
 
-    const oldPrice = getState().price.selectedOffer.totalPrice
-    await dispatch(createPriceRequest())
-    const newPrice = getState().price.selectedOffer.totalPrice
-    const hasPriceChanged = oldPrice !== newPrice
-    if (hasPriceChanged) {
-      dispatch(openPriceChangedModal({oldShippingAddress, newShippingAddress}))
-    } else {
-      dispatch(goToCart())
-    }
+  if (wasEstimatedPrice) {
+    dispatch(openPriceChangedModal())
+  } else if (hasPriceChanged) {
+    dispatch(openPriceLocationChangedModal(oldShippingAddress, newShippingAddress))
   } else {
-    // No change to the shipping address
     dispatch(goToCart())
   }
 }

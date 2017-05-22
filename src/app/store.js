@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import promiseMiddleware from 'redux-promise'
 import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
+import {track} from 'Service/mixpanel'
 
 import {openFatalErrorModal} from 'Action/modal'
 import rootReducer from './reducer'
@@ -21,12 +22,23 @@ const fatalErrorHandler = store => next => (action) => {
   return promise
 }
 
+function trackingReduxMiddleware () {
+  return next => (action) => {
+    if (typeof action === 'object') {
+      track(action.type, action)
+    }
+
+    return next(action)
+  }
+}
+
 export default (initialState = {}) => {
   let middleware = applyMiddleware(
     fatalErrorHandler,
     thunk,
     promiseMiddleware,
-    routerMiddleware(browserHistory)
+    routerMiddleware(browserHistory),
+    trackingReduxMiddleware
   )
 
   if (process.env.NODE_ENV !== 'production') {

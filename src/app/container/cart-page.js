@@ -27,14 +27,14 @@ import ModelQuantityItem from 'Component/model-quantity-item'
 import ModelQuantityItemList from 'Component/model-quantity-item-list'
 import ColorSquare from 'Component/color-square'
 import LoadingIndicator from 'Component/loading-indicator'
+import PaypalButton from 'Component/paypal-button'
 
 import backIcon from 'Icon/back.svg'
 import creditCardIcon from 'Icon/credit-card.svg'
-// import paypalIcon from 'Icon/paypal.svg'
 
 import {goBack, goToHome, goToSuccess} from 'Action/navigation'
-// import {createOrderWithStripe, initPaymentWithPaypal, createOrderWithPaypal} from 'Action/order'
-import {payWithStripe, createOrder} from 'Action/order'
+import {payWithStripe, createOrderWithStripe, payWithPaypal, createOrderWithPaypal} from 'Action/order'
+import {openFatalErrorModal} from 'Action/modal'
 
 import AppLayout from './app-layout'
 
@@ -44,12 +44,13 @@ const CartPage = ({
   offerItems,
   selectedMaterial,
   onGoBack,
-  onOrderWithStripe,
   onGoToHome,
-  onCreateOrder,
   onGoToSuccess,
-  order
-  // onOrderWithPaypal
+  order,
+  onPayWithStripe,
+  onCreateOrderWithStripe,
+  onPayWithPaypal,
+  onCreateOrderWithPaypal
 }) => {
   const CartQantityList = () => {
     const items = offerItems.map(item => (
@@ -143,30 +144,33 @@ const CartPage = ({
 
   const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
 
-  const paymentButtons = (
-    <div>
-      <Button
-        modifiers={['block']}
-        icon={creditCardIcon}
-        label="Pay with Stripe"
-        onClick={async () => {
-          try {
-            await onOrderWithStripe()
-          } catch (error) {
-            // Early return if user aborted payment
-            return
-          }
+  const paymentButtons = [
+    <Button
+      key="payment-button-0"
+      modifiers={['block']}
+      icon={creditCardIcon}
+      label="Pay with Credit Card"
+      onClick={async () => {
+        try {
+          await onPayWithStripe()
+        } catch (error) {
+          // Early return if user aborted payment
+          return
+        }
 
-          await onCreateOrder()
-          onGoToSuccess()
-        }}
-      />
-      {/*
-        <Button icon={paypalIcon} modifiers={['block']}
-          label="Pay with Paypal" onClick={onOrderWithPaypal} />
-      */}
-    </div>
-  )
+        await onCreateOrderWithStripe()
+        onGoToSuccess()
+      }}
+    />,
+    <PaypalButton
+      key="payment-button-1"
+      onClick={onPayWithPaypal}
+      onAuthorize={async () => {
+        await onCreateOrderWithPaypal()
+        onGoToSuccess()
+      }}
+    />
+  ]
 
   const paymentSection = (
     <PaymentSection
@@ -206,10 +210,11 @@ const mapDispatchToProps = {
   onGoBack: goBack,
   onGoToHome: goToHome,
   onGoToSuccess: goToSuccess,
-  onOrderWithStripe: payWithStripe,
-  onCreateOrder: createOrder
-  // onOrderWithPaypal: createOrderWithPaypal,
-  // onPayWithPaypal: initPaymentWithPaypal
+  onOpenFatalErrorModal: openFatalErrorModal,
+  onPayWithStripe: payWithStripe,
+  onCreateOrderWithStripe: createOrderWithStripe,
+  onPayWithPaypal: payWithPaypal,
+  onCreateOrderWithPaypal: createOrderWithPaypal
 }
 
 const enhance = compose(

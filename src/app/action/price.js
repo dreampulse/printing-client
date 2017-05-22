@@ -19,6 +19,7 @@ const priceReceived = createAction(
   TYPE.PRICE.RECEIVED,
   (price, isComplete) => ({price, isComplete})
 )
+const priceTimeout = createAction(TYPE.PRICE.TIMEOUT)
 
 // Public actions
 
@@ -42,7 +43,7 @@ export const refreshSelectedOffer = () => (dispatch, getState) => {
   }
 }
 
-export const createPriceRequest = (debounce = false) => async (dispatch, getState) => {
+export const createPriceRequest = (debounce = false) => (dispatch, getState) => {
   dispatch(clearOffers())
 
   const {
@@ -66,7 +67,7 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
   if (models.length === 0) {
     // Just to be sure, stop any running price polls
     stopPoll(POLL_NAME)
-    return
+    return Promise.resolve()
   }
 
   const materialConfigIds = Object.keys(materialConfigs)
@@ -85,7 +86,7 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
   }
 
   const usePoll = debounce ? debouncedPoll : poll
-  await usePoll(POLL_NAME, async (priceId) => {
+  return usePoll(POLL_NAME, async (priceId) => {
     const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
     dispatch(priceReceived(price))
     return isComplete
@@ -93,17 +94,27 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
     const {priceId} = await printingEngine.createPriceRequest(options)
     dispatch(priceRequested(priceId))
     return priceId
-  }).catch((error) => {
-    // Ignore special error when price request was overwritten or stopped
-    if (error.type !== ERROR_TYPE.POLL_OVERWRITTEN &&
-      error.type !== ERROR_TYPE.POLL_STOPPED) {
-      dispatch(priceReceived(error))
-      dispatch(openFatalErrorModal(error))
-    }
   })
+  .then(() => {
+    // We need to update the selectedOffer if applicable
+    dispatch(refreshSelectedOffer())
+  })
+  .catch((error) => {
+    // Handle timeout separately
+    if (error.type === ERROR_TYPE.POLL_TIMEOUT) {
+      dispatch(priceTimeout(error))
+      return
+    }
 
-  // We need to update the selectedOffer if applicable
-  dispatch(refreshSelectedOffer())
+    // Ignore special error when price request was overwritten or stopped
+    if (error.type === ERROR_TYPE.POLL_OVERWRITTEN ||
+      error.type === ERROR_TYPE.POLL_STOPPED) {
+      return
+    }
+
+    dispatch(priceReceived(error))
+    dispatch(openFatalErrorModal(error))
+  })
 }
 
 export const createDebouncedPriceRequest = () => createPriceRequest(true)
