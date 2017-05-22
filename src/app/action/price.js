@@ -42,7 +42,7 @@ export const refreshSelectedOffer = () => (dispatch, getState) => {
   }
 }
 
-export const createPriceRequest = (debounce = false) => async (dispatch, getState) => {
+export const createPriceRequest = (debounce = false) => (dispatch, getState) => {
   dispatch(clearOffers())
 
   const {
@@ -66,7 +66,7 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
   if (models.length === 0) {
     // Just to be sure, stop any running price polls
     stopPoll(POLL_NAME)
-    return
+    return Promise.resolve()
   }
 
   const materialConfigIds = Object.keys(materialConfigs)
@@ -85,7 +85,7 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
   }
 
   const usePoll = debounce ? debouncedPoll : poll
-  await usePoll(POLL_NAME, async (priceId) => {
+  return usePoll(POLL_NAME, async (priceId) => {
     const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
     dispatch(priceReceived(price))
     return isComplete
