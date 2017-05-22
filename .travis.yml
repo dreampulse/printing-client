@@ -17,3 +17,4 @@ deploy:
   on:
     repo: all3dp/printing-engine-client
     branch: master
+after_deploy: ./bin/purge-cloudflare-cache.sh
