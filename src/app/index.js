@@ -35,10 +35,12 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
-global.addEventListener('load', () => {
-  // Remove bootsplash and show app
+const removeBootsplash = () => {
   const bootsplash = document.getElementById('bootsplash')
   bootsplash.remove()
   const app = document.getElementById('root')
   app.style.display = ''
-})
+}
+
+global.addEventListener('load', () => removeBootsplash)
+removeBootsplash()
