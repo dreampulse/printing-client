@@ -8,7 +8,7 @@ export default defaultsDeep({
     locale: 'en_US',
     env: 'sandbox',
     client: {
-      sandbox: 'AVNqaTFWs0Rbq3tKKF7kJN_D3vlAAmbpv9XnFtajnokdINqj-TLLXpc8JqfpIygjqs0Du6dBYYQR48T9'
+      sandbox: 'AXOhxV6hHM2koGQdbXKcsalRyHtehlcGRDM82RIcb9u1LIIH2XskwgeN2ZeDuIY0qlVh9R8s8Zag9bgK'
     }
   },
   googleMapsApiKey: 'AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo'

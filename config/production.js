@@ -8,7 +8,7 @@ export default defaultsDeep({
     locale: 'en_US',
     env: 'production',
     client: {
-      production: 'AbvitbyqkRJcWOjzsxRH-W__HaSJcbweV96ifdHOonh94toIyopK8hlPUmrkJmArWuR0f4ggKMpzRgZP'
+      production: 'AQUzybuwq7Qi8ODVhPF0RmcEb05kqon2tO058IRVgQUkaekWt5JXOXtc98mvLEx1XTZEhLw90zgVMvs6'
     }
   },
   googleMapsApiKey: 'AIzaSyC_f-WiODvaWW-Hw5T9RZRSKkvLcy9WCGU'
