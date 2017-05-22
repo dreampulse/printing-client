@@ -3,7 +3,6 @@ import {createAction} from 'redux-actions'
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
-import {openFatalErrorModal} from 'Action/modal'
 import TYPE, {ERROR_TYPE} from '../type'
 
 const POLL_NAME = 'price'
@@ -113,7 +112,9 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
     }
 
     dispatch(priceReceived(error))
-    dispatch(openFatalErrorModal(error))
+
+    // Trow again to trigger fatal error modal
+    throw error
   })
 }
 

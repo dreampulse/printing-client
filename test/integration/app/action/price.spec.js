@@ -148,22 +148,21 @@ describe('Price Integration Test', () => {
       })
     })
 
-    it('handles fatal error when polling', async () => {
+    it('handles fatal error when polling', () => {
       const error = new Error('some-error')
       printingEngine.getPriceWithStatus.rejects(error)
 
       store = Store(state)
-      await store.dispatch(createPriceRequest())
-
-      expect(store.getState().price, 'to satisfy', {
-        priceId: null,
-        offers: null,
-        printingServiceComplete: null,
-        selectedOffer: null,
-        error
-      })
-
-      expect(store.getState().modal.isOpen, 'to be', true)
+      return store.dispatch(createPriceRequest())
+        .catch(() => {
+          expect(store.getState().price, 'to satisfy', {
+            priceId: null,
+            offers: null,
+            printingServiceComplete: null,
+            selectedOffer: null,
+            error
+          })
+        })
     })
   })
 })

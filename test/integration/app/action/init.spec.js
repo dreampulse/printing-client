@@ -72,17 +72,4 @@ describe('Init action integration test', () => {
     // it generates some material ids
     expect(store.getState().material.materials.materialStructure[0].id, 'to be ok')
   })
-
-  it('opens address modal, when adress detection fails', async () => {
-    printingEngine.listMaterials.resolves(materialList)
-    geolocation.getLocationByIp.rejects('some-error')
-
-    await store.dispatch(init())
-
-    expect(store.getState().modal, 'to satisfy', {
-      isOpen: true,
-      isCloseable: false,
-      contentType: 'MODAL.SHIPPING_ADDRESS'
-    })
-  })
 })
