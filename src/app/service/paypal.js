@@ -16,6 +16,8 @@ export function createPayment ({amount, currency, offerId}) {
 }
 
 export async function executePayment ({actions}) {
+  console.log('-- actions', actions)
+  if (!actions.payment) throw new Error('Payment failed')
   await actions.payment.execute()
   const payment = await actions.payment.get()
   if (payment.state !== 'approved') throw new Error('PayPal payment not approved')
