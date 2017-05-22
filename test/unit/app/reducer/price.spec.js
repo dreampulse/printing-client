@@ -60,6 +60,10 @@ describe('Price reducer', () => {
         selectedOffer: {some: 'offer'}
       })
     })
+
+    it('clones the offer before putting it in state', () => {
+      expect(reducer(stateBefore, action).selectedOffer, 'not to be', action.payload.offer)
+    })
   })
 
   describe('handles TYPE.PRICE.REQUESTED:', () => {

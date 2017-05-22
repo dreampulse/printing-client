@@ -1,4 +1,5 @@
 import {handleActions} from 'redux-actions'
+import cloneDeep from 'lodash/cloneDeep'
 
 import TYPE from '../type'
 
@@ -22,7 +23,7 @@ function handleClearOffers (state) {
 function handleSelectOffer (state, {payload: {offer}}) {
   return {
     ...state,
-    selectedOffer: offer
+    selectedOffer: cloneDeep(offer)
   }
 }
 
