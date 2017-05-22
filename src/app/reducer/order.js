@@ -8,7 +8,15 @@ const initialState = {
   orderInProgress: false
 }
 
-function handleOrderOrdered (state, {payload: {orderId}}) {
+function handleOrderOrdered (state, {payload: {orderId}, error}) {
+  if (error) {
+    return {
+      ...state,
+      orderId: null,
+      orderInProgress: false
+    }
+  }
+
   return {
     ...state,
     orderId,

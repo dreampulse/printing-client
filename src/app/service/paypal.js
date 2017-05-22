@@ -2,11 +2,11 @@ import config from '../../../config'
 
 export const paypal = global.paypal
 
-export function createPayment ({amount, currency, cartId}) {
+export function createPayment ({amount, currency, offerId}) {
   const env = config.paypal.env
   const client = config.paypal.client
   const transactions = [{
-    custom: cartId,
+    custom: offerId,
     amount: {
       total: String(amount),
       currency
