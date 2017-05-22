@@ -1,5 +1,5 @@
 export default {
-  pollingRetries: 100,
+  pollingRetries: 1,
   pollingInverval: 2000,
   pollingDebouncedWait: 1000,
   fetchTimout: 3000,
