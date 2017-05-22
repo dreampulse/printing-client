@@ -74,7 +74,6 @@ export const createOrderWithStripe = () => (dispatch, getState) => {
 }
 
 export const createOrderWithPaypal = (data, actions) => async (dispatch) => {
-  console.log('-- ...params', data, actions)
   const payment = await paypal.executePayment({actions})
   const token = payment.id
 
