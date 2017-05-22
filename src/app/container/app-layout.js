@@ -52,8 +52,8 @@ const AppLayout = ({
 
   const footer = (
     <Footer copyline="© Copyright 2017 ALL3DP GmbH">
-      <Link label="Terms and conditions" href="https://all3dp.com/3dp-price-comparison-terms-of-service/" />
-      <Link label="Imprint" href="https://all3dp.com/terms-of-use/#imprint" />
+      <Link label="Terms and conditions" target="_blank" href="https://all3dp.com/3dp-price-comparison-terms-of-service/" />
+      <Link label="Imprint" target="_blank" href="https://all3dp.com/terms-of-use/#imprint" />
     </Footer>
   )
 
