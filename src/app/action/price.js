@@ -93,7 +93,12 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
     const {priceId} = await printingEngine.createPriceRequest(options)
     dispatch(priceRequested(priceId))
     return priceId
-  }).catch((error) => {
+  })
+  .then(() => {
+    // We need to update the selectedOffer if applicable
+    dispatch(refreshSelectedOffer())
+  })
+  .catch((error) => {
     // Ignore special error when price request was overwritten or stopped
     if (error.type !== ERROR_TYPE.POLL_OVERWRITTEN &&
       error.type !== ERROR_TYPE.POLL_STOPPED) {
@@ -101,9 +106,6 @@ export const createPriceRequest = (debounce = false) => async (dispatch, getStat
       dispatch(openFatalErrorModal(error))
     }
   })
-
-  // We need to update the selectedOffer if applicable
-  dispatch(refreshSelectedOffer())
 }
 
 export const createDebouncedPriceRequest = () => createPriceRequest(true)
