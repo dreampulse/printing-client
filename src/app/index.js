@@ -34,3 +34,11 @@ if (process.env.NODE_ENV !== 'production') {
     module.hot.accept()
   }
 }
+
+global.addEventListener('load', () => {
+  // Remove bootsplash and show app
+  const bootsplash = document.getElementById('bootsplash')
+  bootsplash.remove()
+  const app = document.getElementById('root')
+  app.style.display = ''
+})
