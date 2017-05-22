@@ -25,7 +25,7 @@ const fatalErrorHandler = store => next => (action) => {
 function trackingReduxMiddleware () {
   return next => (action) => {
     if (typeof action === 'object') {
-      track(action.type, action)
+      track(action.type)
     }
 
     return next(action)

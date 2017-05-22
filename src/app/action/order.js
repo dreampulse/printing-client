@@ -64,7 +64,6 @@ export const payWithStripe = () => async (dispatch, getState) => {
 
 export const payWithPaypal = () => (dispatch, getState) => {
   const {totalPrice, currency, offerId} = getState().price.selectedOffer
-
   return paypal.createPayment({amount: totalPrice, currency, offerId})
 }
 
@@ -78,5 +77,6 @@ export const createOrderWithPaypal = (data, actions) => async (dispatch) => {
   const payment = await paypal.executePayment({actions})
   const token = payment.id
 
-  return dispatch(createOrder('paypal', token))
+  dispatch(createOrder('paypal', token))
+  return payment
 }

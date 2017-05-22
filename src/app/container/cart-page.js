@@ -165,9 +165,10 @@ const CartPage = ({
     <PaypalButton
       key="payment-button-1"
       onClick={onPayWithPaypal}
-      onAuthorize={async (...params) => {
-        await onCreateOrderWithPaypal(...params)
+      onAuthorize={async (data, actions) => {
+        const payment = await onCreateOrderWithPaypal(data, actions)
         onGoToSuccess()
+        return payment
       }}
     />
   ]
