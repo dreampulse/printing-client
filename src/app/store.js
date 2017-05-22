@@ -4,10 +4,24 @@ import promiseMiddleware from 'redux-promise'
 import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
 
+import {openFatalErrorModal} from 'Action/modal'
 import rootReducer from './reducer'
+
+const fatalErrorHandler = store => next => (action) => {
+  const promise = next(action)
+
+  if (promise.catch) {
+    promise.catch((error) => {
+      store.dispatch(openFatalErrorModal(error))
+    })
+  }
+
+  return promise
+}
 
 export default (initialState = {}) => {
   let middleware = applyMiddleware(
+    fatalErrorHandler,
     thunk,
     promiseMiddleware,
     routerMiddleware(browserHistory)
@@ -19,7 +33,6 @@ export default (initialState = {}) => {
     // Enable redux dev-tools
     middleware = compose(
       middleware,
-      // applyMiddleware(require('redux-logger')()),
       global.devToolsExtension ? global.devToolsExtension() : f => f
     )
   }
