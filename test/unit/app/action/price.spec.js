@@ -251,7 +251,7 @@ describe('Price actions', () => {
       ])
     })
 
-    it('dispatches expected actions when polling failes with fatal error', async () => {
+    it('rejects when polling failes with fatal error', () => {
       const error = new Error('some-error')
       pollLib.poll.restore()
       sinon.stub(pollLib, 'poll').rejects(error)
@@ -263,19 +263,33 @@ describe('Price actions', () => {
           payload: undefined
         })
 
-      await store.dispatch(createPriceRequest())
+      const promise = store.dispatch(createPriceRequest())
+      return expect(promise, 'to be rejected')
+    })
 
-      expect(store.getActions(), 'to equal', [{
-        type: TYPE.PRICE.CLEAR_OFFERS,
-        payload: undefined
-      }, {
-        type: TYPE.PRICE.RECEIVED,
-        payload: error,
-        error: true
-      }, {
-        type: 'some-fatal-error-modal',
-        payload: undefined
-      }])
+    it('dispatches expected actions when polling failes with fatal error', () => {
+      const error = new Error('some-error')
+      pollLib.poll.restore()
+      sinon.stub(pollLib, 'poll').rejects(error)
+
+      modalActions.openFatalErrorModal
+        .withArgs(error)
+        .returns({
+          type: 'some-fatal-error-modal',
+          payload: undefined
+        })
+
+      return store.dispatch(createPriceRequest())
+        .catch(() => {
+          expect(store.getActions(), 'to equal', [{
+            type: TYPE.PRICE.CLEAR_OFFERS,
+            payload: undefined
+          }, {
+            type: TYPE.PRICE.RECEIVED,
+            payload: error,
+            error: true
+          }])
+        })
     })
 
     it('dispatches expected actions when polling failes with ERROR_TYPE.POLL_OVERWRITTEN', async () => {

@@ -41,14 +41,12 @@ export const detectAddress = () => async (dispatch) => {
 
 export const createUser = () => async (dispatch, getState) => {
   const user = getState().user.user
-  // TODO handle error
   const {userId} = await printingEngine.createUser({user})
   return dispatch(userCreated(userId))
 }
 
 export const updateUser = user => async (dispatch, getState) => {
   const userId = getState().user.userId
-  // TODO handle error
   await printingEngine.updateUser({userId, user})
   return dispatch(createAction(TYPE.USER.UPDATED)(user))
 }
