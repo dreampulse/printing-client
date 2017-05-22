@@ -30,15 +30,12 @@ mixpanel.init("c0f3635dd469baa77a07c81b6a20394d");</script>
 
   <!-- start: Remove bootsplash -->
   <script>
-    (function () {
-      function removeBootsplash() {
-        var bootsplash = document.getElementById('bootsplash')
-        bootsplash.remove()
-        var app = document.getElementById('root')
-        app.style.display = ''
-      }
-      window.addEventListener('load', removeBootsplash)
-    })();
+    window.addEventListener('load', function () {
+      var bootsplash = document.getElementById('bootsplash')
+      bootsplash.remove()
+      var app = document.getElementById('root')
+      app.style.display = ''
+    });
   </script>
   <!-- end: Remove bootsplash -->
 
@@ -47,6 +44,7 @@ mixpanel.init("c0f3635dd469baa77a07c81b6a20394d");</script>
 
 </head>
 <body>
+
   <!--start: Bootsplash Logo -->
   <div style="position: relative; height: 100vh; width: 100vw;" id="bootsplash">
     <img style="position: absolute; top: 50%; margin-top: auto; margin-bottom: auto; left: 50%; margin-left: auto; margin-right: auto; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); width: 30vw;" src="asset/image/bootsplash.svg" alt="All3DP logo" />
@@ -54,5 +52,6 @@ mixpanel.init("c0f3635dd469baa77a07c81b6a20394d");</script>
   <!--end: Bootsplash Logo -->
 
   <div id="root" style="display: none" />
+
 </body>
 </html>
