@@ -47,9 +47,9 @@ describe('User actions', () => {
       nextStates = []
       store = createMockStore(initialState, nextStates)
 
-      priceActions.createPriceRequest
+      priceActions.recalculateSelectedOffer
         .withArgs()
-        .returns(resolveAsyncThunk('some-create-price-request'))
+        .returns(resolveAsyncThunk('some-recalculate-selected-offer-action'))
 
       modalActions.openFetchingPriceModal
         .withArgs()
@@ -80,7 +80,7 @@ describe('User actions', () => {
         type: TYPE.USER.UPDATED,
         payload: {some: 'user-data'}
       }, {
-        type: 'some-create-price-request'
+        type: 'some-recalculate-selected-offer-action'
       }, {
         type: 'some-go-to-cart'
       }])
@@ -96,7 +96,7 @@ describe('User actions', () => {
         type: TYPE.USER.UPDATED,
         payload: {some: 'user-data'}
       }, {
-        type: 'some-create-price-request'
+        type: 'some-recalculate-selected-offer-action'
       }, {
         type: 'some-open-price-changed-modal'
       }])
@@ -104,7 +104,7 @@ describe('User actions', () => {
 
     it('dispatches expected actions when price changed', async () => {
       nextStates.push({
-        type: 'some-create-price-request',
+        type: 'some-recalculate-selected-offer-action',
         state: {
           ...initialState,
           price: {
@@ -123,7 +123,7 @@ describe('User actions', () => {
         type: TYPE.USER.UPDATED,
         payload: {some: 'user-data'}
       }, {
-        type: 'some-create-price-request'
+        type: 'some-recalculate-selected-offer-action'
       }, {
         type: 'some-open-price-location-changed-modal'
       }])
