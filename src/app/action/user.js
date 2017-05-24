@@ -15,7 +15,7 @@ import {
   openPriceLocationChangedModal,
   openFetchingPriceModal
 } from './modal'
-import {createPriceRequest} from './price'
+import {createPriceRequest, recalculateSelectedOffer} from './price'
 
 // Private actions
 
@@ -84,7 +84,7 @@ export const reviewOrder = form => async (dispatch, getState) => {
 
   dispatch(openFetchingPriceModal())
   await dispatch(updateUser(form))
-  await dispatch(createPriceRequest())
+  await dispatch(recalculateSelectedOffer())
 
   const newOffer = getState().price.selectedOffer
   const hasPriceChanged = oldOffer.totalPrice !== newOffer.totalPrice

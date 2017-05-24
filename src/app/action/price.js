@@ -6,6 +6,7 @@ import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
 import TYPE, {ERROR_TYPE} from '../type'
 
 const POLL_NAME = 'price'
+const RECALC_POLL_NAME = 'price_recalc'
 
 // Private actions
 
@@ -97,6 +98,64 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
   .then(() => {
     // We need to update the selectedOffer if applicable
     dispatch(refreshSelectedOffer())
+  })
+  .catch((error) => {
+    // Handle timeout separately
+    if (error.type === ERROR_TYPE.POLL_TIMEOUT) {
+      dispatch(priceTimeout(error))
+      return
+    }
+
+    // Ignore special error when price request was overwritten or stopped
+    if (error.type === ERROR_TYPE.POLL_OVERWRITTEN ||
+      error.type === ERROR_TYPE.POLL_STOPPED) {
+      return
+    }
+
+    dispatch(priceReceived(error))
+
+    // Trow again to trigger fatal error modal
+    throw error
+  })
+}
+
+export const recalculateSelectedOffer = () => (dispatch, getState) => {
+  const {
+    model: {
+      models
+    },
+    price: {
+      priceId: lastPriceId,
+      selectedOffer
+    },
+    user: {
+      userId
+    }
+  } = getState()
+
+  const items = models.map(({modelId, quantity}) => ({
+    modelId,
+    materialConfigIds: [selectedOffer.materialConfigId],
+    quantity
+  }))
+
+  const options = {
+    vendorId: selectedOffer.printingService,
+    lastPriceId,
+    userId,
+    items
+  }
+
+  return poll(RECALC_POLL_NAME, async (priceId) => {
+    const {price} = await printingEngine.getPriceWithStatus({priceId})
+    const updatedOffer = getUpdatedOffer(selectedOffer, price.offers)
+    if (!updatedOffer || updatedOffer.priceEstimated) return false
+    dispatch(selectOffer(updatedOffer))
+    return true
+  }, async () => {
+    const {priceId} = await printingEngine.createPriceRequest(options)
+    dispatch(priceRequested(priceId))
+    return priceId
   })
   .catch((error) => {
     // Handle timeout separately
