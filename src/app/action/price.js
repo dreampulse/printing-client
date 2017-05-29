@@ -133,6 +133,9 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
     }
   } = getState()
 
+  // Stop any other price polling
+  stopPoll(POLL_NAME)
+
   const items = models.map(({modelId, quantity}) => ({
     modelId,
     materialConfigIds: [selectedOffer.materialConfigId],
