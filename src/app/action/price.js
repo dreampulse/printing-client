@@ -114,7 +114,7 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
 
     dispatch(priceReceived(error))
 
-    // Trow again to trigger fatal error modal
+    // Throw again to trigger fatal error modal
     throw error
   })
 }
@@ -133,6 +133,9 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
     }
   } = getState()
 
+  // Stop any other price polling
+  stopPoll(POLL_NAME)
+
   const items = models.map(({modelId, quantity}) => ({
     modelId,
     materialConfigIds: [selectedOffer.materialConfigId],
@@ -149,8 +152,13 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
   return poll(RECALC_POLL_NAME, async (priceId) => {
     const {price} = await printingEngine.getPriceWithStatus({priceId})
     const updatedOffer = getUpdatedOffer(selectedOffer, price.offers)
-    if (!updatedOffer || updatedOffer.priceEstimated) return false
+
+    if (!updatedOffer || updatedOffer.priceEstimated) {
+      return false
+    }
+
     dispatch(selectOffer(updatedOffer))
+
     return true
   }, async () => {
     const {priceId} = await printingEngine.createPriceRequest(options)
@@ -158,21 +166,11 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
     return priceId
   })
   .catch((error) => {
-    // Handle timeout separately
-    if (error.type === ERROR_TYPE.POLL_TIMEOUT) {
-      dispatch(priceTimeout(error))
-      return
-    }
-
-    // Ignore special error when price request was overwritten or stopped
-    if (error.type === ERROR_TYPE.POLL_OVERWRITTEN ||
-      error.type === ERROR_TYPE.POLL_STOPPED) {
-      return
-    }
+    // Every error here is fatal!
 
     dispatch(priceReceived(error))
 
-    // Trow again to trigger fatal error modal
+    // Throw again to trigger fatal error modal
     throw error
   })
 }
