@@ -21,7 +21,7 @@ const CartPage = ({
         label={
           order.orderId
             ? `Order number: ${order.orderId}`
-            : 'Order completed'
+            : 'Thank you for ordering at ALL3DP!'
         }
       />
       <Paragraph modifiers={['l']}>
@@ -35,7 +35,7 @@ const CartPage = ({
       </Paragraph>
       <Headline label="Any questions?" />
       <Paragraph modifiers={['l']}>
-        Email us on <Link href="mailto:sales@all3dp.com " label="sales@all3dp.com" />
+        Email us on <Link href="mailto:support@all3dp.com" label="support@all3dp.com" />
       </Paragraph>
     </Section>
   )
