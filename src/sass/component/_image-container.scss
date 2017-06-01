@@ -38,7 +38,8 @@
     .image-container__image {
       // Model images come with a black background.
       // We want to mix that with the background gradient.
-      background-blend-mode: lighten;
+      // REMOVED FOR NOW BECAUSE THE THUMBNAIL IS LOOKING GRAYISH
+      //background-blend-mode: lighten;
     }
   }
 }

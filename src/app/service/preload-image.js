@@ -9,7 +9,7 @@ function pollImage (url, onLoad, onError) {
 
 export default function preloadImage (url) {
   const retries = config.imagePollingRetries
-  const interval = config.imagePollingInverval
+  const interval = config.imagePollingInterval
 
   return new Promise((resolve, reject) => {
     let tries = 0

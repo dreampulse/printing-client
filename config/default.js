@@ -3,7 +3,7 @@ export default {
   pollingInverval: 2000,
   pollingDebouncedWait: 1000,
   fetchTimout: 3000,
-  imagePollingRetries: 300,
+  imagePollingRetries: 100,
   imagePollingInterval: 1500,
   cloudinaryUrl: '//res.cloudinary.com/all3dp/image/upload',
   cloudinaryDefaultParams: ['q_90', 'f_auto'],
