@@ -5,6 +5,7 @@ import * as priceActions from 'Action/price'
 import * as modalActions from 'Action/modal'
 import * as navigationActions from 'Action/navigation'
 import * as printingEngine from 'Lib/printing-engine'
+import * as normalize from 'Lib/normalize'
 import TYPE from '../../../../src/app/type'
 import {resolveAsyncThunk, createMockStore} from '../../../helper'
 
@@ -18,6 +19,7 @@ describe('User actions', () => {
     sandbox.stub(modalActions)
     sandbox.stub(navigationActions)
     sandbox.stub(printingEngine)
+    sandbox.stub(normalize)
   })
 
   afterEach(() => {
@@ -70,6 +72,8 @@ describe('User actions', () => {
       printingEngine.updateUser
         .withArgs('some-user-id', {some: 'user-data'})
         .resolves()
+
+      normalize.normalizeTelephoneNumber.returns(undefined)
     })
 
     it('dispatches expected actions', async () => {

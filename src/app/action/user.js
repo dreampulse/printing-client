@@ -4,6 +4,7 @@ import {
   isAddressValid
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
+import {normalizeTelephoneNumber} from 'Lib/normalize'
 import {identify} from 'Service/mixpanel'
 
 import TYPE from '../type'
@@ -72,6 +73,8 @@ export const reviewOrder = form => async (dispatch, getState) => {
   const oldShippingAddress = user.shippingAddress
   const oldOffer = getState().price.selectedOffer
   const newShippingAddress = form.shippingAddress
+
+  form.phoneNumber = normalizeTelephoneNumber(form.phoneNumber)
 
   // Send user information to Mixpanel
   identify({

@@ -47,6 +47,12 @@ const AddressPage = ({
     : undefined
   )
 
+  const tel = value => (
+    !value || value && !/^[+]?[0-9\-\s()]*$/i.test(value)
+    ? 'Invalid phone number'
+    : undefined
+  )
+
   const CountrySelect = ({onChange, value, ...props}) => {
     const changeCountry = val => onChange(val.value)
     const val = !value || value === '' ? undefined : {value, label: getCountryName(value)}
@@ -95,7 +101,7 @@ const AddressPage = ({
       </FormRow>
 
       <FormRow modifiers={['l-s']}>
-        <Field validate={required}component={renderField(InputField)} label="Street" name="billingAddress.street" />
+        <Field validate={required} component={renderField(InputField)} label="Street" name="billingAddress.street" />
         <Field validate={required} component={renderField(InputField)} label="House number" name="billingAddress.houseNumber" />
       </FormRow>
 
@@ -139,7 +145,7 @@ const AddressPage = ({
 
           <FormRow modifiers={['half-half']}>
             <Field validate={email} component={renderField(InputField)} label="Email address" name="emailAddress" type="email" />
-            <Field validate={required} component={renderField(InputField)} label="Phone number" name="phoneNumber" />
+            <Field validate={tel} component={renderField(InputField)} label="Phone number" name="phoneNumber" type="tel" />
           </FormRow>
 
           <FormRow>
