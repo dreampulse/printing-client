@@ -4,7 +4,7 @@ import {
   isAddressValid
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
-import {identify} from 'Service/mixpanel'
+import {identify, peopleSet} from 'Service/mixpanel'
 
 import TYPE from '../type'
 import {goToCart} from './navigation'
@@ -42,6 +42,7 @@ export const detectAddress = () => async (dispatch) => {
 export const createUser = () => async (dispatch, getState) => {
   const user = getState().user.user
   const {userId} = await printingEngine.createUser({user})
+  identify(userId)  // Send user information to Mixpanel
   return dispatch(userCreated(userId))
 }
 
@@ -74,12 +75,12 @@ export const reviewOrder = form => async (dispatch, getState) => {
   const newShippingAddress = form.shippingAddress
 
   // Send user information to Mixpanel
-  identify({
-    $name: `${user.shippingAddress.firstName} ${user.shippingAddress.lastName}`,
-    $city: user.shippingAddress.city,
-    $country: user.shippingAddress.countryCode,
-    $email: user.emailAddress,
-    raw: user
+  peopleSet({
+    $name: `${form.shippingAddress.firstName} ${form.shippingAddress.lastName}`,
+    $city: form.shippingAddress.city,
+    $country: form.shippingAddress.countryCode,
+    $email: form.emailAddress,
+    raw: form
   })
 
   dispatch(openFetchingPriceModal())
