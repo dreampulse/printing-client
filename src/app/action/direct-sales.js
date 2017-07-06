@@ -3,6 +3,8 @@ import {createAction} from 'redux-actions'
 import {routerActions} from 'react-router-redux'
 import {getBaseUrl} from 'Service/location'
 
+import {createPriceRequest} from './price'
+
 import TYPE from '../type'
 
 const restoreConfigurationAction = createAction(TYPE.DIRECT_SALES.RESTORE_CONFIGURATION)
@@ -32,4 +34,5 @@ export const createConfiguration = () => async (dispatch, getState) => {
 export const restoreConfiguration = configurationId => async (dispatch) => {
   const configuration = await printingEngine.getConfiguration(configurationId)
   dispatch(restoreConfigurationAction(configuration))
+  dispatch(createPriceRequest())
 }
