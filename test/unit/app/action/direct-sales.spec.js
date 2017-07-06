@@ -4,6 +4,7 @@ import {
 } from 'Action/direct-sales'
 import * as printingEngine from 'Lib/printing-engine'
 import * as location from 'Service/location'
+import * as priceActions from 'Action/price'
 
 describe('Direct Sales actions', () => {
   let initialStoreData
@@ -25,9 +26,14 @@ describe('Direct Sales actions', () => {
     sandbox = sinon.sandbox.create()
     sandbox.stub(printingEngine, 'createConfiguration')
     sandbox.stub(printingEngine, 'getConfiguration')
+    sandbox.stub(priceActions, 'createPriceRequest')
     sandbox.stub(location, 'getBaseUrl')
 
     location.getBaseUrl.returns('some-base-url://')
+
+    priceActions.createPriceRequest.returns({
+      type: 'some-create-price-request-action'
+    })
   })
 
   afterEach(() => {
@@ -77,6 +83,8 @@ describe('Direct Sales actions', () => {
       expect(store.getActions(), 'to equal', [{
         type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
         payload: 'some-configuration'
+      }, {
+        type: 'some-create-price-request-action'
       }])
     })
   })
