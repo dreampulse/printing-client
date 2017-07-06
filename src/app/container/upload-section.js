@@ -15,6 +15,7 @@ import ModelItemLoad from 'Component/model-item-load'
 import ModelItemError from 'Component/model-item-error'
 import ModelItemList from 'Component/model-item-list'
 import LabeledField from 'Component/labeled-field'
+import Button from 'Component/button'
 
 import {
   uploadFiles,
@@ -22,6 +23,9 @@ import {
   changeIndividualQuantity,
   changeUnit
 } from 'Action/model'
+import {
+  createConfiguration
+} from 'Action/direct-sales'
 import {formatDimensions} from 'Lib/formatter'
 
 const UploadSection = ({
@@ -30,7 +34,8 @@ const UploadSection = ({
   onDeleteFile,
   selectedUnit,
   onChangeIndividualQuantity,
-  onChangeUnit
+  onChangeUnit,
+  onCreateConfiguration
 }) => {
   const onUpload = (files) => {
     onUploadFiles(toArray(files))
@@ -57,7 +62,7 @@ const UploadSection = ({
         </Column>
       </Grid>
       <UploadArea
-        label="Drag 3D files here or"
+        label="Drag .STL files here or"
         linkLabel="select files"
         accept=".stl"
         onChange={onUpload}
@@ -123,6 +128,7 @@ const UploadSection = ({
           })}
         </ModelItemList>
       )}
+      {models.length > 0 && <Button label="Share models" modifiers={['text']} classNames={['u-float-right']} onClick={() => onCreateConfiguration()} />}
     </Section>
   )
 }
@@ -136,7 +142,8 @@ const mapDispatchToProps = {
   onUploadFiles: uploadFiles,
   onDeleteFile: deleteFile,
   onChangeIndividualQuantity: changeIndividualQuantity,
-  onChangeUnit: changeUnit
+  onChangeUnit: changeUnit,
+  onCreateConfiguration: createConfiguration
 }
 
 export default compose(
