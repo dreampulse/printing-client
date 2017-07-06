@@ -55,3 +55,12 @@ export const order = ({userId, priceId, offerId, type, token}) =>
       }
     }
   })
+
+export const createConfiguration = configuration =>
+  requestJson(`${baseUrl}/configuration`, {
+    method: 'POST',
+    body: configuration
+  })
+
+export const getConfiguration = configurationId =>
+  requestJson(`${baseUrl}/configuration/${configurationId}`)

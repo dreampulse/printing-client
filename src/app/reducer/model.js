@@ -9,6 +9,17 @@ const initialState = {
   models: []
 }
 
+function handleRestoreConfiguration (state, {payload}) {
+  return {
+    ...state,
+    models: payload.items.map((item, index) => ({
+      ...item,
+      uploadFinished: true,
+      fileId: index
+    }))
+  }
+}
+
 function handleUnitChanged (state, {payload: {unit}}) {
   return {
     ...state,
@@ -115,5 +126,6 @@ export default handleActions({
   [TYPE.MODEL.FILE_DELETED]: handleFileDeleted,
   [TYPE.MODEL.QUANTITIY_CHANGED]: handleQuantityChanged,
   [TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED]: handleIndividualQuantityChanged,
-  [TYPE.MODEL.UNIT_CHANGED]: handleUnitChanged
+  [TYPE.MODEL.UNIT_CHANGED]: handleUnitChanged,
+  [TYPE.DIRECT_SALES.RESTORE_CONFIGURATION]: handleRestoreConfiguration
 }, initialState)

@@ -8,7 +8,7 @@ import Grid from 'Component/grid'
 import Column from 'Component/column'
 import Image from 'Component/image'
 
-import reloadPage from 'Service/reload-page'
+import {reloadPage} from 'Service/location'
 
 import errorImage from '../../../asset/image/error.svg'
 

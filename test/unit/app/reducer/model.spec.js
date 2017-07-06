@@ -265,4 +265,39 @@ describe('Model reducer', () => {
       })
     })
   })
+
+  describe('handles TYPE.DIRECT_SALES.RESTORE_CONFIGURATION:', () => {
+    let stateBefore
+    let action
+
+    beforeEach(() => {
+      stateBefore = {
+        some: 'thing'
+      }
+
+      action = {
+        type: TYPE.DIRECT_SALES.RESTORE_CONFIGURATION,
+        payload: {items: [{
+          thisIsItem: 'one'
+        }, {
+          thisIsItem: 'two'
+        }]}
+      }
+    })
+
+    it('updates the models array', () => {
+      expect(reducer(stateBefore, action), 'to equal', {
+        some: 'thing',
+        models: [{
+          thisIsItem: 'one',
+          uploadFinished: true,
+          fileId: 0
+        }, {
+          thisIsItem: 'two',
+          uploadFinished: true,
+          fileId: 1
+        }]
+      })
+    })
+  })
 })
