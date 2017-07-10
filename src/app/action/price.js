@@ -43,6 +43,8 @@ export const refreshSelectedOffer = () => (dispatch, getState) => {
   }
 }
 
+const isDirectSales = () => /configuration/.test(global.location.pathname)
+
 export const createPriceRequest = (debounce = false) => (dispatch, getState) => {
   dispatch(clearOffers())
 
@@ -78,6 +80,7 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
   }))
 
   const options = {
+    isEstimate: !isDirectSales(), // fetch and cache real prices for direct sales
     userId,
     items
   }
@@ -143,6 +146,7 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
   }))
 
   const options = {
+    isEstimate: false, // get real price for recalculated offer
     vendorId: selectedOffer.printingService,
     lastPriceId,
     userId,
