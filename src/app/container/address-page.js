@@ -34,6 +34,7 @@ const AddressPage = ({
   handleSubmit,
   onGoBack,
   isCompany,
+  handleIsCompanyChange,
   submitting,
   useDifferentBillingAddress,
   handleBillingChange,
@@ -149,7 +150,7 @@ const AddressPage = ({
           </FormRow>
 
           <FormRow>
-            <Field name="isCompany" component={renderField(LabeledCheckbox)} label="I am ordering for a company" type="checkbox" />
+            <Field onChangeValue={handleIsCompanyChange} name="isCompany" component={renderField(LabeledCheckbox)} label="I am ordering for a company" type="checkbox" />
           </FormRow>
 
           {isCompany && companySection}
@@ -209,6 +210,8 @@ const mapStateToProps = state => ({
   isCompany: selector(state, 'isCompany'),
   useDifferentBillingAddress: selector(state, 'useDifferentBillingAddress'),
   valid: isValid(FORM_NAME)(state),
+  companyName: selector(state, 'companyName'),
+  vatId: selector(state, 'vatId'),
   billingAddress: {
     countryCode: selector(state, 'billingAddress.countryCode')
   },
@@ -229,6 +232,14 @@ const mapDispatchToProps = {
   onGoBack: goBack,
   onSubmit: reviewOrder,
   clearBillingAddress: () => {},
+  handleIsCompanyChange: () => (dispatch, getState) => {
+    const state = getState()
+    const isComany = selector(state, 'isCompany')
+    if (isComany === false) {
+      dispatch(change(FORM_NAME, 'companyName', ''))
+      dispatch(change(FORM_NAME, 'vatId', ''))
+    }
+  },
   handleBillingChange: () => (dispatch, getState) => {
     const state = getState()
     const useDifferentBillingAddress = selector(state, 'useDifferentBillingAddress')
