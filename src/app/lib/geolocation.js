@@ -12,8 +12,7 @@ export const getLocationByIp = async () => {
     countryCode
   } = await timeout(request(URL), config.fetchTimout)
 
-  /* istanbul ignore next */
-  if (!city || !zip || !region || !countryCode) {
+  if (!countryCode) {
     throw new Error('Location detection failed')
   }
 
@@ -46,5 +45,5 @@ export const convertPlaceToLocation = (place) => {
 }
 
 export const isAddressValid = address => (
-  address.countryCode && address.zipCode && address.city
+  address.countryCode
 )
