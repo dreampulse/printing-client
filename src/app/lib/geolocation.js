@@ -12,7 +12,6 @@ export const getLocationByIp = async () => {
     countryCode
   } = await timeout(request(URL), config.fetchTimout)
 
-  /* istanbul ignore next */
   if (!countryCode) {
     throw new Error('Location detection failed')
   }
