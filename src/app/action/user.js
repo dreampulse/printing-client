@@ -5,6 +5,7 @@ import {
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
 import {identify, peopleSet} from 'Service/mixpanel'
+import {normalizeTelephoneNumber} from 'Lib/normalize'
 
 import TYPE from '../type'
 import {goToCart} from './navigation'
@@ -73,6 +74,8 @@ export const reviewOrder = form => async (dispatch, getState) => {
   const oldShippingAddress = user.shippingAddress
   const oldOffer = getState().price.selectedOffer
   const newShippingAddress = form.shippingAddress
+
+  form.phoneNumber = normalizeTelephoneNumber(form.phoneNumber)
 
   // Send user information to Mixpanel
   peopleSet({
