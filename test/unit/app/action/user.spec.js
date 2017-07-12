@@ -73,11 +73,13 @@ describe('User actions', () => {
         .withArgs('some-user-id', {some: 'user-data'})
         .resolves()
 
-      normalize.normalizeTelephoneNumber.returns(undefined)
+      normalize.normalizeTelephoneNumber
+        .withArgs('some-phone-number')
+        .returns(undefined)
     })
 
     it('dispatches expected actions', async () => {
-      await store.dispatch(reviewOrder({some: 'user-data'}))
+      await store.dispatch(reviewOrder({some: 'user-data', phoneNumber: 'some-phone-number'}))
       expect(store.getActions(), 'to equal', [{
         type: 'some-open-fetching-price-modal'
       }, {
@@ -93,7 +95,7 @@ describe('User actions', () => {
     it('dispatches expected actions when selected offer had an estimated price', async () => {
       initialState.price.selectedOffer.priceEstimated = true
 
-      await store.dispatch(reviewOrder({some: 'user-data'}))
+      await store.dispatch(reviewOrder({some: 'user-data', phoneNumber: 'some-phone-number'}))
       expect(store.getActions(), 'to equal', [{
         type: 'some-open-fetching-price-modal'
       }, {
@@ -120,7 +122,7 @@ describe('User actions', () => {
         }
       })
 
-      await store.dispatch(reviewOrder({some: 'user-data'}))
+      await store.dispatch(reviewOrder({some: 'user-data', phoneNumber: 'some-phone-number'}))
       expect(store.getActions(), 'to equal', [{
         type: 'some-open-fetching-price-modal'
       }, {
