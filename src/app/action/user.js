@@ -32,12 +32,8 @@ const userCreated = createAction(
 // Public actions
 
 export const detectAddress = () => async (dispatch) => {
-  try {
-    const address = await getLocationByIp()
-    dispatch(shippingAddressChanged(address))
-  } catch (error) {
-    dispatch(openAddressModal())
-  }
+  const address = await getLocationByIp()
+  dispatch(shippingAddressChanged(address))
 }
 
 export const createUser = () => async (dispatch, getState) => {

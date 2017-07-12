@@ -101,7 +101,9 @@ export default class LocationField extends Component {
   }
 
   initAutocomplete = (googleMaps) => {
-    this.autocomplete = new googleMaps.places.Autocomplete(this.inputDom, {types: ['address']})
+    this.autocomplete = new googleMaps.places.Autocomplete(this.inputDom, {
+      types: ['geocode']  // https://developers.google.com/places/web-service/autocomplete?#place_types
+    })
     this.autocomplete.addListener('place_changed', () => {
       const place = this.autocomplete.getPlace()
       this.setState({value: place.formatted_address})
