@@ -9,6 +9,13 @@ const initialState = {
   selectedMaterialConfigs: {}
 }
 
+function handleRestoreConfiguration (state, {payload}) {
+  return {
+    ...state,
+    selectedMaterialConfig: payload.materialConfigId
+  }
+}
+
 function handleReceivedMaterials (state, {payload}) {
   return {
     ...state,
@@ -45,6 +52,6 @@ export default handleActions({
   [TYPE.MATERIAL.RECEIVED]: handleReceivedMaterials,
   [TYPE.MATERIAL.SELECTED]: handleSelectedMaterial,
   [TYPE.MATERIAL.CONFIG_SELECTED]: handleSelectedMaterialConfig,
-  [TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED]: handleSelectedMaterialConfigForFinishGroup
+  [TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED]: handleSelectedMaterialConfigForFinishGroup,
+  [TYPE.DIRECT_SALES.RESTORE_CONFIGURATION]: handleRestoreConfiguration
 }, initialState)
-

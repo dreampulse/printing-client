@@ -30,6 +30,7 @@ describe('User actions', () => {
     let initialState
     let nextStates
     let store
+    let form
 
     beforeEach(() => {
       initialState = {
@@ -45,6 +46,16 @@ describe('User actions', () => {
             priceEstimated: false
           }
         }
+      }
+      form = {
+        shippingAddress: {
+          firstName: 'firstName',
+          lastName: 'lastName',
+          city: 'city',
+          countryCode: 'countryCode'
+        },
+        emailAddress: 'some-email-address',
+        phoneNumber: 'some-phone-number'
       }
       nextStates = []
       store = createMockStore(initialState, nextStates)
@@ -79,12 +90,12 @@ describe('User actions', () => {
     })
 
     it('dispatches expected actions', async () => {
-      await store.dispatch(reviewOrder({some: 'user-data', phoneNumber: 'some-phone-number'}))
+      await store.dispatch(reviewOrder(form))
       expect(store.getActions(), 'to equal', [{
         type: 'some-open-fetching-price-modal'
       }, {
         type: TYPE.USER.UPDATED,
-        payload: {some: 'user-data'}
+        payload: form
       }, {
         type: 'some-recalculate-selected-offer-action'
       }, {
@@ -95,12 +106,12 @@ describe('User actions', () => {
     it('dispatches expected actions when selected offer had an estimated price', async () => {
       initialState.price.selectedOffer.priceEstimated = true
 
-      await store.dispatch(reviewOrder({some: 'user-data', phoneNumber: 'some-phone-number'}))
+      await store.dispatch(reviewOrder(form))
       expect(store.getActions(), 'to equal', [{
         type: 'some-open-fetching-price-modal'
       }, {
         type: TYPE.USER.UPDATED,
-        payload: {some: 'user-data'}
+        payload: form
       }, {
         type: 'some-recalculate-selected-offer-action'
       }, {
@@ -122,12 +133,12 @@ describe('User actions', () => {
         }
       })
 
-      await store.dispatch(reviewOrder({some: 'user-data', phoneNumber: 'some-phone-number'}))
+      await store.dispatch(reviewOrder(form))
       expect(store.getActions(), 'to equal', [{
         type: 'some-open-fetching-price-modal'
       }, {
         type: TYPE.USER.UPDATED,
-        payload: {some: 'user-data'}
+        payload: form
       }, {
         type: 'some-recalculate-selected-offer-action'
       }, {

@@ -12,7 +12,7 @@ const app = express()
 app.use(compression())
 
 app.use(favicon(
-    resolve(`${__dirname}/../src/asset/favicon.png`
+    resolve(`${__dirname}/../src/asset/image/favicon.png`
   ))
 )
 
