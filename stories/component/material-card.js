@@ -44,6 +44,34 @@ storiesOf('Material Card', module)
       onSelectClick={action('onSelectClick')}
     />
   ))
+  .add('without image', () => (
+    <MaterialCard
+      title="Polyamide"
+      shipping="2-5 days, no express"
+      subline="Solid, raw"
+      description="Best all-round material"
+      price={price}
+      info={info}
+      onMoreClick={action('onMoreClick')}
+      colorSelect={colorSelect}
+      onSelectClick={action('onSelectClick')}
+    />
+  ))
+  .add('alternative label', () => (
+    <MaterialCard
+      title="Polyamide"
+      shipping="2-5 days, no express"
+      subline="Solid, raw"
+      description="Best all-round material"
+      price={price}
+      info={info}
+      image="http://placehold.it/260x170/ff0000"
+      onMoreClick={action('onMoreClick')}
+      colorSelect={colorSelect}
+      onSelectClick={action('onSelectClick')}
+      selectLabel="Checkout"
+    />
+  ))
   .add('selected', () => (
     <MaterialCard
       selected

@@ -5,6 +5,7 @@
 
   max-width: $screen-sm-max;
   border-radius: $border-radius;
+  overflow: hidden;
 
   &__image {
     @include scut-ratio-box(26/17);

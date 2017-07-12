@@ -22,18 +22,29 @@ const AppLayout = ({
   children,
   configurationHeader,
   currentStep,
+  isDirectSales = false,
   onGoToHome,
   onGoToAddress
 }) => {
   const processStepBar = (
     <ProcessStepBar currentStep={currentStep}>
-      <ProcessStep
-        label="Your Order"
-        onClick={(event) => {
-          event.preventDefault()
-          onGoToHome()
-        }}
-      />
+      {!isDirectSales
+        ? <ProcessStep
+          label="Your Order"
+          onClick={(event) => {
+            event.preventDefault()
+            onGoToHome()
+          }}
+        />
+        : <ProcessStep
+          label="Overview"
+          onClick={(event) => {
+            event.preventDefault()
+            // TODO: go somewhere
+            // onGoToHome()
+          }}
+        />
+      }
       <ProcessStep
         label="Address"
         onClick={(event) => {
