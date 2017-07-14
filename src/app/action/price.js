@@ -78,7 +78,7 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
 
   const options = {
     isEstimate: !isDirectSales(), // fetch real prices for direct sales
-    caching: isDirectSales(), // cache prices for next user
+    caching: true, // cache prices for next user
     userId,
     items
   }
