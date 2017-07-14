@@ -76,6 +76,14 @@ const CartPage = ({
         <Column md={6}>
           <Headline modifiers={['minor', 's']} label="Shipping Address" />
           <Paragraph modifiers={['l']}>
+            {user.companyName
+              ? <span>{user.companyName}<br /></span>
+              : null
+            }
+            {user.vatId
+              ? <span>{user.vatId}<br /></span>
+              : null
+            }
             {user.shippingAddress.firstName} {user.shippingAddress.lastName}<br />
             {user.shippingAddress.street} {user.shippingAddress.houseNumber}<br />
             {user.shippingAddress.addressLine2}<br />
@@ -91,6 +99,14 @@ const CartPage = ({
         <Column md={6}>
           <Headline modifiers={['minor', 's']} label="Billing Address" />
           <Paragraph modifiers={['l']}>
+            {user.companyName
+              ? <span>{user.companyName}<br /></span>
+              : null
+            }
+            {user.vatId
+              ? <span>{user.vatId}<br /></span>
+              : null
+            }
             {user.billingAddress.firstName ||
               user.shippingAddress.firstName} {user.billingAddress.lastName ||
               user.shippingAddress.lastName}<br />
