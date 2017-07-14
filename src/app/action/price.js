@@ -77,7 +77,8 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
   }))
 
   const options = {
-    isEstimate: !isDirectSales(), // fetch and cache real prices for direct sales
+    isEstimate: !isDirectSales(), // fetch real prices for direct sales
+    caching: isDirectSales(), // cache prices for next user
     userId,
     items
   }
@@ -139,7 +140,8 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
   }))
 
   const options = {
-    isEstimate: false, // get real price for recalculated offer
+    isEstimate: false, // always get real price for recalculated offer
+    caching: isDirectSales(), // use cached prices from first request
     vendorId: selectedOffer.printingService,
     userId,
     items
