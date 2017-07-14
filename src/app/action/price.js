@@ -141,7 +141,7 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
 
   const options = {
     isEstimate: false, // always get real price for recalculated offer
-    caching: isDirectSales(), // use cached prices from first request
+    caching: true, // use cached prices from first request
     vendorId: selectedOffer.printingService,
     userId,
     items
