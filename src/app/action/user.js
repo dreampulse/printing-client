@@ -58,6 +58,8 @@ export const updateLocation = address => async (dispatch, getState) => {
   } else {
     if (!getState().user.userId) {  // No user created so far
       await dispatch(createUser())
+    } else {
+      await dispatch(updateUser(getState().user.user))
     }
 
     // Update prices
