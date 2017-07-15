@@ -51,7 +51,6 @@ export const updateUser = user => async (dispatch, getState) => {
 
 export const updateLocation = address => async (dispatch, getState) => {
   dispatch(shippingAddressChanged(address))
-  await dispatch(updateUser(getState().user.user))
 
   if (!isAddressValid(address)) {
     // Open address modal if address is not valid
@@ -59,6 +58,8 @@ export const updateLocation = address => async (dispatch, getState) => {
   } else {
     if (!getState().user.userId) {  // No user created so far
       await dispatch(createUser())
+    } else {
+      await dispatch(updateUser(getState().user.user))
     }
 
     // Update prices
