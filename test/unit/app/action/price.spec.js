@@ -39,9 +39,6 @@ describe('Price actions', () => {
       },
       user: {
         userId: 'some-user-id'
-      },
-      configuration: {
-        configurationId: null
       }
     }
     store = mockStore(initialStoreData)
@@ -220,20 +217,18 @@ describe('Price actions', () => {
           modelId: 'model2',
           quantity: 2,
           materialConfigIds
-        }],
-        isEstimate: true,
-        caching: true
+        }]
       }])
     })
 
-    it('calls printingEngine.createPriceRequest() with configurationId should get real prices', async () => {
+    it('calls printingEngine.createPriceRequest() with last price id', async () => {
       initialStoreData.price.priceId = 'last-price-id'
-      initialStoreData.configuration.configurationId = 'some-configuration-id'
       await store.dispatch(createPriceRequest())
 
       const materialConfigIds = ['material1', 'material2']
       expect(printingEngine.createPriceRequest, 'to have a call satisfying', [{
         userId: 'some-user-id',
+        lastPriceId: 'last-price-id',
         items: [{
           modelId: 'model1',
           quantity: 1,
@@ -242,9 +237,7 @@ describe('Price actions', () => {
           modelId: 'model2',
           quantity: 2,
           materialConfigIds
-        }],
-        isEstimate: false,
-        caching: true
+        }]
       }])
     })
 
