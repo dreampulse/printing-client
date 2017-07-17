@@ -3,15 +3,13 @@ import {handleActions} from 'redux-actions'
 import TYPE from '../type'
 
 const initialState = {
-  configurationId: null,
-  configuration: null
+  configurationId: null
 }
 
 function handleConfigurationRestored (state, {payload}) {
   return {
     ...state,
-    configurationId: payload._id, // eslint-disable-line no-underscore-dangle
-    configuration: payload
+    configurationId: payload._id // eslint-disable-line no-underscore-dangle
   }
 }
 
