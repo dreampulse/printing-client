@@ -223,9 +223,10 @@ describe('Price actions', () => {
       }])
     })
 
-    it('calls printingEngine.createPriceRequest() with custom options', async () => {
+    it('calls printingEngine.createPriceRequest() with configurationId should get real prices', async () => {
       initialStoreData.price.priceId = 'last-price-id'
-      await store.dispatch(createPriceRequest({isEstimate: false}))
+      initialStoreData.configuration.configurationId = 'some-configuration-id'
+      await store.dispatch(createPriceRequest())
 
       const materialConfigIds = ['material1', 'material2']
       expect(printingEngine.createPriceRequest, 'to have a call satisfying', [{
