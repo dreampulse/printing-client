@@ -217,18 +217,19 @@ describe('Price actions', () => {
           modelId: 'model2',
           quantity: 2,
           materialConfigIds
-        }]
+        }],
+        isEstimate: true,
+        caching: true
       }])
     })
 
-    it('calls printingEngine.createPriceRequest() with last price id', async () => {
+    it('calls printingEngine.createPriceRequest() with custom options', async () => {
       initialStoreData.price.priceId = 'last-price-id'
-      await store.dispatch(createPriceRequest())
+      await store.dispatch(createPriceRequest({isEstimate: false}))
 
       const materialConfigIds = ['material1', 'material2']
       expect(printingEngine.createPriceRequest, 'to have a call satisfying', [{
         userId: 'some-user-id',
-        lastPriceId: 'last-price-id',
         items: [{
           modelId: 'model1',
           quantity: 1,
@@ -237,7 +238,9 @@ describe('Price actions', () => {
           modelId: 'model2',
           quantity: 2,
           materialConfigIds
-        }]
+        }],
+        isEstimate: false,
+        caching: true
       }])
     })
 
