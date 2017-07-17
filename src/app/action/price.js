@@ -43,9 +43,10 @@ export const refreshSelectedOffer = () => (dispatch, getState) => {
   }
 }
 
-const isDirectSales = () => /configuration/.test(global.location.pathname)
-
-export const createPriceRequest = (debounce = false) => (dispatch, getState) => {
+export const createPriceRequest = ({
+  isEstimate = true,
+  debounce = false
+} = {}) => (dispatch, getState) => {
   dispatch(clearOffers())
 
   const {
@@ -77,7 +78,7 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
   }))
 
   const options = {
-    isEstimate: !isDirectSales(), // fetch real prices for direct sales
+    isEstimate,
     caching: true, // cache prices for next user
     userId,
     items
@@ -173,4 +174,5 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
   })
 }
 
-export const createDebouncedPriceRequest = () => createPriceRequest(true)
+export const createDebouncedPriceRequest = options =>
+  createPriceRequest({...options, debounce: true})

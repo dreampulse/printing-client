@@ -34,5 +34,5 @@ export const createConfiguration = () => async (dispatch, getState) => {
 export const restoreConfiguration = configurationId => async (dispatch) => {
   const configuration = await printingEngine.getConfiguration(configurationId)
   dispatch(restoreConfigurationAction(configuration))
-  dispatch(createPriceRequest())
+  dispatch(createPriceRequest({isEstimate: false})) // fetch real prices for direct sales
 }
