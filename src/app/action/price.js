@@ -55,11 +55,11 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
     model: {
       models
     },
-    price: {
-      priceId: lastPriceId
-    },
     user: {
       userId
+    },
+    configuration: {
+      configurationId
     }
   } = getState()
 
@@ -78,11 +78,10 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
   }))
 
   const options = {
+    isEstimate: !configurationId, // fetch real prices for direct sales
+    caching: true, // cache prices for next user
     userId,
     items
-  }
-  if (lastPriceId) {
-    options.lastPriceId = lastPriceId
   }
 
   const usePoll = debounce ? debouncedPoll : poll
@@ -125,7 +124,6 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
       models
     },
     price: {
-      priceId: lastPriceId,
       selectedOffer
     },
     user: {
@@ -143,8 +141,9 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
   }))
 
   const options = {
+    isEstimate: false, // always get real price for recalculated offer
+    caching: false, // do not cache price recalc with a single material/vendor
     vendorId: selectedOffer.printingService,
-    lastPriceId,
     userId,
     items
   }
