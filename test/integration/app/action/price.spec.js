@@ -125,8 +125,7 @@ describe('Price Integration Test', () => {
           modelId: 'material-id-model-2',
           materialConfigIds: ['some-material-id', 'some-material-other-id'],
           quantity: 2
-        }],
-        lastPriceId: 'some-old-price-id'
+        }]
       })
 
       expect(store.getState().price, 'to satisfy', {
