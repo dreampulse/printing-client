@@ -39,6 +39,9 @@ describe('Price actions', () => {
       },
       user: {
         userId: 'some-user-id'
+      },
+      configuration: {
+        configurationId: null
       }
     }
     store = mockStore(initialStoreData)
