@@ -6,8 +6,7 @@ import CartPage from 'Container/cart-page'
 import ModelPage from 'Container/model-page'
 import AddressPage from 'Container/address-page'
 import SuccessPage from 'Container/success-page'
-import ModelWithConfigurationPage from 'Container/model-with-configuration-page'
-import DirectSalesPage from 'Container/direct-sales-page'
+import ConfigurationPage from 'Container/configuration-page'
 
 const preventDeepLinking = store => (nextState, replace) => {
   // It is only possible to reach other routes than the model page
@@ -28,9 +27,7 @@ export default ({store}) => {
       <Route component={AddressPage} path="/address" onEnter={preventDeepLinking(store)} />
       <Route component={CartPage} path="/cart" onEnter={preventDeepLinking(store)} />
       <Route component={SuccessPage} path="/success" onEnter={preventDeepLinking(store)} />
-      <Route component={ModelWithConfigurationPage} path="/configuration/:id" />
-      {/* TODO: update upper route as soon as the container is finished */}
-      <Route component={DirectSalesPage} path="/direct-sales" />
+      <Route component={ConfigurationPage} path="/configuration/:id" />
     </Router>
   )
 }

@@ -14,7 +14,7 @@ import SelectMenu from 'Component/select-menu'
 
 import AppLayout from './app-layout'
 
-const DirectSalesPage = () => {
+const DirectConfigurationPage = () => {
   const CartQantityList = () => (
     <ModelQuantityItemList>
       <ModelQuantityItem
@@ -97,4 +97,4 @@ const DirectSalesPage = () => {
   )
 }
 
-export default DirectSalesPage
+export default DirectConfigurationPage

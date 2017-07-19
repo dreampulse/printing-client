@@ -3,13 +3,15 @@ import {handleActions} from 'redux-actions'
 import TYPE from '../type'
 
 const initialState = {
-  configurationId: null
+  configurationId: null,
+  isDirectSales: false
 }
 
 function handleConfigurationRestored (state, {payload}) {
   return {
     ...state,
-    configurationId: payload._id // eslint-disable-line no-underscore-dangle
+    configurationId: payload._id, // eslint-disable-line no-underscore-dangle
+    isDirectSales: Boolean(payload.materialConfigId)
   }
 }
 
