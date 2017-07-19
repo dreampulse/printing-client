@@ -22,6 +22,9 @@ describe('Configuration actions', () => {
       },
       material: {
         selectedMaterialConfig: 'some-material-config-id'
+      },
+      user: {
+        userId: 'some-user-id'
       }
     }
     store = mockStore(initialStoreData)
@@ -125,6 +128,25 @@ describe('Configuration actions', () => {
         payload: 'some-configuration'
       }, {
         type: 'some-create-price-request-action'
+      }])
+    })
+
+    it('does not create price request when user is missing', async () => {
+      store = mockStore({
+        model: initialStoreData.model,
+        user: {
+          // empty user object
+        }
+      })
+
+      printingEngine.getConfiguration
+        .withArgs('some-configuration-id')
+        .returns('some-configuration')
+
+      await store.dispatch(restoreConfiguration('some-configuration-id'))
+      expect(store.getActions(), 'to equal', [{
+        type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
+        payload: 'some-configuration'
       }])
     })
   })
