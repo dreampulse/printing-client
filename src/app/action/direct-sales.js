@@ -31,8 +31,10 @@ export const createConfiguration = () => async (dispatch, getState) => {
   dispatch(crateConfigurationAction(shareUrl))
 }
 
-export const restoreConfiguration = configurationId => async (dispatch) => {
+export const restoreConfiguration = configurationId => async (dispatch, getState) => {
   const configuration = await printingEngine.getConfiguration(configurationId)
   dispatch(restoreConfigurationAction(configuration))
-  dispatch(createPriceRequest())
+  if (getState().user.userId) {
+    dispatch(createPriceRequest())
+  }
 }
