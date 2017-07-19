@@ -4,6 +4,8 @@ import {Provider} from 'react-redux'
 
 import 'babel-polyfill'
 
+import 'Service/logging'
+
 import Store from './store'
 import Router from './router'
 
