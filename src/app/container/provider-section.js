@@ -8,20 +8,26 @@ import {
   formatPrice,
   formatShipping
 } from 'Lib/formatter'
+import {hasInternalFlag} from 'Service/location'
 
 import Section from 'Component/section'
 import Headline from 'Component/headline'
 import ProviderList from 'Component/provider-list'
 import ProviderItem from 'Component/provider-item'
+import Button from 'Component/button'
 
 import {selectOffer} from 'Action/price'
 import {goToAddress} from 'Action/navigation'
+import {createConfiguration} from 'Action/configuration'
 
 const ProviderSection = ({
+  configurationId,
   selectedMaterialConfig,
   offers,
+  isInternal,
   onSelectOffer,
-  onGoToAddress
+  onGoToAddress,
+  onCreateConfiguration
 }) => {
   const disabled = !selectedMaterialConfig || !offers
   const headlineModifiers = buildClassArray({
@@ -54,18 +60,29 @@ const ProviderSection = ({
     <Section id="section-provider">
       <Headline label="3. Choose a provider and shipping option" modifiers={headlineModifiers} />
       {!disabled && renderProviderList()}
+      {isInternal && !disabled && !configurationId && (
+        <Button
+          label="Share selection"
+          modifiers={['text']}
+          classNames={['u-float-right']}
+          onClick={() => onCreateConfiguration(true)}
+        />
+      )}
     </Section>
   )
 }
 
 const mapStateToProps = state => ({
+  configurationId: state.configuration.configurationId,
   selectedMaterialConfig: state.material.selectedMaterialConfig,
-  offers: selectOffersForSelectedMaterialConfig(state)
+  offers: selectOffersForSelectedMaterialConfig(state),
+  isInternal: hasInternalFlag()
 })
 
 const mapDispatchToProps = {
   onSelectOffer: selectOffer,
-  onGoToAddress: goToAddress
+  onGoToAddress: goToAddress,
+  onCreateConfiguration: createConfiguration
 }
 
 export default compose(
