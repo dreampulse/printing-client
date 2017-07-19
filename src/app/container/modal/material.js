@@ -24,11 +24,11 @@ import Image from 'Component/image'
 const MaterialModal = ({material, finishGroup, onClose}) => {
   const headline = <Headline label={material.name} modifiers={['l']} />
   const buttons = [
-    <Button label="Close" onClick={onClose} />
+    <Button label="Close" onClick={() => onClose()} />
   ]
 
   return (
-    <Overlay modifiers={['l']} headline={headline} buttons={buttons} closePortal={onClose}>
+    <Overlay modifiers={['l']} headline={headline} buttons={buttons} closePortal={() => onClose()}>
       <Grid>
         <Column sm={12} md={8} lg={7}>
           <Paragraph classNames={['u-margin-bottom-xl']}>
