@@ -4,6 +4,7 @@ import promiseMiddleware from 'redux-promise'
 import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
 import {track} from 'Service/mixpanel'
+import {captureException} from 'Service/error-logging'
 
 import {openFatalErrorModal} from 'Action/modal'
 import rootReducer from './reducer'
@@ -14,8 +15,9 @@ const fatalErrorHandler = store => next => (action) => {
   if (promise && promise.catch) {
     return promise.catch((error) => {
       store.dispatch(openFatalErrorModal(error))
-      // Throw error again
-      throw error
+
+      captureException(error) // Send error to the logging service
+      throw error  // Throw error again
     })
   }
 
