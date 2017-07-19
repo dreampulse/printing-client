@@ -13,8 +13,7 @@ const mapDispatchToProps = {
   onRestoreConfiguration: restoreConfiguration
 }
 
-// TODO: We use here the ModelPage as a temporary solution until we have the UI-Componentes
-const DirectSales = ModelPage
+const ModelWithConfigurationPage = ModelPage
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
@@ -24,4 +23,4 @@ export default compose(
       this.props.onRestoreConfiguration(configurationId)
     }
   })
-)(DirectSales)
+)(ModelWithConfigurationPage)
