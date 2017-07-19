@@ -59,7 +59,7 @@ const CartPage = ({
         key={item.modelId}
         quantity={item.quantity}
         title={item.name}
-        onQuantityChange={onGoToHome}
+        onQuantityChange={() => onGoToHome()}
         price={formatPrice(item.price, offer.currency)}
       />
     ))
@@ -158,7 +158,7 @@ const CartPage = ({
     </Section>
   )
 
-  const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
+  const backLink = <Link icon={backIcon} onClick={() => onGoBack()} label="Back" />
 
   const paymentButtons = [
     <Button
@@ -180,7 +180,7 @@ const CartPage = ({
     />,
     <PaypalButton
       key="payment-button-1"
-      onClick={onPayWithPaypal}
+      onClick={() => onPayWithPaypal()}
       onAuthorize={async (data, actions) => {
         const payment = await onCreateOrderWithPaypal(data, actions)
         onGoToSuccess()

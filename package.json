@@ -107,7 +107,7 @@
     "react-router-redux": "^4.0.5",
     "recompose": "^0.21.2",
     "redux": "^3.3.1",
-    "redux-actions": "0.11.0",
+    "redux-actions": "^2.2.1",
     "redux-form": "^6.4.3",
     "redux-promise": "dreampulse/redux-promise",
     "redux-thunk": "^2.0.1",

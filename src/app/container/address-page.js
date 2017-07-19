@@ -128,7 +128,7 @@ const AddressPage = ({
     </div>
   )
 
-  const backLink = <Link icon={backIcon} onClick={onGoBack} label="Back" />
+  const backLink = <Link icon={backIcon} onClick={() => onGoBack()} label="Back" />
 
   return (
     <AppLayout currentStep={1}>
