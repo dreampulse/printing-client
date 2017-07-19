@@ -547,9 +547,15 @@ describe('Selector lib', () => {
       }
     })
 
-    it('selects the material by id and returns it together with the config', () => {
+    it('selects the material by id and returns it together with finish group and material config', () => {
       expect(selectMaterialByMaterialConfigId(state, 'some-other-material-config-id'), 'to equal', {
         material,
+        finishGroup: {
+          materialConfigs: [
+            materialConfig,
+            otherMaterialConfig
+          ]
+        },
         materialConfig: otherMaterialConfig
       })
     })
@@ -592,6 +598,9 @@ describe('Selector lib', () => {
     it('selects the material defined in the selectedOffer', () => {
       expect(selectedOfferMaterial(state), 'to equal', {
         material,
+        finishGroup: {
+          materialConfigs: [materialConfig]
+        },
         materialConfig
       })
     })

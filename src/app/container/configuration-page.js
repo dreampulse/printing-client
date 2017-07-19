@@ -41,8 +41,9 @@ export default compose(
           .then(() => {
             this.props.setIsLoading(false)
           })
-          .catch(() => {
+          .catch((error) => {
             // TODO: catch error here and show 404 page
+            throw error
           })
       }
     }

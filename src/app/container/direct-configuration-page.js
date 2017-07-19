@@ -1,4 +1,27 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import {compose} from 'recompose'
+
+import {
+  selectMaterialByMaterialConfigId,
+  selectPrintingServiceRequests
+} from 'Lib/selector'
+import {
+  getBestOfferForMaterialConfig
+} from 'Lib/material'
+import {
+  formatDimensions,
+  formatPrice,
+  formatDeliveryTime
+} from 'Lib/formatter'
+import getCloudinaryUrl from 'Lib/cloudinary'
+
+import {
+  openMaterialModal
+} from 'Action/modal'
+import {
+  selectMaterialConfig
+} from 'Action/material'
 
 import SidebarLayout from 'Component/sidebar-layout'
 import PageHeader from 'Component/page-header'
@@ -14,76 +37,96 @@ import SelectMenu from 'Component/select-menu'
 
 import AppLayout from './app-layout'
 
-const DirectConfigurationPage = () => {
-  const CartQantityList = () => (
-    <ModelQuantityItemList>
-      <ModelQuantityItem
-        readOnly
-        imageSource="http://placehold.it/130x98"
-        quantity={1}
-        title="model_item_title.stl with a very long text"
-        subline="54 x 84 x 75 mm"
-      />
-      <ModelQuantityItem
-        readOnly
-        imageSource="http://placehold.it/130x98"
-        quantity={2}
-        title="model_item_title.stl with a very long text"
-        subline="54 x 84 x 75 mm"
-      />
-      <ModelQuantityItem
-        readOnly
-        imageSource="http://placehold.it/130x98"
-        quantity={3}
-        title="model_item_title.stl with a very long text"
-        subline="54 x 84 x 75 mm"
-      />
-      <ModelQuantityItem
-        readOnly
-        imageSource="http://placehold.it/130x98"
-        quantity={1}
-        title="model_item_title.stl with a very long text"
-        subline="54 x 84 x 75 mm"
-      />
-    </ModelQuantityItemList>
-  )
+const DirectConfigurationPage = ({
+  models,
+  selectedMaterial,
+  offers,
+  printingServiceRequests,
+  onOpenMaterialModal,
+  onSelectMaterialConfig
+}) => {
+  const {
+    finishGroup,
+    materialConfig
+  } = selectedMaterial
+  const colorValues = finishGroup.materialConfigs
+    // Filter out material configs which do not have an offer
+    .filter(config => (
+      Boolean(getBestOfferForMaterialConfig(offers, config.id))
+    ))
+    .map(({id, color, colorCode, colorImage}) => ({
+      value: id,
+      colorValue: colorCode,
+      label: color,
+      colorImage: colorImage ? getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']) : undefined
+    }))
+  // Only select an offer if price request completed!
+  const bestOffer = printingServiceRequests &&
+    printingServiceRequests.complete === printingServiceRequests.total &&
+    getBestOfferForMaterialConfig(
+      offers,
+      materialConfig.id
+    )
+  const selectedColorValue = colorValues.find(({value}) => (
+    value === materialConfig.id
+  ))
 
-  const info = (
-    <Info modifiers={['minor']}>
-      <Headline modifiers={['s']} label="Headline" />
-      <Paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit
-      </Paragraph>
-    </Info>
-  )
-  const price = (<Price value="$19.99" meta="incl. tax & shipping" />)
-  const colorMenu = (
-    <SelectMenu
-      values={[
-        {value: 'value1', colorValue: '#ffffff', label: 'Color 1'},
-        {value: 'value2', colorValue: '#ff0000', label: 'Color 2'},
-        {value: 'value3', colorValue: '#00ff00', label: 'Color 3'},
-        {value: 'value4', colorValue: '#0000ff', label: 'Color 4'},
-        {value: 'value5', colorImage: 'http://placehold.it/40x40', label: 'Color 5'}
-      ]}
+  const colorMenu = colorValues.length > 1 ? (<SelectMenu values={colorValues} />) : undefined
+  const materialPrice = (
+    <Price
+      value={
+        bestOffer
+        ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
+        : undefined
+      }
+      meta="incl. tax & shipping"
     />
   )
   const colorSelect = (
-    <SelectField modifiers={['compact']} placeholder="Placeholder" menu={colorMenu} />
+    <SelectField
+      modifiers={['compact']}
+      menu={colorMenu}
+      value={selectedColorValue}
+      onChange={({value}) => onSelectMaterialConfig(value)}
+    />
+  )
+  const info = (
+    <Info>
+      <Headline modifiers={['s']} label="Delivery Time" />
+      <Paragraph>
+        The delivery time is an approximate summary of  production time and shipping time.
+      </Paragraph>
+    </Info>
   )
 
   const materialSection = (
     <MaterialCard
-      title="Polyamide"
-      shipping="2-5 days, no express"
-      subline="Solid, raw"
-      description="Best all-round material"
-      price={price}
+      key={finishGroup.name}
+      title={finishGroup.name}
+      subline={finishGroup.materialName}
+      shipping={bestOffer && formatDeliveryTime(bestOffer.shipping.deliveryTime) || undefined}
+      description={finishGroup.summary}
+      price={materialPrice}
       info={info}
-      onMoreClick={() => {}}
       colorSelect={colorSelect}
-      onSelectClick={() => {}}
+      loading={!bestOffer}
       selectLabel="Checkout"
+      unavailable={
+        !bestOffer &&
+        printingServiceRequests &&
+        printingServiceRequests.complete === printingServiceRequests.total
+      }
+      onSelectClick={
+        bestOffer &&
+        (() => {}) ||
+        undefined
+      }
+      onMoreClick={() => {
+        onOpenMaterialModal({
+          materialId: selectedMaterial.material.id,
+          finishGroupId: selectedMaterial.finishGroup.id
+        })
+      }}
     />
   )
 
@@ -91,10 +134,37 @@ const DirectConfigurationPage = () => {
     <AppLayout currentStep={1} isDirectSales>
       <PageHeader label="Shared Compilation" />
       <SidebarLayout sidebar={materialSection}>
-        <CartQantityList />
+        <ModelQuantityItemList classNames={['u-no-margin']}>
+          {models.map(model => (
+            <ModelQuantityItem
+              key={model.fileId}
+              imageSource={model.thumbnailUrl}
+              quantity={model.quantity}
+              title={model.name}
+              subline={formatDimensions(
+                model.dimensions,
+                model.fileUnit
+              )}
+            />
+          ))}
+        </ModelQuantityItemList>
       </SidebarLayout>
     </AppLayout>
   )
 }
 
-export default DirectConfigurationPage
+const mapStateToProps = state => ({
+  models: state.model.models,
+  offers: state.price.offers || [],
+  selectedMaterial: selectMaterialByMaterialConfigId(state, state.material.selectedMaterialConfig),
+  printingServiceRequests: selectPrintingServiceRequests(state)
+})
+
+const mapDispatchToProps = {
+  onOpenMaterialModal: openMaterialModal,
+  onSelectMaterialConfig: selectMaterialConfig
+}
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps)
+)(DirectConfigurationPage)

@@ -120,6 +120,7 @@ export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
   } = state
 
   let selectedMaterial
+  let selectedFinishGroup
   let selectedMaterialConfig
   materials.materialStructure.every((materialGroup) => {
     materialGroup.materials.every((material) => {
@@ -127,6 +128,7 @@ export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
         finishGroup.materialConfigs.every((materialConfig) => {
           if (materialConfig.id === materialConfigId) {
             selectedMaterial = material
+            selectedFinishGroup = finishGroup
             selectedMaterialConfig = materialConfig
           }
           return !selectedMaterial
@@ -140,6 +142,7 @@ export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
 
   return {
     material: selectedMaterial,
+    finishGroup: selectedFinishGroup,
     materialConfig: selectedMaterialConfig
   }
 }
