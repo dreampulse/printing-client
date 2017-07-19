@@ -15,7 +15,7 @@ const PriceChangedModal = ({onClose}) => {
   ]
 
   return (
-    <Overlay headline={headline} buttons={buttons} closePortal={onClose}>
+    <Overlay headline={headline} buttons={buttons} closePortal={() => onClose()}>
       <RichText>
         <p>
           You have selected your model based on estimated prices,
