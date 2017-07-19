@@ -16,6 +16,7 @@ const ModelQuantityItem = ({
   imageSource,
   quantity,
   title,
+  subline,
   price,
   onQuantityChange,
   onDelete
@@ -32,8 +33,11 @@ const ModelQuantityItem = ({
         <div className="model-quantity-item__title">
           {title}
         </div>
+        {Boolean(subline) && (
+          <div className="model-quantity-item__subline">{subline}</div>
+        )}
         <div className="model-quantity-item__quantity">
-          Quantity: {quantity} <Link label="change quantity" onClick={onQuantityChange} />
+          Quantity: {quantity} {onQuantityChange && <Link label="change quantity" onClick={onQuantityChange} />}
         </div>
       </div>
       <Price value={price} />
@@ -52,7 +56,7 @@ ModelQuantityItem.propTypes = {
   quantity: PropTypes.number.isRequired,
   title: PropTypes.string,
   subline: PropTypes.string,
-  onQuantityChange: PropTypes.func.isRequired,
+  onQuantityChange: PropTypes.func,
   onDelete: PropTypes.func,
   price: PropTypes.string
 }

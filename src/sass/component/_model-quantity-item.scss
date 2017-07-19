@@ -22,11 +22,18 @@
 
   &__title {
     @include scut-truncate;
-    margin-bottom: $space-base
   }
 
   &__quantity {
+    margin-top: $space-base;
     font-size: $font-size-base;
+  }
+
+  &__subline {
+    @include scut-truncate;
+
+    display: block;
+    color: $color-minor;
   }
 
   & > .price {

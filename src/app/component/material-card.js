@@ -25,10 +25,11 @@ const MaterialCard = ({
   image,
   shipping,
   onMoreClick = () => {},
-  onSelectClick
+  onSelectClick,
+  selectLabel = 'Select'
 }) => {
   const buttonModifiers = buildClassArray(['block', {selected}])
-  const selectedLabel = selected ? 'Selected' : 'Select'
+  const selectButtonLabel = selected ? 'Selected' : selectLabel
   modifiers.push({
     unavailable
   })
@@ -45,7 +46,7 @@ const MaterialCard = ({
         modifiers={buttonModifiers}
         disabled={!onSelectClick}
         onClick={onSelectClick}
-        label={selectedLabel}
+        label={selectButtonLabel}
       />
     </footer>
   )
@@ -62,7 +63,7 @@ const MaterialCard = ({
 
   return (
     <article className={buildClassName('material-card', modifiers, classNames)}>
-      <div className="material-card__image" style={imageStyle} />
+      {image && <div className="material-card__image" style={imageStyle} />}
       <div className="material-card__content">
         <header className="material-card__header">
           <Headline label={title} tag="h3" classNames={['u-margin-bottom-s']} />
@@ -97,7 +98,8 @@ MaterialCard.propTypes = {
   shipping: PropTypes.string,
   onMoreClick: PropTypes.func,
   onSelectClick: PropTypes.func,
-  image: PropTypes.string.isRequired
+  image: PropTypes.string,
+  selectLabel: PropTypes.string
 }
 
 export default MaterialCard
