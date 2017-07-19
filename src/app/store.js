@@ -4,7 +4,7 @@ import promiseMiddleware from 'redux-promise'
 import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
 import {track} from 'Service/mixpanel'
-import {captureException} from 'Service/error-logging'
+import {captureException} from 'Service/logging'
 
 import {openFatalErrorModal} from 'Action/modal'
 import rootReducer from './reducer'
