@@ -17,3 +17,8 @@ body {
   font-size: $font-size-base;
   line-height: $line-height-base;
 }
+
+#root {
+  position: relative;
+  z-index: 0;  // Solves conflict issue with paypal client library
+}
