@@ -29,9 +29,11 @@ import {
   convertPlaceToLocation
 } from 'Lib/geolocation'
 
+import {getFeatures} from './util/feature'
 import config from '../../../config'
 
 const ModelPage = ({
+  features,
   address,
   commonQuantity,
   onChangeQuantity,
@@ -58,9 +60,9 @@ const ModelPage = ({
 
   return (
     <AppLayout currentStep={0} configurationHeader={configurationHeader}>
-      <UploadSection />
+      <UploadSection features={features} />
       <MaterialSection />
-      <ProviderSection />
+      <ProviderSection features={features} />
     </AppLayout>
   )
 }
@@ -76,5 +78,6 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  getFeatures()
 )(ModelPage)

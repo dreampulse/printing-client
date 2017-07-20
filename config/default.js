@@ -10,5 +10,6 @@ export default {
   scrollToOffset: 100, // Height of sticky header in pixels plus spacing
   debouncePriceRequestWait: 1000,
   defaultSelectedMaterial: 'Polyamide',
-  stripeCheckoutImage: 'asset/image/checkout-logo.png'
+  stripeCheckoutImage: 'asset/image/checkout-logo.png',
+  raven: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367'
 }

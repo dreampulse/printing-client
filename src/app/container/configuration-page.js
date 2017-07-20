@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   compose,
   lifecycle,
@@ -12,6 +13,7 @@ import {
 } from 'Action/configuration'
 
 import LoadingContainer from 'Component/loading-container'
+import Modal from './modal'
 import ModelPage from './model-page'
 import DirectConfigurationPage from './direct-configuration-page'
 
@@ -41,10 +43,6 @@ export default compose(
           .then(() => {
             this.props.setIsLoading(false)
           })
-          .catch((error) => {
-            // TODO: catch error here and show 404 page
-            throw error
-          })
       } else {
         this.props.setIsLoading(false)
       }
@@ -52,7 +50,12 @@ export default compose(
   }),
   branch(
     props => props.isLoading,
-    renderComponent(LoadingContainer)
+    renderComponent(() => (
+      <div>
+        <LoadingContainer />
+        <Modal />
+      </div>
+    ))
   ),
   branch(
     props => props.isDirectSales,

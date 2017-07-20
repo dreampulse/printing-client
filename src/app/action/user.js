@@ -5,6 +5,7 @@ import {
 } from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
 import {identify, peopleSet} from 'Service/mixpanel'
+import {setUserContext} from 'Service/logging'
 import {normalizeTelephoneNumber} from 'Lib/normalize'
 
 import TYPE from '../type'
@@ -40,6 +41,9 @@ export const createUser = () => async (dispatch, getState) => {
   const user = getState().user.user
   const {userId} = await printingEngine.createUser({user})
   identify(userId)  // Send user information to Mixpanel
+  setUserContext({
+    id: userId
+  })
   return dispatch(userCreated(userId))
 }
 
@@ -82,6 +86,11 @@ export const reviewOrder = form => async (dispatch, getState) => {
     $country: form.shippingAddress.countryCode,
     $email: form.emailAddress,
     raw: form
+  })
+
+  setUserContext({
+    email: form.emailAddress,
+    id: getState().user.userId
   })
 
   dispatch(openFetchingPriceModal())

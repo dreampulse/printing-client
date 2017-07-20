@@ -17,8 +17,6 @@ import ModelItemList from 'Component/model-item-list'
 import LabeledField from 'Component/labeled-field'
 import Button from 'Component/button'
 
-import {hasInternalFlag} from 'Service/location'
-
 import {
   uploadFiles,
   deleteFile,
@@ -36,7 +34,7 @@ const UploadSection = ({
   onUploadFiles,
   onDeleteFile,
   selectedUnit,
-  isInternal,
+  features,
   onChangeIndividualQuantity,
   onChangeUnit,
   onCreateConfiguration
@@ -132,7 +130,7 @@ const UploadSection = ({
           })}
         </ModelItemList>
       )}
-      {isInternal && models.length > 0 && !configurationId && (
+      {features.share && models.length > 0 && !configurationId && (
         <Button
           label="Share compilation"
           modifiers={['text']}
@@ -147,8 +145,7 @@ const UploadSection = ({
 const mapStateToProps = state => ({
   configurationId: state.configuration.configurationId,
   models: state.model.models,
-  selectedUnit: state.model.selectedUnit,
-  isInternal: hasInternalFlag()
+  selectedUnit: state.model.selectedUnit
 })
 
 const mapDispatchToProps = {

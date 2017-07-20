@@ -14,8 +14,7 @@ const fatalErrorHandler = store => next => (action) => {
   if (promise && promise.catch) {
     return promise.catch((error) => {
       store.dispatch(openFatalErrorModal(error))
-      // Throw error again
-      throw error
+      throw error  // Throw error again
     })
   }
 
