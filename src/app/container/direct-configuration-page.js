@@ -10,15 +10,21 @@ import {getBestOfferForMaterialConfig} from 'Lib/material'
 import {
   formatDimensions,
   formatPrice,
-  formatDeliveryTime
+  formatDeliveryTime,
+  formatAddress
 } from 'Lib/formatter'
 import getCloudinaryUrl from 'Lib/cloudinary'
+import {convertPlaceToLocation} from 'Lib/geolocation'
 
 import {openMaterialModal} from 'Action/modal'
 import {selectMaterialConfig} from 'Action/material'
 import {selectOffer} from 'Action/price'
 import {goToAddress} from 'Action/navigation'
+import {updateLocation} from 'Action/user'
 
+import ConfigurationHeader from 'Component/configuration-header'
+import LabeledField from 'Component/labeled-field'
+import LocationField from 'Component/location-field'
 import SidebarLayout from 'Component/sidebar-layout'
 import PageHeader from 'Component/page-header'
 import ModelQuantityItem from 'Component/model-quantity-item'
@@ -33,7 +39,10 @@ import SelectMenu from 'Component/select-menu'
 
 import AppLayout from './app-layout'
 
+import config from '../../../config'
+
 const DirectConfigurationPage = ({
+  address,
   models,
   selectedMaterial,
   offers,
@@ -41,7 +50,8 @@ const DirectConfigurationPage = ({
   onOpenMaterialModal,
   onSelectMaterialConfig,
   onSelectOffer,
-  onGoToAddress
+  onGoToAddress,
+  onUpdateLocation
 }) => {
   const {
     finishGroup,
@@ -131,8 +141,20 @@ const DirectConfigurationPage = ({
     />
   )
 
+  const configurationHeader = (
+    <ConfigurationHeader>
+      <LabeledField label="Shipping:" modifiers={['block']}>
+        <LocationField
+          value={formatAddress(address)}
+          googleMapsApiKey={config.googleMapsApiKey}
+          onChange={place => onUpdateLocation(convertPlaceToLocation(place))}
+        />
+      </LabeledField>
+    </ConfigurationHeader>
+  )
+
   return (
-    <AppLayout currentStep={0}>
+    <AppLayout currentStep={0} configurationHeader={configurationHeader}>
       <PageHeader label="Shared Compilation" />
       <SidebarLayout sidebar={materialSection}>
         <ModelQuantityItemList classNames={['u-no-margin']}>
@@ -155,6 +177,7 @@ const DirectConfigurationPage = ({
 }
 
 const mapStateToProps = state => ({
+  address: state.user.user.shippingAddress,
   models: state.model.models,
   offers: state.price.offers || [],
   selectedMaterial: selectMaterialByMaterialConfigId(state, state.material.selectedMaterialConfig),
@@ -165,7 +188,8 @@ const mapDispatchToProps = {
   onOpenMaterialModal: openMaterialModal,
   onSelectMaterialConfig: selectMaterialConfig,
   onSelectOffer: selectOffer,
-  onGoToAddress: goToAddress
+  onGoToAddress: goToAddress,
+  onUpdateLocation: updateLocation
 }
 
 export default compose(
