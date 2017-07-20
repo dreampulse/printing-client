@@ -108,7 +108,7 @@ describe('Model reducer', () => {
 
       action = {
         type: TYPE.MODEL.FILE_UPLOAD_STARTED,
-        payload: {fileId: 1, name: 'some-name', size: 123}
+        payload: {fileId: 1, fileName: 'some-name', fileSize: 123}
       }
     })
 
@@ -117,8 +117,8 @@ describe('Model reducer', () => {
         {some: 'old-model'},
         {
           fileId: 1,
-          name: 'some-name',
-          size: 123,
+          fileName: 'some-name',
+          fileSize: 123,
           progress: 0,
           uploadFinished: false
         }

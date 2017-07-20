@@ -6,9 +6,7 @@ import {
   selectMaterialByMaterialConfigId,
   selectPrintingServiceRequests
 } from 'Lib/selector'
-import {
-  getBestOfferForMaterialConfig
-} from 'Lib/material'
+import {getBestOfferForMaterialConfig} from 'Lib/material'
 import {
   formatDimensions,
   formatPrice,
@@ -16,12 +14,10 @@ import {
 } from 'Lib/formatter'
 import getCloudinaryUrl from 'Lib/cloudinary'
 
-import {
-  openMaterialModal
-} from 'Action/modal'
-import {
-  selectMaterialConfig
-} from 'Action/material'
+import {openMaterialModal} from 'Action/modal'
+import {selectMaterialConfig} from 'Action/material'
+import {selectOffer} from 'Action/price'
+import {goToAddress} from 'Action/navigation'
 
 import SidebarLayout from 'Component/sidebar-layout'
 import PageHeader from 'Component/page-header'
@@ -43,7 +39,9 @@ const DirectConfigurationPage = ({
   offers,
   printingServiceRequests,
   onOpenMaterialModal,
-  onSelectMaterialConfig
+  onSelectMaterialConfig,
+  onSelectOffer,
+  onGoToAddress
 }) => {
   const {
     finishGroup,
@@ -118,7 +116,10 @@ const DirectConfigurationPage = ({
       }
       onSelectClick={
         bestOffer &&
-        (() => {}) ||
+        (() => {
+          onSelectOffer(bestOffer)
+          onGoToAddress()
+        }) ||
         undefined
       }
       onMoreClick={() => {
@@ -131,7 +132,7 @@ const DirectConfigurationPage = ({
   )
 
   return (
-    <AppLayout currentStep={1} isDirectSales>
+    <AppLayout currentStep={0}>
       <PageHeader label="Shared Compilation" />
       <SidebarLayout sidebar={materialSection}>
         <ModelQuantityItemList classNames={['u-no-margin']}>
@@ -140,7 +141,7 @@ const DirectConfigurationPage = ({
               key={model.fileId}
               imageSource={model.thumbnailUrl}
               quantity={model.quantity}
-              title={model.name}
+              title={model.fileName}
               subline={formatDimensions(
                 model.dimensions,
                 model.fileUnit
@@ -162,7 +163,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onOpenMaterialModal: openMaterialModal,
-  onSelectMaterialConfig: selectMaterialConfig
+  onSelectMaterialConfig: selectMaterialConfig,
+  onSelectOffer: selectOffer,
+  onGoToAddress: goToAddress
 }
 
 export default compose(

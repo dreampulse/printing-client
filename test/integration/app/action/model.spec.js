@@ -100,9 +100,8 @@ describe('Model Integration Test', () => {
       expect(models[0], 'to satisfy', {
         fileId: expect.it('to be a string'),
         modelId: 'some-model-id',
-        name: 'some-file-name',
         thumbnailUrl: 'some-thumbnail-url',
-        size: 42,
+        fileSize: 42,
         progress: 1,
         uploadFinished: true,
         quantity: 1,

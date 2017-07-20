@@ -25,7 +25,9 @@ store.dispatch(init()).then(() => {
 
   const bootsplash = global.document.getElementById('bootsplash')
   // TODO: lets fade out the bootsplash, looks nicer
-  bootsplash.remove()
+  if (bootsplash) { // Otherwise hot reloading breaks
+    bootsplash.remove()
+  }
 })
 
 // Webpack (uglify) will remove this code in the production build

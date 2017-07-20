@@ -24,8 +24,8 @@ const fileUploadStarted = createAction(
   TYPE.MODEL.FILE_UPLOAD_STARTED,
   (fileId, file) => ({
     fileId,
-    name: file.name,
-    size: file.size
+    fileName: file.name,
+    fileSize: file.size
   })
 )
 const fileUploadProgressed = createAction(

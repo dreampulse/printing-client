@@ -91,7 +91,7 @@ const UploadSection = ({
                   key={model.fileId}
                   status={model.progress}
                   title="Uploading"
-                  subline={model.name}
+                  subline={model.fileName}
                   onDelete={() => onDeleteFile(model.fileId)}
                 />
               )
@@ -102,7 +102,7 @@ const UploadSection = ({
                 <ModelItemLoad
                   key={model.fileId}
                   title="Processing"
-                  subline={model.name}
+                  subline={model.fileName}
                   onDelete={() => onDeleteFile(model.fileId)}
                 />
               )
@@ -113,7 +113,7 @@ const UploadSection = ({
                 key={model.fileId}
                 imageSource={model.thumbnailUrl}
                 quantity={model.quantity}
-                title={model.name}
+                title={model.fileName}
 
                 onDelete={() => onDeleteFile(model.fileId)}
                 subline={formatDimensions(

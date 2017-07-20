@@ -45,6 +45,8 @@ export default compose(
             // TODO: catch error here and show 404 page
             throw error
           })
+      } else {
+        this.props.setIsLoading(false)
       }
     }
   }),
