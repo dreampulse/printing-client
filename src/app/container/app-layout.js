@@ -22,29 +22,19 @@ const AppLayout = ({
   children,
   configurationHeader,
   currentStep,
-  isDirectSales = false,
+  isDirectSales,
   onGoToHome,
   onGoToAddress
 }) => {
   const processStepBar = (
     <ProcessStepBar currentStep={currentStep}>
-      {!isDirectSales
-        ? <ProcessStep
-          label="Your Order"
-          onClick={(event) => {
-            event.preventDefault()
-            onGoToHome()
-          }}
-        />
-        : <ProcessStep
-          label="Overview"
-          onClick={(event) => {
-            event.preventDefault()
-            // TODO: go somewhere
-            // onGoToHome()
-          }}
-        />
-      }
+      <ProcessStep
+        label={isDirectSales ? 'Overview' : 'Your Order'}
+        onClick={(event) => {
+          event.preventDefault()
+          onGoToHome()
+        }}
+      />
       <ProcessStep
         label="Address"
         onClick={(event) => {
@@ -88,7 +78,9 @@ const AppLayout = ({
   )
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = state => ({
+  isDirectSales: state.configuration.isDirectSales
+})
 
 const mapDispatchToProps = {
   onGoToHome: goToHome,

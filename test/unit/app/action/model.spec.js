@@ -115,8 +115,8 @@ describe('Model actions', () => {
         type: TYPE.MODEL.FILE_UPLOAD_STARTED,
         payload: {
           fileId: expect.it('to be a string'),
-          name: 'some-name',
-          size: 123
+          fileName: 'some-name',
+          fileSize: 123
         }
       }, {
         type: TYPE.MODEL.FILE_UPLOAD_PROGRESSED,
@@ -158,8 +158,8 @@ describe('Model actions', () => {
             type: TYPE.MODEL.FILE_UPLOAD_STARTED,
             payload: {
               fileId: expect.it('to be a string'),
-              name: 'some-name',
-              size: 123
+              fileName: 'some-name',
+              fileSize: 123
             }
           }, {
             type: TYPE.MODEL.FILE_UPLOADED,

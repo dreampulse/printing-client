@@ -1,8 +1,13 @@
 import {routerActions} from 'react-router-redux'
 
-// TODO: remove
-export const goBack = () => routerActions.goBack()
 export const goToAddress = () => routerActions.push('/address')
 export const goToCart = () => routerActions.push('/cart')
-export const goToHome = () => routerActions.push('/')
+export const goToHome = () => (dispatch, getState) => {
+  const configurationId = getState().configuration.configurationId
+  if (configurationId) {
+    dispatch(routerActions.push(`/configuration/${configurationId}`))
+  } else {
+    dispatch(routerActions.push('/'))
+  }
+}
 export const goToSuccess = () => routerActions.push('/success')

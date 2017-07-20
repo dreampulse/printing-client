@@ -43,6 +43,8 @@ export default compose(
           .then(() => {
             this.props.setIsLoading(false)
           })
+      } else {
+        this.props.setIsLoading(false)
       }
     }
   }),

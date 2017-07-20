@@ -32,7 +32,7 @@ import PaypalButton from 'Component/paypal-button'
 import backIcon from 'Icon/back.svg'
 import creditCardIcon from 'Icon/credit-card.svg'
 
-import {goBack, goToHome, goToSuccess} from 'Action/navigation'
+import {goToAddress, goToHome, goToSuccess} from 'Action/navigation'
 import {payWithStripe, createOrderWithStripe, payWithPaypal, createOrderWithPaypal} from 'Action/order'
 import {openFatalErrorModal} from 'Action/modal'
 
@@ -43,10 +43,11 @@ const CartPage = ({
   offer,
   offerItems,
   selectedMaterial,
-  onGoBack,
+  onGoToAddress,
   onGoToHome,
   onGoToSuccess,
   order,
+  isDirectSales,
   onPayWithStripe,
   onCreateOrderWithStripe,
   onPayWithPaypal,
@@ -58,8 +59,8 @@ const CartPage = ({
         imageSource={item.thumbnailUrl}
         key={item.modelId}
         quantity={item.quantity}
-        title={item.name}
-        onQuantityChange={() => onGoToHome()}
+        title={item.fileName}
+        onQuantityChange={!isDirectSales && (() => onGoToHome()) || undefined}
         price={formatPrice(item.price, offer.currency)}
       />
     ))
@@ -158,7 +159,16 @@ const CartPage = ({
     </Section>
   )
 
-  const backLink = <Link icon={backIcon} onClick={() => onGoBack()} label="Back" />
+  const backLink = (
+    <Link
+      icon={backIcon}
+      onClick={(event) => {
+        event.preventDefault()
+        onGoToAddress()
+      }}
+      label="Back"
+    />
+  )
 
   const paymentButtons = [
     <Button
@@ -220,11 +230,12 @@ const mapStateToProps = state => ({
   offer: state.price.selectedOffer,
   user: state.user.user,
   offerItems: selectOfferItems(state),
-  selectedMaterial: selectedOfferMaterial(state)
+  selectedMaterial: selectedOfferMaterial(state),
+  isDirectSales: state.configuration.isDirectSales
 })
 
 const mapDispatchToProps = {
-  onGoBack: goBack,
+  onGoToAddress: goToAddress,
   onGoToHome: goToHome,
   onGoToSuccess: goToSuccess,
   onOpenFatalErrorModal: openFatalErrorModal,

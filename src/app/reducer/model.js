@@ -49,7 +49,7 @@ function handleQuantityChanged (state, {payload: {quantity}}) {
   }
 }
 
-function handleFileUploadStarted (state, {payload: {fileId, name, size}}) {
+function handleFileUploadStarted (state, {payload: {fileId, fileName, fileSize}}) {
   return {
     ...state,
     numberOfUploads: state.numberOfUploads + 1,
@@ -57,8 +57,8 @@ function handleFileUploadStarted (state, {payload: {fileId, name, size}}) {
       ...state.models,
       {
         fileId,
-        name,
-        size,
+        fileName,
+        fileSize,
         progress: 0,
         uploadFinished: false
       }

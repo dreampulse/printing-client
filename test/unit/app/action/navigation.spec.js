@@ -6,7 +6,6 @@ import {
   goToAddress,
   goToHome
 } from 'Action/navigation'
-import Store from '../../../../src/app/store'
 
 describe('Navigation actions', () => {
   let sandbox
@@ -14,8 +13,10 @@ describe('Navigation actions', () => {
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create()
-    sandbox.stub(routerActions, 'push').returns({type: 'foo'})
-    store = Store({})
+    sandbox.stub(routerActions, 'push')
+    store = mockStore({
+      configuration: {}
+    })
   })
 
   afterEach(() => {
@@ -23,30 +24,71 @@ describe('Navigation actions', () => {
   })
 
   describe('goToCart()', () => {
-    it('should got to vendor', () => {
+    it('calls router push with expected route', () => {
+      routerActions.push
+        .withArgs('/cart')
+        .returns({type: 'push'})
+
       store.dispatch(goToCart())
-      expect(routerActions.push, 'was called with', '/cart')
+      expect(store.getActions(), 'to equal', [
+        {type: 'push'}
+      ])
     })
   })
 
   describe('goToAddress()', () => {
-    it('should got to vendor', () => {
+    it('calls router push with expected route', () => {
+      routerActions.push
+        .withArgs('/address')
+        .returns({type: 'push'})
+
       store.dispatch(goToAddress())
-      expect(routerActions.push, 'was called with', '/address')
+      expect(store.getActions(), 'to equal', [
+        {type: 'push'}
+      ])
     })
   })
 
   describe('goToSuccess()', () => {
-    it('should got to vendor', () => {
+    it('calls router push with expected route', () => {
+      routerActions.push
+        .withArgs('/success')
+        .returns({type: 'push'})
+
       store.dispatch(goToSuccess())
-      expect(routerActions.push, 'was called with', '/success')
+      expect(store.getActions(), 'to equal', [
+        {type: 'push'}
+      ])
     })
   })
 
   describe('goToHome()', () => {
-    it('should got to vendor', () => {
+    it('calls router push with expected route', () => {
+      routerActions.push
+        .withArgs('/')
+        .returns({type: 'push'})
+
       store.dispatch(goToHome())
-      expect(routerActions.push, 'was called with', '/')
+      expect(store.getActions(), 'to equal', [
+        {type: 'push'}
+      ])
+    })
+
+    it('calls router push with expected route when in configuration mode', () => {
+      store = mockStore({
+        configuration: {
+          configurationId: 'some-config-id'
+        }
+      })
+
+      routerActions.push
+        .withArgs('/configuration/some-config-id')
+        .returns({type: 'push'})
+
+      store.dispatch(goToHome())
+      expect(store.getActions(), 'to equal', [
+        {type: 'push'}
+      ])
     })
   })
 })

@@ -26,13 +26,13 @@ import backIcon from 'Icon/back.svg'
 import {renderField} from 'Container/util/form'
 
 import {reviewOrder} from 'Action/user'
-import {goBack} from 'Action/navigation'
+import {goToHome} from 'Action/navigation'
 
 import AppLayout from './app-layout'
 
 const AddressPage = ({
   handleSubmit,
-  onGoBack,
+  onGoToHome,
   isCompany,
   handleIsCompanyChange,
   submitting,
@@ -128,7 +128,16 @@ const AddressPage = ({
     </div>
   )
 
-  const backLink = <Link icon={backIcon} onClick={() => onGoBack()} label="Back" />
+  const backLink = (
+    <Link
+      icon={backIcon}
+      onClick={(event) => {
+        event.preventDefault()
+        onGoToHome()
+      }}
+      label="Back"
+    />
+  )
 
   return (
     <AppLayout currentStep={1}>
@@ -229,7 +238,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onGoBack: goBack,
+  onGoToHome: goToHome,
   onSubmit: reviewOrder,
   clearBillingAddress: () => {},
   handleIsCompanyChange: () => (dispatch, getState) => {

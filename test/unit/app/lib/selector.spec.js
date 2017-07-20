@@ -547,9 +547,15 @@ describe('Selector lib', () => {
       }
     })
 
-    it('selects the material by id and returns it together with the config', () => {
+    it('selects the material by id and returns it together with finish group and material config', () => {
       expect(selectMaterialByMaterialConfigId(state, 'some-other-material-config-id'), 'to equal', {
         material,
+        finishGroup: {
+          materialConfigs: [
+            materialConfig,
+            otherMaterialConfig
+          ]
+        },
         materialConfig: otherMaterialConfig
       })
     })
@@ -592,6 +598,9 @@ describe('Selector lib', () => {
     it('selects the material defined in the selectedOffer', () => {
       expect(selectedOfferMaterial(state), 'to equal', {
         material,
+        finishGroup: {
+          materialConfigs: [materialConfig]
+        },
         materialConfig
       })
     })
@@ -639,11 +648,11 @@ describe('Selector lib', () => {
           models: [{
             modelId: 'some-model-id',
             thumbnailUrl: 'some-thumbnail-url',
-            name: 'some-model-name'
+            fileName: 'some-model-name'
           }, {
             modelId: 'some-other-model-id',
             thumbnailUrl: 'some-other-thumbnail-url',
-            name: 'some-other-model-name'
+            fileName: 'some-other-model-name'
           }]
         }
       }
@@ -654,12 +663,12 @@ describe('Selector lib', () => {
         {
           modelId: 'some-model-id',
           thumbnailUrl: 'some-thumbnail-url',
-          name: 'some-model-name'
+          fileName: 'some-model-name'
         },
         {
           modelId: 'some-other-model-id',
           thumbnailUrl: 'some-other-thumbnail-url',
-          name: 'some-other-model-name'
+          fileName: 'some-other-model-name'
         }
       ])
     })
