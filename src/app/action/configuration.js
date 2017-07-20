@@ -8,27 +8,42 @@ import {createPriceRequest} from './price'
 import TYPE from '../type'
 
 const restoreConfigurationAction = createAction(TYPE.DIRECT_SALES.RESTORE_CONFIGURATION)
-const crateConfigurationAction = createAction(TYPE.DIRECT_SALES.CREATE_CONFIGURATION)
+const createConfigurationAction = createAction(TYPE.DIRECT_SALES.CREATE_CONFIGURATION)
 
-export const createConfiguration = () => async (dispatch, getState) => {
-  if (getState().model.numberOfUploads !== 0) {
-    return  // Assure that upload of all model are finished
+export const createConfiguration = includeMaterialConfig => async (dispatch, getState) => {
+  const {
+    model: {
+      numberOfUploads,
+      models
+    },
+    material: {
+      selectedMaterialConfig
+    }
+  } = getState()
+
+  if (numberOfUploads !== 0) {
+    return // Assure that upload of all models is finished.
   }
 
   const configuration = {
-    items: getState().model.models.map(model => ({
+    items: models.map(model => ({
       modelId: model.modelId,
       quantity: model.quantity
     }))
   }
 
+  if (includeMaterialConfig) {
+    configuration.materialConfigId = selectedMaterialConfig
+  }
+
   const {configurationId} = await printingEngine.createConfiguration(configuration)
-  const shareUrl = `${getBaseUrl()}/configuration/${configurationId}`
+  const path = `/configuration/${configurationId}`
+  const shareUrl = `${getBaseUrl()}${path}`
 
-  // TODO: This is just a temporary solution until we have the UI-Componentes for that
-  dispatch(routerActions.push(`/configuration/${configurationId}`))
+  // TODO: This is just a temporary solution until we have the UI components for that.
+  dispatch(routerActions.push(path))
 
-  dispatch(crateConfigurationAction(shareUrl))
+  dispatch(createConfigurationAction(shareUrl))
 }
 
 export const restoreConfiguration = configurationId => async (dispatch, getState) => {

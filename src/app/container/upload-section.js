@@ -25,7 +25,7 @@ import {
 } from 'Action/model'
 import {
   createConfiguration
-} from 'Action/direct-sales'
+} from 'Action/configuration'
 import {formatDimensions} from 'Lib/formatter'
 
 const UploadSection = ({

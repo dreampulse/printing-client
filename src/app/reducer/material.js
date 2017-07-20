@@ -9,10 +9,10 @@ const initialState = {
   selectedMaterialConfigs: {}
 }
 
-function handleRestoreConfiguration (state, {payload}) {
+function handleRestoreConfiguration (state, {payload: {materialConfigId}}) {
   return {
     ...state,
-    selectedMaterialConfig: payload.materialConfigId
+    selectedMaterialConfig: materialConfigId
   }
 }
 

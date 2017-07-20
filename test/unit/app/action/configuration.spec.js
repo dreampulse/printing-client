@@ -1,12 +1,12 @@
 import {
   createConfiguration,
   restoreConfiguration
-} from 'Action/direct-sales'
+} from 'Action/configuration'
 import * as printingEngine from 'Lib/printing-engine'
 import * as location from 'Service/location'
 import * as priceActions from 'Action/price'
 
-describe('Direct Sales actions', () => {
+describe('Configuration actions', () => {
   let initialStoreData
   let store
   let sandbox
@@ -20,6 +20,9 @@ describe('Direct Sales actions', () => {
         }],
         numberOfUploads: 0
       },
+      material: {
+        selectedMaterialConfig: 'some-material-config-id'
+      },
       user: {
         userId: 'some-user-id'
       }
@@ -27,24 +30,21 @@ describe('Direct Sales actions', () => {
     store = mockStore(initialStoreData)
 
     sandbox = sinon.sandbox.create()
-    sandbox.stub(printingEngine, 'createConfiguration')
-    sandbox.stub(printingEngine, 'getConfiguration')
-    sandbox.stub(priceActions, 'createPriceRequest')
-    sandbox.stub(location, 'getBaseUrl')
-
-    location.getBaseUrl.returns('some-base-url://')
-
-    priceActions.createPriceRequest.returns({
-      type: 'some-create-price-request-action'
-    })
   })
 
   afterEach(() => {
     sandbox.restore()
   })
 
-  describe('restoreConfiguration()', () => {
-    it('dispatches expected actions, when everything succeeds', async () => {
+  describe('createConfiguration()', () => {
+    beforeEach(() => {
+      sandbox.stub(printingEngine, 'createConfiguration')
+      sandbox.stub(location, 'getBaseUrl')
+
+      location.getBaseUrl.returns('http://example.com')
+    })
+
+    it('dispatches expected actions when called without material config', async () => {
       printingEngine.createConfiguration
         .withArgs({
           items: [{
@@ -56,19 +56,50 @@ describe('Direct Sales actions', () => {
 
       await store.dispatch(createConfiguration())
       expect(store.getActions(), 'to equal', [{
+        // TODO: this action creator should have been mocked in the first place
+        // (its not an integration test)
+
         // TODO: The first action is only temporary
         type: '@@router/CALL_HISTORY_METHOD',
         payload: {method: 'push', args: ['/configuration/some-configuration-id']}
       }, {
         type: 'DIRECT_SALES.CREATE_CONFIGURATION',
-        payload: 'some-base-url:///configuration/some-configuration-id'
+        payload: 'http://example.com/configuration/some-configuration-id'
       }])
     })
 
-    it('dispatches noting, when upload is still in progress', async () => {
+    it('dispatches expected actions when called with material config', async () => {
+      printingEngine.createConfiguration
+        .withArgs({
+          items: [{
+            modelId: 'some-model-id',
+            quantity: 42
+          }],
+          materialConfigId: 'some-material-config-id'
+        })
+        .returns({configurationId: 'some-configuration-id'})
+
+      await store.dispatch(createConfiguration(true))
+      expect(store.getActions(), 'to equal', [{
+        // TODO: this action creator should have been mocked in the first place
+        // (its not an integration test)
+
+        // TODO: The first action is only temporary
+        type: '@@router/CALL_HISTORY_METHOD',
+        payload: {method: 'push', args: ['/configuration/some-configuration-id']}
+      }, {
+        type: 'DIRECT_SALES.CREATE_CONFIGURATION',
+        payload: 'http://example.com/configuration/some-configuration-id'
+      }])
+    })
+
+    it('dispatches nothing when upload is still in progress', async () => {
       store = mockStore({
         model: {
           numberOfUploads: 42
+        },
+        material: {
+          selectedMaterialConfig: null
         }
       })
       await store.dispatch(createConfiguration())
@@ -77,6 +108,15 @@ describe('Direct Sales actions', () => {
   })
 
   describe('restoreConfiguration()', () => {
+    beforeEach(() => {
+      sandbox.stub(priceActions, 'createPriceRequest')
+      sandbox.stub(printingEngine, 'getConfiguration')
+
+      priceActions.createPriceRequest.returns({
+        type: 'some-create-price-request-action'
+      })
+    })
+
     it('dispatches expected actions', async () => {
       printingEngine.getConfiguration
         .withArgs('some-configuration-id')
@@ -91,7 +131,7 @@ describe('Direct Sales actions', () => {
       }])
     })
 
-    it('does not create price request, when user is missing', async () => {
+    it('does not create price request when user is missing', async () => {
       store = mockStore({
         model: initialStoreData.model,
         user: {

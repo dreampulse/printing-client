@@ -9,10 +9,10 @@ const initialState = {
   models: []
 }
 
-function handleRestoreConfiguration (state, {payload}) {
+function handleRestoreConfiguration (state, {payload: {items}}) {
   return {
     ...state,
-    models: payload.items.map((item, index) => ({
+    models: items.map((item, index) => ({
       ...item,
       uploadFinished: true,
       fileId: index

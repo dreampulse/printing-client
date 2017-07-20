@@ -15,7 +15,6 @@ import ProviderSection from 'Container/provider-section'
 import {
   changeQuantity
 } from 'Action/model'
-
 import {
   updateLocation
 } from 'Action/user'
@@ -23,11 +22,9 @@ import {
 import {
   selectCommonQuantity
 } from 'Lib/selector'
-
 import {
   formatAddress
 } from 'Lib/formatter'
-
 import {
   convertPlaceToLocation
 } from 'Lib/geolocation'

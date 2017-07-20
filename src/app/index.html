@@ -28,30 +28,18 @@ mixpanel.init("c0f3635dd469baa77a07c81b6a20394d");</script>
   <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/iwy6mn75';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
   <!-- end: Intercom -->
 
-  <!-- start: Remove bootsplash -->
-  <script>
-    window.addEventListener('load', function () {
-      var bootsplash = document.getElementById('bootsplash')
-      bootsplash.remove()
-      var app = document.getElementById('root')
-      app.style.display = ''
-    });
-  </script>
-  <!-- end: Remove bootsplash -->
-
-
   <title>Printing Service</title>
 
 </head>
-<body>
+<body style="padding: 0; margin: 0;">
 
   <!--start: Bootsplash Logo -->
-  <div style="position: relative; height: 100vh; width: 100vw;" id="bootsplash">
-    <img style="position: absolute; top: 50%; margin-top: auto; margin-bottom: auto; left: 50%; margin-left: auto; margin-right: auto; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); width: 30vw;" src="asset/image/bootsplash.svg" />
+  <div style="position: absolute; height: 100vh; width: 100vw; z-index: 1000;" id="bootsplash">
+    <img style="position: absolute; top: 50%; margin-top: auto; margin-bottom: auto; left: 50%; margin-left: auto; margin-right: auto; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); width: 30vw; max-width: 120px;" src="/asset/image/bootsplash.svg" />
   </div>
   <!--end: Bootsplash Logo -->
 
-  <div id="root" style="display: none" />
+  <div id="root" />
 
 </body>
 </html>
