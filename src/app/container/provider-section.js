@@ -8,7 +8,6 @@ import {
   formatPrice,
   formatShipping
 } from 'Lib/formatter'
-import {hasInternalFlag} from 'Service/location'
 
 import Section from 'Component/section'
 import Headline from 'Component/headline'
@@ -21,10 +20,10 @@ import {goToAddress} from 'Action/navigation'
 import {createConfiguration} from 'Action/configuration'
 
 const ProviderSection = ({
+  features,
   configurationId,
   selectedMaterialConfig,
   offers,
-  isInternal,
   onSelectOffer,
   onGoToAddress,
   onCreateConfiguration
@@ -60,7 +59,7 @@ const ProviderSection = ({
     <Section id="section-provider">
       <Headline label="3. Choose a provider and shipping option" modifiers={headlineModifiers} />
       {!disabled && renderProviderList()}
-      {isInternal && !disabled && !configurationId && (
+      {features.share && !disabled && !configurationId && (
         <Button
           label="Share selection"
           modifiers={['text']}
@@ -75,8 +74,7 @@ const ProviderSection = ({
 const mapStateToProps = state => ({
   configurationId: state.configuration.configurationId,
   selectedMaterialConfig: state.material.selectedMaterialConfig,
-  offers: selectOffersForSelectedMaterialConfig(state),
-  isInternal: hasInternalFlag()
+  offers: selectOffersForSelectedMaterialConfig(state)
 })
 
 const mapDispatchToProps = {
