@@ -59,8 +59,8 @@ const DirectConfigurationPage = ({
   } = selectedMaterial
   const colorValues = finishGroup.materialConfigs
     // Filter out material configs which do not have an offer
-    .filter(config => (
-      Boolean(getBestOfferForMaterialConfig(offers, config.id))
+    .filter(filterConfig => (
+      Boolean(getBestOfferForMaterialConfig(offers, filterConfig.id))
     ))
     .map(({id, color, colorCode, colorImage}) => ({
       value: id,
@@ -155,7 +155,7 @@ const DirectConfigurationPage = ({
 
   return (
     <AppLayout currentStep={0} configurationHeader={configurationHeader}>
-      <PageHeader label="Shared Compilation" />
+      <PageHeader label="My Shopping Cart" />
       <SidebarLayout sidebar={materialSection}>
         <ModelQuantityItemList classNames={['u-no-margin']}>
           {models.map(model => (
