@@ -209,7 +209,7 @@ export const selectOfferItems = (state) => {
     return {
       ...item,
       thumbnailUrl: model ? model.thumbnailUrl : null,
-      name: model ? model.name : null
+      fileName: model ? model.fileName : null
     }
   })
 }

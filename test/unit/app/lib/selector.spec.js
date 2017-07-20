@@ -648,11 +648,11 @@ describe('Selector lib', () => {
           models: [{
             modelId: 'some-model-id',
             thumbnailUrl: 'some-thumbnail-url',
-            name: 'some-model-name'
+            fileName: 'some-model-name'
           }, {
             modelId: 'some-other-model-id',
             thumbnailUrl: 'some-other-thumbnail-url',
-            name: 'some-other-model-name'
+            fileName: 'some-other-model-name'
           }]
         }
       }
@@ -663,12 +663,12 @@ describe('Selector lib', () => {
         {
           modelId: 'some-model-id',
           thumbnailUrl: 'some-thumbnail-url',
-          name: 'some-model-name'
+          fileName: 'some-model-name'
         },
         {
           modelId: 'some-other-model-id',
           thumbnailUrl: 'some-other-thumbnail-url',
-          name: 'some-other-model-name'
+          fileName: 'some-other-model-name'
         }
       ])
     })

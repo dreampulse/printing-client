@@ -47,6 +47,7 @@ const CartPage = ({
   onGoToHome,
   onGoToSuccess,
   order,
+  isDirectSales,
   onPayWithStripe,
   onCreateOrderWithStripe,
   onPayWithPaypal,
@@ -59,7 +60,7 @@ const CartPage = ({
         key={item.modelId}
         quantity={item.quantity}
         title={item.fileName}
-        onQuantityChange={() => onGoToHome()}
+        onQuantityChange={!isDirectSales && (() => onGoToHome()) || undefined}
         price={formatPrice(item.price, offer.currency)}
       />
     ))
@@ -229,7 +230,8 @@ const mapStateToProps = state => ({
   offer: state.price.selectedOffer,
   user: state.user.user,
   offerItems: selectOfferItems(state),
-  selectedMaterial: selectedOfferMaterial(state)
+  selectedMaterial: selectedOfferMaterial(state),
+  isDirectSales: state.configuration.isDirectSales
 })
 
 const mapDispatchToProps = {
