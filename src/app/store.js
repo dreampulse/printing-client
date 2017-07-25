@@ -3,7 +3,8 @@ import thunk from 'redux-thunk'
 import promiseMiddleware from 'redux-promise'
 import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
-import {track} from 'Service/mixpanel'
+import {track as trackMixpanel} from 'Service/mixpanel'
+import {track as trackGoogleAnalytics} from 'Service/google-analytics'
 
 import {openFatalErrorModal} from 'Action/modal'
 import rootReducer from './reducer'
@@ -24,7 +25,8 @@ const fatalErrorHandler = store => next => (action) => {
 function trackingReduxMiddleware () {
   return next => (action) => {
     if (typeof action === 'object') {
-      track(action.type)
+      trackMixpanel(action.type)
+      trackGoogleAnalytics(action.type)
     }
 
     return next(action)
