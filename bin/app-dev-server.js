@@ -11,7 +11,7 @@ const config = webpackConfig({
   devServerPort: port,
   extractStyles: false,
   optimize: false,
-  sourceMaps: true,
+  debugSourceMaps: true,
   nodeEnv: process.env.NODE_ENV
 })
 

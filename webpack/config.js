@@ -8,14 +8,14 @@ module.exports = ({
   devServer = false,
   devServerPort,
   extractStyles = false,
-  sourceMaps = false,
+  debugSourceMaps = false,
   nodeEnv = 'production',
   optimize = true
 }) => {
   const styleLoaders = [
-    sourceMaps ? 'css?sourceMap' : 'css',
+    debugSourceMaps ? 'css?sourceMap' : 'css',
     'postcss',
-    sourceMaps ? 'sass?sourceMap' : 'sass',
+    debugSourceMaps ? 'sass?sourceMap' : 'sass',
     'import-glob'
   ]
 
@@ -112,6 +112,6 @@ module.exports = ({
         new webpack.optimize.OccurenceOrderPlugin()
       ] : [])
     ],
-    devtool: sourceMaps ? 'eval-source-map' : undefined // https://webpack.github.io/docs/configuration.html#devtool
+    devtool: debugSourceMaps ? 'eval-source-map' : 'source-map' // https://webpack.github.io/docs/configuration.html#devtool
   }
 }
