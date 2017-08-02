@@ -112,6 +112,6 @@ module.exports = ({
         new webpack.optimize.OccurenceOrderPlugin()
       ] : [])
     ],
-    devtool: sourceMaps ? 'eval-source-map' : undefined // https://webpack.github.io/docs/configuration.html#devtool
+    devtool: sourceMaps ? 'eval-source-map' : 'source-map' // https://webpack.github.io/docs/configuration.html#devtool
   }
 }
