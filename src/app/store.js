@@ -24,7 +24,8 @@ const fatalErrorHandler = store => next => (action) => {
 
 function trackingReduxMiddleware () {
   return next => (action) => {
-    if (typeof action === 'object') {
+    // Only track the production environment
+    if (process.env.NODE_ENV === 'production' && typeof action === 'object') {
       trackMixpanel(action.type)
       trackGoogleAnalytics(action.type)
     }
