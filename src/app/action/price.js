@@ -57,9 +57,6 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
     },
     user: {
       userId
-    },
-    configuration: {
-      configurationId
     }
   } = getState()
 
@@ -78,7 +75,7 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
   }))
 
   const options = {
-    isEstimate: !configurationId, // fetch real prices for direct sales
+    isEstimate: false, // always fetch real prices
     caching: true, // cache prices for next user
     userId,
     items
