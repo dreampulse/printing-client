@@ -206,26 +206,6 @@ describe('Price actions', () => {
       expect(pollLib.stopPoll, 'to have a call satisfying', ['price'])
     })
 
-    it('calls printingEngine.createPriceRequest() with expected options', async () => {
-      await store.dispatch(createPriceRequest())
-
-      const materialConfigIds = ['material1', 'material2']
-      expect(printingEngine.createPriceRequest, 'to have a call satisfying', [{
-        userId: 'some-user-id',
-        items: [{
-          modelId: 'model1',
-          quantity: 1,
-          materialConfigIds
-        }, {
-          modelId: 'model2',
-          quantity: 2,
-          materialConfigIds
-        }],
-        isEstimate: false,
-        caching: true
-      }])
-    })
-
     it('calls printingEngine.createPriceRequest() with configurationId should get real prices', async () => {
       initialStoreData.price.priceId = 'last-price-id'
       initialStoreData.configuration.configurationId = 'some-configuration-id'
