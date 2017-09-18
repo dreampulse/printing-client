@@ -221,7 +221,7 @@ describe('Price actions', () => {
           quantity: 2,
           materialConfigIds
         }],
-        isEstimate: true,
+        isEstimate: false,
         caching: true
       }])
     })
