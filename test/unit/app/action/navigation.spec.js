@@ -6,6 +6,8 @@ import {
   goToAddress,
   goToHome
 } from 'Action/navigation'
+import * as userActions from 'Action/user'
+import {resolveAsyncThunk} from '../../../helper'
 
 describe('Navigation actions', () => {
   let sandbox
@@ -14,6 +16,7 @@ describe('Navigation actions', () => {
   beforeEach(() => {
     sandbox = sinon.sandbox.create()
     sandbox.stub(routerActions, 'push')
+    sandbox.stub(userActions)
     store = mockStore({
       configuration: {}
     })
@@ -50,14 +53,18 @@ describe('Navigation actions', () => {
   })
 
   describe('goToSuccess()', () => {
-    it('calls router push with expected route', () => {
+    it('calls router push with expected route', async () => {
       routerActions.push
         .withArgs('/success')
         .returns({type: 'push'})
+      userActions.createUser
+        .withArgs()
+        .returns(resolveAsyncThunk('some-user-created'))
 
-      store.dispatch(goToSuccess())
+      await store.dispatch(goToSuccess())
       expect(store.getActions(), 'to equal', [
-        {type: 'push'}
+        {type: 'push'},
+        {type: 'some-user-created'}
       ])
     })
   })
