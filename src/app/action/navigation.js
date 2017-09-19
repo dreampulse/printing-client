@@ -1,5 +1,7 @@
 import {routerActions} from 'react-router-redux'
 
+import {createUser} from 'Action/user'
+
 export const goToAddress = () => routerActions.push('/address')
 export const goToCart = () => routerActions.push('/cart')
 export const goToHome = () => (dispatch, getState) => {
@@ -10,4 +12,7 @@ export const goToHome = () => (dispatch, getState) => {
     dispatch(routerActions.push('/'))
   }
 }
-export const goToSuccess = () => routerActions.push('/success')
+export const goToSuccess = () => async (dispatch) => {
+  await dispatch(routerActions.push('/success'))
+  await dispatch(createUser())
+}
