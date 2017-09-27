@@ -50,6 +50,6 @@ export const restoreConfiguration = configurationId => async (dispatch, getState
   const configuration = await printingEngine.getConfiguration(configurationId)
   dispatch(restoreConfigurationAction(configuration))
   if (getState().user.userId) {
-    dispatch(createPriceRequest())
+    dispatch(createPriceRequest({refresh: true}))
   }
 }
