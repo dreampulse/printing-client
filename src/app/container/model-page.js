@@ -30,6 +30,7 @@ import {
 } from 'Lib/geolocation'
 
 import {getFeatures} from './util/feature'
+import {hasQueryParam} from './util/queryParam'
 import config from '../../../config'
 
 const ModelPage = ({
@@ -37,7 +38,8 @@ const ModelPage = ({
   address,
   commonQuantity,
   onChangeQuantity,
-  onUpdateLocation
+  onUpdateLocation,
+  refresh
 }) => {
   const configurationHeader = (
     <ConfigurationHeader>
@@ -60,16 +62,17 @@ const ModelPage = ({
 
   return (
     <AppLayout currentStep={0} configurationHeader={configurationHeader}>
-      <UploadSection features={features} />
+      <UploadSection features={features} refreshPrices={refresh} />
       <MaterialSection />
       <ProviderSection features={features} />
     </AppLayout>
   )
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   address: state.user.user.shippingAddress,
-  commonQuantity: selectCommonQuantity(state)
+  commonQuantity: selectCommonQuantity(state),
+  refresh: hasQueryParam(ownProps, 'refresh')
 })
 
 const mapDispatchToProps = {
