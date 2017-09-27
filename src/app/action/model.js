@@ -84,11 +84,11 @@ const uploadFile = file => async (dispatch, getState) => {
   }
 }
 
-export const uploadFiles = files => dispatch => (
+export const uploadFiles = (files, refresh) => dispatch => (
   Promise.all(
     files.map(file => dispatch(uploadFile(file)))
   )
-  .then(() => dispatch(createPriceRequest()))
+  .then(() => dispatch(createPriceRequest({refresh})))
   .catch(() => {
     // Ignore upload error
     // It has already been handled in uploadFile()

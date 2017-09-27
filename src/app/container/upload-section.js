@@ -37,10 +37,11 @@ const UploadSection = ({
   features,
   onChangeIndividualQuantity,
   onChangeUnit,
-  onCreateConfiguration
+  onCreateConfiguration,
+  refreshPrices
 }) => {
   const onUpload = (files) => {
-    onUploadFiles(toArray(files))
+    onUploadFiles(toArray(files), refreshPrices)
   }
 
   return (
