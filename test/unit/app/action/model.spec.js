@@ -66,9 +66,11 @@ describe('Model actions', () => {
 
   describe('uploadFiles()', () => {
     let file
+    let features
 
     beforeEach(() => {
       file = {name: 'some-name', size: 123}
+      features = {refresh: true}
 
       priceActions.createPriceRequest
         .withArgs()
@@ -90,17 +92,17 @@ describe('Model actions', () => {
     })
 
     it('calls uploadModel() with expected parameters', async () => {
-      await store.dispatch(uploadFiles([file]))
+      await store.dispatch(uploadFiles([file], features))
 
       expect(printingEngine.uploadModel, 'to have a call satisfying', [
         file,
-        {unit: 'mm'},
+        {unit: 'mm', refresh: true},
         expect.it('to be a function')
       ])
     })
 
     it('dispatches expected actions', async () => {
-      await store.dispatch(uploadFiles([file]))
+      await store.dispatch(uploadFiles([file], features))
 
       // Get created file id for later checks
       const fileId = store.getActions()[2].payload.fileId
@@ -147,7 +149,7 @@ describe('Model actions', () => {
       })
 
       it('dispatches expected actions', () => (
-        store.dispatch(uploadFiles([file])).then(() => {
+        store.dispatch(uploadFiles([file], features)).then(() => {
           expect(store.getActions(), 'to satisfy', [{
             type: TYPE.PRICE.CLEAR_OFFERS,
             payload: undefined
