@@ -43,7 +43,10 @@ export const refreshSelectedOffer = () => (dispatch, getState) => {
   }
 }
 
-export const createPriceRequest = (debounce = false) => (dispatch, getState) => {
+export const createPriceRequest = ({
+  refresh = false,
+  debounce = false
+} = {}) => (dispatch, getState) => {
   dispatch(clearOffers())
 
   const {
@@ -77,6 +80,7 @@ export const createPriceRequest = (debounce = false) => (dispatch, getState) => 
   const options = {
     isEstimate: false, // always fetch real prices
     caching: true, // cache prices for next user
+    refresh, // force refresh when requested
     userId,
     items
   }
@@ -171,4 +175,4 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
   })
 }
 
-export const createDebouncedPriceRequest = () => createPriceRequest(true)
+export const createDebouncedPriceRequest = () => createPriceRequest({debounce: true})

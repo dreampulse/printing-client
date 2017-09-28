@@ -46,10 +46,10 @@ export const createConfiguration = includeMaterialConfig => async (dispatch, get
   dispatch(createConfigurationAction(shareUrl))
 }
 
-export const restoreConfiguration = configurationId => async (dispatch, getState) => {
+export const restoreConfiguration = (configurationId, {refresh}) => async (dispatch, getState) => {
   const configuration = await printingEngine.getConfiguration(configurationId)
   dispatch(restoreConfigurationAction(configuration))
   if (getState().user.userId) {
-    dispatch(createPriceRequest())
+    dispatch(createPriceRequest({refresh}))
   }
 }

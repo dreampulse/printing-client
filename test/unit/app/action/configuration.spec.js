@@ -108,7 +108,11 @@ describe('Configuration actions', () => {
   })
 
   describe('restoreConfiguration()', () => {
+    let features
+
     beforeEach(() => {
+      features = {refresh: true}
+
       sandbox.stub(priceActions, 'createPriceRequest')
       sandbox.stub(printingEngine, 'getConfiguration')
 
@@ -122,13 +126,16 @@ describe('Configuration actions', () => {
         .withArgs('some-configuration-id')
         .returns('some-configuration')
 
-      await store.dispatch(restoreConfiguration('some-configuration-id'))
+      await store.dispatch(restoreConfiguration('some-configuration-id', features))
       expect(store.getActions(), 'to equal', [{
         type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
         payload: 'some-configuration'
       }, {
         type: 'some-create-price-request-action'
       }])
+      expect(priceActions.createPriceRequest, 'to have a call satisfying', [
+        {refresh: true}
+      ])
     })
 
     it('does not create price request when user is missing', async () => {
@@ -143,7 +150,7 @@ describe('Configuration actions', () => {
         .withArgs('some-configuration-id')
         .returns('some-configuration')
 
-      await store.dispatch(restoreConfiguration('some-configuration-id'))
+      await store.dispatch(restoreConfiguration('some-configuration-id', features))
       expect(store.getActions(), 'to equal', [{
         type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
         payload: 'some-configuration'

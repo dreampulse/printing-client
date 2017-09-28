@@ -40,7 +40,7 @@ const UploadSection = ({
   onCreateConfiguration
 }) => {
   const onUpload = (files) => {
-    onUploadFiles(toArray(files))
+    onUploadFiles(toArray(files), features)
   }
 
   return (
