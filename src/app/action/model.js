@@ -84,7 +84,7 @@ const uploadFile = (file, {refresh}) => async (dispatch, getState) => {
   }
 }
 
-export const uploadFiles = (files, refresh) => dispatch => (
+export const uploadFiles = (files, {refresh}) => dispatch => (
   Promise.all(
     files.map(file => dispatch(uploadFile(file, {refresh})))
   )
