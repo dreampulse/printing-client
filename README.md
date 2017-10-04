@@ -8,7 +8,7 @@ To build and run the source code you need to install a recent version of [Node.j
 
 ## Project setup
 
-Run the command `yarn install` in the root of the project folder to install all required dependencies.
+Run the command `npm install` in the root of the project folder to install all required dependencies.
 
 ## NPM commands
 
@@ -32,7 +32,7 @@ There are various commands available via NPM for use during development and to c
 To start the application from the `/dist` folder do the following:
 
 ~~~
-$ yarn install
+$ npm install
 $ npm run build
 $ npm run start
 ~~~
