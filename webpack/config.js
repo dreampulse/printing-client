@@ -11,107 +11,119 @@ module.exports = ({
   debugSourceMaps = false,
   nodeEnv = 'production',
   optimize = true
-}) => {
-  const styleLoaders = [
-    debugSourceMaps ? 'css?sourceMap' : 'css',
-    'postcss',
-    debugSourceMaps ? 'sass?sourceMap' : 'sass',
-    'import-glob'
-  ]
-
-  return {
-    entry: (devServer)
-      ? [
-        `webpack-dev-server/client?http://localhost:${devServerPort}/`,
-        'webpack/hot/dev-server',
-        path.resolve(__dirname, '../src/app')
-      ] : [
-        path.resolve(__dirname, '../src/app')
-      ],
-    output: {
-      path: path.resolve(__dirname, '../dist'),
-      publicPath: (devServer) ? `http://localhost:${devServerPort}/` : '/',
-      filename: 'bundle.js'
-    },
-    resolve: {
-      modulesDirectories: ['node_modules'],
-      extensions: ['', '.js'],
-      alias: {
-        Image: path.resolve(__dirname, '../src/asset/image'),
-        Icon: path.resolve(__dirname, '../src/asset/icon'),
-        Action: path.resolve(__dirname, '../src/app/action'),
-        Component: path.resolve(__dirname, '../src/app/component'),
-        Container: path.resolve(__dirname, '../src/app/container'),
-        Lib: path.resolve(__dirname, '../src/app/lib'),
-        Reducer: path.resolve(__dirname, '../src/app/reducer'),
-        Service: path.resolve(__dirname, '../src/app/service')
-      }
-    },
-    module: {
-      loaders: [
-        {
-          test: /\.scss$/,
-          loaders: [
-            'style',
-            ...(extractStyles ? [ExtractTextPlugin.extract(styleLoaders)] : styleLoaders)
-          ]
-        }, {
-          test: /\.(ttf|eot|woff|woff2)$/,
-          loader: 'file'
-        }, {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          loaders: ['babel']
-        }, {
-          test: /\.svg$/,
-          include: [
-            path.resolve(__dirname, '../src/asset/icon')
-          ],
-          loaders: [
-            `svg-sprite?${JSON.stringify({
-              name: '[name]'
-            })}`,
-            'svgo'
-          ]
-        }, {
-          test: /\.json$/,
-          loader: 'json'
-        }, {
-          test: /\.(jpg|png|gif|svg)$/,
-          include: [
-            path.resolve(__dirname, '../src/asset/image')
-          ],
-          loader: 'file'
-        }
-      ]
-    },
-    postcss: [autoprefixer({browsers: ['last 2 versions']})],
-    plugins: [
-      ...(devServer ? [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin() // webpack process will not exit on error
-      ] : []),
-      ...(extractStyles ? [
-        new ExtractTextPlugin('app.css')
-      ] : []),
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify(nodeEnv)
-        }
-      }),
-      new HtmlWebpackPlugin({
-        template: path.join(__dirname, '../src/app/index.html'),
-        inject: true
-      }),
-      ...(optimize ? [
-        new webpack.optimize.UglifyJsPlugin({
-          compress: {
-            warnings: false
-          }
-        }),
-        new webpack.optimize.OccurenceOrderPlugin()
-      ] : [])
+}) => ({
+  entry: (devServer)
+    ? [
+      `webpack-dev-server/client?http://localhost:${devServerPort}/`,
+      'webpack/hot/dev-server',
+      path.resolve(__dirname, '../src/app')
+    ] : [
+      path.resolve(__dirname, '../src/app')
     ],
-    devtool: debugSourceMaps ? 'eval-source-map' : 'source-map' // https://webpack.github.io/docs/configuration.html#devtool
-  }
-}
+  output: {
+    path: path.resolve(__dirname, '../dist'),
+    publicPath: (devServer) ? `http://localhost:${devServerPort}/` : '/',
+    filename: 'bundle.js'
+  },
+  resolve: {
+    alias: {
+      Image: path.resolve(__dirname, '../src/asset/image'),
+      Icon: path.resolve(__dirname, '../src/asset/icon'),
+      Action: path.resolve(__dirname, '../src/app/action'),
+      Component: path.resolve(__dirname, '../src/app/component'),
+      Container: path.resolve(__dirname, '../src/app/container'),
+      Lib: path.resolve(__dirname, '../src/app/lib'),
+      Reducer: path.resolve(__dirname, '../src/app/reducer'),
+      Service: path.resolve(__dirname, '../src/app/service')
+    }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: {
+            loader: 'style-loader',
+            options: {
+              sourceMap: debugSourceMaps
+            }
+          },
+          use: [{
+            loader: 'css-loader',
+            options: {
+              sourceMap: debugSourceMaps
+            }
+          }, {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: debugSourceMaps,
+              plugins: [autoprefixer({browsers: ['last 2 versions']})]
+            }
+          }, {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: debugSourceMaps
+            }
+          }, {
+            loader: 'import-glob'
+          }]
+        })
+      }, {
+        test: /\.(ttf|eot|woff2?)$/,
+        use: 'file-loader'
+      }, {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader'
+      }, {
+        test: /\.svg$/,
+        include: [
+          path.resolve(__dirname, '../src/asset/icon')
+        ],
+        use: [{
+          loader: 'svg-sprite-loader',
+          options: {
+            name: '[name]'
+          }
+        }, {
+          loader: 'svgo-loader'
+        }]
+      }, {
+        test: /\.json$/,
+        use: 'json-loader'
+      }, {
+        test: /\.(jpe?g|png|gif|svg)$/,
+        include: [
+          path.resolve(__dirname, '../src/asset/image')
+        ],
+        use: 'file-loader'
+      }
+    ]
+  },
+  plugins: [
+    ...(devServer ? [
+      new webpack.HotModuleReplacementPlugin()
+    ] : []),
+    new ExtractTextPlugin({
+      filename: 'app.css',
+      disable: !extractStyles
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(nodeEnv)
+      }
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, '../src/app/index.html'),
+      inject: true
+    }),
+    ...(optimize ? [
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
+      })
+    ] : [])
+  ],
+  devtool: debugSourceMaps ? 'eval-source-map' : 'source-map'
+})
