@@ -8,7 +8,8 @@ const config = webpackConfig({
 const jsTestRegExpString = /\.js$/.toString()
 
 // Remove JS loader to use default provided by Storybook
-const rules = config.module.rules.filter(rule => !rule.test || rule.test.toString() !== jsTestRegExpString)
+const rules = config.module.rules
+  .filter(rule => !rule.test || rule.test.toString() !== jsTestRegExpString)
 
 module.exports = {
   resolve: config.resolve,
