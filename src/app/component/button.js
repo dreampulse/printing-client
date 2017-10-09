@@ -34,7 +34,9 @@ const Button = ({
 Button.propTypes = {
   ...propTypes.component,
   label: PropTypes.string,
-  icon: PropTypes.string,
+  source: React.PropTypes.shape({
+    id: React.PropTypes.string
+  }),
   type: PropTypes.string,
   disabled: PropTypes.bool,
   selected: PropTypes.bool,
