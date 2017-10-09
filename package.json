@@ -31,6 +31,7 @@
     "Christian Ranz <cr@codastic.com>"
   ],
   "devDependencies": {
+    "@storybook/addon-actions": "^3.2.12",
     "@storybook/addon-centered": "^3.2.12",
     "@storybook/react": "^3.2.12",
     "autoprefixer": "^6.4.0",
