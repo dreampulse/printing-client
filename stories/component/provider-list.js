@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf, action} from '@kadira/storybook'
+import {storiesOf, action} from '@storybook/react'
 
 import ProviderList from 'Component/provider-list'
 import ProviderItem from 'Component/provider-item'

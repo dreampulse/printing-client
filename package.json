@@ -12,7 +12,7 @@
     "build:styleguide": "build-storybook -c .storybook -o dist/styleguide",
     "start:dev": "PORT=3000 NODE_ENV=development babel-node bin/app-dev-server",
     "start:dev:stubs": "PORT=3000 NODE_ENV=development-with-stubs babel-node bin/app-dev-server",
-    "start:styleguide": "start-storybook --dont-track -p 3001 -s src",
+    "start:styleguide": "start-storybook -p 3001 -s src",
     "start": "babel-node bin/app-server",
     "test": "npm run test:lint && npm run test:coverage",
     "test:lint": "eslint src test bin stories .storybook ./*.js",
@@ -31,8 +31,8 @@
     "Christian Ranz <cr@codastic.com>"
   ],
   "devDependencies": {
-    "@kadira/react-storybook-decorator-centered": "^1.0.0",
-    "@kadira/storybook": "^2.5.1",
+    "@storybook/addon-centered": "^3.2.12",
+    "@storybook/react": "^3.2.12",
     "autoprefixer": "^6.4.0",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",

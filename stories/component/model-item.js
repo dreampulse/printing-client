@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf, action} from '@kadira/storybook'
+import {storiesOf, action} from '@storybook/react'
 
 import ModelItem from 'Component/model-item'
 import ModelItemError from 'Component/model-item-error'

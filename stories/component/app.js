@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf} from '@kadira/storybook'
+import {storiesOf} from '@storybook/react'
 
 import App from 'Component/app'
 import StickyContainer from 'Component/sticky-container'

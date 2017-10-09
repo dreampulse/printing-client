@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf} from '@kadira/storybook'
+import {storiesOf} from '@storybook/react'
 
 import ConfigurationHeader from 'Component/configuration-header'
 import LabeledField from 'Component/labeled-field'

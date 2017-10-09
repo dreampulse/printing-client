@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf, action} from '@kadira/storybook'
+import {storiesOf, action} from '@storybook/react'
 
 import ModelQuantityItem from 'Component/model-quantity-item'
 import ModelQuantityItemList from 'Component/model-quantity-item-list'

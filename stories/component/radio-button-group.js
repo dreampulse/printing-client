@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf} from '@kadira/storybook'
+import {storiesOf} from '@storybook/react'
 
 import RadioButtonGroup from 'Component/radio-button-group'
 import RadioButton from 'Component/radio-button'

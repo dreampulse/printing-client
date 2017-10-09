@@ -1,5 +1,5 @@
 import React, {cloneElement} from 'react'
-import {storiesOf} from '@kadira/storybook'
+import {storiesOf} from '@storybook/react'
 
 import FeatureList from 'Component/feature-list'
 import FeatureListItem from 'Component/feature-list-item'

@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf} from '@kadira/storybook'
+import {storiesOf} from '@storybook/react'
 
 import FormLayout from 'Component/form-layout'
 import FormRow from 'Component/form-row'

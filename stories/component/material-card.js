@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf, action} from '@kadira/storybook'
+import {storiesOf, action} from '@storybook/react'
 
 import MaterialCard from 'Component/material-card'
 import Price from 'Component/price'

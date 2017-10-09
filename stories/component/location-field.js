@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf, action} from '@kadira/storybook'
+import {storiesOf, action} from '@storybook/react'
 
 import LocationField from 'Component/location-field'
 import HandleValue from '../util/handle-value'
