@@ -133,7 +133,7 @@ const MaterialSection = ({
 
     return (
       <MaterialCard
-        key={finishGroup.name}
+        key={finishGroup.id}
         title={finishGroup.name}
         subline={finishGroup.materialName}
         shipping={bestOffer && formatDeliveryTime(bestOffer.shipping.deliveryTime)}
