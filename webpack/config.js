@@ -81,10 +81,7 @@ module.exports = ({
           path.resolve(__dirname, '../src/asset/icon')
         ],
         use: [{
-          loader: 'svg-sprite-loader',
-          options: {
-            name: '[name]'
-          }
+          loader: 'svg-sprite-loader'
         }, {
           loader: 'svgo-loader'
         }]
