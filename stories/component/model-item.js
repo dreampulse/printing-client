@@ -1,5 +1,6 @@
 import React from 'react'
-import {storiesOf, action} from '@storybook/react'
+import {storiesOf} from '@storybook/react'
+import {action} from '@storybook/addon-actions'
 
 import ModelItem from 'Component/model-item'
 import ModelItemError from 'Component/model-item-error'

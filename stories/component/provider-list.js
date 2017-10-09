@@ -1,5 +1,6 @@
 import React from 'react'
-import {storiesOf, action} from '@storybook/react'
+import {storiesOf} from '@storybook/react'
+import {action} from '@storybook/addon-actions'
 
 import ProviderList from 'Component/provider-list'
 import ProviderItem from 'Component/provider-item'
