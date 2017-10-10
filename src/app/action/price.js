@@ -3,6 +3,7 @@ import {createAction} from 'redux-actions'
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
+import {selectCurrentMaterial} from 'Lib/selector'
 import TYPE, {ERROR_TYPE} from '../type'
 
 const POLL_NAME = 'price'
@@ -49,19 +50,16 @@ export const createPriceRequest = ({
 } = {}) => (dispatch, getState) => {
   dispatch(clearOffers())
 
+  const state = getState()
   const {
-    material: {
-      materials: {
-        materialConfigs
-      }
-    },
     model: {
       models
     },
     user: {
       userId
     }
-  } = getState()
+  } = state
+  const selectedMaterial = selectCurrentMaterial(state)
 
   // Abort if user did not upload any models yet
   if (models.length === 0) {
@@ -70,7 +68,12 @@ export const createPriceRequest = ({
     return Promise.resolve()
   }
 
-  const materialConfigIds = Object.keys(materialConfigs)
+  const materialConfigIds = []
+  selectedMaterial.finishGroups.forEach((finishGroup) => {
+    finishGroup.materialConfigs.forEach((materialConfig) => {
+      materialConfigIds.push(materialConfig.id)
+    })
+  })
   const items = models.map(({modelId, quantity}) => ({
     modelId,
     materialConfigIds,
