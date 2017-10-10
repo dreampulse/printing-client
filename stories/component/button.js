@@ -1,5 +1,6 @@
 import React from 'react'
-import {storiesOf, action} from '@kadira/storybook'
+import {storiesOf} from '@storybook/react'
+import {action} from '@storybook/addon-actions'
 
 import Button from 'Component/button'
 
@@ -23,7 +24,4 @@ storiesOf('Button', module)
   ))
   .add('selected', () => (
     <Button label="Selected Button" modifiers={['selected']} onClick={action('click')} />
-  ))
-  .add('disabled', () => (
-    <Button label="Default Button" onClick={action('click')} disabled />
   ))

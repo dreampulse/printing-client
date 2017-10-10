@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf} from '@kadira/storybook'
+import {storiesOf} from '@storybook/react'
 
 import SidebarLayout from 'Component/sidebar-layout'
 import Section from 'Component/section'

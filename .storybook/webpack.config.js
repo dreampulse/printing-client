@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpackConfig = require('../webpack/config')
 
 const config = webpackConfig({
@@ -5,14 +6,18 @@ const config = webpackConfig({
   optimize: false,
   nodeEnv: 'development'
 })
+const jsTestRegExpString = /\.js$/.toString()
 
 // Remove JS loader to use default provided by Storybook
-const loaders = config.module.loaders.filter(loader => !(loader.loaders && loader.loaders.indexOf('babel') >= 0))
+const rules = config.module.rules
+  .filter(rule => !rule.test || rule.test.toString() !== jsTestRegExpString)
+
+config.plugins = config.plugins.filter(plugin => plugin instanceof HtmlWebpackPlugin === false)
 
 module.exports = {
   resolve: config.resolve,
   module: {
-    loaders
+    rules
   },
-  postcss: config.postcss
+  plugins: config.plugins
 }

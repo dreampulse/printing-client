@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf} from '@kadira/storybook'
+import {storiesOf} from '@storybook/react'
 
 import CheckboxField from 'Component/checkbox-field'
 import HandleChecked from '../util/handle-checked'

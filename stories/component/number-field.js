@@ -1,5 +1,5 @@
 import React from 'react'
-import {storiesOf} from '@kadira/storybook'
+import {storiesOf} from '@storybook/react'
 
 import NumberField from 'Component/number-field'
 import HandleValue from '../util/handle-value'

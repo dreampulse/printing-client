@@ -1,5 +1,5 @@
 import React, {cloneElement} from 'react'
-import {storiesOf} from '@kadira/storybook'
+import {storiesOf} from '@storybook/react'
 
 import MaterialCardList from 'Component/material-card-list'
 import MaterialCard from 'Component/material-card'
