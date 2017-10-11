@@ -19,14 +19,16 @@ import {selectOffer} from 'Action/price'
 import {goToAddress} from 'Action/navigation'
 import {createConfiguration} from 'Action/configuration'
 
+import {getFeatures} from './util/feature'
+
 const ProviderSection = ({
-  features,
   configurationId,
   selectedMaterialConfig,
   offers,
   onSelectOffer,
   onGoToAddress,
-  onCreateConfiguration
+  onCreateConfiguration,
+  features
 }) => {
   const disabled = !selectedMaterialConfig || !offers
   const headlineModifiers = buildClassArray({
@@ -84,5 +86,6 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
+  getFeatures,
+  connect(mapStateToProps, mapDispatchToProps),
 )(ProviderSection)

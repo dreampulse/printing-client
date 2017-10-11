@@ -3,6 +3,7 @@ import {createAction} from 'redux-actions'
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
+import {selectFeatures} from 'Lib/selector'
 import TYPE, {ERROR_TYPE} from '../type'
 
 const POLL_NAME = 'price'
@@ -44,11 +45,11 @@ export const refreshSelectedOffer = () => (dispatch, getState) => {
 }
 
 export const createPriceRequest = ({
-  refresh = false,
   debounce = false
 } = {}) => (dispatch, getState) => {
   dispatch(clearOffers())
 
+  const state = getState()
   const {
     material: {
       materials: {
@@ -61,7 +62,8 @@ export const createPriceRequest = ({
     user: {
       userId
     }
-  } = getState()
+  } = state
+  const {refresh} = selectFeatures(state)
 
   // Abort if user did not upload any models yet
   if (models.length === 0) {

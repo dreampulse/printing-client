@@ -3,6 +3,8 @@ import {connect} from 'react-redux'
 import {compose} from 'recompose'
 import toArray from 'lodash/toArray'
 
+import {formatDimensions} from 'Lib/formatter'
+
 import Section from 'Component/section'
 import Grid from 'Component/grid'
 import Column from 'Component/column'
@@ -26,7 +28,8 @@ import {
 import {
   createConfiguration
 } from 'Action/configuration'
-import {formatDimensions} from 'Lib/formatter'
+
+import {getFeatures} from './util/feature'
 
 const UploadSection = ({
   configurationId,
@@ -157,5 +160,6 @@ const mapDispatchToProps = {
 }
 
 export default compose(
+  getFeatures,
   connect(mapStateToProps, mapDispatchToProps)
 )(UploadSection)

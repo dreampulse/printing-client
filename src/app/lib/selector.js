@@ -1,3 +1,5 @@
+import get from 'lodash/get'
+
 import {
   hasMaterialMultipleConfigs,
   getBestOfferForMaterial
@@ -261,13 +263,11 @@ export const selectAreAllUploadsFinished = (state) => {
 }
 
 export const selectFeatures = (state) => {
-  const {
-    routing: {
-      locationBeforeTransitions: {
-        query
-      }
-    }
-  } = state
+  const query = get(state, 'routing.locationBeforeTransitions.query')
+
+  if (!query) {
+    return {}
+  }
 
   return Object.keys(query)
     .filter(name => /^feature:/.test(name))
