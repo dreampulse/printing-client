@@ -1,8 +1,8 @@
 # Definition of Done
 
-- [ ]	The code does at least what is defined in the ticket and does not affect any other functionality
-- [ ]	The PR has a meaningful title
-- [ ]	The is a link to the issue-id
+- [ ] The code does at least what is defined in the ticket and does not affect any other functionality
+- [ ] The PR has a meaningful title
+- [ ] The is a link to the issue-id
 - [ ] The PR has been reviewed
 
 ## Tests
@@ -12,7 +12,7 @@
 - [ ] All exported functions are testable
 - [ ] There is no code execution in the global scope
 - [ ] Default exports are avoided
-- [ ]	The code is concise, expressive and readable
+- [ ] The code is concise, expressive and readable
 - [ ] The code is functional and doesn’t use class syntax
 
 ## React components are
