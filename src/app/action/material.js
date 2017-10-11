@@ -17,7 +17,7 @@ export const selectMaterialConfigForFinishGroup = ({materialConfigId, finishGrou
 export const selectMaterialConfig = createAction(TYPE.MATERIAL.CONFIG_SELECTED)
 
 // Async actions
-export const selectMaterial = materialId => async (dispatch) => {
+export const selectMaterial = materialId => (dispatch) => {
   dispatch(createAction(TYPE.MATERIAL.SELECTED)(materialId))
 
   return dispatch(createPriceRequest())
