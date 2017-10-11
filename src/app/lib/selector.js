@@ -259,3 +259,21 @@ export const selectAreAllUploadsFinished = (state) => {
 
   return numberOfUploads === 0 && models.length > 0
 }
+
+export const selectFeatures = (state) => {
+  const {
+    routing: {
+      locationBeforeTransitions: {
+        query
+      }
+    }
+  } = state
+
+  return Object.keys(query)
+    .filter(name => /^feature:/.test(name))
+    .map(name => name.substr('feature:'.length))
+    .reduce((agg, name) => {
+      agg[name] = true
+      return agg
+    }, {})
+}
