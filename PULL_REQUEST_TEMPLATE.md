@@ -2,11 +2,12 @@
 
 - [ ] The code does at least what is defined in the ticket and does not affect any other functionality
 - [ ] The PR has a meaningful title
-- [ ] The is a link to the issue-id
+- [ ] There is a link to the issue-id
 - [ ] The PR has been reviewed
+- [ ] There are no 'hacks' or shortcuts refactoring is prefered
 
 ## Tests
-- [ ] As much as reasonable is tested
+- [ ] Reasonably tested with high code coverage (unit/integration)
 
 ##	Testability
 - [ ] All exported functions are testable
