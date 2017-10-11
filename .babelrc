@@ -5,12 +5,14 @@
     "transform-async-to-generator",
     "react-hot-loader/babel"
   ],
+  "retainLines": true,
   "env": {
     "test": {
       "plugins": [
         [ "babel-plugin-webpack-alias", { "config": "./webpack/production.js" } ],
         "istanbul"
-      ]
+      ],
+      "sourceMaps": "inline"
     }
   }
 }
