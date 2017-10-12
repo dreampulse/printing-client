@@ -71,12 +71,18 @@ describe('Model Integration Test', () => {
       store = Store({
         material: {
           materials: {
-            materialConfigs: {
-              'some-material-id': 'something'
-            },
-            materialStructure: []
+            materialStructure: [{
+              materials: [{
+                id: 'some-material-1',
+                finishGroups: [{
+                  materialConfigs: [{
+                    id: 'material-config-1'
+                  }]
+                }]
+              }]
+            }]
           },
-          selectedMaterialConfig: 'some-material-id'
+          selectedMaterial: 'some-material-1'
         },
         user: {
           userId: 'some-user-id',
@@ -155,12 +161,18 @@ describe('Model Integration Test', () => {
         },
         material: {
           materials: {
-            materialConfigs: {
-              'some-material-id': 'something',
-              'some-material-other-id': 'something'
-            },
-            materialStructure: []
-          }
+            materialStructure: [{
+              materials: [{
+                id: 'some-material-1',
+                finishGroups: [{
+                  materialConfigs: [{
+                    id: 'material-config-1'
+                  }]
+                }]
+              }]
+            }]
+          },
+          selectedMaterial: 'some-material-1'
         },
         user: {
           userId: 'some-user-id',
@@ -223,12 +235,18 @@ describe('Model Integration Test', () => {
         },
         material: {
           materials: {
-            materialConfigs: {
-              'some-material-id': 'something',
-              'some-material-other-id': 'something'
-            },
-            materialStructure: []
-          }
+            materialStructure: [{
+              materials: [{
+                id: 'some-material-1',
+                finishGroups: [{
+                  materialConfigs: [{
+                    id: 'material-config-1'
+                  }]
+                }]
+              }]
+            }]
+          },
+          selectedMaterial: 'some-material-1'
         },
         user: {
           userId: 'some-user-id',
@@ -298,12 +316,18 @@ describe('Model Integration Test', () => {
         },
         material: {
           materials: {
-            materialConfigs: {
-              'some-material-id': 'something',
-              'some-material-other-id': 'something'
-            },
-            materialStructure: []
-          }
+            materialStructure: [{
+              materials: [{
+                id: 'some-material-1',
+                finishGroups: [{
+                  materialConfigs: [{
+                    id: 'material-config-1'
+                  }]
+                }]
+              }]
+            }]
+          },
+          selectedMaterial: 'some-material-1'
         },
         user: {
           userId: 'some-user-id',
