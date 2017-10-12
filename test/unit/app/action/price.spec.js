@@ -19,25 +19,11 @@ describe('Price actions', () => {
     initialStoreData = {
       material: {
         materials: {
-          materialStructure: [{
-            materials: [{
-              id: 'some-material-1',
-              finishGroups: [{
-                materialConfigs: [{
-                  id: 'material-config-1'
-                }]
-              }]
-            }, {
-              id: 'some-material-2',
-              finishGroups: [{
-                materialConfigs: [{
-                  id: 'material-config-2'
-                }]
-              }]
-            }]
-          }]
-        },
-        selectedMaterial: 'some-material-1'
+          materialConfigs: {
+            material1: 'something',
+            material2: 'something'
+          }
+        }
       },
       model: {
         models: [{
@@ -221,9 +207,11 @@ describe('Price actions', () => {
     })
 
     it('calls printingEngine.createPriceRequest() with configurationId should get real prices', async () => {
+      initialStoreData.price.priceId = 'last-price-id'
+      initialStoreData.configuration.configurationId = 'some-configuration-id'
       await store.dispatch(createPriceRequest())
 
-      const materialConfigIds = ['material-config-1']
+      const materialConfigIds = ['material1', 'material2']
       expect(printingEngine.createPriceRequest, 'to have a call satisfying', [{
         userId: 'some-user-id',
         items: [{
@@ -237,18 +225,6 @@ describe('Price actions', () => {
         }],
         isEstimate: false,
         caching: true
-      }])
-    })
-
-    it('calls printingEngine.createPriceRequest() only with the selected material ids', async () => {
-      await store.dispatch(createPriceRequest())
-
-      expect(printingEngine.createPriceRequest, 'to have a call satisfying', [{
-        items: [{
-          materialConfigIds: expect.it('not to contain', 'material-config-2')
-        }, {
-          materialConfigIds: expect.it('not to contain', 'material-config-2')
-        }]
       }])
     })
 
