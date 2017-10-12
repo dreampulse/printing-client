@@ -57,6 +57,10 @@ describe('formatShipping()', () => {
   it('returns formatted string', () => {
     expect(formatShipping({name: 'Standard', deliveryTime: '2-5'}), 'to equal', 'Standard (2-5 days)')
   })
+
+  it('returns formatted display name', () => {
+    expect(formatShipping({displayName: 'UPS Standard', name: 'UPSStandard', deliveryTime: '2-5'}), 'to equal', 'UPS Standard (2-5 days)')
+  })
 })
 
 describe('formatAddress', () => {

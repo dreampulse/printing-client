@@ -25,7 +25,7 @@ export function formatDeliveryTime (deliveryTime) {
 }
 
 export function formatShipping (shipping) {
-  return `${shipping.name} (${formatDeliveryTime(shipping.deliveryTime)})`
+  return `${shipping.displayName || shipping.name} (${formatDeliveryTime(shipping.deliveryTime)})`
 }
 
 export function formatAddress (address) {
