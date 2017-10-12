@@ -4,7 +4,7 @@ Frontend Application for the Printing Engine
 
 ## Requirements
 
-To build and run the source code you need to install a recent version of [Node.js, NPM and Yarn](https://nodejs.org/).
+To build and run the source code you need to install a recent version of [Node.js, NPM](https://nodejs.org/).
 
 ## Project setup
 
@@ -60,3 +60,44 @@ The following folders are unit tested and should have 100% test coverage:
 - `/src/app/action`
 - `/src/app/reducer`
 - `/src/app/lib`
+
+React components (`/src/app/component`) and containers (`/src/app/container`) are not automatically tested the reviewer is responsible to test them carefully manually.
+
+## Definition of Done
+
+- The code of a new pull request (PR) does at least what is defined in the ticket and does not affect any other functionality
+- The PR has a meaningful title
+- There is a link to the issue-id
+- The PR has been reviewed
+- There are no 'hacks' or shortcuts refactoring is preferred
+
+###	Testability
+- All exported functions are testable
+- Default exports are avoided
+- The code is concise, expressive and readable
+- The code is functional and doesn’t use class syntax
+
+### React components are
+- Stateless and use pure rendering functions
+- Are documented and tested in storybook
+- Typed-checked
+- The Sass is strictly using the BEM-Convention
+- For each react component exists exactly one Sass-File
+- The is no container styled
+- There are no console errors or unwanted console logs
+
+## Workflow
+1. The implementer has to discuss the solution strategy with the most experienced developer(s) of the project. They have to approve the strategy and provide helpful feedback.  
+1. The implementer of a bugfix / new feature creates a pull request (PR) in github.
+1. The implementer adds a reviewer to the pull request when the implementation is done.
+  - The reviewer is selected by the implementer.
+  - The reviewer is added to the list of **reviewers** and **assignees**.
+  - The label `needs review` is added to the pull request.
+1. The reviewer reviews the PR and adds comments for each known issue.
+  - The reviewer has to update the label to `needs fixing` and to change the **assignees** to the implementer.
+  - If there are no issues left the reviewer **and only him** has to merge the PR to the `master`.
+1. If there are still open issues the implementer **and only him** has to fix them.
+  - Fixed issues has to be marked by using the :+1:-emoji.
+  - If an issue isn't fixable or unjustified a reasonable comment has to be provided.
+  - The implementer has to update the label to `need review` again and to change the **assignees** to the reviewer.
+  - Repeat the preview step.
