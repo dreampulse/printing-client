@@ -78,24 +78,12 @@ describe('Price Integration Test', () => {
         },
         material: {
           materials: {
-            materialStructure: [{
-              materials: [{
-                id: 'some-material-1',
-                finishGroups: [{
-                  materialConfigs: [{
-                    id: 'material-config-1'
-                  }, {
-                    id: 'material-config-2'
-                  }]
-                }, {
-                  materialConfigs: [{
-                    id: 'material-config-3'
-                  }]
-                }]
-              }]
-            }]
-          },
-          selectedMaterial: 'some-material-1'
+            materialConfigs: {
+              'some-material-id': 'something',
+              'some-material-other-id': 'something'
+            },
+            materialStructure: []
+          }
         },
         user: {
           userId: 'some-user-id'
@@ -131,11 +119,11 @@ describe('Price Integration Test', () => {
         userId: 'some-user-id',
         items: [{
           modelId: 'material-id-model-1',
-          materialConfigIds: ['material-config-1', 'material-config-2', 'material-config-3'],
+          materialConfigIds: ['some-material-id', 'some-material-other-id'],
           quantity: 1
         }, {
           modelId: 'material-id-model-2',
-          materialConfigIds: ['material-config-1', 'material-config-2', 'material-config-3'],
+          materialConfigIds: ['some-material-id', 'some-material-other-id'],
           quantity: 2
         }]
       })
