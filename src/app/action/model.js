@@ -8,7 +8,7 @@ import {
   createDebouncedPriceRequest
 } from './price'
 
-import TYPE from '../type'
+import TYPE from '../action-type'
 
 // Private actions
 

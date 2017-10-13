@@ -1,5 +1,5 @@
 import reducer from 'Reducer/configuration'
-import TYPE from '../../../../src/app/type'
+import TYPE from '../../../../src/app/action-type'
 
 describe('Configuration reducer', () => {
   it('returns the initial state', () => {

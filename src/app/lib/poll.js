@@ -2,7 +2,7 @@ import debounce from 'debounce-promise'
 import uniqueId from 'lodash/uniqueId'
 
 import {AppError} from 'Lib/error'
-import {ERROR_TYPE} from '../type'
+import {ERROR_TYPE} from '../action-type'
 import config from '../../../config'
 
 // State

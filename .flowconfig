@@ -1,0 +1,15 @@
+[ignore]
+<PROJECT_ROOT>/dist/.*
+<PROJECT_ROOT>/node_modules/radium/.*
+<PROJECT_ROOT>/node_modules/immutable/.*
+<PROJECT_ROOT>/node_modules/mitt/.*
+
+[include]
+
+[libs]
+
+[lints]
+
+[options]
+module.name_mapper='^.*\.sass$' -> 'empty/object'
+module.name_mapper='^Lib$' -> '../src/app/lib'

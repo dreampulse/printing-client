@@ -1,5 +1,5 @@
 import reducer from 'Reducer/price'
-import TYPE from '../../../../src/app/type'
+import TYPE from '../../../../src/app/action-type'
 
 describe('Price reducer', () => {
   it('returns the initial state', () => {

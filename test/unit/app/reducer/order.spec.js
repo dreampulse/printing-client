@@ -1,5 +1,5 @@
 import reducer from 'Reducer/order'
-import TYPE from '../../../../src/app/type'
+import TYPE from '../../../../src/app/action-type'
 
 describe('Order reducer', () => {
   it('returns the initial state', () => {

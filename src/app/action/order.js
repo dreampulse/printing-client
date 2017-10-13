@@ -4,7 +4,7 @@ import * as stripe from 'Service/stripe'
 import * as paypal from 'Service/paypal'
 import * as printingEngine from 'Lib/printing-engine'
 
-import TYPE from '../type'
+import TYPE from '../action-type'
 
 // Private actions
 const orderStarted = createAction(
