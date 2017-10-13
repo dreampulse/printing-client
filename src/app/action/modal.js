@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions'
 
-import TYPE, {MODAL_TYPE} from '../type'
+import TYPE, {MODAL_TYPE} from '../action-type'
 
 export const open = createAction(
   TYPE.MODAL.OPEN,

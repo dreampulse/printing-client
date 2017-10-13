@@ -1,6 +1,6 @@
 import {handleActions} from 'redux-actions'
 
-import TYPE from '../type'
+import TYPE from '../action-type'
 import {updateArrayItems} from '../lib/util'
 
 const initialState = {

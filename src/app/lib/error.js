@@ -1,4 +1,4 @@
-import {ERROR_TYPE} from '../type'
+import {ERROR_TYPE} from '../action-type'
 
 export class AppError extends Error {
   constructor (type, message) {

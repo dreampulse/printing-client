@@ -5,7 +5,7 @@ import {getBaseUrl} from 'Service/location'
 
 import {createPriceRequest} from './price'
 
-import TYPE from '../type'
+import TYPE from '../action-type'
 
 const restoreConfigurationAction = createAction(TYPE.DIRECT_SALES.RESTORE_CONFIGURATION)
 const createConfigurationAction = createAction(TYPE.DIRECT_SALES.CREATE_CONFIGURATION)

@@ -8,7 +8,7 @@ import {
 import * as printingEngine from 'Lib/printing-engine'
 import {resetPollState} from 'Lib/poll'
 import Store from '../../../../src/app/store'
-import {ERROR_TYPE} from '../../../../src/app/type'
+import {ERROR_TYPE} from '../../../../src/app/action-type'
 
 import config from '../../../../config'
 

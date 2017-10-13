@@ -6,7 +6,7 @@ import {
 } from 'Action/model'
 import * as priceActions from 'Action/price'
 import * as printingEngine from 'Lib/printing-engine'
-import TYPE, {ERROR_TYPE} from '../../../../src/app/type'
+import TYPE, {ERROR_TYPE} from '../../../../src/app/action-type'
 import {resolveAsyncThunk} from '../../../helper'
 
 describe('Model actions', () => {

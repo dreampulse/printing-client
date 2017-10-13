@@ -4,7 +4,7 @@ import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
 import {selectFeatures} from 'Lib/selector'
-import TYPE, {ERROR_TYPE} from '../type'
+import TYPE, {ERROR_TYPE} from '../action-type'
 
 const POLL_NAME = 'price'
 const RECALC_POLL_NAME = 'price_recalc'
