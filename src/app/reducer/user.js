@@ -1,8 +1,9 @@
 // @flow
 
-import type {Action, UserState} from '../type'
+import type {UserState} from '../type'
+import type {Action} from '../action-type'
 
-const initialState : UserState = {
+const initialState = {
   userId: null,
   user: {
     emailAddress: '',

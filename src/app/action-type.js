@@ -1,5 +1,32 @@
-// Action types
+// @flow
 
+import type {Address, User} from './type'
+
+export type UserShippingAddressChangedAction = {
+  type: 'USER.SHIPPING_ADDRESS_CHANGED',
+  payload: {
+    address: Address
+  }
+}
+
+export type UserCreatedAction = {
+  type: 'USER.CREATED',
+  payload: {
+    userId: string
+  }
+}
+
+export type UserUpdatedAction = {
+  type: 'USER.UPDATED',
+  payload: User
+}
+
+export type Action =
+  UserShippingAddressChangedAction |
+  UserCreatedAction |
+  UserUpdatedAction
+
+// TODO: remove those constants
 export default {
   MODAL: {
     OPEN: 'MODAL.OPEN',

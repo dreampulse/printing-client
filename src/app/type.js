@@ -34,29 +34,3 @@ export type State = {
   user: UserState,
   price: any // TODO
 }
-
-// Action Types
-
-export type UserShippingAddressChangedAction = {
-  type: 'USER.SHIPPING_ADDRESS_CHANGED',
-  payload: {
-    address: Address
-  }
-}
-
-export type UserCreatedAction = {
-  type: 'USER.CREATED',
-  payload: {
-    userId: string
-  }
-}
-
-export type UserUpdatedAction = {
-  type: 'USER.UPDATED',
-  payload: User
-}
-
-export type Action =
-  UserShippingAddressChangedAction |
-  UserCreatedAction |
-  UserUpdatedAction
