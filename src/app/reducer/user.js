@@ -1,17 +1,15 @@
 // @flow
 
-import {handleActions} from 'redux-actions'
+import type {Action, UserState} from '../type'
 
-import TYPE from '../action-type'
-
-const initialState = {
+const initialState : UserState = {
   userId: null,
   user: {
     emailAddress: '',
     phoneNumber: '',
     currency: 'USD',
     isCompany: false,
-    // companyName: '',
+    companyName: undefined,
     vatId: '',
     shippingAddress: {
       firstName: '',
@@ -24,7 +22,7 @@ const initialState = {
       stateCode: '',
       countryCode: ''
     },
-    // useDifferentBillingAddress: false,
+    useDifferentBillingAddress: undefined,
     billingAddress: {
       firstName: '',
       lastName: '',
@@ -63,8 +61,13 @@ function handleUserUpdated (state, {payload}) {
   }
 }
 
-export default handleActions({
-  [TYPE.USER.SHIPPING_ADDRESS_CHANGED]: handleShippingAddressChange,
-  [TYPE.USER.CREATED]: handleUserCreated,
-  [TYPE.USER.UPDATED]: handleUserUpdated
-}, initialState)
+const reducer = (state : UserState = initialState, action: Action) : UserState => {
+  switch (action.type) {
+    case 'USER.SHIPPING_ADDRESS_CHANGED': return handleShippingAddressChange(state, action)
+    case 'USER.CREATED': return handleUserCreated(state, action)
+    case 'USER.UPDATED': return handleUserUpdated(state, action)
+    default: return state
+  }
+}
+
+export default reducer

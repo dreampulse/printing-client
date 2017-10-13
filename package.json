@@ -23,7 +23,7 @@
     "changes": "./bin/update-changelog.js ./ --dry-run",
     "prerelease": "npm run test && ./bin/update-changelog.js ./",
     "release": "./bin/bump-release.js ./",
-    "postinstall": "flow-typed install"
+    "update-types": "flow-typed install"
   },
   "author": "All3dp <info@all3dp.com>",
   "contributors": [
