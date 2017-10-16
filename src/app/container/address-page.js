@@ -23,11 +23,11 @@ import Link from 'Component/link'
 
 import backIcon from 'Icon/back.svg'
 
-import {renderField} from 'Container/util/form'
-
 import {reviewOrder} from 'Action/user'
 import {goToHome} from 'Action/navigation'
 
+import {renderField} from './util/form'
+import {onlyWithSelectedOffer} from './util/guards'
 import AppLayout from './app-layout'
 
 const AddressPage = ({
@@ -278,6 +278,7 @@ const mapDispatchToProps = {
 
 const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
+  onlyWithSelectedOffer,
   reduxForm({form: FORM_NAME})
 )
 
