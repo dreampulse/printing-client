@@ -39,11 +39,12 @@ const createOrder = (type : string, token : string) => async (
     },
     price: {
       priceId,
-      selectedOffer: {
-        offerId
-      }
+      selectedOffer
     }
   } = getState()
+
+  if (!selectedOffer) throw new Error('No offer selected')
+  const offerId = selectedOffer.offerId
 
   try {
     const {orderId} = await printingEngine.order({userId, priceId, offerId, type, token})
@@ -59,6 +60,8 @@ export const payWithStripe = () => async (
 ) => {
   dispatch(orderStarted())
   const offer = getState().price.selectedOffer
+  if (!offer) throw new Error('No offer selected')
+
   const currency = offer.currency
   const amount = offer.totalPrice
   const email = getState().user.user.emailAddress
@@ -77,7 +80,9 @@ export const payWithPaypal = () => (
   dispatch : Dispatch<*>,
   getState : () => State
 ) => {
-  const {totalPrice, currency, offerId} = getState().price.selectedOffer
+  const {price} = getState()
+  if (!price.selectedOffer) throw new Error('No offer selected')
+  const {totalPrice, currency, offerId} = price.selectedOffer
   return paypal.createPayment({amount: totalPrice, currency, offerId})
 }
 
@@ -86,7 +91,8 @@ export const createOrderWithStripe = () => (
   getState : () => State
 ) => {
   const token = getState().order.paymentToken
-  if (token) return dispatch(createOrder('stripe', token))
+  if (!token) throw new Error('Payment token missing')
+  return dispatch(createOrder('stripe', token))
 }
 
 export const createOrderWithPaypal = (data : any, actions : any) => async (

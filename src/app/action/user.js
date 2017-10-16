@@ -125,6 +125,8 @@ export const reviewOrder = (
   await dispatch(recalculateSelectedOffer())
 
   const newOffer = getState().price.selectedOffer
+  if (!newOffer || !oldOffer) throw new Error('No offer slected')
+
   const hasPriceChanged = oldOffer.totalPrice !== newOffer.totalPrice
   const wasEstimatedPrice = oldOffer.priceEstimated
 

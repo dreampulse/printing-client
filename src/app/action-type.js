@@ -1,6 +1,6 @@
 // @flow
 
-import type {Address, User} from './type'
+import type {Address, User, Offer, Price} from './type'
 
 // User actions
 
@@ -43,9 +43,46 @@ export type OrderAbortedAction = {
 export type OrderOrderedAction = {
   type: 'ORDER.ORDERED',
   payload: {
-    orderId: string
+    orderId: string,
   },
-  error: ?boolean
+  error: ?boolean // @TODO: is this possible (we removed redux promise)
+}
+
+// Price actions
+
+export type PriceOfferCleardAction = {
+  type: 'PRICE.CLEAR_OFFERS', // @TODO rename
+}
+
+export type PriceRequestedAction = {
+  type: 'PRICE.REQUESTED',
+  payload: {
+    priceId: string
+  }
+}
+
+export type PriceReceivedAction = {
+  type: 'PRICE.RECEIVED',
+  payload: {
+    price: Price,
+    isComplete: boolean
+  }
+}
+
+export type PriceTimedOutAction = {
+  type: 'PRICE.TIMEOUT',  // @TODO rename
+}
+
+export type PriceOfferSelectedAction = {
+  type: 'PRICE.SELECT_OFFER', // @TODO rename
+  payload: {
+    offer: ?Offer
+  }
+}
+
+export type PriceGotErrorAction = {
+  type: 'PRICE.GOT_ERROR',
+  payload: Error
 }
 
 // All actions combined
@@ -56,7 +93,13 @@ export type Action =
   OrderStartedAction |
   OrderPayedAction |
   OrderAbortedAction |
-  OrderOrderedAction
+  OrderOrderedAction |
+  PriceOfferCleardAction |
+  PriceRequestedAction |
+  PriceReceivedAction |
+  PriceTimedOutAction |
+  PriceOfferSelectedAction |
+  PriceGotErrorAction
 
 export default {
   MODAL: {
@@ -83,7 +126,8 @@ export default {
     CLEAR_OFFERS: 'PRICE.CLEAR_OFFERS',
     REQUESTED: 'PRICE.REQUESTED',
     RECEIVED: 'PRICE.RECEIVED',
-    TIMEOUT: 'PRICE.TIMEOUT'
+    TIMEOUT: 'PRICE.TIMEOUT',
+    GOT_ERROR: 'PRICE.GOT_ERROR'
   },
   USER: {
     SHIPPING_ADDRESS_CHANGED: 'USER.SHIPPING_ADDRESS_CHANGED',

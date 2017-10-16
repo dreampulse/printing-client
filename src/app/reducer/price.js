@@ -1,7 +1,9 @@
-import {handleActions} from 'redux-actions'
+// @flow
+
 import cloneDeep from 'lodash/cloneDeep'
 
-import TYPE from '../action-type'
+import type {PriceState} from '../type'
+import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   priceId: null,
@@ -34,14 +36,14 @@ function handlePriceRequested (state, {payload: {priceId}}) {
   }
 }
 
-function handlePriceReceived (state, {payload, error}) {
-  if (error) {
-    return {
-      ...initialState,
-      error: payload
-    }
+function handleGotError (state, {payload}) {
+  return {
+    ...initialState,
+    error: payload
   }
+}
 
+function handlePriceReceived (state, {payload}) {
   const {
     offers,
     printingServiceComplete
@@ -78,10 +80,16 @@ function handlePriceTimeout (state) {
   }
 }
 
-export default handleActions({
-  [TYPE.PRICE.CLEAR_OFFERS]: handleClearOffers,
-  [TYPE.PRICE.SELECT_OFFER]: handleSelectOffer,
-  [TYPE.PRICE.REQUESTED]: handlePriceRequested,
-  [TYPE.PRICE.RECEIVED]: handlePriceReceived,
-  [TYPE.PRICE.TIMEOUT]: handlePriceTimeout
-}, initialState)
+const reducer = (state : PriceState = initialState, action: Action) : PriceState => {
+  switch (action.type) {
+    case TYPE.PRICE.CLEAR_OFFERS: return handleClearOffers(state)
+    case TYPE.PRICE.SELECT_OFFER: return handleSelectOffer(state, action)
+    case TYPE.PRICE.REQUESTED: return handlePriceRequested(state, action)
+    case TYPE.PRICE.RECEIVED: return handlePriceReceived(state, action)
+    case TYPE.PRICE.TIMEOUT: return handlePriceTimeout(state)
+    case TYPE.PRICE.GOT_ERROR: return handleGotError(state, action)
+    default: return state
+  }
+}
+
+export default reducer
