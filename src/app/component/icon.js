@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 import placeholder from 'Icon/placeholder.svg'
@@ -13,8 +14,8 @@ const Icon = ({modifiers, classNames, source = placeholder}) => (
 
 Icon.propTypes = {
   ...propTypes.component,
-  source: React.PropTypes.shape({
-    id: React.PropTypes.string
+  source: PropTypes.shape({
+    id: PropTypes.string
   })
 }
 

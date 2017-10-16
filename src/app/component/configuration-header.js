@@ -1,4 +1,5 @@
-import React, {Children, PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React, {Children} from 'react'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'

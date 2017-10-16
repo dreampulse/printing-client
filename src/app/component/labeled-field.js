@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 import propTypes from 'Lib/prop-types'
@@ -17,8 +18,8 @@ const LabeledField = ({
 
 LabeledField.propTypes = {
   ...propTypes.component,
-  label: React.PropTypes.string.isRequired,
-  children: React.PropTypes.node.isRequired
+  label: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired
 }
 
 export default LabeledField

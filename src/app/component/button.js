@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
@@ -34,8 +35,8 @@ const Button = ({
 Button.propTypes = {
   ...propTypes.component,
   label: PropTypes.string,
-  source: React.PropTypes.shape({
-    id: React.PropTypes.string
+  source: PropTypes.shape({
+    id: PropTypes.string
   }),
   type: PropTypes.string,
   disabled: PropTypes.bool,
