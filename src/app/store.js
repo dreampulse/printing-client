@@ -1,6 +1,5 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
-import promiseMiddleware from 'redux-promise'
 import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
 import {captureException, showReportDialog} from 'Service/logging'
@@ -43,7 +42,6 @@ export default (initialState = {}) => {
   let middleware = applyMiddleware(
     fatalErrorHandler,
     thunk,
-    promiseMiddleware,
     routerMiddleware(browserHistory),
     trackingReduxMiddleware
   )
