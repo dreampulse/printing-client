@@ -63,7 +63,7 @@ export const changeIndividualQuantity = ({quantity, modelId}) => (dispatch) => {
 
 export const changeUnit = createAction(TYPE.MODEL.UNIT_CHANGED, ({unit}) => ({unit}))
 
-const uploadFile = (file, {refresh}) => async (dispatch, getState) => {
+const uploadFile = file => async (dispatch, getState) => {
   const fileId = uniqueId('file-id-')
   const unit = getState().model.selectedUnit
 
@@ -75,7 +75,7 @@ const uploadFile = (file, {refresh}) => async (dispatch, getState) => {
   const onUploadProgressed = progress => dispatch(fileUploadProgressed(fileId, progress))
 
   try {
-    const modelData = await uploadModel(file, {unit, refresh}, onUploadProgressed)
+    const modelData = await uploadModel(file, {unit}, onUploadProgressed)
     dispatch(fileUploaded(fileId, modelData))
   } catch (error) {
     const uploadError = new FileUploadError(fileId)
@@ -84,16 +84,17 @@ const uploadFile = (file, {refresh}) => async (dispatch, getState) => {
   }
 }
 
-export const uploadFiles = (files, {refresh}) => dispatch => (
-  Promise.all(
-    files.map(file => dispatch(uploadFile(file, {refresh})))
-  )
-  .then(() => dispatch(createPriceRequest({refresh})))
-  .catch(() => {
+export const uploadFiles = files => async (dispatch) => {
+  try {
+    await Promise.all(files.map(file => dispatch(uploadFile(file))))
+  } catch (err) {
     // Ignore upload error
     // It has already been handled in uploadFile()
-  })
-)
+    return
+  }
+
+  await dispatch(createPriceRequest())
+}
 
 export const deleteFile = fileId => async (dispatch) => {
   dispatch(fileDeleted(fileId))

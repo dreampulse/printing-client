@@ -1,3 +1,5 @@
+import get from 'lodash/get'
+
 import {
   hasMaterialMultipleConfigs,
   getBestOfferForMaterial
@@ -258,4 +260,20 @@ export const selectAreAllUploadsFinished = (state) => {
   } = state
 
   return numberOfUploads === 0 && models.length > 0
+}
+
+export const selectFeatures = (state) => {
+  const query = get(state, 'routing.locationBeforeTransitions.query')
+
+  if (!query) {
+    return {}
+  }
+
+  return Object.keys(query)
+    .filter(name => /^feature:/.test(name))
+    .map(name => name.substr('feature:'.length))
+    .reduce((agg, name) => {
+      agg[name] = true
+      return agg
+    }, {})
 }
