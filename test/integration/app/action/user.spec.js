@@ -1,3 +1,5 @@
+import createHistory from 'history/createMemoryHistory'
+
 import {detectAddress, createUser, updateUser} from 'Action/user'
 import * as navigation from 'Action/navigation'
 import * as modal from 'Action/modal'
@@ -20,7 +22,7 @@ describe('User Integration Test', () => {
     sandbox.stub(modal)
     sandbox.stub(price)
 
-    store = Store()
+    store = Store(createHistory())
   })
 
   afterEach(() => {
@@ -60,7 +62,7 @@ describe('User Integration Test', () => {
       const userId = '789'
       const user = {someUserInfo: 'something'}
 
-      store = Store({
+      store = Store(createHistory(), {
         user: {
           userId
         }

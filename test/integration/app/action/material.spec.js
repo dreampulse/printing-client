@@ -1,3 +1,5 @@
+import createHistory from 'history/createMemoryHistory'
+
 import {
   getMaterials,
   selectMaterial,
@@ -17,7 +19,7 @@ describe('Material Integration Test', () => {
     sandbox.stub(printingEngine)
     sandbox.stub(materialLib)
 
-    store = Store({})
+    store = Store(createHistory())
   })
 
   afterEach(() => {
@@ -44,7 +46,7 @@ describe('Material Integration Test', () => {
 
   describe('selectMaterialConfigForFinishGroup()', () => {
     it('should work', () => {
-      store = Store({
+      store = Store(createHistory(), {
         material: {
           selectedMaterialConfig: 'some-config-id'
         }

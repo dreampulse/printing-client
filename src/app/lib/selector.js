@@ -263,7 +263,7 @@ export const selectAreAllUploadsFinished = (state) => {
 }
 
 export const selectFeatures = (state) => {
-  const query = get(state, 'routing.locationBeforeTransitions.query')
+  const query = get(state, 'routing.location.query')
 
   if (!query) {
     return {}

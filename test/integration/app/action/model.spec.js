@@ -1,3 +1,5 @@
+import createHistory from 'history/createMemoryHistory'
+
 import {
   uploadFiles,
   deleteFile,
@@ -66,7 +68,7 @@ describe('Model Integration Test', () => {
         }
       }) // Finished polling
 
-      store = Store({
+      store = Store(createHistory(), {
         material: {
           materials: {
             materialConfigs: {
@@ -144,7 +146,7 @@ describe('Model Integration Test', () => {
 
   describe('changeQuantity()', () => {
     it('changes quanity and creates a price request', async () => {
-      store = Store({
+      store = Store(createHistory(), {
         model: {
           models: [{
             modelId: 'some-model-id',
@@ -213,7 +215,7 @@ describe('Model Integration Test', () => {
 
   describe('changeIndividualQuantity()', () => {
     it('changes quanity and creates a price request', async () => {
-      store = Store({
+      store = Store(createHistory(), {
         model: {
           models: [{
             modelId: 'some-model-id',
@@ -289,7 +291,7 @@ describe('Model Integration Test', () => {
 
   describe('deleteFile()', () => {
     it('deletes file and creates a price request', async () => {
-      store = Store({
+      store = Store(createHistory(), {
         model: {
           models: [
             {fileId: 1, uploadFinished: true},

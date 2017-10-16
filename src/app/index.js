@@ -1,6 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
+import createHistory from 'history/createBrowserHistory'
 
 import 'babel-polyfill'
 
@@ -16,11 +17,12 @@ import {init} from './action/init'
 // Stub backend during development. Webpack will remove this in production
 if (process.env.NODE_ENV === 'development-with-stubs') require('../../test-data/server-stubs') // eslint-disable-line
 
-const store = Store()
+const history = createHistory()
+const store = Store(history)
 store.dispatch(init()).then(() => {
   render(
     <Provider store={store}>
-      <Router store={store} />
+      <Router store={store} history={history} />
     </Provider>,
     global.document.getElementById('root')
   )

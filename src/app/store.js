@@ -1,6 +1,5 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
-import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
 import {captureException, showReportDialog} from 'Service/logging'
 import {track as trackMixpanel} from 'Service/mixpanel'
@@ -38,11 +37,11 @@ function trackingReduxMiddleware () {
   }
 }
 
-export default (initialState = {}) => {
+export default (history, initialState = {}) => {
   let middleware = applyMiddleware(
     fatalErrorHandler,
     thunk,
-    routerMiddleware(browserHistory),
+    routerMiddleware(history),
     trackingReduxMiddleware
   )
 

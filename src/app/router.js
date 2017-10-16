@@ -1,6 +1,6 @@
 import React from 'react'
-import {syncHistoryWithStore} from 'react-router-redux'
-import {Router, Route, browserHistory} from 'react-router'
+import {ConnectedRouter} from 'react-router-redux'
+import {Route, Switch} from 'react-router'
 
 import CartPage from 'Container/cart-page'
 import ModelPage from 'Container/model-page'
@@ -17,17 +17,14 @@ const preventDeepLinking = store => (nextState, replace) => {
 }
 
 /* eslint-disable react/prop-types */
-export default ({store}) => {
-  // Create an enhanced history that syncs navigation events with the store
-  const history = syncHistoryWithStore(browserHistory, store)
-
-  return (
-    <Router history={history}>
+export default ({store, history}) => (
+  <ConnectedRouter history={history}>
+    <Switch>
       <Route component={ModelPage} path="/" />
       <Route component={AddressPage} path="/address" onEnter={preventDeepLinking(store)} />
       <Route component={CartPage} path="/cart" onEnter={preventDeepLinking(store)} />
       <Route component={SuccessPage} path="/success" onEnter={preventDeepLinking(store)} />
       <Route component={ConfigurationPage} path="/configuration/:id" />
-    </Router>
-  )
-}
+    </Switch>
+  </ConnectedRouter>
+)

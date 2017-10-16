@@ -46,7 +46,7 @@ describe('Price actions', () => {
         configurationId: null
       },
       routing: {
-        locationBeforeTransitions: {
+        location: {
           query: {
             'feature:refresh': undefined
           }

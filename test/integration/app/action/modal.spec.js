@@ -1,3 +1,5 @@
+import createHistory from 'history/createMemoryHistory'
+
 import {
   open,
   close,
@@ -13,7 +15,7 @@ describe('Modal Integration Test', () => {
   let store
 
   beforeEach(() => {
-    store = Store({})
+    store = Store(createHistory())
   })
 
   describe('open()', () => {
