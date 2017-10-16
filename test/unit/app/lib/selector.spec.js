@@ -711,6 +711,9 @@ describe('Selector lib', () => {
   })
 
   describe('selectFeatures()', () => {
+    it('returns an empty object if the state does not contain feature toggles', () => {
+      expect(selectFeatures({}), 'to equal', {})
+    })
     it('returns the feature toggles in an object', () => {
       expect(selectFeatures({routing: {
         locationBeforeTransitions: {query: {'feature:featureA': undefined, 'feature:featureB': undefined}}
@@ -718,6 +721,11 @@ describe('Selector lib', () => {
         featureA: true,
         featureB: true
       })
+    })
+    it('should not detect query parameters without feature: prefix', () => {
+      expect(selectFeatures({routing: {
+        locationBeforeTransitions: {query: {otherParam: undefined}}
+      }}), 'to equal', {})
     })
   })
 })
