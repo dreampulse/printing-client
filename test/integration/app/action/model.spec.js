@@ -22,8 +22,8 @@ describe('Model Integration Test', () => {
     resetPollState()
 
     sandbox = sinon.sandbox.create()
-    sandbox.stub(config, 'pollingInverval', 0)
-    sandbox.stub(config, 'pollingDebouncedWait', 0)
+    sandbox.stub(config, 'pollingInverval').value(0)
+    sandbox.stub(config, 'pollingDebouncedWait').value(0)
 
     sandbox.stub(printingEngine)
   })

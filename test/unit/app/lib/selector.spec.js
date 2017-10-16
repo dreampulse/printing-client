@@ -435,7 +435,7 @@ describe('Selector lib', () => {
     })
 
     it('returns default material from config if selected material is undefined', () => {
-      sandbox.stub(config, 'defaultSelectedMaterial', 'Material 1')
+      sandbox.stub(config, 'defaultSelectedMaterial').value('Material 1')
       const state = {
         material: {
           materials,

@@ -14,7 +14,7 @@ describe('Poll lib', () => {
     resetPollState()
 
     sandbox = sinon.sandbox.create()
-    sandbox.stub(config, 'pollingInverval', 0)
+    sandbox.stub(config, 'pollingInverval').value(0)
   })
 
   afterEach(() => {
@@ -33,7 +33,7 @@ describe('Poll lib', () => {
     })
 
     it('retries when poll callback resolves with false the first time', async () => {
-      sandbox.stub(config, 'pollingRetries', 100)
+      sandbox.stub(config, 'pollingRetries').value(100)
 
       const pollCallback = sinon.stub()
       pollCallback.withArgs().onCall(0).resolves(false)
@@ -45,7 +45,7 @@ describe('Poll lib', () => {
     })
 
     it('rejects with error after retry limit is reached', async () => {
-      sandbox.stub(config, 'pollingRetries', 2)
+      sandbox.stub(config, 'pollingRetries').value(2)
       const pollCallback = sinon.stub()
         .withArgs()
         .resolves(false)
@@ -57,7 +57,7 @@ describe('Poll lib', () => {
     })
 
     it('calls pollCallback with a maximum of pollingRetries plus one', async () => {
-      sandbox.stub(config, 'pollingRetries', 2)
+      sandbox.stub(config, 'pollingRetries').value(2)
       const pollCallback = sinon.stub()
         .withArgs()
         .resolves(false)
@@ -126,7 +126,7 @@ describe('Poll lib', () => {
 
   describe('debouncedPoll', () => {
     it('starts poll only once if called multiple times in a row', async () => {
-      sandbox.stub(config, 'pollingDebouncedWait', 1)
+      sandbox.stub(config, 'pollingDebouncedWait').value(1)
 
       const pollCallback = sinon.stub()
         .withArgs()
