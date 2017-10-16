@@ -91,14 +91,14 @@ React components (`/src/app/component`) and containers (`/src/app/container`) ar
 1. The implementer has to discuss the solution strategy with the most experienced developer(s) of the project. They have to approve the strategy and provide helpful feedback.  
 1. The implementer of a bugfix / new feature creates a pull request (PR) in github.
 1. The implementer adds a reviewer to the pull request when the implementation is done.
-  - The reviewer is selected by the implementer.
-  - The reviewer is added to the list of **reviewers** and **assignees**.
-  - The label `needs review` is added to the pull request.
+   - The reviewer is selected by the implementer.
+   - The reviewer is added to the list of **reviewers** and **assignees**.
+   - The label `needs review` is added to the pull request.
 1. The reviewer reviews the PR and adds comments for each known issue.
-  - The reviewer has to update the label to `needs fixing` and to change the **assignees** to the implementer.
-  - If there are no issues left the reviewer **and only him** has to merge the PR to the `master`.
+   - The reviewer has to update the label to `needs fixing` and to change the **assignees** to the implementer.
+   - If there are no issues left the reviewer **and only him** has to merge the PR to the `master`.
 1. If there are still open issues the implementer **and only him** has to fix them.
-  - Fixed issues have to be marked by using the :+1:-emoji.
-  - If an issue isn't fixable or unjustified a reasonable comment has to be provided.
-  - The implementer has to update the label to `need review` again and to change the **assignees** to the reviewer.
-  - Repeat the preview step.
+   - Fixed issues have to be marked by using the :+1:-emoji.
+   - If an issue isn't fixable or unjustified a reasonable comment has to be provided.
+   - The implementer has to update the label to `need review` again and to change the **assignees** to the reviewer.
+   - Repeat the preview step.
