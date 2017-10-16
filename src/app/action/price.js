@@ -91,11 +91,15 @@ export const createPriceRequest = ({
   }
 
   const materialConfigIds = Object.keys(materialConfigs)
-  const items = models.map(({modelId, quantity}) => ({
-    modelId,
-    materialConfigIds,
-    quantity
-  }))
+  const items = models.map((model) => {
+    if (!model.uploadFinished) throw new Error('Upload still in progress')
+    const {modelId, quantity} = model
+    return {
+      modelId,
+      materialConfigIds,
+      quantity
+    }
+  })
 
   const options = {
     isEstimate: false, // always fetch real prices
@@ -160,11 +164,15 @@ export const recalculateSelectedOffer = () => (
   // Stop any other price polling
   stopPoll(POLL_NAME)
 
-  const items = models.map(({modelId, quantity}) => ({
-    modelId,
-    materialConfigIds: [selectedOffer.materialConfigId],
-    quantity
-  }))
+  const items = models.map((model) => {
+    if (!model.uploadFinished) throw new Error('Upload still in progress')
+    const {modelId, quantity} = model
+    return {
+      modelId,
+      materialConfigIds: [selectedOffer.materialConfigId],
+      quantity
+    }
+  })
 
   const options = {
     isEstimate: false, // always get real price for recalculated offer

@@ -1,6 +1,8 @@
-import {handleActions} from 'redux-actions'
+// @flow
 
-import TYPE from '../action-type'
+import type {ModelState} from '../type'
+import TYPE, {type Action} from '../action-type'
+
 import {updateArrayItems} from '../lib/util'
 
 const initialState = {
@@ -54,8 +56,7 @@ function handleFileUploadStarted (state, {payload: {fileId, fileName, fileSize}}
     ...state,
     numberOfUploads: state.numberOfUploads + 1,
     models: [
-      ...state.models,
-      {
+      ...state.models, {
         fileId,
         fileName,
         fileSize,
@@ -77,20 +78,21 @@ function handleFileUploadProgressed (state, {payload: {fileId, progress}}) {
   }
 }
 
-function handleFileUploaded (state, {payload, error}) {
+function handleFileUploaded (state, {payload}) {
   const {fileId} = payload
   const updateModels = updateArrayItems(state.models, model => model.fileId === fileId)
 
-  if (error) {
-    return {
-      ...state,
-      numberOfUploads: state.numberOfUploads - 1,
-      models: updateModels({
-        progress: 1,
-        error: payload
-      })
-    }
-  }
+  // @TODO: own action for this
+  // if (error) {
+  //   return {
+  //     ...state,
+  //     numberOfUploads: state.numberOfUploads - 1,
+  //     models: updateModels({
+  //       progress: 1,
+  //       error: payload
+  //     })
+  //   }
+  // }
 
   const {modelId, thumbnailUrl, fileName, fileUnit, dimensions, area, volume} = payload
 
@@ -119,13 +121,27 @@ function handleFileDeleted (state, {payload: {fileId}}) {
   }
 }
 
-export default handleActions({
-  [TYPE.MODEL.FILE_UPLOAD_STARTED]: handleFileUploadStarted,
-  [TYPE.MODEL.FILE_UPLOAD_PROGRESSED]: handleFileUploadProgressed,
-  [TYPE.MODEL.FILE_UPLOADED]: handleFileUploaded,
-  [TYPE.MODEL.FILE_DELETED]: handleFileDeleted,
-  [TYPE.MODEL.QUANTITIY_CHANGED]: handleQuantityChanged,
-  [TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED]: handleIndividualQuantityChanged,
-  [TYPE.MODEL.UNIT_CHANGED]: handleUnitChanged,
-  [TYPE.DIRECT_SALES.RESTORE_CONFIGURATION]: handleRestoreConfiguration
-}, initialState)
+const reducer = (state : ModelState = initialState, action: Action) : ModelState => {
+  switch (action.type) {
+    case TYPE.MODEL.FILE_UPLOAD_STARTED:
+      return handleFileUploadStarted(state, action)
+    case TYPE.MODEL.FILE_UPLOAD_PROGRESSED:
+      return handleFileUploadProgressed(state, action)
+    case TYPE.MODEL.FILE_UPLOADED:
+      return handleFileUploaded(state, action)
+    case TYPE.MODEL.FILE_DELETED:
+      return handleFileDeleted(state, action)
+    case TYPE.MODEL.QUANTITIY_CHANGED:
+      return handleQuantityChanged(state, action)
+    case TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED:
+      return handleIndividualQuantityChanged(state, action)
+    case TYPE.MODEL.UNIT_CHANGED:
+      return handleUnitChanged(state, action)
+    case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION:
+      return handleRestoreConfiguration(state, action)
+
+    default: return state
+  }
+}
+
+export default reducer

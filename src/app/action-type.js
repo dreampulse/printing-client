@@ -85,6 +85,84 @@ export type PriceGotErrorAction = {
   payload: Error
 }
 
+// Model actions
+
+export type ModelQuantityChangedAction = {
+  type: 'MODEL.QUANTITIY_CHANGED',
+  payload: {
+    quantity: number
+  }
+}
+
+export type ModelIndividualQuantityChangedAction = {
+  type: 'MODEL.INDIVIDUAL_QUANTITIY_CHANGED',
+  payload: {
+    modelId: string,
+    quantity: number
+  }
+}
+
+export type ModelFileUploadStartedAction = {
+  type: 'MODEL.FILE_UPLOAD_STARTED',
+  payload: {
+    fileId: string,
+    fileName: string,
+    fileSize: number
+  }
+}
+
+export type ModelFileUploadProgressedAction = {
+  type: 'MODEL.FILE_UPLOAD_PROGRESSED',
+  payload: {
+    fileId: string,
+    progress: number
+  }
+}
+
+export type ModelFileUploadedAction = {
+  type: 'MODEL.FILE_UPLOADED',
+  payload: {
+    modelId: string,
+    fileName: string,
+    fileUnit: 'mm' | 'cm' | 'in',
+    area: number,
+    volume: number,
+    dimensions: {
+      x: number,
+      y: number,
+      z: number
+    },
+    thumbnailUrl: string,
+    fileId: number
+  }
+}
+
+export type ModelFileDeletedAction = {
+  type: 'MODEL.FILE_DELETED',
+  payload: {
+    fileId: string
+  }
+}
+
+export type ModelUnitChangedAction = {
+  type: 'MODEL.UNIT_CHANGED',
+  payload: {
+    unit: 'mm' | 'cm' | 'in'
+  }
+}
+
+// Configuration actions
+
+// @TODO: rename -> direct_sales -> Configuration
+export type ConfigurationRestoreAction = {
+  type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
+  payload: any // @TODO: configuration obj
+}
+
+export type ConfigurationCreateAction = {
+  type: 'DIRECT_SALES.CREATE_CONFIGURATION',
+}
+
 // All actions combined
 export type Action =
   UserShippingAddressChangedAction |
@@ -99,7 +177,16 @@ export type Action =
   PriceReceivedAction |
   PriceTimedOutAction |
   PriceOfferSelectedAction |
-  PriceGotErrorAction
+  PriceGotErrorAction |
+  ModelQuantityChangedAction |
+  ModelIndividualQuantityChangedAction |
+  ModelFileUploadStartedAction |
+  ModelFileUploadProgressedAction |
+  ModelFileUploadedAction |
+  ModelFileDeletedAction |
+  ModelUnitChangedAction |
+  ConfigurationRestoreAction |
+  ConfigurationCreateAction
 
 export default {
   MODAL: {

@@ -60,6 +60,39 @@ export type Price = {
   }
 }
 
+export type ModelCompleted = {
+  modelId: string,
+  fileName: string,
+  fileUnit: 'mm' | 'cm' | 'in',
+  area: number,
+  volume: number,
+  dimensions: {
+    x: number,
+    y: number,
+    z: number
+  },
+  thumbnailUrl: string,
+  // The folowing fields are differend from the backend:
+  fileId: number,
+  fileSize: number,
+  quantity: number,
+  // This are static for a completed upload
+  progress: 1,
+  uploadFinished: true,
+}
+
+type ModelUploading = {
+  fileId: string,
+  fileName: string,
+  fileSize: number,
+  progress: number,
+  // This is static for an uncompleted upload
+  uploadFinished: false
+}
+
+// @TODO: simplify this compex data model
+export type Model = ModelCompleted | ModelUploading
+
 export type UserState = {
   userId: ?string,
   user: User
@@ -69,6 +102,12 @@ export type OrderState = {
   orderId: ?string,
   paymentToken: ?string,
   orderInProgress: boolean
+}
+
+export type ModelState = {
+  numberOfUploads: number,
+  selectedUnit: 'mm' | 'cm' | 'in',
+  models: Model[]
 }
 
 export type PriceState = {
@@ -88,5 +127,5 @@ export type State = {
   order: OrderState,
   price: PriceState,
   material: any, // @TODO
-  model: any // @TODO
+  model: ModelState
 }

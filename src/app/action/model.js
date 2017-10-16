@@ -10,7 +10,7 @@ import {
 
 import TYPE from '../action-type'
 
-// Private actions
+// Sync actions
 
 const quantityChanged = createAction(
   TYPE.MODEL.QUANTITIY_CHANGED,
@@ -46,8 +46,9 @@ const fileUploaded = createAction(
   })
 )
 const fileDeleted = createAction(TYPE.MODEL.FILE_DELETED, fileId => ({fileId}))
+export const changeUnit = createAction(TYPE.MODEL.UNIT_CHANGED, ({unit}) => ({unit}))
 
-// Public actions
+// Async actions
 
 export const changeQuantity = ({quantity}) => (dispatch) => {
   dispatch(quantityChanged(quantity))
@@ -60,8 +61,6 @@ export const changeIndividualQuantity = ({quantity, modelId}) => (dispatch) => {
   // Update prices
   return dispatch(createDebouncedPriceRequest())
 }
-
-export const changeUnit = createAction(TYPE.MODEL.UNIT_CHANGED, ({unit}) => ({unit}))
 
 const uploadFile = file => async (dispatch, getState) => {
   const fileId = uniqueId('file-id-')
@@ -79,7 +78,7 @@ const uploadFile = file => async (dispatch, getState) => {
     dispatch(fileUploaded(fileId, modelData))
   } catch (error) {
     const uploadError = new FileUploadError(fileId)
-    dispatch(fileUploaded(uploadError))
+    dispatch(fileUploaded(uploadError))  // @TODO: own action for error
     throw uploadError  // Prevent to create a price request if upload failed
   }
 }
