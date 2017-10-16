@@ -119,13 +119,19 @@ describe('Price reducer', () => {
         error: null
       })
     })
+  })
 
+  describe('handles TYPE.PRICE.GOT_ERROR:', () => {
     it('sets error and resets other state', () => {
       const error = new Error()
-      action.payload = error
-      action.error = true
 
-      expect(reducer(stateBefore, action), 'to equal', {
+      const action = {
+        type: TYPE.PRICE.GOT_ERROR,
+        payload: error,
+        error: true
+      }
+
+      expect(reducer({}, action), 'to equal', {
         priceId: null,
         offers: null,
         printingServiceComplete: null,

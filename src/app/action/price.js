@@ -108,7 +108,7 @@ export const createPriceRequest = ({
   const usePoll = debounce ? debouncedPoll : poll
   return usePoll(POLL_NAME, async (priceId) => {
     const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
-    dispatch(priceReceived(price, isComplete))  // @TODO: isComplete was missing -> is this ok?
+    dispatch(priceReceived(price, isComplete))
     return isComplete
   }, async () => {
     const {priceId} = await printingEngine.createPriceRequest(options)
@@ -193,8 +193,7 @@ export const recalculateSelectedOffer = () => (
   .catch((error) => {
     // Every error here is fatal!
 
-    // @TODO: this can't work this way
-    // dispatch(priceReceived(error))
+    dispatch(gotError(error))
 
     // Throw again to trigger fatal error modal
     throw error
