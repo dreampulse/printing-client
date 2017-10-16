@@ -57,7 +57,7 @@ describe('Order actions', () => {
 
       await store.dispatch(payWithStripe())
       expect(store.getActions(), 'to equal', [
-        {type: 'ORDER:STARTED'},
+        {type: 'ORDER.STARTED'},
         {type: 'ORDER.PAYED', payload: {paymentToken: 'some-token'}}
       ])
     })
@@ -75,8 +75,8 @@ describe('Order actions', () => {
         }
 
         expect(store.getActions(), 'to equal', [
-          {type: 'ORDER:STARTED'},
-          {type: 'ORDER:ABORTED'}
+          {type: 'ORDER.STARTED'},
+          {type: 'ORDER.ABORTED'}
         ])
       })
 

@@ -1,28 +1,38 @@
+// @flow
+
+import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 
 import * as stripe from 'Service/stripe'
 import * as paypal from 'Service/paypal'
 import * as printingEngine from 'Lib/printing-engine'
 
+import type {State} from '../type'
 import TYPE from '../action-type'
 
-// Private actions
+// Syncron actions
+
 const orderStarted = createAction(
   TYPE.ORDER.STARTED
 )
 const payed = createAction(
   TYPE.ORDER.PAYED,
-  paymentToken => ({paymentToken})
+  (paymentToken : string) => ({paymentToken})
 )
 const aborted = createAction(
   TYPE.ORDER.ABORTED
 )
 const ordered = createAction(
   TYPE.ORDER.ORDERED,
-  orderId => ({orderId})
+  (orderId : string) => ({orderId})
 )
 
-const createOrder = (type, token) => async (dispatch, getState) => {
+// Async actions
+
+const createOrder = (type : string, token : string) => async (
+  dispatch : Dispatch<*>,
+  getState : () => State
+) => {
   const {
     user: {
       userId
@@ -43,9 +53,10 @@ const createOrder = (type, token) => async (dispatch, getState) => {
   }
 }
 
-// Public actions
-
-export const payWithStripe = () => async (dispatch, getState) => {
+export const payWithStripe = () => async (
+  dispatch : Dispatch<*>,
+  getState : () => State
+) => {
   dispatch(orderStarted())
   const offer = getState().price.selectedOffer
   const currency = offer.currency
@@ -62,18 +73,25 @@ export const payWithStripe = () => async (dispatch, getState) => {
   }
 }
 
-export const payWithPaypal = () => (dispatch, getState) => {
+export const payWithPaypal = () => (
+  dispatch : Dispatch<*>,
+  getState : () => State
+) => {
   const {totalPrice, currency, offerId} = getState().price.selectedOffer
   return paypal.createPayment({amount: totalPrice, currency, offerId})
 }
 
-export const createOrderWithStripe = () => (dispatch, getState) => {
+export const createOrderWithStripe = () => (
+  dispatch : Dispatch<*>,
+  getState : () => State
+) => {
   const token = getState().order.paymentToken
-
-  return dispatch(createOrder('stripe', token))
+  if (token) return dispatch(createOrder('stripe', token))
 }
 
-export const createOrderWithPaypal = (data, actions) => async (dispatch) => {
+export const createOrderWithPaypal = (data : any, actions : any) => async (
+  dispatch : Dispatch<*>
+) => {
   const payment = await paypal.executePayment({actions})
   const token = payment.id
 

@@ -24,15 +24,15 @@ import {
 } from './modal'
 import {createPriceRequest, recalculateSelectedOffer} from './price'
 
-export const shippingAddressChanged = createAction(
+const shippingAddressChanged = createAction(
   TYPE.USER.SHIPPING_ADDRESS_CHANGED,
   (address : Address) => ({address})
 )
-export const userCreated = createAction(
+const userCreated = createAction(
   TYPE.USER.CREATED,
   (userId : string) => ({userId})
 )
-export const userUpdated = createAction(
+const userUpdated = createAction(
   TYPE.USER.UPDATED,
   (user: User) => user
 )

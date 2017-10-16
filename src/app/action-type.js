@@ -2,6 +2,8 @@
 
 import type {Address, User} from './type'
 
+// User actions
+
 export type UserShippingAddressChangedAction = {
   type: 'USER.SHIPPING_ADDRESS_CHANGED',
   payload: {
@@ -21,10 +23,40 @@ export type UserUpdatedAction = {
   payload: User
 }
 
+// Order actions
+
+export type OrderStartedAction = {
+  type: 'ORDER.STARTED'
+}
+
+export type OrderPayedAction = {
+  type: 'ORDER.PAYED',
+  payload: {
+    paymentToken: string
+  }
+}
+
+export type OrderAbortedAction = {
+  type: 'ORDER.ABORTED'
+}
+
+export type OrderOrderedAction = {
+  type: 'ORDER.ORDERED',
+  payload: {
+    orderId: string
+  },
+  error: ?boolean
+}
+
+// All actions combined
 export type Action =
   UserShippingAddressChangedAction |
   UserCreatedAction |
-  UserUpdatedAction
+  UserUpdatedAction |
+  OrderStartedAction |
+  OrderPayedAction |
+  OrderAbortedAction |
+  OrderOrderedAction
 
 export default {
   MODAL: {
@@ -62,8 +94,8 @@ export default {
   ORDER: {
     ORDERED: 'ORDER.ORDERED',
     PAYED: 'ORDER.PAYED',
-    STARTED: 'ORDER:STARTED',
-    ABORTED: 'ORDER:ABORTED'
+    STARTED: 'ORDER.STARTED',
+    ABORTED: 'ORDER.ABORTED'
   },
   DIRECT_SALES: {
     RESTORE_CONFIGURATION: 'DIRECT_SALES.RESTORE_CONFIGURATION',

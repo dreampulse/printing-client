@@ -30,7 +30,14 @@ export type UserState = {
   user: User
 }
 
+export type OrderState = {
+  orderId: ?string,
+  paymentToken: ?string,
+  orderInProgress: boolean
+}
+
 export type State = {
   user: UserState,
+  order: OrderState,
   price: any // TODO
 }
