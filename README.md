@@ -78,12 +78,13 @@ React components (`/src/app/component`) and containers (`/src/app/container`) ar
 - The code is functional and doesn’t use class syntax
 
 ### React components are
-- Stateless and use pure rendering functions
+- Are stateless
+- Use pure rendering functions
 - Are documented and tested in storybook
 - Typed-checked
 - The Sass is strictly using the BEM-Convention
-- For each react component exists exactly one Sass-File
-- The is no container styled
+- For each React component, there is only one Sass file
+- There is no container styled
 - There are no console errors or unwanted console logs
 
 ## Workflow
@@ -97,7 +98,7 @@ React components (`/src/app/component`) and containers (`/src/app/container`) ar
   - The reviewer has to update the label to `needs fixing` and to change the **assignees** to the implementer.
   - If there are no issues left the reviewer **and only him** has to merge the PR to the `master`.
 1. If there are still open issues the implementer **and only him** has to fix them.
-  - Fixed issues has to be marked by using the :+1:-emoji.
+  - Fixed issues have to be marked by using the :+1:-emoji.
   - If an issue isn't fixable or unjustified a reasonable comment has to be provided.
   - The implementer has to update the label to `need review` again and to change the **assignees** to the reviewer.
   - Repeat the preview step.
