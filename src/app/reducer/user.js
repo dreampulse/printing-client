@@ -1,7 +1,7 @@
 // @flow
 
 import type {UserState} from '../type'
-import type {Action} from '../action-type'
+import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   userId: null,
@@ -64,9 +64,9 @@ function handleUserUpdated (state, {payload}) {
 
 const reducer = (state : UserState = initialState, action: Action) : UserState => {
   switch (action.type) {
-    case 'USER.SHIPPING_ADDRESS_CHANGED': return handleShippingAddressChange(state, action)
-    case 'USER.CREATED': return handleUserCreated(state, action)
-    case 'USER.UPDATED': return handleUserUpdated(state, action)
+    case TYPE.USER.SHIPPING_ADDRESS_CHANGED: return handleShippingAddressChange(state, action)
+    case TYPE.USER.CREATED: return handleUserCreated(state, action)
+    case TYPE.USER.UPDATED: return handleUserUpdated(state, action)
     default: return state
   }
 }

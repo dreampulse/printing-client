@@ -12,6 +12,7 @@ import {setUserContext} from 'Service/logging'
 import {normalizeTelephoneNumber} from 'Lib/normalize'
 
 import type {Address, User, State} from '../type'
+import TYPE from '../action-type'
 
 import {goToCart} from './navigation'
 
@@ -23,16 +24,16 @@ import {
 } from './modal'
 import {createPriceRequest, recalculateSelectedOffer} from './price'
 
-const shippingAddressChanged = createAction(
-  'USER.SHIPPING_ADDRESS_CHANGED',
+export const shippingAddressChanged = createAction(
+  TYPE.USER.SHIPPING_ADDRESS_CHANGED,
   (address : Address) => ({address})
 )
-const userCreated = createAction(
-  'USER.CREATED',
+export const userCreated = createAction(
+  TYPE.USER.CREATED,
   (userId : string) => ({userId})
 )
-const userUpdated = createAction(
-  'USER.UPDATED',
+export const userUpdated = createAction(
+  TYPE.USER.UPDATED,
   (user: User) => user
 )
 
@@ -93,7 +94,7 @@ export const updateLocation = (
 }
 
 export const reviewOrder = (
-  form : any
+  form : any // @TODO update type
 ) => async (
   dispatch : Dispatch<*>,
   getState : () => State

@@ -26,7 +26,6 @@ export type Action =
   UserCreatedAction |
   UserUpdatedAction
 
-// TODO: remove those constants
 export default {
   MODAL: {
     OPEN: 'MODAL.OPEN',
