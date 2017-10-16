@@ -77,6 +77,6 @@ export const createOrderWithPaypal = (data, actions) => async (dispatch) => {
   const payment = await paypal.executePayment({actions})
   const token = payment.id
 
-  dispatch(createOrder('paypal', token))
+  await dispatch(createOrder('paypal', token))
   return payment
 }
