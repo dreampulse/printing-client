@@ -1,0 +1,30 @@
+{
+    "check-coverage": true,
+    "per-file": false,
+    "sourceMap": false,
+    "instrument": false,
+    "cache": true,
+    "lines": 100,
+    "statements": 92,
+    "branches": 93,
+    "functions": 89,
+    "lines": 93,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "src/app/*.js",
+      "src/app/service/*.js"
+    ],
+    "reporter": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "extension": [
+      ".js"
+    ],
+    "require": [
+      "babel-register"
+    ]
+}

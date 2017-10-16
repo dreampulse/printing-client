@@ -34,14 +34,12 @@ describe('Model Integration Test', () => {
 
   describe('uploadFiles()', () => {
     let file
-    let features
 
     beforeEach(() => {
       file = {
         name: 'some-file-name',
         size: 42
       }
-      features = {refresh: true}
 
       printingEngine.uploadModel.resolves({
         modelId: 'some-model-id',
@@ -93,7 +91,7 @@ describe('Model Integration Test', () => {
     })
 
     it('uploads a file', async () => {
-      await store.dispatch(uploadFiles([file], features))
+      await store.dispatch(uploadFiles([file]))
 
       expect(store.getState().model.numberOfUploads, 'to equal', 0)
 
@@ -124,7 +122,7 @@ describe('Model Integration Test', () => {
     it('handles error when upload failes', () => {
       printingEngine.uploadModel.rejects(new Error('some-error'))
 
-      store.dispatch(uploadFiles([file], features)).catch((error) => {
+      store.dispatch(uploadFiles([file])).catch((error) => {
         expect(error, 'to satisfy', {
           type: ERROR_TYPE.FILE_UPLOAD_FAILED
         })

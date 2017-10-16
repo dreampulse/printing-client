@@ -17,8 +17,6 @@ import Modal from './modal'
 import ModelPage from './model-page'
 import DirectConfigurationPage from './direct-configuration-page'
 
-import {getFeatures} from './util/feature'
-
 const mapStateToProps = state => ({
   configurationId: state.configuration.configurationId,
   isDirectSales: state.configuration.isDirectSales
@@ -30,20 +28,18 @@ const mapDispatchToProps = {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  getFeatures(),
   withState('isLoading', 'setIsLoading', true),
   lifecycle({
     componentWillMount () {
       const {
         params,
         configurationId,
-        onRestoreConfiguration,
-        features
+        onRestoreConfiguration
       } = this.props
 
       // Restore only if configuration id changed
       if (configurationId !== params.id) {
-        onRestoreConfiguration(params.id, features)
+        onRestoreConfiguration(params.id)
           .then(() => {
             this.props.setIsLoading(false)
           })

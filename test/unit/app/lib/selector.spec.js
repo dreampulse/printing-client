@@ -11,7 +11,8 @@ import {
   selectedOfferMaterial,
   selectModelByModelId,
   selectOfferItems,
-  selectAreAllUploadsFinished
+  selectAreAllUploadsFinished,
+  selectFeatures
 } from 'Lib/selector'
 import * as materialLib from 'Lib/material'
 import config from '../../../../config'
@@ -706,6 +707,25 @@ describe('Selector lib', () => {
           models: []
         }
       }), 'to be', false)
+    })
+  })
+
+  describe('selectFeatures()', () => {
+    it('returns an empty object if the state does not contain feature toggles', () => {
+      expect(selectFeatures({}), 'to equal', {})
+    })
+    it('returns the feature toggles in an object', () => {
+      expect(selectFeatures({routing: {
+        locationBeforeTransitions: {query: {'feature:featureA': undefined, 'feature:featureB': undefined}}
+      }}), 'to equal', {
+        featureA: true,
+        featureB: true
+      })
+    })
+    it('should not detect query parameters without feature: prefix', () => {
+      expect(selectFeatures({routing: {
+        locationBeforeTransitions: {query: {otherParam: undefined}}
+      }}), 'to equal', {})
     })
   })
 })

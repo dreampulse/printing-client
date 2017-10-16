@@ -42,6 +42,13 @@ describe('Price actions', () => {
       },
       configuration: {
         configurationId: null
+      },
+      routing: {
+        locationBeforeTransitions: {
+          query: {
+            'feature:refresh': undefined
+          }
+        }
       }
     }
     store = mockStore(initialStoreData)
@@ -209,9 +216,7 @@ describe('Price actions', () => {
       expect(pollLib.stopPoll, 'to have a call satisfying', ['price'])
     })
 
-    it('calls printingEngine.createPriceRequest() with configurationId should get real prices', async () => {
-      initialStoreData.price.priceId = 'last-price-id'
-      initialStoreData.configuration.configurationId = 'some-configuration-id'
+    it('calls printingEngine.createPriceRequest() with the expected arguments', async () => {
       await store.dispatch(createPriceRequest())
 
       const materialConfigIds = ['material1', 'material2']
@@ -227,7 +232,8 @@ describe('Price actions', () => {
           materialConfigIds
         }],
         isEstimate: false,
-        caching: true
+        caching: true,
+        refresh: true
       }])
     })
 

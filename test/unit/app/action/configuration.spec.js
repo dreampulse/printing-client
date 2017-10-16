@@ -111,8 +111,6 @@ describe('Configuration actions', () => {
     let features
 
     beforeEach(() => {
-      features = {refresh: true}
-
       sandbox.stub(priceActions, 'createPriceRequest')
       sandbox.stub(printingEngine, 'getConfiguration')
 
@@ -133,9 +131,7 @@ describe('Configuration actions', () => {
       }, {
         type: 'some-create-price-request-action'
       }])
-      expect(priceActions.createPriceRequest, 'to have a call satisfying', [
-        {refresh: true}
-      ])
+      expect(priceActions.createPriceRequest, 'to have a call satisfying', [])
     })
 
     it('does not create price request when user is missing', async () => {

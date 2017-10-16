@@ -70,7 +70,6 @@ describe('Model actions', () => {
 
     beforeEach(() => {
       file = {name: 'some-name', size: 123}
-      features = {refresh: true}
 
       priceActions.createPriceRequest
         .withArgs()
@@ -96,7 +95,7 @@ describe('Model actions', () => {
 
       expect(printingEngine.uploadModel, 'to have a call satisfying', [
         file,
-        {unit: 'mm', refresh: true},
+        {unit: 'mm'},
         expect.it('to be a function')
       ])
     })
