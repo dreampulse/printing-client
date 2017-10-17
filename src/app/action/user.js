@@ -8,7 +8,7 @@ import {identify, peopleSet} from 'Service/mixpanel'
 import {setUserContext} from 'Service/logging'
 import {normalizeTelephoneNumber} from 'Lib/normalize'
 
-import TYPE from '../type'
+import TYPE from '../action-type'
 import {goToCart} from './navigation'
 
 import {

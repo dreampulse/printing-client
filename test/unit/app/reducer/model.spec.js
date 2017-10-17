@@ -1,6 +1,6 @@
 import reducer from 'Reducer/model'
 import {FileUploadError} from 'Lib/error'
-import TYPE from '../../../../src/app/type'
+import TYPE from '../../../../src/app/action-type'
 
 describe('Model reducer', () => {
   it('returns the initial state', () => {

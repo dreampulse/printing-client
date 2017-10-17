@@ -6,7 +6,7 @@ import * as modalActions from 'Action/modal'
 import * as navigationActions from 'Action/navigation'
 import * as printingEngine from 'Lib/printing-engine'
 import * as normalize from 'Lib/normalize'
-import TYPE from '../../../../src/app/type'
+import TYPE from '../../../../src/app/action-type'
 import {resolveAsyncThunk, createMockStore} from '../../../helper'
 
 describe('User actions', () => {

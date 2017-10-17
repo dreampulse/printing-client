@@ -8,7 +8,7 @@ import * as pollLib from 'Lib/poll'
 import * as printingEngine from 'Lib/printing-engine'
 import * as modalActions from 'Action/modal'
 import {AppError} from 'Lib/error'
-import TYPE, {ERROR_TYPE} from '../../../../src/app/type'
+import TYPE, {ERROR_TYPE} from '../../../../src/app/action-type'
 
 describe('Price actions', () => {
   let sandbox

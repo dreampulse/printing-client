@@ -4,7 +4,7 @@ import {
   debouncedPoll,
   stopPoll
 } from 'Lib/poll'
-import {ERROR_TYPE} from '../../../../src/app/type'
+import {ERROR_TYPE} from '../../../../src/app/action-type'
 import config from '../../../../config'
 
 describe('Poll lib', () => {
