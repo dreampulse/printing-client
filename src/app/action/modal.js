@@ -1,38 +1,42 @@
+// @flow
+
 import {createAction} from 'redux-actions'
 
+import type {Address} from '../type'
 import TYPE, {MODAL_TYPE} from '../action-type'
 
 export const open = createAction(
-  TYPE.MODAL.OPEN,
-  ({contentType, contentProps, isCloseable}) => ({contentType, contentProps, isCloseable})
+  TYPE.MODAL.OPEN, (
+    contentType : string,
+    contentProps : ?any,
+    isCloseable : ?boolean
+  ) => ({
+    contentType, contentProps, isCloseable
+  })
 )
 
 export const close = createAction(TYPE.MODAL.CLOSE)
 
 export const openAddressModal = () =>
-  open({contentType: MODAL_TYPE.SHIPPING_ADDRESS, isCloseable: false})
+  open(MODAL_TYPE.SHIPPING_ADDRESS, undefined, false)
 
 export const openFetchingPriceModal = () =>
-  open({contentType: MODAL_TYPE.FETCHING_PRICE})
+  open(MODAL_TYPE.FETCHING_PRICE)
 
-export const openPriceLocationChangedModal = (oldShippingAddress, newShippingAddress) =>
-  open({
-    contentType: MODAL_TYPE.PRICE_LOCATION_CHANGED,
-    contentProps: {oldShippingAddress, newShippingAddress}
+export const openPriceLocationChangedModal = (
+  oldShippingAddress : Address, newShippingAddress : Address
+) =>
+  open(MODAL_TYPE.PRICE_LOCATION_CHANGED, {
+    oldShippingAddress, newShippingAddress
   })
 
-export const openPriceChangedModal = props =>
-  open({contentType: MODAL_TYPE.PRICE_CHANGED, contentProps: props})
+export const openPriceChangedModal = () =>
+  open(MODAL_TYPE.PRICE_CHANGED)
 
-export const openMaterialModal = ({materialId, finishGroupId}) =>
-  open({
-    contentType: MODAL_TYPE.MATERIAL,
-    contentProps: {materialId, finishGroupId}
-  })
+export const openMaterialModal = (
+  {materialId, finishGroupId} : {materialId: string, finishGroupId: string}
+) =>
+  open(MODAL_TYPE.MATERIAL, {materialId, finishGroupId})
 
-export const openFatalErrorModal = error =>
-  open({
-    contentType: MODAL_TYPE.FATAL_ERROR,
-    contentProps: {error},
-    isCloseable: false
-  })
+export const openFatalErrorModal = (error : Error) =>
+  open(MODAL_TYPE.FATAL_ERROR, {error}, false)

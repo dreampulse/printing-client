@@ -134,8 +134,8 @@ export type PriceState = {
 export type ModalState = {
   isOpen: boolean,
   isCloseable: boolean,
-  contentType: any,
-  contentProps: any  // @TODO: are there better types?
+  contentType: ?string,
+  contentProps: ?any
 }
 
 export type State = {
