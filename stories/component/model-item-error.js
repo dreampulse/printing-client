@@ -5,10 +5,10 @@ import {action} from '@storybook/addon-actions'
 import ModelItemError from 'Component/model-item-error'
 
 storiesOf('Model Item Error', module)
-  .add('detault', () => (
+  .add('default', () => (
     <ModelItemError
       title="Upload failed"
       subline="This is why"
-      onDelete={action('delete')}
+      onDelete={action('discard')}
     />
   ))

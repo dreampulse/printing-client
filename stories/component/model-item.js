@@ -14,7 +14,7 @@ storiesOf('Model Item', module)
       title="model_item_title.stl"
       subline="42 x 42 x 42 mm"
       onQuantityChange={action('quantity change')}
-      onDelete={action('delete')}
+      onDelete={action('discard')}
     />
   ))
   .add('error', () => (
@@ -23,7 +23,7 @@ storiesOf('Model Item', module)
       modifiers={['error']}
       title="Upload failed"
       subline="This is why"
-      onDelete={action('delete')}
+      onDelete={action('discard')}
     />
   ))
   .add('load', () => (
@@ -33,6 +33,6 @@ storiesOf('Model Item', module)
       title="Uploading"
       subline="model_item_title.stl"
       onStatusChange={action('Status change')}
-      onDelete={action('delete')}
+      onDelete={action('discard')}
     />
   ))

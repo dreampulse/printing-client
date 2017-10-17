@@ -13,28 +13,28 @@ storiesOf('Model Quantity Item List & Model Quantity Item', module)
         quantity={1}
         title="model_item_title.stl with a very long text"
         onQuantityChange={action('quantity change')}
-        onDelete={action('delete')}
+        onDelete={action('discard')}
       />
       <ModelQuantityItem
         imageSource="http://placehold.it/130x98"
         quantity={1}
         title="model_item_title.stl"
         onQuantityChange={action('quantity change')}
-        onDelete={action('delete')}
+        onDelete={action('discard')}
       />
       <ModelQuantityItem
         imageSource="http://placehold.it/130x98"
         quantity={1}
         title="model_item_title.stl"
         onQuantityChange={action('quantity change')}
-        onDelete={action('delete')}
+        onDelete={action('discard')}
       />
       <ModelQuantityItem
         imageSource="http://placehold.it/130x98"
         quantity={1}
         title="model_item_title.stl"
         onQuantityChange={action('quantity change')}
-        onDelete={action('delete')}
+        onDelete={action('discard')}
       />
     </ModelQuantityItemList>
   ))
