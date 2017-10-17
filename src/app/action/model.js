@@ -32,6 +32,10 @@ const fileUploadProgressed = createAction(
   TYPE.MODEL.FILE_UPLOAD_PROGRESSED,
   (fileId, progress) => ({fileId, progress})
 )
+const fileUploadFailed = createAction(
+  TYPE.MODEL.FILE_UPLOAD_FAILED,
+  (fileId, error) => ({fileId, error})
+)
 const fileUploaded = createAction(
   TYPE.MODEL.FILE_UPLOADED,
   (fileId, model) => ({
@@ -78,7 +82,7 @@ const uploadFile = file => async (dispatch, getState) => {
     dispatch(fileUploaded(fileId, modelData))
   } catch (error) {
     const uploadError = new FileUploadError(fileId)
-    dispatch(fileUploaded(uploadError))  // @TODO: own action for error
+    dispatch(fileUploadFailed(fileId, uploadError))
     throw uploadError  // Prevent to create a price request if upload failed
   }
 }

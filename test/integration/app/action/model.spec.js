@@ -148,7 +148,8 @@ describe('Model Integration Test', () => {
         model: {
           models: [{
             modelId: 'some-model-id',
-            quantity: 1
+            quantity: 1,
+            uploadFinished: true
           }]
         },
         material: {
@@ -216,7 +217,8 @@ describe('Model Integration Test', () => {
         model: {
           models: [{
             modelId: 'some-model-id',
-            quantity: 1
+            quantity: 1,
+            uploadFinished: true
           }]
         },
         material: {
@@ -290,8 +292,8 @@ describe('Model Integration Test', () => {
       store = Store({
         model: {
           models: [
-            {fileId: 1},
-            {fileId: 2}
+            {fileId: 1, uploadFinished: true},
+            {fileId: 2, uploadFinished: true}
           ]
         },
         material: {
@@ -335,7 +337,8 @@ describe('Model Integration Test', () => {
       await store.dispatch(deleteFile(2))
 
       expect(store.getState().model.models, 'to equal', [{
-        fileId: 1
+        fileId: 1,
+        uploadFinished: true
       }])
 
       expect(store.getState().price, 'to satisfy', {

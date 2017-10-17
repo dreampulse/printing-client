@@ -28,10 +28,12 @@ describe('Price actions', () => {
       model: {
         models: [{
           modelId: 'model1',
-          quantity: 1
+          quantity: 1,
+          uploadFinished: true
         }, {
           modelId: 'model2',
-          quantity: 2
+          quantity: 2,
+          uploadFinished: true
         }]
       },
       price: {

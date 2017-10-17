@@ -119,6 +119,14 @@ export type ModelFileUploadProgressedAction = {
   }
 }
 
+export type ModelFileUploadFailedAction = {
+  type: 'MODEL.FILE_UPLOAD_FAILED',
+  payload: {
+    fileId: string,
+    error: Error
+  }
+}
+
 export type ModelFileUploadedAction = {
   type: 'MODEL.FILE_UPLOADED',
   payload: {
@@ -182,6 +190,7 @@ export type Action =
   ModelIndividualQuantityChangedAction |
   ModelFileUploadStartedAction |
   ModelFileUploadProgressedAction |
+  ModelFileUploadFailedAction |
   ModelFileUploadedAction |
   ModelFileDeletedAction |
   ModelUnitChangedAction |
@@ -196,6 +205,7 @@ export default {
   MODEL: {
     FILE_UPLOAD_PROGRESSED: 'MODEL.FILE_UPLOAD_PROGRESSED',
     FILE_UPLOAD_STARTED: 'MODEL.FILE_UPLOAD_STARTED',
+    FILE_UPLOAD_FAILED: 'MODEL.FILE_UPLOAD_FAILED',
     FILE_UPLOADED: 'MODEL.FILE_UPLOADED',
     FILE_DELETED: 'MODEL.FILE_DELETED',
     QUANTITIY_CHANGED: 'MODEL.QUANTITIY_CHANGED',

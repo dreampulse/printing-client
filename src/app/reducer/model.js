@@ -79,22 +79,8 @@ function handleFileUploadProgressed (state, {payload: {fileId, progress}}) {
 }
 
 function handleFileUploaded (state, {payload}) {
-  const {fileId} = payload
+  const {modelId, thumbnailUrl, fileName, fileUnit, dimensions, area, volume, fileId} = payload
   const updateModels = updateArrayItems(state.models, model => model.fileId === fileId)
-
-  // @TODO: own action for this
-  // if (error) {
-  //   return {
-  //     ...state,
-  //     numberOfUploads: state.numberOfUploads - 1,
-  //     models: updateModels({
-  //       progress: 1,
-  //       error: payload
-  //     })
-  //   }
-  // }
-
-  const {modelId, thumbnailUrl, fileName, fileUnit, dimensions, area, volume} = payload
 
   return {
     ...state,
@@ -110,6 +96,19 @@ function handleFileUploaded (state, {payload}) {
       dimensions,
       area,
       volume
+    })
+  }
+}
+
+function handleFileUploadFailed (state, {payload: {error, fileId}}) {
+  const updateModels = updateArrayItems(state.models, model => model.fileId === fileId)
+
+  return {
+    ...state,
+    numberOfUploads: state.numberOfUploads - 1,
+    models: updateModels({
+      progress: 1,
+      error
     })
   }
 }
@@ -137,6 +136,8 @@ const reducer = (state : ModelState = initialState, action: Action) : ModelState
       return handleIndividualQuantityChanged(state, action)
     case TYPE.MODEL.UNIT_CHANGED:
       return handleUnitChanged(state, action)
+    case TYPE.MODEL.FILE_UPLOAD_FAILED:
+      return handleFileUploadFailed(state, action)
     case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION:
       return handleRestoreConfiguration(state, action)
 

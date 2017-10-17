@@ -211,31 +211,47 @@ describe('Model reducer', () => {
     it('decrements numberOfUploads', () => {
       expect(reducer(stateBefore, action).numberOfUploads, 'to equal', 0)
     })
+  })
 
-    describe('when actions contains error:', () => {
-      let error
+  describe('handles TYPE.MODEL.FILE_UPLOAD_FAILED:', () => {
+    let stateBefore
+    let action
+    let error
 
-      beforeEach(() => {
-        error = new FileUploadError(1)
-
-        action.error = true
-        action.payload = error
-      })
-
-      it('updates model with given fileId', () => {
-        expect(reducer(stateBefore, action).models, 'to equal', [
-          {
-            fileId: 1,
-            progress: 1,
-            error
-          },
+    beforeEach(() => {
+      stateBefore = {
+        some: 'thing',
+        numberOfUploads: 1,
+        models: [
+          {fileId: 1, progress: 0},
           {fileId: 2, progress: 0}
-        ])
-      })
+        ]
+      }
 
-      it('decrements numberOfUploads', () => {
-        expect(reducer(stateBefore, action).numberOfUploads, 'to equal', 0)
-      })
+      error = new FileUploadError(1)
+
+      action = {
+        type: TYPE.MODEL.FILE_UPLOAD_FAILED,
+        payload: {
+          fileId: 1,
+          error
+        }
+      }
+    })
+
+    it('updates model with given fileId', () => {
+      expect(reducer(stateBefore, action).models, 'to equal', [
+        {
+          fileId: 1,
+          progress: 1,
+          error
+        },
+        {fileId: 2, progress: 0}
+      ])
+    })
+
+    it('decrements numberOfUploads', () => {
+      expect(reducer(stateBefore, action).numberOfUploads, 'to equal', 0)
     })
   })
 

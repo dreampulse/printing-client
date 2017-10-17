@@ -163,12 +163,14 @@ describe('Model actions', () => {
               fileSize: 123
             }
           }, {
-            type: TYPE.MODEL.FILE_UPLOADED,
-            payload: expect.it('to satisfy', {
-              type: ERROR_TYPE.FILE_UPLOAD_FAILED,
+            type: TYPE.MODEL.FILE_UPLOAD_FAILED,
+            payload: {
+              error: expect.it('to satisfy', {
+                type: ERROR_TYPE.FILE_UPLOAD_FAILED,
+                fileId: expect.it('to be a string')
+              }),
               fileId: expect.it('to be a string')
-            }),
-            error: true
+            }
           }])
         })
       ))
