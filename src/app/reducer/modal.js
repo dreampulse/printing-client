@@ -1,6 +1,6 @@
 import {handleActions} from 'redux-actions'
 
-import TYPE from '../type'
+import TYPE from '../action-type'
 
 const initialState = {
   isOpen: false,

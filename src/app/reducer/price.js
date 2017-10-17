@@ -1,7 +1,7 @@
 import {handleActions} from 'redux-actions'
 import cloneDeep from 'lodash/cloneDeep'
 
-import TYPE from '../type'
+import TYPE from '../action-type'
 
 const initialState = {
   priceId: null,

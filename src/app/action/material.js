@@ -5,7 +5,7 @@ import * as printingEngine from 'Lib/printing-engine'
 import {
   generateMaterialIds
 } from 'Lib/material'
-import TYPE from '../type'
+import TYPE from '../action-type'
 
 // Sync actions
 export const selectMaterial = createAction(TYPE.MATERIAL.SELECTED)

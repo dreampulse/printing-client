@@ -6,7 +6,7 @@ import {AppError} from 'Lib/error'
 
 import {resolveAsyncThunk, rejectAsyncThunk} from '../../../helper'
 
-import {ERROR_TYPE} from '../../../../src/app/type'
+import {ERROR_TYPE} from '../../../../src/app/action-type'
 
 describe('Init actions', () => {
   let initialStoreData
