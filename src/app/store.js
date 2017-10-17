@@ -28,11 +28,12 @@ const fatalErrorHandler = store => next => (action) => {
 function trackingReduxMiddleware () {
   return next => (action) => {
     // Only track the production environment
-    if (process.env.NODE_ENV === 'production' && typeof action === 'object') {
-      trackMixpanel(action.type)
-      trackGoogleAnalytics(action.type)
+    if (process.env.NODE_ENV === 'production') {
+      const actionType = (typeof action === 'object') ? action.type : 'ACTION UNDEFINED'
+      trackMixpanel(actionType)
+      trackGoogleAnalytics(actionType)
       // We log every event. Sentry.io will recorde them.
-      console.log('Dispatch event', action.type) // eslint-disable-line
+      console.log('Dispatch action', actionType) // eslint-disable-line
     }
     return next(action)
   }
