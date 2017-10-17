@@ -68,6 +68,7 @@ export const createPriceRequest = ({
   dispatch(clearOffers())
 
   const state = getState()
+  if (!state.material.materials) throw new Error('Materials structure missing')
   const {
     material: {
       materials: {

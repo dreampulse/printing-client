@@ -1,6 +1,7 @@
-import {handleActions} from 'redux-actions'
+// @flow
 
-import TYPE from '../action-type'
+import type {MaterialState} from '../type'
+import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   materials: undefined,
@@ -48,10 +49,17 @@ function handleSelectedMaterialConfigForFinishGroup (state, {payload}) {
   }
 }
 
-export default handleActions({
-  [TYPE.MATERIAL.RECEIVED]: handleReceivedMaterials,
-  [TYPE.MATERIAL.SELECTED]: handleSelectedMaterial,
-  [TYPE.MATERIAL.CONFIG_SELECTED]: handleSelectedMaterialConfig,
-  [TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED]: handleSelectedMaterialConfigForFinishGroup,
-  [TYPE.DIRECT_SALES.RESTORE_CONFIGURATION]: handleRestoreConfiguration
-}, initialState)
+const reducer = (state : MaterialState = initialState, action: Action) : MaterialState => {
+  switch (action.type) {
+    case TYPE.MATERIAL.RECEIVED: return handleReceivedMaterials(state, action)
+    case TYPE.MATERIAL.SELECTED: return handleSelectedMaterial(state, action)
+    case TYPE.MATERIAL.CONFIG_SELECTED: return handleSelectedMaterialConfig(state, action)
+    case TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED:
+      return handleSelectedMaterialConfigForFinishGroup(state, action)
+    case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION: return handleRestoreConfiguration(state, action)
+
+    default: return state
+  }
+}
+
+export default reducer

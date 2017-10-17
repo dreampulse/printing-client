@@ -46,7 +46,7 @@ export const createConfiguration = (
         quantity
       }
     }),
-    materialConfigId: null
+    materialConfigId: undefined
   }
 
   if (includeMaterialConfig) {

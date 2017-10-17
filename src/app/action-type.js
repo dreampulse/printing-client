@@ -6,7 +6,8 @@ import type {
   Offer,
   Price,
   ModelBackend,
-  Configuration
+  Configuration,
+  Materials
 } from './type'
 
 // User actions
@@ -155,18 +156,7 @@ export type ModelUnitChangedAction = {
   }
 }
 
-// Configuration actions
-
-// @TODO: rename -> direct_sales -> Configuration
-export type ConfigurationRestoreAction = {
-  type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
-  payload: any // @TODO: configuration obj
-}
-
-export type ConfigurationCreateAction = {
-  type: 'DIRECT_SALES.CREATE_CONFIGURATION',
-}
-
+//
 // Modal actions
 
 export type ModalOpenedAction = {
@@ -182,8 +172,10 @@ export type ModalClosedAction = {
   type: 'MODAL.CLOSE'  // @TODO: past!
 }
 
+//
 // Configuration actions
 
+// @TODO: rename -> direct_sales -> Configuration
 export type ConfigurationRestoredAction = {
   type: 'DIRECT_SALES.RESTORE_CONFIGURATION',  // @TODO: rename
   payload: Configuration
@@ -194,6 +186,29 @@ export type ConfigurationCreatedAction = {
   payload: Configuration
 }
 
+//
+// Materials actions
+export type MaterialSelectedAction = {
+  type: 'MATERIAL.SELECTED',
+  payload: string  // This (in the frontend generated) materialId
+}
+
+export type MaterialConfigForFinishGroupSelectedAction = {
+  type: 'MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED',
+  payload: {[finishGroupId: string]: string}  // @TODO: why so strage?
+}
+
+export type MaterialConfigSelectedAction = {
+  type: 'MATERIAL.CONFIG_SELECTED',
+  payload: string  // This is the materialId
+}
+
+export type MaterialReceivedAction = {
+  type: 'MATERIAL.RECEIVED',
+  payload: Materials
+}
+
+//
 // All actions combined
 export type Action =
   UserShippingAddressChangedAction |
@@ -217,12 +232,15 @@ export type Action =
   ModelFileUploadedAction |
   ModelFileDeletedAction |
   ModelUnitChangedAction |
-  ConfigurationRestoreAction |
-  ConfigurationCreateAction |
   ModalOpenedAction |
   ModalClosedAction |
   ConfigurationRestoredAction |
-  ConfigurationCreatedAction
+  ConfigurationCreatedAction |
+  MaterialSelectedAction |
+  MaterialConfigForFinishGroupSelectedAction |
+  MaterialConfigSelectedAction |
+  MaterialConfigSelectedAction |
+  MaterialReceivedAction
 
 export default {
   MODAL: {

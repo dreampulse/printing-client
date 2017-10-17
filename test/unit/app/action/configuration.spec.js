@@ -52,7 +52,7 @@ describe('Configuration actions', () => {
             modelId: 'some-model-id',
             quantity: 42
           }],
-          materialConfigId: null
+          materialConfigId: undefined
         })
         .returns({configurationId: 'some-configuration-id'})
 

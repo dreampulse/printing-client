@@ -15,11 +15,15 @@ export const selectMaterialConfigForFinishGroup = ({materialConfigId, finishGrou
   })
 )
 export const selectMaterialConfig = createAction(TYPE.MATERIAL.CONFIG_SELECTED)
+const materialReceived = createAction(
+  TYPE.MATERIAL.RECEIVED,
+  materials => materials
+)
 
 // Async actions
 export const getMaterials = () => async (dispatch) => {
   const materials = cloneDeep(await printingEngine.listMaterials())
   generateMaterialIds(materials)
 
-  return dispatch(createAction(TYPE.MATERIAL.RECEIVED)(materials))
+  return dispatch(materialReceived(materials))
 }
