@@ -8,3 +8,4 @@ if (process.env.NODE_ENV === 'production') {
 
 export const captureException = exception => Raven && Raven.captureException(exception)
 export const setUserContext = user => Raven && Raven.setUserContext(user)
+export const showReportDialog = () => Raven && Raven.showReportDialog()

@@ -23,6 +23,9 @@
         "istanbul"
       ],
       "sourceMaps": "inline"
+    },
+    "production": {
+      "sourceMaps": true
     }
   }
 }
