@@ -1,16 +1,29 @@
 {
-  "presets": ["flow", "es2015", "react", "stage-2"],
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": [
+          "last 2 versions",
+          "not IE <= 11"
+        ]
+      }
+    }],
+    "flow",
+    "react"
+  ],
   "plugins": [
     "transform-class-properties",
-    "transform-async-to-generator",
+    "transform-object-rest-spread",
     "react-hot-loader/babel"
   ],
+  "retainLines": true,
   "env": {
     "test": {
       "plugins": [
         [ "babel-plugin-webpack-alias", { "config": "./webpack/production.js" } ],
         "istanbul"
-      ]
+      ],
+      "sourceMaps": "inline"
     }
   }
 }
