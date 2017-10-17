@@ -60,7 +60,7 @@ export type Price = {
   }
 }
 
-export type ModelCompleted = {
+export type ModelBackend = {
   modelId: string,
   fileName: string,
   fileUnit: 'mm' | 'cm' | 'in',
@@ -71,7 +71,10 @@ export type ModelCompleted = {
     y: number,
     z: number
   },
-  thumbnailUrl: string,
+  thumbnailUrl: string
+}
+
+export type ModelCompleted = ModelBackend & {
   // The folowing fields are differend from the backend:
   fileId: number,
   fileSize: number,
@@ -92,6 +95,12 @@ type ModelUploading = {
 
 // @TODO: simplify this compex data model
 export type Model = ModelCompleted | ModelUploading
+
+export type File = {
+  // This is the browsers native file object
+  name: string,
+  size: number
+}
 
 export type UserState = {
   userId: ?string,

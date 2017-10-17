@@ -1,6 +1,6 @@
 // @flow
 
-import type {Address, User, Offer, Price} from './type'
+import type {Address, User, Offer, Price, ModelBackend} from './type'
 
 // User actions
 
@@ -129,18 +129,7 @@ export type ModelFileUploadFailedAction = {
 
 export type ModelFileUploadedAction = {
   type: 'MODEL.FILE_UPLOADED',
-  payload: {
-    modelId: string,
-    fileName: string,
-    fileUnit: 'mm' | 'cm' | 'in',
-    area: number,
-    volume: number,
-    dimensions: {
-      x: number,
-      y: number,
-      z: number
-    },
-    thumbnailUrl: string,
+  payload: ModelBackend & {  // @TODO: improve payload datastructure
     fileId: number
   }
 }
