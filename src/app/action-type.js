@@ -160,6 +160,21 @@ export type ConfigurationCreateAction = {
   type: 'DIRECT_SALES.CREATE_CONFIGURATION',
 }
 
+// Modal actions
+
+export type ModalOpenedAction = {
+  type: 'MODAL.OPEN',  // @TODO: past!
+  payload: {
+    contentType: string,
+    contentProps: any,
+    isCloseable: boolean
+  }
+}
+
+export type ModalClosedAction = {
+  type: 'MODAL.CLOSE'  // @TODO: past!
+}
+
 // All actions combined
 export type Action =
   UserShippingAddressChangedAction |
@@ -184,7 +199,9 @@ export type Action =
   ModelFileDeletedAction |
   ModelUnitChangedAction |
   ConfigurationRestoreAction |
-  ConfigurationCreateAction
+  ConfigurationCreateAction |
+  ModalOpenedAction |
+  ModalClosedAction
 
 export default {
   MODAL: {

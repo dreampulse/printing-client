@@ -131,10 +131,18 @@ export type PriceState = {
   error: ?any  // @TODO: unclear
 }
 
+export type ModalState = {
+  isOpen: boolean,
+  isCloseable: boolean,
+  contentType: any,
+  contentProps: any  // @TODO: are there better types?
+}
+
 export type State = {
   user: UserState,
   order: OrderState,
   price: PriceState,
   material: any, // @TODO
-  model: ModelState
+  model: ModelState,
+  modal: ModalState
 }

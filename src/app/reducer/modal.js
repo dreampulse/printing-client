@@ -1,6 +1,7 @@
-import {handleActions} from 'redux-actions'
+// @flow
 
-import TYPE from '../action-type'
+import type {ModalState} from '../type'
+import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   isOpen: false,
@@ -23,7 +24,13 @@ function handleOpen (state, action) {
   }
 }
 
-export default handleActions({
-  [TYPE.MODAL.OPEN]: handleOpen,
-  [TYPE.MODAL.CLOSE]: handleClose
-}, initialState)
+const reducer = (state : ModalState = initialState, action: Action) : ModalState => {
+  switch (action.type) {
+    case TYPE.MODAL.OPEN: return handleOpen(state, action)
+    case TYPE.MODAL.CLOSE: return handleClose()
+
+    default: return state
+  }
+}
+
+export default reducer
