@@ -41,9 +41,9 @@ const ProviderSection = ({
       {
         offers
         .sort((a, b) => a.totalPrice > b.totalPrice)
-        .map((offer, index) => (
+        .map(offer => (
           <ProviderItem
-            key={index}
+            key={offer.offerId}
             provider={offer.printingService}
             price={formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}
             shipping={formatShipping(offer.shipping)}
@@ -87,5 +87,5 @@ const mapDispatchToProps = {
 
 export default compose(
   getFeatures,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps)
 )(ProviderSection)

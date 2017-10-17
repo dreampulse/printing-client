@@ -6,12 +6,15 @@ describe('timeout lib', () => {
     expect(result, 'to equal', 'something')
   })
 
-  it('works for rejecting promise', () => (
-    timeout(Promise.reject('something'), 1)
+  it('works for rejecting promise', () => {
+    const err = new Error('something')
+
+    return timeout(Promise.reject(err), 1)
       .catch((result) => {
-        expect(result, 'to equal', 'something')
+        expect(result, 'to equal', err)
       })
-  ))
+  }
+  )
 
   it('fails after timeout', () => {
     const endlessPromise = new Promise(() => {})

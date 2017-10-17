@@ -6,7 +6,6 @@ import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
 export default class InputField extends Component {
-
   static propTypes = {
     ...propTypes.component,
     label: PropTypes.string.isRequired,

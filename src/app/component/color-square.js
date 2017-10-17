@@ -28,4 +28,3 @@ ColorSquare.propTypes = {
 }
 
 export default ColorSquare
-

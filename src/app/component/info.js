@@ -9,7 +9,6 @@ import buildClassName, {buildClassArray} from 'Lib/build-class-name'
 import Tooltip from 'Component/tooltip'
 
 export default class Info extends Component {
-
   static propTypes = {
     ...propTypes.component,
     children: PropTypes.node

@@ -32,4 +32,3 @@ Footer.propTypes = {
 }
 
 export default Footer
-

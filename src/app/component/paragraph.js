@@ -16,4 +16,3 @@ Paragraph.propTypes = {
 }
 
 export default Paragraph
-

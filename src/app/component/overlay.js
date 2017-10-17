@@ -8,7 +8,6 @@ import Icon from 'Component/icon'
 import closeIcon from 'Icon/close.svg'
 
 class Overlay extends Component {
-
   static propTypes = {
     ...propTypes.component,
     closePortal: PropTypes.func,

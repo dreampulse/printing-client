@@ -14,4 +14,3 @@ LoadingIndicator.propTypes = {
 }
 
 export default LoadingIndicator
-

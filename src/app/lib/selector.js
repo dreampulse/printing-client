@@ -278,4 +278,3 @@ export const selectFeatures = (state) => {
       return agg
     }, features)
 }
-

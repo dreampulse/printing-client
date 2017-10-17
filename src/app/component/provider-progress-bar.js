@@ -33,4 +33,3 @@ ProviderProgressBar.propTypes = {
 }
 
 export default ProviderProgressBar
-
