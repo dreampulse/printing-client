@@ -121,6 +121,7 @@
     "standard-react": "^4.0.0",
     "susy": "^2.2.12",
     "timezones.json": "^1.1.0",
+    "url-search-params": "^0.10.0",
     "velocity-animate": "^1.4.3",
     "whatwg-fetch": "^2.0.1"
   },

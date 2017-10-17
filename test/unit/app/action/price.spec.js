@@ -47,9 +47,7 @@ describe('Price actions', () => {
       },
       routing: {
         location: {
-          query: {
-            'feature:refresh': undefined
-          }
+          query: 'feature:refresh'
         }
       }
     }

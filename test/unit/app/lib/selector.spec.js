@@ -1,3 +1,4 @@
+import URLSearchParams from 'url-search-params'
 import {
   selectCommonQuantity,
   selectMaterialMenuValues,
@@ -12,7 +13,8 @@ import {
   selectModelByModelId,
   selectOfferItems,
   selectAreAllUploadsFinished,
-  selectFeatures
+  selectFeatures,
+  selectLocationQuery
 } from 'Lib/selector'
 import * as materialLib from 'Lib/material'
 import config from '../../../../config'
@@ -711,21 +713,90 @@ describe('Selector lib', () => {
   })
 
   describe('selectFeatures()', () => {
-    it('returns an empty object if the state does not contain feature toggles', () => {
-      expect(selectFeatures({}), 'to equal', {})
+    it('returns an empty object without prototype if the state does not contain feature toggles', () => {
+      expect(selectFeatures({}), 'to equal', Object.create(null))
     })
-    it('returns the feature toggles in an object', () => {
-      expect(selectFeatures({routing: {
-        location: {query: {'feature:featureA': undefined, 'feature:featureB': undefined}}
-      }}), 'to equal', {
-        featureA: true,
-        featureB: true
+
+    it('returns the feature toggles in an object without prototype', () => {
+      const query = new URLSearchParams()
+      const features = Object.assign(Object.create(null), {
+        a: true,
+        b: true,
+        c: true,
+        d: true
+      })
+
+      query.append('feature:a', true)
+      query.append('feature:b', '')
+      query.append('feature:c', null)
+      query.append('feature:d', false)
+
+      expect(selectFeatures({
+        routing: {
+          location: {
+            query: query.toString()
+          }
+        }
+      }), 'to equal', features)
+    })
+
+    it('does not detect query parameters without "feature:" prefix as feature', () => {
+      const query = new URLSearchParams()
+      const features = Object.create(null)
+
+      query.append('a', true)
+      query.append('b', '')
+      query.append('c', null)
+      query.append('d', false)
+
+      expect(selectFeatures({
+        routing: {
+          location: {
+            query: query.toString()
+          }
+        }
+      }), 'to equal', features)
+    })
+  })
+
+  describe('selectLocationQuery()', () => {
+    describe('when there is no location query', () => {
+      it('returns an instance of URLSearchParams', () => {
+        const params = selectLocationQuery({})
+
+        expect(params instanceof URLSearchParams, 'to equal', true)
+      })
+
+      it('returns an empty URLSearchParams', () => {
+        const params = selectLocationQuery({})
+
+        expect([...params.entries()], 'to equal', [])
       })
     })
-    it('should not detect query parameters without feature: prefix', () => {
-      expect(selectFeatures({routing: {
-        location: {query: {otherParam: undefined}}
-      }}), 'to equal', {})
+
+    describe('when there is a location query', () => {
+      it('returns an instance of URLSearchParams', () => {
+        const params = selectLocationQuery({})
+
+        expect(params instanceof URLSearchParams, 'to equal', true)
+      })
+
+      it('returns a params object that provides access to the query params', () => {
+        const params = selectLocationQuery({
+          routing: {
+            location: {
+              query: 'a&b=false&c=2'
+            }
+          }
+        })
+        const pairs = [...params.entries()]
+
+        expect(pairs, 'to equal', [
+          ['a', ''],
+          ['b', 'false'],
+          ['c', '2']
+        ])
+      })
     })
   })
 })

@@ -1,4 +1,5 @@
 import get from 'lodash/get'
+import URLSearchParams from 'url-search-params'
 
 import {
   hasMaterialMultipleConfigs,
@@ -262,18 +263,19 @@ export const selectAreAllUploadsFinished = (state) => {
   return numberOfUploads === 0 && models.length > 0
 }
 
+export const selectLocationQuery = state =>
+  new URLSearchParams(get(state, 'routing.location.query') || '')
+
 export const selectFeatures = (state) => {
-  const query = get(state, 'routing.location.query')
+  const query = selectLocationQuery(state)
+  const features = Object.create(null)
 
-  if (!query) {
-    return {}
-  }
-
-  return Object.keys(query)
+  return Array.from(query.keys())
     .filter(name => /^feature:/.test(name))
     .map(name => name.substr('feature:'.length))
     .reduce((agg, name) => {
       agg[name] = true
       return agg
-    }, {})
+    }, features)
 }
+

@@ -9,7 +9,7 @@ import SuccessPage from 'Container/success-page'
 import ConfigurationPage from 'Container/configuration-page'
 
 /* eslint-disable react/prop-types */
-export default ({store, history}) => (
+export default ({history}) => (
   <ConnectedRouter history={history}>
     <Switch>
       <Route component={ModelPage} path="/" exact />
