@@ -1,6 +1,6 @@
 // @flow
 
-import type {ModelState} from '../type'
+import type {ModelState, ModelCompleted} from '../type'
 import TYPE, {type Action} from '../action-type'
 
 import {updateArrayItems} from '../lib/util'
@@ -17,8 +17,10 @@ function handleRestoreConfiguration (state, {payload: {items}}) {
     models: items.map((item, index) => ({
       ...item,
       uploadFinished: true,
-      fileId: index
-    }))
+      progress: 1,
+      fileSize: -1, // @TODO: this is missing from the backend
+      fileId: String(index)
+    } : ModelCompleted))  // This is due to a very compley Model-Type
   }
 }
 

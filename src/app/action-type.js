@@ -1,6 +1,13 @@
 // @flow
 
-import type {Address, User, Offer, Price, ModelBackend} from './type'
+import type {
+  Address,
+  User,
+  Offer,
+  Price,
+  ModelBackend,
+  Configuration
+} from './type'
 
 // User actions
 
@@ -175,6 +182,18 @@ export type ModalClosedAction = {
   type: 'MODAL.CLOSE'  // @TODO: past!
 }
 
+// Configuration actions
+
+export type ConfigurationRestoredAction = {
+  type: 'DIRECT_SALES.RESTORE_CONFIGURATION',  // @TODO: rename
+  payload: Configuration
+}
+
+export type ConfigurationCreatedAction = {
+  type: 'DIRECT_SALES.CREATE_CONFIGURATION',  // @TODO: rename
+  payload: Configuration
+}
+
 // All actions combined
 export type Action =
   UserShippingAddressChangedAction |
@@ -201,7 +220,9 @@ export type Action =
   ConfigurationRestoreAction |
   ConfigurationCreateAction |
   ModalOpenedAction |
-  ModalClosedAction
+  ModalClosedAction |
+  ConfigurationRestoredAction |
+  ConfigurationCreatedAction
 
 export default {
   MODAL: {

@@ -307,11 +307,15 @@ describe('Model reducer', () => {
         models: [{
           thisIsItem: 'one',
           uploadFinished: true,
-          fileId: 0
+          fileId: '0',
+          progress: 1,
+          fileSize: -1
         }, {
           thisIsItem: 'two',
           uploadFinished: true,
-          fileId: 1
+          fileId: '1',
+          progress: 1,
+          fileSize: -1
         }]
       })
     })

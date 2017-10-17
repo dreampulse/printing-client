@@ -76,7 +76,7 @@ export type ModelBackend = {
 
 export type ModelCompleted = ModelBackend & {
   // The folowing fields are differend from the backend:
-  fileId: number,
+  fileId: string,
   fileSize: number,
   quantity: number,
   // This are static for a completed upload
@@ -101,6 +101,17 @@ export type File = {
   name: string,
   size: number
 }
+
+export type Configuration = {
+  _id: string,
+  materialConfigId: string,
+  items: (ModelBackend & {  // @TODO: why is this unneded complicated?
+    quantity: number
+  })[]
+}
+
+//
+// States
 
 export type UserState = {
   userId: ?string,
@@ -138,11 +149,19 @@ export type ModalState = {
   contentProps: ?any
 }
 
+export type ConfigurationState = {
+  configurationId: ?string,
+  isDirectSales: boolean
+}
+
 export type State = {
   user: UserState,
   order: OrderState,
   price: PriceState,
   material: any, // @TODO
   model: ModelState,
-  modal: ModalState
+  modal: ModalState,
+  configuration: ConfigurationState,
+  routing: any,  // Managed by react-router-redux
+  form: any  // Managed by redux-form
 }

@@ -1,6 +1,7 @@
-import {handleActions} from 'redux-actions'
+// @flow
 
-import TYPE from '../action-type'
+import type {ConfigurationState} from '../type'
+import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   configurationId: null,
@@ -15,6 +16,15 @@ function handleConfigurationRestored (state, {payload}) {
   }
 }
 
-export default handleActions({
-  [TYPE.DIRECT_SALES.RESTORE_CONFIGURATION]: handleConfigurationRestored
-}, initialState)
+const reducer = (
+  state : ConfigurationState = initialState,
+  action: Action
+) : ConfigurationState => {
+  switch (action.type) {
+    case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION: return handleConfigurationRestored(state, action)
+
+    default: return state
+  }
+}
+
+export default reducer
