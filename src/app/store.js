@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import promiseMiddleware from 'redux-promise'
 import {browserHistory} from 'react-router'
 import {routerMiddleware} from 'react-router-redux'
-import {captureException} from 'Service/logging'
+import {captureException, showReportDialog} from 'Service/logging'
 import {track as trackMixpanel} from 'Service/mixpanel'
 import {track as trackGoogleAnalytics} from 'Service/google-analytics'
 
@@ -17,6 +17,7 @@ const fatalErrorHandler = store => next => (action) => {
     return promise.catch((error) => {
       captureException(error) // log in sentry
       store.dispatch(openFatalErrorModal(error))
+      showReportDialog() // Opens a feedback dialog for the user
       throw error  // Throw error again
     })
   }
@@ -27,11 +28,13 @@ const fatalErrorHandler = store => next => (action) => {
 function trackingReduxMiddleware () {
   return next => (action) => {
     // Only track the production environment
-    if (process.env.NODE_ENV === 'production' && typeof action === 'object') {
-      trackMixpanel(action.type)
-      trackGoogleAnalytics(action.type)
+    if (process.env.NODE_ENV === 'production') {
+      const actionType = action && action.type || 'ACTION UNDEFINED'
+      trackMixpanel(actionType)
+      trackGoogleAnalytics(actionType)
+      // We log every event. Sentry.io will recorde them.
+      console.log('Dispatch action', actionType) // eslint-disable-line
     }
-
     return next(action)
   }
 }
