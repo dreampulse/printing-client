@@ -30,6 +30,18 @@ import {renderField} from './util/form'
 import {onlyWithSelectedOffer} from './util/guards'
 import AppLayout from './app-layout'
 
+const required = value => (value ? undefined : 'Required')
+const email = value => (
+  !value || value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+  ? 'Invalid email address'
+  : undefined
+)
+const tel = value => (
+  !value || value && !/^[+]?[0-9\-\s()]*$/i.test(value)
+  ? 'Invalid phone number'
+  : undefined
+)
+
 const AddressPage = ({
   handleSubmit,
   onGoToHome,
@@ -41,19 +53,6 @@ const AddressPage = ({
   billingAddress,
   shippingAddress
 }) => {
-  const required = value => (value ? undefined : 'Required')
-  const email = value => (
-    !value || value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-    ? 'Invalid email address'
-    : undefined
-  )
-
-  const tel = value => (
-    !value || value && !/^[+]?[0-9\-\s()]*$/i.test(value)
-    ? 'Invalid phone number'
-    : undefined
-  )
-
   const CountrySelect = ({onChange, value, ...props}) => {
     const changeCountry = val => onChange(val.value)
     const val = !value || value === '' ? undefined : {value, label: getCountryName(value)}
