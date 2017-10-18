@@ -247,8 +247,8 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  onlyWithSelectedOffer
+  onlyWithSelectedOffer,
+  connect(mapStateToProps, mapDispatchToProps)
 )
 
 export default enhance(CartPage)

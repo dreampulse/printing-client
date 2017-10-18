@@ -277,8 +277,8 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
   onlyWithSelectedOffer,
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({form: FORM_NAME})
 )
 

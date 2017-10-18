@@ -1,4 +1,5 @@
-import {compose, lifecycle} from 'recompose'
+import React, {Component} from 'react'
+import {compose} from 'recompose'
 import {connect} from 'react-redux'
 import {replace} from 'react-router-redux'
 
@@ -9,13 +10,19 @@ export const onlyWithSelectedOffer = compose(
   }), {
     replaceRoute: replace
   }),
-  lifecycle({
-    componentWillMount () {
-      const {selectedOffer, replaceRoute} = this.props
+  OtherComponent => class extends Component {
+    constructor (props) {
+      super()
+      const {selectedOffer, replaceRoute} = props
 
       if (!selectedOffer) {
         replaceRoute('/')
+        this.renderOtherComponent = false
       }
     }
-  })
+    renderOtherComponent = true
+    render () {
+      return this.renderOtherComponent ? <OtherComponent {...this.props} /> : null
+    }
+  }
 )
