@@ -34,6 +34,4 @@ HandleChecked.propTypes = {
   onChange: PropTypes.func.isRequired
 }
 
-export default compose(
-  withState('checked', 'onChange', props => props.checked)
-)(HandleChecked)
+export default compose(withState('checked', 'onChange', props => props.checked))(HandleChecked)

@@ -14,9 +14,7 @@ class Overlay extends Component {
     closeable: PropTypes.bool,
     children: PropTypes.node,
     headline: PropTypes.node.isRequired,
-    buttons: PropTypes.arrayOf(
-      PropTypes.node
-    )
+    buttons: PropTypes.arrayOf(PropTypes.node)
   }
 
   static defaultProps = {
@@ -55,9 +53,8 @@ class Overlay extends Component {
 
             <footer className="overlay__footer">
               {
-                React.Children.map(
-                  this.props.buttons, button => cloneElement(button, {key: button.key})
-                )
+                React.Children.map(this.props.buttons, button =>
+                  cloneElement(button, {key: button.key}))
               }
             </footer>
           </div>

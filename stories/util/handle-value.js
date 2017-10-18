@@ -34,6 +34,4 @@ HandleValue.propTypes = {
   onChange: PropTypes.func.isRequired
 }
 
-export default compose(
-  withState('value', 'onChange', props => props.initialValue)
-)(HandleValue)
+export default compose(withState('value', 'onChange', props => props.initialValue))(HandleValue)

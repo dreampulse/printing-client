@@ -104,7 +104,7 @@ const uploadFile = (
   } catch (error) {
     const uploadError = new FileUploadError(fileId)
     dispatch(fileUploadFailed(fileId, uploadError))
-    throw uploadError  // Prevent to create a price request if upload failed
+    throw uploadError // Prevent to create a price request if upload failed
   }
 }
 

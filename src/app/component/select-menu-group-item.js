@@ -14,7 +14,9 @@ const getMenuItem = (type) => {
   return SelectMenuItem
 }
 
-const SelectMenuGroupItem = ({classNames, modifiers, value, selectedValue, onClick = () => {}}) => (
+const SelectMenuGroupItem = ({
+  classNames, modifiers, value, selectedValue, onClick = () => {}
+}) => (
   <div className={buildClassName('select-menu-group-item', modifiers, classNames)}>
     <strong className="select-menu-group-item__title">{value.label}</strong>
     <ul className="select-menu-group-item__list">

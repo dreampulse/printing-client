@@ -103,6 +103,4 @@ NumberField.propTypes = {
   disabled: PropTypes.bool
 }
 
-export default compose(
-  withState('hasFocus', 'setFocus', false)
-)(NumberField)
+export default compose(withState('hasFocus', 'setFocus', false))(NumberField)

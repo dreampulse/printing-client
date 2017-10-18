@@ -11,23 +11,18 @@ const app = express()
 
 app.use(compression())
 
-app.use(favicon(
-    resolve(`${__dirname}/../src/asset/image/favicon.png`
-  ))
-)
+app.use(favicon(resolve(`${__dirname}/../src/asset/image/favicon.png`)))
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
 
-  app.set('json spaces', 2)  // Pretty print json
+  app.set('json spaces', 2) // Pretty print json
 
   // Don't allow crawling
   app.get('/robots.txt', (req, res) => {
     res.set('Content-Type', 'text/plain')
-    res.send(
-      'User-agent: *\n' +
-      'Disallow: /\n'
-    )
+    res.send('User-agent: *\n' +
+      'Disallow: /\n')
   })
 }
 
@@ -49,15 +44,12 @@ if (process.env.BASIC_AUTH) {
   })
 }
 
-app.use('/', express.static(
-  resolve(`${__dirname}/../dist`), {maxAge: ONE_HOUR}
-))
+app.use('/', express.static(resolve(`${__dirname}/../dist`), {maxAge: ONE_HOUR}))
 
 app.get('*', (req, res) =>
   res
     .status(200)
-    .sendFile(resolve(`${__dirname}/../dist/index.html`))
-)
+    .sendFile(resolve(`${__dirname}/../dist/index.html`)))
 
 const port = process.env.PORT || 8888
 app.listen(port, () => {

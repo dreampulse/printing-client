@@ -4,7 +4,9 @@ import React, {cloneElement} from 'react'
 import propTypes from 'Lib/prop-types'
 import buildClassName, {buildClassArray} from 'Lib/build-class-name'
 
-const ProcessStepBar = ({classNames, modifiers, children, currentStep = 0}) => {
+const ProcessStepBar = ({
+  classNames, modifiers, children, currentStep = 0
+}) => {
   const modifiedChildren = React.Children.map(children, (child, index) => (
     cloneElement(child, {
       key: child.props.label,

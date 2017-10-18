@@ -39,8 +39,8 @@ const MaterialCard = ({
       {price ? cloneElement(price, {loading}) : null}
       {
         shipping && !loading
-        ? <div className="material-card__shipping"><Icon source={shippingIcon} /> {shipping} {info}</div>
-        : <div className="material-card__shipping" />
+          ? <div className="material-card__shipping"><Icon source={shippingIcon} /> {shipping} {info}</div>
+          : <div className="material-card__shipping" />
       }
       <div className="material-card__color">{colorSelect}</div>
       <Button

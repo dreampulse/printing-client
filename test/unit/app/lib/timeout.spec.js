@@ -13,8 +13,7 @@ describe('timeout lib', () => {
       .catch((result) => {
         expect(result, 'to equal', err)
       })
-  }
-  )
+  })
 
   it('fails after timeout', () => {
     const endlessPromise = new Promise(() => {})

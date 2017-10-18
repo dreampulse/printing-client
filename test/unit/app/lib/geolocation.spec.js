@@ -40,7 +40,7 @@ describe('geolocation lib', () => {
     it('aborts request after a configured timeout', () => {
       const endlessPromise = new Promise(() => {})
       http.request.resolves(endlessPromise)
-      sandbox.stub(config, 'fetchTimout').value(1)  // Faster timeout
+      sandbox.stub(config, 'fetchTimout').value(1) // Faster timeout
 
       return getLocationByIp()
         .catch((result) => {
@@ -53,7 +53,7 @@ describe('geolocation lib', () => {
         city: 'something',
         zip: 'something',
         region: 'something',
-        countryCode: ''  // A key is missing
+        countryCode: '' // A key is missing
       }
       http.request.resolves(geolocationResponse)
 

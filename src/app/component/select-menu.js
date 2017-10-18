@@ -18,7 +18,9 @@ const getMenuItem = (type) => {
   return SelectMenuItem
 }
 
-const SelectMenu = ({classNames, modifiers, values, selectedValue, onClick = () => {}}) => (
+const SelectMenu = ({
+  classNames, modifiers, values, selectedValue, onClick = () => {}
+}) => (
   <ul className={buildClassName('select-menu', modifiers, classNames)}>
     {
       values.map((value) => {

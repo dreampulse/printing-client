@@ -33,13 +33,13 @@ import AppLayout from './app-layout'
 const required = value => (value ? undefined : 'Required')
 const email = value => (
   !value || value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-  ? 'Invalid email address'
-  : undefined
+    ? 'Invalid email address'
+    : undefined
 )
 const tel = value => (
   !value || value && !/^[+]?[0-9\-\s()]*$/i.test(value)
-  ? 'Invalid phone number'
-  : undefined
+    ? 'Invalid phone number'
+    : undefined
 )
 
 const AddressPage = ({
@@ -60,7 +60,9 @@ const AddressPage = ({
     return (<SelectField menu={countryMenu} value={val} onChange={changeCountry} {...props} />)
   }
 
-  const UsStateSelect = ({onChange, countryCode, value, ...props}) => {
+  const UsStateSelect = ({
+    onChange, countryCode, value, ...props
+  }) => {
     const changeState = val => onChange(val.value)
     const usStateMenu = <SelectMenu values={getUsStates()} />
     const isDisabled = !countryCode || (countryCode && countryCode !== 'US')

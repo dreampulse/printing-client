@@ -52,7 +52,7 @@ export const createUser = () => async (
 ) => {
   const user = getState().user.user
   const {userId} = await printingEngine.createUser({user})
-  identify(userId)  // Send user information to Mixpanel
+  identify(userId) // Send user information to Mixpanel
   setUserContext({
     id: userId
   })
@@ -82,7 +82,7 @@ export const updateLocation = (
     // Open address modal if address is not valid
     dispatch(openAddressModal())
   } else {
-    if (!getState().user.userId) {  // No user created so far
+    if (!getState().user.userId) { // No user created so far
       await dispatch(createUser())
     } else {
       await dispatch(updateUser(getState().user.user))

@@ -72,19 +72,19 @@ export default class LocationField extends Component {
 
         return geocode(this.googleMaps, coords)
       })
-      .then((places) => {
+        .then((places) => {
         // The first place is the one with the highest granularity
-        this.setState({
-          value: places[0].formatted_address,
-          loading: false
+          this.setState({
+            value: places[0].formatted_address,
+            loading: false
+          })
+          this.props.onChange(places[0])
         })
-        this.props.onChange(places[0])
-      })
-      .catch(() => {
-        this.setState({loading: false})
+        .catch(() => {
+          this.setState({loading: false})
         // Currently we do not display the error.
         // This happens usually when the user aborts the geolocation process
-      })
+        })
     }
   }
 
@@ -103,7 +103,7 @@ export default class LocationField extends Component {
 
   initAutocomplete = (googleMaps) => {
     this.autocomplete = new googleMaps.places.Autocomplete(this.inputDom, {
-      types: ['geocode']  // https://developers.google.com/places/web-service/autocomplete?#place_types
+      types: ['geocode'] // https://developers.google.com/places/web-service/autocomplete?#place_types
     })
     this.autocomplete.addListener('place_changed', () => {
       const place = this.autocomplete.getPlace()

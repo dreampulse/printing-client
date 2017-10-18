@@ -76,8 +76,10 @@ describe('buildClassName()', () => {
         'disabled-class-name': false
       }
     ])
-    expect(className, 'to equal',
-      'some-class-name some-class-name--extra-modifier some-class-name--some-extra-class-name')
+    expect(
+      className, 'to equal',
+      'some-class-name some-class-name--extra-modifier some-class-name--some-extra-class-name'
+    )
   })
 
   it('handles objects inside the array of the classNames parameter', () => {
@@ -88,8 +90,10 @@ describe('buildClassName()', () => {
         'disabled-class-name': false
       }
     ])
-    expect(className, 'to equal',
-      'some-class-name extra-class-name enabled-class-name')
+    expect(
+      className, 'to equal',
+      'some-class-name extra-class-name enabled-class-name'
+    )
   })
 
   it('ignores `undefined` in arrays', () => {

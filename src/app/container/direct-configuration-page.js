@@ -62,7 +62,9 @@ const DirectConfigurationPage = ({
     .filter(filterConfig => (
       Boolean(getBestOfferForMaterialConfig(offers, filterConfig.id))
     ))
-    .map(({id, color, colorCode, colorImage}) => ({
+    .map(({
+      id, color, colorCode, colorImage
+    }) => ({
       value: id,
       colorValue: colorCode,
       label: color,
@@ -84,8 +86,8 @@ const DirectConfigurationPage = ({
     <Price
       value={
         bestOffer
-        ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
-        : undefined
+          ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
+          : undefined
       }
       meta="incl. tax & shipping"
     />
@@ -192,6 +194,4 @@ const mapDispatchToProps = {
   onUpdateLocation: updateLocation
 }
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
-)(DirectConfigurationPage)
+export default compose(connect(mapStateToProps, mapDispatchToProps))(DirectConfigurationPage)

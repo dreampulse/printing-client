@@ -15,8 +15,7 @@ export default class ImageContainer extends Component {
 
   state = {
     imageLoading: false,
-    imageLoaded: false,
-    imageError: false
+    imageLoaded: false
   }
 
   componentDidMount () {
@@ -42,8 +41,7 @@ export default class ImageContainer extends Component {
   loadImage (source) {
     this.setState({
       imageLoading: true,
-      imageLoaded: false,
-      imageError: false
+      imageLoaded: false
     })
 
     if (source) {
@@ -57,8 +55,7 @@ export default class ImageContainer extends Component {
       }).catch(() => {
         if (!this.unmounted) {
           this.setState({
-            imageLoading: false,
-            imageError: true
+            imageLoading: false
           })
         }
       })

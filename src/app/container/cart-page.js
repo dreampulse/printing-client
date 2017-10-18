@@ -92,8 +92,8 @@ const CartPage = ({
             {user.shippingAddress.zipCode} {user.shippingAddress.city}<br />
             {
               user.shippingAddress.countryCode === 'US'
-              ? <span>{getUsStateName(user.shippingAddress.stateCode)}<br /></span>
-              : null
+                ? <span>{getUsStateName(user.shippingAddress.stateCode)}<br /></span>
+                : null
             }
             {getCountryName(user.shippingAddress.countryCode)}
           </Paragraph>
@@ -120,14 +120,14 @@ const CartPage = ({
               user.shippingAddress.zipCode} {user.billingAddress.city ||
               user.shippingAddress.city}<br />
             {
-               user.billingAddress.countryCode && user.billingAddress.countryCode === 'US'
-              ? <span>{getUsStateName(user.billingAddress.stateCode)}<br /></span>
-              : null
+              user.billingAddress.countryCode && user.billingAddress.countryCode === 'US'
+                ? <span>{getUsStateName(user.billingAddress.stateCode)}<br /></span>
+                : null
             }
             {
-               !user.billingAddress.countryCode && user.shippingAddress.countryCode === 'US'
-              ? <span>getUsStateName(user.shippingAddress.stateCode)<br /></span>
-              : null
+              !user.billingAddress.countryCode && user.shippingAddress.countryCode === 'US'
+                ? <span>getUsStateName(user.shippingAddress.stateCode)<br /></span>
+                : null
             }
             {user.billingAddress.countryCode
               ? getCountryName(user.billingAddress.countryCode)

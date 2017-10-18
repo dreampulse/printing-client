@@ -64,8 +64,7 @@ describe('Order actions', () => {
 
     describe('when checkout rejects', () => {
       beforeEach(() =>
-        stripe.checkout.rejects(new Error('some-error'))
-      )
+        stripe.checkout.rejects(new Error('some-error')))
 
       it('dispatches expected actions', async () => {
         try {
@@ -85,15 +84,14 @@ describe('Order actions', () => {
           store.dispatch(payWithStripe()),
           'to be rejected with',
           'some-error'
-        )
-      )
+        ))
     })
 
     describe('payWithPaypal()', () => {
       it('fulfills with correct arguments', () => {
         paypal.createPayment
-        .withArgs({amount: 42, currency: 'some-currency', offerId: 'some-offer-id'})
-        .resolves('create-paypal-payment')
+          .withArgs({amount: 42, currency: 'some-currency', offerId: 'some-offer-id'})
+          .resolves('create-paypal-payment')
 
         expect(
           store.dispatch(payWithPaypal()),

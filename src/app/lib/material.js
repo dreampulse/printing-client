@@ -13,20 +13,18 @@ export function generateMaterialIds (materials) {
 }
 
 export function hasMaterialMultipleConfigs (material) {
-  return !material.finishGroups.every(
-    finishGroup => (finishGroup.materialConfigs.length <= 1)
-  )
+  return !material.finishGroups.every(finishGroup => (finishGroup.materialConfigs.length <= 1))
 }
 
 export function getBestOfferForMaterialConfig (offers, materialConfigId) {
   return offers
-  .filter(offer => offer.materialConfigId === materialConfigId)
-  .reduce((bestOffer, offer) => {
-    if (!bestOffer || bestOffer.totalPrice > offer.totalPrice) {
-      return offer
-    }
-    return bestOffer
-  }, null)
+    .filter(offer => offer.materialConfigId === materialConfigId)
+    .reduce((bestOffer, offer) => {
+      if (!bestOffer || bestOffer.totalPrice > offer.totalPrice) {
+        return offer
+      }
+      return bestOffer
+    }, null)
 }
 
 export function getBestOfferForMaterial (offers, material) {
@@ -38,13 +36,13 @@ export function getBestOfferForMaterial (offers, material) {
   })
 
   return offers
-  .filter(offer => materialConfigs[offer.materialConfigId])
-  .reduce((bestOffer, offer) => {
-    if (!bestOffer || bestOffer.totalPrice > offer.totalPrice) {
-      return offer
-    }
-    return bestOffer
-  }, null)
+    .filter(offer => materialConfigs[offer.materialConfigId])
+    .reduce((bestOffer, offer) => {
+      if (!bestOffer || bestOffer.totalPrice > offer.totalPrice) {
+        return offer
+      }
+      return bestOffer
+    }, null)
 }
 
 export function getMaterialByName (materials, name) {

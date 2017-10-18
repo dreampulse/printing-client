@@ -4,7 +4,9 @@ import React from 'react'
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
-const App = ({classNames, modifiers, children, header, footer}) => (
+const App = ({
+  classNames, modifiers, children, header, footer
+}) => (
   <div className={buildClassName('app', modifiers, classNames)}>
     <header className="app__header">
       {header}

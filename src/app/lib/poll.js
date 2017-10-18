@@ -43,12 +43,10 @@ export const poll = (
 
       // When callId changed stop this polling loop
       if (callId !== state.callId) {
-        reject(
-          new AppError(
-            ERROR_TYPE.POLL_OVERWRITTEN,
-            `Polling loop overwritten by another call with the same name ${name}!`
-          )
-        )
+        reject(new AppError(
+          ERROR_TYPE.POLL_OVERWRITTEN,
+          `Polling loop overwritten by another call with the same name ${name}!`
+        ))
         return
       }
 

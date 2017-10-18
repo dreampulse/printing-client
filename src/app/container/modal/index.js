@@ -26,7 +26,9 @@ const getContent = (contentType, contentProps) => {
   return <div />
 }
 
-const Modal = ({isOpen, onModalClose, contentType, contentProps, isCloseable}) => (
+const Modal = ({
+  isOpen, onModalClose, contentType, contentProps, isCloseable
+}) => (
   <Portal
     closeOnEsc={isCloseable}
     isOpened={isOpen}

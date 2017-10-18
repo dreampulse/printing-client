@@ -4,7 +4,9 @@ import React from 'react'
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
-const Section = ({classNames, modifiers, children, id}) => (
+const Section = ({
+  classNames, modifiers, children, id
+}) => (
   <section className={buildClassName('section', modifiers, classNames)} id={id}>
     {children}
   </section>

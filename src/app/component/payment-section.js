@@ -4,7 +4,9 @@ import React from 'react'
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
-const PaymentSection = ({classNames, modifiers, children, subtotal, shipping, vat, total}) => (
+const PaymentSection = ({
+  classNames, modifiers, children, subtotal, shipping, vat, total
+}) => (
   <section className={buildClassName('payment-section', modifiers, classNames)}>
     <ul className="payment-section__price-components">
       <li className="payment-section__price-component">

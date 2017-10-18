@@ -18,7 +18,7 @@ function handleOpen (state, action) {
   return {
     isOpen: true,
     isCloseable: action.payload.isCloseable !== undefined
-      ? action.payload.isCloseable : true,  // Default: isCloseable = true
+      ? action.payload.isCloseable : true, // Default: isCloseable = true
     contentType: action.payload.contentType,
     contentProps: action.payload.contentProps || {}
   }

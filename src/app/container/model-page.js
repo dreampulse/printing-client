@@ -75,6 +75,4 @@ const mapDispatchToProps = {
   onUpdateLocation: updateLocation
 }
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
-)(ModelPage)
+export default compose(connect(mapStateToProps, mapDispatchToProps))(ModelPage)

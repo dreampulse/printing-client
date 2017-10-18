@@ -81,7 +81,9 @@ function handleFileUploadProgressed (state, {payload: {fileId, progress}}) {
 }
 
 function handleFileUploaded (state, {payload}) {
-  const {modelId, thumbnailUrl, fileName, fileUnit, dimensions, area, volume, fileId} = payload
+  const {
+    modelId, thumbnailUrl, fileName, fileUnit, dimensions, area, volume, fileId
+  } = payload
   const updateModels = updateArrayItems(state.models, model => model.fileId === fileId)
 
   return {

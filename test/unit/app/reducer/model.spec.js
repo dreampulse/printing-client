@@ -293,11 +293,13 @@ describe('Model reducer', () => {
 
       action = {
         type: TYPE.DIRECT_SALES.RESTORE_CONFIGURATION,
-        payload: {items: [{
-          thisIsItem: 'one'
-        }, {
-          thisIsItem: 'two'
-        }]}
+        payload: {
+          items: [{
+            thisIsItem: 'one'
+          }, {
+            thisIsItem: 'two'
+          }]
+        }
       }
     })
 

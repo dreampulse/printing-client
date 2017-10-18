@@ -19,9 +19,7 @@ const payed = createAction(
   TYPE.ORDER.PAYED,
   (paymentToken : string) => ({paymentToken})
 )
-const aborted = createAction(
-  TYPE.ORDER.ABORTED
-)
+const aborted = createAction(TYPE.ORDER.ABORTED)
 const ordered = createAction(
   TYPE.ORDER.ORDERED,
   (orderId : string) => ({orderId})
@@ -47,7 +45,9 @@ const createOrder = (type : string, token : string) => async (
   const offerId = selectedOffer.offerId
 
   try {
-    const {orderId} = await printingEngine.order({userId, priceId, offerId, type, token})
+    const {orderId} = await printingEngine.order({
+      userId, priceId, offerId, type, token
+    })
     dispatch(ordered(orderId))
   } catch (error) {
     dispatch(ordered(error))

@@ -75,7 +75,9 @@ const MaterialSection = ({
       .filter(materialConfig => (
         Boolean(getBestOfferForMaterialConfig(offers, materialConfig.id))
       ))
-      .map(({id, color, colorCode, colorImage}) => ({
+      .map(({
+        id, color, colorCode, colorImage
+      }) => ({
         value: id,
         colorValue: colorCode,
         label: color,
@@ -105,8 +107,8 @@ const MaterialSection = ({
       <Price
         value={
           bestOffer
-          ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
-          : undefined
+            ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
+            : undefined
         }
         meta="incl. tax & shipping"
       />

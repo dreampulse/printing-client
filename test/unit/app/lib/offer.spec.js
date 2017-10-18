@@ -15,7 +15,8 @@ describe('Offer unit tests', () => {
         printingService: 'some-printing-service',
         shipping: {
           name: 'some-shipping'
-        }}]
+        }
+      }]
 
       expect(getUpdatedOffer(selectedOffer, offers), 'to be', offers[0])
     })
@@ -33,7 +34,8 @@ describe('Offer unit tests', () => {
         printingService: 'some-printing-service',
         shipping: {
           name: 'some-shipping'
-        }}]
+        }
+      }]
 
       expect(getUpdatedOffer(selectedOffer, offers), 'to be', null)
     })

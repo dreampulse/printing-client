@@ -16,7 +16,7 @@ const fatalErrorHandler = store => next => (action) => {
       captureException(error) // log in sentry
       store.dispatch(openFatalErrorModal(error))
       showReportDialog() // Opens a feedback dialog for the user
-      throw error  // Throw error again
+      throw error // Throw error again
     })
   }
 

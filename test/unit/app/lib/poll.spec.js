@@ -52,8 +52,10 @@ describe('Poll lib', () => {
 
       const promise = poll('some-poll', pollCallback)
 
-      return expect(promise, 'to be rejected with error satisfying',
-        {type: ERROR_TYPE.POLL_TIMEOUT})
+      return expect(
+        promise, 'to be rejected with error satisfying',
+        {type: ERROR_TYPE.POLL_TIMEOUT}
+      )
     })
 
     it('calls pollCallback with a maximum of pollingRetries plus one', async () => {
@@ -74,8 +76,10 @@ describe('Poll lib', () => {
       const promise = poll('some-poll', pollCallbackFalse)
       poll('some-poll', pollCallbackTrue)
 
-      return expect(promise, 'to be rejected with error satisfying',
-        {type: ERROR_TYPE.POLL_OVERWRITTEN})
+      return expect(
+        promise, 'to be rejected with error satisfying',
+        {type: ERROR_TYPE.POLL_OVERWRITTEN}
+      )
     })
 
     it('rejects when poll callback rejects', async () => {
@@ -119,8 +123,10 @@ describe('Poll lib', () => {
 
       stopPoll('some-poll')
 
-      return expect(promise, 'to be rejected with error satisfying',
-        {type: ERROR_TYPE.POLL_STOPPED})
+      return expect(
+        promise, 'to be rejected with error satisfying',
+        {type: ERROR_TYPE.POLL_STOPPED}
+      )
     })
   })
 

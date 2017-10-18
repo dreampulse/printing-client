@@ -40,19 +40,19 @@ const ProviderSection = ({
     <ProviderList>
       {
         offers
-        .sort((a, b) => a.totalPrice > b.totalPrice)
-        .map(offer => (
-          <ProviderItem
-            key={offer.offerId}
-            provider={offer.printingService}
-            price={formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}
-            shipping={formatShipping(offer.shipping)}
-            onCheckoutClick={() => {
-              onSelectOffer(offer)
-              onGoToAddress()
-            }}
-          />
-        ))
+          .sort((a, b) => a.totalPrice > b.totalPrice)
+          .map(offer => (
+            <ProviderItem
+              key={offer.offerId}
+              provider={offer.printingService}
+              price={formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}
+              shipping={formatShipping(offer.shipping)}
+              onCheckoutClick={() => {
+                onSelectOffer(offer)
+                onGoToAddress()
+              }}
+            />
+          ))
       }
     </ProviderList>
   )

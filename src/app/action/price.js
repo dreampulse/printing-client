@@ -120,10 +120,10 @@ export const createPriceRequest = ({
     dispatch(priceRequested(priceId))
     return priceId
   })
-  .then(() => {
+    .then(() => {
     // We need to update the selectedOffer if applicable
-    dispatch(refreshSelectedOffer())
-  })
+      dispatch(refreshSelectedOffer())
+    })
   .catch((error : Error) => {
     // Handle timeout separately
     if (error.type === ERROR_TYPE.POLL_TIMEOUT) {
@@ -131,7 +131,7 @@ export const createPriceRequest = ({
       return
     }
 
-    // Ignore special error when price request was overwritten or stopped
+      // Ignore special error when price request was overwritten or stopped
     if (error.type === ERROR_TYPE.POLL_OVERWRITTEN ||
       error.type === ERROR_TYPE.POLL_STOPPED) {
       return
@@ -139,7 +139,7 @@ export const createPriceRequest = ({
 
     dispatch(gotError(error))
 
-    // Throw again to trigger fatal error modal
+      // Throw again to trigger fatal error modal
     throw error
   })
 }
@@ -199,14 +199,14 @@ export const recalculateSelectedOffer = () => (
     dispatch(priceRequested(priceId))
     return priceId
   })
-  .catch((error) => {
+    .catch((error) => {
     // Every error here is fatal!
 
-    dispatch(gotError(error))
+      dispatch(gotError(error))
 
-    // Throw again to trigger fatal error modal
-    throw error
-  })
+      // Throw again to trigger fatal error modal
+      throw error
+    })
 }
 
 export const createDebouncedPriceRequest = () =>

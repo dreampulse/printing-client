@@ -5,7 +5,9 @@ import config from '../../../config'
 
 class PaypalButton extends Component {
   componentDidMount () {
-    const {onClick, onAuthorize, onCancel, onError} = this.props
+    const {
+      onClick, onAuthorize, onCancel, onError
+    } = this.props
 
     const options = {
       ...config.paypal,
@@ -13,7 +15,7 @@ class PaypalButton extends Component {
       onAuthorize,
       onCancel,
       onError,
-      commit: true,  // Show 'Pay Now' button during checkout
+      commit: true, // Show 'Pay Now' button during checkout
       style: {size: 'responsive', color: 'gold', shape: 'rect'}
     }
 

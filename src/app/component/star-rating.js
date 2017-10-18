@@ -9,7 +9,9 @@ import Icon from 'Component/icon'
 
 import starIcon from 'Icon/star.svg'
 
-const StarRating = ({classNames, modifiers, stars, of = 5}) => (
+const StarRating = ({
+  classNames, modifiers, stars, of = 5
+}) => (
   <ul className={buildClassName('star-rating', modifiers, classNames)} aria-label={`${stars} of ${of}`}>
     {
       range(of).map(key => (
