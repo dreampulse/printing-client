@@ -1,3 +1,6 @@
+// @flow
+
+import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 import uniqueId from 'lodash/uniqueId'
 
@@ -8,21 +11,22 @@ import {
   createDebouncedPriceRequest
 } from './price'
 
+import type {State, File, ModelBackend} from '../type'
 import TYPE from '../action-type'
 
-// Private actions
+// Sync actions
 
 const quantityChanged = createAction(
   TYPE.MODEL.QUANTITIY_CHANGED,
-  quantity => ({quantity})
+  (quantity : number) => ({quantity})
 )
 const individualQuantityChanged = createAction(
   TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED,
-  (modelId, quantity) => ({modelId, quantity})
+  (modelId : string, quantity : number) => ({modelId, quantity})
 )
 const fileUploadStarted = createAction(
   TYPE.MODEL.FILE_UPLOAD_STARTED,
-  (fileId, file) => ({
+  (fileId : string, file : File) => ({
     fileId,
     fileName: file.name,
     fileSize: file.size
@@ -30,11 +34,15 @@ const fileUploadStarted = createAction(
 )
 const fileUploadProgressed = createAction(
   TYPE.MODEL.FILE_UPLOAD_PROGRESSED,
-  (fileId, progress) => ({fileId, progress})
+  (fileId : string, progress : number) => ({fileId, progress})
+)
+const fileUploadFailed = createAction(
+  TYPE.MODEL.FILE_UPLOAD_FAILED,
+  (fileId : string, error : Error) => ({fileId, error})
 )
 const fileUploaded = createAction(
   TYPE.MODEL.FILE_UPLOADED,
-  (fileId, model) => ({
+  (fileId : string, model : ModelBackend) => ({
     fileId,
     modelId: model.modelId,
     thumbnailUrl: model.thumbnailUrl,
@@ -45,25 +53,41 @@ const fileUploaded = createAction(
     volume: model.volume
   })
 )
-const fileDeleted = createAction(TYPE.MODEL.FILE_DELETED, fileId => ({fileId}))
+const fileDeleted = createAction(
+  TYPE.MODEL.FILE_DELETED,
+  (fileId : string) => ({fileId}))
+export const changeUnit = createAction(
+  TYPE.MODEL.UNIT_CHANGED,
+  ({unit} : {unit: 'mm' | 'cm' | 'in'}) => ({unit}))  // @TODO improve interface
 
-// Public actions
+// Async actions
 
-export const changeQuantity = ({quantity}) => (dispatch) => {
+export const changeQuantity = (
+  {quantity} : {quantity: number}  // @TODO improve interface
+) => (
+  dispatch : Dispatch<*>
+) => {
   dispatch(quantityChanged(quantity))
   // Update prices
   return dispatch(createDebouncedPriceRequest())
 }
 
-export const changeIndividualQuantity = ({quantity, modelId}) => (dispatch) => {
+export const changeIndividualQuantity = (
+  {quantity, modelId} : {quantity: number, modelId: string}
+) => (
+  dispatch : Dispatch<*>
+) => {
   dispatch(individualQuantityChanged(modelId, quantity))
   // Update prices
   return dispatch(createDebouncedPriceRequest())
 }
 
-export const changeUnit = createAction(TYPE.MODEL.UNIT_CHANGED, ({unit}) => ({unit}))
-
-const uploadFile = file => async (dispatch, getState) => {
+const uploadFile = (
+  file : File
+) => async (
+  dispatch : Dispatch<*>,
+  getState : () => State
+) => {
   const fileId = uniqueId('file-id-')
   const unit = getState().model.selectedUnit
 
@@ -79,12 +103,16 @@ const uploadFile = file => async (dispatch, getState) => {
     dispatch(fileUploaded(fileId, modelData))
   } catch (error) {
     const uploadError = new FileUploadError(fileId)
-    dispatch(fileUploaded(uploadError))
+    dispatch(fileUploadFailed(fileId, uploadError))
     throw uploadError  // Prevent to create a price request if upload failed
   }
 }
 
-export const uploadFiles = files => async (dispatch) => {
+export const uploadFiles = (
+  files : File[]
+) => async (
+  dispatch : Dispatch<*>
+) => {
   try {
     await Promise.all(files.map(file => dispatch(uploadFile(file))))
   } catch (err) {
@@ -96,7 +124,11 @@ export const uploadFiles = files => async (dispatch) => {
   await dispatch(createPriceRequest())
 }
 
-export const deleteFile = fileId => async (dispatch) => {
+export const deleteFile = (
+  fileId : string
+) => async (
+  dispatch : Dispatch<*>
+) => {
   dispatch(fileDeleted(fileId))
   await dispatch(createPriceRequest())
 }

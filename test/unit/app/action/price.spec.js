@@ -28,10 +28,12 @@ describe('Price actions', () => {
       model: {
         models: [{
           modelId: 'model1',
-          quantity: 1
+          quantity: 1,
+          uploadFinished: true
         }, {
           modelId: 'model2',
-          quantity: 2
+          quantity: 2,
+          uploadFinished: true
         }]
       },
       price: {
@@ -192,7 +194,10 @@ describe('Price actions', () => {
         payload: {priceId: 'some-price-id'}
       }, {
         type: TYPE.PRICE.RECEIVED,
-        payload: {price: {some: 'price'}}
+        payload: {
+          price: {some: 'price'},
+          isComplete: true
+        }
       }])
     })
 
@@ -278,7 +283,7 @@ describe('Price actions', () => {
             type: TYPE.PRICE.CLEAR_OFFERS,
             payload: undefined
           }, {
-            type: TYPE.PRICE.RECEIVED,
+            type: TYPE.PRICE.GOT_ERROR,
             payload: error,
             error: true
           }])

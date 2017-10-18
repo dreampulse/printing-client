@@ -1,6 +1,3 @@
-// flow-typed signature: 86993bd000012d3e1ef10d757d16952d
-// flow-typed version: a165222d28/redux_v3.x.x/flow_>=v0.33.x
-
 declare module 'redux' {
 
   /*
@@ -12,7 +9,8 @@ declare module 'redux' {
   */
 
   declare type DispatchAPI<A> = (action: A) => A;
-  declare type Dispatch<A: { type: $Subtype<string> }> = DispatchAPI<A>;
+  declare type Dispatch<A> = DispatchAPI<A>;
+  // declare type Dispatch<A: { type: $Subtype<string> }> = DispatchAPI<A>;
 
   declare type MiddlewareAPI<S, A, D = Dispatch<A>> = {
     dispatch: D;

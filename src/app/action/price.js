@@ -1,35 +1,46 @@
+// @flow
+
+import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
 import {selectFeatures} from 'Lib/selector'
+
+import type {Offer, Price, State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
 
 const POLL_NAME = 'price'
 const RECALC_POLL_NAME = 'price_recalc'
 
-// Private actions
+// Sync actions
 
 const clearOffers = createAction(TYPE.PRICE.CLEAR_OFFERS)
 const priceRequested = createAction(
   TYPE.PRICE.REQUESTED,
-  priceId => ({priceId})
+  (priceId : string) => ({priceId})
 )
 const priceReceived = createAction(
   TYPE.PRICE.RECEIVED,
-  (price, isComplete) => ({price, isComplete})
+  (price : Price, isComplete : boolean) => ({price, isComplete})
+)
+const gotError = createAction(
+  TYPE.PRICE.GOT_ERROR,
+  (error: Error) => error
 )
 const priceTimeout = createAction(TYPE.PRICE.TIMEOUT)
-
-// Public actions
-
 export const selectOffer = createAction(
   TYPE.PRICE.SELECT_OFFER,
-  offer => ({offer})
+  (offer : ?Offer) => ({offer})
 )
 
-export const refreshSelectedOffer = () => (dispatch, getState) => {
+// Asnyc actions
+
+export const refreshSelectedOffer = () => (
+  dispatch : Dispatch<*>,
+  getState : () => State
+) => {
   const {
     price: {
       offers,
@@ -44,12 +55,20 @@ export const refreshSelectedOffer = () => (dispatch, getState) => {
   }
 }
 
+// @TODO: Improve interface
 export const createPriceRequest = ({
   debounce = false
-} = {}) => (dispatch, getState) => {
+} : {
+  refresh : boolean,
+  debounce : boolean
+} = {}) => (
+  dispatch : Dispatch<*>,
+  getState : () => State
+) : Promise<any> => {
   dispatch(clearOffers())
 
   const state = getState()
+  if (!state.material.materials) throw new Error('Materials structure missing')
   const {
     material: {
       materials: {
@@ -73,11 +92,15 @@ export const createPriceRequest = ({
   }
 
   const materialConfigIds = Object.keys(materialConfigs)
-  const items = models.map(({modelId, quantity}) => ({
-    modelId,
-    materialConfigIds,
-    quantity
-  }))
+  const items = models.map((model) => {
+    if (!model.uploadFinished) throw new Error('Upload still in progress')
+    const {modelId, quantity} = model
+    return {
+      modelId,
+      materialConfigIds,
+      quantity
+    }
+  })
 
   const options = {
     isEstimate: false, // always fetch real prices
@@ -90,7 +113,7 @@ export const createPriceRequest = ({
   const usePoll = debounce ? debouncedPoll : poll
   return usePoll(POLL_NAME, async (priceId) => {
     const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
-    dispatch(priceReceived(price))
+    dispatch(priceReceived(price, isComplete))
     return isComplete
   }, async () => {
     const {priceId} = await printingEngine.createPriceRequest(options)
@@ -101,7 +124,7 @@ export const createPriceRequest = ({
     // We need to update the selectedOffer if applicable
     dispatch(refreshSelectedOffer())
   })
-  .catch((error) => {
+  .catch((error : Error) => {
     // Handle timeout separately
     if (error.type === ERROR_TYPE.POLL_TIMEOUT) {
       dispatch(priceTimeout(error))
@@ -114,14 +137,17 @@ export const createPriceRequest = ({
       return
     }
 
-    dispatch(priceReceived(error))
+    dispatch(gotError(error))
 
     // Throw again to trigger fatal error modal
     throw error
   })
 }
 
-export const recalculateSelectedOffer = () => (dispatch, getState) => {
+export const recalculateSelectedOffer = () => (
+  dispatch : Dispatch<*>,
+  getState : () => State
+) => {
   const {
     model: {
       models
@@ -134,14 +160,20 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
     }
   } = getState()
 
+  if (!selectedOffer) throw new Error('No offer selected')
+
   // Stop any other price polling
   stopPoll(POLL_NAME)
 
-  const items = models.map(({modelId, quantity}) => ({
-    modelId,
-    materialConfigIds: [selectedOffer.materialConfigId],
-    quantity
-  }))
+  const items = models.map((model) => {
+    if (!model.uploadFinished) throw new Error('Upload still in progress')
+    const {modelId, quantity} = model
+    return {
+      modelId,
+      materialConfigIds: [selectedOffer.materialConfigId],
+      quantity
+    }
+  })
 
   const options = {
     isEstimate: false, // always get real price for recalculated offer
@@ -170,11 +202,12 @@ export const recalculateSelectedOffer = () => (dispatch, getState) => {
   .catch((error) => {
     // Every error here is fatal!
 
-    dispatch(priceReceived(error))
+    dispatch(gotError(error))
 
     // Throw again to trigger fatal error modal
     throw error
   })
 }
 
-export const createDebouncedPriceRequest = () => createPriceRequest({debounce: true})
+export const createDebouncedPriceRequest = () =>
+  createPriceRequest({debounce: true, refresh: false})

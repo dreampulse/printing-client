@@ -1,6 +1,7 @@
-import {handleActions} from 'redux-actions'
+// @flow
 
-import TYPE from '../action-type'
+import type {OrderState} from '../type'
+import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   orderId: null,
@@ -9,7 +10,7 @@ const initialState = {
 }
 
 function handleOrderOrdered (state, {payload: {orderId}, error}) {
-  if (error) {
+  if (error) {  // @TODO: is this still possible (we removed redux promise)
     return {
       ...state,
       orderId: null,
@@ -45,9 +46,14 @@ function handleOrderAborted (state) {
   }
 }
 
-export default handleActions({
-  [TYPE.ORDER.ORDERED]: handleOrderOrdered,
-  [TYPE.ORDER.PAYED]: handleOrderPayed,
-  [TYPE.ORDER.STARTED]: handleOrderStarted,
-  [TYPE.ORDER.ABORTED]: handleOrderAborted
-}, initialState)
+const reducer = (state : OrderState = initialState, action: Action) : OrderState => {
+  switch (action.type) {
+    case TYPE.ORDER.ORDERED: return handleOrderOrdered(state, action)
+    case TYPE.ORDER.PAYED: return handleOrderPayed(state, action)
+    case TYPE.ORDER.STARTED: return handleOrderStarted(state)
+    case TYPE.ORDER.ABORTED: return handleOrderAborted(state)
+    default: return state
+  }
+}
+
+export default reducer

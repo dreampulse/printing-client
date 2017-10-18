@@ -16,7 +16,8 @@ describe('Configuration actions', () => {
       model: {
         models: [{
           modelId: 'some-model-id',
-          quantity: 42
+          quantity: 42,
+          uploadFinished: true
         }],
         numberOfUploads: 0
       },
@@ -50,7 +51,8 @@ describe('Configuration actions', () => {
           items: [{
             modelId: 'some-model-id',
             quantity: 42
-          }]
+          }],
+          materialConfigId: undefined
         })
         .returns({configurationId: 'some-configuration-id'})
 

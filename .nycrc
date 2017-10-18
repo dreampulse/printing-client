@@ -5,10 +5,10 @@
     "instrument": false,
     "cache": true,
     "lines": 100,
-    "statements": 92,
-    "branches": 93,
-    "functions": 89,
-    "lines": 93,
+    "statements": 90,
+    "branches": 86,
+    "functions": 90,
+    "lines": 90,
     "include": [
       "src/**/*.js"
     ],

@@ -70,10 +70,12 @@ describe('Price Integration Test', () => {
         model: {
           models: [{
             modelId: 'material-id-model-1',
-            quantity: 1
+            quantity: 1,
+            uploadFinished: true
           }, {
             modelId: 'material-id-model-2',
-            quantity: 2
+            quantity: 2,
+            uploadFinished: true
           }]
         },
         material: {

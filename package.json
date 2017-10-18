@@ -23,7 +23,7 @@
     "changes": "./bin/update-changelog.js ./ --dry-run",
     "prerelease": "npm run test && ./bin/update-changelog.js ./",
     "release": "./bin/bump-release.js ./",
-    "postinstall": "flow-typed install"
+    "update-types": "flow-typed install"
   },
   "author": "All3dp <info@all3dp.com>",
   "contributors": [
@@ -45,8 +45,8 @@
     "babel-plugin-transform-class-properties": "^6.6.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-webpack-alias": "^2.1.2",
-    "babel-preset-flow": "^6.23.0",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.5.0",
     "css-loader": "^0.28.7",
     "eslint": "^3.13.1",
