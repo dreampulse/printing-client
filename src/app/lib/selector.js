@@ -206,7 +206,7 @@ export const selectAreAllUploadsFinished = state => {
 }
 
 export const selectLocationQuery = state =>
-  new URLSearchParams(get(state, 'routing.location.query') || '')
+  new URLSearchParams(get(state, 'routing.location.search') || '')
 
 export const selectFeatures = state => {
   const query = selectLocationQuery(state)

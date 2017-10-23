@@ -50,7 +50,7 @@ describe('Price actions', () => {
       },
       routing: {
         location: {
-          query: 'feature:refresh'
+          search: 'feature:refresh'
         }
       }
     }
