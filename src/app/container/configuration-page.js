@@ -23,7 +23,7 @@ export default compose(
   withState('isLoading', 'setIsLoading', true),
   lifecycle({
     componentWillMount() {
-      const {params, configurationId, onRestoreConfiguration} = this.props
+      const {match: {params}, configurationId, onRestoreConfiguration} = this.props
 
       // Restore only if configuration id changed
       if (configurationId !== params.id) {

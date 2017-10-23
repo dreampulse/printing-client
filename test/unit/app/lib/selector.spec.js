@@ -790,7 +790,7 @@ describe('Selector lib', () => {
         selectFeatures({
           routing: {
             location: {
-              query: query.toString()
+              search: query.toString()
             }
           }
         }),
@@ -812,7 +812,7 @@ describe('Selector lib', () => {
         selectFeatures({
           routing: {
             location: {
-              query: query.toString()
+              search: query.toString()
             }
           }
         }),
@@ -848,7 +848,7 @@ describe('Selector lib', () => {
         const params = selectLocationQuery({
           routing: {
             location: {
-              query: 'a&b=false&c=2'
+              search: 'a&b=false&c=2'
             }
           }
         })
