@@ -1,7 +1,4 @@
-import {
-  AppError,
-  FileUploadError
-} from 'Lib/error'
+import {AppError, FileUploadError} from 'Lib/error'
 import {ERROR_TYPE} from '../../../../src/app/action-type'
 
 describe('Error lib', () => {

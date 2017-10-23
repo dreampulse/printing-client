@@ -10,7 +10,7 @@ storiesOf('Model Item Load', module)
       status={0.7}
       title="Uploading"
       subline="model_item_title.stl"
-      onDelete={action('delete')}
+      onDelete={action('discard')}
     />
   ))
   .add('no status', () => (
@@ -18,6 +18,6 @@ storiesOf('Model Item Load', module)
       modifiers={['processing']}
       title="Processing"
       subline="model_item_title.stl"
-      onDelete={action('delete')}
+      onDelete={action('discard')}
     />
   ))

@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
@@ -23,7 +24,12 @@ const ProviderItem = ({
     <td className="provider-item__price">{price}</td>
     <td className="provider-item__shipping">{shipping}</td>
     <td className="provider-item__checkout">
-      <Button icon={checkoutIcon} modifiers={['block']} label="Checkout" onClick={onCheckoutClick} />
+      <Button
+        icon={checkoutIcon}
+        modifiers={['block']}
+        label="Checkout"
+        onClick={onCheckoutClick}
+      />
     </td>
   </tr>
 )

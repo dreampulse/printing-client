@@ -8,7 +8,7 @@ const initialState = {
   isDirectSales: false
 }
 
-function handleConfigurationRestored (state, {payload}) {
+function handleConfigurationRestored(state, {payload}) {
   return {
     ...state,
     configurationId: payload._id, // eslint-disable-line no-underscore-dangle
@@ -16,14 +16,13 @@ function handleConfigurationRestored (state, {payload}) {
   }
 }
 
-const reducer = (
-  state : ConfigurationState = initialState,
-  action: Action
-) : ConfigurationState => {
+const reducer = (state: ConfigurationState = initialState, action: Action): ConfigurationState => {
   switch (action.type) {
-    case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION: return handleConfigurationRestored(state, action)
+    case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION:
+      return handleConfigurationRestored(state, action)
 
-    default: return state
+    default:
+      return state
   }
 }
 

@@ -1,12 +1,11 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
 const FormLayout = ({classNames, modifiers, children}) => (
-  <div className={buildClassName('form-layout', modifiers, classNames)}>
-    {children}
-  </div>
+  <div className={buildClassName('form-layout', modifiers, classNames)}>{children}</div>
 )
 
 FormLayout.propTypes = {

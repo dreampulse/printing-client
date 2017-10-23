@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 import uniqueId from 'lodash/uniqueId'
 
 import propTypes from 'Lib/prop-types'
@@ -41,10 +42,7 @@ RadioButton.propTypes = {
   ...propTypes.component,
   name: PropTypes.string,
   label: PropTypes.string,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onClick: PropTypes.func,
   checked: PropTypes.bool,
   disabled: PropTypes.bool

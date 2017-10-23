@@ -6,10 +6,7 @@ import SelectMenuItem from 'Component/select-menu-item'
 
 storiesOf('Select Menu Item', module)
   .add('default', () => (
-    <SelectMenuItem
-      value={{value: 'value', label: 'Select Menu Item'}}
-      onClick={action('click')}
-    />
+    <SelectMenuItem value={{value: 'value', label: 'Select Menu Item'}} onClick={action('click')} />
   ))
   .add('selected', () => (
     <SelectMenuItem

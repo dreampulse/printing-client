@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
@@ -21,7 +22,7 @@ const ModelQuantityItem = ({
   onQuantityChange,
   onDelete
 }) => {
-  const handleDeleteClick = (event) => {
+  const handleDeleteClick = event => {
     event.preventDefault()
     onDelete()
   }
@@ -30,14 +31,11 @@ const ModelQuantityItem = ({
     <div className={buildClassName('model-quantity-item', modifiers, classNames)}>
       <ImageContainer modifiers={['model']} source={imageSource} />
       <div className="model-quantity-item__body">
-        <div className="model-quantity-item__title">
-          {title}
-        </div>
-        {Boolean(subline) && (
-          <div className="model-quantity-item__subline">{subline}</div>
-        )}
+        <div className="model-quantity-item__title">{title}</div>
+        {Boolean(subline) && <div className="model-quantity-item__subline">{subline}</div>}
         <div className="model-quantity-item__quantity">
-          Quantity: {quantity} {onQuantityChange && <Link label="change quantity" onClick={onQuantityChange} />}
+          Quantity: {quantity}{' '}
+          {onQuantityChange && <Link label="change quantity" onClick={onQuantityChange} />}
         </div>
       </div>
       <Price value={price} />

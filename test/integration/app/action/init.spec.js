@@ -1,4 +1,6 @@
 import deepFreeze from 'deep-freeze'
+import createHistory from 'history/createMemoryHistory'
+
 import {init} from 'Action/init'
 
 import * as printingEngine from 'Lib/printing-engine'
@@ -15,7 +17,7 @@ describe('Init action integration test', () => {
   let store
 
   beforeEach(() => {
-    store = Store({})
+    store = Store(createHistory())
 
     sandbox = sinon.sandbox.create()
     sandbox.stub(printingEngine)

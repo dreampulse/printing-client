@@ -7,12 +7,8 @@ import invert from '../decorator/invert'
 
 storiesOf('Process Step', module)
   .addDecorator(invert)
-  .add('default', () => (
-    <ProcessStep label="Process Step" onClick={action('click')} />
-  ))
-  .add('inactive', () => (
-    <ProcessStep label="Inactive Process Step" modifiers={['inactive']} />
-  ))
+  .add('default', () => <ProcessStep label="Process Step" onClick={action('click')} />)
+  .add('inactive', () => <ProcessStep label="Inactive Process Step" modifiers={['inactive']} />)
   .add('first', () => (
     <ProcessStep label="First Process Step" modifiers={['first']} onClick={action('click')} />
   ))
@@ -20,5 +16,9 @@ storiesOf('Process Step', module)
     <ProcessStep label="Last Process Step" modifiers={['last']} onClick={action('click')} />
   ))
   .add('last-active', () => (
-    <ProcessStep label="Last Active Process Step" modifiers={['last-active']} onClick={action('click')} />
+    <ProcessStep
+      label="Last Active Process Step"
+      modifiers={['last-active']}
+      onClick={action('click')}
+    />
   ))

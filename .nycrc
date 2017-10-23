@@ -4,7 +4,6 @@
     "sourceMap": false,
     "instrument": false,
     "cache": true,
-    "lines": 100,
     "statements": 90,
     "branches": 86,
     "functions": 90,
@@ -23,8 +22,5 @@
     ],
     "extension": [
       ".js"
-    ],
-    "require": [
-      "babel-register"
     ]
 }

@@ -6,8 +6,8 @@ describe('getCloudinaryUrl()', () => {
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create()
-    sandbox.stub(config, 'cloudinaryUrl', '//cloudinary.invalid')
-    sandbox.stub(config, 'cloudinaryDefaultParams', [])
+    sandbox.stub(config, 'cloudinaryUrl').value('//cloudinary.invalid')
+    sandbox.stub(config, 'cloudinaryDefaultParams').value([])
   })
 
   afterEach(() => {

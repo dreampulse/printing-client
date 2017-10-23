@@ -7,7 +7,7 @@ import FormRow from 'Component/form-row'
 const style = {
   backgroundColor: '#fff'
 }
-const column = (<div style={style}>column</div>)
+const column = <div style={style}>column</div>
 
 storiesOf('Form Row', module)
   .add('default', () => (

@@ -1,7 +1,6 @@
-import {
-  createPriceRequest,
-  refreshSelectedOffer
-} from 'Action/price'
+import createHistory from 'history/createMemoryHistory'
+
+import {createPriceRequest, refreshSelectedOffer} from 'Action/price'
 import * as printingEngine from 'Lib/printing-engine'
 import Store from '../../../../src/app/store'
 
@@ -24,11 +23,13 @@ describe('Price Integration Test', () => {
     beforeEach(() => {
       state = {
         price: {
-          offers: [{
-            materialConfigId: 1,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'}
-          }],
+          offers: [
+            {
+              materialConfigId: 1,
+              printingService: 'some-service',
+              shipping: {name: 'some-shipping'}
+            }
+          ],
           selectedOffer: {
             materialConfigId: 2,
             printingService: 'some-service',
@@ -39,7 +40,7 @@ describe('Price Integration Test', () => {
     })
 
     it('refreshes selected offer', async () => {
-      store = Store(state)
+      store = Store(createHistory(), state)
       await store.dispatch(refreshSelectedOffer())
 
       expect(store.getState().price, 'to satisfy', {
@@ -54,11 +55,13 @@ describe('Price Integration Test', () => {
     beforeEach(() => {
       state = {
         price: {
-          offers: [{
-            materialConfigId: 3,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'}
-          }],
+          offers: [
+            {
+              materialConfigId: 3,
+              printingService: 'some-service',
+              shipping: {name: 'some-shipping'}
+            }
+          ],
           printingServiceComplete: null,
           priceId: 'some-old-price-id',
           selectedOffer: {
@@ -68,15 +71,18 @@ describe('Price Integration Test', () => {
           }
         },
         model: {
-          models: [{
-            modelId: 'material-id-model-1',
-            quantity: 1,
-            uploadFinished: true
-          }, {
-            modelId: 'material-id-model-2',
-            quantity: 2,
-            uploadFinished: true
-          }]
+          models: [
+            {
+              modelId: 'material-id-model-1',
+              quantity: 1,
+              uploadFinished: true
+            },
+            {
+              modelId: 'material-id-model-2',
+              quantity: 2,
+              uploadFinished: true
+            }
+          ]
         },
         material: {
           materials: {
@@ -96,15 +102,18 @@ describe('Price Integration Test', () => {
       printingEngine.getPriceWithStatus.resolves({
         isComplete: true,
         price: {
-          offers: [{
-            materialConfigId: 1,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'}
-          }, {
-            materialConfigId: 2,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'}
-          }],
+          offers: [
+            {
+              materialConfigId: 1,
+              printingService: 'some-service',
+              shipping: {name: 'some-shipping'}
+            },
+            {
+              materialConfigId: 2,
+              printingService: 'some-service',
+              shipping: {name: 'some-shipping'}
+            }
+          ],
           printingServiceComplete: {
             shapeways: true,
             imaterialize: true
@@ -114,33 +123,39 @@ describe('Price Integration Test', () => {
     })
 
     it('handles price request and updates selected offer', async () => {
-      store = Store(state)
+      store = Store(createHistory(), state)
       await store.dispatch(createPriceRequest())
 
       expect(printingEngine.createPriceRequest, 'was called with', {
         userId: 'some-user-id',
-        items: [{
-          modelId: 'material-id-model-1',
-          materialConfigIds: ['some-material-id', 'some-material-other-id'],
-          quantity: 1
-        }, {
-          modelId: 'material-id-model-2',
-          materialConfigIds: ['some-material-id', 'some-material-other-id'],
-          quantity: 2
-        }]
+        items: [
+          {
+            modelId: 'material-id-model-1',
+            materialConfigIds: ['some-material-id', 'some-material-other-id'],
+            quantity: 1
+          },
+          {
+            modelId: 'material-id-model-2',
+            materialConfigIds: ['some-material-id', 'some-material-other-id'],
+            quantity: 2
+          }
+        ]
       })
 
       expect(store.getState().price, 'to satisfy', {
         priceId: 'some-price-id',
-        offers: [{
-          materialConfigId: 1,
-          printingService: 'some-service',
-          shipping: {name: 'some-shipping'}
-        }, {
-          materialConfigId: 2,
-          printingService: 'some-service',
-          shipping: {name: 'some-shipping'}
-        }],
+        offers: [
+          {
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          },
+          {
+            materialConfigId: 2,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }
+        ],
         printingServiceComplete: {
           shapeways: true,
           imaterialize: true
@@ -153,17 +168,16 @@ describe('Price Integration Test', () => {
       const error = new Error('some-error')
       printingEngine.getPriceWithStatus.rejects(error)
 
-      store = Store(state)
-      return store.dispatch(createPriceRequest())
-        .catch(() => {
-          expect(store.getState().price, 'to satisfy', {
-            priceId: null,
-            offers: null,
-            printingServiceComplete: null,
-            selectedOffer: null,
-            error
-          })
+      store = Store(createHistory(), state)
+      return store.dispatch(createPriceRequest()).catch(() => {
+        expect(store.getState().price, 'to satisfy', {
+          priceId: null,
+          offers: null,
+          printingServiceComplete: null,
+          selectedOffer: null,
+          error
         })
+      })
     })
   })
 })

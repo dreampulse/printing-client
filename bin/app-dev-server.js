@@ -23,7 +23,7 @@ new WebpackDevServer(webpack(config), {
   stats: {colors: true},
   quiet: false,
   noInfo: false
-}).listen(port, 'localhost', (err) => {
+}).listen(port, 'localhost', err => {
   if (err) console.error(err)
   else {
     console.log(`Webpack Dev Server listening at localhost:${port}`)

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React, {Component} from 'react'
 import Portal from 'react-portal'
 import ReactDOM from 'react-dom'
 
@@ -8,7 +9,6 @@ import buildClassName, {buildClassArray} from 'Lib/build-class-name'
 import Tooltip from 'Component/tooltip'
 
 export default class Info extends Component {
-
   static propTypes = {
     ...propTypes.component,
     children: PropTypes.node
@@ -19,7 +19,7 @@ export default class Info extends Component {
     openRight: false
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.timeout) clearTimeout(this.timeout)
     this.setState({
       tooltipOpen: false
@@ -56,7 +56,7 @@ export default class Info extends Component {
 
     // Open the tooltip right of the info button if there is enough space
     // else open to the left
-    const openRight = (infoSize.right + tooltipSize.width > global.innerWidth)
+    const openRight = infoSize.right + tooltipSize.width > global.innerWidth
     let left = infoSize.left + 5 + infoSize.width + global.scrollX
     if (openRight) {
       left = infoSize.left - 5 + global.scrollX
@@ -71,7 +71,7 @@ export default class Info extends Component {
     })
   }
 
-  render () {
+  render() {
     return (
       <button
         onMouseEnter={this.onInfoEnter}
@@ -86,7 +86,9 @@ export default class Info extends Component {
           onClose={this.onTooltipClose}
         >
           <div
-            ref={(d) => { this.tooltipDOM = d }}
+            ref={d => {
+              this.tooltipDOM = d
+            }}
             className="info__tooltip"
             style={this.state.style}
           >

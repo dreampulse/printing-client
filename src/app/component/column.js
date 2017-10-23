@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 import compact from 'lodash/compact'
 
 import propTypes from 'Lib/prop-types'
@@ -25,11 +26,7 @@ const Column = ({
     lgPush ? `lg-push-${lgPush}` : undefined
   ])
 
-  return (
-    <div className={buildClassName('column', finalModifiers, classNames)}>
-      {children}
-    </div>
-  )
+  return <div className={buildClassName('column', finalModifiers, classNames)}>{children}</div>
 }
 
 Column.propTypes = {

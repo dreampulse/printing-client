@@ -64,22 +64,24 @@ const usStates = {
 
 const countryList = createCountryList()
 
-export function getCountriesMenu () {
+export function getCountriesMenu() {
   return countryList.getCodes().map(code => ({
-    value: code, label: countryList.getName(code)
+    value: code,
+    label: countryList.getName(code)
   }))
 }
 
-export function getCountryName (code) {
+export function getCountryName(code) {
   return countryList.getName(code)
 }
 
-export function getUsStateName (code) {
+export function getUsStateName(code) {
   return usStates[code]
 }
 
-export function getUsStates () {
+export function getUsStates() {
   return Object.keys(usStates).map(code => ({
-    value: code, label: getUsStateName(code)
+    value: code,
+    label: getUsStateName(code)
   }))
 }

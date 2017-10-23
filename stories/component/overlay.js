@@ -24,21 +24,21 @@ import HandleValue from '../util/handle-value'
 
 const headline = <Headline label="Warning Headline" modifiers={['l']} />
 const headlineOther = <Headline label="Overlay Headline" modifiers={['l']} />
-const buttons = [
-  <Button label="Cancel" modifiers={['text']} />,
-  <Button label="OK" />
-]
+const buttons = [<Button label="Cancel" modifiers={['text']} />, <Button label="OK" />]
 
 storiesOf('Overlay', module)
   .add('default', () => (
     <Overlay headline={headline} buttons={buttons} closePortal={action('onClose')}>
-      <div>
-        Overlay content
-      </div>
+      <div>Overlay content</div>
     </Overlay>
   ))
   .add('large', () => (
-    <Overlay modifiers={['l']} headline={headlineOther} buttons={buttons} closePortal={action('onClose')}>
+    <Overlay
+      modifiers={['l']}
+      headline={headlineOther}
+      buttons={buttons}
+      closePortal={action('onClose')}
+    >
       <div>Overlay content</div>
     </Overlay>
   ))
@@ -48,32 +48,40 @@ storiesOf('Overlay', module)
     </Overlay>
   ))
   .add('Prices changed', () => {
-    const pricesChangedHeadline = <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
+    const pricesChangedHeadline = (
+      <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
+    )
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <RichText>
           <p>
-            We used the location <strong>Munich, Germany</strong> to calculate prices.
-            You have entered <strong>New York, USA</strong> as your shipping address.
+            We used the location <strong>Munich, Germany</strong> to calculate prices. You have
+            entered <strong>New York, USA</strong> as your shipping address.
           </p>
         </RichText>
         <RichText>
           <p>
-            Please double check the prices on the order summary or go
-            back to find the best deal for your new location.
+            Please double check the prices on the order summary or go back to find the best deal for
+            your new location.
           </p>
         </RichText>
       </Overlay>
     )
   })
   .add('Fetching new prices', () => {
-    const fetchingNewPricesHeadline = <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
+    const fetchingNewPricesHeadline = (
+      <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
+    )
     const fetchingNewPricesButtons = [
       <Button label="Cancel" modifiers={['text']} />,
       <Button label="OK" disabled />
     ]
     return (
-      <Overlay headline={fetchingNewPricesHeadline} buttons={fetchingNewPricesButtons} closePortal={action('onClose')}>
+      <Overlay
+        headline={fetchingNewPricesHeadline}
+        buttons={fetchingNewPricesButtons}
+        closePortal={action('onClose')}
+      >
         <LabeledLoadingIndicator>
           Recalculating prices…<br />
           This might take a few minutes
@@ -83,23 +91,23 @@ storiesOf('Overlay', module)
   })
   .add('System error', () => {
     const systemErrorHeadline = <Headline label="System Error" modifiers={['l']} />
-    const systemErrorButtons = [
-      <Button label="OK" />
-    ]
+    const systemErrorButtons = [<Button label="OK" />]
     return (
-      <Overlay headline={systemErrorHeadline} buttons={systemErrorButtons} closePortal={action('onClose')}>
+      <Overlay
+        headline={systemErrorHeadline}
+        buttons={systemErrorButtons}
+        closePortal={action('onClose')}
+      >
         <Grid>
           <Column sm={3}>
             <Image src={errorImage} alt="System Error" />
           </Column>
           <Column sm={9}>
             <Paragraph>
-              An unexpected error occured. Our technicians have been automatically
-              warned and are working to fix the problem.
+              An unexpected error occured. Our technicians have been automatically warned and are
+              working to fix the problem.
             </Paragraph>
-            <Paragraph>
-              Please press OK to reload the app.
-            </Paragraph>
+            <Paragraph>Please press OK to reload the app.</Paragraph>
           </Column>
         </Grid>
       </Overlay>
@@ -127,14 +135,17 @@ storiesOf('Overlay', module)
   })
   .add('Material detail', () => {
     const materialDetailHeadline = <Headline label="Polyamide" modifiers={['l']} />
-    const materialDetailButtons = [
-      <Button label="Close" />
-    ]
+    const materialDetailButtons = [<Button label="Close" />]
     const rating = <StarRating stars={3} />
     const checked = <Checked checked />
     const unchecked = <Checked />
     return (
-      <Overlay modifiers={['l']} headline={materialDetailHeadline} buttons={materialDetailButtons} closePortal={action('onClose')}>
+      <Overlay
+        modifiers={['l']}
+        headline={materialDetailHeadline}
+        buttons={materialDetailButtons}
+        closePortal={action('onClose')}
+      >
         <Grid>
           <Column sm={12} md={8} lg={7}>
             <RichText classNames={['u-margin-bottom-xl']}>
@@ -142,10 +153,10 @@ storiesOf('Overlay', module)
                 A great all-round material with great money value. Polyamide is extremely versatile.
                 It is strong and slightly flexible. It can be used for a wide range of applications.
                 Suitable for full functional parts as well as jewelry and many more applications.
-                The surface can be polished and dyed. Its available in many colors.
-                Polyamide is also known as Nylon. Professionally 3D printed using laser
-                sintering (SLS). When thin, its flexible enough for springs, but when thick, its
-                strong enough for full functional parts.
+                The surface can be polished and dyed. Its available in many colors. Polyamide is
+                also known as Nylon. Professionally 3D printed using laser sintering (SLS). When
+                thin, its flexible enough for springs, but when thick, its strong enough for full
+                functional parts.
               </p>
             </RichText>
             <Grid>
@@ -163,9 +174,7 @@ storiesOf('Overlay', module)
               </Column>
               <Column sm={6}>
                 <Headline modifiers={['xs']} label="Material Spec" />
-                <Paragraph classNames={['u-margin-bottom-xl']}>
-                  EOS PA 2200 (PA 12)
-                </Paragraph>
+                <Paragraph classNames={['u-margin-bottom-xl']}>EOS PA 2200 (PA 12)</Paragraph>
                 <FeatureList>
                   <FeatureListItem feature={unchecked} label="Dishwasher safe" />
                   <FeatureListItem feature={unchecked} label="Edible" />

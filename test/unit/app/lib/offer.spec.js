@@ -10,12 +10,15 @@ describe('Offer unit tests', () => {
           name: 'some-shipping'
         }
       }
-      const offers = [{
-        materialConfigId: 'some-config-id',
-        printingService: 'some-printing-service',
-        shipping: {
-          name: 'some-shipping'
-        }}]
+      const offers = [
+        {
+          materialConfigId: 'some-config-id',
+          printingService: 'some-printing-service',
+          shipping: {
+            name: 'some-shipping'
+          }
+        }
+      ]
 
       expect(getUpdatedOffer(selectedOffer, offers), 'to be', offers[0])
     })
@@ -28,12 +31,15 @@ describe('Offer unit tests', () => {
           name: 'some-shipping'
         }
       }
-      const offers = [{
-        materialConfigId: 'some-config-id-2',
-        printingService: 'some-printing-service',
-        shipping: {
-          name: 'some-shipping'
-        }}]
+      const offers = [
+        {
+          materialConfigId: 'some-config-id-2',
+          printingService: 'some-printing-service',
+          shipping: {
+            name: 'some-shipping'
+          }
+        }
+      ]
 
       expect(getUpdatedOffer(selectedOffer, offers), 'to be', null)
     })

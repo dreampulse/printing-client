@@ -8,9 +8,7 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 // Add store middlewares here
-global.mockStore = configureStore([
-  thunk
-])
+global.mockStore = configureStore([thunk])
 
 expect.use(unexpectedSinon)
 

@@ -12,9 +12,7 @@ import {goToCart} from 'Action/navigation'
 
 const PriceLocationChangedModal = ({oldShippingAddress, newShippingAddress, onClose}) => {
   const headline = <Headline label="Prices have changed" modifiers={['l', 'warning']} />
-  const buttons = [
-    <Button label="OK" onClick={() => onClose()} />
-  ]
+  const buttons = [<Button label="OK" onClick={() => onClose()} />]
 
   return (
     <Overlay headline={headline} buttons={buttons} closePortal={() => onClose()}>
@@ -22,19 +20,21 @@ const PriceLocationChangedModal = ({oldShippingAddress, newShippingAddress, onCl
         <p>
           We used the location
           <strong>
-            {' '}{oldShippingAddress.city}, {getCountryName(oldShippingAddress.countryCode)}{' '}
+            {' '}
+            {oldShippingAddress.city}, {getCountryName(oldShippingAddress.countryCode)}{' '}
           </strong>
           to calculate prices. You have entered
           <strong>
-            {' '}{newShippingAddress.city}, {getCountryName(oldShippingAddress.countryCode)}{' '}
+            {' '}
+            {newShippingAddress.city}, {getCountryName(oldShippingAddress.countryCode)}{' '}
           </strong>
           as your shipping address.
         </p>
       </RichText>
       <RichText>
         <p>
-          Please double check the prices on the order summary or go
-          back to find the best deal for your new location.
+          Please double check the prices on the order summary or go back to find the best deal for
+          your new location.
         </p>
       </RichText>
     </Overlay>

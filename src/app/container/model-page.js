@@ -12,31 +12,16 @@ import UploadSection from 'Container/upload-section'
 import MaterialSection from 'Container/material-section'
 import ProviderSection from 'Container/provider-section'
 
-import {
-  changeQuantity
-} from 'Action/model'
-import {
-  updateLocation
-} from 'Action/user'
+import {changeQuantity} from 'Action/model'
+import {updateLocation} from 'Action/user'
 
-import {
-  selectCommonQuantity
-} from 'Lib/selector'
-import {
-  formatAddress
-} from 'Lib/formatter'
-import {
-  convertPlaceToLocation
-} from 'Lib/geolocation'
+import {selectCommonQuantity} from 'Lib/selector'
+import {formatAddress} from 'Lib/formatter'
+import {convertPlaceToLocation} from 'Lib/geolocation'
 
 import config from '../../../config'
 
-const ModelPage = ({
-  address,
-  commonQuantity,
-  onChangeQuantity,
-  onUpdateLocation
-}) => {
+const ModelPage = ({address, commonQuantity, onChangeQuantity, onUpdateLocation}) => {
   const configurationHeader = (
     <ConfigurationHeader>
       <LabeledField label="Shipping:" modifiers={['block']}>
@@ -75,6 +60,4 @@ const mapDispatchToProps = {
   onUpdateLocation: updateLocation
 }
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
-)(ModelPage)
+export default compose(connect(mapStateToProps, mapDispatchToProps))(ModelPage)

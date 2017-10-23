@@ -1,3 +1,5 @@
+import createHistory from 'history/createMemoryHistory'
+
 import {
   open,
   close,
@@ -13,14 +15,12 @@ describe('Modal Integration Test', () => {
   let store
 
   beforeEach(() => {
-    store = Store({})
+    store = Store(createHistory())
   })
 
   describe('open()', () => {
     it('works with all parameters set', async () => {
-      store.dispatch(
-        open('some-content-type', 'some-content-props', false)
-      )
+      store.dispatch(open('some-content-type', 'some-content-props', false))
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
         isCloseable: false,
@@ -30,9 +30,7 @@ describe('Modal Integration Test', () => {
     })
 
     it('works with default parameters', async () => {
-      store.dispatch(
-        open('some-content-type')
-      )
+      store.dispatch(open('some-content-type'))
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
         isCloseable: true,
@@ -78,10 +76,12 @@ describe('Modal Integration Test', () => {
 
   describe('openMaterialModal()', () => {
     it('opens material modal', () => {
-      store.dispatch(openMaterialModal({
-        materialId: 'some-material',
-        finishGroupId: 'some-finish-group'
-      }))
+      store.dispatch(
+        openMaterialModal({
+          materialId: 'some-material',
+          finishGroupId: 'some-finish-group'
+        })
+      )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
         isCloseable: true,

@@ -1,4 +1,4 @@
-export default function geolocate () {
+export default function geolocate() {
   if (!('geolocation' in global.navigator)) {
     return Promise.reject(new Error('Navigator API not available.'))
   }

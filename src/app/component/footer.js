@@ -1,4 +1,5 @@
-import React, {PropTypes, Children, cloneElement} from 'react'
+import PropTypes from 'prop-types'
+import React, {Children, cloneElement} from 'react'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
@@ -11,13 +12,9 @@ const Footer = ({classNames, modifiers, children, copyline}) => (
       <div className="footer__grid">
         <div className="footer__copyline">{copyline}</div>
         <ul className="footer__link-list">
-          {
-            Children.map(children, link => (
-              <li className="footer__link">
-                {cloneElement(link, {modifiers: ['invert']})}
-              </li>
-            ))
-          }
+          {Children.map(children, link => (
+            <li className="footer__link">{cloneElement(link, {modifiers: ['invert']})}</li>
+          ))}
         </ul>
       </div>
     </Container>
@@ -31,4 +28,3 @@ Footer.propTypes = {
 }
 
 export default Footer
-

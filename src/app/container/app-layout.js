@@ -11,10 +11,7 @@ import ProcessStep from 'Component/process-step'
 import Footer from 'Component/footer'
 import Link from 'Component/link'
 
-import {
-  goToHome,
-  goToAddress
-} from 'Action/navigation'
+import {goToHome, goToAddress} from 'Action/navigation'
 
 import Modal from './modal'
 
@@ -30,14 +27,14 @@ const AppLayout = ({
     <ProcessStepBar currentStep={currentStep}>
       <ProcessStep
         label={isDirectSales ? 'Overview' : 'Your Order'}
-        onClick={(event) => {
+        onClick={event => {
           event.preventDefault()
           onGoToHome()
         }}
       />
       <ProcessStep
         label="Address"
-        onClick={(event) => {
+        onClick={event => {
           event.preventDefault()
           onGoToAddress()
         }}
@@ -53,7 +50,11 @@ const AppLayout = ({
 
   const footer = (
     <Footer copyline="© Copyright 2017 ALL3DP GmbH">
-      <Link label="Terms and conditions" target="_blank" href="https://all3dp.com/3dp-price-comparison-terms-of-service/" />
+      <Link
+        label="Terms and conditions"
+        target="_blank"
+        href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
+      />
       <Link label="Imprint" target="_blank" href="https://all3dp.com/terms-of-use/#imprint" />
     </Footer>
   )
@@ -63,17 +64,13 @@ const AppLayout = ({
       header={[
         header,
         Boolean(configurationHeader) && (
-          <StickyContainer key="configHeader">
-            {configurationHeader}
-          </StickyContainer>
+          <StickyContainer key="configHeader">{configurationHeader}</StickyContainer>
         )
       ]}
       footer={footer}
     >
       <Modal />
-      <Container>
-        {children}
-      </Container>
+      <Container>{children}</Container>
     </App>
   )
 }
@@ -87,8 +84,6 @@ const mapDispatchToProps = {
   onGoToAddress: goToAddress
 }
 
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps)
-)
+const enhance = compose(connect(mapStateToProps, mapDispatchToProps))
 
 export default enhance(AppLayout)

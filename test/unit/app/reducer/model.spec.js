@@ -41,10 +41,7 @@ describe('Model reducer', () => {
     beforeEach(() => {
       stateBefore = {
         some: 'thing',
-        models: [
-          {fileId: 1, quantity: 1},
-          {fileId: 2, quantity: 2}
-        ]
+        models: [{fileId: 1, quantity: 1}, {fileId: 2, quantity: 2}]
       }
 
       action = {
@@ -56,10 +53,7 @@ describe('Model reducer', () => {
     it('updates quantity in all models', () => {
       expect(reducer(stateBefore, action), 'to equal', {
         some: 'thing',
-        models: [
-          {fileId: 1, quantity: 3},
-          {fileId: 2, quantity: 3}
-        ]
+        models: [{fileId: 1, quantity: 3}, {fileId: 2, quantity: 3}]
       })
     })
   })
@@ -71,10 +65,7 @@ describe('Model reducer', () => {
     beforeEach(() => {
       stateBefore = {
         some: 'thing',
-        models: [
-          {modelId: 1, quantity: 1},
-          {modelId: 2, quantity: 2}
-        ]
+        models: [{modelId: 1, quantity: 1}, {modelId: 2, quantity: 2}]
       }
 
       action = {
@@ -86,10 +77,7 @@ describe('Model reducer', () => {
     it('updates quantity in model with given modelId', () => {
       expect(reducer(stateBefore, action), 'to equal', {
         some: 'thing',
-        models: [
-          {modelId: 1, quantity: 1},
-          {modelId: 2, quantity: 3}
-        ]
+        models: [{modelId: 1, quantity: 1}, {modelId: 2, quantity: 3}]
       })
     })
   })
@@ -101,9 +89,7 @@ describe('Model reducer', () => {
     beforeEach(() => {
       stateBefore = {
         numberOfUploads: 0,
-        models: [
-          {some: 'old-model'}
-        ]
+        models: [{some: 'old-model'}]
       }
 
       action = {
@@ -137,10 +123,7 @@ describe('Model reducer', () => {
     beforeEach(() => {
       stateBefore = {
         some: 'thing',
-        models: [
-          {fileId: 1, progress: 0},
-          {fileId: 2, progress: 0}
-        ]
+        models: [{fileId: 1, progress: 0}, {fileId: 2, progress: 0}]
       }
 
       action = {
@@ -152,10 +135,7 @@ describe('Model reducer', () => {
     it('updates progress in model with given fileId', () => {
       expect(reducer(stateBefore, action), 'to equal', {
         some: 'thing',
-        models: [
-          {fileId: 1, progress: 0.5},
-          {fileId: 2, progress: 0}
-        ]
+        models: [{fileId: 1, progress: 0.5}, {fileId: 2, progress: 0}]
       })
     })
   })
@@ -168,10 +148,7 @@ describe('Model reducer', () => {
       stateBefore = {
         some: 'thing',
         numberOfUploads: 1,
-        models: [
-          {fileId: 1, progress: 0},
-          {fileId: 2, progress: 0}
-        ]
+        models: [{fileId: 1, progress: 0}, {fileId: 2, progress: 0}]
       }
 
       action = {
@@ -222,10 +199,7 @@ describe('Model reducer', () => {
       stateBefore = {
         some: 'thing',
         numberOfUploads: 1,
-        models: [
-          {fileId: 1, progress: 0},
-          {fileId: 2, progress: 0}
-        ]
+        models: [{fileId: 1, progress: 0}, {fileId: 2, progress: 0}]
       }
 
       error = new FileUploadError(1)
@@ -262,10 +236,7 @@ describe('Model reducer', () => {
     beforeEach(() => {
       stateBefore = {
         some: 'thing',
-        models: [
-          {fileId: 1},
-          {fileId: 2}
-        ]
+        models: [{fileId: 1}, {fileId: 2}]
       }
 
       action = {
@@ -293,30 +264,38 @@ describe('Model reducer', () => {
 
       action = {
         type: TYPE.DIRECT_SALES.RESTORE_CONFIGURATION,
-        payload: {items: [{
-          thisIsItem: 'one'
-        }, {
-          thisIsItem: 'two'
-        }]}
+        payload: {
+          items: [
+            {
+              thisIsItem: 'one'
+            },
+            {
+              thisIsItem: 'two'
+            }
+          ]
+        }
       }
     })
 
     it('updates the models array', () => {
       expect(reducer(stateBefore, action), 'to equal', {
         some: 'thing',
-        models: [{
-          thisIsItem: 'one',
-          uploadFinished: true,
-          fileId: '0',
-          progress: 1,
-          fileSize: -1
-        }, {
-          thisIsItem: 'two',
-          uploadFinished: true,
-          fileId: '1',
-          progress: 1,
-          fileSize: -1
-        }]
+        models: [
+          {
+            thisIsItem: 'one',
+            uploadFinished: true,
+            fileId: '0',
+            progress: 1,
+            fileSize: -1
+          },
+          {
+            thisIsItem: 'two',
+            uploadFinished: true,
+            fileId: '1',
+            progress: 1,
+            fileSize: -1
+          }
+        ]
       })
     })
   })

@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
@@ -13,12 +14,12 @@ const providerImages = {
   shapeways: shapewaysImage
 }
 
-const ProviderItem = ({
-  classNames,
-  modifiers,
-  name
-}) => (
-  <img className={buildClassName('provider-image', modifiers, classNames)} src={providerImages[name]} alt={name} />
+const ProviderItem = ({classNames, modifiers, name}) => (
+  <img
+    className={buildClassName('provider-image', modifiers, classNames)}
+    src={providerImages[name]}
+    alt={name}
+  />
 )
 
 ProviderItem.propTypes = {

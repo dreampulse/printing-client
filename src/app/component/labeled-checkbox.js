@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import uniqueId from 'lodash/uniqueId'
 
@@ -24,17 +25,19 @@ const LabeledCheckbox = ({
         checked={checked}
         onChange={onChange}
       />
-      <label htmlFor={id} className="labeled-checkbox__label">{label}</label>
+      <label htmlFor={id} className="labeled-checkbox__label">
+        {label}
+      </label>
     </div>
   )
 }
 
 LabeledCheckbox.propTypes = {
   ...propTypes.component,
-  checked: React.PropTypes.bool,
-  label: React.PropTypes.string.isRequired,
-  onChange: React.PropTypes.func,
-  name: React.PropTypes.string
+  checked: PropTypes.bool,
+  label: PropTypes.string.isRequired,
+  onChange: PropTypes.func,
+  name: PropTypes.string
 }
 
 export default LabeledCheckbox

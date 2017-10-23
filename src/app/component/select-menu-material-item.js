@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
@@ -7,7 +8,7 @@ import Icon from 'Component/icon'
 
 import selectedIcon from 'Icon/selected.svg'
 
-const getLabel = ({value, label}) => (label || value)
+const getLabel = ({value, label}) => label || value
 
 const SelectMenuMaterialItem = ({
   classNames,
@@ -16,7 +17,7 @@ const SelectMenuMaterialItem = ({
   selected = false,
   onClick = () => {}
 }) => {
-  const handleClick = (event) => {
+  const handleClick = event => {
     event.preventDefault()
     onClick(value)
   }

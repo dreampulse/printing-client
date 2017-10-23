@@ -1,9 +1,10 @@
-import React, {Component, PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React, {Component} from 'react'
 
 import config from '../../../config'
 
 class PaypalButton extends Component {
-  componentDidMount () {
+  componentDidMount() {
     const {onClick, onAuthorize, onCancel, onError} = this.props
 
     const options = {
@@ -12,16 +13,20 @@ class PaypalButton extends Component {
       onAuthorize,
       onCancel,
       onError,
-      commit: true,  // Show 'Pay Now' button during checkout
+      commit: true, // Show 'Pay Now' button during checkout
       style: {size: 'responsive', color: 'gold', shape: 'rect'}
     }
 
     global.paypal.Button.render(options, this.paypalButton)
   }
 
-  render () {
+  render() {
     return (
-      <div ref={(el) => { this.paypalButton = el }} />
+      <div
+        ref={el => {
+          this.paypalButton = el
+        }}
+      />
     )
   }
 }

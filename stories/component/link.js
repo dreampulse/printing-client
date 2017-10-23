@@ -7,9 +7,7 @@ import Link from 'Component/link'
 import backIcon from 'Icon/back.svg'
 
 storiesOf('Link', module)
-  .add('default', () => (
-    <Link label="Default Link" href="#" onClick={action('click')} />
-  ))
+  .add('default', () => <Link label="Default Link" href="#" onClick={action('click')} />)
   .add('with icon', () => (
     <Link label="Link with Icon" href="#" icon={backIcon} onClick={action('click')} />
   ))

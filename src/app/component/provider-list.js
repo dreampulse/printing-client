@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
@@ -16,9 +17,7 @@ const ProviderList = ({classNames, modifiers, children, providerInfo}) => (
         <th className="provider-list__checkout" />
       </tr>
     </thead>
-    <tbody>
-      {children}
-    </tbody>
+    <tbody>{children}</tbody>
   </table>
 )
 

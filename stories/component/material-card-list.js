@@ -31,9 +31,7 @@ const colorSelect = (
 const info = (
   <Info>
     <Headline modifiers={['s']} label="Headline" />
-    <Paragraph>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit
-    </Paragraph>
+    <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
   </Info>
 )
 
@@ -50,18 +48,17 @@ const card = (
   />
 )
 
-storiesOf('Material Card List', module)
-  .add('default', () => (
-    <div>
-      <MaterialCardList>
-        {cloneElement(card, {title: 'Polyamide 1'})}
-        {cloneElement(card, {title: 'Polyamide 2'})}
-        {cloneElement(card, {title: 'Polyamide 3', loading: true})}
-        {cloneElement(card, {title: 'Polyamide 4'})}
-        {cloneElement(card, {title: 'Polyamide 5', selected: true})}
-        {cloneElement(card, {title: 'Polyamide 6'})}
-        {cloneElement(card, {title: 'Polyamide 7', unavailable: true})}
-        {cloneElement(card, {title: 'Polyamide 8'})}
-      </MaterialCardList>
-    </div>
-  ))
+storiesOf('Material Card List', module).add('default', () => (
+  <div>
+    <MaterialCardList>
+      {cloneElement(card, {title: 'Polyamide 1'})}
+      {cloneElement(card, {title: 'Polyamide 2'})}
+      {cloneElement(card, {title: 'Polyamide 3', loading: true})}
+      {cloneElement(card, {title: 'Polyamide 4'})}
+      {cloneElement(card, {title: 'Polyamide 5', selected: true})}
+      {cloneElement(card, {title: 'Polyamide 6'})}
+      {cloneElement(card, {title: 'Polyamide 7', unavailable: true})}
+      {cloneElement(card, {title: 'Polyamide 8'})}
+    </MaterialCardList>
+  </div>
+))

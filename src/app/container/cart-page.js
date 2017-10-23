@@ -3,14 +3,9 @@ import {connect} from 'react-redux'
 import {compose} from 'recompose'
 import {getUsStateName, getCountryName} from 'Service/country'
 import getCloudinaryUrl from 'Lib/cloudinary'
-import {
-  selectedOfferMaterial,
-  selectOfferItems
-} from 'Lib/selector'
+import {selectedOfferMaterial, selectOfferItems} from 'Lib/selector'
 
-import {
-  formatPrice
-} from 'Lib/formatter'
+import {formatPrice} from 'Lib/formatter'
 
 import PageHeader from 'Component/page-header'
 import Link from 'Component/link'
@@ -33,9 +28,15 @@ import backIcon from 'Icon/back.svg'
 import creditCardIcon from 'Icon/credit-card.svg'
 
 import {goToAddress, goToHome, goToSuccess} from 'Action/navigation'
-import {payWithStripe, createOrderWithStripe, payWithPaypal, createOrderWithPaypal} from 'Action/order'
+import {
+  payWithStripe,
+  createOrderWithStripe,
+  payWithPaypal,
+  createOrderWithPaypal
+} from 'Action/order'
 import {openFatalErrorModal} from 'Action/modal'
 
+import {guard} from './util/guard'
 import AppLayout from './app-layout'
 
 const CartPage = ({
@@ -60,15 +61,11 @@ const CartPage = ({
         key={item.modelId}
         quantity={item.quantity}
         title={item.fileName}
-        onQuantityChange={!isDirectSales && (() => onGoToHome()) || undefined}
+        onQuantityChange={(!isDirectSales && (() => onGoToHome())) || undefined}
         price={formatPrice(item.price, offer.currency)}
       />
     ))
-    return (
-      <ModelQuantityItemList>
-        {items}
-      </ModelQuantityItemList>
-    )
+    return <ModelQuantityItemList>{items}</ModelQuantityItemList>
   }
 
   const AddressSection = () => (
@@ -77,57 +74,72 @@ const CartPage = ({
         <Column md={6}>
           <Headline modifiers={['minor', 's']} label="Shipping Address" />
           <Paragraph modifiers={['l']}>
-            {user.companyName
-              ? <span>{user.companyName}<br /></span>
-              : null
-            }
-            {user.vatId
-              ? <span>{user.vatId}<br /></span>
-              : null
-            }
-            {user.shippingAddress.firstName} {user.shippingAddress.lastName}<br />
-            {user.shippingAddress.street} {user.shippingAddress.houseNumber}<br />
-            {user.shippingAddress.addressLine2}<br />
-            {user.shippingAddress.zipCode} {user.shippingAddress.city}<br />
-            {
-              user.shippingAddress.countryCode === 'US'
-              ? <span>{getUsStateName(user.shippingAddress.stateCode)}<br /></span>
-              : null
-            }
+            {user.companyName ? (
+              <span>
+                {user.companyName}
+                <br />
+              </span>
+            ) : null}
+            {user.vatId ? (
+              <span>
+                {user.vatId}
+                <br />
+              </span>
+            ) : null}
+            {user.shippingAddress.firstName} {user.shippingAddress.lastName}
+            <br />
+            {user.shippingAddress.street} {user.shippingAddress.houseNumber}
+            <br />
+            {user.shippingAddress.addressLine2}
+            <br />
+            {user.shippingAddress.zipCode} {user.shippingAddress.city}
+            <br />
+            {user.shippingAddress.countryCode === 'US' ? (
+              <span>
+                {getUsStateName(user.shippingAddress.stateCode)}
+                <br />
+              </span>
+            ) : null}
             {getCountryName(user.shippingAddress.countryCode)}
           </Paragraph>
         </Column>
         <Column md={6}>
           <Headline modifiers={['minor', 's']} label="Billing Address" />
           <Paragraph modifiers={['l']}>
-            {user.companyName
-              ? <span>{user.companyName}<br /></span>
-              : null
-            }
-            {user.vatId
-              ? <span>{user.vatId}<br /></span>
-              : null
-            }
-            {user.billingAddress.firstName ||
-              user.shippingAddress.firstName} {user.billingAddress.lastName ||
-              user.shippingAddress.lastName}<br />
-            {user.billingAddress.street ||
-              user.shippingAddress.street} {user.billingAddress.houseNumber ||
-              user.shippingAddress.houseNumber}<br />
-            {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}<br />
-            {user.billingAddress.zipCode ||
-              user.shippingAddress.zipCode} {user.billingAddress.city ||
-              user.shippingAddress.city}<br />
-            {
-               user.billingAddress.countryCode && user.billingAddress.countryCode === 'US'
-              ? <span>{getUsStateName(user.billingAddress.stateCode)}<br /></span>
-              : null
-            }
-            {
-               !user.billingAddress.countryCode && user.shippingAddress.countryCode === 'US'
-              ? <span>getUsStateName(user.shippingAddress.stateCode)<br /></span>
-              : null
-            }
+            {user.companyName ? (
+              <span>
+                {user.companyName}
+                <br />
+              </span>
+            ) : null}
+            {user.vatId ? (
+              <span>
+                {user.vatId}
+                <br />
+              </span>
+            ) : null}
+            {user.billingAddress.firstName || user.shippingAddress.firstName}{' '}
+            {user.billingAddress.lastName || user.shippingAddress.lastName}
+            <br />
+            {user.billingAddress.street || user.shippingAddress.street}{' '}
+            {user.billingAddress.houseNumber || user.shippingAddress.houseNumber}
+            <br />
+            {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}
+            <br />
+            {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
+            {user.billingAddress.city || user.shippingAddress.city}
+            <br />
+            {user.billingAddress.countryCode && user.billingAddress.countryCode === 'US' ? (
+              <span>
+                {getUsStateName(user.billingAddress.stateCode)}
+                <br />
+              </span>
+            ) : null}
+            {!user.billingAddress.countryCode && user.shippingAddress.countryCode === 'US' ? (
+              <span>
+                getUsStateName(user.shippingAddress.stateCode)<br />
+              </span>
+            ) : null}
             {user.billingAddress.countryCode
               ? getCountryName(user.billingAddress.countryCode)
               : getCountryName(user.shippingAddress.countryCode)}
@@ -148,11 +160,17 @@ const CartPage = ({
           <Headline modifiers={['minor', 's']} label="Material" />
           <Paragraph modifiers={['l']}>
             {selectedMaterial.material.name},&nbsp;
-            {selectedMaterial.material.properties.printingMethod}<br />
+            {selectedMaterial.material.properties.printingMethod}
+            <br />
             <ColorSquare
               color={selectedMaterial.materialConfig.colorCode}
-              image={getCloudinaryUrl(selectedMaterial.materialConfig.colorImage, ['w_40', 'h_40', 'c_fill'])}
-            /> {selectedMaterial.materialConfig.color}
+              image={getCloudinaryUrl(selectedMaterial.materialConfig.colorImage, [
+                'w_40',
+                'h_40',
+                'c_fill'
+              ])}
+            />{' '}
+            {selectedMaterial.materialConfig.color}
           </Paragraph>
         </Column>
       </Grid>
@@ -162,7 +180,7 @@ const CartPage = ({
   const backLink = (
     <Link
       icon={backIcon}
-      onClick={(event) => {
+      onClick={event => {
         event.preventDefault()
         onGoToAddress()
       }}
@@ -206,10 +224,13 @@ const CartPage = ({
       vat={formatPrice(offer.vatPrice, offer.currency)}
       total={formatPrice(offer.totalPrice, offer.currency)}
     >
-      {order.orderInProgress
-        ? <div className="u-align-center u-font-size-l "><LoadingIndicator /></div>
-        : paymentButtons
-      }
+      {order.orderInProgress ? (
+        <div className="u-align-center u-font-size-l ">
+          <LoadingIndicator />
+        </div>
+      ) : (
+        paymentButtons
+      )}
     </PaymentSection>
   )
 
@@ -246,6 +267,7 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
+  guard(state => state.price.selectedOffer),
   connect(mapStateToProps, mapDispatchToProps)
 )
 

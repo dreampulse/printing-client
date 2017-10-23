@@ -19,15 +19,8 @@ import ModelItemList from 'Component/model-item-list'
 import LabeledField from 'Component/labeled-field'
 import Button from 'Component/button'
 
-import {
-  uploadFiles,
-  deleteFile,
-  changeIndividualQuantity,
-  changeUnit
-} from 'Action/model'
-import {
-  createConfiguration
-} from 'Action/configuration'
+import {uploadFiles, deleteFile, changeIndividualQuantity, changeUnit} from 'Action/model'
+import {createConfiguration} from 'Action/configuration'
 
 import {getFeatures} from './util/feature'
 
@@ -42,7 +35,7 @@ const UploadSection = ({
   onChangeUnit,
   onCreateConfiguration
 }) => {
-  const onUpload = (files) => {
+  const onUpload = files => {
     onUploadFiles(toArray(files), features)
   }
 
@@ -74,7 +67,7 @@ const UploadSection = ({
       />
       {models.length > 0 && (
         <ModelItemList>
-          {models.map((model) => {
+          {models.map(model => {
             if (model.error) {
               return (
                 <ModelItemError
@@ -115,32 +108,28 @@ const UploadSection = ({
                 imageSource={model.thumbnailUrl}
                 quantity={model.quantity}
                 title={model.fileName}
-
                 onDelete={() => onDeleteFile(model.fileId)}
-                subline={formatDimensions(
-                  model.dimensions,
-                  model.fileUnit
-                )}
-
-                onQuantityChange={
-                  value => onChangeIndividualQuantity({
+                subline={formatDimensions(model.dimensions, model.fileUnit)}
+                onQuantityChange={value =>
+                  onChangeIndividualQuantity({
                     quantity: value,
                     modelId: model.modelId
-                  })
-                }
+                  })}
               />
             )
           })}
         </ModelItemList>
       )}
-      {features.share && models.length > 0 && !configurationId && (
-        <Button
-          label="Share compilation"
-          modifiers={['text']}
-          classNames={['u-float-right']}
-          onClick={() => onCreateConfiguration()}
-        />
-      )}
+      {features.share &&
+        models.length > 0 &&
+        !configurationId && (
+          <Button
+            label="Share compilation"
+            modifiers={['text']}
+            classNames={['u-float-right']}
+            onClick={() => onCreateConfiguration()}
+          />
+        )}
     </Section>
   )
 }
@@ -159,7 +148,4 @@ const mapDispatchToProps = {
   onCreateConfiguration: createConfiguration
 }
 
-export default compose(
-  getFeatures,
-  connect(mapStateToProps, mapDispatchToProps)
-)(UploadSection)
+export default compose(getFeatures, connect(mapStateToProps, mapDispatchToProps))(UploadSection)

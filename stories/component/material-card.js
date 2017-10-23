@@ -13,8 +13,8 @@ import Paragraph from 'Component/paragraph'
 import HandleValue from '../util/handle-value'
 import {selectMenuColorValues} from '../util/data'
 
-const colorMenu = (<SelectMenu values={selectMenuColorValues} />)
-const price = (<Price value="$19.99" meta="incl. tax & shipping" />)
+const colorMenu = <SelectMenu values={selectMenuColorValues} />
+const price = <Price value="$19.99" meta="incl. tax & shipping" />
 const colorSelect = (
   <HandleValue>
     <SelectField modifiers={['compact']} placeholder="Placeholder" menu={colorMenu} />
@@ -24,9 +24,7 @@ const colorSelect = (
 const info = (
   <Info modifiers={['minor']}>
     <Headline modifiers={['s']} label="Headline" />
-    <Paragraph>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit
-    </Paragraph>
+    <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
   </Info>
 )
 

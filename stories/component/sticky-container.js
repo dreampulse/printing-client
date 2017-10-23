@@ -3,13 +3,10 @@ import {storiesOf} from '@storybook/react'
 
 import StickyContainer from 'Component/sticky-container'
 
-storiesOf('Sticky Container', module)
-  .add('default', () => (
-    <div style={{height: '1000px'}}>
-      This one is not.
-      <StickyContainer>
-        This text is sticky!
-      </StickyContainer>
-      This one is not.
-    </div>
-  ))
+storiesOf('Sticky Container', module).add('default', () => (
+  <div style={{height: '1000px'}}>
+    This one is not.
+    <StickyContainer>This text is sticky!</StickyContainer>
+    This one is not.
+  </div>
+))

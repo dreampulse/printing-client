@@ -1,9 +1,4 @@
-import {
-  changeQuantity,
-  changeIndividualQuantity,
-  uploadFiles,
-  deleteFile
-} from 'Action/model'
+import {changeQuantity, changeIndividualQuantity, uploadFiles, deleteFile} from 'Action/model'
 import * as priceActions from 'Action/price'
 import * as printingEngine from 'Lib/printing-engine'
 import TYPE, {ERROR_TYPE} from '../../../../src/app/action-type'
@@ -39,12 +34,15 @@ describe('Model actions', () => {
         .returns(resolveAsyncThunk('some-create-debounced-price-request'))
 
       await store.dispatch(changeQuantity({quantity: 123}))
-      expect(store.getActions(), 'to equal', [{
-        type: TYPE.MODEL.QUANTITIY_CHANGED,
-        payload: {quantity: 123}
-      }, {
-        type: 'some-create-debounced-price-request'
-      }])
+      expect(store.getActions(), 'to equal', [
+        {
+          type: TYPE.MODEL.QUANTITIY_CHANGED,
+          payload: {quantity: 123}
+        },
+        {
+          type: 'some-create-debounced-price-request'
+        }
+      ])
     })
   })
 
@@ -55,12 +53,15 @@ describe('Model actions', () => {
         .returns(resolveAsyncThunk('some-create-debounced-price-request'))
 
       await store.dispatch(changeIndividualQuantity({modelId: 'some-id', quantity: 123}))
-      expect(store.getActions(), 'to equal', [{
-        type: TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED,
-        payload: {modelId: 'some-id', quantity: 123}
-      }, {
-        type: 'some-create-debounced-price-request'
-      }])
+      expect(store.getActions(), 'to equal', [
+        {
+          type: TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED,
+          payload: {modelId: 'some-id', quantity: 123}
+        },
+        {
+          type: 'some-create-debounced-price-request'
+        }
+      ])
     })
   })
 
@@ -75,19 +76,18 @@ describe('Model actions', () => {
         .withArgs()
         .returns(resolveAsyncThunk('some-create-price-request'))
 
-      printingEngine.uploadModel
-        .callsFake((f, params, onUploadProgressed) => {
-          onUploadProgressed(1)
-          return Promise.resolve({
-            modelId: 'some-model-id',
-            thumbnailUrl: 'some-url',
-            fileName: 'some-file.stl',
-            fileUnit: 'mm',
-            area: 100,
-            volume: 200,
-            dimensions: {x: 1, y: 2, z: 3}
-          })
+      printingEngine.uploadModel.callsFake((f, params, onUploadProgressed) => {
+        onUploadProgressed(1)
+        return Promise.resolve({
+          modelId: 'some-model-id',
+          thumbnailUrl: 'some-url',
+          fileName: 'some-file.stl',
+          fileUnit: 'mm',
+          area: 100,
+          volume: 200,
+          dimensions: {x: 1, y: 2, z: 3}
         })
+      })
     })
 
     it('calls uploadModel() with expected parameters', async () => {
@@ -106,40 +106,47 @@ describe('Model actions', () => {
       // Get created file id for later checks
       const fileId = store.getActions()[2].payload.fileId
 
-      expect(store.getActions(), 'to satisfy', [{
-        type: TYPE.PRICE.CLEAR_OFFERS,
-        payload: undefined
-      }, {
-        type: TYPE.MATERIAL.CONFIG_SELECTED,
-        payload: undefined
-      }, {
-        type: TYPE.MODEL.FILE_UPLOAD_STARTED,
-        payload: {
-          fileId: expect.it('to be a string'),
-          fileName: 'some-name',
-          fileSize: 123
+      expect(store.getActions(), 'to satisfy', [
+        {
+          type: TYPE.PRICE.CLEAR_OFFERS,
+          payload: undefined
+        },
+        {
+          type: TYPE.MATERIAL.CONFIG_SELECTED,
+          payload: undefined
+        },
+        {
+          type: TYPE.MODEL.FILE_UPLOAD_STARTED,
+          payload: {
+            fileId: expect.it('to be a string'),
+            fileName: 'some-name',
+            fileSize: 123
+          }
+        },
+        {
+          type: TYPE.MODEL.FILE_UPLOAD_PROGRESSED,
+          payload: {
+            fileId,
+            progress: 1
+          }
+        },
+        {
+          type: TYPE.MODEL.FILE_UPLOADED,
+          payload: {
+            fileId,
+            modelId: 'some-model-id',
+            thumbnailUrl: 'some-url',
+            fileName: 'some-file.stl',
+            fileUnit: 'mm',
+            area: 100,
+            volume: 200,
+            dimensions: {x: 1, y: 2, z: 3}
+          }
+        },
+        {
+          type: 'some-create-price-request'
         }
-      }, {
-        type: TYPE.MODEL.FILE_UPLOAD_PROGRESSED,
-        payload: {
-          fileId,
-          progress: 1
-        }
-      }, {
-        type: TYPE.MODEL.FILE_UPLOADED,
-        payload: {
-          fileId,
-          modelId: 'some-model-id',
-          thumbnailUrl: 'some-url',
-          fileName: 'some-file.stl',
-          fileUnit: 'mm',
-          area: 100,
-          volume: 200,
-          dimensions: {x: 1, y: 2, z: 3}
-        }
-      }, {
-        type: 'some-create-price-request'
-      }])
+      ])
     })
 
     describe('when upload failes:', () => {
@@ -147,33 +154,37 @@ describe('Model actions', () => {
         printingEngine.uploadModel.rejects(new Error('some-error'))
       })
 
-      it('dispatches expected actions', () => (
+      it('dispatches expected actions', () =>
         store.dispatch(uploadFiles([file], features)).then(() => {
-          expect(store.getActions(), 'to satisfy', [{
-            type: TYPE.PRICE.CLEAR_OFFERS,
-            payload: undefined
-          }, {
-            type: TYPE.MATERIAL.CONFIG_SELECTED,
-            payload: undefined
-          }, {
-            type: TYPE.MODEL.FILE_UPLOAD_STARTED,
-            payload: {
-              fileId: expect.it('to be a string'),
-              fileName: 'some-name',
-              fileSize: 123
-            }
-          }, {
-            type: TYPE.MODEL.FILE_UPLOAD_FAILED,
-            payload: {
-              error: expect.it('to satisfy', {
-                type: ERROR_TYPE.FILE_UPLOAD_FAILED,
+          expect(store.getActions(), 'to satisfy', [
+            {
+              type: TYPE.PRICE.CLEAR_OFFERS,
+              payload: undefined
+            },
+            {
+              type: TYPE.MATERIAL.CONFIG_SELECTED,
+              payload: undefined
+            },
+            {
+              type: TYPE.MODEL.FILE_UPLOAD_STARTED,
+              payload: {
+                fileId: expect.it('to be a string'),
+                fileName: 'some-name',
+                fileSize: 123
+              }
+            },
+            {
+              type: TYPE.MODEL.FILE_UPLOAD_FAILED,
+              payload: {
+                error: expect.it('to satisfy', {
+                  type: ERROR_TYPE.FILE_UPLOAD_FAILED,
+                  fileId: expect.it('to be a string')
+                }),
                 fileId: expect.it('to be a string')
-              }),
-              fileId: expect.it('to be a string')
+              }
             }
-          }])
-        })
-      ))
+          ])
+        }))
     })
   })
 
@@ -184,12 +195,15 @@ describe('Model actions', () => {
         .returns(resolveAsyncThunk('some-create-price-request'))
 
       await store.dispatch(deleteFile('some-file-id'))
-      expect(store.getActions(), 'to equal', [{
-        type: TYPE.MODEL.FILE_DELETED,
-        payload: {fileId: 'some-file-id'}
-      }, {
-        type: 'some-create-price-request'
-      }])
+      expect(store.getActions(), 'to equal', [
+        {
+          type: TYPE.MODEL.FILE_DELETED,
+          payload: {fileId: 'some-file-id'}
+        },
+        {
+          type: 'some-create-price-request'
+        }
+      ])
     })
   })
 })

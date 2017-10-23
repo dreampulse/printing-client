@@ -1,13 +1,7 @@
 import React from 'react'
 import {compose} from 'recompose'
 import {connect} from 'react-redux'
-import {
-  Field,
-  reduxForm,
-  formValueSelector,
-  isValid,
-  change
-} from 'redux-form'
+import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
 import {getCountriesMenu, getUsStateName, getUsStates, getCountryName} from 'Service/country'
 
 import FormLayout from 'Component/form-layout'
@@ -23,12 +17,20 @@ import Link from 'Component/link'
 
 import backIcon from 'Icon/back.svg'
 
-import {renderField} from 'Container/util/form'
-
 import {reviewOrder} from 'Action/user'
 import {goToHome} from 'Action/navigation'
 
+import {renderField} from './util/form'
+import {guard} from './util/guard'
 import AppLayout from './app-layout'
+
+const required = value => (value ? undefined : 'Required')
+const email = value =>
+  !value || (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value))
+    ? 'Invalid email address'
+    : undefined
+const tel = value =>
+  !value || (value && !/^[+]?[0-9\-\s()]*$/i.test(value)) ? 'Invalid phone number' : undefined
 
 const AddressPage = ({
   handleSubmit,
@@ -41,31 +43,19 @@ const AddressPage = ({
   billingAddress,
   shippingAddress
 }) => {
-  const required = value => (value ? undefined : 'Required')
-  const email = value => (
-    !value || value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-    ? 'Invalid email address'
-    : undefined
-  )
-
-  const tel = value => (
-    !value || value && !/^[+]?[0-9\-\s()]*$/i.test(value)
-    ? 'Invalid phone number'
-    : undefined
-  )
-
   const CountrySelect = ({onChange, value, ...props}) => {
     const changeCountry = val => onChange(val.value)
     const val = !value || value === '' ? undefined : {value, label: getCountryName(value)}
     const countryMenu = <SelectMenu values={getCountriesMenu()} />
-    return (<SelectField menu={countryMenu} value={val} onChange={changeCountry} {...props} />)
+    return <SelectField menu={countryMenu} value={val} onChange={changeCountry} {...props} />
   }
 
   const UsStateSelect = ({onChange, countryCode, value, ...props}) => {
     const changeState = val => onChange(val.value)
     const usStateMenu = <SelectMenu values={getUsStates()} />
     const isDisabled = !countryCode || (countryCode && countryCode !== 'US')
-    const actualValue = !value || value === '' || isDisabled ? undefined : {value, label: getUsStateName(value)}
+    const actualValue =
+      !value || value === '' || isDisabled ? undefined : {value, label: getUsStateName(value)}
     return (
       <SelectField
         validate={!isDisabled ? required : undefined}
@@ -84,8 +74,18 @@ const AddressPage = ({
         <Headline modifiers={['xs']} label="Company information" />
       </FormRow>
       <FormRow modifiers={['half-half']}>
-        <Field validate={required} component={renderField(InputField)} label="Company Name" name="companyName" />
-        <Field validate={required} component={renderField(InputField)} label="VAT ID" name="vatId" />
+        <Field
+          validate={required}
+          component={renderField(InputField)}
+          label="Company Name"
+          name="companyName"
+        />
+        <Field
+          validate={required}
+          component={renderField(InputField)}
+          label="VAT ID"
+          name="vatId"
+        />
       </FormRow>
     </div>
   )
@@ -97,22 +97,56 @@ const AddressPage = ({
       </FormRow>
 
       <FormRow modifiers={['half-half']}>
-        <Field validate={required} component={renderField(InputField)} label="First name" name="billingAddress.firstName" />
-        <Field validate={required} component={renderField(InputField)} label="Last name" name="billingAddress.lastName" />
+        <Field
+          validate={required}
+          component={renderField(InputField)}
+          label="First name"
+          name="billingAddress.firstName"
+        />
+        <Field
+          validate={required}
+          component={renderField(InputField)}
+          label="Last name"
+          name="billingAddress.lastName"
+        />
       </FormRow>
 
       <FormRow modifiers={['l-s']}>
-        <Field validate={required} component={renderField(InputField)} label="Street" name="billingAddress.street" />
-        <Field validate={required} component={renderField(InputField)} label="House number" name="billingAddress.houseNumber" />
+        <Field
+          validate={required}
+          component={renderField(InputField)}
+          label="Street"
+          name="billingAddress.street"
+        />
+        <Field
+          validate={required}
+          component={renderField(InputField)}
+          label="House number"
+          name="billingAddress.houseNumber"
+        />
       </FormRow>
 
       <FormRow>
-        <Field component={renderField(InputField)} label="Address line 2" name="billingAddress.addressLine2" />
+        <Field
+          component={renderField(InputField)}
+          label="Address line 2"
+          name="billingAddress.addressLine2"
+        />
       </FormRow>
 
       <FormRow modifiers={['half-half']}>
-        <Field validate={required} component={renderField(InputField)} label="City" name="billingAddress.city" />
-        <Field validate={required} component={renderField(InputField)} label="Zip code" name="billingAddress.zipCode" />
+        <Field
+          validate={required}
+          component={renderField(InputField)}
+          label="City"
+          name="billingAddress.city"
+        />
+        <Field
+          validate={required}
+          component={renderField(InputField)}
+          label="Zip code"
+          name="billingAddress.zipCode"
+        />
       </FormRow>
 
       <FormRow modifiers={['half-half']}>
@@ -123,7 +157,12 @@ const AddressPage = ({
           type="select"
           countryCode={billingAddress.countryCode}
         />
-        <Field validate={required} component={renderField(CountrySelect)} label="Country" name="billingAddress.countryCode" />
+        <Field
+          validate={required}
+          component={renderField(CountrySelect)}
+          label="Country"
+          name="billingAddress.countryCode"
+        />
       </FormRow>
     </div>
   )
@@ -131,7 +170,7 @@ const AddressPage = ({
   const backLink = (
     <Link
       icon={backIcon}
-      onClick={(event) => {
+      onClick={event => {
         event.preventDefault()
         onGoToHome()
       }}
@@ -149,17 +188,45 @@ const AddressPage = ({
           </FormRow>
 
           <FormRow modifiers={['half-half']}>
-            <Field validate={required} component={renderField(InputField)} label="First name" name="shippingAddress.firstName" />
-            <Field validate={required} component={renderField(InputField)} label="Last name" name="shippingAddress.lastName" />
+            <Field
+              validate={required}
+              component={renderField(InputField)}
+              label="First name"
+              name="shippingAddress.firstName"
+            />
+            <Field
+              validate={required}
+              component={renderField(InputField)}
+              label="Last name"
+              name="shippingAddress.lastName"
+            />
           </FormRow>
 
           <FormRow modifiers={['half-half']}>
-            <Field validate={email} component={renderField(InputField)} label="Email address" name="emailAddress" type="email" />
-            <Field validate={tel} component={renderField(InputField)} label="Phone number" name="phoneNumber" type="tel" />
+            <Field
+              validate={email}
+              component={renderField(InputField)}
+              label="Email address"
+              name="emailAddress"
+              type="email"
+            />
+            <Field
+              validate={tel}
+              component={renderField(InputField)}
+              label="Phone number"
+              name="phoneNumber"
+              type="tel"
+            />
           </FormRow>
 
           <FormRow>
-            <Field onChangeValue={handleIsCompanyChange} name="isCompany" component={renderField(LabeledCheckbox)} label="I am ordering for a company" type="checkbox" />
+            <Field
+              onChangeValue={handleIsCompanyChange}
+              name="isCompany"
+              component={renderField(LabeledCheckbox)}
+              label="I am ordering for a company"
+              type="checkbox"
+            />
           </FormRow>
 
           {isCompany && companySection}
@@ -169,17 +236,41 @@ const AddressPage = ({
           </FormRow>
 
           <FormRow modifiers={['l-s']}>
-            <Field validate={required} component={renderField(InputField)} label="Street" name="shippingAddress.street" />
-            <Field validate={required} component={renderField(InputField)} label="House number" name="shippingAddress.houseNumber" />
+            <Field
+              validate={required}
+              component={renderField(InputField)}
+              label="Street"
+              name="shippingAddress.street"
+            />
+            <Field
+              validate={required}
+              component={renderField(InputField)}
+              label="House number"
+              name="shippingAddress.houseNumber"
+            />
           </FormRow>
 
           <FormRow>
-            <Field component={renderField(InputField)} label="Address line 2" name="shippingAddress.addressLine2" />
+            <Field
+              component={renderField(InputField)}
+              label="Address line 2"
+              name="shippingAddress.addressLine2"
+            />
           </FormRow>
 
           <FormRow modifiers={['half-half']}>
-            <Field validate={required} component={renderField(InputField)} label="City" name="shippingAddress.city" />
-            <Field validate={required} component={renderField(InputField)} label="Zip code" name="shippingAddress.zipCode" />
+            <Field
+              validate={required}
+              component={renderField(InputField)}
+              label="City"
+              name="shippingAddress.city"
+            />
+            <Field
+              validate={required}
+              component={renderField(InputField)}
+              label="Zip code"
+              name="shippingAddress.zipCode"
+            />
           </FormRow>
 
           <FormRow modifiers={['half-half']}>
@@ -190,15 +281,26 @@ const AddressPage = ({
               type="select"
               countryCode={shippingAddress.countryCode}
             />
-            <Field validate={required} component={renderField(CountrySelect)} label="Country" name="shippingAddress.countryCode" type="select" />
+            <Field
+              validate={required}
+              component={renderField(CountrySelect)}
+              label="Country"
+              name="shippingAddress.countryCode"
+              type="select"
+            />
           </FormRow>
 
           <FormRow>
-            <Field onChangeValue={handleBillingChange} name="useDifferentBillingAddress" component={renderField(LabeledCheckbox)} label="Use different billing address" type="checkbox" />
+            <Field
+              onChangeValue={handleBillingChange}
+              name="useDifferentBillingAddress"
+              component={renderField(LabeledCheckbox)}
+              label="Use different billing address"
+              type="checkbox"
+            />
           </FormRow>
 
           {useDifferentBillingAddress && billingAddressSection}
-
         </FormLayout>
 
         <Button
@@ -263,20 +365,49 @@ const mapDispatchToProps = {
       dispatch(change(FORM_NAME, 'billingAddress.stateCode', ''))
       dispatch(change(FORM_NAME, 'billingAddress.countryCode', ''))
     } else {
-      dispatch(change(FORM_NAME, 'billingAddress.firstName', selector(state, 'shippingAddress.firstName')))
-      dispatch(change(FORM_NAME, 'billingAddress.lastName', selector(state, 'shippingAddress.lastName')))
-      dispatch(change(FORM_NAME, 'billingAddress.street', selector(state, 'shippingAddress.street')))
-      dispatch(change(FORM_NAME, 'billingAddress.houseNumber', selector(state, 'shippingAddress.houseNumber')))
-      dispatch(change(FORM_NAME, 'billingAddress.addressLine2', selector(state, 'shippingAddress.addressLine2')))
+      dispatch(
+        change(FORM_NAME, 'billingAddress.firstName', selector(state, 'shippingAddress.firstName'))
+      )
+      dispatch(
+        change(FORM_NAME, 'billingAddress.lastName', selector(state, 'shippingAddress.lastName'))
+      )
+      dispatch(
+        change(FORM_NAME, 'billingAddress.street', selector(state, 'shippingAddress.street'))
+      )
+      dispatch(
+        change(
+          FORM_NAME,
+          'billingAddress.houseNumber',
+          selector(state, 'shippingAddress.houseNumber')
+        )
+      )
+      dispatch(
+        change(
+          FORM_NAME,
+          'billingAddress.addressLine2',
+          selector(state, 'shippingAddress.addressLine2')
+        )
+      )
       dispatch(change(FORM_NAME, 'billingAddress.city', selector(state, 'shippingAddress.city')))
-      dispatch(change(FORM_NAME, 'billingAddress.zipCode', selector(state, 'shippingAddress.zipCode')))
-      dispatch(change(FORM_NAME, 'billingAddress.stateCode', selector(state, 'shippingAddress.stateCode')))
-      dispatch(change(FORM_NAME, 'billingAddress.countryCode', selector(state, 'shippingAddress.countryCode')))
+      dispatch(
+        change(FORM_NAME, 'billingAddress.zipCode', selector(state, 'shippingAddress.zipCode'))
+      )
+      dispatch(
+        change(FORM_NAME, 'billingAddress.stateCode', selector(state, 'shippingAddress.stateCode'))
+      )
+      dispatch(
+        change(
+          FORM_NAME,
+          'billingAddress.countryCode',
+          selector(state, 'shippingAddress.countryCode')
+        )
+      )
     }
   }
 }
 
 const enhance = compose(
+  guard(state => state.price.selectedOffer),
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({form: FORM_NAME})
 )

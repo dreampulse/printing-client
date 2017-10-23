@@ -9,8 +9,9 @@ const initialState = {
   orderInProgress: false
 }
 
-function handleOrderOrdered (state, {payload: {orderId}, error}) {
-  if (error) {  // @TODO: is this still possible (we removed redux promise)
+function handleOrderOrdered(state, {payload: {orderId}, error}) {
+  if (error) {
+    // @TODO: is this still possible (we removed redux promise)
     return {
       ...state,
       orderId: null,
@@ -25,34 +26,39 @@ function handleOrderOrdered (state, {payload: {orderId}, error}) {
   }
 }
 
-function handleOrderPayed (state, {payload: {paymentToken}}) {
+function handleOrderPayed(state, {payload: {paymentToken}}) {
   return {
     ...state,
     paymentToken
   }
 }
 
-function handleOrderStarted (state) {
+function handleOrderStarted(state) {
   return {
     ...state,
     orderInProgress: true
   }
 }
 
-function handleOrderAborted (state) {
+function handleOrderAborted(state) {
   return {
     ...state,
     orderInProgress: false
   }
 }
 
-const reducer = (state : OrderState = initialState, action: Action) : OrderState => {
+const reducer = (state: OrderState = initialState, action: Action): OrderState => {
   switch (action.type) {
-    case TYPE.ORDER.ORDERED: return handleOrderOrdered(state, action)
-    case TYPE.ORDER.PAYED: return handleOrderPayed(state, action)
-    case TYPE.ORDER.STARTED: return handleOrderStarted(state)
-    case TYPE.ORDER.ABORTED: return handleOrderAborted(state)
-    default: return state
+    case TYPE.ORDER.ORDERED:
+      return handleOrderOrdered(state, action)
+    case TYPE.ORDER.PAYED:
+      return handleOrderPayed(state, action)
+    case TYPE.ORDER.STARTED:
+      return handleOrderStarted(state)
+    case TYPE.ORDER.ABORTED:
+      return handleOrderAborted(state)
+    default:
+      return state
   }
 }
 

@@ -10,35 +10,35 @@ const initialState = {
   selectedMaterialConfigs: {}
 }
 
-function handleRestoreConfiguration (state, {payload: {materialConfigId}}) {
+function handleRestoreConfiguration(state, {payload: {materialConfigId}}) {
   return {
     ...state,
     selectedMaterialConfig: materialConfigId
   }
 }
 
-function handleReceivedMaterials (state, {payload}) {
+function handleReceivedMaterials(state, {payload}) {
   return {
     ...state,
     materials: payload
   }
 }
 
-function handleSelectedMaterial (state, {payload}) {
+function handleSelectedMaterial(state, {payload}) {
   return {
     ...state,
     selectedMaterial: payload
   }
 }
 
-function handleSelectedMaterialConfig (state, {payload}) {
+function handleSelectedMaterialConfig(state, {payload}) {
   return {
     ...state,
     selectedMaterialConfig: payload
   }
 }
 
-function handleSelectedMaterialConfigForFinishGroup (state, {payload}) {
+function handleSelectedMaterialConfigForFinishGroup(state, {payload}) {
   return {
     ...state,
     selectedMaterialConfigs: {
@@ -49,16 +49,21 @@ function handleSelectedMaterialConfigForFinishGroup (state, {payload}) {
   }
 }
 
-const reducer = (state : MaterialState = initialState, action: Action) : MaterialState => {
+const reducer = (state: MaterialState = initialState, action: Action): MaterialState => {
   switch (action.type) {
-    case TYPE.MATERIAL.RECEIVED: return handleReceivedMaterials(state, action)
-    case TYPE.MATERIAL.SELECTED: return handleSelectedMaterial(state, action)
-    case TYPE.MATERIAL.CONFIG_SELECTED: return handleSelectedMaterialConfig(state, action)
+    case TYPE.MATERIAL.RECEIVED:
+      return handleReceivedMaterials(state, action)
+    case TYPE.MATERIAL.SELECTED:
+      return handleSelectedMaterial(state, action)
+    case TYPE.MATERIAL.CONFIG_SELECTED:
+      return handleSelectedMaterialConfig(state, action)
     case TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED:
       return handleSelectedMaterialConfigForFinishGroup(state, action)
-    case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION: return handleRestoreConfiguration(state, action)
+    case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION:
+      return handleRestoreConfiguration(state, action)
 
-    default: return state
+    default:
+      return state
   }
 }
 

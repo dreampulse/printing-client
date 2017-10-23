@@ -1,4 +1,5 @@
-import React, {PropTypes, Component} from 'react'
+import PropTypes from 'prop-types'
+import React, {Component} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
 import propTypes from 'Lib/prop-types'
@@ -21,7 +22,7 @@ export default class UploadArea extends Component {
     onChange: () => {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -42,12 +43,12 @@ export default class UploadArea extends Component {
     })
   }
 
-  onDragOver = (event) => {
+  onDragOver = event => {
     event.preventDefault()
     event.dataTransfer.dropEffect = 'copy'
   }
 
-  onDrop = (event) => {
+  onDrop = event => {
     event.preventDefault()
     this.setState({
       dragOver: 0
@@ -56,22 +57,13 @@ export default class UploadArea extends Component {
     this.props.onChange(event.dataTransfer.files)
   }
 
-  onInputChange = (event) => {
+  onInputChange = event => {
     this.props.onChange(event.target.files)
   }
 
-  render () {
-    const {
-      classNames,
-      modifiers = [],
-      label,
-      linkLabel,
-      accept
-    } = this.props
-    const {
-      inputId,
-      dragOver
-    } = this.state
+  render() {
+    const {classNames, modifiers = [], label, linkLabel, accept} = this.props
+    const {inputId, dragOver} = this.state
 
     const finalModifiers = [
       ...modifiers,
@@ -89,8 +81,7 @@ export default class UploadArea extends Component {
         onDrop={this.onDrop}
       >
         <Icon source={uploadIcon} />
-        {label}
-        {' '}
+        {label}{' '}
         <label className="upload-area__link" htmlFor={inputId}>
           {linkLabel}
         </label>

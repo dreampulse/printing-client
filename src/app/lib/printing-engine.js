@@ -10,7 +10,8 @@ export const listMaterials = () => requestJson(`${baseUrl}/material`)
 
 export const createUser = ({user}) => requestJson(`${baseUrl}/user`, {method: 'POST', body: user})
 
-export const updateUser = ({userId, user}) => requestJson(`${baseUrl}/user/${userId}`, {method: 'PUT', body: user})
+export const updateUser = ({userId, user}) =>
+  requestJson(`${baseUrl}/user/${userId}`, {method: 'PUT', body: user})
 
 export const createPriceRequest = options =>
   requestJson(`${baseUrl}/price`, {
@@ -39,8 +40,7 @@ export const createShoppingCart = cart =>
     body: cart
   })
 
-export const getFinalCartPrice = ({cartId}) =>
-  requestJson(`${baseUrl}/cart/${cartId}`)
+export const getFinalCartPrice = ({cartId}) => requestJson(`${baseUrl}/cart/${cartId}`)
 
 export const order = ({userId, priceId, offerId, type, token}) =>
   requestJson(`${baseUrl}/order`, {

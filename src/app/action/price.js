@@ -17,36 +17,19 @@ const RECALC_POLL_NAME = 'price_recalc'
 // Sync actions
 
 const clearOffers = createAction(TYPE.PRICE.CLEAR_OFFERS)
-const priceRequested = createAction(
-  TYPE.PRICE.REQUESTED,
-  (priceId : string) => ({priceId})
-)
-const priceReceived = createAction(
-  TYPE.PRICE.RECEIVED,
-  (price : Price, isComplete : boolean) => ({price, isComplete})
-)
-const gotError = createAction(
-  TYPE.PRICE.GOT_ERROR,
-  (error: Error) => error
-)
+const priceRequested = createAction(TYPE.PRICE.REQUESTED, (priceId: string) => ({priceId}))
+const priceReceived = createAction(TYPE.PRICE.RECEIVED, (price: Price, isComplete: boolean) => ({
+  price,
+  isComplete
+}))
+const gotError = createAction(TYPE.PRICE.GOT_ERROR, (error: Error) => error)
 const priceTimeout = createAction(TYPE.PRICE.TIMEOUT)
-export const selectOffer = createAction(
-  TYPE.PRICE.SELECT_OFFER,
-  (offer : ?Offer) => ({offer})
-)
+export const selectOffer = createAction(TYPE.PRICE.SELECT_OFFER, (offer: ?Offer) => ({offer}))
 
 // Asnyc actions
 
-export const refreshSelectedOffer = () => (
-  dispatch : Dispatch<*>,
-  getState : () => State
-) => {
-  const {
-    price: {
-      offers,
-      selectedOffer
-    }
-  } = getState()
+export const refreshSelectedOffer = () => (dispatch: Dispatch<*>, getState: () => State) => {
+  const {price: {offers, selectedOffer}} = getState()
 
   if (selectedOffer) {
     const offer = offers ? getUpdatedOffer(selectedOffer, offers) : null
@@ -56,32 +39,19 @@ export const refreshSelectedOffer = () => (
 }
 
 // @TODO: Improve interface
-export const createPriceRequest = ({
-  debounce = false
-} : {
-  refresh : boolean,
-  debounce : boolean
-} = {}) => (
-  dispatch : Dispatch<*>,
-  getState : () => State
-) : Promise<any> => {
+export const createPriceRequest = (
+  {
+    debounce = false
+  }: {
+    refresh: boolean,
+    debounce: boolean
+  } = {}
+) => (dispatch: Dispatch<*>, getState: () => State): Promise<any> => {
   dispatch(clearOffers())
 
   const state = getState()
   if (!state.material.materials) throw new Error('Materials structure missing')
-  const {
-    material: {
-      materials: {
-        materialConfigs
-      }
-    },
-    model: {
-      models
-    },
-    user: {
-      userId
-    }
-  } = state
+  const {material: {materials: {materialConfigs}}, model: {models}, user: {userId}} = state
   const {refresh} = selectFeatures(state)
 
   // Abort if user did not upload any models yet
@@ -92,7 +62,7 @@ export const createPriceRequest = ({
   }
 
   const materialConfigIds = Object.keys(materialConfigs)
-  const items = models.map((model) => {
+  const items = models.map(model => {
     if (!model.uploadFinished) throw new Error('Upload still in progress')
     const {modelId, quantity} = model
     return {
@@ -111,61 +81,51 @@ export const createPriceRequest = ({
   }
 
   const usePoll = debounce ? debouncedPoll : poll
-  return usePoll(POLL_NAME, async (priceId) => {
-    const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
-    dispatch(priceReceived(price, isComplete))
-    return isComplete
-  }, async () => {
-    const {priceId} = await printingEngine.createPriceRequest(options)
-    dispatch(priceRequested(priceId))
-    return priceId
-  })
-  .then(() => {
-    // We need to update the selectedOffer if applicable
-    dispatch(refreshSelectedOffer())
-  })
-  .catch((error : Error) => {
-    // Handle timeout separately
-    if (error.type === ERROR_TYPE.POLL_TIMEOUT) {
-      dispatch(priceTimeout(error))
-      return
+  return usePoll(
+    POLL_NAME,
+    async priceId => {
+      const {price, isComplete} = await printingEngine.getPriceWithStatus({priceId})
+      dispatch(priceReceived(price, isComplete))
+      return isComplete
+    },
+    async () => {
+      const {priceId} = await printingEngine.createPriceRequest(options)
+      dispatch(priceRequested(priceId))
+      return priceId
     }
+  )
+    .then(() => {
+      // We need to update the selectedOffer if applicable
+      dispatch(refreshSelectedOffer())
+    })
+    .catch((error: Error) => {
+      // Handle timeout separately
+      if (error.type === ERROR_TYPE.POLL_TIMEOUT) {
+        dispatch(priceTimeout(error))
+        return
+      }
 
-    // Ignore special error when price request was overwritten or stopped
-    if (error.type === ERROR_TYPE.POLL_OVERWRITTEN ||
-      error.type === ERROR_TYPE.POLL_STOPPED) {
-      return
-    }
+      // Ignore special error when price request was overwritten or stopped
+      if (error.type === ERROR_TYPE.POLL_OVERWRITTEN || error.type === ERROR_TYPE.POLL_STOPPED) {
+        return
+      }
 
-    dispatch(gotError(error))
+      dispatch(gotError(error))
 
-    // Throw again to trigger fatal error modal
-    throw error
-  })
+      // Throw again to trigger fatal error modal
+      throw error
+    })
 }
 
-export const recalculateSelectedOffer = () => (
-  dispatch : Dispatch<*>,
-  getState : () => State
-) => {
-  const {
-    model: {
-      models
-    },
-    price: {
-      selectedOffer
-    },
-    user: {
-      userId
-    }
-  } = getState()
+export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: () => State) => {
+  const {model: {models}, price: {selectedOffer}, user: {userId}} = getState()
 
   if (!selectedOffer) throw new Error('No offer selected')
 
   // Stop any other price polling
   stopPoll(POLL_NAME)
 
-  const items = models.map((model) => {
+  const items = models.map(model => {
     if (!model.uploadFinished) throw new Error('Upload still in progress')
     const {modelId, quantity} = model
     return {
@@ -183,23 +143,26 @@ export const recalculateSelectedOffer = () => (
     items
   }
 
-  return poll(RECALC_POLL_NAME, async (priceId) => {
-    const {price} = await printingEngine.getPriceWithStatus({priceId})
-    const updatedOffer = getUpdatedOffer(selectedOffer, price.offers)
+  return poll(
+    RECALC_POLL_NAME,
+    async priceId => {
+      const {price} = await printingEngine.getPriceWithStatus({priceId})
+      const updatedOffer = getUpdatedOffer(selectedOffer, price.offers)
 
-    if (!updatedOffer || updatedOffer.priceEstimated) {
-      return false
+      if (!updatedOffer || updatedOffer.priceEstimated) {
+        return false
+      }
+
+      dispatch(selectOffer(updatedOffer))
+
+      return true
+    },
+    async () => {
+      const {priceId} = await printingEngine.createPriceRequest(options)
+      dispatch(priceRequested(priceId))
+      return priceId
     }
-
-    dispatch(selectOffer(updatedOffer))
-
-    return true
-  }, async () => {
-    const {priceId} = await printingEngine.createPriceRequest(options)
-    dispatch(priceRequested(priceId))
-    return priceId
-  })
-  .catch((error) => {
+  ).catch(error => {
     // Every error here is fatal!
 
     dispatch(gotError(error))

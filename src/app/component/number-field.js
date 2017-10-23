@@ -1,8 +1,6 @@
-import React, {PropTypes} from 'react'
-import {
-  compose,
-  withState
-} from 'recompose'
+import PropTypes from 'prop-types'
+import React from 'react'
+import {compose, withState} from 'recompose'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
@@ -23,7 +21,7 @@ const NumberField = ({
   hasFocus,
   setFocus
 }) => {
-  const handleLessClick = (event) => {
+  const handleLessClick = event => {
     event.preventDefault()
 
     const nextValue = value - 1
@@ -32,7 +30,7 @@ const NumberField = ({
     }
   }
 
-  const handleMoreClick = (event) => {
+  const handleMoreClick = event => {
     event.preventDefault()
 
     const nextValue = value + 1
@@ -41,7 +39,7 @@ const NumberField = ({
     }
   }
 
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     const nextValue = event.target.value
     if (nextValue < lowerLimit) {
       onChange(lowerLimit)
@@ -77,8 +75,12 @@ const NumberField = ({
         className="number-field__value"
         value={value}
         onChange={handleInputChange}
-        onFocus={() => { setFocus(true) }}
-        onBlur={() => { setFocus(false) }}
+        onFocus={() => {
+          setFocus(true)
+        }}
+        onBlur={() => {
+          setFocus(false)
+        }}
         disabled={disabled}
       />
       <button
@@ -102,6 +104,4 @@ NumberField.propTypes = {
   disabled: PropTypes.bool
 }
 
-export default compose(
-  withState('hasFocus', 'setFocus', false)
-)(NumberField)
+export default compose(withState('hasFocus', 'setFocus', false))(NumberField)
