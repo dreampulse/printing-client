@@ -78,7 +78,7 @@ export type PriceReceivedAction = {
 }
 
 export type PriceTimedOutAction = {
-  type: 'PRICE.TIMEOUT',  // @TODO rename
+  type: 'PRICE.TIMEOUT', // @TODO rename
 }
 
 export type PriceOfferSelectedAction = {
@@ -137,7 +137,7 @@ export type ModelFileUploadFailedAction = {
 
 export type ModelFileUploadedAction = {
   type: 'MODEL.FILE_UPLOADED',
-  payload: ModelBackend & {  // @TODO: improve payload datastructure
+  payload: ModelBackend & { // @TODO: improve payload datastructure
     fileId: number
   }
 }
@@ -160,7 +160,7 @@ export type ModelUnitChangedAction = {
 // Modal actions
 
 export type ModalOpenedAction = {
-  type: 'MODAL.OPEN',  // @TODO: past!
+  type: 'MODAL.OPEN', // @TODO: past!
   payload: {
     contentType: string,
     contentProps: any,
@@ -169,7 +169,7 @@ export type ModalOpenedAction = {
 }
 
 export type ModalClosedAction = {
-  type: 'MODAL.CLOSE'  // @TODO: past!
+  type: 'MODAL.CLOSE' // @TODO: past!
 }
 
 //
@@ -177,12 +177,12 @@ export type ModalClosedAction = {
 
 // @TODO: rename -> direct_sales -> Configuration
 export type ConfigurationRestoredAction = {
-  type: 'DIRECT_SALES.RESTORE_CONFIGURATION',  // @TODO: rename
+  type: 'DIRECT_SALES.RESTORE_CONFIGURATION', // @TODO: rename
   payload: Configuration
 }
 
 export type ConfigurationCreatedAction = {
-  type: 'DIRECT_SALES.CREATE_CONFIGURATION',  // @TODO: rename
+  type: 'DIRECT_SALES.CREATE_CONFIGURATION', // @TODO: rename
   payload: Configuration
 }
 
@@ -190,17 +190,17 @@ export type ConfigurationCreatedAction = {
 // Materials actions
 export type MaterialSelectedAction = {
   type: 'MATERIAL.SELECTED',
-  payload: string  // This (in the frontend generated) materialId
+  payload: string // This (in the frontend generated) materialId
 }
 
 export type MaterialConfigForFinishGroupSelectedAction = {
   type: 'MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED',
-  payload: {[finishGroupId: string]: string}  // @TODO: why so strage?
+  payload: {[finishGroupId: string]: string} // @TODO: why so strage?
 }
 
 export type MaterialConfigSelectedAction = {
   type: 'MATERIAL.CONFIG_SELECTED',
-  payload: string  // This is the materialId
+  payload: string // This is the materialId
 }
 
 export type MaterialReceivedAction = {

@@ -9,7 +9,7 @@ import Headline from 'Component/headline'
 import Paragraph from 'Component/paragraph'
 import ProviderImage from 'Component/provider-image'
 
-import {onlyWithSelectedOffer} from './util/guards'
+import {guard} from './util/guard'
 import AppLayout from './app-layout'
 
 const CartPage = ({
@@ -57,7 +57,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {}
 
 const enhance = compose(
-  onlyWithSelectedOffer,
+  guard(state => state.price.selectedOffer),
   connect(mapStateToProps, mapDispatchToProps)
 )
 

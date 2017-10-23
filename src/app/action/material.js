@@ -19,7 +19,8 @@ export const selectMaterial = createAction(
 )
 export const selectMaterialConfigForFinishGroup = createAction(
   TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED,
-  ({materialConfigId, finishGroupId} : {  // @TODO: improve interface
+  ({
+    materialConfigId, finishGroupId} : { // @TODO: improve interface
     materialConfigId: string, finishGroupId: string
   }) => ({
     [finishGroupId]: materialConfigId

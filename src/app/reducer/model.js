@@ -20,7 +20,7 @@ function handleRestoreConfiguration (state, {payload: {items}}) {
       progress: 1,
       fileSize: -1, // @TODO: this is missing from the backend
       fileId: String(index)
-    } : ModelCompleted))  // This is due to a very compley Model-Type
+    } : ModelCompleted)) // This is due to a very compley Model-Type
   }
 }
 

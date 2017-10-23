@@ -59,9 +59,7 @@ export const createUser = () => async (
   return dispatch(userCreated(userId))
 }
 
-export const updateUser = (
-  user : User
-) => async (
+export const updateUser = (user : User) => async (
   dispatch : Dispatch<*>,
   getState : () => State
 ) => {
@@ -70,9 +68,7 @@ export const updateUser = (
   return dispatch(userUpdated(user))
 }
 
-export const updateLocation = (
-  address : Address
-) => async (
+export const updateLocation = (address : Address) => async (
   dispatch : Dispatch<*>,
   getState : () => State
 ) => {
@@ -93,9 +89,8 @@ export const updateLocation = (
   }
 }
 
-export const reviewOrder = (
-  form : any // @TODO update type
-) => async (
+// @TODO update type
+export const reviewOrder = (form : any) => async (
   dispatch : Dispatch<*>,
   getState : () => State
 ) => {

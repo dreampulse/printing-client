@@ -27,7 +27,7 @@ import {reviewOrder} from 'Action/user'
 import {goToHome} from 'Action/navigation'
 
 import {renderField} from './util/form'
-import {onlyWithSelectedOffer} from './util/guards'
+import {guard} from './util/guard'
 import AppLayout from './app-layout'
 
 const required = value => (value ? undefined : 'Required')
@@ -278,7 +278,7 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  onlyWithSelectedOffer,
+  guard(state => state.price.selectedOffer),
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({form: FORM_NAME})
 )

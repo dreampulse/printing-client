@@ -124,24 +124,24 @@ export const createPriceRequest = ({
     // We need to update the selectedOffer if applicable
       dispatch(refreshSelectedOffer())
     })
-  .catch((error : Error) => {
+    .catch((error : Error) => {
     // Handle timeout separately
-    if (error.type === ERROR_TYPE.POLL_TIMEOUT) {
-      dispatch(priceTimeout(error))
-      return
-    }
+      if (error.type === ERROR_TYPE.POLL_TIMEOUT) {
+        dispatch(priceTimeout(error))
+        return
+      }
 
       // Ignore special error when price request was overwritten or stopped
-    if (error.type === ERROR_TYPE.POLL_OVERWRITTEN ||
+      if (error.type === ERROR_TYPE.POLL_OVERWRITTEN ||
       error.type === ERROR_TYPE.POLL_STOPPED) {
-      return
-    }
+        return
+      }
 
-    dispatch(gotError(error))
+      dispatch(gotError(error))
 
       // Throw again to trigger fatal error modal
-    throw error
-  })
+      throw error
+    })
 }
 
 export const recalculateSelectedOffer = () => (

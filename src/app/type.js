@@ -105,7 +105,7 @@ export type File = {
 export type Configuration = {
   _id: string,
   materialConfigId: string,
-  items: (ModelBackend & {  // @TODO: why is this unneded complicated?
+  items: (ModelBackend & { // @TODO: why is this unneded complicated?
     quantity: number
   })[]
 }
@@ -179,7 +179,7 @@ export type PriceState = {
     sculpteo: boolean
   },
   selectedOffer: ?Offer,
-  error: ?any  // @TODO: unclear
+  error: ?any // @TODO: unclear
 }
 
 export type ModalState = {
@@ -209,6 +209,6 @@ export type State = {
   model: ModelState,
   modal: ModalState,
   configuration: ConfigurationState,
-  routing: any,  // Managed by react-router-redux
-  form: any  // Managed by redux-form
+  routing: any, // Managed by react-router-redux
+  form: any // Managed by redux-form
 }

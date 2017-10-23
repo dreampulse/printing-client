@@ -10,7 +10,7 @@ const initialState = {
 }
 
 function handleOrderOrdered (state, {payload: {orderId}, error}) {
-  if (error) {  // @TODO: is this still possible (we removed redux promise)
+  if (error) { // @TODO: is this still possible (we removed redux promise)
     return {
       ...state,
       orderId: null,

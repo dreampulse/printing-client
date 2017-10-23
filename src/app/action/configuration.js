@@ -12,14 +12,13 @@ import type {State, Configuration} from '../type'
 import TYPE from '../action-type'
 
 const restoreConfigurationAction =
-  createAction(TYPE.DIRECT_SALES.RESTORE_CONFIGURATION,
+  createAction(
+    TYPE.DIRECT_SALES.RESTORE_CONFIGURATION,
     (configuration : Configuration) => configuration
   )
 const createConfigurationAction = createAction(TYPE.DIRECT_SALES.CREATE_CONFIGURATION)
 
-export const createConfiguration = (
-  includeMaterialConfig : boolean
-) => async (
+export const createConfiguration = (includeMaterialConfig : boolean) => async (
   dispatch : Dispatch<*>,
   getState : () => State
 ) => {
@@ -63,9 +62,7 @@ export const createConfiguration = (
   dispatch(createConfigurationAction(shareUrl))
 }
 
-export const restoreConfiguration = (
-  configurationId : string
-) => async (
+export const restoreConfiguration = (configurationId : string) => async (
   dispatch : Dispatch<*>,
   getState : () => State
 ) => {

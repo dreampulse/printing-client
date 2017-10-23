@@ -36,7 +36,7 @@ import {goToAddress, goToHome, goToSuccess} from 'Action/navigation'
 import {payWithStripe, createOrderWithStripe, payWithPaypal, createOrderWithPaypal} from 'Action/order'
 import {openFatalErrorModal} from 'Action/modal'
 
-import {onlyWithSelectedOffer} from './util/guards'
+import {guard} from './util/guard'
 import AppLayout from './app-layout'
 
 const CartPage = ({
@@ -247,7 +247,7 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  onlyWithSelectedOffer,
+  guard(state => state.price.selectedOffer),
   connect(mapStateToProps, mapDispatchToProps)
 )
 

@@ -13,10 +13,12 @@ const Price = ({
     {
       loading
         ? <div className="price__loading"><LoadingIndicator /> Fetching prices</div>
-        : <div className="price__price">
-          <div className="price__value">{value}</div>
-          {meta ? <small className="price__meta">{meta}</small> : null}
-        </div> // eslint-disable-line react/jsx-closing-tag-location
+        : (
+          <div className="price__price">
+            <div className="price__value">{value}</div>
+            {meta ? <small className="price__meta">{meta}</small> : null}
+          </div>
+        )
     }
   </div>
 )

@@ -12,9 +12,7 @@ import TYPE from '../action-type'
 
 // Syncron actions
 
-const orderStarted = createAction(
-  TYPE.ORDER.STARTED
-)
+const orderStarted = createAction(TYPE.ORDER.STARTED)
 const payed = createAction(
   TYPE.ORDER.PAYED,
   (paymentToken : string) => ({paymentToken})

@@ -55,36 +55,37 @@ const fileUploaded = createAction(
 )
 const fileDeleted = createAction(
   TYPE.MODEL.FILE_DELETED,
-  (fileId : string) => ({fileId}))
+  (fileId : string) => ({fileId})
+)
 export const changeUnit = createAction(
   TYPE.MODEL.UNIT_CHANGED,
-  ({unit} : {unit: 'mm' | 'cm' | 'in'}) => ({unit}))  // @TODO improve interface
+  ({unit} : {unit: 'mm' | 'cm' | 'in'}) => ({unit})
+) // @TODO improve interface
 
 // Async actions
 
-export const changeQuantity = (
-  {quantity} : {quantity: number}  // @TODO improve interface
-) => (
-  dispatch : Dispatch<*>
-) => {
+export const changeQuantity = ({
+  quantity
+} : {
+  quantity: number // @TODO improve interface
+}) => (dispatch : Dispatch<*>) => {
   dispatch(quantityChanged(quantity))
   // Update prices
   return dispatch(createDebouncedPriceRequest())
 }
 
-export const changeIndividualQuantity = (
-  {quantity, modelId} : {quantity: number, modelId: string}
-) => (
-  dispatch : Dispatch<*>
-) => {
+export const changeIndividualQuantity = ({
+  quantity, modelId
+} : {
+  quantity: number,
+  modelId: string
+}) => (dispatch : Dispatch<*>) => {
   dispatch(individualQuantityChanged(modelId, quantity))
   // Update prices
   return dispatch(createDebouncedPriceRequest())
 }
 
-const uploadFile = (
-  file : File
-) => async (
+const uploadFile = (file : File) => async (
   dispatch : Dispatch<*>,
   getState : () => State
 ) => {
@@ -108,9 +109,7 @@ const uploadFile = (
   }
 }
 
-export const uploadFiles = (
-  files : File[]
-) => async (
+export const uploadFiles = (files : File[]) => async (
   dispatch : Dispatch<*>
 ) => {
   try {
@@ -124,9 +123,7 @@ export const uploadFiles = (
   await dispatch(createPriceRequest())
 }
 
-export const deleteFile = (
-  fileId : string
-) => async (
+export const deleteFile = (fileId : string) => async (
   dispatch : Dispatch<*>
 ) => {
   dispatch(fileDeleted(fileId))
