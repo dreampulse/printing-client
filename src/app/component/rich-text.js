@@ -5,9 +5,7 @@ import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
 const RichText = ({modifiers, classNames, children}) => (
-  <div className={buildClassName('rich-text', modifiers, classNames)}>
-    {children}
-  </div>
+  <div className={buildClassName('rich-text', modifiers, classNames)}>{children}</div>
 )
 
 RichText.propTypes = {

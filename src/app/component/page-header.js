@@ -6,9 +6,7 @@ import buildClassName from 'Lib/build-class-name'
 
 import Headline from 'Component/headline'
 
-const PageHeader = ({
-  classNames, modifiers, label, backLink
-}) => (
+const PageHeader = ({classNames, modifiers, label, backLink}) => (
   <div className={buildClassName('page-header', modifiers, classNames)}>
     <div className="page-header__title">
       <Headline modifiers={['xl']} label={label} />

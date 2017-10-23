@@ -8,7 +8,7 @@ import SelectMenuItem from 'Component/select-menu-item'
 import SelectMenuMaterialItem from 'Component/select-menu-material-item'
 import SelectMenuGroupItem from 'Component/select-menu-group-item'
 
-const getMenuItem = (type) => {
+const getMenuItem = type => {
   if (type === 'material') {
     return SelectMenuMaterialItem
   }
@@ -18,48 +18,52 @@ const getMenuItem = (type) => {
   return SelectMenuItem
 }
 
-const SelectMenu = ({
-  classNames, modifiers, values, selectedValue, onClick = () => {}
-}) => (
+const SelectMenu = ({classNames, modifiers, values, selectedValue, onClick = () => {}}) => (
   <ul className={buildClassName('select-menu', modifiers, classNames)}>
-    {
-      values.map((value) => {
-        const Item = getMenuItem(value.type)
-        return (
-          <li className="select-menu__item" key={value.value !== undefined ? value.value : value.label}>
-            <Item
-              value={value}
-              selected={selectedValue === value.value}
-              selectedValue={selectedValue}
-              onClick={onClick}
-            />
-          </li>
-        )
-      })
-    }
+    {values.map(value => {
+      const Item = getMenuItem(value.type)
+      return (
+        <li
+          className="select-menu__item"
+          key={value.value !== undefined ? value.value : value.label}
+        >
+          <Item
+            value={value}
+            selected={selectedValue === value.value}
+            selectedValue={selectedValue}
+            onClick={onClick}
+          />
+        </li>
+      )
+    })}
   </ul>
 )
 
 SelectMenu.propTypes = {
   ...propTypes.component,
-  values: PropTypes.arrayOf(PropTypes.shape({
-    type: PropTypes.oneOf(['regular', 'group', 'material']), // Default is regular
-    value: PropTypes.any,
-    label: PropTypes.string, // When not provided value will be shown
-    colorValue: propTypes.string, // Optional color square
-    colorImage: PropTypes.string, // Optional color image URL
-    hasColor: PropTypes.bool, // Only if type is material
-    price: PropTypes.string, // Only if type is material
-    children: PropTypes.arrayOf(PropTypes.shape({ // Only if type is group
-      type: PropTypes.oneOf(['regular', 'material']), // Default is regular
-      value: PropTypes.string.isRequired,
+  values: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.oneOf(['regular', 'group', 'material']), // Default is regular
+      value: PropTypes.any,
       label: PropTypes.string, // When not provided value will be shown
       colorValue: propTypes.string, // Optional color square
       colorImage: PropTypes.string, // Optional color image URL
       hasColor: PropTypes.bool, // Only if type is material
-      price: PropTypes.string // Only if type is material
-    }))
-  })).isRequired,
+      price: PropTypes.string, // Only if type is material
+      children: PropTypes.arrayOf(
+        PropTypes.shape({
+          // Only if type is group
+          type: PropTypes.oneOf(['regular', 'material']), // Default is regular
+          value: PropTypes.string.isRequired,
+          label: PropTypes.string, // When not provided value will be shown
+          colorValue: propTypes.string, // Optional color square
+          colorImage: PropTypes.string, // Optional color image URL
+          hasColor: PropTypes.bool, // Only if type is material
+          price: PropTypes.string // Only if type is material
+        })
+      )
+    })
+  ).isRequired,
   selectedValue: PropTypes.any, // eslint-disable-line react/forbid-prop-types
   onClick: PropTypes.func
 }

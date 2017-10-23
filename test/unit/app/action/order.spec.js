@@ -63,8 +63,7 @@ describe('Order actions', () => {
     })
 
     describe('when checkout rejects', () => {
-      beforeEach(() =>
-        stripe.checkout.rejects(new Error('some-error')))
+      beforeEach(() => stripe.checkout.rejects(new Error('some-error')))
 
       it('dispatches expected actions', async () => {
         try {
@@ -73,18 +72,11 @@ describe('Order actions', () => {
           // ignore
         }
 
-        expect(store.getActions(), 'to equal', [
-          {type: 'ORDER.STARTED'},
-          {type: 'ORDER.ABORTED'}
-        ])
+        expect(store.getActions(), 'to equal', [{type: 'ORDER.STARTED'}, {type: 'ORDER.ABORTED'}])
       })
 
       it('rejects with the correct error', () =>
-        expect(
-          store.dispatch(payWithStripe()),
-          'to be rejected with',
-          'some-error'
-        ))
+        expect(store.dispatch(payWithStripe()), 'to be rejected with', 'some-error'))
     })
 
     describe('payWithPaypal()', () => {
@@ -93,11 +85,7 @@ describe('Order actions', () => {
           .withArgs({amount: 42, currency: 'some-currency', offerId: 'some-offer-id'})
           .resolves('create-paypal-payment')
 
-        expect(
-          store.dispatch(payWithPaypal()),
-          'to be fulfilled with',
-          'create-paypal-payment'
-        )
+        expect(store.dispatch(payWithPaypal()), 'to be fulfilled with', 'create-paypal-payment')
       })
     })
 
@@ -122,8 +110,7 @@ describe('Order actions', () => {
       })
 
       it('dispatches expected actions, when order rejects', async () => {
-        printingEngine.order
-          .rejects(new Error('some-error'))
+        printingEngine.order.rejects(new Error('some-error'))
 
         await store.dispatch(createOrderWithStripe())
         expect(store.getActions(), 'to equal', [
@@ -146,11 +133,9 @@ describe('Order actions', () => {
             orderId: 'some-order-id'
           })
 
-        paypal.executePayment
-          .withArgs({actions: 'some-action'})
-          .resolves({
-            id: 'some-token'
-          })
+        paypal.executePayment.withArgs({actions: 'some-action'}).resolves({
+          id: 'some-token'
+        })
 
         await store.dispatch(createOrderWithPaypal('some-data', 'some-action'))
         expect(store.getActions(), 'to equal', [
@@ -159,13 +144,11 @@ describe('Order actions', () => {
       })
 
       it('dispatches expected actions, when order rejects', async () => {
-        printingEngine.order
-          .rejects(new Error('some-error'))
+        printingEngine.order.rejects(new Error('some-error'))
 
-        paypal.executePayment
-          .resolves({
-            id: 'some-token'
-          })
+        paypal.executePayment.resolves({
+          id: 'some-token'
+        })
 
         await store.dispatch(createOrderWithPaypal())
         expect(store.getActions(), 'to equal', [

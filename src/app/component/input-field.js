@@ -2,17 +2,14 @@ import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
 export default class InputField extends Component {
   static propTypes = {
-    ...propTypes.component,
+    modifiers: PropTypes.arrayOf(PropTypes.string),
+    classNames: PropTypes.arrayOf(PropTypes.string),
     label: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([
-      PropTypes.string.isRequired,
-      PropTypes.number.isRequired
-    ]),
+    value: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.number.isRequired]),
     name: PropTypes.string,
     type: PropTypes.string,
     onChange: PropTypes.func,
@@ -30,7 +27,7 @@ export default class InputField extends Component {
 
   id = uniqueId('uid-')
 
-  render () {
+  render() {
     const inputId = this.props.id || this.id
     const finalModifiers = [
       ...this.props.modifiers,
@@ -48,7 +45,9 @@ export default class InputField extends Component {
           value={this.props.value}
           onChange={this.props.onChange}
         />
-        <label htmlFor={inputId} className="input-field__label">{this.props.label}</label>
+        <label htmlFor={inputId} className="input-field__label">
+          {this.props.label}
+        </label>
       </div>
     )
   }

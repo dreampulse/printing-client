@@ -4,19 +4,11 @@ import {action} from '@storybook/addon-actions'
 
 import SelectMenu from 'Component/select-menu'
 
-import {
-  selectMenuValues,
-  selectMenuColorValues,
-  selectMenuMaterialValues
-} from '../util/data'
+import {selectMenuValues, selectMenuColorValues, selectMenuMaterialValues} from '../util/data'
 
 storiesOf('Select Menu', module)
   .add('default', () => (
-    <SelectMenu
-      values={selectMenuValues}
-      selectedValue="item2"
-      onClick={action('click')}
-    />
+    <SelectMenu values={selectMenuValues} selectedValue="item2" onClick={action('click')} />
   ))
   .add('large', () => (
     <SelectMenu
@@ -27,11 +19,7 @@ storiesOf('Select Menu', module)
     />
   ))
   .add('color', () => (
-    <SelectMenu
-      values={selectMenuColorValues}
-      selectedValue="item2"
-      onClick={action('click')}
-    />
+    <SelectMenu values={selectMenuColorValues} selectedValue="item2" onClick={action('click')} />
   ))
   .add('material', () => (
     <SelectMenu

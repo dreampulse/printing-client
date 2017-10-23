@@ -1,31 +1,24 @@
 import PropTypes from 'prop-types'
 import React, {cloneElement} from 'react'
-import {
-  compose,
-  withState
-} from 'recompose'
+import {compose, withState} from 'recompose'
 
 const HandleValue = ({children, value, onChange}) => {
-  const change = (input) => {
+  const change = input => {
     if (input.target && typeof input.target.value !== 'undefined') {
       return onChange(input.target.value)
     }
     return onChange(input)
   }
 
-  const modifiedChildren = React.Children.map(children, (child, index) => (
+  const modifiedChildren = React.Children.map(children, (child, index) =>
     cloneElement(child, {
       key: index,
       value,
       onChange: change
     })
-  ))
-
-  return (
-    <div>
-      {modifiedChildren}
-    </div>
   )
+
+  return <div>{modifiedChildren}</div>
 }
 
 HandleValue.propTypes = {

@@ -10,20 +10,18 @@ import {goToCart} from 'Action/navigation'
 
 const PriceChangedModal = ({onClose}) => {
   const headline = <Headline label="Prices have changed" modifiers={['l', 'warning']} />
-  const buttons = [
-    <Button label="OK" onClick={() => onClose()} />
-  ]
+  const buttons = [<Button label="OK" onClick={() => onClose()} />]
 
   return (
     <Overlay headline={headline} buttons={buttons} closePortal={() => onClose()}>
       <RichText>
         <p>
-          You have selected your model based on estimated prices,
-          we now have the final price available.
+          You have selected your model based on estimated prices, we now have the final price
+          available.
         </p>
         <p>
-          By clicking “ok” you will be directed to the order summary
-          where we will have the final price ready for you.
+          By clicking “ok” you will be directed to the order summary where we will have the final
+          price ready for you.
         </p>
       </RichText>
     </Overlay>

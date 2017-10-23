@@ -6,7 +6,9 @@ import buildClassName from 'Lib/build-class-name'
 
 const ModelQuantityItemList = ({classNames, modifiers, children}) => {
   const modifiedChildren = React.Children.map(children, child => (
-    <li className="model-quantity-item-list__item" key={child.key}>{child}</li>
+    <li className="model-quantity-item-list__item" key={child.key}>
+      {child}
+    </li>
   ))
 
   return (

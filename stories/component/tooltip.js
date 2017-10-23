@@ -11,16 +11,12 @@ storiesOf('Tooltip', module)
   .add('default', () => (
     <Tooltip>
       <Headline modifiers={['s']} label="Headline" />
-      <Paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit
-      </Paragraph>
+      <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
     </Tooltip>
   ))
   .add('right', () => (
     <Tooltip modifiers={['right']}>
       <Headline modifiers={['s']} label="Headline" />
-      <Paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit
-      </Paragraph>
+      <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
     </Tooltip>
   ))

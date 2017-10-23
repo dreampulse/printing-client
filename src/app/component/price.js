@@ -6,20 +6,18 @@ import buildClassName from 'Lib/build-class-name'
 
 import LoadingIndicator from 'Component/loading-indicator'
 
-const Price = ({
-  classNames, modifiers, value, meta, loading = false
-}) => (
+const Price = ({classNames, modifiers, value, meta, loading = false}) => (
   <div className={buildClassName('price', modifiers, classNames)}>
-    {
-      loading
-        ? <div className="price__loading"><LoadingIndicator /> Fetching prices</div>
-        : (
-          <div className="price__price">
-            <div className="price__value">{value}</div>
-            {meta ? <small className="price__meta">{meta}</small> : null}
-          </div>
-        )
-    }
+    {loading ? (
+      <div className="price__loading">
+        <LoadingIndicator /> Fetching prices
+      </div>
+    ) : (
+      <div className="price__price">
+        <div className="price__value">{value}</div>
+        {meta ? <small className="price__meta">{meta}</small> : null}
+      </div>
+    )}
   </div>
 )
 

@@ -5,12 +5,7 @@ import config from '../../../config'
 const URL = 'https://pro.ip-api.com/json/?key=CVsxFrDy2yI1Ctu'
 
 export const getLocationByIp = async () => {
-  const {
-    city,
-    zip,
-    region,
-    countryCode
-  } = await timeout(request(URL), config.fetchTimout)
+  const {city, zip, region, countryCode} = await timeout(request(URL), config.fetchTimout)
 
   if (!countryCode) {
     throw new Error('Location detection failed')
@@ -24,12 +19,11 @@ export const getLocationByIp = async () => {
   }
 }
 
-export const convertPlaceToLocation = (place) => {
-  const findType = (query) => {
+export const convertPlaceToLocation = place => {
+  const findType = query => {
     const addressComponents = place.address_components
     if (!addressComponents) return ''
-    const components = addressComponents
-      .filter(c => c.types.find(t => t === query))
+    const components = addressComponents.filter(c => c.types.find(t => t === query))
     if (components.length > 0) return components[0].short_name
     return ''
   }
@@ -44,6 +38,4 @@ export const convertPlaceToLocation = (place) => {
   }
 }
 
-export const isAddressValid = address => (
-  address.countryCode
-)
+export const isAddressValid = address => address.countryCode

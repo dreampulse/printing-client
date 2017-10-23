@@ -76,10 +76,12 @@ describe('Modal Integration Test', () => {
 
   describe('openMaterialModal()', () => {
     it('opens material modal', () => {
-      store.dispatch(openMaterialModal({
-        materialId: 'some-material',
-        finishGroupId: 'some-finish-group'
-      }))
+      store.dispatch(
+        openMaterialModal({
+          materialId: 'some-material',
+          finishGroupId: 'some-finish-group'
+        })
+      )
       expect(store.getState().modal, 'to equal', {
         isOpen: true,
         isCloseable: true,

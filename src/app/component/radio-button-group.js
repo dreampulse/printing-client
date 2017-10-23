@@ -14,22 +14,20 @@ const RadioButtonGroup = ({
   disabled = false,
   onChange = () => {}
 }) => {
-  const onClick = (event) => {
+  const onClick = event => {
     onChange(event.target.value)
   }
   const groupName = name || uniqueId('button-group-')
-  const buttons = React.Children.map(children, child => (
+  const buttons = React.Children.map(children, child =>
     cloneElement(child, {
       onClick,
       name: groupName,
       checked: value === child.props.value,
       disabled: child.props.disabled || disabled
     })
-  ))
+  )
   return (
-    <div className={buildClassName('radio-button-group', modifiers, classNames)}>
-      {buttons}
-    </div>
+    <div className={buildClassName('radio-button-group', modifiers, classNames)}>{buttons}</div>
   )
 }
 
@@ -38,10 +36,7 @@ RadioButtonGroup.propTypes = {
   children: PropTypes.node,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   disabled: PropTypes.bool
 }
 

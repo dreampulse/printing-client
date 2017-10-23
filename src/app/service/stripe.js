@@ -1,6 +1,6 @@
 import config from '../../../config'
 
-export function checkout ({amount, currency, email}) {
+export function checkout({amount, currency, email}) {
   return new Promise((resolve, reject) => {
     const checkoutHandler = global.StripeCheckout.configure({
       key: config.stripePublicKey,

@@ -11,27 +11,30 @@ const initialState = {
   models: []
 }
 
-function handleRestoreConfiguration (state, {payload: {items}}) {
+function handleRestoreConfiguration(state, {payload: {items}}) {
   return {
     ...state,
-    models: items.map((item, index) => ({
-      ...item,
-      uploadFinished: true,
-      progress: 1,
-      fileSize: -1, // @TODO: this is missing from the backend
-      fileId: String(index)
-    } : ModelCompleted)) // This is due to a very compley Model-Type
+    models: items.map(
+      (item, index) =>
+        ({
+          ...item,
+          uploadFinished: true,
+          progress: 1,
+          fileSize: -1, // @TODO: this is missing from the backend
+          fileId: String(index)
+        }: ModelCompleted)
+    ) // This is due to a very compley Model-Type
   }
 }
 
-function handleUnitChanged (state, {payload: {unit}}) {
+function handleUnitChanged(state, {payload: {unit}}) {
   return {
     ...state,
     selectedUnit: unit
   }
 }
 
-function handleIndividualQuantityChanged (state, {payload: {quantity, modelId}}) {
+function handleIndividualQuantityChanged(state, {payload: {quantity, modelId}}) {
   const updateModels = updateArrayItems(state.models, model => model.modelId === modelId)
 
   return {
@@ -42,7 +45,7 @@ function handleIndividualQuantityChanged (state, {payload: {quantity, modelId}})
   }
 }
 
-function handleQuantityChanged (state, {payload: {quantity}}) {
+function handleQuantityChanged(state, {payload: {quantity}}) {
   const updateModels = updateArrayItems(state.models, () => true)
 
   return {
@@ -53,12 +56,13 @@ function handleQuantityChanged (state, {payload: {quantity}}) {
   }
 }
 
-function handleFileUploadStarted (state, {payload: {fileId, fileName, fileSize}}) {
+function handleFileUploadStarted(state, {payload: {fileId, fileName, fileSize}}) {
   return {
     ...state,
     numberOfUploads: state.numberOfUploads + 1,
     models: [
-      ...state.models, {
+      ...state.models,
+      {
         fileId,
         fileName,
         fileSize,
@@ -69,7 +73,7 @@ function handleFileUploadStarted (state, {payload: {fileId, fileName, fileSize}}
   }
 }
 
-function handleFileUploadProgressed (state, {payload: {fileId, progress}}) {
+function handleFileUploadProgressed(state, {payload: {fileId, progress}}) {
   const updateModels = updateArrayItems(state.models, model => model.fileId === fileId)
 
   return {
@@ -80,10 +84,8 @@ function handleFileUploadProgressed (state, {payload: {fileId, progress}}) {
   }
 }
 
-function handleFileUploaded (state, {payload}) {
-  const {
-    modelId, thumbnailUrl, fileName, fileUnit, dimensions, area, volume, fileId
-  } = payload
+function handleFileUploaded(state, {payload}) {
+  const {modelId, thumbnailUrl, fileName, fileUnit, dimensions, area, volume, fileId} = payload
   const updateModels = updateArrayItems(state.models, model => model.fileId === fileId)
 
   return {
@@ -104,7 +106,7 @@ function handleFileUploaded (state, {payload}) {
   }
 }
 
-function handleFileUploadFailed (state, {payload: {error, fileId}}) {
+function handleFileUploadFailed(state, {payload: {error, fileId}}) {
   const updateModels = updateArrayItems(state.models, model => model.fileId === fileId)
 
   return {
@@ -117,14 +119,14 @@ function handleFileUploadFailed (state, {payload: {error, fileId}}) {
   }
 }
 
-function handleFileDeleted (state, {payload: {fileId}}) {
+function handleFileDeleted(state, {payload: {fileId}}) {
   return {
     ...state,
     models: state.models.filter(model => model.fileId !== fileId)
   }
 }
 
-const reducer = (state : ModelState = initialState, action: Action) : ModelState => {
+const reducer = (state: ModelState = initialState, action: Action): ModelState => {
   switch (action.type) {
     case TYPE.MODEL.FILE_UPLOAD_STARTED:
       return handleFileUploadStarted(state, action)
@@ -145,7 +147,8 @@ const reducer = (state : ModelState = initialState, action: Action) : ModelState
     case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION:
       return handleRestoreConfiguration(state, action)
 
-    default: return state
+    default:
+      return state
   }
 }
 

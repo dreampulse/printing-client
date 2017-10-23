@@ -2,10 +2,7 @@
 
 import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
-import {
-  getLocationByIp,
-  isAddressValid
-} from 'Lib/geolocation'
+import {getLocationByIp, isAddressValid} from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
 import {identify, peopleSet} from 'Service/mixpanel'
 import {setUserContext} from 'Service/logging'
@@ -26,30 +23,19 @@ import {createPriceRequest, recalculateSelectedOffer} from './price'
 
 const shippingAddressChanged = createAction(
   TYPE.USER.SHIPPING_ADDRESS_CHANGED,
-  (address : Address) => ({address})
+  (address: Address) => ({address})
 )
-const userCreated = createAction(
-  TYPE.USER.CREATED,
-  (userId : string) => ({userId})
-)
-const userUpdated = createAction(
-  TYPE.USER.UPDATED,
-  (user: User) => user
-)
+const userCreated = createAction(TYPE.USER.CREATED, (userId: string) => ({userId}))
+const userUpdated = createAction(TYPE.USER.UPDATED, (user: User) => user)
 
 // Async actions
 
-export const detectAddress = () => async (
-  dispatch : Dispatch<*>
-) => {
+export const detectAddress = () => async (dispatch: Dispatch<*>) => {
   const address = await getLocationByIp()
   dispatch(shippingAddressChanged(address))
 }
 
-export const createUser = () => async (
-  dispatch : Dispatch<*>,
-  getState : () => State
-) => {
+export const createUser = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const user = getState().user.user
   const {userId} = await printingEngine.createUser({user})
   identify(userId) // Send user information to Mixpanel
@@ -59,18 +45,15 @@ export const createUser = () => async (
   return dispatch(userCreated(userId))
 }
 
-export const updateUser = (user : User) => async (
-  dispatch : Dispatch<*>,
-  getState : () => State
-) => {
+export const updateUser = (user: User) => async (dispatch: Dispatch<*>, getState: () => State) => {
   const userId = getState().user.userId
   await printingEngine.updateUser({userId, user})
   return dispatch(userUpdated(user))
 }
 
-export const updateLocation = (address : Address) => async (
-  dispatch : Dispatch<*>,
-  getState : () => State
+export const updateLocation = (address: Address) => async (
+  dispatch: Dispatch<*>,
+  getState: () => State
 ) => {
   dispatch(shippingAddressChanged(address))
 
@@ -78,7 +61,8 @@ export const updateLocation = (address : Address) => async (
     // Open address modal if address is not valid
     dispatch(openAddressModal())
   } else {
-    if (!getState().user.userId) { // No user created so far
+    if (!getState().user.userId) {
+      // No user created so far
       await dispatch(createUser())
     } else {
       await dispatch(updateUser(getState().user.user))
@@ -90,10 +74,7 @@ export const updateLocation = (address : Address) => async (
 }
 
 // @TODO update type
-export const reviewOrder = (form : any) => async (
-  dispatch : Dispatch<*>,
-  getState : () => State
-) => {
+export const reviewOrder = (form: any) => async (dispatch: Dispatch<*>, getState: () => State) => {
   const user = getState().user.user
   const oldShippingAddress = user.shippingAddress
   const oldOffer = getState().price.selectedOffer

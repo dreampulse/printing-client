@@ -16,24 +16,18 @@ const initState = (name, callId) => {
   }
 }
 
-const getState = name => (
-  polls[name]
-)
+const getState = name => polls[name]
 
-const deleteState = (name) => {
+const deleteState = name => {
   delete polls[name]
 }
 
-export const poll = (
-  name,
-  pollCallback,
-  initPollCallback = () => Promise.resolve()
-) => {
+export const poll = (name, pollCallback, initPollCallback = () => Promise.resolve()) => {
   const callId = uniqueId()
   initState(name, callId)
 
   return new Promise((resolve, reject) => {
-    const runPoll = async (initPayload) => {
+    const runPoll = async initPayload => {
       const state = getState(name)
 
       if (!state) {
@@ -43,10 +37,12 @@ export const poll = (
 
       // When callId changed stop this polling loop
       if (callId !== state.callId) {
-        reject(new AppError(
-          ERROR_TYPE.POLL_OVERWRITTEN,
-          `Polling loop overwritten by another call with the same name ${name}!`
-        ))
+        reject(
+          new AppError(
+            ERROR_TYPE.POLL_OVERWRITTEN,
+            `Polling loop overwritten by another call with the same name ${name}!`
+          )
+        )
         return
       }
 
@@ -77,7 +73,7 @@ export const poll = (
   })
 }
 
-export const stopPoll = (name) => {
+export const stopPoll = name => {
   deleteState(name)
 }
 
@@ -86,10 +82,7 @@ export const debouncedPoll = (name, pollCallback, initPollCallback) => {
     return debouncedPolls[name](name, pollCallback, initPollCallback)
   }
 
-  const debouncedFunc = debounce(
-    poll,
-    config.pollingDebouncedWait
-  )
+  const debouncedFunc = debounce(poll, config.pollingDebouncedWait)
   debouncedPolls[name] = debouncedFunc
 
   return debouncedFunc(name, pollCallback, initPollCallback)

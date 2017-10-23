@@ -12,17 +12,12 @@ import ProviderImage from 'Component/provider-image'
 import {guard} from './util/guard'
 import AppLayout from './app-layout'
 
-const CartPage = ({
-  offer,
-  order
-}) => {
+const CartPage = ({offer, order}) => {
   const SuccessSection = () => (
     <Section modifiers={['highlight']}>
       <Headline
         label={
-          order.orderId
-            ? `Order number: ${order.orderId}`
-            : 'Thank you for ordering at ALL3DP!'
+          order.orderId ? `Order number: ${order.orderId}` : 'Thank you for ordering at ALL3DP!'
         }
       />
       <Paragraph modifiers={['l']}>

@@ -22,11 +22,7 @@ describe('generateMaterialIds()', () => {
 
   it('adds unique ids to material groups', () => {
     generateMaterialIds(materials)
-    expect(
-      materials.materialStructure[0].id,
-      'not to equal',
-      materials.materialStructure[1].id
-    )
+    expect(materials.materialStructure[0].id, 'not to equal', materials.materialStructure[1].id)
   })
 
   it('adds ids to materials', () => {
@@ -61,22 +57,28 @@ describe('generateMaterialIds()', () => {
 describe('hasMaterialMultipleConfigs()', () => {
   it('returns true if at least one finish group has multiple configs', () => {
     const material = {
-      finishGroups: [{
-        materialConfigs: [{some: 'config-1'}]
-      }, {
-        materialConfigs: [{some: 'config-1'}, {some: 'config-2'}]
-      }]
+      finishGroups: [
+        {
+          materialConfigs: [{some: 'config-1'}]
+        },
+        {
+          materialConfigs: [{some: 'config-1'}, {some: 'config-2'}]
+        }
+      ]
     }
     expect(hasMaterialMultipleConfigs(material), 'to be', true)
   })
 
   it('returns false if no finish group has multiple configs', () => {
     const material = {
-      finishGroups: [{
-        materialConfigs: [{some: 'config-1'}]
-      }, {
-        materialConfigs: [{some: 'config-1'}]
-      }]
+      finishGroups: [
+        {
+          materialConfigs: [{some: 'config-1'}]
+        },
+        {
+          materialConfigs: [{some: 'config-1'}]
+        }
+      ]
     }
     expect(hasMaterialMultipleConfigs(material), 'to be', false)
   })
@@ -86,19 +88,24 @@ describe('getBestOfferForMaterialConfig()', () => {
   let offers
 
   beforeEach(() => {
-    offers = [{
-      materialConfigId: 'config-1',
-      totalPrice: 20
-    }, {
-      materialConfigId: 'config-2',
-      totalPrice: 10
-    }, {
-      materialConfigId: 'config-1',
-      totalPrice: 10
-    }, {
-      materialConfigId: 'config-1',
-      totalPrice: 30
-    }]
+    offers = [
+      {
+        materialConfigId: 'config-1',
+        totalPrice: 20
+      },
+      {
+        materialConfigId: 'config-2',
+        totalPrice: 10
+      },
+      {
+        materialConfigId: 'config-1',
+        totalPrice: 10
+      },
+      {
+        materialConfigId: 'config-1',
+        totalPrice: 30
+      }
+    ]
   })
 
   it('returns cheapest offer for given material config', () => {
@@ -115,35 +122,49 @@ describe('getBestOfferForMaterial()', () => {
   let material
 
   beforeEach(() => {
-    offers = [{
-      materialConfigId: 'config-1',
-      totalPrice: 40
-    }, {
-      materialConfigId: 'config-2',
-      totalPrice: 30
-    }, {
-      materialConfigId: 'config-3',
-      totalPrice: 20
-    }, {
-      materialConfigId: 'config-4',
-      totalPrice: 10
-    }, {
-      materialConfigId: 'config-1',
-      totalPrice: 30
-    }]
+    offers = [
+      {
+        materialConfigId: 'config-1',
+        totalPrice: 40
+      },
+      {
+        materialConfigId: 'config-2',
+        totalPrice: 30
+      },
+      {
+        materialConfigId: 'config-3',
+        totalPrice: 20
+      },
+      {
+        materialConfigId: 'config-4',
+        totalPrice: 10
+      },
+      {
+        materialConfigId: 'config-1',
+        totalPrice: 30
+      }
+    ]
 
     material = {
-      finishGroups: [{
-        materialConfigs: [{
-          id: 'config-1'
-        }]
-      }, {
-        materialConfigs: [{
-          id: 'config-2'
-        }, {
-          id: 'config-3'
-        }]
-      }]
+      finishGroups: [
+        {
+          materialConfigs: [
+            {
+              id: 'config-1'
+            }
+          ]
+        },
+        {
+          materialConfigs: [
+            {
+              id: 'config-2'
+            },
+            {
+              id: 'config-3'
+            }
+          ]
+        }
+      ]
     }
   })
 
@@ -161,22 +182,30 @@ describe('getMaterialByName()', () => {
 
   beforeEach(() => {
     materials = {
-      materialStructure: [{
-        name: 'Group 1',
-        materials: [{
-          id: 'material-1',
-          name: 'Material 1'
-        }]
-      }, {
-        name: 'Group 2',
-        materials: [{
-          id: 'material-2',
-          name: 'Material 2'
-        }, {
-          id: 'material-3',
-          name: 'Material 3'
-        }]
-      }]
+      materialStructure: [
+        {
+          name: 'Group 1',
+          materials: [
+            {
+              id: 'material-1',
+              name: 'Material 1'
+            }
+          ]
+        },
+        {
+          name: 'Group 2',
+          materials: [
+            {
+              id: 'material-2',
+              name: 'Material 2'
+            },
+            {
+              id: 'material-3',
+              name: 'Material 3'
+            }
+          ]
+        }
+      ]
     }
   })
 

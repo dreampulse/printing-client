@@ -4,9 +4,7 @@ import React from 'react'
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
-const ColorSquare = ({
-  classNames, modifiers, color = '#ffffff', image
-}) => {
+const ColorSquare = ({classNames, modifiers, color = '#ffffff', image}) => {
   const style = {
     backgroundColor: color
   }
@@ -15,12 +13,7 @@ const ColorSquare = ({
     style.backgroundImage = `url(${image})`
   }
 
-  return (
-    <span
-      className={buildClassName('color-square', modifiers, classNames)}
-      style={style}
-    />
-  )
+  return <span className={buildClassName('color-square', modifiers, classNames)} style={style} />
 }
 
 ColorSquare.propTypes = {

@@ -4,9 +4,7 @@ import React from 'react'
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
-const PaymentSection = ({
-  classNames, modifiers, children, subtotal, shipping, vat, total
-}) => (
+const PaymentSection = ({classNames, modifiers, children, subtotal, shipping, vat, total}) => (
   <section className={buildClassName('payment-section', modifiers, classNames)}>
     <ul className="payment-section__price-components">
       <li className="payment-section__price-component">
@@ -27,13 +25,11 @@ const PaymentSection = ({
       </li>
     </ul>
     <ul className="payment-section__buttons">
-      {
-        React.Children.map(children, child => (
-          <li key={child.key} className="payment-section__button">
-            {child}
-          </li>
-        ))
-      }
+      {React.Children.map(children, child => (
+        <li key={child.key} className="payment-section__button">
+          {child}
+        </li>
+      ))}
     </ul>
   </section>
 )

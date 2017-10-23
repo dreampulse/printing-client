@@ -38,7 +38,7 @@ const initialState = {
   }
 }
 
-function handleShippingAddressChange (state, {payload: {address}}) {
+function handleShippingAddressChange(state, {payload: {address}}) {
   return {
     ...state,
     user: {
@@ -48,26 +48,30 @@ function handleShippingAddressChange (state, {payload: {address}}) {
   }
 }
 
-function handleUserCreated (state, {payload: {userId}}) {
+function handleUserCreated(state, {payload: {userId}}) {
   return {
     ...state,
     userId
   }
 }
 
-function handleUserUpdated (state, {payload}) {
+function handleUserUpdated(state, {payload}) {
   return {
     ...state,
     user: payload
   }
 }
 
-const reducer = (state : UserState = initialState, action: Action) : UserState => {
+const reducer = (state: UserState = initialState, action: Action): UserState => {
   switch (action.type) {
-    case TYPE.USER.SHIPPING_ADDRESS_CHANGED: return handleShippingAddressChange(state, action)
-    case TYPE.USER.CREATED: return handleUserCreated(state, action)
-    case TYPE.USER.UPDATED: return handleUserUpdated(state, action)
-    default: return state
+    case TYPE.USER.SHIPPING_ADDRESS_CHANGED:
+      return handleShippingAddressChange(state, action)
+    case TYPE.USER.CREATED:
+      return handleUserCreated(state, action)
+    case TYPE.USER.UPDATED:
+      return handleUserUpdated(state, action)
+    default:
+      return state
   }
 }
 

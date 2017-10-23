@@ -6,10 +6,13 @@ import buildClassName from 'Lib/build-class-name'
 
 import Icon from 'Component/icon'
 
-const Link = ({
-  classNames, modifiers, label, href = '#', icon, onClick = () => {}, ...rest
-}) => (
-  <a className={buildClassName('link', modifiers, classNames)} href={href} onClick={onClick} {...rest}>
+const Link = ({classNames, modifiers, label, href = '#', icon, onClick = () => {}, ...rest}) => (
+  <a
+    className={buildClassName('link', modifiers, classNames)}
+    href={href}
+    onClick={onClick}
+    {...rest}
+  >
     {icon && <Icon source={icon} />}
     {label}
   </a>

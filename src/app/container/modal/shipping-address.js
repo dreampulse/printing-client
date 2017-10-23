@@ -16,9 +16,7 @@ import {close} from 'Action/modal'
 
 import config from '../../../../config'
 
-const ShippingAddressModal = ({
-  address, setAddress, onUpdateLocation, onClose
-}) => {
+const ShippingAddressModal = ({address, setAddress, onUpdateLocation, onClose}) => {
   const headline = <Headline label="Shipping address required" modifiers={['l']} />
   const buttons = [
     <Button

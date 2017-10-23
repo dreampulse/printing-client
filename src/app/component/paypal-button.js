@@ -4,10 +4,8 @@ import React, {Component} from 'react'
 import config from '../../../config'
 
 class PaypalButton extends Component {
-  componentDidMount () {
-    const {
-      onClick, onAuthorize, onCancel, onError
-    } = this.props
+  componentDidMount() {
+    const {onClick, onAuthorize, onCancel, onError} = this.props
 
     const options = {
       ...config.paypal,
@@ -22,9 +20,13 @@ class PaypalButton extends Component {
     global.paypal.Button.render(options, this.paypalButton)
   }
 
-  render () {
+  render() {
     return (
-      <div ref={(el) => { this.paypalButton = el }} />
+      <div
+        ref={el => {
+          this.paypalButton = el
+        }}
+      />
     )
   }
 }

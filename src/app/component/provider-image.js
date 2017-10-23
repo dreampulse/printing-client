@@ -14,12 +14,12 @@ const providerImages = {
   shapeways: shapewaysImage
 }
 
-const ProviderItem = ({
-  classNames,
-  modifiers,
-  name
-}) => (
-  <img className={buildClassName('provider-image', modifiers, classNames)} src={providerImages[name]} alt={name} />
+const ProviderItem = ({classNames, modifiers, name}) => (
+  <img
+    className={buildClassName('provider-image', modifiers, classNames)}
+    src={providerImages[name]}
+    alt={name}
+  />
 )
 
 ProviderItem.propTypes = {

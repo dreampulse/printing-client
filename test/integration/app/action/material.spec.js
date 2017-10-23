@@ -52,10 +52,12 @@ describe('Material Integration Test', () => {
         }
       })
 
-      store.dispatch(selectMaterialConfigForFinishGroup({
-        materialConfigId: 'some-config-id',
-        finishGroupId: 'some-finish-group-id'
-      }))
+      store.dispatch(
+        selectMaterialConfigForFinishGroup({
+          materialConfigId: 'some-config-id',
+          finishGroupId: 'some-finish-group-id'
+        })
+      )
 
       expect(
         store.getState().material.selectedMaterialConfigs,

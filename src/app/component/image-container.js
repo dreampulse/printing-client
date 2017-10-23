@@ -18,60 +18,55 @@ export default class ImageContainer extends Component {
     imageLoaded: false
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.loadImage(this.props.source)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.source !== this.props.source) {
       this.loadImage(nextProps.source)
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.unmounted = true
   }
 
-  getGradient = (element) => {
+  getGradient = element => {
     if (element) {
       this.gradient = global.getComputedStyle(element, null).getPropertyValue('background-image')
     }
   }
 
-  loadImage (source) {
+  loadImage(source) {
     this.setState({
       imageLoading: true,
       imageLoaded: false
     })
 
     if (source) {
-      preloadImage(source).then(() => {
-        if (!this.unmounted) {
-          this.setState({
-            imageLoading: false,
-            imageLoaded: true
-          })
-        }
-      }).catch(() => {
-        if (!this.unmounted) {
-          this.setState({
-            imageLoading: false
-          })
-        }
-      })
+      preloadImage(source)
+        .then(() => {
+          if (!this.unmounted) {
+            this.setState({
+              imageLoading: false,
+              imageLoaded: true
+            })
+          }
+        })
+        .catch(() => {
+          if (!this.unmounted) {
+            this.setState({
+              imageLoading: false
+            })
+          }
+        })
     }
   }
 
-  render () {
-    const {
-      source,
-      modifiers = [],
-      classNames
-    } = this.props
-    const {
-      imageLoading,
-      imageLoaded
-    } = this.state
+  render() {
+    const {source, modifiers = [], classNames} = this.props
+    const {imageLoading, imageLoaded} = this.state
 
     const style = {}
     if (this.gradient && imageLoaded) {

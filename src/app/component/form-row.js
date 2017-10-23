@@ -9,11 +9,7 @@ const FormRow = ({classNames, modifiers, children}) => {
     <div className="form-row__column">{child}</div>
   ))
 
-  return (
-    <div className={buildClassName('form-row', modifiers, classNames)}>
-      {mappedChildren}
-    </div>
-  )
+  return <div className={buildClassName('form-row', modifiers, classNames)}>{mappedChildren}</div>
 }
 
 FormRow.propTypes = {

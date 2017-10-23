@@ -1,7 +1,9 @@
 import range from 'lodash/range'
 
-export const selectMenuValues = range(1, 10)
-  .map(i => ({value: `item${i}`, label: `Select Menu Item ${i}`}))
+export const selectMenuValues = range(1, 10).map(i => ({
+  value: `item${i}`,
+  label: `Select Menu Item ${i}`
+}))
 
 export const selectMenuColorValues = [
   {value: 'value1', colorValue: '#ffffff', label: 'Color 1'},
@@ -11,8 +13,8 @@ export const selectMenuColorValues = [
   {value: 'value5', colorImage: 'http://placehold.it/40x40', label: 'Color 5'}
 ]
 
-const materialChildren = prefix => range(1, 10)
-  .map(i => ({
+const materialChildren = prefix =>
+  range(1, 10).map(i => ({
     type: 'material',
     value: `${prefix}-item${i}`,
     label: `Select Menu Item ${i}`,
@@ -26,17 +28,21 @@ export const selectMenuGroupItemValue = {
   children: materialChildren('group')
 }
 
-export const selectMenuMaterialValues = [{
-  value: 'regular-item1',
-  label: 'Regular Item'
-}, {
-  type: 'group',
-  label: 'Group Item 1',
-  children: materialChildren('group1')
-}, {
-  type: 'group',
-  label: 'Group Item 2',
-  children: materialChildren('group2')
-}]
+export const selectMenuMaterialValues = [
+  {
+    value: 'regular-item1',
+    label: 'Regular Item'
+  },
+  {
+    type: 'group',
+    label: 'Group Item 1',
+    children: materialChildren('group1')
+  },
+  {
+    type: 'group',
+    label: 'Group Item 2',
+    children: materialChildren('group2')
+  }
+]
 
 export const googleMapsApiKey = 'AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo'

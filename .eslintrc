@@ -1,40 +1,35 @@
 {
-  "extends": ["airbnb", "standard"],
   "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaVersion": 2017,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
-      "jsx": true
-    }
-  },
+  "extends": [
+    "airbnb",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "root": true,
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "import/prefer-default-export": 0,
+    "jsx-a11y/href-no-hash": 0,
     "jsx-a11y/no-static-element-interactions": 0,
     "jsx-a11y/anchor-has-content": 0,
-    "object-curly-spacing": ["error", "never"],
     "no-mixed-operators": 0,
     "no-plusplus": 0,
-    "no-unused-vars-rest/no-unused-vars": 2,
     "no-param-reassign": 0,
     "no-shadow": 1,
-    // @TODO Discuss these values
-    // Recent eslint updates have brought up these rules which might make sense. We should discuss them.
-    "react/require-default-props": 0,
+    "react/require-default-props": 1,  // This need refactoring
     "prefer-destructuring": 0,
-    "react/default-props-match-prop-types": 0,
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/anchor-is-valid": 0,
-    "jsx-a11y/label-has-for": 0
+    "jsx-a11y/label-has-for": 0,
+    "prettier/prettier": ["error", {
+      "parser": "flow",
+      "semi": false,
+      "singleQuote": true,
+      "bracketSpacing": false
+    }]
   },
-  "plugins": [
-    "flowtype",
-    "react",
-    "no-unused-vars-rest"
-  ],
-  "root": true,
   "settings": {
     "import/resolver": {
       "webpack": {

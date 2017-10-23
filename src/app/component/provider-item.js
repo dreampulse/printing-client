@@ -24,7 +24,12 @@ const ProviderItem = ({
     <td className="provider-item__price">{price}</td>
     <td className="provider-item__shipping">{shipping}</td>
     <td className="provider-item__checkout">
-      <Button icon={checkoutIcon} modifiers={['block']} label="Checkout" onClick={onCheckoutClick} />
+      <Button
+        icon={checkoutIcon}
+        modifiers={['block']}
+        label="Checkout"
+        onClick={onCheckoutClick}
+      />
     </td>
   </tr>
 )

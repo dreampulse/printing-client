@@ -20,7 +20,7 @@ const ModelItem = ({
   onQuantityChange = () => {},
   onDelete = () => {}
 }) => {
-  const handleDeleteClick = (event) => {
+  const handleDeleteClick = event => {
     event.preventDefault()
     onDelete()
   }
@@ -30,12 +30,8 @@ const ModelItem = ({
       <ImageContainer modifiers={['model']} source={imageSource} />
       <NumberField modifiers={['compact']} value={quantity} onChange={onQuantityChange} />
       <div className="model-item__description">
-        {Boolean(title) && (
-          <strong className="model-item__title">{title}</strong>
-        )}
-        {Boolean(subline) && (
-          <span className="model-item__subline">{subline}</span>
-        )}
+        {Boolean(title) && <strong className="model-item__title">{title}</strong>}
+        {Boolean(subline) && <span className="model-item__subline">{subline}</span>}
       </div>
       <button type="button" className="model-item__delete" onClick={handleDeleteClick}>
         <Icon source={deleteIcon} />

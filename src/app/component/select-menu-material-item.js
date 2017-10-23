@@ -8,7 +8,7 @@ import Icon from 'Component/icon'
 
 import selectedIcon from 'Icon/selected.svg'
 
-const getLabel = ({value, label}) => (label || value)
+const getLabel = ({value, label}) => label || value
 
 const SelectMenuMaterialItem = ({
   classNames,
@@ -17,7 +17,7 @@ const SelectMenuMaterialItem = ({
   selected = false,
   onClick = () => {}
 }) => {
-  const handleClick = (event) => {
+  const handleClick = event => {
     event.preventDefault()
     onClick(value)
   }

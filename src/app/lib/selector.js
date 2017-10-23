@@ -1,23 +1,14 @@
 import get from 'lodash/get'
 import URLSearchParams from 'url-search-params'
 
-import {
-  hasMaterialMultipleConfigs,
-  getBestOfferForMaterial
-} from 'Lib/material'
-import {
-  formatPrice
-} from 'Lib/formatter'
+import {hasMaterialMultipleConfigs, getBestOfferForMaterial} from 'Lib/material'
+import {formatPrice} from 'Lib/formatter'
 
 import config from '../../../config'
 
-export const selectCommonQuantity = (state) => {
+export const selectCommonQuantity = state => {
   // Common quantity exists only if all models have the same individual quantity
-  const {
-    model: {
-      models
-    }
-  } = state
+  const {model: {models}} = state
 
   if (models.length === 0) {
     return undefined
@@ -35,15 +26,8 @@ export const selectCommonQuantity = (state) => {
   }, null)
 }
 
-export const selectMaterialMenuValues = (state) => {
-  const {
-    price: {
-      offers
-    },
-    material: {
-      materials
-    }
-  } = state
+export const selectMaterialMenuValues = state => {
+  const {price: {offers}, material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
     return []
@@ -52,25 +36,23 @@ export const selectMaterialMenuValues = (state) => {
   return materials.materialStructure.map(materialGroup => ({
     type: 'group',
     label: materialGroup.name,
-    children: materialGroup.materials.map((material) => {
+    children: materialGroup.materials.map(material => {
       const offer = offers && getBestOfferForMaterial(offers, material)
       return {
         type: 'material',
         value: material.id,
         label: material.name,
         hasColor: hasMaterialMultipleConfigs(material),
-        price: offer ? `From ${formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}` : undefined
+        price: offer
+          ? `From ${formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}`
+          : undefined
       }
     })
   }))
 }
 
 export const selectMaterial = (state, materialId) => {
-  const {
-    material: {
-      materials
-    }
-  } = state
+  const {material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
     return null
@@ -79,8 +61,8 @@ export const selectMaterial = (state, materialId) => {
   // Search for material by id
   let material = null
 
-  materials.materialStructure.forEach((materialGroup) => {
-    materialGroup.materials.forEach((item) => {
+  materials.materialStructure.forEach(materialGroup => {
+    materialGroup.materials.forEach(item => {
       if (item.id === materialId) {
         material = item
       }
@@ -91,11 +73,7 @@ export const selectMaterial = (state, materialId) => {
 }
 
 export const selectMaterialByName = (state, name) => {
-  const {
-    material: {
-      materials
-    }
-  } = state
+  const {material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
     return null
@@ -104,8 +82,8 @@ export const selectMaterialByName = (state, name) => {
   // Search for material by name
   let material = null
 
-  materials.materialStructure.forEach((materialGroup) => {
-    materialGroup.materials.forEach((item) => {
+  materials.materialStructure.forEach(materialGroup => {
+    materialGroup.materials.forEach(item => {
       if (item.name === name) {
         material = item
       }
@@ -116,19 +94,15 @@ export const selectMaterialByName = (state, name) => {
 }
 
 export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
-  const {
-    material: {
-      materials
-    }
-  } = state
+  const {material: {materials}} = state
 
   let selectedMaterial
   let selectedFinishGroup
   let selectedMaterialConfig
-  materials.materialStructure.every((materialGroup) => {
-    materialGroup.materials.every((material) => {
-      material.finishGroups.every((finishGroup) => {
-        finishGroup.materialConfigs.every((materialConfig) => {
+  materials.materialStructure.every(materialGroup => {
+    materialGroup.materials.every(material => {
+      material.finishGroups.every(finishGroup => {
+        finishGroup.materialConfigs.every(materialConfig => {
           if (materialConfig.id === materialConfigId) {
             selectedMaterial = material
             selectedFinishGroup = finishGroup
@@ -150,14 +124,8 @@ export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
   }
 }
 
-export const selectedOfferMaterial = (state) => {
-  const {
-    price: {
-      selectedOffer: {
-        materialConfigId
-      }
-    }
-  } = state
+export const selectedOfferMaterial = state => {
+  const {price: {selectedOffer: {materialConfigId}}} = state
   return selectMaterialByMaterialConfigId(state, materialConfigId)
 }
 
@@ -170,7 +138,7 @@ export const selectFinishGroup = (state, materialId, finishGroupId) => {
   // Search for finish group by id
   let finishGroup = null
 
-  material.finishGroups.forEach((item) => {
+  material.finishGroups.forEach(item => {
     if (item.id === finishGroupId) {
       finishGroup = item
     }
@@ -179,35 +147,25 @@ export const selectFinishGroup = (state, materialId, finishGroupId) => {
   return finishGroup
 }
 
-export const selectCurrentMaterial = (state) => {
-  const {
-    material: {
-      selectedMaterial
-    }
-  } = state
+export const selectCurrentMaterial = state => {
+  const {material: {selectedMaterial}} = state
 
-  return selectMaterial(state, selectedMaterial) ||
+  return (
+    selectMaterial(state, selectedMaterial) ||
     selectMaterialByName(state, config.defaultSelectedMaterial)
+  )
 }
 
 export const selectModelByModelId = (state, modelId) => {
-  const {
-    model: {models}
-  } = state
+  const {model: {models}} = state
 
-  return models
-    .filter(model => model.modelId === modelId)
-    .shift() || null
+  return models.filter(model => model.modelId === modelId).shift() || null
 }
 
-export const selectOfferItems = (state) => {
-  const {
-    price: {
-      selectedOffer: {items}
-    }
-  } = state
+export const selectOfferItems = state => {
+  const {price: {selectedOffer: {items}}} = state
 
-  return items.map((item) => {
+  return items.map(item => {
     const model = selectModelByModelId(state, item.modelId)
     return {
       ...item,
@@ -217,15 +175,8 @@ export const selectOfferItems = (state) => {
   })
 }
 
-export const selectOffersForSelectedMaterialConfig = (state) => {
-  const {
-    price: {
-      offers
-    },
-    material: {
-      selectedMaterialConfig
-    }
-  } = state
+export const selectOffersForSelectedMaterialConfig = state => {
+  const {price: {offers}, material: {selectedMaterialConfig}} = state
 
   if (!offers) {
     return null
@@ -234,12 +185,8 @@ export const selectOffersForSelectedMaterialConfig = (state) => {
   return offers.filter(offer => offer.materialConfigId === selectedMaterialConfig)
 }
 
-export const selectPrintingServiceRequests = (state) => {
-  const {
-    price: {
-      printingServiceComplete
-    }
-  } = state
+export const selectPrintingServiceRequests = state => {
+  const {price: {printingServiceComplete}} = state
 
   if (!printingServiceComplete) {
     return null
@@ -252,13 +199,8 @@ export const selectPrintingServiceRequests = (state) => {
   }
 }
 
-export const selectAreAllUploadsFinished = (state) => {
-  const {
-    model: {
-      numberOfUploads,
-      models
-    }
-  } = state
+export const selectAreAllUploadsFinished = state => {
+  const {model: {numberOfUploads, models}} = state
 
   return numberOfUploads === 0 && models.length > 0
 }
@@ -266,7 +208,7 @@ export const selectAreAllUploadsFinished = (state) => {
 export const selectLocationQuery = state =>
   new URLSearchParams(get(state, 'routing.location.query') || '')
 
-export const selectFeatures = (state) => {
+export const selectFeatures = state => {
   const query = selectLocationQuery(state)
   const features = Object.create(null)
 

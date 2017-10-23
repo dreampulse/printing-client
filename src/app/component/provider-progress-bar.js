@@ -9,9 +9,7 @@ import Icon from 'Component/icon'
 
 import selectedIcon from 'Icon/selected.svg'
 
-const ProviderProgressBar = ({
-  classNames, modifiers, currentStep, totalSteps
-}) => (
+const ProviderProgressBar = ({classNames, modifiers, currentStep, totalSteps}) => (
   <div className={buildClassName('provider-progress-bar', modifiers, classNames)}>
     <div className="provider-progress-bar__content">
       {currentStep < totalSteps && <LoadingIndicator />}

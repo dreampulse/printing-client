@@ -6,7 +6,7 @@ global.initMap = () => {
   defers.forEach(resolve => resolve(googleMaps))
 }
 
-export function getGoogleMaps (googleMapsKey) {
+export function getGoogleMaps(googleMapsKey) {
   if (googleMaps) {
     return Promise.resolve(googleMaps)
   }
@@ -18,12 +18,12 @@ export function getGoogleMaps (googleMapsKey) {
     global.document.body.insertBefore(scriptNode, global.document.body.firstChild)
   }
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     defers.push(resolve)
   })
 }
 
-export function geocode (_googleMaps, coords) {
+export function geocode(_googleMaps, coords) {
   const geocoder = new _googleMaps.Geocoder()
 
   return new Promise((resolve, reject) => {

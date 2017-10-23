@@ -9,7 +9,7 @@ import ColorSquare from 'Component/color-square'
 
 import selectedIcon from 'Icon/selected.svg'
 
-const getLabel = ({value, label}) => (label || value)
+const getLabel = ({value, label}) => label || value
 
 const SelectMenuItem = ({
   classNames,
@@ -18,15 +18,12 @@ const SelectMenuItem = ({
   selected = false,
   onClick = () => {}
 }) => {
-  const handleClick = (event) => {
+  const handleClick = event => {
     event.preventDefault()
     onClick(value)
   }
 
-  const finalModifier = [
-    ...modifiers,
-    {selected}
-  ]
+  const finalModifier = [...modifiers, {selected}]
 
   return (
     <button

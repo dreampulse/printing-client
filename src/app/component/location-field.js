@@ -1,12 +1,8 @@
 import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 
-import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
-import {
-  getGoogleMaps,
-  geocode
-} from 'Service/google-maps'
+import {getGoogleMaps, geocode} from 'Service/google-maps'
 import geolocate from 'Service/navigator-geolocate'
 
 import Icon from 'Component/icon'
@@ -16,15 +12,14 @@ import locationIcon from 'Icon/location.svg'
 
 export default class LocationField extends Component {
   static propTypes = {
-    ...propTypes.component,
+    modifiers: PropTypes.arrayOf(PropTypes.string),
+    classNames: PropTypes.arrayOf(PropTypes.string),
     googleMapsApiKey: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object
-    ]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     placeholder: PropTypes.string,
     onChange: PropTypes.func,
-    name: PropTypes.string
+    name: PropTypes.string,
+    disabled: PropTypes.bool
   }
 
   static defaultProps = {
@@ -38,42 +33,43 @@ export default class LocationField extends Component {
     loading: false
   }
 
-  componentDidMount () {
-    getGoogleMaps(this.props.googleMapsApiKey).then((googleMaps) => {
+  componentDidMount() {
+    getGoogleMaps(this.props.googleMapsApiKey).then(googleMaps => {
       this.googleMaps = googleMaps
       this.initAutocomplete(googleMaps)
     })
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.value !== this.props.value) {
       this.setState({value: nextProps.value})
     }
   }
 
-  onLocationClick = (event) => {
+  onLocationClick = event => {
     event.preventDefault()
 
     if (this.googleMaps) {
       this.setState({loading: true})
-      geolocate().then((position) => {
-        const {coords: {latitude: lat, longitude: lng, accuracy}} = position
-        const coords = {lat, lng}
+      geolocate()
+        .then(position => {
+          const {coords: {latitude: lat, longitude: lng, accuracy}} = position
+          const coords = {lat, lng}
 
-        // Bias the autocomplete object to the user's geographical location,
-        // as supplied by the browser's 'navigator.geolocation' object.
-        if (this.autocomplete) {
-          const circle = new this.googleMaps.Circle({
-            center: coords,
-            radius: accuracy
-          })
-          this.autocomplete.setBounds(circle.getBounds())
-        }
+          // Bias the autocomplete object to the user's geographical location,
+          // as supplied by the browser's 'navigator.geolocation' object.
+          if (this.autocomplete) {
+            const circle = new this.googleMaps.Circle({
+              center: coords,
+              radius: accuracy
+            })
+            this.autocomplete.setBounds(circle.getBounds())
+          }
 
-        return geocode(this.googleMaps, coords)
-      })
-        .then((places) => {
-        // The first place is the one with the highest granularity
+          return geocode(this.googleMaps, coords)
+        })
+        .then(places => {
+          // The first place is the one with the highest granularity
           this.setState({
             value: places[0].formatted_address,
             loading: false
@@ -82,13 +78,13 @@ export default class LocationField extends Component {
         })
         .catch(() => {
           this.setState({loading: false})
-        // Currently we do not display the error.
-        // This happens usually when the user aborts the geolocation process
+          // Currently we do not display the error.
+          // This happens usually when the user aborts the geolocation process
         })
     }
   }
 
-  onInputChange = (event) => {
+  onInputChange = event => {
     this.setState({value: event.target.value})
   }
 
@@ -101,7 +97,7 @@ export default class LocationField extends Component {
     return value
   }
 
-  initAutocomplete = (googleMaps) => {
+  initAutocomplete = googleMaps => {
     this.autocomplete = new googleMaps.places.Autocomplete(this.inputDom, {
       types: ['geocode'] // https://developers.google.com/places/web-service/autocomplete?#place_types
     })
@@ -113,22 +109,12 @@ export default class LocationField extends Component {
     this.setState({autocompleteReady: true})
   }
 
-  render () {
-    const {
-      modifiers,
-      classNames,
-      name,
-      placeholder
-    } = this.props
-    const {
-      loading
-    } = this.state
+  render() {
+    const {modifiers, classNames, name, placeholder} = this.props
+    const {loading} = this.state
 
     const disabled = !this.state.autocompleteReady || this.props.disabled
-    const finalModifiers = [
-      ...modifiers,
-      {disabled}
-    ]
+    const finalModifiers = [...modifiers, {disabled}]
     const supportsGeolocation = 'geolocation' in global.navigator
 
     return (
@@ -140,17 +126,18 @@ export default class LocationField extends Component {
           placeholder={placeholder}
           value={this.getValue()}
           disabled={disabled}
-          ref={(d) => { this.inputDom = d }}
+          ref={d => {
+            this.inputDom = d
+          }}
           onChange={this.onInputChange}
         />
-        {supportsGeolocation && !loading && (
-          <button type="button" className="location-field__button" onClick={this.onLocationClick}>
-            <Icon source={locationIcon} />
-          </button>
-        )}
-        {supportsGeolocation && loading && (
-          <LoadingIndicator />
-        )}
+        {supportsGeolocation &&
+          !loading && (
+            <button type="button" className="location-field__button" onClick={this.onLocationClick}>
+              <Icon source={locationIcon} />
+            </button>
+          )}
+        {supportsGeolocation && loading && <LoadingIndicator />}
       </div>
     )
   }

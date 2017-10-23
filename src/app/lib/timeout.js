@@ -1,6 +1,4 @@
-const delay = time =>
-  new Promise(resolve =>
-    setTimeout(resolve, time))
+const delay = time => new Promise(resolve => setTimeout(resolve, time))
 
 export default (promise, time) =>
   Promise.race([

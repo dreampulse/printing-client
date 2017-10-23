@@ -10,14 +10,8 @@ import {
   selectPrintingServiceRequests,
   selectAreAllUploadsFinished
 } from 'Lib/selector'
-import {
-  getBestOfferForMaterialConfig,
-  getMaterialByName
-} from 'Lib/material'
-import {
-  formatPrice,
-  formatDeliveryTime
-} from 'Lib/formatter'
+import {getBestOfferForMaterialConfig, getMaterialByName} from 'Lib/material'
+import {formatPrice, formatDeliveryTime} from 'Lib/formatter'
 import getCloudinaryUrl from 'Lib/cloudinary'
 
 import Section from 'Component/section'
@@ -38,9 +32,7 @@ import {
   selectMaterialConfig,
   selectMaterialConfigForFinishGroup
 } from 'Action/material'
-import {
-  openMaterialModal
-} from 'Action/modal'
+import {openMaterialModal} from 'Action/modal'
 
 const MaterialSection = ({
   areAllUploadsFinished,
@@ -61,37 +53,31 @@ const MaterialSection = ({
     disabled: !areAllUploadsFinished
   })
 
-  const materialMenu = (
-    <SelectMenu modifiers={['l']} values={materialMenuValues} />
-  )
+  const materialMenu = <SelectMenu modifiers={['l']} values={materialMenuValues} />
 
   const selectedValue = selectedMaterial
     ? {value: selectedMaterial.id, label: selectedMaterial.name}
     : undefined
 
-  function renderMaterialCard (finishGroup) {
+  function renderMaterialCard(finishGroup) {
     const colorValues = finishGroup.materialConfigs
       // Filter out material configs which do not have an offer
-      .filter(materialConfig => (
-        Boolean(getBestOfferForMaterialConfig(offers, materialConfig.id))
-      ))
-      .map(({
-        id, color, colorCode, colorImage
-      }) => ({
+      .filter(materialConfig => Boolean(getBestOfferForMaterialConfig(offers, materialConfig.id)))
+      .map(({id, color, colorCode, colorImage}) => ({
         value: id,
         colorValue: colorCode,
         label: color,
-        colorImage: colorImage ? getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']) : undefined
+        colorImage: colorImage
+          ? getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
+          : undefined
       }))
 
-    let bestOffer = getBestOfferForMaterialConfig(
-      offers,
-      selectedMaterialConfigs[finishGroup.id]
+    let bestOffer = getBestOfferForMaterialConfig(offers, selectedMaterialConfigs[finishGroup.id])
+    let selectedColorValue = colorValues.find(
+      ({value}) =>
+        selectedMaterialConfigs[finishGroup.id] !== undefined &&
+        value === selectedMaterialConfigs[finishGroup.id]
     )
-    let selectedColorValue = colorValues.find(({value}) => (
-      selectedMaterialConfigs[finishGroup.id] !== undefined &&
-      value === selectedMaterialConfigs[finishGroup.id]
-    ))
 
     // If selected config does not have an offer
     // try to select first config which has an offer
@@ -102,7 +88,7 @@ const MaterialSection = ({
       }
     }
 
-    const colorMenu = colorValues.length > 1 ? (<SelectMenu values={colorValues} />) : undefined
+    const colorMenu = colorValues.length > 1 ? <SelectMenu values={colorValues} /> : undefined
     const materialPrice = (
       <Price
         value={
@@ -118,17 +104,18 @@ const MaterialSection = ({
         modifiers={['compact']}
         menu={colorMenu}
         value={selectedColorValue}
-        onChange={({value}) => onSelectMaterialConfigForFinishGroup({
-          materialConfigId: value,
-          finishGroupId: finishGroup.id
-        })}
+        onChange={({value}) =>
+          onSelectMaterialConfigForFinishGroup({
+            materialConfigId: value,
+            finishGroupId: finishGroup.id
+          })}
       />
     )
     const info = (
       <Info>
         <Headline modifiers={['s']} label="Delivery Time" />
         <Paragraph>
-          The delivery time is an approximate summary of  production time and shipping time.
+          The delivery time is an approximate summary of production time and shipping time.
         </Paragraph>
       </Info>
     )
@@ -191,11 +178,13 @@ const MaterialSection = ({
           </Column>
         </Grid>
       )}
-      {areAllUploadsFinished && selectedMaterial && selectedMaterial.finishGroups.length > 0 && (
-        <MaterialCardList>
-          {selectedMaterial.finishGroups.map(renderMaterialCard)}
-        </MaterialCardList>
-      )}
+      {areAllUploadsFinished &&
+        selectedMaterial &&
+        selectedMaterial.finishGroups.length > 0 && (
+          <MaterialCardList>
+            {selectedMaterial.finishGroups.map(renderMaterialCard)}
+          </MaterialCardList>
+        )}
     </Section>
   )
 }
@@ -221,7 +210,7 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
-    componentDidUpdate (prevProps) {
+    componentDidUpdate(prevProps) {
       if (!prevProps.areAllUploadsFinished && this.props.areAllUploadsFinished) {
         scrollTo('#section-material')
       }

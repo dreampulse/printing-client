@@ -6,15 +6,9 @@ import buildClassName from 'Lib/build-class-name'
 
 const MaterialCardList = ({classNames, modifiers, children}) => {
   const cards = React.Children.map(children, card => (
-    <li className="material-card-list__card">
-      {card}
-    </li>
+    <li className="material-card-list__card">{card}</li>
   ))
-  return (
-    <ul className={buildClassName('material-card-list', modifiers, classNames)}>
-      {cards}
-    </ul>
-  )
+  return <ul className={buildClassName('material-card-list', modifiers, classNames)}>{cards}</ul>
 }
 
 MaterialCardList.propTypes = {

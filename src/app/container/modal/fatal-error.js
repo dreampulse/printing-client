@@ -24,12 +24,10 @@ export default ({error}) => {
         </Column>
         <Column sm={9}>
           <Paragraph>
-            An unexpected error occured. Our technicians have been automatically
-            warned and are working to fix the problem.
+            An unexpected error occured. Our technicians have been automatically warned and are
+            working to fix the problem.
           </Paragraph>
-          <Paragraph>
-            Please press OK to reload the app.
-          </Paragraph>
+          <Paragraph>Please press OK to reload the app.</Paragraph>
         </Column>
       </Grid>
     </Overlay>

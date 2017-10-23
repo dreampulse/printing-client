@@ -10,13 +10,11 @@ const ConfigurationHeader = ({classNames, modifiers, children}) => (
   <div className={buildClassName('configuration-header', modifiers, classNames)}>
     <Container>
       <div className="configuration-header__grid">
-        {
-          Children.map(children, (child, index) => (
-            <div className="configuration-header__cell" key={index}>
-              {child}
-            </div>
-          ))
-        }
+        {Children.map(children, (child, index) => (
+          <div className="configuration-header__cell" key={index}>
+            {child}
+          </div>
+        ))}
       </div>
     </Container>
   </div>

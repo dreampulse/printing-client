@@ -1,16 +1,8 @@
 import React from 'react'
-import {
-  compose,
-  lifecycle,
-  renderComponent,
-  branch,
-  withState
-} from 'recompose'
+import {compose, lifecycle, renderComponent, branch, withState} from 'recompose'
 import {connect} from 'react-redux'
 
-import {
-  restoreConfiguration
-} from 'Action/configuration'
+import {restoreConfiguration} from 'Action/configuration'
 
 import LoadingContainer from 'Component/loading-container'
 import Modal from './modal'
@@ -30,19 +22,14 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withState('isLoading', 'setIsLoading', true),
   lifecycle({
-    componentWillMount () {
-      const {
-        params,
-        configurationId,
-        onRestoreConfiguration
-      } = this.props
+    componentWillMount() {
+      const {params, configurationId, onRestoreConfiguration} = this.props
 
       // Restore only if configuration id changed
       if (configurationId !== params.id) {
-        onRestoreConfiguration(params.id)
-          .then(() => {
-            this.props.setIsLoading(false)
-          })
+        onRestoreConfiguration(params.id).then(() => {
+          this.props.setIsLoading(false)
+        })
       } else {
         this.props.setIsLoading(false)
       }
@@ -57,8 +44,5 @@ export default compose(
       </div>
     ))
   ),
-  branch(
-    props => props.isDirectSales,
-    renderComponent(DirectConfigurationPage)
-  )
+  branch(props => props.isDirectSales, renderComponent(DirectConfigurationPage))
 )(ModelPage)

@@ -3,13 +3,13 @@ import 'whatwg-fetch'
 export const fetch = global.fetch
 export const Xhr = global.XMLHttpRequest
 
-function isJSON ({headers}) {
+function isJSON({headers}) {
   const contentType = headers.get('content-type')
   if (contentType) return contentType.indexOf('application/json') >= 0
   return false
 }
 
-export function checkStatus (response) {
+export function checkStatus(response) {
   if (response.status >= 200 && response.status < 400) {
     if (isJSON(response)) return response.json()
     return null
@@ -21,7 +21,7 @@ export function checkStatus (response) {
   throw error
 }
 
-export async function requestJson (url, additionalOptions = {}) {
+export async function requestJson(url, additionalOptions = {}) {
   const options = {
     ...additionalOptions
   }
@@ -31,12 +31,12 @@ export async function requestJson (url, additionalOptions = {}) {
   return checkStatus(response)
 }
 
-export async function request (url, options) {
+export async function request(url, options) {
   const response = await fetch(url, options)
   return checkStatus(response)
 }
 
-export async function requestWithResponse (url, options) {
+export async function requestWithResponse(url, options) {
   const response = await fetch(url, options)
   return {
     data: await checkStatus(response),
@@ -44,10 +44,10 @@ export async function requestWithResponse (url, options) {
   }
 }
 
-export function upload (url, file, params, onProgress) {
+export function upload(url, file, params, onProgress) {
   const xhr = new Xhr()
 
-  xhr.upload.addEventListener('progress', (event) => {
+  xhr.upload.addEventListener('progress', event => {
     if (event.lengthComputable) {
       const progress = event.loaded / event.total
       if (onProgress) {
@@ -70,7 +70,7 @@ export function upload (url, file, params, onProgress) {
 
   const form = new global.FormData()
   form.append('file', file)
-  Object.keys(params).forEach((param) => {
+  Object.keys(params).forEach(param => {
     form.append(param, params[param])
   })
 

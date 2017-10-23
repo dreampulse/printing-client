@@ -9,15 +9,8 @@ import LoadingIndicator from 'Component/loading-indicator'
 
 import deleteIcon from 'Icon/delete.svg'
 
-const ModelItemLoad = ({
-  classNames,
-  modifiers,
-  title,
-  subline,
-  status,
-  onDelete = () => {}
-}) => {
-  const handleDeleteClick = (event) => {
+const ModelItemLoad = ({classNames, modifiers, title, subline, status, onDelete = () => {}}) => {
+  const handleDeleteClick = event => {
     event.preventDefault()
     onDelete()
   }
@@ -28,7 +21,6 @@ const ModelItemLoad = ({
 
   return (
     <div className={buildClassName('model-item-load', modifiers, classNames)}>
-
       <div className="model-item-load__description">
         {Boolean(title) && (
           <strong className="model-item-load__title">
@@ -36,9 +28,7 @@ const ModelItemLoad = ({
             {loadTitle}
           </strong>
         )}
-        {Boolean(subline) && (
-          <span className="model-item-load__subline">{subline}</span>
-        )}
+        {Boolean(subline) && <span className="model-item-load__subline">{subline}</span>}
       </div>
       <button type="button" className="model-item-load__delete" onClick={handleDeleteClick}>
         <Icon source={deleteIcon} />

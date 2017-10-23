@@ -1,7 +1,7 @@
 import developmentSettings from './development'
 import productionSettings from './production'
 
-function chooseConfig () {
+function chooseConfig() {
   if (process.env.NODE_ENV === 'production') {
     return productionSettings
   }

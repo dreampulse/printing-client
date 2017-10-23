@@ -1,31 +1,24 @@
 import PropTypes from 'prop-types'
 import React, {cloneElement} from 'react'
-import {
-  compose,
-  withState
-} from 'recompose'
+import {compose, withState} from 'recompose'
 
 const HandleChecked = ({children, checked, onChange}) => {
-  const change = (input) => {
+  const change = input => {
     if (input.target && typeof input.target.checked !== 'undefined') {
       return onChange(input.target.checked)
     }
     return onChange(input)
   }
 
-  const modifiedChildren = React.Children.map(children, (child, index) => (
+  const modifiedChildren = React.Children.map(children, (child, index) =>
     cloneElement(child, {
       key: index,
       checked,
       onChange: change
     })
-  ))
-
-  return (
-    <div>
-      {modifiedChildren}
-    </div>
   )
+
+  return <div>{modifiedChildren}</div>
 }
 
 HandleChecked.propTypes = {

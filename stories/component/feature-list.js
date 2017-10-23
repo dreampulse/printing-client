@@ -7,8 +7,8 @@ import FeatureListItem from 'Component/feature-list-item'
 import StarRating from 'Component/star-rating'
 import Checked from 'Component/checked'
 
-const feature = (<StarRating stars={3} />)
-const checked = (<Checked />)
+const feature = <StarRating stars={3} />
+const checked = <Checked />
 
 storiesOf('Feature List & Feature List Item', module)
   .add('default', () => (

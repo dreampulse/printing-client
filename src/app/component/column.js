@@ -26,11 +26,7 @@ const Column = ({
     lgPush ? `lg-push-${lgPush}` : undefined
   ])
 
-  return (
-    <div className={buildClassName('column', finalModifiers, classNames)}>
-      {children}
-    </div>
-  )
+  return <div className={buildClassName('column', finalModifiers, classNames)}>{children}</div>
 }
 
 Column.propTypes = {

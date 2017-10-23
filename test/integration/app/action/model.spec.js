@@ -56,11 +56,13 @@ describe('Model Integration Test', () => {
       printingEngine.getPriceWithStatus.resolves({
         isComplete: true,
         price: {
-          offers: [{
-            materialConfigId: 1,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'}
-          }],
+          offers: [
+            {
+              materialConfigId: 1,
+              printingService: 'some-service',
+              shipping: {name: 'some-shipping'}
+            }
+          ],
           printingServiceComplete: {
             shapeways: true,
             imaterialize: true
@@ -124,7 +126,7 @@ describe('Model Integration Test', () => {
     it('handles error when upload failes', () => {
       printingEngine.uploadModel.rejects(new Error('some-error'))
 
-      store.dispatch(uploadFiles([file])).catch((error) => {
+      store.dispatch(uploadFiles([file])).catch(error => {
         expect(error, 'to satisfy', {
           type: ERROR_TYPE.FILE_UPLOAD_FAILED
         })
@@ -148,154 +150,12 @@ describe('Model Integration Test', () => {
     it('changes quanity and creates a price request', async () => {
       store = Store(createHistory(), {
         model: {
-          models: [{
-            modelId: 'some-model-id',
-            quantity: 1,
-            uploadFinished: true
-          }]
-        },
-        material: {
-          materials: {
-            materialConfigs: {
-              'some-material-id': 'something',
-              'some-material-other-id': 'something'
-            },
-            materialStructure: []
-          }
-        },
-        user: {
-          userId: 'some-user-id',
-          user: {
-            shippingAddress: {
-              city: 'Pittsburgh',
-              zipCode: '15234',
-              stateCode: 'PA',
-              countryCode: 'US'
-            }
-          }
-        }
-      })
-
-      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
-      printingEngine.getPriceWithStatus.resolves({
-        isComplete: true,
-        price: {
-          offers: [{
-            materialConfigId: 1,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'}
-          }],
-          printingServiceComplete: {
-            shapeways: true,
-            imaterialize: true
-          }
-        }
-      })
-
-      await store.dispatch(changeQuantity({quantity: 42}))
-
-      expect(store.getState().model.models[0], 'to satisfy', {
-        quantity: 42
-      })
-
-      expect(store.getState().price, 'to satisfy', {
-        priceId: 'some-price-id',
-        offers: [{
-          materialConfigId: 1,
-          printingService: 'some-service',
-          shipping: {name: 'some-shipping'}
-        }],
-        printingServiceComplete: {
-          shapeways: true,
-          imaterialize: true
-        }
-      })
-    })
-  })
-
-  describe('changeIndividualQuantity()', () => {
-    it('changes quanity and creates a price request', async () => {
-      store = Store(createHistory(), {
-        model: {
-          models: [{
-            modelId: 'some-model-id',
-            quantity: 1,
-            uploadFinished: true
-          }]
-        },
-        material: {
-          materials: {
-            materialConfigs: {
-              'some-material-id': 'something',
-              'some-material-other-id': 'something'
-            },
-            materialStructure: []
-          }
-        },
-        user: {
-          userId: 'some-user-id',
-          user: {
-            shippingAddress: {
-              city: 'Pittsburgh',
-              zipCode: '15234',
-              stateCode: 'PA',
-              countryCode: 'US'
-            }
-          }
-        }
-      })
-
-      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
-      printingEngine.getPriceWithStatus.resolves({
-        isComplete: true,
-        price: {
-          offers: [{
-            materialConfigId: 1,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'}
-          }],
-          printingServiceComplete: {
-            shapeways: true,
-            imaterialize: true
-          }
-        }
-      })
-
-      await store.dispatch(changeIndividualQuantity({quantity: 42, modelId: 'some-model-id'}))
-
-      expect(store.getState().model.models[0], 'to satisfy', {
-        quantity: 42
-      })
-
-      expect(store.getState().price, 'to satisfy', {
-        priceId: 'some-price-id',
-        offers: [{
-          materialConfigId: 1,
-          printingService: 'some-service',
-          shipping: {name: 'some-shipping'}
-        }],
-        printingServiceComplete: {
-          shapeways: true,
-          imaterialize: true
-        }
-      })
-    })
-  })
-
-  describe('changeUnit()', () => {
-    it('updates the current selected unit state', () => {
-      store.dispatch(changeUnit({unit: 'some-unit'}))
-      expect(store.getState().model.selectedUnit, 'to equal', 'some-unit')
-    })
-  })
-
-  describe('deleteFile()', () => {
-    it('deletes file and creates a price request', async () => {
-      store = Store(createHistory(), {
-        model: {
           models: [
-            {fileId: 1, uploadFinished: true},
-            {fileId: 2, uploadFinished: true}
+            {
+              modelId: 'some-model-id',
+              quantity: 1,
+              uploadFinished: true
+            }
           ]
         },
         material: {
@@ -324,11 +184,164 @@ describe('Model Integration Test', () => {
       printingEngine.getPriceWithStatus.resolves({
         isComplete: true,
         price: {
-          offers: [{
+          offers: [
+            {
+              materialConfigId: 1,
+              printingService: 'some-service',
+              shipping: {name: 'some-shipping'}
+            }
+          ],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          }
+        }
+      })
+
+      await store.dispatch(changeQuantity({quantity: 42}))
+
+      expect(store.getState().model.models[0], 'to satisfy', {
+        quantity: 42
+      })
+
+      expect(store.getState().price, 'to satisfy', {
+        priceId: 'some-price-id',
+        offers: [
+          {
             materialConfigId: 1,
             printingService: 'some-service',
             shipping: {name: 'some-shipping'}
-          }],
+          }
+        ],
+        printingServiceComplete: {
+          shapeways: true,
+          imaterialize: true
+        }
+      })
+    })
+  })
+
+  describe('changeIndividualQuantity()', () => {
+    it('changes quanity and creates a price request', async () => {
+      store = Store(createHistory(), {
+        model: {
+          models: [
+            {
+              modelId: 'some-model-id',
+              quantity: 1,
+              uploadFinished: true
+            }
+          ]
+        },
+        material: {
+          materials: {
+            materialConfigs: {
+              'some-material-id': 'something',
+              'some-material-other-id': 'something'
+            },
+            materialStructure: []
+          }
+        },
+        user: {
+          userId: 'some-user-id',
+          user: {
+            shippingAddress: {
+              city: 'Pittsburgh',
+              zipCode: '15234',
+              stateCode: 'PA',
+              countryCode: 'US'
+            }
+          }
+        }
+      })
+
+      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: true,
+        price: {
+          offers: [
+            {
+              materialConfigId: 1,
+              printingService: 'some-service',
+              shipping: {name: 'some-shipping'}
+            }
+          ],
+          printingServiceComplete: {
+            shapeways: true,
+            imaterialize: true
+          }
+        }
+      })
+
+      await store.dispatch(changeIndividualQuantity({quantity: 42, modelId: 'some-model-id'}))
+
+      expect(store.getState().model.models[0], 'to satisfy', {
+        quantity: 42
+      })
+
+      expect(store.getState().price, 'to satisfy', {
+        priceId: 'some-price-id',
+        offers: [
+          {
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }
+        ],
+        printingServiceComplete: {
+          shapeways: true,
+          imaterialize: true
+        }
+      })
+    })
+  })
+
+  describe('changeUnit()', () => {
+    it('updates the current selected unit state', () => {
+      store.dispatch(changeUnit({unit: 'some-unit'}))
+      expect(store.getState().model.selectedUnit, 'to equal', 'some-unit')
+    })
+  })
+
+  describe('deleteFile()', () => {
+    it('deletes file and creates a price request', async () => {
+      store = Store(createHistory(), {
+        model: {
+          models: [{fileId: 1, uploadFinished: true}, {fileId: 2, uploadFinished: true}]
+        },
+        material: {
+          materials: {
+            materialConfigs: {
+              'some-material-id': 'something',
+              'some-material-other-id': 'something'
+            },
+            materialStructure: []
+          }
+        },
+        user: {
+          userId: 'some-user-id',
+          user: {
+            shippingAddress: {
+              city: 'Pittsburgh',
+              zipCode: '15234',
+              stateCode: 'PA',
+              countryCode: 'US'
+            }
+          }
+        }
+      })
+
+      printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
+      printingEngine.getPriceWithStatus.resolves({
+        isComplete: true,
+        price: {
+          offers: [
+            {
+              materialConfigId: 1,
+              printingService: 'some-service',
+              shipping: {name: 'some-shipping'}
+            }
+          ],
           printingServiceComplete: {
             shapeways: true,
             imaterialize: true
@@ -338,18 +351,22 @@ describe('Model Integration Test', () => {
 
       await store.dispatch(deleteFile(2))
 
-      expect(store.getState().model.models, 'to equal', [{
-        fileId: 1,
-        uploadFinished: true
-      }])
+      expect(store.getState().model.models, 'to equal', [
+        {
+          fileId: 1,
+          uploadFinished: true
+        }
+      ])
 
       expect(store.getState().price, 'to satisfy', {
         priceId: 'some-price-id',
-        offers: [{
-          materialConfigId: 1,
-          printingService: 'some-service',
-          shipping: {name: 'some-shipping'}
-        }],
+        offers: [
+          {
+            materialConfigId: 1,
+            printingService: 'some-service',
+            shipping: {name: 'some-shipping'}
+          }
+        ],
         printingServiceComplete: {
           shapeways: true,
           imaterialize: true

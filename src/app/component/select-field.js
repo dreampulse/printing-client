@@ -39,22 +39,22 @@ export default class SelectField extends Component {
 
     // Open the menu above the select field if there is not enough space
     // to the bottom
-    const openAbove = (selectSize.top + selectSize.height + menuSize.height > global.innerHeight)
+    const openAbove = selectSize.top + selectSize.height + menuSize.height > global.innerHeight
 
     this.setState({
       menuStyle: {
         top: openAbove
-          ? (selectSize.top - menuSize.height + global.scrollY)
-          : (selectSize.top + selectSize.height + global.scrollY),
+          ? selectSize.top - menuSize.height + global.scrollY
+          : selectSize.top + selectSize.height + global.scrollY,
         left: selectSize.left + global.scrollX,
         width: selectSize.width
       }
     })
   }
 
-  getLabel = ({value, label}) => (label || value)
+  getLabel = ({value, label}) => label || value
 
-  handleSelectClick = (event) => {
+  handleSelectClick = event => {
     event.preventDefault()
     this.setState({
       isOpen: !this.state.isOpen,
@@ -62,7 +62,7 @@ export default class SelectField extends Component {
     })
   }
 
-  handleMenuClick = (value) => {
+  handleMenuClick = value => {
     this.setState({
       isOpen: false,
       menuStyle: null
@@ -77,18 +77,9 @@ export default class SelectField extends Component {
     })
   }
 
-  render () {
-    const {
-      modifiers = [],
-      classNames,
-      value,
-      placeholder,
-      menu
-    } = this.props
-    const {
-      isOpen,
-      menuStyle
-    } = this.state
+  render() {
+    const {modifiers = [], classNames, value, placeholder, menu} = this.props
+    const {isOpen, menuStyle} = this.state
     const finalModifiers = [
       ...modifiers,
       {
@@ -105,9 +96,10 @@ export default class SelectField extends Component {
         onClick={this.handleSelectClick}
         disabled={!menu || this.props.disabled}
       >
-        {Boolean(value) && (value.colorValue || value.colorImage) && (
-          <ColorSquare color={value.colorValue} image={value.colorImage} />
-        )}
+        {Boolean(value) &&
+          (value.colorValue || value.colorImage) && (
+            <ColorSquare color={value.colorValue} image={value.colorImage} />
+          )}
         <span className="select-field__value">{value ? this.getLabel(value) : placeholder}</span>
         <Icon source={arrowIcon} />
 
@@ -121,7 +113,9 @@ export default class SelectField extends Component {
           >
             <div
               className="select-field__menu"
-              ref={(d) => { this.menuDOM = d }}
+              ref={d => {
+                this.menuDOM = d
+              }}
               style={menuStyle}
             >
               {cloneElement(menu, {

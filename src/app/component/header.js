@@ -8,12 +8,7 @@ import Container from 'Component/container'
 
 import logoImage from 'Image/logo.svg'
 
-const Header = ({
-  classNames,
-  modifiers,
-  children,
-  onClickIdentity = () => {}
-}) => (
+const Header = ({classNames, modifiers, children, onClickIdentity = () => {}}) => (
   <header className={buildClassName('header', modifiers, classNames)}>
     <Container>
       <div className="header__grid">
@@ -24,9 +19,7 @@ const Header = ({
             for the Best Price
           </strong>
         </button>
-        <div className="header__content">
-          {children}
-        </div>
+        <div className="header__content">{children}</div>
       </div>
     </Container>
   </header>

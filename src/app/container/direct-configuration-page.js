@@ -2,17 +2,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
-import {
-  selectMaterialByMaterialConfigId,
-  selectPrintingServiceRequests
-} from 'Lib/selector'
+import {selectMaterialByMaterialConfigId, selectPrintingServiceRequests} from 'Lib/selector'
 import {getBestOfferForMaterialConfig} from 'Lib/material'
-import {
-  formatDimensions,
-  formatPrice,
-  formatDeliveryTime,
-  formatAddress
-} from 'Lib/formatter'
+import {formatDimensions, formatPrice, formatDeliveryTime, formatAddress} from 'Lib/formatter'
 import getCloudinaryUrl from 'Lib/cloudinary'
 import {convertPlaceToLocation} from 'Lib/geolocation'
 
@@ -53,35 +45,24 @@ const DirectConfigurationPage = ({
   onGoToAddress,
   onUpdateLocation
 }) => {
-  const {
-    finishGroup,
-    materialConfig
-  } = selectedMaterial
+  const {finishGroup, materialConfig} = selectedMaterial
   const colorValues = finishGroup.materialConfigs
     // Filter out material configs which do not have an offer
-    .filter(filterConfig => (
-      Boolean(getBestOfferForMaterialConfig(offers, filterConfig.id))
-    ))
-    .map(({
-      id, color, colorCode, colorImage
-    }) => ({
+    .filter(filterConfig => Boolean(getBestOfferForMaterialConfig(offers, filterConfig.id)))
+    .map(({id, color, colorCode, colorImage}) => ({
       value: id,
       colorValue: colorCode,
       label: color,
       colorImage: colorImage ? getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']) : undefined
     }))
   // Only select an offer if price request completed!
-  const bestOffer = printingServiceRequests &&
+  const bestOffer =
+    printingServiceRequests &&
     printingServiceRequests.complete === printingServiceRequests.total &&
-    getBestOfferForMaterialConfig(
-      offers,
-      materialConfig.id
-    )
-  const selectedColorValue = colorValues.find(({value}) => (
-    value === materialConfig.id
-  ))
+    getBestOfferForMaterialConfig(offers, materialConfig.id)
+  const selectedColorValue = colorValues.find(({value}) => value === materialConfig.id)
 
-  const colorMenu = colorValues.length > 1 ? (<SelectMenu values={colorValues} />) : undefined
+  const colorMenu = colorValues.length > 1 ? <SelectMenu values={colorValues} /> : undefined
   const materialPrice = (
     <Price
       value={
@@ -104,7 +85,7 @@ const DirectConfigurationPage = ({
     <Info>
       <Headline modifiers={['s']} label="Delivery Time" />
       <Paragraph>
-        The delivery time is an approximate summary of  production time and shipping time.
+        The delivery time is an approximate summary of production time and shipping time.
       </Paragraph>
     </Info>
   )
@@ -114,7 +95,7 @@ const DirectConfigurationPage = ({
       key={finishGroup.name}
       title={finishGroup.name}
       subline={finishGroup.materialName}
-      shipping={bestOffer && formatDeliveryTime(bestOffer.shipping.deliveryTime) || undefined}
+      shipping={(bestOffer && formatDeliveryTime(bestOffer.shipping.deliveryTime)) || undefined}
       description={finishGroup.summary}
       price={materialPrice}
       info={info}
@@ -127,11 +108,11 @@ const DirectConfigurationPage = ({
         printingServiceRequests.complete === printingServiceRequests.total
       }
       onSelectClick={
-        bestOffer &&
-        (() => {
-          onSelectOffer(bestOffer)
-          onGoToAddress()
-        }) ||
+        (bestOffer &&
+          (() => {
+            onSelectOffer(bestOffer)
+            onGoToAddress()
+          })) ||
         undefined
       }
       onMoreClick={() => {
@@ -166,10 +147,7 @@ const DirectConfigurationPage = ({
               imageSource={model.thumbnailUrl}
               quantity={model.quantity}
               title={model.fileName}
-              subline={formatDimensions(
-                model.dimensions,
-                model.fileUnit
-              )}
+              subline={formatDimensions(model.dimensions, model.fileUnit)}
             />
           ))}
         </ModelQuantityItemList>

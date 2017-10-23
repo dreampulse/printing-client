@@ -55,25 +55,43 @@ describe('formatDeliveryTime()', () => {
 
 describe('formatShipping()', () => {
   it('returns formatted string', () => {
-    expect(formatShipping({name: 'Standard', deliveryTime: '2-5'}), 'to equal', 'Standard (2-5 days)')
+    expect(
+      formatShipping({name: 'Standard', deliveryTime: '2-5'}),
+      'to equal',
+      'Standard (2-5 days)'
+    )
   })
 
   it('returns formatted display name', () => {
-    expect(formatShipping({displayName: 'UPS Standard', name: 'UPSStandard', deliveryTime: '2-5'}), 'to equal', 'UPS Standard (2-5 days)')
+    expect(
+      formatShipping({displayName: 'UPS Standard', name: 'UPSStandard', deliveryTime: '2-5'}),
+      'to equal',
+      'UPS Standard (2-5 days)'
+    )
   })
 })
 
 describe('formatAddress', () => {
   it('returns formatted string', () => {
-    expect(formatAddress({
-      city: 'Ulm', countryCode: 'DE', something: 'else'
-    }), 'to equal', 'Ulm, Germany')
+    expect(
+      formatAddress({
+        city: 'Ulm',
+        countryCode: 'DE',
+        something: 'else'
+      }),
+      'to equal',
+      'Ulm, Germany'
+    )
   })
 
   it('returns an empty string if some key is missing', () => {
-    expect(formatAddress({
-      countryCode: 'DE'
-    }), 'to equal', '')
+    expect(
+      formatAddress({
+        countryCode: 'DE'
+      }),
+      'to equal',
+      ''
+    )
   })
 })
 

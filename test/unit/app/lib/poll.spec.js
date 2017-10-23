@@ -1,9 +1,4 @@
-import {
-  resetPollState,
-  poll,
-  debouncedPoll,
-  stopPoll
-} from 'Lib/poll'
+import {resetPollState, poll, debouncedPoll, stopPoll} from 'Lib/poll'
 import {ERROR_TYPE} from '../../../../src/app/action-type'
 import config from '../../../../config'
 
@@ -23,7 +18,8 @@ describe('Poll lib', () => {
 
   describe('poll()', () => {
     it('ends polling when callback resolves with true', async () => {
-      const pollCallback = sinon.stub()
+      const pollCallback = sinon
+        .stub()
         .withArgs()
         .resolves(true)
 
@@ -36,8 +32,14 @@ describe('Poll lib', () => {
       sandbox.stub(config, 'pollingRetries').value(100)
 
       const pollCallback = sinon.stub()
-      pollCallback.withArgs().onCall(0).resolves(false)
-      pollCallback.withArgs().onCall(1).resolves(true)
+      pollCallback
+        .withArgs()
+        .onCall(0)
+        .resolves(false)
+      pollCallback
+        .withArgs()
+        .onCall(1)
+        .resolves(true)
 
       await poll('some-poll', pollCallback)
 
@@ -46,21 +48,22 @@ describe('Poll lib', () => {
 
     it('rejects with error after retry limit is reached', async () => {
       sandbox.stub(config, 'pollingRetries').value(2)
-      const pollCallback = sinon.stub()
+      const pollCallback = sinon
+        .stub()
         .withArgs()
         .resolves(false)
 
       const promise = poll('some-poll', pollCallback)
 
-      return expect(
-        promise, 'to be rejected with error satisfying',
-        {type: ERROR_TYPE.POLL_TIMEOUT}
-      )
+      return expect(promise, 'to be rejected with error satisfying', {
+        type: ERROR_TYPE.POLL_TIMEOUT
+      })
     })
 
     it('calls pollCallback with a maximum of pollingRetries plus one', async () => {
       sandbox.stub(config, 'pollingRetries').value(2)
-      const pollCallback = sinon.stub()
+      const pollCallback = sinon
+        .stub()
         .withArgs()
         .resolves(false)
 
@@ -70,21 +73,29 @@ describe('Poll lib', () => {
     })
 
     it('rejects when another poll with the same name has been started', async () => {
-      const pollCallbackTrue = sinon.stub().withArgs().resolves(true)
-      const pollCallbackFalse = sinon.stub().withArgs().resolves(false)
+      const pollCallbackTrue = sinon
+        .stub()
+        .withArgs()
+        .resolves(true)
+      const pollCallbackFalse = sinon
+        .stub()
+        .withArgs()
+        .resolves(false)
 
       const promise = poll('some-poll', pollCallbackFalse)
       poll('some-poll', pollCallbackTrue)
 
-      return expect(
-        promise, 'to be rejected with error satisfying',
-        {type: ERROR_TYPE.POLL_OVERWRITTEN}
-      )
+      return expect(promise, 'to be rejected with error satisfying', {
+        type: ERROR_TYPE.POLL_OVERWRITTEN
+      })
     })
 
     it('rejects when poll callback rejects', async () => {
       const error = new Error('some-error')
-      const pollCallback = sinon.stub().withArgs().rejects(error)
+      const pollCallback = sinon
+        .stub()
+        .withArgs()
+        .rejects(error)
 
       const promise = poll('some-poll', pollCallback)
 
@@ -93,10 +104,19 @@ describe('Poll lib', () => {
 
     it('forwards return value of initial poll callback to poll callback', async () => {
       const response = 'some-response'
-      const initPollCallback = sinon.stub().withArgs().resolves(response)
+      const initPollCallback = sinon
+        .stub()
+        .withArgs()
+        .resolves(response)
       const pollCallback = sinon.stub()
-      pollCallback.withArgs(response).onCall(0).resolves(false)
-      pollCallback.withArgs(response).onCall(1).resolves(true)
+      pollCallback
+        .withArgs(response)
+        .onCall(0)
+        .resolves(false)
+      pollCallback
+        .withArgs(response)
+        .onCall(1)
+        .resolves(true)
 
       await poll('some-poll', pollCallback, initPollCallback)
 
@@ -105,7 +125,10 @@ describe('Poll lib', () => {
 
     it('rejects when init poll callback rejects', async () => {
       const error = new Error('some-error')
-      const initPollCallback = sinon.stub().withArgs().rejects(error)
+      const initPollCallback = sinon
+        .stub()
+        .withArgs()
+        .rejects(error)
 
       const promise = poll('some-poll', () => {}, initPollCallback)
 
@@ -115,7 +138,8 @@ describe('Poll lib', () => {
 
   describe('stopPoll()', () => {
     it('stop running poll which then rejects with expected error', async () => {
-      const pollCallback = sinon.stub()
+      const pollCallback = sinon
+        .stub()
         .withArgs()
         .resolves(false)
 
@@ -123,10 +147,9 @@ describe('Poll lib', () => {
 
       stopPoll('some-poll')
 
-      return expect(
-        promise, 'to be rejected with error satisfying',
-        {type: ERROR_TYPE.POLL_STOPPED}
-      )
+      return expect(promise, 'to be rejected with error satisfying', {
+        type: ERROR_TYPE.POLL_STOPPED
+      })
     })
   })
 
@@ -134,7 +157,8 @@ describe('Poll lib', () => {
     it('starts poll only once if called multiple times in a row', async () => {
       sandbox.stub(config, 'pollingDebouncedWait').value(1)
 
-      const pollCallback = sinon.stub()
+      const pollCallback = sinon
+        .stub()
         .withArgs()
         .resolves(true)
 

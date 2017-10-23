@@ -25,7 +25,9 @@ const LabeledCheckbox = ({
         checked={checked}
         onChange={onChange}
       />
-      <label htmlFor={id} className="labeled-checkbox__label">{label}</label>
+      <label htmlFor={id} className="labeled-checkbox__label">
+        {label}
+      </label>
     </div>
   )
 }

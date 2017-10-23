@@ -29,7 +29,8 @@ store.dispatch(init()).then(() => {
 
   const bootsplash = global.document.getElementById('bootsplash')
   // TODO: lets fade out the bootsplash, looks nicer
-  if (bootsplash) { // Otherwise hot reloading breaks
+  if (bootsplash) {
+    // Otherwise hot reloading breaks
     bootsplash.remove()
   }
 })
@@ -40,7 +41,8 @@ if (process.env.NODE_ENV !== 'production') {
 
   global.store = store
 
-  if (module.hot) { // Enable Webpack hot module replacement
+  if (module.hot) {
+    // Enable Webpack hot module replacement
     module.hot.accept()
   }
 }

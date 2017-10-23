@@ -37,11 +37,13 @@ const MaterialCard = ({
   const availableFooter = (
     <footer className="material-card__footer">
       {price ? cloneElement(price, {loading}) : null}
-      {
-        shipping && !loading
-          ? <div className="material-card__shipping"><Icon source={shippingIcon} /> {shipping} {info}</div>
-          : <div className="material-card__shipping" />
-      }
+      {shipping && !loading ? (
+        <div className="material-card__shipping">
+          <Icon source={shippingIcon} /> {shipping} {info}
+        </div>
+      ) : (
+        <div className="material-card__shipping" />
+      )}
       <div className="material-card__color">{colorSelect}</div>
       <Button
         modifiers={buttonModifiers}
@@ -71,8 +73,9 @@ const MaterialCard = ({
           <small className="material-card__subline">{subline}</small>
         </header>
         <div className="material-card__body">
-          {description} <Link
-            onClick={(event) => {
+          {description}{' '}
+          <Link
+            onClick={event => {
               event.preventDefault()
               onMoreClick()
             }}

@@ -24,10 +24,7 @@ describe('Selector lib', () => {
     it('returns common quantity if all individual model quantities are the same', () => {
       const state = {
         model: {
-          models: [
-            {quantity: 2},
-            {quantity: 2}
-          ]
+          models: [{quantity: 2}, {quantity: 2}]
         }
       }
 
@@ -37,10 +34,7 @@ describe('Selector lib', () => {
     it('returns undefined if not all individual model quantities are the same', () => {
       const state = {
         model: {
-          models: [
-            {quantity: 2},
-            {quantity: 1}
-          ]
+          models: [{quantity: 2}, {quantity: 1}]
         }
       }
 
@@ -85,13 +79,16 @@ describe('Selector lib', () => {
 
       offers = ['some', 'offers']
       materials = {
-        materialStructure: [{
-          name: 'Group 1',
-          materials: [material1]
-        }, {
-          name: 'Group 2',
-          materials: [material2, material3]
-        }]
+        materialStructure: [
+          {
+            name: 'Group 1',
+            materials: [material1]
+          },
+          {
+            name: 'Group 2',
+            materials: [material2, material3]
+          }
+        ]
       }
     })
 
@@ -100,18 +97,12 @@ describe('Selector lib', () => {
     })
 
     it('returns expected material menu values', () => {
-      materialLib.getBestOfferForMaterial
-        .withArgs(offers, material1)
-        .returns({
-          totalPrice: 10,
-          currency: 'USD'
-        })
-      materialLib.getBestOfferForMaterial
-        .withArgs(offers, material2)
-        .returns(null)
-      materialLib.getBestOfferForMaterial
-        .withArgs(offers, material3)
-        .returns(null)
+      materialLib.getBestOfferForMaterial.withArgs(offers, material1).returns({
+        totalPrice: 10,
+        currency: 'USD'
+      })
+      materialLib.getBestOfferForMaterial.withArgs(offers, material2).returns(null)
+      materialLib.getBestOfferForMaterial.withArgs(offers, material3).returns(null)
 
       materialLib.hasMaterialMultipleConfigs.withArgs(material1).returns(true)
       materialLib.hasMaterialMultipleConfigs.withArgs(material2).returns(false)
@@ -128,33 +119,41 @@ describe('Selector lib', () => {
 
       const menuValues = selectMaterialMenuValues(state)
 
-      expect(menuValues, 'to equal', [{
-        type: 'group',
-        label: 'Group 1',
-        children: [{
-          type: 'material',
-          value: 'material-1',
-          label: 'Material 1',
-          hasColor: true,
-          price: 'From 10.00 $'
-        }]
-      }, {
-        type: 'group',
-        label: 'Group 2',
-        children: [{
-          type: 'material',
-          value: 'material-2',
-          label: 'Material 2',
-          hasColor: false,
-          price: undefined
-        }, {
-          type: 'material',
-          value: 'material-3',
-          label: 'Material 3',
-          hasColor: false,
-          price: undefined
-        }]
-      }])
+      expect(menuValues, 'to equal', [
+        {
+          type: 'group',
+          label: 'Group 1',
+          children: [
+            {
+              type: 'material',
+              value: 'material-1',
+              label: 'Material 1',
+              hasColor: true,
+              price: 'From 10.00 $'
+            }
+          ]
+        },
+        {
+          type: 'group',
+          label: 'Group 2',
+          children: [
+            {
+              type: 'material',
+              value: 'material-2',
+              label: 'Material 2',
+              hasColor: false,
+              price: undefined
+            },
+            {
+              type: 'material',
+              value: 'material-3',
+              label: 'Material 3',
+              hasColor: false,
+              price: undefined
+            }
+          ]
+        }
+      ])
     })
 
     it('returns material menu values without price when offers are null', () => {
@@ -171,33 +170,41 @@ describe('Selector lib', () => {
 
       const menuValues = selectMaterialMenuValues(state)
 
-      expect(menuValues, 'to equal', [{
-        type: 'group',
-        label: 'Group 1',
-        children: [{
-          type: 'material',
-          value: 'material-1',
-          label: 'Material 1',
-          hasColor: false,
-          price: undefined
-        }]
-      }, {
-        type: 'group',
-        label: 'Group 2',
-        children: [{
-          type: 'material',
-          value: 'material-2',
-          label: 'Material 2',
-          hasColor: false,
-          price: undefined
-        }, {
-          type: 'material',
-          value: 'material-3',
-          label: 'Material 3',
-          hasColor: false,
-          price: undefined
-        }]
-      }])
+      expect(menuValues, 'to equal', [
+        {
+          type: 'group',
+          label: 'Group 1',
+          children: [
+            {
+              type: 'material',
+              value: 'material-1',
+              label: 'Material 1',
+              hasColor: false,
+              price: undefined
+            }
+          ]
+        },
+        {
+          type: 'group',
+          label: 'Group 2',
+          children: [
+            {
+              type: 'material',
+              value: 'material-2',
+              label: 'Material 2',
+              hasColor: false,
+              price: undefined
+            },
+            {
+              type: 'material',
+              value: 'material-3',
+              label: 'Material 3',
+              hasColor: false,
+              price: undefined
+            }
+          ]
+        }
+      ])
     })
 
     it('returns empty array if there are no materials in state', () => {
@@ -233,15 +240,21 @@ describe('Selector lib', () => {
 
     beforeEach(() => {
       materials = {
-        materialStructure: [{
-          materials: []
-        }, {
-          materials: [{
-            id: 'material-1'
-          }, {
-            id: 'material-2'
-          }]
-        }]
+        materialStructure: [
+          {
+            materials: []
+          },
+          {
+            materials: [
+              {
+                id: 'material-1'
+              },
+              {
+                id: 'material-2'
+              }
+            ]
+          }
+        ]
       }
     })
 
@@ -278,17 +291,23 @@ describe('Selector lib', () => {
 
     beforeEach(() => {
       materials = {
-        materialStructure: [{
-          materials: []
-        }, {
-          materials: [{
-            id: 'material-1',
-            name: 'Material 1'
-          }, {
-            id: 'material-2',
-            name: 'Material 2'
-          }]
-        }]
+        materialStructure: [
+          {
+            materials: []
+          },
+          {
+            materials: [
+              {
+                id: 'material-1',
+                name: 'Material 1'
+              },
+              {
+                id: 'material-2',
+                name: 'Material 2'
+              }
+            ]
+          }
+        ]
       }
     })
 
@@ -328,23 +347,34 @@ describe('Selector lib', () => {
 
     beforeEach(() => {
       materials = {
-        materialStructure: [{
-          materials: []
-        }, {
-          materials: [{
-            id: 'material-1',
-            finishGroups: [{
-              id: 'finish-group-1'
-            }]
-          }, {
-            id: 'material-2',
-            finishGroups: [{
-              id: 'finish-group-2'
-            }, {
-              id: 'finish-group-3'
-            }]
-          }]
-        }]
+        materialStructure: [
+          {
+            materials: []
+          },
+          {
+            materials: [
+              {
+                id: 'material-1',
+                finishGroups: [
+                  {
+                    id: 'finish-group-1'
+                  }
+                ]
+              },
+              {
+                id: 'material-2',
+                finishGroups: [
+                  {
+                    id: 'finish-group-2'
+                  },
+                  {
+                    id: 'finish-group-3'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     })
 
@@ -353,7 +383,9 @@ describe('Selector lib', () => {
         material: {materials}
       }
 
-      expect(selectFinishGroup(state, 'material-2', 'finish-group-2'), 'to equal', {id: 'finish-group-2'})
+      expect(selectFinishGroup(state, 'material-2', 'finish-group-2'), 'to equal', {
+        id: 'finish-group-2'
+      })
     })
 
     it('returns null if material does not exist', () => {
@@ -381,17 +413,23 @@ describe('Selector lib', () => {
       sandbox = sinon.sandbox.create()
 
       materials = {
-        materialStructure: [{
-          materials: []
-        }, {
-          materials: [{
-            id: 'material-1',
-            name: 'Material 1'
-          }, {
-            id: 'material-2',
-            name: 'Material 2'
-          }]
-        }]
+        materialStructure: [
+          {
+            materials: []
+          },
+          {
+            materials: [
+              {
+                id: 'material-1',
+                name: 'Material 1'
+              },
+              {
+                id: 'material-2',
+                name: 'Material 2'
+              }
+            ]
+          }
+        ]
       }
     })
 
@@ -485,16 +523,20 @@ describe('Selector lib', () => {
     beforeEach(() => {
       state = {
         price: {
-          offers: [{
-            materialConfigId: 'config-1',
-            totalPrice: 10
-          }, {
-            materialConfigId: 'config-2',
-            totalPrice: 10
-          }, {
-            materialConfigId: 'config-1',
-            totalPrice: 20
-          }]
+          offers: [
+            {
+              materialConfigId: 'config-1',
+              totalPrice: 10
+            },
+            {
+              materialConfigId: 'config-2',
+              totalPrice: 10
+            },
+            {
+              materialConfigId: 'config-1',
+              totalPrice: 20
+            }
+          ]
         },
         material: {
           selectedMaterialConfig: 'config-1'
@@ -503,13 +545,16 @@ describe('Selector lib', () => {
     })
 
     it('returns expected offers', () => {
-      expect(selectOffersForSelectedMaterialConfig(state), 'to equal', [{
-        materialConfigId: 'config-1',
-        totalPrice: 10
-      }, {
-        materialConfigId: 'config-1',
-        totalPrice: 20
-      }])
+      expect(selectOffersForSelectedMaterialConfig(state), 'to equal', [
+        {
+          materialConfigId: 'config-1',
+          totalPrice: 10
+        },
+        {
+          materialConfigId: 'config-1',
+          totalPrice: 20
+        }
+      ])
     })
 
     it('returns null if offers is null', () => {
@@ -532,19 +577,20 @@ describe('Selector lib', () => {
         id: 'some-other-material-config-id'
       }
       material = {
-        finishGroups: [{
-          materialConfigs: [
-            materialConfig,
-            otherMaterialConfig
-          ]
-        }]
+        finishGroups: [
+          {
+            materialConfigs: [materialConfig, otherMaterialConfig]
+          }
+        ]
       }
       state = {
         material: {
           materials: {
-            materialStructure: [{
-              materials: [material]
-            }]
+            materialStructure: [
+              {
+                materials: [material]
+              }
+            ]
           }
         }
       }
@@ -554,10 +600,7 @@ describe('Selector lib', () => {
       expect(selectMaterialByMaterialConfigId(state, 'some-other-material-config-id'), 'to equal', {
         material,
         finishGroup: {
-          materialConfigs: [
-            materialConfig,
-            otherMaterialConfig
-          ]
+          materialConfigs: [materialConfig, otherMaterialConfig]
         },
         materialConfig: otherMaterialConfig
       })
@@ -578,9 +621,11 @@ describe('Selector lib', () => {
         id: 'some-material-config-id'
       }
       material = {
-        finishGroups: [{
-          materialConfigs: [materialConfig]
-        }]
+        finishGroups: [
+          {
+            materialConfigs: [materialConfig]
+          }
+        ]
       }
       state = {
         price: {
@@ -590,9 +635,11 @@ describe('Selector lib', () => {
         },
         material: {
           materials: {
-            materialStructure: [{
-              materials: [material]
-            }]
+            materialStructure: [
+              {
+                materials: [material]
+              }
+            ]
           }
         }
       }
@@ -615,10 +662,7 @@ describe('Selector lib', () => {
     beforeEach(() => {
       state = {
         model: {
-          models: [
-            {modelId: 'some-model-1'},
-            {modelId: 'some-model-2'}
-          ]
+          models: [{modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
         }
       }
     })
@@ -639,24 +683,29 @@ describe('Selector lib', () => {
       state = {
         price: {
           selectedOffer: {
-            items: [{
-              modelId: 'some-model-id'
-            },
-            {
-              modelId: 'some-other-model-id'
-            }]
+            items: [
+              {
+                modelId: 'some-model-id'
+              },
+              {
+                modelId: 'some-other-model-id'
+              }
+            ]
           }
         },
         model: {
-          models: [{
-            modelId: 'some-model-id',
-            thumbnailUrl: 'some-thumbnail-url',
-            fileName: 'some-model-name'
-          }, {
-            modelId: 'some-other-model-id',
-            thumbnailUrl: 'some-other-thumbnail-url',
-            fileName: 'some-other-model-name'
-          }]
+          models: [
+            {
+              modelId: 'some-model-id',
+              thumbnailUrl: 'some-thumbnail-url',
+              fileName: 'some-model-name'
+            },
+            {
+              modelId: 'some-other-model-id',
+              thumbnailUrl: 'some-other-thumbnail-url',
+              fileName: 'some-other-model-name'
+            }
+          ]
         }
       }
     })
@@ -679,36 +728,42 @@ describe('Selector lib', () => {
 
   describe('selectAreAllUploadsFinished()', () => {
     it('returns true if all uploads are finished', () => {
-      expect(selectAreAllUploadsFinished({
-        model: {
-          numberOfUploads: 0,
-          models: [
-            {modelId: 'some-model-1'},
-            {modelId: 'some-model-2'}
-          ]
-        }
-      }), 'to be', true)
+      expect(
+        selectAreAllUploadsFinished({
+          model: {
+            numberOfUploads: 0,
+            models: [{modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
+          }
+        }),
+        'to be',
+        true
+      )
     })
 
     it('returns false if not all uploads are finished', () => {
-      expect(selectAreAllUploadsFinished({
-        model: {
-          numberOfUploads: 1,
-          models: [
-            {modelId: 'some-model-1'},
-            {modelId: 'some-model-2'}
-          ]
-        }
-      }), 'to be', false)
+      expect(
+        selectAreAllUploadsFinished({
+          model: {
+            numberOfUploads: 1,
+            models: [{modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
+          }
+        }),
+        'to be',
+        false
+      )
     })
 
     it('returns false if no models are uploaded', () => {
-      expect(selectAreAllUploadsFinished({
-        model: {
-          numberOfUploads: 0,
-          models: []
-        }
-      }), 'to be', false)
+      expect(
+        selectAreAllUploadsFinished({
+          model: {
+            numberOfUploads: 0,
+            models: []
+          }
+        }),
+        'to be',
+        false
+      )
     })
   })
 
@@ -731,13 +786,17 @@ describe('Selector lib', () => {
       query.append('feature:c', null)
       query.append('feature:d', false)
 
-      expect(selectFeatures({
-        routing: {
-          location: {
-            query: query.toString()
+      expect(
+        selectFeatures({
+          routing: {
+            location: {
+              query: query.toString()
+            }
           }
-        }
-      }), 'to equal', features)
+        }),
+        'to equal',
+        features
+      )
     })
 
     it('does not detect query parameters without "feature:" prefix as feature', () => {
@@ -749,13 +808,17 @@ describe('Selector lib', () => {
       query.append('c', null)
       query.append('d', false)
 
-      expect(selectFeatures({
-        routing: {
-          location: {
-            query: query.toString()
+      expect(
+        selectFeatures({
+          routing: {
+            location: {
+              query: query.toString()
+            }
           }
-        }
-      }), 'to equal', features)
+        }),
+        'to equal',
+        features
+      )
     })
   })
 
@@ -791,11 +854,7 @@ describe('Selector lib', () => {
         })
         const pairs = [...params.entries()]
 
-        expect(pairs, 'to equal', [
-          ['a', ''],
-          ['b', 'false'],
-          ['c', '2']
-        ])
+        expect(pairs, 'to equal', [['a', ''], ['b', 'false'], ['c', '2']])
       })
     })
   })

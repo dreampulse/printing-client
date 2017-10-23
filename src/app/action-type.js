@@ -1,14 +1,6 @@
 // @flow
 
-import type {
-  Address,
-  User,
-  Offer,
-  Price,
-  ModelBackend,
-  Configuration,
-  Materials
-} from './type'
+import type {Address, User, Offer, Price, ModelBackend, Configuration, Materials} from './type'
 
 // User actions
 
@@ -51,7 +43,7 @@ export type OrderAbortedAction = {
 export type OrderOrderedAction = {
   type: 'ORDER.ORDERED',
   payload: {
-    orderId: string,
+    orderId: string
   },
   error: ?boolean // @TODO: is this possible (we removed redux promise)
 }
@@ -59,7 +51,7 @@ export type OrderOrderedAction = {
 // Price actions
 
 export type PriceOfferCleardAction = {
-  type: 'PRICE.CLEAR_OFFERS', // @TODO rename
+  type: 'PRICE.CLEAR_OFFERS' // @TODO rename
 }
 
 export type PriceRequestedAction = {
@@ -78,7 +70,7 @@ export type PriceReceivedAction = {
 }
 
 export type PriceTimedOutAction = {
-  type: 'PRICE.TIMEOUT', // @TODO rename
+  type: 'PRICE.TIMEOUT' // @TODO rename
 }
 
 export type PriceOfferSelectedAction = {
@@ -137,7 +129,8 @@ export type ModelFileUploadFailedAction = {
 
 export type ModelFileUploadedAction = {
   type: 'MODEL.FILE_UPLOADED',
-  payload: ModelBackend & { // @TODO: improve payload datastructure
+  payload: ModelBackend & {
+    // @TODO: improve payload datastructure
     fileId: number
   }
 }
@@ -211,36 +204,36 @@ export type MaterialReceivedAction = {
 //
 // All actions combined
 export type Action =
-  UserShippingAddressChangedAction |
-  UserCreatedAction |
-  UserUpdatedAction |
-  OrderStartedAction |
-  OrderPayedAction |
-  OrderAbortedAction |
-  OrderOrderedAction |
-  PriceOfferCleardAction |
-  PriceRequestedAction |
-  PriceReceivedAction |
-  PriceTimedOutAction |
-  PriceOfferSelectedAction |
-  PriceGotErrorAction |
-  ModelQuantityChangedAction |
-  ModelIndividualQuantityChangedAction |
-  ModelFileUploadStartedAction |
-  ModelFileUploadProgressedAction |
-  ModelFileUploadFailedAction |
-  ModelFileUploadedAction |
-  ModelFileDeletedAction |
-  ModelUnitChangedAction |
-  ModalOpenedAction |
-  ModalClosedAction |
-  ConfigurationRestoredAction |
-  ConfigurationCreatedAction |
-  MaterialSelectedAction |
-  MaterialConfigForFinishGroupSelectedAction |
-  MaterialConfigSelectedAction |
-  MaterialConfigSelectedAction |
-  MaterialReceivedAction
+  | UserShippingAddressChangedAction
+  | UserCreatedAction
+  | UserUpdatedAction
+  | OrderStartedAction
+  | OrderPayedAction
+  | OrderAbortedAction
+  | OrderOrderedAction
+  | PriceOfferCleardAction
+  | PriceRequestedAction
+  | PriceReceivedAction
+  | PriceTimedOutAction
+  | PriceOfferSelectedAction
+  | PriceGotErrorAction
+  | ModelQuantityChangedAction
+  | ModelIndividualQuantityChangedAction
+  | ModelFileUploadStartedAction
+  | ModelFileUploadProgressedAction
+  | ModelFileUploadFailedAction
+  | ModelFileUploadedAction
+  | ModelFileDeletedAction
+  | ModelUnitChangedAction
+  | ModalOpenedAction
+  | ModalClosedAction
+  | ConfigurationRestoredAction
+  | ConfigurationCreatedAction
+  | MaterialSelectedAction
+  | MaterialConfigForFinishGroupSelectedAction
+  | MaterialConfigSelectedAction
+  | MaterialConfigSelectedAction
+  | MaterialReceivedAction
 
 export default {
   MODAL: {

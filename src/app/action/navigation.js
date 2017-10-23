@@ -12,7 +12,7 @@ export const goToHome = () => (dispatch, getState) => {
     dispatch(routerActions.push('/'))
   }
 }
-export const goToSuccess = () => async (dispatch) => {
+export const goToSuccess = () => async dispatch => {
   await dispatch(routerActions.push('/success'))
   await dispatch(createUser())
 }
