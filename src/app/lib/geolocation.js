@@ -2,7 +2,7 @@ import {request} from 'Service/http'
 import timeout from './timeout'
 import config from '../../../config'
 
-const URL = 'https://pro.ip-api.com/json/?key=CVsxFrDy2yI1Ctu'
+const URL = `https://pro.ip-api.com/json/?key=${config.ipApiKey}`
 
 export const getLocationByIp = async () => {
   const {city, zip, region, countryCode} = await timeout(request(URL), config.fetchTimout)
