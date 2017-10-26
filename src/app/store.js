@@ -1,27 +1,10 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
 import {routerMiddleware} from 'react-router-redux'
-import {captureException, showReportDialog} from 'Service/logging'
 import {track as trackMixpanel} from 'Service/mixpanel'
 import {track as trackGoogleAnalytics} from 'Service/google-analytics'
 
-import {openFatalErrorModal} from 'Action/modal'
 import rootReducer from './reducer'
-
-const fatalErrorHandler = store => next => action => {
-  const promise = next(action)
-
-  if (promise && promise.catch) {
-    return promise.catch(error => {
-      captureException(error) // log in sentry
-      store.dispatch(openFatalErrorModal(error))
-      showReportDialog() // Opens a feedback dialog for the user
-      throw error // Throw error again
-    })
-  }
-
-  return promise
-}
 
 function trackingReduxMiddleware() {
   return next => action => {
@@ -38,12 +21,7 @@ function trackingReduxMiddleware() {
 }
 
 export default (history, initialState = {}) => {
-  let middleware = applyMiddleware(
-    fatalErrorHandler,
-    thunk,
-    routerMiddleware(history),
-    trackingReduxMiddleware
-  )
+  let middleware = applyMiddleware(thunk, routerMiddleware(history), trackingReduxMiddleware)
 
   if (process.env.NODE_ENV !== 'production') {
     /* eslint global-require: 0 */
