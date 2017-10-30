@@ -16,6 +16,7 @@ module.exports = ({
     ? [
         `webpack-dev-server/client?http://localhost:${devServerPort}/`,
         'webpack/hot/dev-server',
+        'react-hot-loader/patch',
         path.resolve(__dirname, '../src/app')
       ]
     : [path.resolve(__dirname, '../src/app')],
@@ -109,7 +110,9 @@ module.exports = ({
     ]
   },
   plugins: [
-    ...(devServer ? [new webpack.HotModuleReplacementPlugin()] : []),
+    ...(devServer
+      ? [new webpack.HotModuleReplacementPlugin(), new webpack.NamedModulesPlugin()]
+      : []),
     new ExtractTextPlugin({
       filename: 'app.css',
       disable: !extractStyles
