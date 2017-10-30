@@ -1,7 +1,7 @@
 export default {
-  pollingRetries: 400,
-  pollingInverval: 500,
-  pollingDebouncedWait: 1000,
+  pollingRetries: 200,
+  pollingInverval: 1000,
+  pollingDebouncedWait: 2000,
   fetchTimout: 3000,
   imagePollingRetries: 100,
   imagePollingInterval: 1500,
