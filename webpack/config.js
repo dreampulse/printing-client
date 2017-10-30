@@ -22,7 +22,10 @@ module.exports = ({
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: devServer ? `http://localhost:${devServerPort}/` : '/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    // Using the webpack default 'webpack://' conflicts with third-party scripts that have been bundled with webpack
+    // As a result, their source folders are merged with ours which can be confusing
+    devtoolModuleFilenameTemplate: '/all3dp/printing-engine-client/[resource-path]'
   },
   resolve: {
     alias: {
@@ -123,6 +126,7 @@ module.exports = ({
     ...(optimize
       ? [
           new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true,
             compress: {
               warnings: false
             }
