@@ -1,12 +1,16 @@
+// @flow
+
 import get from 'lodash/get'
 import URLSearchParams from 'url-search-params'
 
 import {hasMaterialMultipleConfigs, getBestOfferForMaterial} from 'Lib/material'
 import {formatPrice} from 'Lib/formatter'
 
+import type {State} from '../type'
+
 import config from '../../../config'
 
-export const selectCommonQuantity = state => {
+export const selectCommonQuantity = (state: State) => {
   // Common quantity exists only if all models have the same individual quantity
   const {model: {models}} = state
 
@@ -15,6 +19,7 @@ export const selectCommonQuantity = state => {
   }
 
   return models.reduce((quantity, model) => {
+    if (!model.quantity) throw new Error('Upload not completed')
     const modelQuantity = model.quantity
     if (quantity === null) {
       return modelQuantity
@@ -26,7 +31,7 @@ export const selectCommonQuantity = state => {
   }, null)
 }
 
-export const selectMaterialMenuValues = state => {
+export const selectMaterialMenuValues = (state: State) => {
   const {price: {offers}, material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
@@ -51,7 +56,7 @@ export const selectMaterialMenuValues = state => {
   }))
 }
 
-export const selectMaterial = (state, materialId) => {
+export const selectMaterial = (state: State, materialId: string) => {
   const {material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
@@ -72,7 +77,7 @@ export const selectMaterial = (state, materialId) => {
   return material
 }
 
-export const selectMaterialByName = (state, name) => {
+export const selectMaterialByName = (state: State, name: string) => {
   const {material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
@@ -93,8 +98,10 @@ export const selectMaterialByName = (state, name) => {
   return material
 }
 
-export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
-  const {material: {materials}} = state
+export const selectMaterialByMaterialConfigId = (state: State, materialConfigId: string) => {
+  const materials = state.material.materials
+
+  if (!materials) throw new Error('Material structure not loaded')
 
   let selectedMaterial
   let selectedFinishGroup
@@ -124,12 +131,14 @@ export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
   }
 }
 
-export const selectedOfferMaterial = state => {
-  const {price: {selectedOffer: {materialConfigId}}} = state
+export const selectedOfferMaterial = (state: State) => {
+  if (!state.price.selectedOffer) throw new Error('No offer selected')
+
+  const materialConfigId = state.price.selectedOffer.materialConfigId
   return selectMaterialByMaterialConfigId(state, materialConfigId)
 }
 
-export const selectFinishGroup = (state, materialId, finishGroupId) => {
+export const selectFinishGroup = (state: State, materialId: string, finishGroupId: string) => {
   const material = selectMaterial(state, materialId)
   if (!material) {
     return null
@@ -147,26 +156,37 @@ export const selectFinishGroup = (state, materialId, finishGroupId) => {
   return finishGroup
 }
 
-export const selectCurrentMaterial = state => {
+export const selectCurrentMaterial = (state: State) => {
   const {material: {selectedMaterial}} = state
 
   return (
-    selectMaterial(state, selectedMaterial) ||
+    selectMaterial(state, selectedMaterial) || // @TODO: unclear
     selectMaterialByName(state, config.defaultSelectedMaterial)
   )
 }
 
-export const selectModelByModelId = (state, modelId) => {
+export const selectModelByModelId = (state: State, modelId: string) => {
   const {model: {models}} = state
 
-  return models.filter(model => model.modelId === modelId).shift() || null
+  return (
+    models
+      .filter(model => {
+        if (!model.modelId) throw new Error('Upload not completed')
+        return model.modelId === modelId
+      })
+      .shift() || null
+  )
 }
 
-export const selectOfferItems = state => {
-  const {price: {selectedOffer: {items}}} = state
+export const selectOfferItems = (state: State) => {
+  if (!state.price.selectedOffer) throw new Error('No offer selected')
+
+  const items = state.price.selectedOffer.items
 
   return items.map(item => {
     const model = selectModelByModelId(state, item.modelId)
+    // This guaranteed that the upload is completed
+    if (!model || !model.thumbnailUrl) throw new Error('Upload not completed')
     return {
       ...item,
       thumbnailUrl: model ? model.thumbnailUrl : null,
@@ -175,7 +195,7 @@ export const selectOfferItems = state => {
   })
 }
 
-export const selectOffersForSelectedMaterialConfig = state => {
+export const selectOffersForSelectedMaterialConfig = (state: State) => {
   const {price: {offers}, material: {selectedMaterialConfig}} = state
 
   if (!offers) {
@@ -185,7 +205,7 @@ export const selectOffersForSelectedMaterialConfig = state => {
   return offers.filter(offer => offer.materialConfigId === selectedMaterialConfig)
 }
 
-export const selectPrintingServiceRequests = state => {
+export const selectPrintingServiceRequests = (state: State) => {
   const {price: {printingServiceComplete}} = state
 
   if (!printingServiceComplete) {
@@ -199,16 +219,16 @@ export const selectPrintingServiceRequests = state => {
   }
 }
 
-export const selectAreAllUploadsFinished = state => {
+export const selectAreAllUploadsFinished = (state: State) => {
   const {model: {numberOfUploads, models}} = state
 
   return numberOfUploads === 0 && models.length > 0
 }
 
-export const selectLocationQuery = state =>
+export const selectLocationQuery = (state: State) =>
   new URLSearchParams(get(state, 'routing.location.search') || '')
 
-export const selectFeatures = state => {
+export const selectFeatures = (state: State) => {
   const query = selectLocationQuery(state)
   const features = Object.create(null)
 
