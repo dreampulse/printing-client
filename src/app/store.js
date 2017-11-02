@@ -33,16 +33,14 @@ export default (history, initialState = {}) => {
   // This initialState is empty, because each reducer has its own initial state
   const store = createStore(rootReducer, initialState, middleware)
 
-  if (process.env.NODE_ENV !== 'production') {
-    if (module.hot) {
-      // Enable Webpack hot module replacement for reducers
-      module.hot.accept('./reducer', () => {
-        /* eslint global-require: 0 */
-        /* eslint import/newline-after-import: 0 */
-        const nextReducer = require('./reducer').default
-        store.replaceReducer(nextReducer)
-      })
-    }
+  if (module.hot) {
+    // Enable Webpack hot module replacement for reducers
+    module.hot.accept('./reducer', () => {
+      /* eslint global-require: 0 */
+      /* eslint import/newline-after-import: 0 */
+      const nextReducer = require('./reducer').default
+      store.replaceReducer(nextReducer)
+    })
   }
 
   return store
