@@ -1,9 +1,10 @@
-import {reviewOrder} from 'Action/user'
+import {reviewOrder, updateLocation} from 'Action/user'
 import * as priceActions from 'Action/price'
 import * as modalActions from 'Action/modal'
 import * as navigationActions from 'Action/navigation'
 import * as printingEngine from 'Lib/printing-engine'
 import * as normalize from 'Lib/normalize'
+import * as geolocation from 'Lib/geolocation'
 import TYPE from '../../../../src/app/action-type'
 import {resolveAsyncThunk, createMockStore} from '../../../helper'
 
@@ -18,6 +19,7 @@ describe('User actions', () => {
     sandbox.stub(navigationActions)
     sandbox.stub(printingEngine)
     sandbox.stub(normalize)
+    sandbox.stub(geolocation)
   })
 
   afterEach(() => {
@@ -151,6 +153,91 @@ describe('User actions', () => {
           type: 'some-open-price-location-changed-modal'
         }
       ])
+    })
+  })
+
+  describe('updateLocation()', () => {
+    let address
+    let store
+    let initialState
+
+    beforeEach(() => {
+      address = {}
+      initialState = {}
+      address = 'some-address'
+    })
+
+    describe('when address is not valid', () => {
+      it('dispatches expected actions', async () => {
+        geolocation.isAddressValid.returns(false)
+
+        modalActions.openAddressModal.returns({
+          type: 'open-address-modal-action'
+        })
+
+        store = mockStore(initialState)
+        await store.dispatch(updateLocation(address))
+
+        expect(store.getActions(), 'to equal', [
+          {
+            type: 'USER.SHIPPING_ADDRESS_CHANGED',
+            payload: {address: 'some-address'}
+          },
+          {
+            type: 'open-address-modal-action'
+          }
+        ])
+      })
+    })
+
+    describe('when address is valid', () => {
+      beforeEach(() => {
+        geolocation.isAddressValid.returns(true)
+        printingEngine.createUser.resolves({
+          userId: 'some-new-user-id'
+        })
+        priceActions.createPriceRequest.returns({
+          type: 'create-price-request-action'
+        })
+      })
+
+      it('dispatches expected actions, when no user exists', async () => {
+        initialState = {
+          user: {
+            userId: undefined
+          }
+        }
+        store = mockStore(initialState)
+        await store.dispatch(updateLocation(address))
+
+        expect(store.getActions(), 'to equal', [
+          {
+            type: 'USER.SHIPPING_ADDRESS_CHANGED',
+            payload: {address: 'some-address'}
+          },
+          {type: 'USER.CREATED', payload: {userId: 'some-new-user-id'}},
+          {type: 'create-price-request-action'}
+        ])
+      })
+
+      it('dispatches expected actions, when user exists', async () => {
+        initialState = {
+          user: {
+            userId: 'some-user-id'
+          }
+        }
+        store = mockStore(initialState)
+        await store.dispatch(updateLocation(address))
+
+        expect(store.getActions(), 'to equal', [
+          {
+            type: 'USER.SHIPPING_ADDRESS_CHANGED',
+            payload: {address: 'some-address'}
+          },
+          {type: 'USER.UPDATED'},
+          {type: 'create-price-request-action'}
+        ])
+      })
     })
   })
 })
