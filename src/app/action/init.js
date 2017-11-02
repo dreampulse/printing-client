@@ -9,8 +9,10 @@ import {openAddressModal} from './modal'
 export const init = () => async (dispatch: Dispatch<*>) => {
   await dispatch(getMaterials())
   try {
-    await dispatch(detectAddress())
-    await dispatch(createUser())
+    const detectAddressPromise = dispatch(detectAddress())
+    const createUserPromise = dispatch(createUser())
+
+    await [detectAddressPromise, createUserPromise]
   } catch (error) {
     await dispatch(openAddressModal())
   }

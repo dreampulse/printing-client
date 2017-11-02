@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import {routerMiddleware} from 'react-router-redux'
 import {track as trackMixpanel} from 'Service/mixpanel'
 import {track as trackGoogleAnalytics} from 'Service/google-analytics'
-import {createReduxMiddleware} from 'Service/logging'
+import {ravenMiddleware} from 'Service/logging'
 
 import rootReducer from './reducer'
 
@@ -24,7 +24,7 @@ export default (history, initialState = {}) => {
     thunk,
     routerMiddleware(history),
     trackingReduxMiddleware,
-    createReduxMiddleware
+    ravenMiddleware
   )
 
   if (process.env.NODE_ENV !== 'production') {
