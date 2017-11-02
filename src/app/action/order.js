@@ -15,7 +15,10 @@ import TYPE from '../action-type'
 const orderStarted = createAction(TYPE.ORDER.STARTED)
 const payed = createAction(TYPE.ORDER.PAYED, (paymentToken: string) => ({paymentToken}))
 const aborted = createAction(TYPE.ORDER.ABORTED)
-const ordered = createAction(TYPE.ORDER.ORDERED, (orderId: string) => ({orderId}))
+const ordered = createAction(
+  TYPE.ORDER.ORDERED,
+  ({orderId, orderNumber}: {orderId: string, orderNumber: string}) => ({orderId, orderNumber})
+)
 
 // Async actions
 
@@ -29,14 +32,15 @@ const createOrder = (type: string, token: string) => async (
   const offerId = selectedOffer.offerId
 
   try {
-    const {orderId} = await printingEngine.order({
+    const {orderId, orderNumber} = await printingEngine.order({
       userId,
       priceId,
       offerId,
       type,
       token
     })
-    dispatch(ordered(orderId))
+
+    dispatch(ordered({orderId, orderNumber}))
   } catch (error) {
     dispatch(ordered(error))
   }

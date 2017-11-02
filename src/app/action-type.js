@@ -43,7 +43,8 @@ export type OrderAbortedAction = {
 export type OrderOrderedAction = {
   type: 'ORDER.ORDERED',
   payload: {
-    orderId: string
+    orderId: string,
+    orderNumber: string
   },
   error: ?boolean // @TODO: is this possible (we removed redux promise)
 }

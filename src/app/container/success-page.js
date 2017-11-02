@@ -17,7 +17,9 @@ const CartPage = ({offer, order}) => {
     <Section modifiers={['highlight']}>
       <Headline
         label={
-          order.orderId ? `Order number: ${order.orderId}` : 'Thank you for ordering at ALL3DP!'
+          order.orderNumber
+            ? `Order number: ${order.orderNumber}`
+            : 'Thank you for ordering at ALL3DP!'
         }
       />
       <Paragraph modifiers={['l']}>

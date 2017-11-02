@@ -5,16 +5,18 @@ import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   orderId: null,
+  orderNumber: null,
   paymentToken: null,
   orderInProgress: false
 }
 
-function handleOrderOrdered(state, {payload: {orderId}, error}) {
+function handleOrderOrdered(state, {payload: {orderId, orderNumber}, error}) {
   if (error) {
     // @TODO: is this still possible (we removed redux promise)
     return {
       ...state,
       orderId: null,
+      orderNumber: null,
       orderInProgress: false
     }
   }
@@ -22,6 +24,7 @@ function handleOrderOrdered(state, {payload: {orderId}, error}) {
   return {
     ...state,
     orderId,
+    orderNumber,
     orderInProgress: false
   }
 }
