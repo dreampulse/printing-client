@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import {routerMiddleware} from 'react-router-redux'
 import {track as trackMixpanel} from 'Service/mixpanel'
 import {track as trackGoogleAnalytics} from 'Service/google-analytics'
+import {createReduxMiddleware} from 'Service/logging'
 
 import rootReducer from './reducer'
 
@@ -13,15 +14,18 @@ function trackingReduxMiddleware() {
       const actionType = (action && action.type) || 'ACTION UNDEFINED'
       trackMixpanel(actionType)
       trackGoogleAnalytics(actionType)
-      // We log every event. Sentry.io will recorde them.
-      console.log('Dispatch action', actionType) // eslint-disable-line
     }
     return next(action)
   }
 }
 
 export default (history, initialState = {}) => {
-  let middleware = applyMiddleware(thunk, routerMiddleware(history), trackingReduxMiddleware)
+  let middleware = applyMiddleware(
+    thunk,
+    routerMiddleware(history),
+    trackingReduxMiddleware,
+    createReduxMiddleware
+  )
 
   if (process.env.NODE_ENV !== 'production') {
     /* eslint global-require: 0 */
