@@ -107,6 +107,7 @@
     "morgan": "^1.7.0",
     "normalize.css": "^7.0.0",
     "prop-types": "^15.6.0",
+    "raven-for-redux": "^1.1.1",
     "raven-js": "^3.19.1",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
