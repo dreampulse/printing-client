@@ -16,13 +16,17 @@ module.exports = ({
     ? [
         `webpack-dev-server/client?http://localhost:${devServerPort}/`,
         'webpack/hot/dev-server',
+        'react-hot-loader/patch',
         path.resolve(__dirname, '../src/app')
       ]
     : [path.resolve(__dirname, '../src/app')],
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: devServer ? `http://localhost:${devServerPort}/` : '/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    // Using the webpack default 'webpack://' conflicts with third-party scripts that have been bundled with webpack
+    // As a result, their source folders are merged with ours which can be confusing
+    devtoolModuleFilenameTemplate: '/all3dp/printing-engine-client/[resource-path]'
   },
   resolve: {
     alias: {
@@ -106,7 +110,9 @@ module.exports = ({
     ]
   },
   plugins: [
-    ...(devServer ? [new webpack.HotModuleReplacementPlugin()] : []),
+    ...(devServer
+      ? [new webpack.HotModuleReplacementPlugin(), new webpack.NamedModulesPlugin()]
+      : []),
     new ExtractTextPlugin({
       filename: 'app.css',
       disable: !extractStyles
@@ -123,6 +129,7 @@ module.exports = ({
     ...(optimize
       ? [
           new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true,
             compress: {
               warnings: false
             }

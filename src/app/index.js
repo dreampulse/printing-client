@@ -2,6 +2,7 @@ import React from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
 import createHistory from 'history/createBrowserHistory'
+import {AppContainer} from 'react-hot-loader'
 
 import 'babel-polyfill'
 
@@ -19,13 +20,20 @@ if (process.env.NODE_ENV === 'development-with-stubs') require('../../test-data/
 
 const history = createHistory()
 const store = Store(history)
-store.dispatch(init()).then(() => {
+
+function renderApp(CurrentRouter) {
   render(
-    <Provider store={store}>
-      <Router store={store} history={history} />
-    </Provider>,
+    <AppContainer>
+      <Provider store={store}>
+        <CurrentRouter store={store} history={history} />
+      </Provider>
+    </AppContainer>,
     global.document.getElementById('root')
   )
+}
+
+store.dispatch(init()).then(() => {
+  renderApp(Router)
 
   const bootsplash = global.document.getElementById('bootsplash')
   // TODO: lets fade out the bootsplash, looks nicer
@@ -43,6 +51,9 @@ if (process.env.NODE_ENV !== 'production') {
 
   if (module.hot) {
     // Enable Webpack hot module replacement
-    module.hot.accept()
+    module.hot.accept(['./router'], () => {
+      // eslint-disable-next-line global-require
+      renderApp(require('./router').default)
+    })
   }
 }
