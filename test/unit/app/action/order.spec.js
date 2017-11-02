@@ -114,7 +114,7 @@ describe('Order actions', () => {
 
         await store.dispatch(createOrderWithStripe())
         expect(store.getActions(), 'to equal', [
-          {type: 'ORDER.ORDERED', payload: new Error('some-error'), error: true}
+          {type: 'ORDER.GOT_ERROR', payload: new Error('some-error'), error: true}
         ])
       })
     })
@@ -152,7 +152,7 @@ describe('Order actions', () => {
 
         await store.dispatch(createOrderWithPaypal())
         expect(store.getActions(), 'to equal', [
-          {type: 'ORDER.ORDERED', payload: new Error('some-error'), error: true}
+          {type: 'ORDER.GOT_ERROR', payload: new Error('some-error'), error: true}
         ])
       })
     })

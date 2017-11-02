@@ -19,6 +19,7 @@ const ordered = createAction(
   TYPE.ORDER.ORDERED,
   ({orderId, orderNumber}: {orderId: string, orderNumber: string}) => ({orderId, orderNumber})
 )
+const gotError = createAction(TYPE.ORDER.GOT_ERROR)
 
 // Async actions
 
@@ -42,7 +43,7 @@ const createOrder = (type: string, token: string) => async (
 
     dispatch(ordered({orderId, orderNumber}))
   } catch (error) {
-    dispatch(ordered(error))
+    dispatch(gotError(error))
   }
 }
 

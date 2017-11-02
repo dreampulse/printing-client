@@ -39,14 +39,15 @@ describe('Order reducer', () => {
       }
 
       const action = {
-        type: TYPE.ORDER.ORDERED,
-        payload: {orderId: 'some-order-id'},
+        type: TYPE.ORDER.GOT_ERROR,
+        payload: new Error('some-error'),
         error: true
       }
 
       expect(reducer(state, action), 'to equal', {
         some: 'thing',
         orderId: null,
+        orderNumber: null,
         orderInProgress: false
       })
     })

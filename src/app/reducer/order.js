@@ -10,21 +10,20 @@ const initialState = {
   orderInProgress: false
 }
 
-function handleOrderOrdered(state, {payload: {orderId, orderNumber}, error}) {
-  if (error) {
-    // @TODO: is this still possible (we removed redux promise)
-    return {
-      ...state,
-      orderId: null,
-      orderNumber: null,
-      orderInProgress: false
-    }
-  }
-
+function handleOrderOrdered(state, {payload: {orderId, orderNumber}}) {
   return {
     ...state,
     orderId,
     orderNumber,
+    orderInProgress: false
+  }
+}
+
+function handleOrderGotError(state) {
+  return {
+    ...state,
+    orderId: null,
+    orderNumber: null,
     orderInProgress: false
   }
 }
@@ -60,6 +59,8 @@ const reducer = (state: OrderState = initialState, action: Action): OrderState =
       return handleOrderStarted(state)
     case TYPE.ORDER.ABORTED:
       return handleOrderAborted(state)
+    case TYPE.ORDER.GOT_ERROR:
+      return handleOrderGotError(state)
     default:
       return state
   }
