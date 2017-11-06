@@ -180,8 +180,7 @@ export type PriceState = {
     imaterialse: boolean,
     sculpteo: boolean
   },
-  selectedOffer: ?Offer,
-  error: ?any // @TODO: unclear
+  selectedOffer: ?Offer
 }
 
 export type ModalState = {

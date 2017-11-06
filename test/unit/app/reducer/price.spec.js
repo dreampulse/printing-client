@@ -7,8 +7,7 @@ describe('Price reducer', () => {
       priceId: null,
       offers: null,
       printingServiceComplete: null,
-      selectedOffer: null,
-      error: null
+      selectedOffer: null
     })
   })
 
@@ -31,8 +30,7 @@ describe('Price reducer', () => {
       expect(reducer(stateBefore, action), 'to equal', {
         some: 'thing',
         offers: null,
-        printingServiceComplete: null,
-        error: null
+        printingServiceComplete: null
       })
     })
   })
@@ -115,28 +113,7 @@ describe('Price reducer', () => {
       expect(reducer(stateBefore, action), 'to equal', {
         some: 'thing',
         offers: ['some', 'offers'],
-        printingServiceComplete: {some: 'printing-services'},
-        error: null
-      })
-    })
-  })
-
-  describe('handles TYPE.PRICE.GOT_ERROR:', () => {
-    it('sets error and resets other state', () => {
-      const error = new Error()
-
-      const action = {
-        type: TYPE.PRICE.GOT_ERROR,
-        payload: error,
-        error: true
-      }
-
-      expect(reducer({}, action), 'to equal', {
-        priceId: null,
-        offers: null,
-        printingServiceComplete: null,
-        selectedOffer: null,
-        error
+        printingServiceComplete: {some: 'printing-services'}
       })
     })
   })
@@ -161,8 +138,7 @@ describe('Price reducer', () => {
       expect(reducer(stateBefore, action), 'to equal', {
         some: 'thing',
         offers: [{some: 'offer-1'}],
-        printingServiceComplete: {imateralize: true, shapeways: true},
-        error: null
+        printingServiceComplete: {imateralize: true, shapeways: true}
       })
     })
 
@@ -173,8 +149,7 @@ describe('Price reducer', () => {
       expect(reducer(stateBefore, action), 'to equal', {
         some: 'thing',
         offers: null,
-        printingServiceComplete: null,
-        error: null
+        printingServiceComplete: null
       })
     })
   })

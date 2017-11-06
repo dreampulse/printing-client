@@ -114,7 +114,14 @@ describe('Order actions', () => {
 
         await store.dispatch(createOrderWithStripe())
         expect(store.getActions(), 'to equal', [
-          {type: 'ORDER.GOT_ERROR', payload: new Error('some-error'), error: true}
+          {
+            type: 'MODAL.OPEN',
+            payload: {
+              contentType: 'MODAL.FATAL_ERROR',
+              contentProps: {error: new Error('Failed to process the order')},
+              isCloseable: false
+            }
+          }
         ])
       })
     })
@@ -152,7 +159,14 @@ describe('Order actions', () => {
 
         await store.dispatch(createOrderWithPaypal())
         expect(store.getActions(), 'to equal', [
-          {type: 'ORDER.GOT_ERROR', payload: new Error('some-error'), error: true}
+          {
+            type: 'MODAL.OPEN',
+            payload: {
+              contentType: 'MODAL.FATAL_ERROR',
+              contentProps: {error: new Error('Failed to process the order')},
+              isCloseable: false
+            }
+          }
         ])
       })
     })

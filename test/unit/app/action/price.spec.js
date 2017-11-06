@@ -295,7 +295,7 @@ describe('Price actions', () => {
       pollLib.poll.restore()
       sinon.stub(pollLib, 'poll').rejects(error)
 
-      modalActions.openFatalErrorModal.withArgs(error).returns({
+      modalActions.openFatalErrorModal.returns({
         type: 'some-fatal-error-modal',
         payload: undefined
       })

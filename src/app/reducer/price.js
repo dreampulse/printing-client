@@ -9,16 +9,14 @@ const initialState = {
   priceId: null,
   offers: null,
   printingServiceComplete: null,
-  selectedOffer: null,
-  error: null
+  selectedOffer: null
 }
 
 function handleClearOffers(state) {
   return {
     ...state,
     offers: null,
-    printingServiceComplete: null,
-    error: null
+    printingServiceComplete: null
   }
 }
 
@@ -36,21 +34,13 @@ function handlePriceRequested(state, {payload: {priceId}}) {
   }
 }
 
-function handleGotError(state, {payload}) {
-  return {
-    ...initialState,
-    error: payload
-  }
-}
-
 function handlePriceReceived(state, {payload}) {
   const {offers, printingServiceComplete} = payload.price
 
   return {
     ...state,
     offers,
-    printingServiceComplete,
-    error: null
+    printingServiceComplete
   }
 }
 
@@ -70,8 +60,7 @@ function handlePriceTimeout(state) {
   return {
     ...state,
     offers: finalOffers,
-    printingServiceComplete: finalPrintingServiceComplete,
-    error: null
+    printingServiceComplete: finalPrintingServiceComplete
   }
 }
 
@@ -87,8 +76,6 @@ const reducer = (state: PriceState = initialState, action: Action): PriceState =
       return handlePriceReceived(state, action)
     case TYPE.PRICE.TIMEOUT:
       return handlePriceTimeout(state)
-    case TYPE.PRICE.GOT_ERROR:
-      return handleGotError(state, action)
     default:
       return state
   }

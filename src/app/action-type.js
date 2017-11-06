@@ -48,11 +48,6 @@ export type OrderOrderedAction = {
   }
 }
 
-export type OrderGotErrorAction = {
-  type: 'ORDER.GOT_ERROR',
-  payload: Error
-}
-
 // Price actions
 
 export type PriceOfferCleardAction = {
@@ -83,11 +78,6 @@ export type PriceOfferSelectedAction = {
   payload: {
     offer: ?Offer
   }
-}
-
-export type PriceGotErrorAction = {
-  type: 'PRICE.GOT_ERROR',
-  payload: Error
 }
 
 // Model actions
@@ -221,7 +211,6 @@ export type Action =
   | PriceReceivedAction
   | PriceTimedOutAction
   | PriceOfferSelectedAction
-  | PriceGotErrorAction
   | ModelQuantityChangedAction
   | ModelIndividualQuantityChangedAction
   | ModelFileUploadStartedAction
@@ -266,8 +255,7 @@ export default {
     CLEAR_OFFERS: 'PRICE.CLEAR_OFFERS',
     REQUESTED: 'PRICE.REQUESTED',
     RECEIVED: 'PRICE.RECEIVED',
-    TIMEOUT: 'PRICE.TIMEOUT',
-    GOT_ERROR: 'PRICE.GOT_ERROR'
+    TIMEOUT: 'PRICE.TIMEOUT'
   },
   USER: {
     SHIPPING_ADDRESS_CHANGED: 'USER.SHIPPING_ADDRESS_CHANGED',
@@ -279,8 +267,7 @@ export default {
     ORDERED: 'ORDER.ORDERED',
     PAYED: 'ORDER.PAYED',
     STARTED: 'ORDER.STARTED',
-    ABORTED: 'ORDER.ABORTED',
-    GOT_ERROR: 'ORDER.GOT_ERROR'
+    ABORTED: 'ORDER.ABORTED'
   },
   DIRECT_SALES: {
     RESTORE_CONFIGURATION: 'DIRECT_SALES.RESTORE_CONFIGURATION',

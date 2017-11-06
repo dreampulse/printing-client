@@ -10,6 +10,7 @@ import {selectFeatures} from 'Lib/selector'
 
 import type {Offer, Price, State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
+import {openFatalErrorModal} from './modal'
 
 const POLL_NAME = 'price'
 const RECALC_POLL_NAME = 'price_recalc'
@@ -22,7 +23,6 @@ const priceReceived = createAction(TYPE.PRICE.RECEIVED, (price: Price, isComplet
   price,
   isComplete
 }))
-const gotError = createAction(TYPE.PRICE.GOT_ERROR, (error: Error) => error)
 const priceTimeout = createAction(TYPE.PRICE.TIMEOUT)
 export const selectOffer = createAction(TYPE.PRICE.SELECT_OFFER, (offer: ?Offer) => ({offer}))
 
@@ -110,10 +110,7 @@ export const createPriceRequest = (
         return
       }
 
-      dispatch(gotError(error))
-
-      // Throw again to trigger fatal error modal
-      throw error
+      dispatch(openFatalErrorModal(new Error('Failed to get prices')))
     })
 }
 
@@ -162,13 +159,8 @@ export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: 
       dispatch(priceRequested(priceId))
       return priceId
     }
-  ).catch(error => {
-    // Every error here is fatal!
-
-    dispatch(gotError(error))
-
-    // Throw again to trigger fatal error modal
-    throw error
+  ).catch(() => {
+    dispatch(openFatalErrorModal(new Error('failed to recalculate selected offer')))
   })
 }
 
