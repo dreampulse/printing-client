@@ -33,11 +33,18 @@
     text-align: center;
   }
 
-  &__price {
+  &__price, &__check-availability {
     flex-shrink: 0;
     width: 8em;
-    text-align: right;
+    margin-left: 1em;
+  }
+
+  &__price {
     color: $color-minor;
+  }
+
+  &__check-availability {
+    color: $color-primary;
   }
 
   &:hover:not(.select-menu-material-item--selected) {

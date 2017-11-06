@@ -21,7 +21,6 @@ const SelectMenuMaterialItem = ({
     event.preventDefault()
     onClick(value)
   }
-
   const finalModifier = [
     ...modifiers,
     {
@@ -39,7 +38,11 @@ const SelectMenuMaterialItem = ({
       {selected && <Icon source={selectedIcon} />}
       <span className="select-menu-material-item__label">{getLabel(value)}</span>
       <span className="select-menu-material-item__color" />
-      <span className="select-menu-material-item__price">{value.price}</span>
+      {typeof value.price === 'string' ? (
+        <span className="select-menu-material-item__price">{value.price}</span>
+      ) : (
+        <span className="select-menu-material-item__check-availability">Check availability</span>
+      )}
     </button>
   )
 }
