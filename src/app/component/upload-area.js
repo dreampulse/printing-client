@@ -15,6 +15,7 @@ export default class UploadArea extends Component {
     label: PropTypes.string.isRequired,
     linkLabel: PropTypes.string.isRequired,
     accept: PropTypes.string,
+    description: PropTypes.string.isRequired,
     onChange: PropTypes.func
   }
 
@@ -62,7 +63,7 @@ export default class UploadArea extends Component {
   }
 
   render() {
-    const {classNames, modifiers = [], label, linkLabel, accept} = this.props
+    const {classNames, modifiers = [], label, linkLabel, accept, description} = this.props
     const {inputId, dragOver} = this.state
 
     const finalModifiers = [
@@ -85,6 +86,7 @@ export default class UploadArea extends Component {
         <label className="upload-area__link" htmlFor={inputId}>
           {linkLabel}
         </label>
+        <div className="upload-area__description">{description}</div>
         <input
           id={inputId}
           type="file"
