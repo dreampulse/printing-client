@@ -267,7 +267,7 @@ describe('Price actions', () => {
       expect(pollLib.stopPoll, 'to have a call satisfying', ['price'])
     })
 
-    it('calls printingEngine.createPriceRequest() with configurationId should get real prices', async () => {
+    it('calls printingEngine.createPriceRequest() with the expected arguments', async () => {
       await store.dispatch(createPriceRequest())
 
       const materialConfigIds = ['material-config-1']
