@@ -161,6 +161,7 @@ export type UserState = {
 
 export type OrderState = {
   orderId: ?string,
+  orderNumber: ?string,
   paymentToken: ?string,
   orderInProgress: boolean
 }
