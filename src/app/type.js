@@ -66,7 +66,7 @@ export type ModelBackend = {
   fileUnit: 'mm' | 'cm' | 'in',
   area: number,
   volume: number,
-  dimensions: {
+  dimensions: ?{
     x: number,
     y: number,
     z: number
