@@ -27,6 +27,11 @@
     display: none;
   }
 
+  &__sub-line {
+    font-size: $font-size-s;
+    color: $color-minor;
+  }
+
   &--drag {
     border-color: $color-primary-active;
     box-shadow: $box-shadow-focus;
