@@ -137,7 +137,8 @@ const CartPage = ({
             ) : null}
             {!user.billingAddress.countryCode && user.shippingAddress.countryCode === 'US' ? (
               <span>
-                getUsStateName(user.shippingAddress.stateCode)<br />
+                {getUsStateName(user.shippingAddress.stateCode)}
+                <br />
               </span>
             ) : null}
             {user.billingAddress.countryCode
