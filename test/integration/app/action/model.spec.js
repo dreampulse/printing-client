@@ -73,16 +73,24 @@ describe('Model Integration Test', () => {
       store = Store(createHistory(), {
         material: {
           materials: {
-            materialStructure: [{
-              materials: [{
-                id: 'some-material-1',
-                finishGroups: [{
-                  materialConfigs: [{
-                    id: 'material-config-1'
-                  }]
-                }]
-              }]
-            }]
+            materialStructure: [
+              {
+                materials: [
+                  {
+                    id: 'some-material-1',
+                    finishGroups: [
+                      {
+                        materialConfigs: [
+                          {
+                            id: 'material-config-1'
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           selectedMaterial: 'some-material-1'
         },
@@ -166,16 +174,24 @@ describe('Model Integration Test', () => {
         },
         material: {
           materials: {
-            materialStructure: [{
-              materials: [{
-                id: 'some-material-1',
-                finishGroups: [{
-                  materialConfigs: [{
-                    id: 'material-config-1'
-                  }]
-                }]
-              }]
-            }]
+            materialStructure: [
+              {
+                materials: [
+                  {
+                    id: 'some-material-1',
+                    finishGroups: [
+                      {
+                        materialConfigs: [
+                          {
+                            id: 'material-config-1'
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           selectedMaterial: 'some-material-1'
         },
@@ -247,16 +263,24 @@ describe('Model Integration Test', () => {
         },
         material: {
           materials: {
-            materialStructure: [{
-              materials: [{
-                id: 'some-material-1',
-                finishGroups: [{
-                  materialConfigs: [{
-                    id: 'material-config-1'
-                  }]
-                }]
-              }]
-            }]
+            materialStructure: [
+              {
+                materials: [
+                  {
+                    id: 'some-material-1',
+                    finishGroups: [
+                      {
+                        materialConfigs: [
+                          {
+                            id: 'material-config-1'
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           selectedMaterial: 'some-material-1'
         },
@@ -329,16 +353,24 @@ describe('Model Integration Test', () => {
         },
         material: {
           materials: {
-            materialStructure: [{
-              materials: [{
-                id: 'some-material-1',
-                finishGroups: [{
-                  materialConfigs: [{
-                    id: 'material-config-1'
-                  }]
-                }]
-              }]
-            }]
+            materialStructure: [
+              {
+                materials: [
+                  {
+                    id: 'some-material-1',
+                    finishGroups: [
+                      {
+                        materialConfigs: [
+                          {
+                            id: 'material-config-1'
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           selectedMaterial: 'some-material-1'
         },

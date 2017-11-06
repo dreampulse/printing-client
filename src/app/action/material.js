@@ -32,10 +32,10 @@ export const selectMaterialConfig = createAction(
 const materialReceived = createAction(TYPE.MATERIAL.RECEIVED, (materials: Materials) => materials)
 
 // Async actions
-export const selectMaterial = (materialId: string) => (dispatch: Dispatch<*>) => {
+export const selectMaterial = (materialId: string) => async (dispatch: Dispatch<*>) => {
   dispatch(createAction(TYPE.MATERIAL.SELECTED)(materialId))
 
-  return dispatch(createPriceRequest())
+  await dispatch(createPriceRequest())
 }
 export const getMaterials = () => async (dispatch: Dispatch<*>) => {
   const materials = cloneDeep(await printingEngine.listMaterials())
