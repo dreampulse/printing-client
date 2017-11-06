@@ -109,6 +109,6 @@ describe('formatDimensions', () => {
   })
 
   it('returns null if first parameter is undefined', () => {
-    expect(formatDimensions(undefined), 'to be null')
+    expect(formatDimensions({x: null, y: null, z: null}), 'to be null')
   })
 })
