@@ -6,7 +6,7 @@ import {createAction} from 'redux-actions'
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
-import {selectCurrentMaterial} from 'Lib/selector'
+import {selectCurrentMaterial, selectFeatures} from 'Lib/selector'
 import type {Offer, Price, State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
 
@@ -40,21 +40,19 @@ export const refreshSelectedOffer = () => (dispatch: Dispatch<*>, getState: () =
 // @TODO: Improve interface
 export const createPriceRequest = (
   {
-    refresh = false,
     debounce = false
   }: {
     refresh: boolean,
     debounce: boolean
   } = {}
 ) => (dispatch: Dispatch<*>, getState: () => State): Promise<any> => {
-  const state = getState()
-
-  if (!state.material.materials) throw new Error('Materials structure missing')
-
   dispatch(clearOffers())
 
+  const state = getState()
+  if (!state.material.materials) throw new Error('Materials structure missing')
   const {model: {models}, user: {userId}} = state
   const selectedMaterial = selectCurrentMaterial(state)
+  const {refresh} = selectFeatures(state)
 
   // Abort if user did not upload any models yet
   if (models.length === 0) {
