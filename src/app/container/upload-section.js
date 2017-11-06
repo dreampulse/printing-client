@@ -62,8 +62,8 @@ const UploadSection = ({
       <UploadArea
         label="Drag any 3D files here or"
         linkLabel="select files"
-        subLine="Supported file formats: STL, OBJ, WRL, SKP, DAE, 3DS, IGS, FBX, PLY, X3D, STP, PRT, …"
-        accept="*.*"
+        description="Supported file formats: STL, OBJ, WRL, SKP, DAE, 3DS, IGS, FBX, PLY, X3D, STP, PRT, …"
+        accept="*"
         onChange={onUpload}
       />
       {models.length > 0 && (
