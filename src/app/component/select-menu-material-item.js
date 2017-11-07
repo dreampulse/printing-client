@@ -38,11 +38,6 @@ const SelectMenuMaterialItem = ({
       {selected && <Icon source={selectedIcon} />}
       <span className="select-menu-material-item__label">{getLabel(value)}</span>
       <span className="select-menu-material-item__color" />
-      {typeof value.price === 'string' ? (
-        <span className="select-menu-material-item__price">{value.price}</span>
-      ) : (
-        <span className="select-menu-material-item__check-availability">Check availability</span>
-      )}
     </button>
   )
 }
