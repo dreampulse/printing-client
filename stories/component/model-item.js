@@ -17,6 +17,15 @@ storiesOf('Model Item', module)
       onDelete={action('discard')}
     />
   ))
+  .add('no subline', () => (
+    <ModelItem
+      imageSource="http://placehold.it/130x98"
+      quantity={1}
+      title="model_item_title.stl"
+      onQuantityChange={action('quantity change')}
+      onDelete={action('discard')}
+    />
+  ))
   .add('error', () => (
     <ModelItemError
       imageSource="http://placehold.it/130x98"
