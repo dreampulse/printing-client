@@ -6,7 +6,7 @@ const CopyPlugin = require('copy-webpack-plugin')
 const autoprefixer = require('autoprefixer')
 
 const projectRoot = __dirname
-const env = process.env.WEBPACK_ENV || process.env.NODE_ENV || 'development'
+const env = process.env.WEBPACK_ENV || 'development'
 const isProd = env === 'production'
 const isDev = isProd === false
 
