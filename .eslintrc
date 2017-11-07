@@ -31,10 +31,6 @@
     }]
   },
   "settings": {
-    "import/resolver": {
-      "webpack": {
-        "config": "webpack/production.js"
-      }
-    }
+    "import/resolver": "webpack"
   }
 }
