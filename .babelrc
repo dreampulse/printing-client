@@ -20,7 +20,7 @@
   "env": {
     "test": {
       "plugins": [
-        [ "babel-plugin-webpack-alias", { "config": "./webpack/production.js" } ],
+        [ "babel-plugin-webpack-alias" ],
         "istanbul"
       ],
       "sourceMaps": "inline"
