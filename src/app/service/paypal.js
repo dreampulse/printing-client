@@ -1,26 +1,54 @@
 import config from '../../../config'
+import {requestJson} from './http'
 
-export function createPayment({amount, currency, offerId}) {
-  const paypal = global.paypal
+const CREATE_PAYMENT_ENDPOINT = `${config.printingEngineBaseUrl}/paypal/create`
+const EXECUTE_PAYMENT_ENDPOINT = `${config.printingEngineBaseUrl}/paypal/execute`
 
-  const env = config.paypal.env
-  const client = config.paypal.client
+export function createPayment({amount, currency, offerId, shippingAddress}) {
+  const {
+    firstName,
+    lastName,
+    street,
+    houseNumber,
+    addressLine2,
+    city,
+    zipCode,
+    stateCode,
+    countryCode
+  } = shippingAddress
   const transactions = [
     {
       custom: offerId,
       amount: {
         total: String(amount),
         currency
+      },
+      item_list: {
+        shipping_address: {
+          recipient_name: `${firstName} ${lastName}`,
+          line1: `${street} ${houseNumber}`,
+          line2: addressLine2,
+          city,
+          country_code: countryCode,
+          postal_code: zipCode,
+          state: stateCode
+        }
       }
     }
   ]
-  return paypal.rest.payment.create(env, client, {transactions})
+
+  return requestJson(CREATE_PAYMENT_ENDPOINT, {method: 'POST', body: transactions}).then(
+    res => res.paymentId
+  )
 }
 
-export async function executePayment({actions}) {
-  if (!actions.payment) throw new Error('Payment failed')
-  await actions.payment.execute()
-  const payment = await actions.payment.get()
-  if (payment.state !== 'approved') throw new Error('PayPal payment not approved')
+export async function executePayment({data}) {
+  if (!data.paymentID) throw new Error('Payment failed')
+
+  const payment = await requestJson(EXECUTE_PAYMENT_ENDPOINT, {
+    method: 'POST',
+    body: {paymentId: data.paymentID, payerId: data.payerID}
+  })
+  if (!payment.status) throw new Error('PayPal payment not approved')
   return payment
 }
