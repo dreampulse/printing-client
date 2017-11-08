@@ -56,7 +56,7 @@ export const selectMaterialMenuValues = (state: State) => {
   }))
 }
 
-export const selectMaterial = (state: State, materialId: string) => {
+export const selectMaterial = (state: State, materialId: ?string) => {
   const {material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
@@ -157,7 +157,6 @@ export const selectFinishGroup = (state: State, materialId: string, finishGroupI
 }
 
 export const selectCurrentMaterial = (state: State) => {
-  if (!state.material.selectedMaterial) throw new Error('No material selected')
   const selectedMaterial = state.material.selectedMaterial
 
   return (
@@ -186,7 +185,7 @@ export const selectOfferItems = (state: State) => {
 
   return items.map(item => {
     const model = selectModelByModelId(state, item.modelId)
-    // This guaranteed that the upload is completed
+    // Ensure that the upload is completed
     if (!model || !model.thumbnailUrl) throw new Error('Upload not completed')
     return {
       ...item,
@@ -231,7 +230,7 @@ export const selectLocationQuery = (state: State) =>
 
 export const selectFeatures = (state: State): Object => {
   const query = selectLocationQuery(state)
-  const features = {}
+  const features = Object.create(null)
 
   return Array.from(query.keys())
     .filter(name => /^feature:/.test(name))
