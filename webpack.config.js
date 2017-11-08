@@ -1,3 +1,4 @@
+const compact = require('lodash/compact')
 const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -9,10 +10,6 @@ const projectRoot = __dirname
 const env = process.env.WEBPACK_ENV || 'development'
 const isProd = env === 'production'
 const isDev = isProd === false
-
-function clean(arr) {
-  return arr.filter(v => Boolean(v))
-}
 
 module.exports = {
   bail: isProd,
@@ -116,7 +113,7 @@ module.exports = {
       }
     ]
   },
-  plugins: clean([
+  plugins: compact([
     new ExtractTextPlugin({
       filename: 'app.css',
       disable: isDev
