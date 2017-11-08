@@ -27,7 +27,8 @@ describe('Order actions', () => {
       user: {
         userId: 'some-user-id',
         user: {
-          emailAddress: 'some-email-address'
+          emailAddress: 'some-email-address',
+          shippingAddress: 'some-shipping-address'
         }
       },
       order: {
@@ -82,7 +83,12 @@ describe('Order actions', () => {
     describe('payWithPaypal()', () => {
       it('fulfills with correct arguments', () => {
         paypal.createPayment
-          .withArgs({amount: 42, currency: 'some-currency', offerId: 'some-offer-id'})
+          .withArgs({
+            amount: 42,
+            currency: 'some-currency',
+            offerId: 'some-offer-id',
+            shippingAddress: 'some-shipping-address'
+          })
           .resolves('create-paypal-payment')
 
         expect(store.dispatch(payWithPaypal()), 'to be fulfilled with', 'create-paypal-payment')
@@ -133,11 +139,12 @@ describe('Order actions', () => {
             orderId: 'some-order-id'
           })
 
-        paypal.executePayment.withArgs({actions: 'some-action'}).resolves({
-          id: 'some-token'
+        paypal.executePayment.withArgs({data: 'some-data'}).resolves({
+          paymentId: 'some-token',
+          status: true
         })
 
-        await store.dispatch(createOrderWithPaypal('some-data', 'some-action'))
+        await store.dispatch(createOrderWithPaypal('some-data'))
         expect(store.getActions(), 'to equal', [
           {type: 'ORDER.ORDERED', payload: {orderId: 'some-order-id'}}
         ])
@@ -147,7 +154,8 @@ describe('Order actions', () => {
         printingEngine.order.rejects(new Error('some-error'))
 
         paypal.executePayment.resolves({
-          id: 'some-token'
+          paymentId: 'some-token',
+          status: false
         })
 
         await store.dispatch(createOrderWithPaypal())
