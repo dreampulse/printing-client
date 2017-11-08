@@ -44,33 +44,6 @@ describe('Material Integration Test', () => {
     })
   })
 
-  describe('selectMaterialConfigForFinishGroup()', () => {
-    it('should work', () => {
-      store = Store(createHistory(), {
-        material: {
-          selectedMaterialConfig: 'some-config-id'
-        }
-      })
-
-      store.dispatch(
-        selectMaterialConfigForFinishGroup({
-          materialConfigId: 'some-config-id',
-          finishGroupId: 'some-finish-group-id'
-        })
-      )
-
-      expect(
-        store.getState().material.selectedMaterialConfigs,
-        'to have own property',
-        'some-finish-group-id',
-        'some-config-id'
-      )
-
-      // Has to reset selectedMaterialConfig
-      expect(store.getState().material.selectedMaterialConfig, 'to be undefined')
-    })
-  })
-
   describe('selectMaterialConfig()', () => {
     it('should work', () => {
       store.dispatch(selectMaterialConfig('some-config-id'))

@@ -197,9 +197,8 @@ export type ConfigurationState = {
 
 export type MaterialState = {
   materials: ?Materials,
-  selectedMaterial: ?any, // @TODO: unclear
-  selectedMaterialConfig: ?string, // @TODO: This is the Id (rename)
-  selectedMaterialConfigs: any // @TODO: unclear
+  selectedMaterial?: string, // The material-Dropdown sets this generated materialConfig-id
+  selectedMaterialConfig?: string // This is the id of the selected material config
 }
 
 export type State = {

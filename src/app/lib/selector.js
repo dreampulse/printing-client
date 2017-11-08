@@ -157,10 +157,11 @@ export const selectFinishGroup = (state: State, materialId: string, finishGroupI
 }
 
 export const selectCurrentMaterial = (state: State) => {
-  const {material: {selectedMaterial}} = state
+  if (!state.material.selectedMaterial) throw new Error('No material selected')
+  const selectedMaterial = state.material.selectedMaterial
 
   return (
-    selectMaterial(state, selectedMaterial) || // @TODO: unclear
+    selectMaterial(state, selectedMaterial) ||
     selectMaterialByName(state, config.defaultSelectedMaterial)
   )
 }
@@ -228,9 +229,9 @@ export const selectAreAllUploadsFinished = (state: State) => {
 export const selectLocationQuery = (state: State) =>
   new URLSearchParams(get(state, 'routing.location.search') || '')
 
-export const selectFeatures = (state: State) => {
+export const selectFeatures = (state: State): Object => {
   const query = selectLocationQuery(state)
-  const features = Object.create(null)
+  const features = {}
 
   return Array.from(query.keys())
     .filter(name => /^feature:/.test(name))
