@@ -7,6 +7,7 @@ import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
 import {selectFeatures} from 'Lib/selector'
+import {AppError} from 'Lib/error'
 
 import type {Offer, Price, State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
@@ -110,7 +111,7 @@ export const createPriceRequest = (
         return
       }
 
-      dispatch(openFatalErrorModal(new Error('Failed to get prices')))
+      dispatch(openFatalErrorModal(new AppError('Failed to get prices')))
     })
 }
 
@@ -160,7 +161,11 @@ export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: 
       return priceId
     }
   ).catch(() => {
-    dispatch(openFatalErrorModal(new Error('failed to recalculate selected offer')))
+    dispatch(
+      openFatalErrorModal(
+        new AppError(ERROR_TYPE.GET_PRICE_FAILED, 'failed to recalculate selected offer')
+      )
+    )
   })
 }
 

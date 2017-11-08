@@ -8,6 +8,7 @@ import {
 import * as stripe from 'Service/stripe'
 import * as paypal from 'Service/paypal'
 import * as printingEngine from 'Lib/printing-engine'
+import {AppError} from 'Lib/error'
 
 describe('Order actions', () => {
   let initialStoreData
@@ -118,7 +119,9 @@ describe('Order actions', () => {
             type: 'MODAL.OPEN',
             payload: {
               contentType: 'MODAL.FATAL_ERROR',
-              contentProps: {error: new Error('Failed to process the order')},
+              contentProps: {
+                error: new AppError('ORDER_FAILED', 'Failed to process the order')
+              },
               isCloseable: false
             }
           }
@@ -163,7 +166,7 @@ describe('Order actions', () => {
             type: 'MODAL.OPEN',
             payload: {
               contentType: 'MODAL.FATAL_ERROR',
-              contentProps: {error: new Error('Failed to process the order')},
+              contentProps: {error: new AppError('ORDER_FAILED', 'Failed to process the order')},
               isCloseable: false
             }
           }

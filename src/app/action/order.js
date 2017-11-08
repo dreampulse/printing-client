@@ -6,9 +6,10 @@ import {createAction} from 'redux-actions'
 import * as stripe from 'Service/stripe'
 import * as paypal from 'Service/paypal'
 import * as printingEngine from 'Lib/printing-engine'
+import {AppError} from 'Lib/error'
 
 import type {State} from '../type'
-import TYPE from '../action-type'
+import TYPE, {ERROR_TYPE} from '../action-type'
 import {openFatalErrorModal} from './modal'
 
 // Syncron actions
@@ -43,7 +44,9 @@ const createOrder = (type: string, token: string) => async (
 
     dispatch(ordered({orderId, orderNumber}))
   } catch (error) {
-    dispatch(openFatalErrorModal(new Error('Failed to process the order')))
+    dispatch(
+      openFatalErrorModal(new AppError(ERROR_TYPE.ORDER_FAILED, 'Failed to process the order'))
+    )
   }
 }
 

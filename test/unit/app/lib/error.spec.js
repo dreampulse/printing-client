@@ -10,7 +10,7 @@ describe('Error lib', () => {
 
     it('sets some error message ', () => {
       const error = new AppError('some-error-type', 'some-message')
-      expect(error.message, 'to equal', 'some-message')
+      expect(error.message, 'to equal', 'some-message (some-error-type)')
     })
   })
 
