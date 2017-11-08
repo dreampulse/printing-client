@@ -67,10 +67,16 @@ export const payWithStripe = () => async (dispatch: Dispatch<*>, getState: () =>
 }
 
 export const payWithPaypal = () => (dispatch: Dispatch<*>, getState: () => State) => {
-  const {price} = getState()
+  const {price, user} = getState()
   if (!price.selectedOffer) throw new Error('No offer selected')
+
   const {totalPrice, currency, offerId} = price.selectedOffer
-  return paypal.createPayment({amount: totalPrice, currency, offerId})
+  return paypal.createPayment({
+    amount: totalPrice,
+    currency,
+    offerId,
+    shippingAddress: user.user.shippingAddress
+  })
 }
 
 export const createOrderWithStripe = () => (dispatch: Dispatch<*>, getState: () => State) => {
@@ -79,9 +85,9 @@ export const createOrderWithStripe = () => (dispatch: Dispatch<*>, getState: () 
   return dispatch(createOrder('stripe', token))
 }
 
-export const createOrderWithPaypal = (data: any, actions: any) => async (dispatch: Dispatch<*>) => {
-  const payment = await paypal.executePayment({actions})
-  const token = payment.id
+export const createOrderWithPaypal = (data: any) => async (dispatch: Dispatch<*>) => {
+  const payment = await paypal.executePayment({data})
+  const token = payment.paymentId
 
   await dispatch(createOrder('paypal', token))
   return payment
