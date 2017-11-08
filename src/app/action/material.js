@@ -12,6 +12,7 @@ import TYPE from '../action-type'
 import {createPriceRequest} from './price'
 
 // Sync actions
+const materialSelected = createAction(TYPE.MATERIAL.SELECTED)
 export const selectMaterialConfigForFinishGroup = createAction(
   TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED,
   ({
@@ -33,7 +34,7 @@ const materialReceived = createAction(TYPE.MATERIAL.RECEIVED, (materials: Materi
 
 // Async actions
 export const selectMaterial = (materialId: string) => async (dispatch: Dispatch<*>) => {
-  dispatch(createAction(TYPE.MATERIAL.SELECTED)(materialId))
+  dispatch(materialSelected(materialId))
 
   await dispatch(createPriceRequest())
 }

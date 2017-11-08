@@ -48,8 +48,7 @@ SelectMenuMaterialItem.propTypes = {
     type: PropTypes.oneOf(['material']),
     value: PropTypes.any.isRequired,
     label: PropTypes.string, // When not provided value will be shown
-    hasColor: PropTypes.bool,
-    price: PropTypes.string
+    hasColor: PropTypes.bool
   }).isRequired,
   selected: PropTypes.bool,
   onClick: PropTypes.func
