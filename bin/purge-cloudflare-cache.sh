@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -eu
 
 ZONE="924763cc40afc8b78600536e6eb5c652"
 
