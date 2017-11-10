@@ -3,6 +3,7 @@ import {render} from 'react-dom'
 import {Provider} from 'react-redux'
 import createHistory from 'history/createBrowserHistory'
 import {AppContainer} from 'react-hot-loader'
+import browserUpdate from 'browser-update'
 
 import 'babel-polyfill'
 
@@ -14,6 +15,8 @@ import Router from './router'
 import '../sass/main.scss'
 
 import {init} from './action/init'
+
+browserUpdate() // Warn outdated browsers
 
 // Stub backend during development. Webpack will remove this in production
 if (process.env.NODE_ENV === 'development-with-stubs') require('../../test-data/server-stubs') // eslint-disable-line

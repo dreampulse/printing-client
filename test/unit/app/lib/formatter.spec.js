@@ -107,4 +107,8 @@ describe('formatDimensions', () => {
   it('rounds to at most 2 decimal places', () => {
     expect(formatDimensions({x: 1.5, y: 2.05, z: 3.005}, 'mm'), 'to equal', '1.5 × 2.05 × 3.01 mm')
   })
+
+  it('returns null if all parameter are undefined', () => {
+    expect(formatDimensions({x: null, y: null, z: null}), 'to be null')
+  })
 })

@@ -43,9 +43,14 @@ export type OrderAbortedAction = {
 export type OrderOrderedAction = {
   type: 'ORDER.ORDERED',
   payload: {
-    orderId: string
-  },
-  error: ?boolean // @TODO: is this possible (we removed redux promise)
+    orderId: string,
+    orderNumber: string
+  }
+}
+
+export type OrderGotErrorAction = {
+  type: 'ORDER.GOT_ERROR',
+  payload: Error
 }
 
 // Price actions
@@ -274,7 +279,8 @@ export default {
     ORDERED: 'ORDER.ORDERED',
     PAYED: 'ORDER.PAYED',
     STARTED: 'ORDER.STARTED',
-    ABORTED: 'ORDER.ABORTED'
+    ABORTED: 'ORDER.ABORTED',
+    GOT_ERROR: 'ORDER.GOT_ERROR'
   },
   DIRECT_SALES: {
     RESTORE_CONFIGURATION: 'DIRECT_SALES.RESTORE_CONFIGURATION',

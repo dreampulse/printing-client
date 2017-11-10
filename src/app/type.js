@@ -64,12 +64,12 @@ export type ModelBackend = {
   modelId: string,
   fileName: string,
   fileUnit: 'mm' | 'cm' | 'in',
-  area: number,
-  volume: number,
+  area: ?number,
+  volume: ?number,
   dimensions: {
-    x: number,
-    y: number,
-    z: number
+    x: ?number,
+    y: ?number,
+    z: ?number
   },
   thumbnailUrl: string
 }
@@ -163,6 +163,7 @@ export type UserState = {
 
 export type OrderState = {
   orderId: ?string,
+  orderNumber: ?string,
   paymentToken: ?string,
   orderInProgress: boolean
 }
