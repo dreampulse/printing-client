@@ -12,7 +12,7 @@ import TYPE from '../action-type'
 import {createPriceRequest} from './price'
 
 // Sync actions
-const materialSelected = createAction(TYPE.MATERIAL.SELECTED)
+const materialSelected = createAction(TYPE.MATERIAL.SELECTED, (materialId: string) => materialId)
 export const selectMaterialConfigForFinishGroup = createAction(
   TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED,
   ({
