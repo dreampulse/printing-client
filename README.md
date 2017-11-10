@@ -37,6 +37,22 @@ $ npm run build
 $ npm run start
 ~~~
 
+## Env variables
+
+### Build time
+
+- `WEBPACK_ENV`: Controls whether the webpack output should be optimized for development or for production. Expected values: `production`, `development` (default)
+
+### Deploy time
+
+- `CLOUDFLARE_USER`: Required to deploy the production build on the CDN
+- `CLOUDFLARE_API_KEY`: Required to deploy the production build on the CDN
+
+### Run time
+
+- `NODE_ENV`: Controls whether the server should be executed in production or development mode. Expected values: `production`, `development` (default)
+- `BASIC_AUTH`: If present, activates basic authentication for all relevant server routes. Expected value: `username:password`
+
 ## Terminology
 - Services: Services are JS modules which can be found in `/src/app/service`. They wrap external dependencies (e.g. DOM, external libs) which we don't want to include in the unit tests.
 - Libs: Libs are our own libraries which contain the core business logic. They can be found in `/src/app/lib`.

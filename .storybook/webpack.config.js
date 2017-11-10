@@ -1,11 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const webpackConfig = require('../webpack/config')
+const config = require('../webpack.config')
 
-const config = webpackConfig({
-  extractStyles: false,
-  optimize: false,
-  nodeEnv: 'development'
-})
 const jsTestRegExpString = /\.js$/.toString()
 
 // Remove JS loader to use default provided by Storybook
