@@ -111,7 +111,9 @@ export const createPriceRequest = (
         return
       }
 
-      dispatch(openFatalErrorModal(new AppError('Failed to get prices')))
+      dispatch(
+        openFatalErrorModal(new AppError(ERROR_TYPE.GET_PRICE_FAILED, 'Failed to get prices'))
+      )
     })
 }
 
