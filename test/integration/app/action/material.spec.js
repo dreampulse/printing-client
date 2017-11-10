@@ -1,11 +1,6 @@
 import createHistory from 'history/createMemoryHistory'
 
-import {
-  getMaterials,
-  selectMaterial,
-  selectMaterialConfig,
-  selectMaterialConfigForFinishGroup
-} from 'Action/material'
+import {getMaterials, selectMaterial, selectMaterialConfig} from 'Action/material'
 import * as printingEngine from 'Lib/printing-engine'
 import * as materialLib from 'Lib/material'
 import Store from '../../../../src/app/store'
