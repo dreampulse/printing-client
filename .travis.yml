@@ -20,4 +20,6 @@ deploy:
   on:
     repo: all3dp/printing-engine-client
     branch: master
-after_deploy: ./bin/purge-cloudflare-cache.sh
+after_deploy:
+  - ./bin/create-sentry-release.sh
+  - ./bin/purge-cloudflare-cache.sh
