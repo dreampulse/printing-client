@@ -1,34 +1,20 @@
 #!/usr/bin/env bash -eu
 
-ORGANIZATION="all3dp-gmbh"
-PROJECT="printing-engine-client"
-RELEASE=$RELEASE_ID
-TOKEN=$SENTRY_API_TOKEN
-URL=$DEPLOY_URL
+npm i sentry-cli-binary
+
+export SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+export SENTRY_ORG="all3dp-gmbh"
+export SENTRY_PROJECT="printing-engine-client"
 DIST_PATH="./dist"
+SOURCE_MAPS=$(find $DIST_PATH -name '*.js.map' -type f)
+VERSION=$(npx sentry-cli releases propose-version)
 
-printf "Creating sentry release $RELEASE_ID..."
-curl https://sentry.io/api/0/projects/$ORGANIZATION/$PROJECT/releases/ \
-  -X POST \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d "{\"version\": \"$RELEASE\"}" \
-  -f -v
-printf "\nDone."
+npx sentry-cli releases new $VERSION
+npx sentry-cli releases set-commits --auto $VERSION
 
-cd $DIST_PATH
-
-for line in $(find . -name '*.js.map' -type f | sed 's|./||'); do
-
-  printf "Uploading $line..."
-  curl https://sentry.io/api/0/projects/$ORGANIZATION/$PROJECT/releases/$RELEASE/files/ \
-    -X POST \
-    -H "Authorization: Bearer $TOKEN" \
-    -F file=@$line \
-    -F name="$DEPLOY_URL/$line" \
-    -f -v
-  printf "\nDone."
-
+for FILE in $SOURCE_MAPS; do
+  npx sentry-cli releases files $VERSION upload-sourcemaps --rewrite $FILE
 done
 
-cd ..
+npx sentry-cli releases finalize $VERSION
+npx sentry-cli releases deploys $VERSION new -e production
