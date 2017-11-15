@@ -19,8 +19,10 @@ export const selectCommonQuantity = (state: State) => {
   }
 
   return models.reduce((quantity, model) => {
-    if (!model.quantity) return null
-    const modelQuantity = model.quantity
+    let modelQuantity
+    if (model.quantity) {
+      modelQuantity = model.quantity
+    }
     if (quantity === null) {
       return modelQuantity
     }
