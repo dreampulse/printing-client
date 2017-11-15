@@ -5,6 +5,7 @@ import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   orderId: null,
+  paymentId: null,
   orderNumber: null,
   paymentToken: null,
   orderInProgress: false
@@ -40,6 +41,13 @@ function handleOrderAborted(state) {
   }
 }
 
+function handlePaymentCreated(state, {payload: {paymentId}}) {
+  return {
+    ...state,
+    paymentId
+  }
+}
+
 const reducer = (state: OrderState = initialState, action: Action): OrderState => {
   switch (action.type) {
     case TYPE.ORDER.ORDERED:
@@ -50,6 +58,8 @@ const reducer = (state: OrderState = initialState, action: Action): OrderState =
       return handleOrderStarted(state)
     case TYPE.ORDER.ABORTED:
       return handleOrderAborted(state)
+    case TYPE.ORDER.PAYMENT_CREATED:
+      return handlePaymentCreated(state, action)
     default:
       return state
   }

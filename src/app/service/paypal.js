@@ -1,8 +1,7 @@
 import config from '../../../config'
 import {requestJson} from './http'
 
-const CREATE_PAYMENT_ENDPOINT = `${config.printingEngineBaseUrl}/paypal/create`
-const EXECUTE_PAYMENT_ENDPOINT = `${config.printingEngineBaseUrl}/paypal/execute`
+const PAYMENT_ENDPOINT = `${config.printingEngineBaseUrl}/payment/paypal`
 
 export function createPayment({amount, currency, offerId, shippingAddress}) {
   const {
@@ -37,17 +36,15 @@ export function createPayment({amount, currency, offerId, shippingAddress}) {
     }
   ]
 
-  return requestJson(CREATE_PAYMENT_ENDPOINT, {method: 'POST', body: transactions}).then(
-    res => res.paymentId
-  )
+  return requestJson(PAYMENT_ENDPOINT, {method: 'POST', body: {orderId: offerId, transactions}})
 }
 
-export async function executePayment({data}) {
+export async function executePayment({data, paymentId}) {
   if (!data.paymentID) throw new Error('Payment failed')
 
-  const payment = await requestJson(EXECUTE_PAYMENT_ENDPOINT, {
-    method: 'POST',
-    body: {paymentId: data.paymentID, payerId: data.payerID}
+  const payment = await requestJson(`${PAYMENT_ENDPOINT}/${paymentId}`, {
+    method: 'PUT',
+    body: {payerId: data.payerID}
   })
   if (!payment.status) throw new Error('PayPal payment not approved')
   return payment

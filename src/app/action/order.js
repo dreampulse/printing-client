@@ -16,6 +16,9 @@ import {openFatalErrorModal} from './modal'
 
 const orderStarted = createAction(TYPE.ORDER.STARTED)
 const payed = createAction(TYPE.ORDER.PAYED, (paymentToken: string) => ({paymentToken}))
+const paymentCreated = createAction(TYPE.ORDER.PAYMENT_CREATED, (paymentId: string) => ({
+  paymentId
+}))
 const aborted = createAction(TYPE.ORDER.ABORTED)
 const ordered = createAction(
   TYPE.ORDER.ORDERED,
@@ -69,17 +72,21 @@ export const payWithStripe = () => async (dispatch: Dispatch<*>, getState: () =>
   }
 }
 
-export const payWithPaypal = () => (dispatch: Dispatch<*>, getState: () => State) => {
+export const payWithPaypal = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const {price, user} = getState()
   if (!price.selectedOffer) throw new Error('No offer selected')
 
   const {totalPrice, currency, offerId} = price.selectedOffer
-  return paypal.createPayment({
+  const {paymentId, providerFields} = await paypal.createPayment({
     amount: totalPrice,
     currency,
     offerId,
     shippingAddress: user.user.shippingAddress
   })
+
+  dispatch(paymentCreated(paymentId))
+
+  return providerFields.paymentId
 }
 
 export const createOrderWithStripe = () => (dispatch: Dispatch<*>, getState: () => State) => {
@@ -88,8 +95,9 @@ export const createOrderWithStripe = () => (dispatch: Dispatch<*>, getState: () 
   return dispatch(createOrder('stripe', token))
 }
 
-export const createOrderWithPaypal = (data: any) => async (dispatch: Dispatch<*>) => {
-  const payment = await paypal.executePayment({data})
+export const createOrderWithPaypal = (data: any) => async (dispatch: Dispatch<*>, getState: () => State) => {
+  const paymentId = getState().order.paymentId
+  const payment = await paypal.executePayment({data, paymentId})
   const token = payment.paymentId
 
   await dispatch(createOrder('paypal', token))
