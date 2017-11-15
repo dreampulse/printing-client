@@ -3,21 +3,16 @@
 # fail early on simple command errors and missing env variables
 set -eu
 
-npm i sentry-cli-binary
-
-export SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+# SENTRY_AUTH_TOKEN must be set externally
 export SENTRY_ORG="all3dp-gmbh"
 export SENTRY_PROJECT="printing-engine-client"
+SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DIST_PATH="./dist"
 SOURCE_MAPS=$(find $DIST_PATH -name '*.js.map' -type f)
-VERSION=$(npx sentry-cli releases propose-version)
+VERSION=$( $SCRIPT_PATH/get-sentry-release-version.sh )
 
 npx sentry-cli releases new $VERSION
 npx sentry-cli releases set-commits --auto $VERSION
-
-for FILE in $SOURCE_MAPS; do
-  npx sentry-cli releases files $VERSION upload-sourcemaps --rewrite $FILE
-done
-
+npx sentry-cli releases files $VERSION upload-sourcemaps --rewrite --ignore-file $SCRIPT_PATH/.sentryignore $DIST_PATH
 npx sentry-cli releases finalize $VERSION
 npx sentry-cli releases deploys $VERSION new -e production
