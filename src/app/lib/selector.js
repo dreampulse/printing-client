@@ -1,16 +1,12 @@
-// @flow
-
 import get from 'lodash/get'
 import URLSearchParams from 'url-search-params'
 
 import {hasMaterialMultipleConfigs, getBestOfferForMaterial} from 'Lib/material'
 import {formatPrice} from 'Lib/formatter'
 
-import type {State, Features} from '../type'
-
 import config from '../../../config'
 
-export const selectCommonQuantity = (state: State) => {
+export const selectCommonQuantity = state => {
   // Common quantity exists only if all models have the same individual quantity
   const {model: {models}} = state
 
@@ -19,7 +15,6 @@ export const selectCommonQuantity = (state: State) => {
   }
 
   return models.reduce((quantity, model) => {
-    if (!model.quantity) return null
     const modelQuantity = model.quantity
     if (quantity === null) {
       return modelQuantity
@@ -31,7 +26,7 @@ export const selectCommonQuantity = (state: State) => {
   }, null)
 }
 
-export const selectMaterialMenuValues = (state: State) => {
+export const selectMaterialMenuValues = state => {
   const {price: {offers}, material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
@@ -56,7 +51,7 @@ export const selectMaterialMenuValues = (state: State) => {
   }))
 }
 
-export const selectMaterial = (state: State, materialId: ?string) => {
+export const selectMaterial = (state, materialId) => {
   const {material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
@@ -77,7 +72,7 @@ export const selectMaterial = (state: State, materialId: ?string) => {
   return material
 }
 
-export const selectMaterialByName = (state: State, name: string) => {
+export const selectMaterialByName = (state, name) => {
   const {material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
@@ -98,10 +93,8 @@ export const selectMaterialByName = (state: State, name: string) => {
   return material
 }
 
-export const selectMaterialByMaterialConfigId = (state: State, materialConfigId: string) => {
-  const materials = state.material.materials
-
-  if (!materials) throw new Error('Material structure not loaded')
+export const selectMaterialByMaterialConfigId = (state, materialConfigId) => {
+  const {material: {materials}} = state
 
   let selectedMaterial
   let selectedFinishGroup
@@ -131,14 +124,12 @@ export const selectMaterialByMaterialConfigId = (state: State, materialConfigId:
   }
 }
 
-export const selectedOfferMaterial = (state: State) => {
-  if (!state.price.selectedOffer) throw new Error('No offer selected')
-
-  const materialConfigId = state.price.selectedOffer.materialConfigId
+export const selectedOfferMaterial = state => {
+  const {price: {selectedOffer: {materialConfigId}}} = state
   return selectMaterialByMaterialConfigId(state, materialConfigId)
 }
 
-export const selectFinishGroup = (state: State, materialId: string, finishGroupId: string) => {
+export const selectFinishGroup = (state, materialId, finishGroupId) => {
   const material = selectMaterial(state, materialId)
   if (!material) {
     return null
@@ -156,8 +147,8 @@ export const selectFinishGroup = (state: State, materialId: string, finishGroupI
   return finishGroup
 }
 
-export const selectCurrentMaterial = (state: State) => {
-  const selectedMaterial = state.material.selectedMaterial
+export const selectCurrentMaterial = state => {
+  const {material: {selectedMaterial}} = state
 
   return (
     selectMaterial(state, selectedMaterial) ||
@@ -165,39 +156,26 @@ export const selectCurrentMaterial = (state: State) => {
   )
 }
 
-export const selectModelByModelId = (state: State, modelId: string) => {
+export const selectModelByModelId = (state, modelId) => {
   const {model: {models}} = state
 
-  return (
-    models.find(model => {
-      if (!model.modelId) return false
-      return model.modelId === modelId
-    }) || null
-  )
+  return models.filter(model => model.modelId === modelId).shift() || null
 }
 
-export const selectOfferItems = (state: State) => {
-  if (!state.price.selectedOffer) throw new Error('No offer selected')
-
-  const items = state.price.selectedOffer.items
+export const selectOfferItems = state => {
+  const {price: {selectedOffer: {items}}} = state
 
   return items.map(item => {
     const model = selectModelByModelId(state, item.modelId)
-
-    // TODO: this is because of type Model = ModelCompleted | ModelUploading
-    let thumbnailUrl = null
-    if (model && model.thumbnailUrl) {
-      thumbnailUrl = model.thumbnailUrl
-    }
     return {
       ...item,
-      thumbnailUrl,
+      thumbnailUrl: model ? model.thumbnailUrl : null,
       fileName: model ? model.fileName : null
     }
   })
 }
 
-export const selectOffersForSelectedMaterialConfig = (state: State) => {
+export const selectOffersForSelectedMaterialConfig = state => {
   const {price: {offers}, material: {selectedMaterialConfig}} = state
 
   if (!offers) {
@@ -207,7 +185,7 @@ export const selectOffersForSelectedMaterialConfig = (state: State) => {
   return offers.filter(offer => offer.materialConfigId === selectedMaterialConfig)
 }
 
-export const selectPrintingServiceRequests = (state: State) => {
+export const selectPrintingServiceRequests = state => {
   const {price: {printingServiceComplete}} = state
 
   if (!printingServiceComplete) {
@@ -221,23 +199,23 @@ export const selectPrintingServiceRequests = (state: State) => {
   }
 }
 
-export const selectAreAllUploadsFinished = (state: State) => {
+export const selectAreAllUploadsFinished = state => {
   const {model: {numberOfUploads, models}} = state
 
   return numberOfUploads === 0 && models.length > 0
 }
 
-export const selectLocationQuery = (state: State) =>
+export const selectLocationQuery = state =>
   new URLSearchParams(get(state, 'routing.location.search') || '')
 
-export const selectFeatures = (state: State): Features => {
+export const selectFeatures = state => {
   const query = selectLocationQuery(state)
-  const features: Features = {}
+  const features = Object.create(null)
 
   return Array.from(query.keys())
     .filter(name => /^feature:/.test(name))
     .map(name => name.substr('feature:'.length))
-    .reduce((agg: Features, name: string) => {
+    .reduce((agg, name) => {
       agg[name] = true
       return agg
     }, features)

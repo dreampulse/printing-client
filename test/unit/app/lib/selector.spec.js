@@ -768,14 +768,18 @@ describe('Selector lib', () => {
   })
 
   describe('selectFeatures()', () => {
+    it('returns an empty object without prototype if the state does not contain feature toggles', () => {
+      expect(selectFeatures({}), 'to equal', Object.create(null))
+    })
+
     it('returns the feature toggles in an object without prototype', () => {
       const query = new URLSearchParams()
-      const features = {
+      const features = Object.assign(Object.create(null), {
         a: true,
         b: true,
         c: true,
         d: true
-      }
+      })
 
       query.append('feature:a', true)
       query.append('feature:b', '')
@@ -797,7 +801,7 @@ describe('Selector lib', () => {
 
     it('does not detect query parameters without "feature:" prefix as feature', () => {
       const query = new URLSearchParams()
-      const features = {}
+      const features = Object.create(null)
 
       query.append('a', true)
       query.append('b', '')
