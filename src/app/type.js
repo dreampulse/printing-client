@@ -154,6 +154,14 @@ export type Materials = {
 }
 
 //
+// Feature-Flags
+
+export type Features = {
+  share?: true,
+  refresh?: true
+}
+
+//
 // States
 
 export type UserState = {

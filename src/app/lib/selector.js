@@ -6,7 +6,7 @@ import URLSearchParams from 'url-search-params'
 import {hasMaterialMultipleConfigs, getBestOfferForMaterial} from 'Lib/material'
 import {formatPrice} from 'Lib/formatter'
 
-import type {State} from '../type'
+import type {State, Features} from '../type'
 
 import config from '../../../config'
 
@@ -19,7 +19,7 @@ export const selectCommonQuantity = (state: State) => {
   }
 
   return models.reduce((quantity, model) => {
-    if (!model.quantity) throw new Error('Upload not completed')
+    if (!model.quantity) return null
     const modelQuantity = model.quantity
     if (quantity === null) {
       return modelQuantity
@@ -169,12 +169,10 @@ export const selectModelByModelId = (state: State, modelId: string) => {
   const {model: {models}} = state
 
   return (
-    models
-      .filter(model => {
-        if (!model.modelId) throw new Error('Upload not completed')
-        return model.modelId === modelId
-      })
-      .shift() || null
+    models.find(model => {
+      if (!model.modelId) return false
+      return model.modelId === modelId
+    }) || null
   )
 }
 
@@ -186,7 +184,7 @@ export const selectOfferItems = (state: State) => {
   return items.map(item => {
     const model = selectModelByModelId(state, item.modelId)
     // Ensure that the upload is completed
-    if (!model || !model.thumbnailUrl) throw new Error('Upload not completed')
+    if (!model || !model.thumbnailUrl) return null
     return {
       ...item,
       thumbnailUrl: model ? model.thumbnailUrl : null,
@@ -228,14 +226,14 @@ export const selectAreAllUploadsFinished = (state: State) => {
 export const selectLocationQuery = (state: State) =>
   new URLSearchParams(get(state, 'routing.location.search') || '')
 
-export const selectFeatures = (state: State): Object => {
+export const selectFeatures = (state: State): Features => {
   const query = selectLocationQuery(state)
-  const features = Object.create(null)
+  const features: Features = {}
 
   return Array.from(query.keys())
     .filter(name => /^feature:/.test(name))
     .map(name => name.substr('feature:'.length))
-    .reduce((agg, name) => {
+    .reduce((agg: Features, name: string) => {
       agg[name] = true
       return agg
     }, features)
