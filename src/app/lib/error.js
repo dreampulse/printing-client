@@ -2,7 +2,7 @@ import {ERROR_TYPE} from '../action-type'
 
 export class AppError extends Error {
   constructor(type, message) {
-    super(message)
+    super(`${message} (${type})`)
     this.type = type
   }
 }

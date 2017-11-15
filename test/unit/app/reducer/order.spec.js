@@ -32,25 +32,6 @@ describe('Order reducer', () => {
         orderInProgress: false
       })
     })
-
-    it('sets expected state, in error case', () => {
-      const state = {
-        some: 'thing'
-      }
-
-      const action = {
-        type: TYPE.ORDER.GOT_ERROR,
-        payload: new Error('some-error'),
-        error: true
-      }
-
-      expect(reducer(state, action), 'to equal', {
-        some: 'thing',
-        orderId: null,
-        orderNumber: null,
-        orderInProgress: false
-      })
-    })
   })
 
   describe('handles TYPE.ORDER.PAYED:', () => {
