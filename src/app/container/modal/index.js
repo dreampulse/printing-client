@@ -9,6 +9,7 @@ import ShippingAddressModal from './shipping-address'
 import MaterialModal from './material'
 import FetchingPriceModal from './fetching-price'
 import PriceChangedModal from './price-changed'
+import PriceLocationChangedModal from './price-location-changed'
 import FatalErrorModal from './fatal-error'
 
 const modals = {
@@ -16,6 +17,7 @@ const modals = {
   [MODAL_TYPE.MATERIAL]: MaterialModal,
   [MODAL_TYPE.FETCHING_PRICE]: FetchingPriceModal,
   [MODAL_TYPE.PRICE_CHANGED]: PriceChangedModal,
+  [MODAL_TYPE.PRICE_LOCATION_CHANGED]: PriceLocationChangedModal,
   [MODAL_TYPE.FATAL_ERROR]: FatalErrorModal
 }
 
