@@ -22,10 +22,13 @@ const modals = {
 }
 
 const getContent = (contentType, contentProps) => {
-  if (modals[contentType]) {
+  if (contentType === null) {
+    return <div />
+  }
+  if (contentType in modals) {
     return createElement(modals[contentType], contentProps)
   }
-  return <div />
+  throw new Error(`Unknown modal content type "${contentType}"`)
 }
 
 const Modal = ({isOpen, onModalClose, contentType, contentProps, isCloseable}) => (
