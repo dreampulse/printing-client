@@ -21,7 +21,6 @@ const SelectMenuMaterialItem = ({
     event.preventDefault()
     onClick(value)
   }
-
   const finalModifier = [
     ...modifiers,
     {
@@ -39,7 +38,6 @@ const SelectMenuMaterialItem = ({
       {selected && <Icon source={selectedIcon} />}
       <span className="select-menu-material-item__label">{getLabel(value)}</span>
       <span className="select-menu-material-item__color" />
-      <span className="select-menu-material-item__price">{value.price}</span>
     </button>
   )
 }
@@ -50,8 +48,7 @@ SelectMenuMaterialItem.propTypes = {
     type: PropTypes.oneOf(['material']),
     value: PropTypes.any.isRequired,
     label: PropTypes.string, // When not provided value will be shown
-    hasColor: PropTypes.bool,
-    price: PropTypes.string
+    hasColor: PropTypes.bool
   }).isRequired,
   selected: PropTypes.bool,
   onClick: PropTypes.func
