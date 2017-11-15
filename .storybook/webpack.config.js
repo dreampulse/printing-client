@@ -9,7 +9,11 @@ const rules = config.module.rules.filter(
   rule => !rule.test || rule.test.toString() !== jsTestRegExpString
 )
 
-config.plugins = config.plugins.filter(plugin => plugin instanceof HtmlWebpackPlugin === false && plugin instanceof webpack.optimize.UglifyJsPlugin === false)
+config.plugins = config.plugins.filter(
+  plugin =>
+    plugin instanceof HtmlWebpackPlugin === false &&
+    plugin instanceof webpack.optimize.UglifyJsPlugin === false
+)
 
 module.exports = {
   resolve: config.resolve,
