@@ -1,10 +1,6 @@
 import createHistory from 'history/createMemoryHistory'
 
-import {
-  getMaterials,
-  selectMaterialConfig,
-  selectMaterialConfigForFinishGroup
-} from 'Action/material'
+import {getMaterials, selectMaterial, selectMaterialConfig} from 'Action/material'
 import * as printingEngine from 'Lib/printing-engine'
 import * as materialLib from 'Lib/material'
 import Store from '../../../../src/app/store'
@@ -36,30 +32,10 @@ describe('Material Integration Test', () => {
     })
   })
 
-  describe('selectMaterialConfigForFinishGroup()', () => {
+  describe('selectMaterial()', () => {
     it('should work', () => {
-      store = Store(createHistory(), {
-        material: {
-          selectedMaterialConfig: 'some-config-id'
-        }
-      })
-
-      store.dispatch(
-        selectMaterialConfigForFinishGroup({
-          materialConfigId: 'some-config-id',
-          finishGroupId: 'some-finish-group-id'
-        })
-      )
-
-      expect(
-        store.getState().material.selectedMaterialConfigs,
-        'to have own property',
-        'some-finish-group-id',
-        'some-config-id'
-      )
-
-      // Has to reset selectedMaterialConfig
-      expect(store.getState().material.selectedMaterialConfig, 'to be undefined')
+      store.dispatch(selectMaterial('some-material-id'))
+      expect(store.getState().material.selectedMaterial, 'to equal', 'some-material-id')
     })
   })
 

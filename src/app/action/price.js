@@ -56,6 +56,10 @@ export const createPriceRequest = (
   const selectedMaterial = selectCurrentMaterial(state)
   const {refresh} = selectFeatures(state)
 
+  if (!selectedMaterial) {
+    throw new Error('No material selected')
+  }
+
   // Abort if user did not upload any models yet
   if (models.length === 0) {
     // Just to be sure, stop any running price polls

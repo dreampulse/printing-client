@@ -6,8 +6,7 @@ import TYPE, {type Action} from '../action-type'
 const initialState = {
   materials: undefined,
   selectedMaterial: undefined,
-  selectedMaterialConfig: undefined,
-  selectedMaterialConfigs: {}
+  selectedMaterialConfig: undefined
 }
 
 function handleRestoreConfiguration(state, {payload: {materialConfigId}}) {
@@ -38,17 +37,6 @@ function handleSelectedMaterialConfig(state, {payload}) {
   }
 }
 
-function handleSelectedMaterialConfigForFinishGroup(state, {payload}) {
-  return {
-    ...state,
-    selectedMaterialConfigs: {
-      ...state.selectedMaterialConfigs,
-      ...payload
-    },
-    selectedMaterialConfig: undefined
-  }
-}
-
 const reducer = (state: MaterialState = initialState, action: Action): MaterialState => {
   switch (action.type) {
     case TYPE.MATERIAL.RECEIVED:
@@ -57,8 +45,6 @@ const reducer = (state: MaterialState = initialState, action: Action): MaterialS
       return handleSelectedMaterial(state, action)
     case TYPE.MATERIAL.CONFIG_SELECTED:
       return handleSelectedMaterialConfig(state, action)
-    case TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED:
-      return handleSelectedMaterialConfigForFinishGroup(state, action)
     case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION:
       return handleRestoreConfiguration(state, action)
 
