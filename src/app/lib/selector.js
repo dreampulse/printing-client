@@ -183,11 +183,15 @@ export const selectOfferItems = (state: State) => {
 
   return items.map(item => {
     const model = selectModelByModelId(state, item.modelId)
-    // Ensure that the upload is completed
-    if (!model || !model.thumbnailUrl) return null
+
+    // TODO: this is because of type Model = ModelCompleted | ModelUploading
+    let thumbnailUrl = null
+    if (model && model.thumbnailUrl) {
+      thumbnailUrl = model.thumbnailUrl
+    }
     return {
       ...item,
-      thumbnailUrl: model ? model.thumbnailUrl : null,
+      thumbnailUrl,
       fileName: model ? model.fileName : null
     }
   })
