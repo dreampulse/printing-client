@@ -6,7 +6,7 @@ import {createAction} from 'redux-actions'
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
-import {selectFeatures} from 'Lib/selector'
+import {selectCurrentMaterial, selectFeatures} from 'Lib/selector'
 import {AppError} from 'Lib/error'
 
 import type {Offer, Price, State} from '../type'
@@ -52,7 +52,8 @@ export const createPriceRequest = (
 
   const state = getState()
   if (!state.material.materials) throw new Error('Materials structure missing')
-  const {material: {materials: {materialConfigs}}, model: {models}, user: {userId}} = state
+  const {model: {models}, user: {userId}} = state
+  const selectedMaterial = selectCurrentMaterial(state)
   const {refresh} = selectFeatures(state)
 
   // Abort if user did not upload any models yet
@@ -62,7 +63,12 @@ export const createPriceRequest = (
     return Promise.resolve()
   }
 
-  const materialConfigIds = Object.keys(materialConfigs)
+  const materialConfigIds = []
+  selectedMaterial.finishGroups.forEach(finishGroup => {
+    finishGroup.materialConfigs.forEach(materialConfig => {
+      materialConfigIds.push(materialConfig.id)
+    })
+  })
   const items = models.map(model => {
     if (!model.uploadFinished) throw new Error('Upload still in progress')
     const {modelId, quantity} = model

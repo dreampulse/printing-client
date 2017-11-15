@@ -2,7 +2,6 @@ import createHistory from 'history/createMemoryHistory'
 
 import {
   getMaterials,
-  selectMaterial,
   selectMaterialConfig,
   selectMaterialConfigForFinishGroup
 } from 'Action/material'
@@ -34,13 +33,6 @@ describe('Material Integration Test', () => {
 
       expect(materialLib.generateMaterialIds, 'to have a call satisfying', ['some-materials'])
       expect(store.getState().material.materials, 'to equal', 'some-materials')
-    })
-  })
-
-  describe('selectMaterial()', () => {
-    it('should work', () => {
-      store.dispatch(selectMaterial('some-material-id'))
-      expect(store.getState().material.selectedMaterial, 'to equal', 'some-material-id')
     })
   })
 

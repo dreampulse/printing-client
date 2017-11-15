@@ -10,8 +10,7 @@ storiesOf('Select Menu Material Item', module)
       value={{
         value: 'value',
         label: 'Select Menu Material Item',
-        hasColor: true,
-        price: 'From $19.99'
+        hasColor: true
       }}
       onClick={action('click')}
     />
@@ -21,8 +20,7 @@ storiesOf('Select Menu Material Item', module)
       value={{
         value: 'value',
         label: 'Select Menu Material Item',
-        hasColor: true,
-        price: 'From $19.99'
+        hasColor: true
       }}
       selected
       onClick={action('click')}
