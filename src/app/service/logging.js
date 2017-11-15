@@ -4,7 +4,9 @@ import createRavenMiddleware from 'raven-for-redux'
 import config from '../../../config'
 
 if (process.env.NODE_ENV === 'production') {
-  Raven.config(config.raven).install()
+  Raven.config(config.ravenUrl, {
+    release: config.ravenRelease
+  }).install()
 }
 
 export const captureException = exception => Raven && Raven.captureException(exception)

@@ -1,3 +1,4 @@
+const childProcess = require('child_process')
 const compact = require('lodash/compact')
 const path = require('path')
 const webpack = require('webpack')
@@ -10,6 +11,12 @@ const projectRoot = __dirname
 const env = process.env.WEBPACK_ENV || 'development'
 const isProd = env === 'production'
 const isDev = isProd === false
+const sentryReleaseVersion = isProd
+  ? childProcess
+      .execSync(path.resolve(__dirname, 'bin', 'get-sentry-release-version.sh'))
+      .toString()
+      .trim()
+  : 'no-sentry-release'
 
 module.exports = {
   bail: isProd,
@@ -121,7 +128,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(env)
+        NODE_ENV: JSON.stringify(env),
+        SENTRY_RELEASE_VERSION: JSON.stringify(sentryReleaseVersion)
       }
     }),
     new HtmlPlugin({
