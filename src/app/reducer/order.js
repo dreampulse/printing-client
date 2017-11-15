@@ -19,15 +19,6 @@ function handleOrderOrdered(state, {payload: {orderId, orderNumber}}) {
   }
 }
 
-function handleOrderGotError(state) {
-  return {
-    ...state,
-    orderId: null,
-    orderNumber: null,
-    orderInProgress: false
-  }
-}
-
 function handleOrderPayed(state, {payload: {paymentToken}}) {
   return {
     ...state,
@@ -59,8 +50,6 @@ const reducer = (state: OrderState = initialState, action: Action): OrderState =
       return handleOrderStarted(state)
     case TYPE.ORDER.ABORTED:
       return handleOrderAborted(state)
-    case TYPE.ORDER.GOT_ERROR:
-      return handleOrderGotError(state)
     default:
       return state
   }

@@ -6,10 +6,12 @@ import {createAction} from 'redux-actions'
 import * as printingEngine from 'Lib/printing-engine'
 import {getUpdatedOffer} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
-import {selectFeatures} from 'Lib/selector'
+import {selectCurrentMaterial, selectFeatures} from 'Lib/selector'
+import {AppError} from 'Lib/error'
 
 import type {Offer, Price, State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
+import {openFatalErrorModal} from './modal'
 
 const POLL_NAME = 'price'
 const RECALC_POLL_NAME = 'price_recalc'
@@ -22,7 +24,6 @@ const priceReceived = createAction(TYPE.PRICE.RECEIVED, (price: Price, isComplet
   price,
   isComplete
 }))
-const gotError = createAction(TYPE.PRICE.GOT_ERROR, (error: Error) => error)
 const priceTimeout = createAction(TYPE.PRICE.TIMEOUT)
 export const selectOffer = createAction(TYPE.PRICE.SELECT_OFFER, (offer: ?Offer) => ({offer}))
 
@@ -51,8 +52,13 @@ export const createPriceRequest = (
 
   const state = getState()
   if (!state.material.materials) throw new Error('Materials structure missing')
-  const {material: {materials: {materialConfigs}}, model: {models}, user: {userId}} = state
+  const {model: {models}, user: {userId}} = state
+  const selectedMaterial = selectCurrentMaterial(state)
   const {refresh} = selectFeatures(state)
+
+  if (!selectedMaterial) {
+    throw new Error('No material selected')
+  }
 
   // Abort if user did not upload any models yet
   if (models.length === 0) {
@@ -61,7 +67,12 @@ export const createPriceRequest = (
     return Promise.resolve()
   }
 
-  const materialConfigIds = Object.keys(materialConfigs)
+  const materialConfigIds = []
+  selectedMaterial.finishGroups.forEach(finishGroup => {
+    finishGroup.materialConfigs.forEach(materialConfig => {
+      materialConfigIds.push(materialConfig.id)
+    })
+  })
   const items = models.map(model => {
     if (!model.uploadFinished) throw new Error('Upload still in progress')
     const {modelId, quantity} = model
@@ -110,10 +121,9 @@ export const createPriceRequest = (
         return
       }
 
-      dispatch(gotError(error))
-
-      // Throw again to trigger fatal error modal
-      throw error
+      dispatch(
+        openFatalErrorModal(new AppError(ERROR_TYPE.GET_PRICE_FAILED, 'Failed to get prices'))
+      )
     })
 }
 
@@ -162,13 +172,12 @@ export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: 
       dispatch(priceRequested(priceId))
       return priceId
     }
-  ).catch(error => {
-    // Every error here is fatal!
-
-    dispatch(gotError(error))
-
-    // Throw again to trigger fatal error modal
-    throw error
+  ).catch(() => {
+    dispatch(
+      openFatalErrorModal(
+        new AppError(ERROR_TYPE.GET_PRICE_FAILED, 'failed to recalculate selected offer')
+      )
+    )
   })
 }
 

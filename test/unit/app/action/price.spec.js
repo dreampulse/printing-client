@@ -19,11 +19,38 @@ describe('Price actions', () => {
     initialStoreData = {
       material: {
         materials: {
-          materialConfigs: {
-            material1: 'something',
-            material2: 'something'
-          }
-        }
+          materialStructure: [
+            {
+              materials: [
+                {
+                  id: 'some-material-1',
+                  finishGroups: [
+                    {
+                      materialConfigs: [
+                        {
+                          id: 'material-config-1'
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  id: 'some-material-2',
+                  finishGroups: [
+                    {
+                      materialConfigs: [
+                        {
+                          id: 'material-config-2'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        selectedMaterial: 'some-material-1'
       },
       model: {
         models: [
@@ -243,7 +270,7 @@ describe('Price actions', () => {
     it('calls printingEngine.createPriceRequest() with the expected arguments', async () => {
       await store.dispatch(createPriceRequest())
 
-      const materialConfigIds = ['material1', 'material2']
+      const materialConfigIds = ['material-config-1']
       expect(printingEngine.createPriceRequest, 'to have a call satisfying', [
         {
           userId: 'some-user-id',
@@ -260,8 +287,24 @@ describe('Price actions', () => {
             }
           ],
           isEstimate: false,
-          caching: true,
-          refresh: true
+          caching: true
+        }
+      ])
+    })
+
+    it('calls printingEngine.createPriceRequest() only with the selected material ids', async () => {
+      await store.dispatch(createPriceRequest())
+
+      expect(printingEngine.createPriceRequest, 'to have a call satisfying', [
+        {
+          items: [
+            {
+              materialConfigIds: expect.it('not to contain', 'material-config-2')
+            },
+            {
+              materialConfigIds: expect.it('not to contain', 'material-config-2')
+            }
+          ]
         }
       ])
     })
@@ -295,7 +338,7 @@ describe('Price actions', () => {
       pollLib.poll.restore()
       sinon.stub(pollLib, 'poll').rejects(error)
 
-      modalActions.openFatalErrorModal.withArgs(error).returns({
+      modalActions.openFatalErrorModal.returns({
         type: 'some-fatal-error-modal',
         payload: undefined
       })
