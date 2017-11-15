@@ -1,4 +1,7 @@
-#!/usr/bin/env bash -eu
+#!/usr/bin/env bash
+
+# fail early on simple command errors and missing env variables
+set -eu
 
 npm i sentry-cli-binary
 
