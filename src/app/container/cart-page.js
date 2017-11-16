@@ -198,7 +198,7 @@ const CartPage = ({
 
   const paymentButtons = compact([
     <Button
-      key="payment-button-strip"
+      key="payment-button-stripe"
       modifiers={['block']}
       icon={creditCardIcon}
       label="Pay with Credit Card"

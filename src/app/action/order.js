@@ -91,7 +91,7 @@ export const createOrderWithPaypal = (data: any, actions: any) => async (dispatc
   return payment
 }
 
-// This action are only available by using the 'invoice'-feature flag
+// This actions are only available by using the 'invoice'-feature flag
 
 export const payWithInvoice = () => (dispatch: Dispatch<*>, getState: () => State) => {
   const query = selectLocationQuery(getState())
