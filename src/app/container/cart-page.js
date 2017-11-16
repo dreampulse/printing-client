@@ -4,6 +4,7 @@ import {compose} from 'recompose'
 import {getUsStateName, getCountryName} from 'Service/country'
 import getCloudinaryUrl from 'Lib/cloudinary'
 import {selectedOfferMaterial, selectOfferItems} from 'Lib/selector'
+import compact from 'lodash/compact'
 
 import {formatPrice} from 'Lib/formatter'
 
@@ -32,11 +33,14 @@ import {
   payWithStripe,
   createOrderWithStripe,
   payWithPaypal,
-  createOrderWithPaypal
+  createOrderWithPaypal,
+  payWithInvoice,
+  createOrderWithInvoice
 } from 'Action/order'
 import {openFatalErrorModal} from 'Action/modal'
 
 import {guard} from './util/guard'
+import {getFeatures} from './util/feature'
 import AppLayout from './app-layout'
 
 const CartPage = ({
@@ -48,11 +52,14 @@ const CartPage = ({
   onGoToHome,
   onGoToSuccess,
   order,
+  features,
   isDirectSales,
   onPayWithStripe,
   onCreateOrderWithStripe,
   onPayWithPaypal,
-  onCreateOrderWithPaypal
+  onCreateOrderWithPaypal,
+  onPayWithInvoice,
+  onCreateOrderWithInvoice
 }) => {
   const CartQantityList = () => {
     const items = offerItems.map(item => (
@@ -189,9 +196,9 @@ const CartPage = ({
     />
   )
 
-  const paymentButtons = [
+  const paymentButtons = compact([
     <Button
-      key="payment-button-0"
+      key="payment-button-stripe"
       modifiers={['block']}
       icon={creditCardIcon}
       label="Pay with Credit Card"
@@ -208,15 +215,27 @@ const CartPage = ({
       }}
     />,
     <PaypalButton
-      key="payment-button-1"
+      key="payment-button-paypal"
       onClick={() => onPayWithPaypal()}
       onAuthorize={async (data, actions) => {
         const payment = await onCreateOrderWithPaypal(data, actions)
         onGoToSuccess()
         return payment
       }}
-    />
-  ]
+    />,
+    features.invoice && (
+      <Button
+        key="payment-button-invoice"
+        modifiers={['block']}
+        label="Pay with Invoice"
+        onClick={async () => {
+          await onPayWithInvoice()
+          await onCreateOrderWithInvoice()
+          onGoToSuccess()
+        }}
+      />
+    )
+  ])
 
   const paymentSection = (
     <PaymentSection
@@ -264,11 +283,14 @@ const mapDispatchToProps = {
   onPayWithStripe: payWithStripe,
   onCreateOrderWithStripe: createOrderWithStripe,
   onPayWithPaypal: payWithPaypal,
-  onCreateOrderWithPaypal: createOrderWithPaypal
+  onCreateOrderWithPaypal: createOrderWithPaypal,
+  onPayWithInvoice: payWithInvoice,
+  onCreateOrderWithInvoice: createOrderWithInvoice
 }
 
 const enhance = compose(
   guard(state => state.price.selectedOffer),
+  getFeatures,
   connect(mapStateToProps, mapDispatchToProps)
 )
 

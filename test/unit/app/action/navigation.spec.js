@@ -13,7 +13,12 @@ describe('Navigation actions', () => {
     sandbox.stub(routerActions, 'push')
     sandbox.stub(userActions)
     store = mockStore({
-      configuration: {}
+      configuration: {},
+      routing: {
+        location: {
+          search: 'some-search'
+        }
+      }
     })
   })
 
@@ -23,7 +28,11 @@ describe('Navigation actions', () => {
 
   describe('goToCart()', () => {
     it('calls router push with expected route', () => {
-      routerActions.push.withArgs('/cart').returns({type: 'push'})
+      const location = {
+        pathname: '/cart',
+        search: 'some-search'
+      }
+      routerActions.push.withArgs(location).returns({type: 'push'})
 
       store.dispatch(goToCart())
       expect(store.getActions(), 'to equal', [{type: 'push'}])
@@ -32,7 +41,11 @@ describe('Navigation actions', () => {
 
   describe('goToAddress()', () => {
     it('calls router push with expected route', () => {
-      routerActions.push.withArgs('/address').returns({type: 'push'})
+      const location = {
+        pathname: '/address',
+        search: 'some-search'
+      }
+      routerActions.push.withArgs(location).returns({type: 'push'})
 
       store.dispatch(goToAddress())
       expect(store.getActions(), 'to equal', [{type: 'push'}])
@@ -41,7 +54,12 @@ describe('Navigation actions', () => {
 
   describe('goToSuccess()', () => {
     it('calls router push with expected route', async () => {
-      routerActions.push.withArgs('/success').returns({type: 'push'})
+      const location = {
+        pathname: '/success',
+        search: 'some-search'
+      }
+
+      routerActions.push.withArgs(location).returns({type: 'push'})
       userActions.createUser.withArgs().returns(resolveAsyncThunk('some-user-created'))
 
       await store.dispatch(goToSuccess())
@@ -51,7 +69,12 @@ describe('Navigation actions', () => {
 
   describe('goToHome()', () => {
     it('calls router push with expected route', () => {
-      routerActions.push.withArgs('/').returns({type: 'push'})
+      const location = {
+        pathname: '/',
+        search: 'some-search'
+      }
+
+      routerActions.push.withArgs(location).returns({type: 'push'})
 
       store.dispatch(goToHome())
       expect(store.getActions(), 'to equal', [{type: 'push'}])
@@ -61,10 +84,20 @@ describe('Navigation actions', () => {
       store = mockStore({
         configuration: {
           configurationId: 'some-config-id'
+        },
+        routing: {
+          location: {
+            search: 'some-search'
+          }
         }
       })
 
-      routerActions.push.withArgs('/configuration/some-config-id').returns({type: 'push'})
+      const location = {
+        pathname: '/configuration/some-config-id',
+        search: 'some-search'
+      }
+
+      routerActions.push.withArgs(location).returns({type: 'push'})
 
       store.dispatch(goToHome())
       expect(store.getActions(), 'to equal', [{type: 'push'}])

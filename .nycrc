@@ -4,10 +4,10 @@
     "sourceMap": false,
     "instrument": false,
     "cache": true,
-    "statements": 90,
-    "branches": 86,
-    "functions": 90,
-    "lines": 90,
+    "statements": 80,
+    "branches": 80,
+    "functions": 80,
+    "lines": 80,
     "include": [
       "src/**/*.js"
     ],
