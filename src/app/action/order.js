@@ -7,6 +7,7 @@ import * as stripe from 'Service/stripe'
 import * as paypal from 'Service/paypal'
 import * as printingEngine from 'Lib/printing-engine'
 import {AppError} from 'Lib/error'
+import {selectLocationQuery} from 'Lib/selector'
 
 import type {State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
@@ -88,4 +89,20 @@ export const createOrderWithPaypal = (data: any, actions: any) => async (dispatc
 
   await dispatch(createOrder('paypal', token))
   return payment
+}
+
+// This action are only available by using the 'invoice'-feature flag
+
+export const payWithInvoice = () => (dispatch: Dispatch<*>, getState: () => State) => {
+  const query = selectLocationQuery(getState())
+  const invoiceKey = query.get('invoice_key')
+  if (!invoiceKey) throw new Error('Invoice key missing')
+
+  dispatch(payed(invoiceKey))
+}
+
+export const createOrderWithInvoice = () => (dispatch: Dispatch<*>, getState: () => State) => {
+  const token = getState().order.paymentToken
+  if (!token) throw new Error('Payment token missing')
+  return dispatch(createOrder('invoice', token))
 }

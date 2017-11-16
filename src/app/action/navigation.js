@@ -2,17 +2,24 @@ import {routerActions} from 'react-router-redux'
 
 import {createUser} from 'Action/user'
 
-export const goToAddress = () => routerActions.push('/address')
-export const goToCart = () => routerActions.push('/cart')
+// Push the new path without overwriting the search-query
+const pushPath = pathname => (dispatch, getState) => {
+  const search = getState().routing.location.search
+
+  return dispatch(routerActions.push({pathname, search}))
+}
+
+export const goToAddress = () => pushPath('/address')
+export const goToCart = () => pushPath('/cart')
 export const goToHome = () => (dispatch, getState) => {
   const configurationId = getState().configuration.configurationId
   if (configurationId) {
-    dispatch(routerActions.push(`/configuration/${configurationId}`))
+    dispatch(pushPath(`/configuration/${configurationId}`))
   } else {
-    dispatch(routerActions.push('/'))
+    dispatch(pushPath('/'))
   }
 }
 export const goToSuccess = () => async dispatch => {
-  await dispatch(routerActions.push('/success'))
+  await dispatch(pushPath('/success'))
   await dispatch(createUser())
 }

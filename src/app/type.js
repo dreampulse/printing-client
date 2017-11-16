@@ -158,7 +158,8 @@ export type Materials = {
 
 export type Features = {
   share?: true,
-  refresh?: true
+  refresh?: true,
+  invoice?: true
 }
 
 //
