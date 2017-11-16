@@ -11,6 +11,7 @@ export default {
   debouncePriceRequestWait: 1000,
   defaultSelectedMaterial: 'Premium Plastic',
   stripeCheckoutImage: 'asset/image/checkout-logo.png',
-  raven: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
+  ravenUrl: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
+  ravenRelease: process.env.SENTRY_RELEASE_VERSION,
   ipApiKey: '0TrLHRAixWyJhe3'
 }

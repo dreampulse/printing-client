@@ -47,6 +47,7 @@ $ npm run start
 
 - `CLOUDFLARE_USER`: Required to deploy the production build on the CDN
 - `CLOUDFLARE_API_KEY`: Required to deploy the production build on the CDN
+- `SENTRY_AUTH_TOKEN`: Required to create the sentry release and deploy
 
 ### Run time
 
