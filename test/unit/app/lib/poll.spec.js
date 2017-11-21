@@ -9,7 +9,7 @@ describe('Poll lib', () => {
     resetPollState()
 
     sandbox = sinon.sandbox.create()
-    sandbox.stub(config, 'pollingInverval').value(0)
+    sandbox.stub(config, 'pollingInterval').value(0)
   })
 
   afterEach(() => {

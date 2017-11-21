@@ -83,7 +83,7 @@ describe('Price actions', () => {
     sandbox = sinon.sandbox.create()
 
     // Speed up failing tests
-    sandbox.stub(config, 'pollingInverval').value(0)
+    sandbox.stub(config, 'pollingInterval').value(0)
     sandbox.stub(config, 'pollingRetries').value(2)
 
     sandbox.stub(printingEngine)
