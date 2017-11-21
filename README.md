@@ -15,12 +15,10 @@ Run the command `npm install` in the root of the project folder to install all r
 There are various commands available via NPM for use during development and to create a production build of the source code.
 
 - `npm run build`: Build the production version of the source code into `/dist`.
-- `npm run start:dev`: Start a development server with the development build of the source code on Port `3000`.
-- `npm run start:styleguide` : Starts the Component testing app.
 - `npm run start` : Starts a production webserver with the distribution build.
 - `npm run start:dev` : Starts a development server with hot reloading.
 - `npm run start:dev:stubs` : Starts a development server with hot reloading and stubs the API.
-- `npm run start:styleguide` : Starts react storybook.
+- `npm run start:storybook` : Starts react storybook.
 - `npm run test`: Lint the source code and run all available tests cases (unit tests, integration tests and e2e tests).
 - `npm run test:coverage`: Run unit and integration tests and collect coverage Information.
 - `npm run test:dev:watch`: Run unit tests in watch mode.
