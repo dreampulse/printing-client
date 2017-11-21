@@ -9,93 +9,83 @@ import * as printingEngine from 'Lib/printing-engine'
 import * as modalActions from 'Action/modal'
 import {AppError} from 'Lib/error'
 import TYPE, {ERROR_TYPE} from '../../../../src/app/action-type'
+import config from '../../../../config'
 
 describe('Price actions', () => {
-  let sandbox
-  let initialStoreData
-  let store
-
-  beforeEach(() => {
-    initialStoreData = {
-      material: {
-        materials: {
-          materialStructure: [
+  const material = {
+    materials: {
+      materialStructure: [
+        {
+          materials: [
             {
-              materials: [
+              id: 'material-1',
+              finishGroups: [
                 {
-                  id: 'some-material-1',
-                  finishGroups: [
+                  materialConfigs: [
                     {
-                      materialConfigs: [
-                        {
-                          id: 'material-config-1'
-                        }
-                      ]
+                      id: 'material-config-1'
                     }
                   ]
-                },
+                }
+              ]
+            },
+            {
+              id: 'material-2',
+              finishGroups: [
                 {
-                  id: 'some-material-2',
-                  finishGroups: [
+                  materialConfigs: [
                     {
-                      materialConfigs: [
-                        {
-                          id: 'material-config-2'
-                        }
-                      ]
+                      id: 'material-config-2'
                     }
                   ]
                 }
               ]
             }
           ]
-        },
-        selectedMaterial: 'some-material-1'
-      },
-      model: {
-        models: [
-          {
-            modelId: 'model1',
-            quantity: 1,
-            uploadFinished: true
-          },
-          {
-            modelId: 'model2',
-            quantity: 2,
-            uploadFinished: true
-          }
-        ]
-      },
-      price: {
-        priceId: null
-      },
-      user: {
-        userId: 'some-user-id'
-      },
-      configuration: {
-        configurationId: null
-      },
-      routing: {
-        location: {
-          search: 'feature:refresh'
         }
+      ]
+    },
+    selectedMaterial: 'material-1'
+  }
+  const model = {
+    models: [
+      {
+        modelId: 'model-1',
+        quantity: 1,
+        uploadFinished: true
+      },
+      {
+        modelId: 'model-2',
+        quantity: 2,
+        uploadFinished: true
       }
-    }
-    store = mockStore(initialStoreData)
+    ]
+  }
+  const user = {
+    userId: 'user-1'
+  }
+  const offer1 = {
+    materialConfigId: 'material-1',
+    printingService: 'service-1'
+  }
+  const offer2 = {
+    materialConfigId: 'material-1',
+    printingService: 'service-2'
+  }
+  const offer3 = {
+    materialConfigId: 'material-2',
+    printingService: 'service-1'
+  }
+  let sandbox
 
+  beforeEach(() => {
     sandbox = sinon.sandbox.create()
-    sandbox.spy(pollLib, 'poll')
-    sandbox.spy(pollLib, 'debouncedPoll')
-    sandbox.spy(pollLib, 'stopPoll')
-    pollLib.resetPollState()
+
+    // Speed up failing tests
+    sandbox.stub(config, 'pollingInverval').value(0)
+    sandbox.stub(config, 'pollingRetries').value(2)
 
     sandbox.stub(printingEngine)
-    printingEngine.createPriceRequest.resolves({priceId: 'some-price-id'})
-    printingEngine.getPriceWithStatus.resolves({
-      isComplete: true,
-      price: {some: 'price'}
-    })
-
     sandbox.stub(modalActions)
   })
 
@@ -105,13 +95,13 @@ describe('Price actions', () => {
 
   describe('selectOffer()', () => {
     it('dispatches expected actions', async () => {
-      const offer = {some: 'offer'}
-      await store.dispatch(selectOffer(offer))
+      const store = mockStore()
+      await store.dispatch(selectOffer(offer1))
 
       expect(store.getActions(), 'to equal', [
         {
           type: TYPE.PRICE.SELECT_OFFER,
-          payload: {offer}
+          payload: {offer: offer1}
         }
       ])
     })
@@ -119,26 +109,12 @@ describe('Price actions', () => {
 
   describe('refreshSelectedOffer()', () => {
     it('dispatches expected actions when offer is not available anymore', async () => {
-      initialStoreData.price = {
-        offers: [
-          {
-            materialConfigId: 1,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'}
-          },
-          {
-            materialConfigId: 2,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'}
-          }
-        ],
-        selectedOffer: {
-          materialConfigId: 3,
-          printingService: 'some-service',
-          shipping: {name: 'some-shipping'}
+      const store = mockStore({
+        price: {
+          offers: [offer1, offer2],
+          selectedOffer: offer3
         }
-      }
-      store = mockStore(initialStoreData)
+      })
 
       await store.dispatch(refreshSelectedOffer())
 
@@ -151,15 +127,12 @@ describe('Price actions', () => {
     })
 
     it('dispatches expected actions when no offers are available', async () => {
-      initialStoreData.price = {
-        offers: null,
-        selectedOffer: {
-          materialConfigId: 3,
-          printingService: 'some-service',
-          shipping: {name: 'some-shipping'}
+      const store = mockStore({
+        price: {
+          offers: [],
+          selectedOffer: offer1
         }
-      }
-      store = mockStore(initialStoreData)
+      })
 
       await store.dispatch(refreshSelectedOffer())
 
@@ -172,22 +145,12 @@ describe('Price actions', () => {
     })
 
     it('dispatches expected actions when selected offer is still valid', async () => {
-      initialStoreData.price = {
-        offers: [
-          {
-            materialConfigId: 1,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'},
-            some: 'other'
-          }
-        ],
-        selectedOffer: {
-          materialConfigId: 1,
-          printingService: 'some-service',
-          shipping: {name: 'some-shipping'}
+      const store = mockStore({
+        price: {
+          offers: [offer1],
+          selectedOffer: offer1
         }
-      }
-      store = mockStore(initialStoreData)
+      })
 
       await store.dispatch(refreshSelectedOffer())
 
@@ -195,29 +158,19 @@ describe('Price actions', () => {
         {
           type: TYPE.PRICE.SELECT_OFFER,
           payload: {
-            offer: {
-              materialConfigId: 1,
-              printingService: 'some-service',
-              shipping: {name: 'some-shipping'},
-              some: 'other'
-            }
+            offer: offer1
           }
         }
       ])
     })
 
     it('dispatches no action when there is no selected offer', async () => {
-      initialStoreData.price = {
-        offers: [
-          {
-            materialConfigId: 1,
-            printingService: 'some-service',
-            shipping: {name: 'some-shipping'}
-          }
-        ],
-        selectedOffer: null
-      }
-      store = mockStore(initialStoreData)
+      const store = mockStore({
+        price: {
+          offers: [offer1],
+          selectedOffer: null
+        }
+      })
 
       await store.dispatch(refreshSelectedOffer())
 
@@ -227,6 +180,22 @@ describe('Price actions', () => {
 
   describe('createPriceRequest()', () => {
     it('dispatches expected actions', async () => {
+      const price1 = {}
+      const price2 = {}
+      const price3 = {}
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: null
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.onFirstCall().resolves({price: price1, isComplete: false})
+      printingEngine.getPriceWithStatus.onSecondCall().resolves({price: price2, isComplete: false})
+      printingEngine.getPriceWithStatus.onThirdCall().resolves({price: price3, isComplete: true})
+
       await store.dispatch(createPriceRequest())
 
       expect(store.getActions(), 'to equal', [
@@ -236,20 +205,129 @@ describe('Price actions', () => {
         },
         {
           type: TYPE.PRICE.REQUESTED,
-          payload: {priceId: 'some-price-id'}
+          payload: {priceId: 'price-1'}
         },
         {
           type: TYPE.PRICE.RECEIVED,
           payload: {
-            price: {some: 'price'},
+            price: price1,
+            isComplete: false
+          }
+        },
+        {
+          type: TYPE.PRICE.RECEIVED,
+          payload: {
+            price: price2,
+            isComplete: false
+          }
+        },
+        {
+          type: TYPE.PRICE.RECEIVED,
+          payload: {
+            price: price3,
             isComplete: true
           }
         }
       ])
     })
 
+    it('calls printingEngine.createPriceRequest() with the expected arguments', async () => {
+      const price = {}
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: null
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.resolves({price, isComplete: true})
+
+      await store.dispatch(createPriceRequest())
+
+      const materialConfigIds = ['material-config-1']
+      expect(printingEngine.createPriceRequest, 'to have a call satisfying', [
+        {
+          isEstimate: false,
+          caching: true,
+          userId: 'user-1',
+          items: [
+            {
+              modelId: 'model-1',
+              quantity: 1,
+              materialConfigIds
+            },
+            {
+              modelId: 'model-2',
+              quantity: 2,
+              materialConfigIds
+            }
+          ]
+        }
+      ])
+    })
+
+    it('calls printingEngine.createPriceRequest() with the refresh option if requested', async () => {
+      const price = {}
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: null
+        },
+        routing: {
+          location: {
+            search: 'feature:refresh'
+          }
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.resolves({price, isComplete: true})
+
+      await store.dispatch(createPriceRequest())
+
+      expect(printingEngine.createPriceRequest, 'to have a call satisfying', [
+        {
+          refresh: true
+        }
+      ])
+    })
+
+    it('calls printingEngine.getPriceWithStatus() with the expected arguments', async () => {
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: null
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.resolves({price: {}, isComplete: true})
+
+      await store.dispatch(createPriceRequest())
+
+      expect(printingEngine.getPriceWithStatus, 'to have a call satisfying', [
+        {
+          priceId: 'price-1'
+        }
+      ])
+    })
+
     it('aborts if there are no uploaded models', async () => {
-      initialStoreData.model.models = []
+      const store = mockStore({
+        material,
+        user,
+        model: {
+          models: []
+        },
+        price: {
+          offers: null
+        }
+      })
+
       await store.dispatch(createPriceRequest())
 
       expect(store.getActions(), 'to equal', [
@@ -261,107 +339,60 @@ describe('Price actions', () => {
     })
 
     it('stops price polling if there are no uploaded models', async () => {
-      initialStoreData.model.models = []
+      const store = mockStore({
+        material,
+        user,
+        model: {
+          models: []
+        },
+        price: {
+          offers: null
+        }
+      })
+      sandbox.spy(pollLib, 'stopPoll')
+
       await store.dispatch(createPriceRequest())
 
       expect(pollLib.stopPoll, 'to have a call satisfying', ['price'])
     })
 
-    it('calls printingEngine.createPriceRequest() with the expected arguments', async () => {
-      await store.dispatch(createPriceRequest())
-
-      const materialConfigIds = ['material-config-1']
-      expect(printingEngine.createPriceRequest, 'to have a call satisfying', [
-        {
-          userId: 'some-user-id',
-          items: [
-            {
-              modelId: 'model1',
-              quantity: 1,
-              materialConfigIds
-            },
-            {
-              modelId: 'model2',
-              quantity: 2,
-              materialConfigIds
-            }
-          ],
-          isEstimate: false,
-          caching: true
+    it('dispatches expected actions when polling fails with fatal error', async () => {
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: null
         }
-      ])
-    })
-
-    it('calls printingEngine.createPriceRequest() only with the selected material ids', async () => {
-      await store.dispatch(createPriceRequest())
-
-      expect(printingEngine.createPriceRequest, 'to have a call satisfying', [
-        {
-          items: [
-            {
-              materialConfigIds: expect.it('not to contain', 'material-config-2')
-            },
-            {
-              materialConfigIds: expect.it('not to contain', 'material-config-2')
-            }
-          ]
-        }
-      ])
-    })
-
-    it('calls poll lib', async () => {
-      await store.dispatch(createPriceRequest())
-
-      expect(pollLib.poll, 'to have a call satisfying', [
-        'price',
-        expect.it('to be a', 'function'),
-        expect.it('to be a', 'function')
-      ])
-    })
-
-    it('rejects when polling failes with fatal error', () => {
-      const error = new Error('some-error')
-      pollLib.poll.restore()
-      sinon.stub(pollLib, 'poll').rejects(error)
-
-      modalActions.openFatalErrorModal.withArgs(error).returns({
+      })
+      const errorModalAction = {
         type: 'some-fatal-error-modal',
         payload: undefined
-      })
+      }
+      sandbox.stub(pollLib, 'poll').rejects(new Error('some-error'))
+      modalActions.openFatalErrorModal.returns(errorModalAction)
 
-      const promise = store.dispatch(createPriceRequest())
-      return expect(promise, 'to be rejected')
-    })
+      await store.dispatch(createPriceRequest())
 
-    it('dispatches expected actions when polling failes with fatal error', () => {
-      const error = new Error('some-error')
-      pollLib.poll.restore()
-      sinon.stub(pollLib, 'poll').rejects(error)
-
-      modalActions.openFatalErrorModal.returns({
-        type: 'some-fatal-error-modal',
-        payload: undefined
-      })
-
-      return store.dispatch(createPriceRequest()).catch(() => {
-        expect(store.getActions(), 'to equal', [
-          {
-            type: TYPE.PRICE.CLEAR_OFFERS,
-            payload: undefined
-          },
-          {
-            type: TYPE.PRICE.GOT_ERROR,
-            payload: error,
-            error: true
-          }
-        ])
-      })
+      expect(store.getActions(), 'to equal', [
+        {
+          type: TYPE.PRICE.CLEAR_OFFERS,
+          payload: undefined
+        },
+        errorModalAction
+      ])
     })
 
     it('dispatches expected actions when polling failes with ERROR_TYPE.POLL_OVERWRITTEN', async () => {
-      const error = new AppError(ERROR_TYPE.POLL_OVERWRITTEN, 'some error')
-      pollLib.poll.restore()
-      sinon.stub(pollLib, 'poll').rejects(error)
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: null
+        }
+      })
+      sandbox.stub(pollLib, 'poll').rejects(new AppError(ERROR_TYPE.POLL_OVERWRITTEN, 'some error'))
 
       await store.dispatch(createPriceRequest())
 
@@ -374,9 +405,15 @@ describe('Price actions', () => {
     })
 
     it('dispatches expected actions when polling has been stopped with ERROR_TYPE.POLL_STOPPED', async () => {
-      const error = new AppError(ERROR_TYPE.POLL_STOPPED, 'some error')
-      pollLib.poll.restore()
-      sinon.stub(pollLib, 'poll').rejects(error)
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: null
+        }
+      })
+      sandbox.stub(pollLib, 'poll').rejects(new AppError(ERROR_TYPE.POLL_STOPPED, 'some error'))
 
       await store.dispatch(createPriceRequest())
 
@@ -389,9 +426,16 @@ describe('Price actions', () => {
     })
 
     it('dispatches expected actions when polling has been stopped with ERROR_TYPE.POLL_TIMEOUT', async () => {
-      const error = new AppError(ERROR_TYPE.POLL_TIMEOUT, 'some error')
-      pollLib.poll.restore()
-      sinon.stub(pollLib, 'poll').rejects(error)
+      const pollTimeoutError = new AppError(ERROR_TYPE.POLL_TIMEOUT, 'some error')
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: null
+        }
+      })
+      sandbox.stub(pollLib, 'poll').rejects(pollTimeoutError)
 
       await store.dispatch(createPriceRequest())
 
@@ -402,7 +446,7 @@ describe('Price actions', () => {
         },
         {
           type: TYPE.PRICE.TIMEOUT,
-          payload: error,
+          payload: pollTimeoutError,
           error: true
         }
       ])
@@ -411,8 +455,15 @@ describe('Price actions', () => {
 
   describe('createDebouncedPriceRequest()', () => {
     it('calls debounced version of poll lib', async () => {
-      pollLib.debouncedPoll.restore()
-      sinon.stub(pollLib, 'debouncedPoll').resolves()
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: null
+        }
+      })
+      sandbox.stub(pollLib, 'debouncedPoll').resolves()
 
       await store.dispatch(createDebouncedPriceRequest())
 
