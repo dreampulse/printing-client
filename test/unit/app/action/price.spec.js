@@ -2,14 +2,15 @@ import {
   selectOffer,
   refreshSelectedOffer,
   createPriceRequest,
+  recalculateSelectedOffer,
   createDebouncedPriceRequest
 } from 'Action/price'
 import * as pollLib from 'Lib/poll'
 import * as printingEngine from 'Lib/printing-engine'
 import * as modalActions from 'Action/modal'
 import {AppError} from 'Lib/error'
-import TYPE, {ERROR_TYPE} from '../../../../src/app/action-type'
 import config from '../../../../config'
+import TYPE, {ERROR_TYPE} from '../../../../src/app/action-type'
 
 describe('Price actions', () => {
   const material = {
@@ -65,15 +66,15 @@ describe('Price actions', () => {
     userId: 'user-1'
   }
   const offer1 = {
-    materialConfigId: 'material-1',
+    materialConfigId: 'material-config-1',
     printingService: 'service-1'
   }
   const offer2 = {
-    materialConfigId: 'material-1',
+    materialConfigId: 'material-config-1',
     printingService: 'service-2'
   }
   const offer3 = {
-    materialConfigId: 'material-2',
+    materialConfigId: 'material-config-2',
     printingService: 'service-1'
   }
   let sandbox
@@ -246,7 +247,6 @@ describe('Price actions', () => {
 
       await store.dispatch(createPriceRequest())
 
-      const materialConfigIds = ['material-config-1']
       expect(printingEngine.createPriceRequest, 'to have a call satisfying', [
         {
           isEstimate: false,
@@ -256,12 +256,12 @@ describe('Price actions', () => {
             {
               modelId: 'model-1',
               quantity: 1,
-              materialConfigIds
+              materialConfigIds: ['material-config-1']
             },
             {
               modelId: 'model-2',
               quantity: 2,
-              materialConfigIds
+              materialConfigIds: ['material-config-1']
             }
           ]
         }
@@ -450,6 +450,149 @@ describe('Price actions', () => {
           error: true
         }
       ])
+    })
+  })
+
+  describe('recalculateSelectedOffer()', () => {
+    it('stops current "price" polls', async () => {
+      const store = mockStore({
+        material,
+        user,
+        model: {
+          models: []
+        },
+        price: {
+          offers: [offer1],
+          selectedOffer: offer1
+        }
+      })
+      sandbox.stub(pollLib, 'poll').resolves()
+      sandbox.spy(pollLib, 'stopPoll')
+
+      await store.dispatch(recalculateSelectedOffer())
+
+      expect(pollLib.stopPoll, 'to have a call satisfying', ['price'])
+    })
+
+    it('dispatches expected actions', async () => {
+      const price1 = {
+        offers: []
+      }
+      const price2 = {
+        offers: [offer2]
+      }
+      const price3 = {
+        offers: [offer2, offer1]
+      }
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: [offer1],
+          selectedOffer: offer1
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.onFirstCall().resolves({price: price1})
+      printingEngine.getPriceWithStatus.onSecondCall().resolves({price: price2})
+      printingEngine.getPriceWithStatus.onThirdCall().resolves({price: price3})
+
+      await store.dispatch(recalculateSelectedOffer())
+
+      expect(store.getActions(), 'to equal', [
+        {
+          type: TYPE.PRICE.REQUESTED,
+          payload: {priceId: 'price-1'}
+        },
+        {
+          type: TYPE.PRICE.SELECT_OFFER,
+          payload: {offer: offer1}
+        }
+      ])
+    })
+
+    it('calls printingEngine.createPriceRequest() with the expected arguments', async () => {
+      const price = {
+        offers: [offer1]
+      }
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: [offer1],
+          selectedOffer: offer1
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.resolves({price})
+
+      await store.dispatch(recalculateSelectedOffer())
+
+      expect(printingEngine.createPriceRequest, 'to have a call satisfying', [
+        {
+          isEstimate: false,
+          caching: false,
+          vendorId: 'service-1',
+          userId: 'user-1',
+          items: [
+            {
+              modelId: 'model-1',
+              quantity: 1,
+              materialConfigIds: ['material-config-1']
+            },
+            {
+              modelId: 'model-2',
+              quantity: 2,
+              materialConfigIds: ['material-config-1']
+            }
+          ]
+        }
+      ])
+    })
+
+    it('calls printingEngine.getPriceWithStatus() with the expected arguments', async () => {
+      const price = {
+        offers: [offer1]
+      }
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: [offer1],
+          selectedOffer: offer1
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.resolves({price})
+
+      await store.dispatch(recalculateSelectedOffer())
+
+      expect(printingEngine.getPriceWithStatus, 'to have a call satisfying', [{priceId: 'price-1'}])
+    })
+
+    it('dispatches expected actions when polling fails with fatal error', async () => {
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: [offer1],
+          selectedOffer: offer1
+        }
+      })
+      const errorModalAction = {
+        type: 'some-fatal-error-modal',
+        payload: undefined
+      }
+      sandbox.stub(pollLib, 'poll').rejects(new Error('some-error'))
+      modalActions.openFatalErrorModal.returns(errorModalAction)
+
+      await store.dispatch(recalculateSelectedOffer())
+
+      expect(store.getActions(), 'to equal', [errorModalAction])
     })
   })
 
