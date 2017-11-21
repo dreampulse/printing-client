@@ -11,7 +11,7 @@
     "build:styleguide": "build-storybook -c .storybook -o dist/styleguide",
     "start:dev": "PORT=3000 WEBPACK_ENV=development webpack-dev-server --hot",
     "start:dev:stubs": "PORT=3000 WEBPACK_ENV=development NODE_ENV=development-with-stubs webpack-dev-server --hot",
-    "start:styleguide": "start-storybook -p 3001 -s src",
+    "start:storybook": "start-storybook -p 3001 -s src",
     "start": "babel-node bin/app-server",
     "test": "NODE_ENV=test nyc mocha",
     "test:lint": "eslint src test bin stories .storybook ./*.js",
