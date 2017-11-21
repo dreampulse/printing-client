@@ -115,17 +115,12 @@ const MaterialSection = ({
       <Info>
         <Headline modifiers={['s']} label="Delivery Time" />
         <Paragraph>
-          The delivery time is an approximate summary of production time and shipping time. Please note that some materials may have a longer production time.
+          The delivery time is an approximate summary of production time and shipping time. Please
+          note that some materials may have a longer production time.
         </Paragraph>
-        <Paragraph>
-          Plastics: 2-8 days
-        </Paragraph>
-        <Paragraph>
-          Metals: 6-15 days
-        </Paragraph>
-        <Paragraph>
-          Other materials: 6-15 days
-        </Paragraph>
+        <Paragraph>Plastics: 2-8 days</Paragraph>
+        <Paragraph>Metals: 6-15 days</Paragraph>
+        <Paragraph>Other materials: 6-15 days</Paragraph>
       </Info>
     )
 
