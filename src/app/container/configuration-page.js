@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 import {restoreConfiguration} from 'Action/configuration'
 
 import LoadingContainer from 'Component/loading-container'
-import Modal from './modal'
 import ModelPage from './model-page'
 import DirectConfigurationPage from './direct-configuration-page'
 
@@ -40,7 +39,6 @@ export default compose(
     renderComponent(() => (
       <div>
         <LoadingContainer />
-        <Modal />
       </div>
     ))
   ),
