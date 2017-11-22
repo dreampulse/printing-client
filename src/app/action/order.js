@@ -12,7 +12,7 @@ import type {State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
 import {openFatalErrorModal} from './modal'
 
-// Syncron actions
+// Sync actions
 const orderStarted = createAction(TYPE.ORDER.STARTED)
 const payed = createAction(TYPE.ORDER.PAYED, (paymentToken: string) => ({paymentToken}))
 const paymentCreated = createAction(TYPE.ORDER.PAYMENT_CREATED, (paymentId: string) => ({
@@ -25,7 +25,6 @@ const ordered = createAction(
 )
 
 // Async actions
-
 const createOrder = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const {user: {userId}, price: {priceId, selectedOffer}} = getState()
 
@@ -93,10 +92,19 @@ export const payWithPaypal = () => async (dispatch: Dispatch<*>, getState: () =>
   return providerFields.paymentId
 }
 
-export const createOrderWithStripe = () => (dispatch: Dispatch<*>, getState: () => State) => {
+export const createOrderWithStripe = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const token = getState().order.paymentToken
   if (!token) throw new Error('Payment token missing')
-  return dispatch(createOrder())
+  const order = await dispatch(createOrder())
+
+  if (!order) {
+    throw new Error('No order found. Has to be created before payment.')
+  }
+
+  // execute optimistic in background without waiting
+  stripe.executePayment({token, orderId: order.orderId}).catch(err => {
+    throw new Error(`Stripe payment failed: ${err.message}`)
+  })
 }
 
 export const createOrderWithPaypal = (data: any) => async (
