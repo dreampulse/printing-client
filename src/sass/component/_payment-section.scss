@@ -27,6 +27,12 @@
     color: $color-minor;
   }
 
+  &__price-label-smallprint {
+    float: left;
+    font-size: $font-size-s;
+    color: $color-minor;
+  }
+
   &__price-value {
     float: right;
   }
