@@ -51,15 +51,11 @@ const AddressPage = ({
   }
 
   const StateSelect = ({onChange, countryCode, value, ...props}) => {
-    const countrySupported = countryCode === 'US' || countryCode === 'AU' || countryCode === 'JP'
-
     const changeState = val => onChange(val.value)
-    const stateMenu = <SelectMenu values={getStates(countryCode)} />
-    const isDisabled = !countryCode || (countryCode && !countrySupported)
+    const stateMenu = <SelectMenu values={getStates(countryCode) || []} />
+    const isDisabled = !getStates(countryCode)
     const actualValue =
-      !value || value === '' || isDisabled
-        ? undefined
-        : {value, label: getStateName(countryCode, value)}
+      !value || isDisabled ? undefined : {value, label: getStateName(countryCode, value)}
     return (
       <SelectField
         validate={!isDisabled ? required : undefined}

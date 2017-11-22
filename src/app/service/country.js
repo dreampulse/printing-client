@@ -165,6 +165,6 @@ export function getStates(countryCode) {
     case 'JP':
       return getStateList(jpStates)
     default:
-      return []
+      return null
   }
 }
