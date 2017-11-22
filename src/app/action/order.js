@@ -68,15 +68,16 @@ export const payWithStripe = () => async (dispatch: Dispatch<*>, getState: () =>
   }
 }
 
-export const payWithPaypal = () => async (dispatch: Dispatch<*>, getState: () => State) => {
+export const payWithPaypal = () => async (dispatch: Dispatch<any>, getState: () => State) => {
   const {price, user} = getState()
-  if (!price.selectedOffer) throw new Error('No offer selected')
 
   const order = await dispatch(createOrder())
 
   if (!order) {
     throw new Error('No order found. Has to be created before payment.')
   }
+
+  if (!price.selectedOffer) throw new Error('No offer selected')
 
   const {totalPrice, currency, vatPrice, shipping, subTotalPrice} = price.selectedOffer
   const {orderId, orderNumber} = order
@@ -105,11 +106,12 @@ export const createOrderWithStripe = () => async (dispatch: Dispatch<*>, getStat
   if (!order) {
     throw new Error('No order found. Has to be created before payment.')
   }
-
   // execute optimistic in background without waiting
-  stripe.executePayment({token, orderId: order.orderId}).catch(err => {
+  try {
+    await stripe.executePayment({token, orderId: order.orderId})
+  } catch (err) {
     throw new Error(`Stripe payment failed: ${err.message}`)
-  })
+  }
 }
 
 export const createOrderWithPaypal = (data: any) => async (

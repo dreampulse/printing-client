@@ -83,7 +83,7 @@ describe('Order actions', () => {
 
     describe('payWithPaypal()', () => {
       it('fulfills with correct arguments', () => {
-        return paypal.createPayment
+        paypal.createPayment
           .withArgs({
             amount: 42,
             currency: 'some-currency',
@@ -92,7 +92,11 @@ describe('Order actions', () => {
           })
           .resolves({paymentId: 'payment-id', providerFields: {}})
 
-        expect(store.dispatch(payWithPaypal()), 'to be fulfilled with', 'payment-id')
+        return expect(
+          store.dispatch(payWithPaypal()),
+          'to be rejected with',
+          'No order found. Has to be created before payment.'
+        )
       })
     })
 
@@ -111,31 +115,21 @@ describe('Order actions', () => {
       it('dispatches expected actions, when order rejects', async () => {
         printingEngine.order.rejects(new Error('some-error'))
 
-        await store.dispatch(createOrderWithStripe())
-        expect(store.getActions(), 'to equal', [
-          {
-            type: 'MODAL.OPEN',
-            payload: {
-              contentType: 'MODAL.FATAL_ERROR',
-              contentProps: {
-                error: new AppError('ORDER_FAILED', 'Failed to process the order')
-              },
-              isCloseable: false
-            }
-          }
-        ])
+        return expect(
+          store.dispatch(createOrderWithStripe()),
+          'to be rejected with',
+          'No order found. Has to be created before payment.'
+        )
       })
     })
 
     describe('createOrderWithPaypal()', () => {
-      it('dispatches expected actions, when everything succeeds', async () => {
+      it.only('dispatches expected actions, when everything succeeds', async () => {
         printingEngine.order
           .withArgs({
             userId: 'some-user-id',
             priceId: 'some-price-id',
             offerId: 'some-offer-id',
-            type: 'paypal',
-            token: 'some-token'
           })
           .resolves({
             orderId: 'some-order-id'
