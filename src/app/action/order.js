@@ -78,12 +78,17 @@ export const payWithPaypal = () => async (dispatch: Dispatch<*>, getState: () =>
     throw new Error('No order found. Has to be created before payment.')
   }
 
-  const {totalPrice, currency} = price.selectedOffer
-  const {orderId} = order
+  const {totalPrice, currency, vatPrice, shipping, subTotalPrice} = price.selectedOffer
+  const {orderId, orderNumber} = order
+
   const {paymentId, providerFields} = await paypal.createPayment({
     amount: totalPrice,
     currency,
     orderId,
+    subTotal: subTotalPrice,
+    vat: vatPrice,
+    orderNumber,
+    shipping: shipping.price,
     shippingAddress: user.user.shippingAddress
   })
 
