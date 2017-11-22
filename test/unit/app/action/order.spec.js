@@ -83,32 +83,24 @@ describe('Order actions', () => {
 
     describe('payWithPaypal()', () => {
       it('fulfills with correct arguments', () => {
-        paypal.createPayment
+        return paypal.createPayment
           .withArgs({
             amount: 42,
             currency: 'some-currency',
             offerId: 'some-offer-id',
             shippingAddress: 'some-shipping-address'
           })
-          .resolves('create-paypal-payment')
+          .resolves({paymentId: 'payment-id', providerFields: {}})
 
-        expect(store.dispatch(payWithPaypal()), 'to be fulfilled with', 'create-paypal-payment')
+        expect(store.dispatch(payWithPaypal()), 'to be fulfilled with', 'payment-id')
       })
     })
 
     describe('createOrderWithStripe()', () => {
       it('dispatches expected actions, when everything succeeds', async () => {
-        printingEngine.order
-          .withArgs({
-            userId: 'some-user-id',
-            priceId: 'some-price-id',
-            offerId: 'some-offer-id',
-            type: 'stripe',
-            token: 'some-token'
-          })
-          .resolves({
-            orderId: 'some-order-id'
-          })
+        printingEngine.order.resolves({
+          orderId: 'some-order-id'
+        })
 
         await store.dispatch(createOrderWithStripe())
         expect(store.getActions(), 'to equal', [
