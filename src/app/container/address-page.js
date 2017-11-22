@@ -2,7 +2,7 @@ import React from 'react'
 import {compose} from 'recompose'
 import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
-import {getCountriesMenu, getUsStateName, getUsStates, getCountryName} from 'Service/country'
+import {getCountriesMenu, getStateName, getStates, getCountryName} from 'Service/country'
 
 import FormLayout from 'Component/form-layout'
 import FormRow from 'Component/form-row'
@@ -50,16 +50,20 @@ const AddressPage = ({
     return <SelectField menu={countryMenu} value={val} onChange={changeCountry} {...props} />
   }
 
-  const UsStateSelect = ({onChange, countryCode, value, ...props}) => {
+  const StateSelect = ({onChange, countryCode, value, ...props}) => {
+    const countrySupported = countryCode === 'US' || countryCode === 'AU' || countryCode === 'JP'
+
     const changeState = val => onChange(val.value)
-    const usStateMenu = <SelectMenu values={getUsStates()} />
-    const isDisabled = !countryCode || (countryCode && countryCode !== 'US')
+    const stateMenu = <SelectMenu values={getStates(countryCode)} />
+    const isDisabled = !countryCode || (countryCode && !countrySupported)
     const actualValue =
-      !value || value === '' || isDisabled ? undefined : {value, label: getUsStateName(value)}
+      !value || value === '' || isDisabled
+        ? undefined
+        : {value, label: getStateName(countryCode, value)}
     return (
       <SelectField
         validate={!isDisabled ? required : undefined}
-        menu={usStateMenu}
+        menu={stateMenu}
         value={actualValue}
         onChange={changeState}
         disabled={isDisabled}
@@ -151,7 +155,7 @@ const AddressPage = ({
 
       <FormRow modifiers={['half-half']}>
         <Field
-          component={renderField(UsStateSelect)}
+          component={renderField(StateSelect)}
           placeholder="State"
           name="billingAddress.stateCode"
           type="select"
@@ -275,7 +279,7 @@ const AddressPage = ({
 
           <FormRow modifiers={['half-half']}>
             <Field
-              component={renderField(UsStateSelect)}
+              component={renderField(StateSelect)}
               placeholder="State"
               name="shippingAddress.stateCode"
               type="select"
