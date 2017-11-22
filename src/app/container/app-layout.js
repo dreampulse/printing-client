@@ -50,6 +50,7 @@ const AppLayout = ({
 
   const footer = (
     <Footer copyline="© Copyright 2017 ALL3DP GmbH">
+      <Link label="Contact Us" href="mailto:support@all3dp.com" />
       <Link
         label="Terms and conditions"
         target="_blank"
