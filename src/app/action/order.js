@@ -13,7 +13,6 @@ import TYPE, {ERROR_TYPE} from '../action-type'
 import {openFatalErrorModal} from './modal'
 
 // Syncron actions
-
 const orderStarted = createAction(TYPE.ORDER.STARTED)
 const payed = createAction(TYPE.ORDER.PAYED, (paymentToken: string) => ({paymentToken}))
 const paymentCreated = createAction(TYPE.ORDER.PAYMENT_CREATED, (paymentId: string) => ({
@@ -27,10 +26,7 @@ const ordered = createAction(
 
 // Async actions
 
-const createOrder = (type: string, token: string) => async (
-  dispatch: Dispatch<*>,
-  getState: () => State
-) => {
+const createOrder = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const {user: {userId}, price: {priceId, selectedOffer}} = getState()
 
   if (!selectedOffer) throw new Error('No offer selected')
@@ -40,16 +36,17 @@ const createOrder = (type: string, token: string) => async (
     const {orderId, orderNumber} = await printingEngine.order({
       userId,
       priceId,
-      offerId,
-      type,
-      token
+      offerIds: [offerId]
     })
 
     dispatch(ordered({orderId, orderNumber}))
+    return {orderId, orderNumber}
   } catch (error) {
     dispatch(
       openFatalErrorModal(new AppError(ERROR_TYPE.ORDER_FAILED, 'Failed to process the order'))
     )
+
+    return null
   }
 }
 
@@ -76,11 +73,18 @@ export const payWithPaypal = () => async (dispatch: Dispatch<*>, getState: () =>
   const {price, user} = getState()
   if (!price.selectedOffer) throw new Error('No offer selected')
 
-  const {totalPrice, currency, offerId} = price.selectedOffer
+  const order = await dispatch(createOrder())
+
+  if (!order) {
+    throw new Error('No order found. Has to be created before payment.')
+  }
+
+  const {totalPrice, currency} = price.selectedOffer
+  const {orderId} = order
   const {paymentId, providerFields} = await paypal.createPayment({
     amount: totalPrice,
     currency,
-    offerId,
+    orderId,
     shippingAddress: user.user.shippingAddress
   })
 
@@ -92,14 +96,14 @@ export const payWithPaypal = () => async (dispatch: Dispatch<*>, getState: () =>
 export const createOrderWithStripe = () => (dispatch: Dispatch<*>, getState: () => State) => {
   const token = getState().order.paymentToken
   if (!token) throw new Error('Payment token missing')
-  return dispatch(createOrder('stripe', token))
+  return dispatch(createOrder())
 }
 
-export const createOrderWithPaypal = (data: any) => async (dispatch: Dispatch<*>, getState: () => State) => {
+export const createOrderWithPaypal = (data: any) => async (
+  dispatch: Dispatch<*>,
+  getState: () => State
+) => {
   const paymentId = getState().order.paymentId
   const payment = await paypal.executePayment({data, paymentId})
-  const token = payment.paymentId
-
-  await dispatch(createOrder('paypal', token))
   return payment
 }

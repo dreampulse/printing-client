@@ -3,7 +3,7 @@ import {requestJson} from './http'
 
 const PAYMENT_ENDPOINT = `${config.printingEngineBaseUrl}/payment/paypal`
 
-export function createPayment({amount, currency, offerId, shippingAddress}) {
+export function createPayment({amount, currency, orderId, shippingAddress}) {
   const {
     firstName,
     lastName,
@@ -17,12 +17,21 @@ export function createPayment({amount, currency, offerId, shippingAddress}) {
   } = shippingAddress
   const transactions = [
     {
-      custom: offerId,
+      custom: orderId,
       amount: {
         total: String(amount),
         currency
       },
       item_list: {
+        items: [
+          {
+            quantity: 1,
+            name: '3D Printed Item',
+            price: String(amount),
+            currency,
+            tax: 0
+          }
+        ],
         shipping_address: {
           recipient_name: `${firstName} ${lastName}`,
           line1: `${street} ${houseNumber}`,
@@ -36,7 +45,7 @@ export function createPayment({amount, currency, offerId, shippingAddress}) {
     }
   ]
 
-  return requestJson(PAYMENT_ENDPOINT, {method: 'POST', body: {orderId: offerId, transactions}})
+  return requestJson(PAYMENT_ENDPOINT, {method: 'POST', body: {orderId, transactions}})
 }
 
 export async function executePayment({data, paymentId}) {
