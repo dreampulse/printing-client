@@ -69,7 +69,7 @@ const CartPage = ({
     getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode) ||
     shippingStateName
 
-  const CartQantityList = () => {
+  const CartQuantityList = () => {
     const items = offerItems.map(item => (
       <ModelQuantityItem
         imageSource={item.thumbnailUrl}
@@ -262,7 +262,7 @@ const CartPage = ({
       <SidebarLayout sidebar={paymentSection}>
         <AddressSection />
         <VendorSection />
-        <CartQantityList />
+        <CartQuantityList />
       </SidebarLayout>
     </AppLayout>
   )
