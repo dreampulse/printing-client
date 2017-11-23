@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
-import {getUsStateName, getCountryName} from 'Service/country'
+import {getStateName, getCountryName} from 'Service/country'
 import getCloudinaryUrl from 'Lib/cloudinary'
 import {selectedOfferMaterial, selectOfferItems} from 'Lib/selector'
 import compact from 'lodash/compact'
@@ -101,12 +101,12 @@ const CartPage = ({
             <br />
             {user.shippingAddress.zipCode} {user.shippingAddress.city}
             <br />
-            {user.shippingAddress.countryCode === 'US' ? (
+            {getStateName(user.shippingAddress.countryCode) && (
               <span>
-                {getUsStateName(user.shippingAddress.stateCode)}
+                {getStateName(user.shippingAddress.stateCode)}
                 <br />
               </span>
-            ) : null}
+            )}
             {getCountryName(user.shippingAddress.countryCode)}
           </Paragraph>
         </Column>
@@ -136,18 +136,18 @@ const CartPage = ({
             {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
             {user.billingAddress.city || user.shippingAddress.city}
             <br />
-            {user.billingAddress.countryCode && user.billingAddress.countryCode === 'US' ? (
+            {getStateName(user.billingAddress.countryCode) && (
               <span>
-                {getUsStateName(user.billingAddress.stateCode)}
+                {getStateName(user.billingAddress.stateCode)}
                 <br />
               </span>
-            ) : null}
-            {!user.billingAddress.countryCode && user.shippingAddress.countryCode === 'US' ? (
+            )}
+            {getStateName(user.shippingAddress.countryCode) && (
               <span>
-                {getUsStateName(user.shippingAddress.stateCode)}
+                {getStateName(user.shippingAddress.stateCode)}
                 <br />
               </span>
-            ) : null}
+            )}
             {user.billingAddress.countryCode
               ? getCountryName(user.billingAddress.countryCode)
               : getCountryName(user.shippingAddress.countryCode)}
