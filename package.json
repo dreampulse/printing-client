@@ -121,6 +121,7 @@
     "redux": "^3.3.1",
     "redux-actions": "^2.2.1",
     "redux-form": "^7.1.1",
+    "redux-loop": "^4.2.4",
     "redux-thunk": "^2.0.1",
     "scut": "^1.4.0",
     "serve-favicon": "^2.3.0",
