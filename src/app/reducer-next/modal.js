@@ -1,7 +1,11 @@
 // @flow
 
 import type {ModalState} from '../type-next'
-import {MODAL} from '../action-type-next'
+import * as modal from '../action-next/modal'
+
+// eslint-disable-next-line no-unused-vars
+type _ExtractReturn<B, F: (...args: any[]) => B> = B
+type ExtractReturn<F> = _ExtractReturn<*, F>
 
 const initialState = {
   isOpen: false,
@@ -23,13 +27,18 @@ const openFatalError = (state, action) => ({
   content: /* <FatalErrorModal message={action.payload} /> */ null
 })
 
-const reducer = (state: ModalState = initialState, action): ModalState => {
+export type ModalAction =
+  | ExtractReturn<typeof modal.close>
+  | ExtractReturn<typeof modal.openAddress>
+  | ExtractReturn<typeof modal.openFatalError>
+
+const reducer = (state: ModalState = initialState, action: ModalAction): ModalState => {
   switch (action.type) {
-    case MODAL.CLOSE:
+    case modal.TYPE.CLOSE:
       return close()
-    case MODAL.OPEN_ADDRESS:
+    case modal.TYPE.OPEN_ADDRESS:
       return openAddress(state, action)
-    case MODAL.OPEN_FATAL_ERROR:
+    case modal.TYPE.OPEN_FATAL_ERROR:
       return openFatalError(state, action)
     default:
       return state

@@ -1,13 +1,16 @@
 // @flow
 import {loop, Cmd} from 'redux-loop'
 import type {UserState} from '../type-next'
-import type {Actions} from '../action-next'
 
-import {USER, INIT} from '../action-type-next'
 import {getLocationByIp} from '../lib/geolocation'
 
-import * as modal from '../action-next/modal'
+import * as init from '../action-next/init'
 import * as user from '../action-next/user'
+import * as modal from '../action-next/modal'
+
+// eslint-disable-next-line no-unused-vars
+type _ExtractReturn<B, F: (...args: any[]) => B> = B
+type ExtractReturn<F> = _ExtractReturn<*, F>
 
 const initialState = {
   userId: null,
@@ -33,12 +36,17 @@ const changeLocation = (state, action) => ({
   }
 })
 
-export const reducer = (state: UserState = initialState, action: Actions): UserState => {
+export type UserAction =
+  | ExtractReturn<typeof init.init>
+  | ExtractReturn<typeof user.detectLocation>
+  | ExtractReturn<typeof user.changeLocation>
+
+export const reducer = (state: UserState = initialState, action: UserAction): UserState => {
   switch (action.type) {
-    case INIT.INIT:
-    case USER.DETECT_LOCATION: // not necessary now, but possible
+    case init.TYPE.INIT:
+    case user.TYPE.DETECT_LOCATION: // not necessary now, but possible
       return detectLocation(state, action)
-    case USER.CHANGE_LOCATION:
+    case user.TYPE.CHANGE_LOCATION:
       return changeLocation(state, action)
     default:
       return state

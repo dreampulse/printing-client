@@ -5,10 +5,13 @@ import cloneDeep from 'lodash/cloneDeep'
 import * as printingEngine from 'Lib/printing-engine'
 import {generateMaterialIds} from 'Lib/material'
 import type {CoreState} from '../type-next'
-import type {Actions} from '../action-next'
-import {INIT, CORE} from '../action-type-next'
+import * as init from '../action-next/init'
 import * as core from '../action-next/core'
 import * as modal from '../action-next/modal'
+
+// eslint-disable-next-line no-unused-vars
+type _ExtractReturn<B, F: (...args: any[]) => B> = B
+type ExtractReturn<F> = _ExtractReturn<*, F>
 
 const initialState = {
   models: [],
@@ -36,12 +39,15 @@ const updateMaterialGroups = (state, action) => {
   }
 }
 
-export const reducer = (state: CoreState = initialState, action: Actions): CoreState => {
+export type CoreAction =
+  | ExtractReturn<typeof init.init>
+  | ExtractReturn<typeof core.updateMaterialGroups>
+
+export const reducer = (state: CoreState = initialState, action: CoreAction): CoreState => {
   switch (action.type) {
-    case INIT.INIT:
-      // case CORE.LOAD_MATERIAL_GROUPS:
+    case init.TYPE.INIT:
       return loadMaterialGroups(state, action)
-    case CORE.UPDATE_MATERIAL_GROUPS:
+    case core.TYPE.UPDATE_MATERIAL_GROUPS:
       return updateMaterialGroups(state, action)
     default:
       return state

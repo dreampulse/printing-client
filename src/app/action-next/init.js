@@ -1,6 +1,9 @@
 // @flow
-import {createAction} from 'redux-actions'
 
-import {INIT} from '../action-type-next'
+export const TYPE = {
+  INIT: 'INIT.INIT'
+}
 
-export const init = createAction(INIT.INIT)
+export const init = () => ({
+  type: TYPE.INIT
+})
