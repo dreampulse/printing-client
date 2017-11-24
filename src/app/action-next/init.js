@@ -1,5 +1,5 @@
 // @flow
-import {createAction, createActions} from 'redux-actions'
+import {createAction} from 'redux-actions'
 
 import {INIT} from '../action-type-next'
 

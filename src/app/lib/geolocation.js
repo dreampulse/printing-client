@@ -1,16 +1,21 @@
+// @flow
+
 import {request} from 'Service/http'
 import timeout from './timeout'
 import config from '../../../config'
 
+import type {Location} from '../type-next'
+
 const URL = `https://pro.ip-api.com/json/?key=${config.ipApiKey}`
 
-export const getLocationByIp = async () => {
+export const getLocationByIp = async (): Promise<Location> => {
   const {city, zip, region, countryCode} = await timeout(request(URL), config.fetchTimout)
 
   if (!countryCode) {
     throw new Error('Location detection failed')
   }
 
+  // Returns the object as we need it
   return {
     city,
     zipCode: zip,
