@@ -2,7 +2,7 @@ import React from 'react'
 import {compose} from 'recompose'
 import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
-import {getCountriesMenu, getStateName, getStates, getCountryName} from 'Service/country'
+import {getCountriesMenu, getUsStateName, getUsStates, getCountryName} from 'Service/country'
 
 import FormLayout from 'Component/form-layout'
 import FormRow from 'Component/form-row'
@@ -50,16 +50,16 @@ const AddressPage = ({
     return <SelectField menu={countryMenu} value={val} onChange={changeCountry} {...props} />
   }
 
-  const StateSelect = ({onChange, countryCode, value, ...props}) => {
+  const UsStateSelect = ({onChange, countryCode, value, ...props}) => {
     const changeState = val => onChange(val.value)
-    const stateMenu = <SelectMenu values={getStates(countryCode) || []} />
-    const isDisabled = !getStates(countryCode)
+    const usStateMenu = <SelectMenu values={getUsStates()} />
+    const isDisabled = !countryCode || (countryCode && countryCode !== 'US')
     const actualValue =
-      !value || isDisabled ? undefined : {value, label: getStateName(countryCode, value)}
+      !value || value === '' || isDisabled ? undefined : {value, label: getUsStateName(value)}
     return (
       <SelectField
         validate={!isDisabled ? required : undefined}
-        menu={stateMenu}
+        menu={usStateMenu}
         value={actualValue}
         onChange={changeState}
         disabled={isDisabled}
@@ -151,7 +151,7 @@ const AddressPage = ({
 
       <FormRow modifiers={['half-half']}>
         <Field
-          component={renderField(StateSelect)}
+          component={renderField(UsStateSelect)}
           placeholder="State"
           name="billingAddress.stateCode"
           type="select"
@@ -275,7 +275,7 @@ const AddressPage = ({
 
           <FormRow modifiers={['half-half']}>
             <Field
-              component={renderField(StateSelect)}
+              component={renderField(UsStateSelect)}
               placeholder="State"
               name="shippingAddress.stateCode"
               type="select"

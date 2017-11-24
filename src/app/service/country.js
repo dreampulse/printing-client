@@ -62,67 +62,6 @@ const usStates = {
   WY: 'Wyoming'
 }
 
-const auStates = {
-  NSW: 'New South Wales',
-  VIC: 'Victoria',
-  QLD: 'Queensland',
-  TAS: 'Tasmania',
-  SA: 'South Australia',
-  WA: 'Western Australia',
-  NT: 'Northern Territory',
-  ACT: 'Australian Capital Territory'
-}
-
-const jpStates = {
-  '10': 'Gunma',
-  '11': 'Saitama',
-  '12': 'Chiba',
-  '13': 'Tokyo',
-  '14': 'Kanagawa',
-  '15': 'Niigata',
-  '16': 'Toyama',
-  '17': 'Ishikawa',
-  '18': 'Fukui',
-  '19': 'Yamanashi',
-  '20': 'Nagano',
-  '21': 'Gifu',
-  '22': 'Shizuoka',
-  '23': 'Aichi',
-  '24': 'Mie',
-  '25': 'Shiga',
-  '26': 'Kyoto',
-  '27': 'Osaka',
-  '28': 'Hyogo',
-  '29': 'Nara',
-  '30': 'Wakayama',
-  '31': 'Tottori',
-  '32': 'Shimane',
-  '33': 'Okayama',
-  '34': 'Hiroshima',
-  '35': 'Yamaguchi',
-  '36': 'Tokushima',
-  '37': 'Kagawa',
-  '38': 'Ehime',
-  '39': 'Kochi',
-  '40': 'Fukuoka',
-  '41': 'Saga',
-  '42': 'Nagasaki',
-  '43': 'Kumamoto',
-  '44': 'Oita',
-  '45': 'Miyazaki',
-  '46': 'Kagoshima',
-  '47': 'Okinawa',
-  '05': 'Akita',
-  '02': 'Aomori',
-  '07': 'Fukushima',
-  '01': 'Hokkaido',
-  '08': 'Ibaraki',
-  '03': 'Iwate',
-  '04': 'Miyagi',
-  '09': 'Tochigi',
-  '06': 'Yamagata'
-}
-
 const countryList = createCountryList()
 
 export function getCountriesMenu() {
@@ -136,35 +75,13 @@ export function getCountryName(code) {
   return countryList.getName(code)
 }
 
-function getStateList(states) {
-  return Object.keys(states).map(code => ({
+export function getUsStateName(code) {
+  return usStates[code]
+}
+
+export function getUsStates() {
+  return Object.keys(usStates).map(code => ({
     value: code,
-    label: states[code]
+    label: getUsStateName(code)
   }))
-}
-
-export function getStateName(countryCode, stateCode) {
-  switch (countryCode) {
-    case 'US':
-      return usStates[stateCode]
-    case 'AU':
-      return auStates[stateCode]
-    case 'JP':
-      return jpStates[stateCode]
-    default:
-      return null
-  }
-}
-
-export function getStates(countryCode) {
-  switch (countryCode) {
-    case 'US':
-      return getStateList(usStates)
-    case 'AU':
-      return getStateList(auStates)
-    case 'JP':
-      return getStateList(jpStates)
-    default:
-      return null
-  }
 }
