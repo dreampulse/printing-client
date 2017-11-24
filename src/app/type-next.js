@@ -97,15 +97,10 @@ export type ModalState = {
   content: ?Node
 }
 
-export type InitState = {
-  isLoading: boolean
-}
-
 export type State = {
   core: CoreState,
   modal: ModalState,
   user: UserState,
-  init: InitState,
   routing: any, // Managed by react-router-redux
   form: any // Managed by redux-form
 }

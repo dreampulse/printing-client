@@ -4,4 +4,4 @@ import type {Location} from '../type-next'
 
 import {USER} from '../action-type-next'
 
-export const updateLocation = createAction(USER.UPDATE_LOCATION, (location: Location) => location)
+export const changeLocation = createAction(USER.CHANGE_LOCATION, (location: Location) => location)

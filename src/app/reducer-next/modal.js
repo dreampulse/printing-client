@@ -11,19 +11,26 @@ const initialState = {
 
 const close = () => initialState
 
-const openAddress = () => ({
+const openAddress = (state, action) => ({
   isOpen: true,
   isCloseable: false,
   content: /* <AddressModal /> */ null
 })
 
+const openFatalError = (state, action) => ({
+  isOpen: true,
+  isCloseable: false,
+  content: /* <FatalErrorModal message={action.payload} /> */ null
+})
+
 const reducer = (state: ModalState = initialState, action): ModalState => {
   switch (action.type) {
-    case MODAL.OPEN_ADDRESS:
-      return openAddress()
     case MODAL.CLOSE:
       return close()
-
+    case MODAL.OPEN_ADDRESS:
+      return openAddress(state, action)
+    case MODAL.OPEN_FATAL_ERROR:
+      return openFatalError(state, action)
     default:
       return state
   }
