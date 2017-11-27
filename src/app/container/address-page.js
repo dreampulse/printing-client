@@ -52,8 +52,9 @@ const AddressPage = ({
 
   const StateSelect = ({onChange, countryCode, value, ...props}) => {
     const changeState = val => onChange(val.value)
-    const stateMenu = <SelectMenu values={getStates(countryCode) || []} />
-    const isDisabled = !getStates(countryCode)
+    const states = getStates(countryCode)
+    const stateMenu = <SelectMenu values={states || []} />
+    const isDisabled = !states
     const stateName = getStateName(countryCode, value)
     const actualValue = !stateName || isDisabled ? undefined : {value, label: stateName}
 
