@@ -49,7 +49,8 @@ PaymentSection.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
   subtotal: PropTypes.string.isRequired,
-  shipping: PropTypes.string.isRequired,
+  shippingPrice: PropTypes.string.isRequired,
+  shippingName: PropTypes.string.isRequired,
   vat: PropTypes.string.isRequired,
   total: PropTypes.string.isRequired
 }
