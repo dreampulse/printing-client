@@ -54,8 +54,10 @@ const AddressPage = ({
     const changeState = val => onChange(val.value)
     const stateMenu = <SelectMenu values={getStates(countryCode) || []} />
     const isDisabled = !getStates(countryCode)
-    const actualValue =
-      !value || isDisabled ? undefined : {value, label: getStateName(countryCode, value)}
+    const stateName = getStateName(countryCode, value)
+    const actualValue = !stateName || isDisabled ? undefined : {value, label: stateName}
+
+    // TODO: validation of the select field is not working
     return (
       <SelectField
         validate={!isDisabled ? required : undefined}
