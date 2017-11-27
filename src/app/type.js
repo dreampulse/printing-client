@@ -42,7 +42,6 @@ export type Offer = {
   }>,
   shipping: Array<{
     name: string,
-    displayName: string,
     deliveryTime: string,
     price: number
   }>
