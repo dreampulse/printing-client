@@ -64,7 +64,7 @@ describe('formatShipping()', () => {
 
   it('returns formatted display name', () => {
     expect(
-      formatShipping({displayName: 'UPS Standard', name: 'UPSStandard', deliveryTime: '2-5'}),
+      formatShipping({name: 'UPS Standard', deliveryTime: '2-5'}),
       'to equal',
       'UPS Standard (2-5 days)'
     )
