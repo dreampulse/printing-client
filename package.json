@@ -73,7 +73,7 @@
     "minimist": "^1.2.0",
     "mocha": "^4.0.1",
     "node-sass": "^4.5.3",
-    "nyc": "^11.2.1",
+    "nyc": "^11.3.0",
     "postcss-loader": "^2.0.8",
     "prettier": "^1.7.4",
     "redux-logger": "^3.0.6",
