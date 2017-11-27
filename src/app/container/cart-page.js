@@ -61,6 +61,14 @@ const CartPage = ({
   onPayWithInvoice,
   onCreateOrderWithInvoice
 }) => {
+  const shippingStateName = getStateName(
+    user.shippingAddress.countryCode,
+    user.shippingAddress.stateCode
+  )
+  const billingStateName =
+    getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode) ||
+    shippingStateName
+
   const CartQantityList = () => {
     const items = offerItems.map(item => (
       <ModelQuantityItem
@@ -101,9 +109,9 @@ const CartPage = ({
             <br />
             {user.shippingAddress.zipCode} {user.shippingAddress.city}
             <br />
-            {getStateName(user.shippingAddress.countryCode) && (
+            {shippingStateName && (
               <span>
-                {getStateName(user.shippingAddress.stateCode)}
+                {shippingStateName}
                 <br />
               </span>
             )}
@@ -136,15 +144,9 @@ const CartPage = ({
             {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
             {user.billingAddress.city || user.shippingAddress.city}
             <br />
-            {getStateName(user.billingAddress.countryCode) && (
+            {billingStateName && (
               <span>
-                {getStateName(user.billingAddress.stateCode)}
-                <br />
-              </span>
-            )}
-            {getStateName(user.shippingAddress.countryCode) && (
-              <span>
-                {getStateName(user.shippingAddress.stateCode)}
+                {billingStateName}
                 <br />
               </span>
             )}
