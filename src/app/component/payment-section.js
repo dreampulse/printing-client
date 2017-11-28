@@ -4,7 +4,16 @@ import React from 'react'
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 
-const PaymentSection = ({classNames, modifiers, children, subtotal, shipping, vat, total}) => (
+const PaymentSection = ({
+  classNames,
+  modifiers,
+  children,
+  subtotal,
+  shippingPrice,
+  shippingName,
+  vat,
+  total
+}) => (
   <section className={buildClassName('payment-section', modifiers, classNames)}>
     <ul className="payment-section__price-components">
       <li className="payment-section__price-component">
@@ -13,7 +22,9 @@ const PaymentSection = ({classNames, modifiers, children, subtotal, shipping, va
       </li>
       <li className="payment-section__price-component">
         <span className="payment-section__price-label">Shipping:</span>
-        <span className="payment-section__price-value">{shipping}</span>
+        <span className="payment-section__price-value">{shippingPrice}</span>
+        <br />
+        <span className="payment-section__price-label-smallprint">{shippingName}</span>
       </li>
       <li className="payment-section__price-component">
         <span className="payment-section__price-label">VAT:</span>
@@ -38,7 +49,8 @@ PaymentSection.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
   subtotal: PropTypes.string.isRequired,
-  shipping: PropTypes.string.isRequired,
+  shippingPrice: PropTypes.string.isRequired,
+  shippingName: PropTypes.string.isRequired,
   vat: PropTypes.string.isRequired,
   total: PropTypes.string.isRequired
 }

@@ -1,6 +1,6 @@
 import createHistory from 'history/createMemoryHistory'
 
-import {getMaterials, selectMaterial, selectMaterialConfig} from 'Action/material'
+import {getMaterials, selectMaterialConfig} from 'Action/material'
 import * as printingEngine from 'Lib/printing-engine'
 import * as materialLib from 'Lib/material'
 import Store from '../../../../src/app/store'
@@ -29,13 +29,6 @@ describe('Material Integration Test', () => {
 
       expect(materialLib.generateMaterialIds, 'to have a call satisfying', ['some-materials'])
       expect(store.getState().material.materials, 'to equal', 'some-materials')
-    })
-  })
-
-  describe('selectMaterial()', () => {
-    it('should work', () => {
-      store.dispatch(selectMaterial('some-material-id'))
-      expect(store.getState().material.selectedMaterial, 'to equal', 'some-material-id')
     })
   })
 

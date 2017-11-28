@@ -69,7 +69,7 @@ const CartPage = ({
     getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode) ||
     shippingStateName
 
-  const CartQantityList = () => {
+  const CartQuantityList = () => {
     const items = offerItems.map(item => (
       <ModelQuantityItem
         imageSource={item.thumbnailUrl}
@@ -242,7 +242,8 @@ const CartPage = ({
   const paymentSection = (
     <PaymentSection
       subtotal={formatPrice(offer.subTotalPrice, offer.currency)}
-      shipping={formatPrice(offer.shipping.price, offer.currency)}
+      shippingPrice={formatPrice(offer.shipping.price, offer.currency)}
+      shippingName={offer.shipping.name}
       vat={formatPrice(offer.vatPrice, offer.currency)}
       total={formatPrice(offer.totalPrice, offer.currency)}
     >
@@ -262,7 +263,7 @@ const CartPage = ({
       <SidebarLayout sidebar={paymentSection}>
         <AddressSection />
         <VendorSection />
-        <CartQantityList />
+        <CartQuantityList />
       </SidebarLayout>
     </AppLayout>
   )
