@@ -4,7 +4,7 @@ import {request} from 'Service/http'
 import timeout from './timeout'
 import config from '../../../config'
 
-import type {Location} from '../type-next'
+import type {Location, Address, GoogleMapsPlace} from '../type-next'
 
 const URL = `https://pro.ip-api.com/json/?key=${config.ipApiKey}`
 
@@ -24,7 +24,7 @@ export const getLocationByIp = async (): Promise<Location> => {
   }
 }
 
-export const convertPlaceToLocation = place => {
+export const convertPlaceToLocation = (place: GoogleMapsPlace): string | Location => {
   const findType = query => {
     const addressComponents = place.address_components
     if (!addressComponents) return ''
@@ -43,4 +43,4 @@ export const convertPlaceToLocation = place => {
   }
 }
 
-export const isAddressValid = address => address.countryCode
+export const isAddressValid = (address: Address) => address.countryCode

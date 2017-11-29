@@ -79,6 +79,13 @@ export type Address = Location & {
   addressLine2: string
 }
 
+export type GoogleMapsPlace = {
+  address_components: ?Array<{
+    types: Array<string>,
+    short_name: string
+  }>
+}
+
 export type UserState = {
   userId: ?string,
   shippingAddress: ?Address,
