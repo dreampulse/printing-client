@@ -8,7 +8,6 @@ import {
 import * as stripe from 'Service/stripe'
 import * as paypal from 'Service/paypal'
 import * as printingEngine from 'Lib/printing-engine'
-import {AppError} from 'Lib/error'
 
 describe('Order actions', () => {
   let initialStoreData
@@ -33,7 +32,8 @@ describe('Order actions', () => {
         }
       },
       order: {
-        paymentToken: 'some-token'
+        paymentToken: 'some-token',
+        paymentId: 'some-payment-id'
       }
     }
     store = mockStore(initialStoreData)
@@ -42,6 +42,7 @@ describe('Order actions', () => {
     sandbox.stub(stripe, 'checkout')
     sandbox.stub(paypal, 'createPayment')
     sandbox.stub(paypal, 'executePayment')
+    sandbox.stub(stripe, 'executePayment')
     sandbox.stub(printingEngine, 'order')
   })
 
@@ -81,34 +82,18 @@ describe('Order actions', () => {
         expect(store.dispatch(payWithStripe()), 'to be rejected with', 'some-error'))
     })
 
-    describe('payWithPaypal()', () => {
-      it('fulfills with correct arguments', () => {
-        paypal.createPayment
-          .withArgs({
-            amount: 42,
-            currency: 'some-currency',
-            offerId: 'some-offer-id',
-            shippingAddress: 'some-shipping-address'
-          })
-          .resolves({paymentId: 'payment-id', providerFields: {}})
-
-        return expect(
-          store.dispatch(payWithPaypal()),
-          'to be rejected with',
-          'No order found. Has to be created before payment.'
-        )
-      })
-    })
-
     describe('createOrderWithStripe()', () => {
       it('dispatches expected actions, when everything succeeds', async () => {
         printingEngine.order.resolves({
-          orderId: 'some-order-id'
+          orderId: 'some-order-id',
+          orderNumber: 123
         })
+
+        stripe.executePayment.resolves()
 
         await store.dispatch(createOrderWithStripe())
         expect(store.getActions(), 'to equal', [
-          {type: 'ORDER.ORDERED', payload: {orderId: 'some-order-id'}}
+          {type: 'ORDER.ORDERED', payload: {orderId: 'some-order-id', orderNumber: 123}}
         ])
       })
 
@@ -122,49 +107,34 @@ describe('Order actions', () => {
         )
       })
     })
+  })
 
-    describe('createOrderWithPaypal()', () => {
-      it.only('dispatches expected actions, when everything succeeds', async () => {
-        printingEngine.order
-          .withArgs({
-            userId: 'some-user-id',
-            priceId: 'some-price-id',
-            offerId: 'some-offer-id',
-          })
-          .resolves({
-            orderId: 'some-order-id'
-          })
-
-        paypal.executePayment.withArgs({data: 'some-data'}).resolves({
-          paymentId: 'some-token',
-          status: true
+  describe('payWithPaypal()', () => {
+    it('fulfills with correct arguments', () => {
+      paypal.createPayment
+        .withArgs({
+          amount: 42,
+          currency: 'some-currency',
+          offerId: 'some-offer-id',
+          shippingAddress: 'some-shipping-address'
         })
+        .resolves({paymentId: 'payment-id', providerFields: {}})
 
-        await store.dispatch(createOrderWithPaypal('some-data'))
-        expect(store.getActions(), 'to equal', [
-          {type: 'ORDER.ORDERED', payload: {orderId: 'some-order-id'}}
-        ])
-      })
+      return expect(
+        store.dispatch(payWithPaypal()),
+        'to be rejected with',
+        'No order found. Has to be created before payment.'
+      )
+    })
+  })
 
-      it('dispatches expected actions, when order rejects', async () => {
-        printingEngine.order.rejects(new Error('some-error'))
+  describe('createOrderWithPaypal()', () => {
+    it('should resolve with the payment in case executePayment resolves', () => {
+      paypal.executePayment.resolves({paymentId: 'payment-id', providerFields: {}})
 
-        paypal.executePayment.resolves({
-          paymentId: 'some-token',
-          status: false
-        })
-
-        await store.dispatch(createOrderWithPaypal())
-        expect(store.getActions(), 'to equal', [
-          {
-            type: 'MODAL.OPEN',
-            payload: {
-              contentType: 'MODAL.FATAL_ERROR',
-              contentProps: {error: new AppError('ORDER_FAILED', 'Failed to process the order')},
-              isCloseable: false
-            }
-          }
-        ])
+      return expect(store.dispatch(createOrderWithPaypal()), 'to be fulfilled with', {
+        paymentId: 'payment-id',
+        providerFields: {}
       })
     })
   })
