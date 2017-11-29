@@ -193,10 +193,19 @@ export type PriceState = {
   selectedOffer: ?Offer
 }
 
+export type ModalStateContentType =
+  | 'MODAL.SHIPPING_ADDRESS'
+  | 'MODAL.FETCHING_PRICE'
+  | 'MODAL.PRICE_CHANGED'
+  | 'MODAL.PRICE_LOCATION_CHANGED'
+  | 'MODAL.MATERIAL'
+  | 'MODAL.FATAL_ERROR'
+  | null
+
 export type ModalState = {
   isOpen: boolean,
   isCloseable: boolean,
-  contentType: ?string,
+  contentType: ModalStateContentType,
   contentProps: ?any
 }
 

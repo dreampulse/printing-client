@@ -56,7 +56,7 @@ export const poll = (name, pollCallback, initPollCallback = () => Promise.resolv
             // Done polling
             resolve()
           } else {
-            setTimeout(() => runPoll(initPayload), config.pollingInverval)
+            setTimeout(() => runPoll(initPayload), config.pollingInterval)
           }
         } catch (error) {
           reject(error)
