@@ -35,12 +35,13 @@ export const createMockStore = (initialState, nextStates = []) => {
   return store
 }
 
-export const testDispatch = action => {
+const reduceState = oldState => action => {
   const reducerResult = reducer(undefined, action)
+  const state = getModel(reducerResult)
   const cmd = getCmd(reducerResult)
 
   return {
-    state: getModel(reducerResult),
+    state,
     simulate: ({func, args, result}) => {
       const cmds = cmd.type === 'LIST' ? cmd.cmds : [cmd]
 
@@ -71,6 +72,7 @@ export const testDispatch = action => {
       )
 
       return {
+        state,
         actions,
         dispatch(wantedAction) {
           const actionToDispatch = actions.find(
@@ -87,9 +89,12 @@ export const testDispatch = action => {
             })
           }
 
-          return testDispatch(actionToDispatch)
+          return reduceState(state)(actionToDispatch)
         }
       }
     }
   }
 }
+
+// testDispatch always starts on the initial state
+export const testDispatch = reduceState(undefined)
