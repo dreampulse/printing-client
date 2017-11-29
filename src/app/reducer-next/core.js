@@ -5,10 +5,16 @@ import cloneDeep from 'lodash/cloneDeep'
 
 import {listMaterials} from 'App/lib/printing-engine'
 import {generateMaterialIds} from 'App/lib/material'
-import type {CoreState} from 'App/type-next'
+import type {Model, UploadingModel, MaterialGroup} from 'App/type-next'
 import type {AppAction} from 'App/action-next'
 import * as core from 'App/action-next/core'
 import * as modal from 'App/action-next/modal'
+
+export type CoreState = {
+  models: Array<Model>,
+  uploadingModels: Array<UploadingModel>,
+  materialGroups: Array<MaterialGroup>
+}
 
 const initialState: CoreState = {
   models: [],

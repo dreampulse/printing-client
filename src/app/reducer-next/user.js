@@ -1,10 +1,16 @@
 // @flow
 
 import {loop, Cmd} from 'redux-loop'
-import type {UserState, AppAction} from '../type-next'
+import type {AppAction} from '../type-next'
 import {getLocationByIp} from '../lib/geolocation'
 import * as user from '../action-next/user'
 import * as modal from '../action-next/modal'
+
+export type UserState = {
+  userId: string | null,
+  location: Location | null,
+  currency: string
+}
 
 const initialState: UserState = {
   userId: null,

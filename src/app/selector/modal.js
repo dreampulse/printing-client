@@ -1,10 +1,9 @@
 // @flow
 
-import type {State, ModalConfig} from 'App/type-next'
+import type {AppState, ModalConfig} from 'App/type-next'
 
-export const isModalOpen = (state: State): boolean => state.modal.isOpen
-
-export const selectModalConfig = (state: State): ModalConfig => ({
+export const isModalOpen = (state: AppState): boolean => state.modal.isOpen
+export const selectModalConfig = (state: AppState): ModalConfig => ({
   isCloseable: state.modal.isCloseable,
   content: state.modal.content,
   contentArgs: state.modal.contentArgs

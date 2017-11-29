@@ -1,5 +1,6 @@
 // @flow
-import type {State} from 'App/type-next'
 
-export const selectUserId = (state: State) => state.user.userId
-export const selectCurrency = (state: State) => state.user.currency
+import type {AppState} from 'App/type-next'
+
+export const selectUserId = (state: AppState): string | null => state.user.userId
+export const selectCurrency = (state: AppState): string => state.user.currency
