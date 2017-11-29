@@ -137,5 +137,4 @@ export const payWithInvoice = () => (dispatch: Dispatch<*>, getState: () => Stat
 export const createOrderWithInvoice = () => (dispatch: Dispatch<*>, getState: () => State) => {
   const token = getState().order.paymentToken
   if (!token) throw new Error('Payment token missing')
-  return dispatch(createOrder('invoice', token))
 }
