@@ -36,7 +36,7 @@ export const createMockStore = (initialState, nextStates = []) => {
 }
 
 const reduceState = oldState => action => {
-  const reducerResult = reducer(undefined, action)
+  const reducerResult = reducer(oldState, action)
   const state = getModel(reducerResult)
   const cmd = getCmd(reducerResult)
 
