@@ -1,7 +1,7 @@
 // @flow
 
 import {loop, Cmd} from 'redux-loop'
-import type {AppAction} from '../type-next'
+import type {AppAction, Location} from '../type-next'
 import {getLocationByIp} from '../lib/geolocation'
 import * as user from '../action-next/user'
 import * as modal from '../action-next/modal'
