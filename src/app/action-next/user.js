@@ -1,16 +1,17 @@
 // @flow
-import type {Location} from '../type-next'
 
-export const TYPE = {
-  CHANGE_LOCATION: 'USER.CHANGE_LOCATION',
-  DETECT_LOCATION: 'USER.DETECT_LOCATION'
-}
+import type {Action, Location} from '../type-next'
 
-export const changeLocation = (location: Location) => ({
-  type: TYPE.CHANGE_LOCATION,
+type UpdateLocationAction = Action<'USER.UPDATE_LOCATION', Location>
+type DetectLocationAction = Action<'USER.DETECT_LOCATION', void>
+export type UserAction = UpdateLocationAction | DetectLocationAction
+
+export const updateLocation = (location: Location): UpdateLocationAction => ({
+  type: 'USER.UPDATE_LOCATION',
   payload: location
 })
 
-export const detectLocation = () => ({
-  type: TYPE.DETECT_LOCATION
+export const detectLocation = (): DetectLocationAction => ({
+  type: 'USER.DETECT_LOCATION',
+  payload: undefined
 })

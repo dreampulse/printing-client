@@ -9,7 +9,6 @@ import {
   selectUploadingModels,
   selectMaterialGroups,
   selectUserId,
-  selectShippingAddress,
   selectCurrency,
   isModalOpen,
   selectModalConfig
@@ -17,17 +16,16 @@ import {
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
 import geolocationSuccessResponse from '../../../../test-data/mock/geolocation-success-response.json'
 
-describe('init actions', () => {
+describe('init action', () => {
   describe(init.TYPE.INIT, () => {
     ;[
       [selectModels, []],
       [selectUploadingModels, []],
       [selectMaterialGroups, []],
       [selectUserId, null],
-      [selectShippingAddress, null],
       [selectCurrency, 'USD'],
       [isModalOpen, false],
-      [selectModalConfig, {isCloseable: true, content: null}]
+      [selectModalConfig, {isCloseable: true, content: null, contentArgs: null}]
     ].forEach(([selector, expected]) => {
       it(`${selector.name}(state) returns the expected result after execution`, () => {
         const {state} = testDispatch(init.init())
@@ -35,8 +33,7 @@ describe('init actions', () => {
       })
     })
 
-    it(`triggers action ${core.TYPE
-      .UPDATE_MATERIAL_GROUPS} with the result from listMaterials`, () => {
+    it(`triggers core.updateMaterialGroups() action with the result from listMaterials`, () => {
       const {actions} = testDispatch(init.init()).simulate({
         func: listMaterials,
         args: [],
@@ -45,32 +42,33 @@ describe('init actions', () => {
       expect(actions, 'to contain', core.updateMaterialGroups(materialListResponse))
     })
 
-    it(`triggers action ${modal.TYPE
-      .OPEN_FATAL_ERROR} of type 'LOAD_MATERIAL_GROUPS_FAILED' when listMaterials failed`, () => {
+    it(`triggers modal.openFatalErrorModal() action with the given error when listMaterials failed`, () => {
+      const err = new Error('Some error')
       const {actions} = testDispatch(init.init()).simulate({
         func: listMaterials,
         args: [],
-        result: new Error('Some error')
+        result: err
       })
-      expect(actions, 'to contain', modal.openFatalError('LOAD_MATERIAL_GROUPS_FAILED'))
+      expect(actions, 'to contain', modal.openFatalErrorModal(err))
     })
 
-    it(`triggers action ${user.TYPE.CHANGE_LOCATION} with the result from getLocationByIp`, () => {
+    it(`triggers user.updateLocation() action with the result from getLocationByIp`, () => {
       const {actions} = testDispatch(init.init()).simulate({
         func: getLocationByIp,
         args: [],
         result: geolocationSuccessResponse
       })
-      expect(actions, 'to contain', user.changeLocation(geolocationSuccessResponse))
+      expect(actions, 'to contain', user.updateLocation(geolocationSuccessResponse))
     })
 
-    it(`triggers action ${modal.TYPE.OPEN_ADDRESS} when getLocationByIp failed`, () => {
+    it(`triggers modal.openPickLocationModal() action when getLocationByIp failed`, () => {
+      const err = new Error('Some error')
       const {actions} = testDispatch(init.init()).simulate({
         func: getLocationByIp,
         args: [],
-        result: new Error('Some error')
+        result: err
       })
-      expect(actions, 'to contain', modal.openAddress())
+      expect(actions, 'to contain', modal.openPickLocationModal())
     })
   })
 })

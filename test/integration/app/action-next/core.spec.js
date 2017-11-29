@@ -4,8 +4,8 @@ import {generateMaterialIds} from 'App/lib/material'
 import {selectMaterialGroups} from 'App/selector'
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
 
-describe('core actions', () => {
-  describe(core.TYPE.UPDATE_MATERIAL_GROUPS, () => {
+describe('core action', () => {
+  describe('updateMaterialGroups()', () => {
     ;[
       [selectMaterialGroups, generateMaterialIds(cloneDeep(materialListResponse.materialStructure))]
     ].forEach(([selector, expected]) => {
