@@ -2,12 +2,12 @@
 import {loop, Cmd} from 'redux-loop'
 import cloneDeep from 'lodash/cloneDeep'
 
-import * as printingEngine from 'Lib/printing-engine'
-import {generateMaterialIds} from 'Lib/material'
-import type {CoreState} from '../type-next'
-import * as init from '../action-next/init'
-import * as core from '../action-next/core'
-import * as modal from '../action-next/modal'
+import {listMaterials} from 'App/lib/printing-engine'
+import {generateMaterialIds} from 'App/lib/material'
+import type {CoreState} from 'App/type-next'
+import * as init from 'App/action-next/init'
+import * as core from 'App/action-next/core'
+import * as modal from 'App/action-next/modal'
 
 // eslint-disable-next-line no-unused-vars
 type _ExtractReturn<B, F: (...args: any[]) => B> = B
@@ -22,7 +22,7 @@ const initialState = {
 const loadMaterialGroups = (state, action) =>
   loop(
     state,
-    Cmd.run(printingEngine.listMaterials, {
+    Cmd.run(listMaterials, {
       successActionCreator: core.updateMaterialGroups,
       failActionCreator: () => modal.openFatalError('LOAD_MATERIAL_GROUPS_FAILED'),
       args: []
@@ -31,6 +31,7 @@ const loadMaterialGroups = (state, action) =>
 
 const updateMaterialGroups = (state, action) => {
   const materialGroups = cloneDeep(action.payload)
+
   generateMaterialIds(materialGroups)
 
   return {
