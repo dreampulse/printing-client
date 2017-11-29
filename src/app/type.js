@@ -45,7 +45,7 @@ export type Offer = {
     displayName: string,
     deliveryTime: string,
     price: number
-  }[]
+  }
 }
 
 // @TODO: why is this object needed? What is this?
