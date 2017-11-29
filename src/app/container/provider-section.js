@@ -4,7 +4,7 @@ import {compose} from 'recompose'
 
 import {buildClassArray} from 'Lib/build-class-name'
 import {selectOffersForSelectedMaterialConfig} from 'Lib/selector'
-import {formatPrice, formatShipping} from 'Lib/formatter'
+import {formatPrice, formatDeliveryTime} from 'Lib/formatter'
 
 import Section from 'Component/section'
 import Headline from 'Component/headline'
@@ -33,14 +33,22 @@ const ProviderSection = ({
     disabled
   })
 
+  // TODO: add the process from the material config
   const renderProviderList = () => (
     <ProviderList>
       {offers.sort((a, b) => a.totalPrice > b.totalPrice).map(offer => (
         <ProviderItem
           key={offer.offerId}
+          process="SLS"
           provider={offer.printingService}
-          price={formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}
-          shipping={formatShipping(offer.shipping)}
+          price={formatPrice(
+            offer.subTotalPrice + offer.vatPrice,
+            offer.currency,
+            offer.priceEstimated
+          )}
+          deliveryTime={formatDeliveryTime(offer.shipping.deliveryTime)}
+          deliveryProvider={offer.shipping.name}
+          shipping={formatPrice(offer.shipping.price, offer.currency)}
           onCheckoutClick={() => {
             onSelectOffer(offer)
             onGoToAddress()
