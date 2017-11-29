@@ -35,25 +35,6 @@ export const createMockStore = (initialState, nextStates = []) => {
   return store
 }
 
-const printFunctionCall = (output, func, args) => {
-  if (typeof func !== 'function') {
-    return output.appendInspected(func)
-  } else if (Array.isArray(args) === false) {
-    return output
-      .jsFunctionName(func.name)
-      .sp()
-      .text('with arguments')
-      .sp()
-      .appendInspected(args)
-  }
-  return args
-    .reduce(
-      (output, arg, i) => output.text(i === 0 ? '' : ', ').appendInspected(arg),
-      output.jsFunctionName(func.name).text('(')
-    )
-    .text(')')
-}
-
 export const testDispatch = action => {
   const reducerResult = reducer(undefined, action)
   const cmd = getCmd(reducerResult)
@@ -66,7 +47,7 @@ export const testDispatch = action => {
       const cmdsToSimulate = cmds.filter(
         // We need to compare the function source because
         // in mocha's watch mode, strict equality checks won't work
-        cmd => cmd.func.toString() === func.toString() && isEqual(cmd.args, args)
+        c => c.func.toString() === func.toString() && isEqual(c.args, args)
       )
 
       if (cmdsToSimulate.length === 0) {
@@ -82,8 +63,8 @@ export const testDispatch = action => {
         })
       }
 
-      const actions = cmdsToSimulate.map(cmd =>
-        cmd.simulate({
+      const actions = cmdsToSimulate.map(cmdToSimulate =>
+        cmdToSimulate.simulate({
           success: result instanceof Error === false,
           result
         })
@@ -91,21 +72,22 @@ export const testDispatch = action => {
 
       return {
         actions,
-        dispatch(action) {
+        dispatch(wantedAction) {
           const actionToDispatch = actions.find(
-            ({type, payload}) => action.type === type && isEqual(action.payload, payload)
+            ({type, payload}) =>
+              wantedAction.type === type && isEqual(wantedAction.payload, payload)
           )
 
           if (!actionToDispatch) {
             expect.fail(output => {
               output
                 .error('Action ')
-                .appendInspected(action)
+                .appendInspected(wantedAction)
                 .error(' not found in simulation results')
             })
           }
 
-          return testDispatch(action)
+          return testDispatch(actionToDispatch)
         }
       }
     }
