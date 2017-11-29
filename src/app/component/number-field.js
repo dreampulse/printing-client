@@ -40,7 +40,7 @@ const NumberField = ({
   }
 
   const handleInputChange = event => {
-    const nextValue = event.target.value
+    const nextValue = parseInt(event.target.value, 10) || value
     if (nextValue < lowerLimit) {
       onChange(lowerLimit)
     } else if (nextValue > upperLimit) {

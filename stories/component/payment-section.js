@@ -9,7 +9,13 @@ import creditCardIcon from 'Icon/credit-card.svg'
 import paypalIcon from 'Icon/paypal.svg'
 
 storiesOf('Payment Section', module).add('default', () => (
-  <PaymentSection subtotal="$245.25" shipping="$50.00" vat="$50.00" total="$345.00">
+  <PaymentSection
+    subtotal="$245.25"
+    shippingPrice="$50.00"
+    shippingName="DHL"
+    vat="$50.00"
+    total="$345.00"
+  >
     <Button modifiers={['block']} icon={creditCardIcon} label="Pay by credit card" />
     <Button modifiers={['block']} icon={paypalIcon} label="Pay with Paypal" />
     <Link label="Terms of service" />

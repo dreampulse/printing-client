@@ -1,6 +1,15 @@
 // @flow
 
-import type {Address, User, Offer, Price, ModelBackend, Configuration, Materials} from './type'
+import type {
+  Address,
+  User,
+  Offer,
+  Price,
+  ModelBackend,
+  Configuration,
+  Materials,
+  ModalStateContentType
+} from './type'
 
 // User actions
 
@@ -157,7 +166,7 @@ export type ModelUnitChangedAction = {
 export type ModalOpenedAction = {
   type: 'MODAL.OPEN', // @TODO: past!
   payload: {
-    contentType: string,
+    contentType: ModalStateContentType,
     contentProps: any,
     isCloseable: boolean
   }

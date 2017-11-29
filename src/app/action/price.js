@@ -56,6 +56,10 @@ export const createPriceRequest = (
   const selectedMaterial = selectCurrentMaterial(state)
   const {refresh} = selectFeatures(state)
 
+  if (!selectedMaterial) {
+    throw new Error('No material selected')
+  }
+
   // Abort if user did not upload any models yet
   if (models.length === 0) {
     // Just to be sure, stop any running price polls
@@ -151,7 +155,7 @@ export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: 
 
   return poll(
     RECALC_POLL_NAME,
-    async priceId => {
+    async (priceId: string) => {
       const {price} = await printingEngine.getPriceWithStatus({priceId})
       const updatedOffer = getUpdatedOffer(selectedOffer, price.offers)
 

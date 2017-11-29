@@ -26,7 +26,7 @@ const PriceLocationChangedModal = ({oldShippingAddress, newShippingAddress, onCl
           to calculate prices. You have entered
           <strong>
             {' '}
-            {newShippingAddress.city}, {getCountryName(oldShippingAddress.countryCode)}{' '}
+            {newShippingAddress.city}, {getCountryName(newShippingAddress.countryCode)}{' '}
           </strong>
           as your shipping address.
         </p>

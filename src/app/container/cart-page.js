@@ -1,9 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
-import {getUsStateName, getCountryName} from 'Service/country'
+import {getStateName, getCountryName} from 'Service/country'
 import getCloudinaryUrl from 'Lib/cloudinary'
 import {selectedOfferMaterial, selectOfferItems} from 'Lib/selector'
+import compact from 'lodash/compact'
 
 import {formatPrice} from 'Lib/formatter'
 
@@ -32,11 +33,14 @@ import {
   payWithStripe,
   createOrderWithStripe,
   payWithPaypal,
-  createOrderWithPaypal
+  createOrderWithPaypal,
+  payWithInvoice,
+  createOrderWithInvoice
 } from 'Action/order'
 import {openFatalErrorModal} from 'Action/modal'
 
 import {guard} from './util/guard'
+import {getFeatures} from './util/feature'
 import AppLayout from './app-layout'
 
 const CartPage = ({
@@ -48,13 +52,24 @@ const CartPage = ({
   onGoToHome,
   onGoToSuccess,
   order,
+  features,
   isDirectSales,
   onPayWithStripe,
   onCreateOrderWithStripe,
   onPayWithPaypal,
-  onCreateOrderWithPaypal
+  onCreateOrderWithPaypal,
+  onPayWithInvoice,
+  onCreateOrderWithInvoice
 }) => {
-  const CartQantityList = () => {
+  const shippingStateName = getStateName(
+    user.shippingAddress.countryCode,
+    user.shippingAddress.stateCode
+  )
+  const billingStateName =
+    getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode) ||
+    shippingStateName
+
+  const CartQuantityList = () => {
     const items = offerItems.map(item => (
       <ModelQuantityItem
         imageSource={item.thumbnailUrl}
@@ -94,12 +109,12 @@ const CartPage = ({
             <br />
             {user.shippingAddress.zipCode} {user.shippingAddress.city}
             <br />
-            {user.shippingAddress.countryCode === 'US' ? (
+            {shippingStateName && (
               <span>
-                {getUsStateName(user.shippingAddress.stateCode)}
+                {shippingStateName}
                 <br />
               </span>
-            ) : null}
+            )}
             {getCountryName(user.shippingAddress.countryCode)}
           </Paragraph>
         </Column>
@@ -129,18 +144,12 @@ const CartPage = ({
             {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
             {user.billingAddress.city || user.shippingAddress.city}
             <br />
-            {user.billingAddress.countryCode && user.billingAddress.countryCode === 'US' ? (
+            {billingStateName && (
               <span>
-                {getUsStateName(user.billingAddress.stateCode)}
+                {billingStateName}
                 <br />
               </span>
-            ) : null}
-            {!user.billingAddress.countryCode && user.shippingAddress.countryCode === 'US' ? (
-              <span>
-                {getUsStateName(user.shippingAddress.stateCode)}
-                <br />
-              </span>
-            ) : null}
+            )}
             {user.billingAddress.countryCode
               ? getCountryName(user.billingAddress.countryCode)
               : getCountryName(user.shippingAddress.countryCode)}
@@ -189,9 +198,9 @@ const CartPage = ({
     />
   )
 
-  const paymentButtons = [
+  const paymentButtons = compact([
     <Button
-      key="payment-button-0"
+      key="payment-button-stripe"
       modifiers={['block']}
       icon={creditCardIcon}
       label="Pay with Credit Card"
@@ -208,20 +217,33 @@ const CartPage = ({
       }}
     />,
     <PaypalButton
-      key="payment-button-1"
+      key="payment-button-paypal"
       onClick={() => onPayWithPaypal()}
       onAuthorize={async data => {
         const payment = await onCreateOrderWithPaypal(data)
         onGoToSuccess()
         return payment
       }}
-    />
-  ]
+    />,
+    features.invoice && (
+      <Button
+        key="payment-button-invoice"
+        modifiers={['block']}
+        label="Pay with Invoice"
+        onClick={async () => {
+          await onPayWithInvoice()
+          await onCreateOrderWithInvoice()
+          onGoToSuccess()
+        }}
+      />
+    )
+  ])
 
   const paymentSection = (
     <PaymentSection
       subtotal={formatPrice(offer.subTotalPrice, offer.currency)}
-      shipping={formatPrice(offer.shipping.price, offer.currency)}
+      shippingPrice={formatPrice(offer.shipping.price, offer.currency)}
+      shippingName={offer.shipping.name}
       vat={formatPrice(offer.vatPrice, offer.currency)}
       total={formatPrice(offer.totalPrice, offer.currency)}
     >
@@ -241,7 +263,7 @@ const CartPage = ({
       <SidebarLayout sidebar={paymentSection}>
         <AddressSection />
         <VendorSection />
-        <CartQantityList />
+        <CartQuantityList />
       </SidebarLayout>
     </AppLayout>
   )
@@ -264,11 +286,14 @@ const mapDispatchToProps = {
   onPayWithStripe: payWithStripe,
   onCreateOrderWithStripe: createOrderWithStripe,
   onPayWithPaypal: payWithPaypal,
-  onCreateOrderWithPaypal: createOrderWithPaypal
+  onCreateOrderWithPaypal: createOrderWithPaypal,
+  onPayWithInvoice: payWithInvoice,
+  onCreateOrderWithInvoice: createOrderWithInvoice
 }
 
 const enhance = compose(
   guard(state => state.price.selectedOffer),
+  getFeatures,
   connect(mapStateToProps, mapDispatchToProps)
 )
 
