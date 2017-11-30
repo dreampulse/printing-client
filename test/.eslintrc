@@ -6,7 +6,8 @@
   "globals": {
     "expect": true,
     "sinon": true,
-    "mockStore": true
+    "mockStore": true,
+    "testDispatch": true
   },
   "env": {
     "mocha": true

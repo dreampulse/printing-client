@@ -3,10 +3,6 @@
 
   &__title {
     margin-bottom: $space-base;
-    border-bottom: 2px solid $color-border;
-
-    & > * {
-      margin-bottom: $space-base;
-    }
+    border-bottom: 1px solid $color-border;
   }
 }

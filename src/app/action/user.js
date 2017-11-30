@@ -9,6 +9,7 @@ import {setUserContext} from 'Service/logging'
 import {normalizeTelephoneNumber} from 'Lib/normalize'
 
 import type {Address, User, State} from '../type'
+import type {Location} from '../type-next'
 import TYPE from '../action-type'
 
 import {goToCart} from './navigation'
@@ -23,7 +24,8 @@ import {createPriceRequest, recalculateSelectedOffer} from './price'
 
 const shippingAddressChanged = createAction(
   TYPE.USER.SHIPPING_ADDRESS_CHANGED,
-  (address: Address) => ({address})
+  // The Location type is the smallest common denominator of an acceptable address
+  (address: Location) => ({address})
 )
 const userCreated = createAction(TYPE.USER.CREATED, (userId: string) => ({userId}))
 const userUpdated = createAction(TYPE.USER.UPDATED, (user: User) => user)
@@ -31,8 +33,8 @@ const userUpdated = createAction(TYPE.USER.UPDATED, (user: User) => user)
 // Async actions
 
 export const detectAddress = () => async (dispatch: Dispatch<*>) => {
-  const address = await getLocationByIp()
-  dispatch(shippingAddressChanged(address))
+  const location = await getLocationByIp()
+  dispatch(shippingAddressChanged(location))
 }
 
 export const createUser = () => async (dispatch: Dispatch<*>, getState: () => State) => {

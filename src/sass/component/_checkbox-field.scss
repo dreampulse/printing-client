@@ -1,5 +1,5 @@
 .checkbox-field {
-  $checkbox-size: 20px;
+  $checkbox-size: 18px;
 
   display: inline-block;
   width: $checkbox-size;
@@ -8,7 +8,6 @@
   background-color: $color-field-bg;
   border: 2px solid $color-border;
   border-radius: $border-radius / 2;
-  box-shadow: $box-shadow-base;
 
   &__input {
     position: absolute;
@@ -19,20 +18,6 @@
     width: 100%;
     cursor: pointer;
     border-radius: $border-radius / 2;
-
-    &:invalid ~ .checkbox-field__checked-icon{
-      border-color: $color-error;
-      box-shadow: $box-shadow-error;
-    }
-
-    &:focus ~ .checkbox-field__checked-icon{
-      border-color: $color-field-focus;
-      box-shadow: $box-shadow-focus;
-    }
-
-    &:active ~ .checkbox-field__checked-icon{
-      box-shadow: $box-shadow-active;
-    }
   }
 
   &__checked-icon {
@@ -42,23 +27,27 @@
     height: 100%;
     width: 100%;
     color: transparent;
-    font-size: $font-size-l;
+    font-size: $checkbox-size - 2 * 2px; // Due to 2px border
   }
 
   &--checked {
+    background: $color-primary;
+    border-color: $color-primary;
+
     .checkbox-field__checked-icon {
-      color: $color-text;
+      color: $color-bg;
     }
   }
 
   &--error {
     border-color: $color-error;
-    box-shadow: $box-shadow-error;
   }
 
   &--error.checkbox-field--checked, {
+    background: $color-error;
+
     .checkbox-field__checked-icon {
-      color: $color-error;
+      color: $color-bg;
     }
   }
 }

@@ -10,7 +10,7 @@
   padding-left: (2 * $space-base + $font-size-base);
   padding-right: $space-base;
   outline: 0;
-  background: $color-bg-highlight;
+  background: $color-bg;
   text-align: left;
   font-size: $font-size-base;
 
@@ -34,7 +34,7 @@
   }
 
   &:hover:not(.select-menu-material-item--selected) {
-    background: $color-gray-4;
+    background: $color-gray-5;
   }
 
   &--has-color {
