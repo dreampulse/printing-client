@@ -7,7 +7,6 @@ describe('Order reducer', () => {
       orderId: null,
       orderNumber: null,
       paymentToken: null,
-      paymentId: null,
       orderInProgress: false
     })
   })

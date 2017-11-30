@@ -1,7 +1,4 @@
 import config from '../../../config'
-import {requestJson} from './http'
-
-const baseUrl = config.printingEngineBaseUrl
 
 export function checkout({amount, currency, email}) {
   return new Promise((resolve, reject) => {
@@ -21,15 +18,5 @@ export function checkout({amount, currency, email}) {
       currency,
       email
     })
-  })
-}
-
-export function executePayment({orderId, token}) {
-  return requestJson(`${baseUrl}/payment/stripe`, {
-    method: 'POST',
-    body: {
-      orderId,
-      token
-    }
   })
 }

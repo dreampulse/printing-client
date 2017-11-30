@@ -1,7 +1,4 @@
-import config from '../../../config'
-import {requestJson} from './http'
-
-const PAYMENT_ENDPOINT = `${config.printingEngineBaseUrl}/payment/paypal`
+import * as printingEngine from '../lib/printing-engine'
 
 export function createPayment({
   amount,
@@ -58,16 +55,17 @@ export function createPayment({
     }
   ]
 
-  return requestJson(PAYMENT_ENDPOINT, {method: 'POST', body: {orderId, transactions}})
+  return printingEngine.createPaypalPayment({orderId, transactions})
 }
 
 export async function executePayment({data, paymentId}) {
   if (!data.paymentID) throw new Error('Payment failed')
 
-  const payment = await requestJson(`${PAYMENT_ENDPOINT}/${paymentId}`, {
-    method: 'PUT',
-    body: {payerId: data.payerID}
+  const payment = await printingEngine.executePaypalPayment({
+    payerId: data.payerID,
+    paymentId
   })
+
   if (!payment.status) throw new Error('PayPal payment not approved')
   return payment
 }

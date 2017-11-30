@@ -57,13 +57,6 @@ export type OrderOrderedAction = {
   }
 }
 
-export type OrderPaymentCreatedAction = {
-  type: 'ORDER.PAYMENT_CREATED',
-  payload: {
-    paymentId: string
-  }
-}
-
 // Price actions
 
 export type PriceOfferCleardAction = {
@@ -222,7 +215,6 @@ export type Action =
   | OrderPayedAction
   | OrderAbortedAction
   | OrderOrderedAction
-  | OrderPaymentCreatedAction
   | PriceOfferCleardAction
   | PriceRequestedAction
   | PriceReceivedAction
@@ -284,8 +276,7 @@ export default {
     ORDERED: 'ORDER.ORDERED',
     PAYED: 'ORDER.PAYED',
     STARTED: 'ORDER.STARTED',
-    ABORTED: 'ORDER.ABORTED',
-    PAYMENT_CREATED: 'ORDER.PAYMENT_CREATED'
+    ABORTED: 'ORDER.ABORTED'
   },
   DIRECT_SALES: {
     RESTORE_CONFIGURATION: 'DIRECT_SALES.RESTORE_CONFIGURATION',

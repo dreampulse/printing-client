@@ -174,7 +174,6 @@ export type OrderState = {
   orderId: ?string,
   orderNumber: ?string,
   paymentToken: ?string,
-  paymentId: ?string,
   orderInProgress: boolean
 }
 

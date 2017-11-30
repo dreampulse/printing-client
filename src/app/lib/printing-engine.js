@@ -60,3 +60,32 @@ export const createConfiguration = configuration =>
 
 export const getConfiguration = configurationId =>
   requestJson(`${baseUrl}/configuration/${configurationId}`)
+
+export const createPaypalPayment = ({orderId, transactions}) =>
+  requestJson(`${baseUrl}/payment/paypal`, {
+    method: 'POST',
+    body: {orderId, transactions}
+  })
+
+// TODO: use this
+export const createInvoicePayment = ({orderId, token}) =>
+  requestJson(`${baseUrl}/payment/invoice`, {
+    method: 'POST',
+    body: {token, orderId}
+  })
+
+export const createStripePayment = ({orderId, token}) => {
+  requestJson(`${baseUrl}/payment/stripe`, {
+    method: 'POST',
+    body: {
+      orderId,
+      token
+    }
+  })
+}
+
+export const executePaypalPayment = ({payerId, paymentId}) =>
+  requestJson(`${baseUrl}/payment/paypal/${paymentId}`, {
+    method: 'PUT',
+    body: {payerId}
+  })

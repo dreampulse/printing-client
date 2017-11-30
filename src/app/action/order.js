@@ -16,9 +16,6 @@ import {openFatalErrorModal} from './modal'
 // Sync actions
 const orderStarted = createAction(TYPE.ORDER.STARTED)
 const payed = createAction(TYPE.ORDER.PAYED, (paymentToken: string) => ({paymentToken}))
-const paymentCreated = createAction(TYPE.ORDER.PAYMENT_CREATED, (paymentId: string) => ({
-  paymentId
-}))
 const aborted = createAction(TYPE.ORDER.ABORTED)
 const ordered = createAction(
   TYPE.ORDER.ORDERED,
@@ -59,6 +56,8 @@ export const payWithStripe = () => async (dispatch: Dispatch<*>, getState: () =>
   const amount = offer.totalPrice
   const email = getState().user.user.emailAddress
 
+  await dispatch(createOrder())
+
   try {
     const tokenObject = await stripe.checkout({amount, currency, email})
     const paymentToken = tokenObject.id
@@ -73,10 +72,6 @@ export const payWithPaypal = () => async (dispatch: Dispatch<any>, getState: () 
   const {price, user} = getState()
 
   const order = await dispatch(createOrder())
-
-  if (!order) {
-    throw new Error('No order found. Has to be created before payment.')
-  }
 
   if (!price.selectedOffer) throw new Error('No offer selected')
 
@@ -94,22 +89,20 @@ export const payWithPaypal = () => async (dispatch: Dispatch<any>, getState: () 
     shippingAddress: user.user.shippingAddress
   })
 
-  dispatch(paymentCreated(paymentId))
+  dispatch(payed(paymentId))
 
   return providerFields.paymentId
 }
 
 export const createOrderWithStripe = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const token = getState().order.paymentToken
-  if (!token) throw new Error('Payment token missing')
-  const order = await dispatch(createOrder())
+  const orderId = getState().order.orderId
 
-  if (!order) {
-    throw new Error('No order found. Has to be created before payment.')
-  }
+  if (!token) throw new Error('Payment token missing')
+
   // execute optimistic in background without waiting
   try {
-    await stripe.executePayment({token, orderId: order.orderId})
+    await printingEngine.createStripePayment({token, orderId})
   } catch (err) {
     throw new Error(`Stripe payment failed: ${err.message}`)
   }
@@ -119,14 +112,16 @@ export const createOrderWithPaypal = (data: any) => async (
   dispatch: Dispatch<*>,
   getState: () => State
 ) => {
-  const paymentId = getState().order.paymentId
+  const paymentId = getState().order.paymentToken
   const payment = await paypal.executePayment({data, paymentId})
   return payment
 }
 
 // This actions are only available by using the 'invoice'-feature flag
 
-export const payWithInvoice = () => (dispatch: Dispatch<*>, getState: () => State) => {
+export const payWithInvoice = () => async (dispatch: Dispatch<any>, getState: () => State) => {
+  await dispatch(createOrder())
+
   const query = selectLocationQuery(getState())
   const invoiceKey = query.get('invoice_key')
   if (!invoiceKey) throw new Error('Invoice key missing')
@@ -136,5 +131,8 @@ export const payWithInvoice = () => (dispatch: Dispatch<*>, getState: () => Stat
 
 export const createOrderWithInvoice = () => (dispatch: Dispatch<*>, getState: () => State) => {
   const token = getState().order.paymentToken
+  const orderId = getState().order.orderId
   if (!token) throw new Error('Payment token missing')
+
+  return printingEngine.createInvoicePayment({token, orderId})
 }
