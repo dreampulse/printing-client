@@ -2,7 +2,7 @@
   $label-height: 35px;
 
   width: 100%;
-  background: $color-bg-highlight;
+  background: $color-bg;
 
   &__title {
     @include scut-truncate;
@@ -25,6 +25,6 @@
   }
 
   &__item:not(:last-child) {
-    border-bottom: 1px solid $color-gray-4;
+    border-bottom: 1px solid $color-gray-5;
   }
 }

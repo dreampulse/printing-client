@@ -1,6 +1,6 @@
 .process-step {
   $stacking: line, point;
-  $point-size: 20px;
+  $point-size: 12px;
 
   display: block;
   position: relative;
@@ -23,7 +23,6 @@
     height: $point-size;
     border-radius: 50%;
     background: currentColor;
-    border: 4px solid $color-blue-light;
     transition:
       background-color $transition-duration-fast ease-in-out,
       border-color $transition-duration-fast ease-in-out;
@@ -38,7 +37,7 @@
     top: 0.5 * $point-size;
     height: 0;
     width: 50%;
-    border-top: 1px solid $color-blue-light;
+    border-top: 1px solid $color-invert-text;
     transition: border-color $transition-duration-fast ease-in-out;
   }
   &:after {
@@ -49,15 +48,15 @@
   }
 
   &--inactive {
-    color: $color-gray-2;
+    color: mix($color-invert-text, $color-invert-bg, 50%);
 
     .process-step__point {
-      border-color: $color-gray-3;
+      border-color: mix($color-invert-text, $color-invert-bg, 50%);
     }
 
     &:after,
     &:before {
-      border-top-color: $color-gray-3;
+      border-top-color: mix($color-invert-text, $color-invert-bg, 50%);
     }
   }
 
@@ -75,7 +74,7 @@
 
   &--last-active {
     &:after {
-      border-top-color: $color-gray-3;
+      border-top-color: mix($color-invert-text, $color-invert-bg, 50%);
     }
   }
 }
