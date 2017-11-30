@@ -40,7 +40,7 @@ export const selectMaterial = (materialId: string) => async (dispatch: Dispatch<
 }
 export const getMaterials = () => async (dispatch: Dispatch<*>) => {
   const materials = cloneDeep(await printingEngine.listMaterials())
-  generateMaterialIds(materials)
+  generateMaterialIds(materials.materialStructure)
 
   return dispatch(materialReceived(materials))
 }
