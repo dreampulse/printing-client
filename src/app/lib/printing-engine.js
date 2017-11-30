@@ -67,7 +67,6 @@ export const createPaypalPayment = ({orderId, transactions}) =>
     body: {orderId, transactions}
   })
 
-// TODO: use this
 export const createInvoicePayment = ({orderId, token}) =>
   requestJson(`${baseUrl}/payment/invoice`, {
     method: 'POST',
