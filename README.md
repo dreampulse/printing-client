@@ -24,6 +24,7 @@ There are various commands available via NPM for use during development and to c
 - `npm run test:dev:watch`: Run unit tests in watch mode.
 - `npm run changes`: Show current changes which will go into next release.
 - `npm run release [<newversion> | major | minor | patch | prerelease]`: Create a new release by increasing the version number. Changelog is generated automatically from pull requests.
+- `npm run prettier`: Update the code to our code syntax rules.
 
 ## Start Dist Build
 

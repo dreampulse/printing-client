@@ -1,0 +1,5 @@
+/dist
+/node_modules
+/flow-typed
+/coverage
+/.nyc_output
