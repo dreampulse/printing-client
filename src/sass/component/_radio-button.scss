@@ -7,9 +7,10 @@
   padding: 0 0.5em;
   text-align: center;
   min-width: 3.5em;
+  color: $color-primary;
 
   &:hover {
-    background-color: $color-gray-4;
+    background-color: $color-blue-very-light;
   }
 
   &[aria-checked="true"] {
@@ -18,17 +19,17 @@
   }
 
   &[aria-disabled="true"] {
-    background-color: $color-disabled;
+    background-color: $color-gray-5;
     cursor: not-allowed;
-    color: darken($color-disabled, 30);
+    color: $color-minor;
 
     &:hover {
-      background-color: $color-disabled;
+      background-color: $color-gray-5;
     }
   }
 
   &[aria-checked="true"].radio-button[aria-disabled="true"] {
-    background-color: darken($color-primary, 10);
+    background-color: $color-primary;
     color: $color-invert-text;
   }
 

@@ -2,9 +2,9 @@
   margin: 0 0 $space-base;
   list-style: none;
   padding: 0;
-
+  border-top: 1px solid $color-border-minor;
 
   &__item {
-    border-bottom: 1px solid $color-bg;
+    border-bottom: 1px solid $color-border-minor;
   }
 }

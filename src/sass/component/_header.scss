@@ -1,12 +1,10 @@
 .header {
-  $logo-height: 50px;
+  $logo-height: 40px;
 
-  padding: $space-xl 0;
+  padding: $space-l 0;
   background: $color-invert-bg;
-  background: radial-gradient(circle at 50% 50%, $color-blue-dark, #030e16);
   color: $color-invert-text;
   font-size: $font-size-l;
-  font-weight: $font-weight-light;
 
   &__grid {
     @include grid;
@@ -15,8 +13,11 @@
   &__identity {
     @include span(12);
     @include scut-clearfix;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: $space-l;
-    text-align: center;
+    text-align: left;
     outline: 0;
 
     @include respond-to(large) {
@@ -34,17 +35,16 @@
   }
 
   &__logo {
-    display: inline-block;
     height: $logo-height;
     margin-right: $space-l;
-    vertical-align: middle;
+
+    @include respond-to(large) {
+      margin-right: $space-xxl;
+    }
   }
 
   &__subline {
-    display: inline-block;
-    position: relative;
     font-weight: inherit;
-    top: -0.2em; // Align with logo
-    vertical-align: middle;
+    line-height: $line-height-s;
   }
 }
