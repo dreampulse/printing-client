@@ -44,7 +44,9 @@ export type UploadingModel = {
   fileId: string,
   fileName: string,
   fileSize: number,
-  progress: number
+  progress: number,
+  error: boolean,
+  errorMessage?: string
 }
 
 export type BackendModel = {
@@ -62,8 +64,7 @@ export type BackendModel = {
 }
 
 export type Model = BackendModel & {
-  quantity: number,
-  fileSize: number
+  quantity: number
 }
 
 export type Location = {
