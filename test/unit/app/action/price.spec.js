@@ -67,15 +67,24 @@ describe('Price actions', () => {
   }
   const offer1 = {
     materialConfigId: 'material-config-1',
-    printingService: 'service-1'
+    printingService: 'service-1',
+    shipping: {
+      name: 'some-shipping'
+    }
   }
   const offer2 = {
     materialConfigId: 'material-config-1',
-    printingService: 'service-2'
+    printingService: 'service-2',
+    shipping: {
+      name: 'some-shipping'
+    }
   }
   const offer3 = {
     materialConfigId: 'material-config-2',
-    printingService: 'service-1'
+    printingService: 'service-1',
+    shipping: {
+      name: 'some-shipping'
+    }
   }
   let sandbox
 
