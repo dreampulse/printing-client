@@ -64,9 +64,13 @@ const uploadFile = (state, {payload}) => {
       ]
     },
     Cmd.run(uploadModel, {
-      args: [payload, {unit: 'mm'}, core.uploadProgressed(fileId)],
-      successActionCreator: core.uploadCompleted(fileId),
-      failActionCreator: core.uploadFailed(fileId)
+      args: [
+        payload,
+        {unit: 'mm'},
+        progress => Cmd.dispatch(core.uploadProgressed(fileId, progress))
+      ],
+      successActionCreator: model => core.uploadCompleted(fileId, model),
+      failActionCreator: error => core.uploadFailed(fileId, error)
     })
   )
 }

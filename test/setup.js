@@ -6,7 +6,7 @@ import sinon from 'sinon'
 import fetch from 'isomorphic-fetch'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {testDispatch} from './helper'
+import {testDispatch, reduceState} from './helper'
 
 expect.use(unexpectedSinon)
 
@@ -16,3 +16,4 @@ global.expect = expect
 global.sinon = sinon
 global.fetch = fetch
 global.testDispatch = testDispatch
+global.reduceState = reduceState

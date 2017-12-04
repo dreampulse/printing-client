@@ -26,14 +26,13 @@ export const uploadFile = (file: File): UploadFileAction => ({
   payload: file
 })
 
-export const uploadProgressed = (fileId: string) => (progress: number): UploadProgressedAction => ({
+// gegenwart
+export const uploadProgressed = (fileId: string, progress: number): UploadProgressedAction => ({
   type: 'CORE.UPLOAD_PROGRESSED',
   payload: {progress, fileId}
 })
 
-export const uploadCompleted = (fileId: string) => (
-  model: BackendModel
-): UploadCompletedAction => ({
+export const uploadCompleted = (fileId: string, model: BackendModel): UploadCompletedAction => ({
   type: 'CORE.UPLOAD_COMPLETED',
   payload: {
     fileId,
@@ -41,7 +40,7 @@ export const uploadCompleted = (fileId: string) => (
   }
 })
 
-export const uploadFailed = (fileId: string) => (error: Error): UploadFailedAction => ({
+export const uploadFailed = (fileId: string, error: Error): UploadFailedAction => ({
   type: 'CORE.UPLOAD_FAILED',
   payload: {
     fileId,

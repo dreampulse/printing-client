@@ -35,7 +35,7 @@ export const createMockStore = (initialState, nextStates = []) => {
   return store
 }
 
-const reduceState = oldState => action => {
+export const reduceState = oldState => action => {
   const reducerResult = reducer(oldState, action)
   const state = getModel(reducerResult)
   const cmd = getCmd(reducerResult)
@@ -45,11 +45,22 @@ const reduceState = oldState => action => {
     simulate: ({func, args, result}) => {
       const cmds = cmd.type === 'LIST' ? cmd.cmds : [cmd]
 
-      const cmdsToSimulate = cmds.filter(
+      const cmdsToSimulate = cmds.filter(c => {
         // We need to compare the function source because
         // in mocha's watch mode, strict equality checks won't work
-        c => c.func.toString() === func.toString() && isEqual(c.args, args)
-      )
+        if (c.func.toString() !== func.toString()) return false
+
+        if (!args) return true
+
+        try {
+          expect(c.args, 'to satisfy', args)
+
+          return true
+        } catch (err) {
+          console.log('err', err)
+          return false
+        }
+      })
 
       if (cmdsToSimulate.length === 0) {
         expect.fail(output => {
