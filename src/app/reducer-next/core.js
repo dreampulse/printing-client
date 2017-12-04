@@ -67,15 +67,15 @@ const uploadFile = (state, {payload}) => {
       args: [
         payload,
         {unit: 'mm'},
-        progress => Cmd.dispatch(core.uploadProgressed(fileId, progress))
+        progress => Cmd.dispatch(core.uploadProgress(fileId, progress))
       ],
-      successActionCreator: model => core.uploadCompleted(fileId, model),
-      failActionCreator: error => core.uploadFailed(fileId, error)
+      successActionCreator: model => core.uploadComplet(fileId, model),
+      failActionCreator: error => core.uploadFail(fileId, error)
     })
   )
 }
 
-const uploadCompleted = (state, {payload}) => {
+const uploadComplet = (state, {payload}) => {
   const model: Model = {
     ...payload.model,
     quantity: 1
@@ -95,7 +95,7 @@ const uploadCompleted = (state, {payload}) => {
   }
 }
 
-const uploadFailed = (state, {payload}) => {
+const uploadFail = (state, {payload}) => {
   const uploadingModels = state.uploadingModels.map(uploadingModel => {
     // The upload of this model has failed
     if (uploadingModel.fileId === payload.fileId) {
@@ -118,10 +118,10 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return updateMaterialGroups(state, action)
     case 'CORE.UPLOAD_FILE':
       return uploadFile(state, action)
-    case 'CORE.UPLOAD_COMPLETED':
-      return uploadCompleted(state, action)
-    case 'CORE.UPLOAD_FAILED':
-      return uploadFailed(state, action)
+    case 'CORE.UPLOAD_COMPLET':
+      return uploadComplet(state, action)
+    case 'CORE.UPLOAD_FAIL':
+      return uploadFail(state, action)
     default:
       return state
   }

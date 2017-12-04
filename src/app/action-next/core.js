@@ -4,15 +4,16 @@ import type {Action, MaterialGroup, BackendModel} from '../type-next'
 
 type UpdateMaterialGroupsAction = Action<'CORE.UPDATE_MATERIAL_GROUPS', Array<MaterialGroup>>
 type UploadFileAction = Action<'CORE.UPLOAD_FILE', File>
-type UploadProgressedAction = Action<'CORE.UPLOAD_PROGRESSED', {fileId: string, progress: number}>
-type UploadCompletedAction = Action<'CORE.UPLOAD_COMPLETED', {fileId: string, model: BackendModel}>
-type UploadFailedAction = Action<'CORE.UPLOAD_FAILED', {fileId: string, error: Error}>
+type UploadProgressAction = Action<'CORE.UPLOAD_PROGRESS', {fileId: string, progress: number}>
+type UploadCompletAction = Action<'CORE.UPLOAD_COMPLET', {fileId: string, model: BackendModel}>
+type UploadFailAction = Action<'CORE.UPLOAD_FAIL', {fileId: string, error: Error}>
 
 export type CoreAction =
   | UpdateMaterialGroupsAction
   | UploadFileAction
-  | UploadCompletedAction
-  | UploadFailedAction
+  | UploadProgressAction
+  | UploadCompletAction
+  | UploadFailAction
 
 export const updateMaterialGroups = (
   materialGroups: Array<MaterialGroup>
@@ -26,22 +27,21 @@ export const uploadFile = (file: File): UploadFileAction => ({
   payload: file
 })
 
-// gegenwart
-export const uploadProgressed = (fileId: string, progress: number): UploadProgressedAction => ({
-  type: 'CORE.UPLOAD_PROGRESSED',
+export const uploadProgress = (fileId: string, progress: number): UploadProgressAction => ({
+  type: 'CORE.UPLOAD_PROGRESS',
   payload: {progress, fileId}
 })
 
-export const uploadCompleted = (fileId: string, model: BackendModel): UploadCompletedAction => ({
-  type: 'CORE.UPLOAD_COMPLETED',
+export const uploadComplet = (fileId: string, model: BackendModel): UploadCompletAction => ({
+  type: 'CORE.UPLOAD_COMPLET',
   payload: {
     fileId,
     model
   }
 })
 
-export const uploadFailed = (fileId: string, error: Error): UploadFailedAction => ({
-  type: 'CORE.UPLOAD_FAILED',
+export const uploadFail = (fileId: string, error: Error): UploadFailAction => ({
+  type: 'CORE.UPLOAD_FAIL',
   payload: {
     fileId,
     error
