@@ -7,6 +7,7 @@ import * as normalize from 'Lib/normalize'
 import * as geolocation from 'Lib/geolocation'
 import TYPE from '../../../../src/app/action-type'
 import {resolveAsyncThunk, createMockStore} from '../../../helper'
+import { updateCurrency } from '../../../../src/app/action/user';
 
 describe('User actions', () => {
   let sandbox
@@ -143,7 +144,7 @@ describe('User actions', () => {
           type: 'some-open-fetching-price-modal'
         },
         {
-          type: TYPE.USER.UPDATED,
+          type: 'USER.UPDATED',
           payload: form
         },
         {
@@ -162,7 +163,6 @@ describe('User actions', () => {
     let initialState
 
     beforeEach(() => {
-      address = {}
       initialState = {}
       address = 'some-address'
     })
@@ -238,6 +238,40 @@ describe('User actions', () => {
           {type: 'create-price-request-action'}
         ])
       })
+    })
+  })
+
+  describe('updateCurrency()', () => {
+    let currency
+    let store
+    let initialState
+
+    beforeEach(() => {
+      initialState = {
+        user: {
+          userId: 'some-user-id',
+          user: {}
+        }
+      }
+
+      priceActions.createPriceRequest.returns({
+        type: 'create-price-request-action'
+      })
+    })
+
+    it('dispatches expected actions', async () => {
+      store = mockStore(initialState)
+      await store.dispatch(updateCurrency('USD'))
+
+      expect(store.getActions(), 'to equal', [
+        {
+          type: 'USER.UPDATED',
+          payload: {currency: 'USD'}
+        },
+        {
+          type: 'create-price-request-action'
+        }
+      ])
     })
   })
 })
