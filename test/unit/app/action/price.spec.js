@@ -7,6 +7,7 @@ import {
 } from 'Action/price'
 import * as pollLib from 'Lib/poll'
 import * as printingEngine from 'Lib/printing-engine'
+import * as offerLib from 'Lib/offer'
 import * as modalActions from 'Action/modal'
 import {AppError} from 'Lib/error'
 import config from '../../../../config'
@@ -67,15 +68,24 @@ describe('Price actions', () => {
   }
   const offer1 = {
     materialConfigId: 'material-config-1',
-    printingService: 'service-1'
+    printingService: 'service-1',
+    shipping: {
+      name: 'some-shipping'
+    }
   }
   const offer2 = {
     materialConfigId: 'material-config-1',
-    printingService: 'service-2'
+    printingService: 'service-2',
+    shipping: {
+      name: 'some-shipping'
+    }
   }
   const offer3 = {
     materialConfigId: 'material-config-2',
-    printingService: 'service-1'
+    printingService: 'service-1',
+    shipping: {
+      name: 'some-shipping'
+    }
   }
   let sandbox
 
@@ -571,6 +581,106 @@ describe('Price actions', () => {
       await store.dispatch(recalculateSelectedOffer())
 
       expect(printingEngine.getPriceWithStatus, 'to have a call satisfying', [{priceId: 'price-1'}])
+    })
+
+    it('calls getUpdatedOffer() with the expected arguments', async () => {
+      const price = {
+        offers: [offer1]
+      }
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: [offer1],
+          selectedOffer: offer1
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.resolves({price})
+      sandbox.stub(offerLib, 'getUpdatedOffer')
+
+      await store.dispatch(recalculateSelectedOffer())
+
+      expect(offerLib.getUpdatedOffer, 'to have a call satisfying', [offer1, price.offers])
+    })
+
+    it('selects the updated offer from getUpdatedOffer()', async () => {
+      const price = {
+        offers: [offer1]
+      }
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: [offer1],
+          selectedOffer: offer1
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.resolves({price})
+      sandbox.stub(offerLib, 'getUpdatedOffer').returns(offer2)
+
+      await store.dispatch(recalculateSelectedOffer())
+
+      expect(store.getActions(), 'to contain', {
+        type: TYPE.PRICE.SELECT_OFFER,
+        payload: {offer: offer2}
+      })
+    })
+
+    it('calls getCheapestOfferFor() with the expected arguments if getUpdatedOffer() returns null', async () => {
+      const price = {
+        offers: [offer1]
+      }
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: [offer1],
+          selectedOffer: offer1
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.resolves({price})
+      sandbox.stub(offerLib, 'getUpdatedOffer').returns(null)
+      sandbox.stub(offerLib, 'getCheapestOfferFor').returns(offer2)
+
+      await store.dispatch(recalculateSelectedOffer())
+
+      expect(offerLib.getCheapestOfferFor, 'to have a call satisfying', [
+        offer1.materialConfigId,
+        offer1.printingService,
+        price.offers
+      ])
+    })
+
+    it('selects the cheapest offer from getCheapestOfferFor() if getUpdatedOffer() returns null', async () => {
+      const price = {
+        offers: [offer1]
+      }
+      const store = mockStore({
+        material,
+        model,
+        user,
+        price: {
+          offers: [offer1],
+          selectedOffer: offer1
+        }
+      })
+      printingEngine.createPriceRequest.resolves({priceId: 'price-1'})
+      printingEngine.getPriceWithStatus.resolves({price})
+      sandbox.stub(offerLib, 'getUpdatedOffer').returns(null)
+      sandbox.stub(offerLib, 'getCheapestOfferFor').returns(offer2)
+
+      await store.dispatch(recalculateSelectedOffer())
+
+      expect(store.getActions(), 'to contain', {
+        type: TYPE.PRICE.SELECT_OFFER,
+        payload: {offer: offer2}
+      })
     })
 
     it('dispatches expected actions when polling fails with fatal error', async () => {
