@@ -5,14 +5,14 @@ import type {Action, MaterialGroup, BackendModel} from '../type-next'
 type UpdateMaterialGroupsAction = Action<'CORE.UPDATE_MATERIAL_GROUPS', Array<MaterialGroup>>
 type UploadFileAction = Action<'CORE.UPLOAD_FILE', File>
 type UploadProgressAction = Action<'CORE.UPLOAD_PROGRESS', {fileId: string, progress: number}>
-type UploadCompletAction = Action<'CORE.UPLOAD_COMPLET', {fileId: string, model: BackendModel}>
+type UploadCompleteAction = Action<'CORE.UPLOAD_COMPLETE', {fileId: string, model: BackendModel}>
 type UploadFailAction = Action<'CORE.UPLOAD_FAIL', {fileId: string, error: Error}>
 
 export type CoreAction =
   | UpdateMaterialGroupsAction
   | UploadFileAction
   | UploadProgressAction
-  | UploadCompletAction
+  | UploadCompleteAction
   | UploadFailAction
 
 export const updateMaterialGroups = (
@@ -32,8 +32,8 @@ export const uploadProgress = (fileId: string, progress: number): UploadProgress
   payload: {progress, fileId}
 })
 
-export const uploadComplet = (fileId: string, model: BackendModel): UploadCompletAction => ({
-  type: 'CORE.UPLOAD_COMPLET',
+export const uploadComplete = (fileId: string, model: BackendModel): UploadCompleteAction => ({
+  type: 'CORE.UPLOAD_COMPLETE',
   payload: {
     fileId,
     model

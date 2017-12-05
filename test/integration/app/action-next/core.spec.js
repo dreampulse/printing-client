@@ -87,7 +87,7 @@ describe('core action', () => {
           result: uploadResult
         })
         expect(actions, 'to satisfy', [
-          core.uploadCompleted(expect.it('to be a', 'string'), uploadResult)
+          core.uploadComplete(expect.it('to be a', 'string'), uploadResult)
         ])
       })
     })
