@@ -129,7 +129,7 @@ describe('Selector lib', () => {
               value: 'material-1',
               label: 'Material 1',
               hasColor: true,
-              price: 'From 10.00 $'
+              price: 'From $10.00'
             }
           ]
         },
