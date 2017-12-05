@@ -2,7 +2,6 @@
 
 import {loop, Cmd} from 'redux-loop'
 import cloneDeep from 'lodash/cloneDeep'
-import uniqueId from 'lodash/uniqueId'
 
 import {listMaterials, uploadModel} from 'App/lib/printing-engine'
 import {generateMaterialIds} from 'App/lib/material'
@@ -45,9 +44,9 @@ const updateMaterialGroups = (state, action) => {
 }
 
 const uploadFile = (state, {payload}) => {
-  const fileId = uniqueId('file-id-')
-  const fileName = payload.name
-  const fileSize = payload.size
+  const {fileId, file} = payload
+  const fileName = file.name
+  const fileSize = file.size
 
   return loop(
     {
@@ -61,6 +60,36 @@ const uploadFile = (state, {payload}) => {
           progress: 0,
           error: false
         }
+      ]
+    },
+    Cmd.run(uploadModel, {
+      args: [
+        payload.file,
+        {unit: 'mm'},
+        progress => Cmd.dispatch(core.uploadProgress(fileId, progress))
+      ],
+      successActionCreator: model => core.uploadComplete(fileId, model),
+      failActionCreator: error => core.uploadFail(fileId, error)
+    })
+  )
+}
+
+const uploadProgress = (state, {payload}) => {
+  const fileId = payload.fileId
+  const uploadingModels = state.uploadingModels
+  const i = uploadingModels.findIndex(m => m.fileId === fileId)
+  const modelToUpdate = uploadingModels[i]
+
+  return loop(
+    {
+      ...state,
+      uploadingModels: [
+        ...uploadingModels.slice(0, i),
+        {
+          ...modelToUpdate,
+          progress: payload.progress
+        },
+        ...uploadingModels.slice(i + 1)
       ]
     },
     Cmd.run(uploadModel, {
@@ -118,6 +147,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return updateMaterialGroups(state, action)
     case 'CORE.UPLOAD_FILE':
       return uploadFile(state, action)
+    case 'CORE.UPLOAD_PROGRESS':
+      return uploadProgress(state, action)
     case 'CORE.UPLOAD_COMPLETE':
       return uploadComplete(state, action)
     case 'CORE.UPLOAD_FAIL':

@@ -53,24 +53,28 @@ export const reduceState = oldState => actionArg => {
     },
     {state: oldState, cmds: []}
   )
+  const filterCmds = ({func, args}) =>
+    cmds.filter(c => {
+      // We need to compare the function source because
+      // in mocha's watch mode, strict equality checks won't work
+      if (c.func !== func) return false
+      if (!args) return true
+
+      try {
+        expect(c.args, 'to satisfy', args)
+
+        return true
+      } catch (err) {
+        return false
+      }
+    })
 
   return {
     state,
+    cmds,
+    dispatch: action => reduceState(state)(action),
     simulate: ({func, args, result, dispatchResult = false}) => {
-      const cmdsToSimulate = cmds.filter(c => {
-        // We need to compare the function source because
-        // in mocha's watch mode, strict equality checks won't work
-        if (c.func.toString() !== func.toString()) return false
-        if (!args) return true
-
-        try {
-          expect(c.args, 'to satisfy', args)
-
-          return true
-        } catch (err) {
-          return false
-        }
-      })
+      const cmdsToSimulate = filterCmds({func, args})
 
       if (cmdsToSimulate.length === 0) {
         expect.fail(output => {
@@ -94,6 +98,20 @@ export const reduceState = oldState => actionArg => {
           result
         })
       )
+      const filterActions = wantedAction =>
+        resultingActions.filter(({type, payload}) => {
+          if (wantedAction.type !== type) {
+            return false
+          }
+
+          try {
+            expect(wantedAction.payload, 'to satisfy', payload)
+
+            return true
+          } catch (err) {
+            return false
+          }
+        })
 
       if (dispatchResult === true) {
         return reduceState(state)(resultingActions)
@@ -103,19 +121,7 @@ export const reduceState = oldState => actionArg => {
         state,
         actions: resultingActions,
         dispatch(wantedAction) {
-          const actionsToDispatch = resultingActions.filter(({type, payload}) => {
-            if (wantedAction.type !== type) {
-              return false
-            }
-
-            try {
-              expect(wantedAction.payload, 'to satisfy', payload)
-
-              return true
-            } catch (err) {
-              return false
-            }
-          })
+          const actionsToDispatch = filterActions(wantedAction)
 
           if (actionsToDispatch.length === 0) {
             expect.fail(output => {

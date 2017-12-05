@@ -1,9 +1,10 @@
 // @flow
 
-import type {Action, MaterialGroup, BackendModel} from '../type-next'
+import uniqueId from 'lodash/uniqueId'
+import type {Action, MaterialGroup, BackendModel} from 'App/type-next'
 
 type UpdateMaterialGroupsAction = Action<'CORE.UPDATE_MATERIAL_GROUPS', Array<MaterialGroup>>
-type UploadFileAction = Action<'CORE.UPLOAD_FILE', File>
+type UploadFileAction = Action<'CORE.UPLOAD_FILE', {fileId: string, file: File}>
 type UploadProgressAction = Action<'CORE.UPLOAD_PROGRESS', {fileId: string, progress: number}>
 type UploadCompleteAction = Action<'CORE.UPLOAD_COMPLETE', {fileId: string, model: BackendModel}>
 type UploadFailAction = Action<'CORE.UPLOAD_FAIL', {fileId: string, error: Error}>
@@ -24,7 +25,10 @@ export const updateMaterialGroups = (
 
 export const uploadFile = (file: File): UploadFileAction => ({
   type: 'CORE.UPLOAD_FILE',
-  payload: file
+  payload: {
+    file,
+    fileId: uniqueId('file-id-')
+  }
 })
 
 export const uploadProgress = (fileId: string, progress: number): UploadProgressAction => ({
