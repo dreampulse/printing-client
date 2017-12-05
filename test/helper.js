@@ -1,5 +1,4 @@
 import {getModel, getCmd} from 'redux-loop'
-import isEqual from 'lodash/isEqual'
 import reducer from 'App/reducer-next'
 
 export const resolveAsyncThunk = (type, payload) => dispatch => {
@@ -35,21 +34,33 @@ export const createMockStore = (initialState, nextStates = []) => {
   return store
 }
 
-export const reduceState = oldState => action => {
-  const reducerResult = reducer(oldState, action)
-  const state = getModel(reducerResult)
-  const cmd = getCmd(reducerResult)
+export const reduceState = oldState => actionArg => {
+  const actions = Array.isArray(actionArg) ? actionArg : [actionArg]
+  const {state, cmds} = actions.reduce(
+    (result, action) => {
+      const reducerResult = reducer(result.state, action)
+      const c = getCmd(reducerResult)
+
+      if (c.type === 'LIST') {
+        result.cmds.push(...c.cmds)
+      } else {
+        result.cmds.push(c)
+      }
+
+      result.state = getModel(reducerResult)
+
+      return result
+    },
+    {state: oldState, cmds: []}
+  )
 
   return {
     state,
-    simulate: ({func, args, result}) => {
-      const cmds = cmd.type === 'LIST' ? cmd.cmds : [cmd]
-
+    simulate: ({func, args, result, dispatchResult = false}) => {
       const cmdsToSimulate = cmds.filter(c => {
         // We need to compare the function source because
         // in mocha's watch mode, strict equality checks won't work
         if (c.func.toString() !== func.toString()) return false
-
         if (!args) return true
 
         try {
@@ -57,7 +68,6 @@ export const reduceState = oldState => action => {
 
           return true
         } catch (err) {
-          console.log('err', err)
           return false
         }
       })
@@ -68,30 +78,46 @@ export const reduceState = oldState => action => {
             .error('No command found for simulation')
             .sp()
             .jsFunctionName(func.name)
-            .sp()
-            .text('with arguments')
-            .sp()
-            .appendInspected(args)
+          if (args) {
+            output
+              .sp()
+              .text('with arguments')
+              .sp()
+              .appendInspected(args)
+          }
         })
       }
 
-      const actions = cmdsToSimulate.map(cmdToSimulate =>
+      const resultingActions = cmdsToSimulate.map(cmdToSimulate =>
         cmdToSimulate.simulate({
           success: result instanceof Error === false,
           result
         })
       )
 
+      if (dispatchResult === true) {
+        return reduceState(state)(resultingActions)
+      }
+
       return {
         state,
-        actions,
+        actions: resultingActions,
         dispatch(wantedAction) {
-          const actionToDispatch = actions.find(
-            ({type, payload}) =>
-              wantedAction.type === type && isEqual(wantedAction.payload, payload)
-          )
+          const actionsToDispatch = resultingActions.filter(({type, payload}) => {
+            if (wantedAction.type !== type) {
+              return false
+            }
 
-          if (!actionToDispatch) {
+            try {
+              expect(wantedAction.payload, 'to satisfy', payload)
+
+              return true
+            } catch (err) {
+              return false
+            }
+          })
+
+          if (actionsToDispatch.length === 0) {
             expect.fail(output => {
               output
                 .error('Action ')
@@ -100,7 +126,7 @@ export const reduceState = oldState => action => {
             })
           }
 
-          return reduceState(state)(actionToDispatch)
+          return reduceState(state)(actionsToDispatch)
         }
       }
     }
