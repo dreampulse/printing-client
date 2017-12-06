@@ -11,7 +11,7 @@ const app = express()
 
 app.use(compression())
 
-app.use(favicon(resolve(`${__dirname}/../src/asset/image/favicon.png`)))
+app.use(favicon(resolve(`${__dirname}/../dist/asset/image/favicon.png`)))
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
