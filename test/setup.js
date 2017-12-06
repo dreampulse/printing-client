@@ -6,13 +6,13 @@ import sinon from 'sinon'
 import fetch from 'isomorphic-fetch'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-// Add store middlewares here
-global.mockStore = configureStore([thunk])
+import {testDispatch} from './helper'
 
 expect.use(unexpectedSinon)
 
+// Add store middlewares here
+global.mockStore = configureStore([thunk])
 global.expect = expect
 global.sinon = sinon
-
 global.fetch = fetch
+global.testDispatch = testDispatch

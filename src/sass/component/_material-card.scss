@@ -5,6 +5,7 @@
 
   max-width: $screen-sm-max;
   border-radius: $border-radius;
+  box-shadow: $box-shadow-base;
   overflow: hidden;
 
   &__image {
@@ -20,7 +21,6 @@
 
   &__content {
     padding: $space-l;
-    background: $color-bg-highlight;
   }
 
   &__header {
@@ -44,15 +44,6 @@
     margin: $space-base 0;
     height: 3 * $font-size-base * $line-height-base;
     overflow: hidden;
-  }
-
-  &__more {
-    outline: 0;
-    color: $color-blue;
-
-    &:hover {
-      color: $color-blue-light;
-    }
   }
 
   &__footer {
@@ -104,6 +95,7 @@
 
   &--unavailable {
     color: $color-minor;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
     opacity: 0.6;
 
     .material-card__image {

@@ -1,26 +1,71 @@
-import config from '../../../config'
+import * as printingEngine from '../lib/printing-engine'
 
-export function createPayment({amount, currency, offerId}) {
-  const paypal = global.paypal
-
-  const env = config.paypal.env
-  const client = config.paypal.client
+export function createPayment({
+  amount,
+  currency,
+  vat,
+  subTotal,
+  shipping,
+  orderId,
+  orderNumber,
+  shippingAddress
+}) {
+  const {
+    firstName,
+    lastName,
+    street,
+    houseNumber,
+    addressLine2,
+    city,
+    zipCode,
+    stateCode,
+    countryCode
+  } = shippingAddress
   const transactions = [
     {
-      custom: offerId,
+      custom: orderId,
       amount: {
         total: String(amount),
-        currency
+        currency,
+        details: {
+          subtotal: String(subTotal),
+          tax: String(vat),
+          shipping: String(shipping)
+        }
+      },
+      item_list: {
+        items: [
+          {
+            quantity: 1,
+            currency,
+            name: `Order Number: ${orderNumber}`,
+            price: subTotal
+          }
+        ],
+        shipping_address: {
+          recipient_name: `${firstName} ${lastName}`,
+          line1: `${street} ${houseNumber}`,
+          line2: addressLine2,
+          city,
+          country_code: countryCode,
+          postal_code: zipCode,
+          state: stateCode
+        }
       }
     }
   ]
-  return paypal.rest.payment.create(env, client, {transactions})
+
+  return printingEngine.createPaypalPayment({orderId, transactions})
 }
 
-export async function executePayment({actions}) {
-  if (!actions.payment) throw new Error('Payment failed')
-  await actions.payment.execute()
-  const payment = await actions.payment.get()
-  if (payment.state !== 'approved') throw new Error('PayPal payment not approved')
+export async function executePayment({data, paymentId}) {
+  if (!data.paymentID) throw new Error('Payment failed')
+
+  const payment = await printingEngine.executePaypalPayment({
+    payerId: data.payerID,
+    paymentId
+  })
+
+  if (!payment.status) throw new Error('PayPal payment not approved')
   return payment
 }

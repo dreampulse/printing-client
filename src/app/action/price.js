@@ -4,7 +4,7 @@ import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 
 import * as printingEngine from 'Lib/printing-engine'
-import {getUpdatedOffer} from 'Lib/offer'
+import {getUpdatedOffer, getCheapestOfferFor} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
 import {selectCurrentMaterial, selectFeatures} from 'Lib/selector'
 import {AppError} from 'Lib/error'
@@ -157,7 +157,13 @@ export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: 
     RECALC_POLL_NAME,
     async (priceId: string) => {
       const {price} = await printingEngine.getPriceWithStatus({priceId})
-      const updatedOffer = getUpdatedOffer(selectedOffer, price.offers)
+      const updatedOffer =
+        getUpdatedOffer(selectedOffer, price.offers) ||
+        getCheapestOfferFor(
+          selectedOffer.materialConfigId,
+          selectedOffer.printingService,
+          price.offers
+        )
 
       if (!updatedOffer || updatedOffer.priceEstimated) {
         return false

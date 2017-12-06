@@ -35,16 +35,17 @@ export type Offer = {
   totalPrice: number,
   currency: string,
   priceEstimated: boolean,
-  items: Array<{
+  items: {
     modelId: string,
     price: number,
     quantity: number
-  }>,
-  shipping: Array<{
+  }[],
+  shipping: {
     name: string,
+    displayName: string,
     deliveryTime: string,
     price: number
-  }>
+  }
 }
 
 // @TODO: why is this object needed? What is this?

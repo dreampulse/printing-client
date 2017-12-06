@@ -1,6 +1,7 @@
 .info {
   $info-size: 1em;
 
+  position: relative;
   box-sizing: content-box;
   border: 1px solid $color-primary;
   background: $color-primary;
@@ -22,11 +23,17 @@
   }
 
   &:before {
-    @include scut-center-transform;
     content: 'i';
     display: block;
+    position: absolute;
+    top: 1px; // Manual center correction
+    left: 1px; // Manual center correction
+    bottom: 0;
+    right: 0;
     font-size: .8em;
     font-weight: $font-weight-bold;
+    text-align: center;
+    line-height: 1em / 0.8em;
   }
 
   &__tooltip {

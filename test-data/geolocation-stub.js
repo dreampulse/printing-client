@@ -1,9 +1,4 @@
 import * as geolocation from '../src/app/lib/geolocation'
+import geolocationSuccessResponse from './mock/geolocation-success-response.json'
 
-geolocation.getLocation = () =>
-  Promise.resolve({
-    city: 'Munich',
-    zipCode: '80333',
-    stateCode: 'BY',
-    countryCode: 'DE'
-  })
+geolocation.getLocation = () => Promise.resolve(geolocationSuccessResponse)

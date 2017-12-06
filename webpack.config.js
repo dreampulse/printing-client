@@ -42,7 +42,8 @@ module.exports = {
       Container: path.resolve(projectRoot, './src/app/container'),
       Lib: path.resolve(projectRoot, './src/app/lib'),
       Reducer: path.resolve(projectRoot, './src/app/reducer'),
-      Service: path.resolve(projectRoot, './src/app/service')
+      Service: path.resolve(projectRoot, './src/app/service'),
+      App: path.resolve(projectRoot, './src/app')
     }
   },
   module: {

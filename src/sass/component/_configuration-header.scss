@@ -1,30 +1,35 @@
 .configuration-header {
-  padding: $space-l 0;
   background: $color-bg;
-  border-bottom: 1px solid $color-border;
 
   &__grid {
     @include grid;
+    padding: $space-l 0;
+    margin: 0;
+    border-bottom: 1px solid $color-border;
   }
 
   &__cell {
     @include span(12);
 
-    &:not(:last-child) {
-      margin-bottom: $space-base;
+    @include respond-to(small-only) {
+      margin-left: 0;
+      margin-right: 0;
+
+      &:not(:last-child) {
+        margin-bottom: $space-base;
+      }
     }
 
     @include respond-to(medium) {
       @include span(6);
-      &:not(:last-child) {
-        margin-bottom: 0;
-      }
-    }
 
-    &:nth-child(2n) {
-      @include respond-to(medium) {
+      &:nth-child(2n+1) {
+        padding-left: 0;
+      }
+      &:nth-child(2n) {
+        padding-right: 0;
         & > * {
-          float: right
+          float: right;
         }
       }
     }
