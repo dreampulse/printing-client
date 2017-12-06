@@ -9,7 +9,9 @@
     "mockStore": true,
     "getModel": true,
     "getCmd": true,
-    "findCmd": true
+    "findCmd": true,
+    // Remove testDispatch after test refactorings
+    "testDispatch": true
   },
   "env": {
     "mocha": true

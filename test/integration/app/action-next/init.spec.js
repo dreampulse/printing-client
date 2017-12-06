@@ -16,7 +16,7 @@ import {
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
 import geolocationSuccessResponse from '../../../../test-data/mock/geolocation-success-response.json'
 
-describe('init action', () => {
+describe.skip('init action', () => {
   describe(init.TYPE.INIT, () => {
     ;[
       [selectModels, []],
