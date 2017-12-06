@@ -1,7 +1,8 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
+import range from 'lodash/range'
 
-import MaterialCardList from 'Component/material-card-list'
+import MaterialSlider from 'Component/material-slider'
 import MaterialCard from 'Component/material-card'
 import Price from 'Component/price'
 import SelectField from 'Component/select-field'
@@ -9,6 +10,7 @@ import SelectMenu from 'Component/select-menu'
 import Info from 'Component/info'
 import Headline from 'Component/headline'
 import Paragraph from 'Component/paragraph'
+import Container from 'Component/container'
 
 import HandleValue from '../util/handle-value'
 
@@ -48,15 +50,11 @@ const card = ({title = 'Polyamide'}) => (
   />
 )
 
-storiesOf('Material Card List', module).add('default', () => (
-  <MaterialCardList>
-    {card({title: 'Polyamide 1'})}
-    {card({title: 'Polyamide 2'})}
-    {card({title: 'Polyamide 3'})}
-    {card({title: 'Polyamide 4'})}
-    {card({title: 'Polyamide 5'})}
-    {card({title: 'Polyamide 6'})}
-    {card({title: 'Polyamide 7'})}
-    {card({title: 'Polyamide 8'})}
-  </MaterialCardList>
+storiesOf('Material Slider', module).add('default', () => (
+  /* We need the container here to test the max size of the slider */
+  <Container>
+    <MaterialSlider>
+      {range(14).map(index => card({title: `Polyamide ${index + 1}`}))}
+    </MaterialSlider>
+  </Container>
 ))
