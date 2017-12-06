@@ -1,18 +1,11 @@
 import {Cmd} from 'redux-loop'
-import cloneDeep from 'lodash/cloneDeep'
 import * as core from 'App/action-next/core'
-import {generateMaterialIds} from 'App/lib/material'
 import {selectMaterialGroups, selectUploadingModels, selectModels} from 'App/selector'
 import {uploadModel} from 'App/lib/printing-engine'
+import reducer from 'App/reducer-next'
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
-import {testDispatch} from '../../../helper'
-
-// Has the shape of the browsers native file object
-// See: https://github.com/facebook/flow/blob/v0.59.0/lib/dom.js#L44
-const file = {
-  name: 'some-file-name',
-  size: 42
-}
+import uploadModelMock from '../../../mock/printing-engine/upload-model'
+import fileMock from '../../../mock/file'
 
 describe('core action', () => {
   let sandbox
@@ -25,50 +18,62 @@ describe('core action', () => {
   })
 
   describe('updateMaterialGroups()', () => {
-    ;[
-      [selectMaterialGroups, generateMaterialIds(cloneDeep(materialListResponse.materialStructure))]
-    ].forEach(([selector, expected]) => {
-      it(`${selector.name}(state) returns the expected result after execution`, () => {
-        const materialGroups = materialListResponse.materialStructure
-        const {state} = testDispatch(core.updateMaterialGroups(materialGroups))
-        expect(selector(state), 'to equal', expected)
-      })
+    let materialGroups
+    let state
+
+    beforeEach(() => {
+      const stateBefore = undefined
+
+      materialGroups = materialListResponse.materialStructure
+      state = reducer(stateBefore, core.updateMaterialGroups(materialGroups))
     })
 
-    it('selectMaterialGroups(state) returns a copy of the action payload', () => {
-      const materialGroups = [materialListResponse.materialStructure[0]]
-      const {state} = testDispatch(core.updateMaterialGroups(materialGroups))
-      expect(selectMaterialGroups(state), 'not to be', materialGroups)
+    it('assigns material ids to all material groups', () => {
+      const action = core.updateMaterialGroups(materialListResponse.materialStructure)
+
+      expect(action.payload.every(material => 'id' in material), 'to be', true)
+    })
+
+    describe('using selectMaterialGroups() selector', () => {
+      it('returns the updated material group', () =>
+        expect(
+          selectMaterialGroups(getModel(state)),
+          'to satisfy',
+          materialListResponse.materialStructure
+        ))
     })
   })
 
   describe('uploadFile()', () => {
+    let uploadFileAction
+    let state
+
+    beforeEach(() => {
+      const stateBefore = undefined
+      uploadFileAction = core.uploadFile(fileMock())
+      state = reducer(stateBefore, uploadFileAction)
+    })
+
     it('creates unique fileIds', () => {
-      const uploadFileAction1 = core.uploadFile(file)
-      const uploadFileAction2 = core.uploadFile(file)
+      const uploadFileAction1 = core.uploadFile(fileMock())
+      const uploadFileAction2 = core.uploadFile(fileMock())
 
       expect(uploadFileAction1.payload.fileId, 'not to equal', uploadFileAction2.payload.fileId)
     })
 
     describe('using selectUploadingModels() selector', () => {
       it('returns the uploaded models', () => {
-        const {state} = testDispatch(core.uploadFile(file))
-
-        expect(selectUploadingModels(state), 'to satisfy', [
-          {
-            fileId: expect.it('to be a', 'string'),
-            fileName: 'some-file-name',
-            fileSize: 42,
-            progress: 0,
-            error: false
-          }
-        ])
+        expect(selectUploadingModels(getModel(state)), 'to have an item satisfying', {
+          fileId: expect.it('to be a', 'string'),
+          fileName: 'some-file-name',
+          fileSize: 42,
+          progress: 0,
+          error: false
+        })
       })
 
       it('triggers the core.uploadProgress() action as soon as uploadModel() has a progress', () => {
-        const uploadFileAction = core.uploadFile(file)
-        const {cmds} = testDispatch(uploadFileAction)
-        const uploadModelCmd = cmds.find(cmd => cmd.func === uploadModel)
+        const uploadModelCmd = findCmd(state, uploadModel)
         const onProgress = uploadModelCmd.args[2]
 
         sandbox.spy(Cmd, 'dispatch')
@@ -80,126 +85,111 @@ describe('core action', () => {
       })
 
       it('triggers the core.uploadComplete() action with the file id and the result from uploadModel()', () => {
-        const uploadResult = {
-          modelId: 'some-model-id',
-          fileName: 'some-filename',
-          fileUnit: 'mm',
-          area: 42,
-          volume: 42,
-          dimensions: {
-            x: 42,
-            y: 42,
-            z: 42
-          },
-          thumbnailUrl: 'some-thumbnail-url'
-        }
-        const uploadFileAction = core.uploadFile(file)
-        const {actions} = testDispatch(uploadFileAction).simulate({
-          func: uploadModel,
-          args: [file, {unit: 'mm'}, expect.it('to be a', 'function')],
-          result: uploadResult
-        })
+        const cmd = findCmd(state, uploadModel, [
+          fileMock,
+          {unit: 'mm'},
+          expect.it('to be a', 'function')
+        ])
+        const action = cmd.simulate({success: true, result: uploadModelMock})
 
         expect(
-          actions,
-          'to have an item satisfying',
-          core.uploadComplete(uploadFileAction.payload.fileId, uploadResult)
+          action,
+          'to equal',
+          core.uploadComplete(uploadFileAction.payload.fileId, uploadModelMock)
         )
       })
 
       it('triggers the core.uploadFail() action with the file id and the error from uploadModel()', () => {
-        const uploadFileAction = core.uploadFile(file)
-        const error = new Error('File upload failed')
-        const {actions} = testDispatch(uploadFileAction).simulate({
-          func: uploadModel,
-          result: error
-        })
+        const cmd = findCmd(state, uploadModel)
+        const action = cmd.simulate({success: false, result: uploadModelMock})
 
         expect(
-          actions,
-          'to have an item satisfying',
-          core.uploadFail(uploadFileAction.payload.fileId, error)
+          action,
+          'to equal',
+          core.uploadFail(uploadFileAction.payload.fileId, uploadModelMock)
         )
       })
     })
   })
 
   describe('uploadProgress()', () => {
-    it('throws an error if the file id is unknown', () => {
-      expect(
-        () => testDispatch(core.uploadProgress('does-not-exit', 30)),
-        'to throw',
-        new Error('Could not update file upload progress: File does-not-exit is unknown')
-      )
+    let fileId
+    let state
+
+    beforeEach(() => {
+      const stateBefore = undefined
+      const uploadFileAction = core.uploadFile(fileMock())
+      const stateBeforeUploadProgress = reducer(stateBefore, uploadFileAction)
+
+      fileId = uploadFileAction.payload.fileId
+      state = reducer(getModel(stateBeforeUploadProgress), core.uploadProgress(fileId, 42))
     })
 
     describe('using selectUploadingModels() selector', () => {
       it('updates the model with the given file id', () => {
-        const uploadFileAction = core.uploadFile(file)
-        const fileId = uploadFileAction.payload.fileId
-        const {state} = testDispatch([uploadFileAction, core.uploadProgress(fileId, 30)])
-        const model = selectUploadingModels(state).find(m => m.fileId === fileId)
+        const model = selectUploadingModels(getModel(state)).find(m => m.fileId === fileId)
 
-        expect(model, 'to satisfy', {progress: 30})
+        expect(model, 'to satisfy', {progress: 42})
       })
 
       it('does not change the order (or manipulate the array unexpectedly)', () => {
-        const uploadFileAction1 = core.uploadFile(file)
-        const uploadFileAction2 = core.uploadFile(file)
-        const uploadFileAction3 = core.uploadFile(file)
+        const uploadFileAction1 = core.uploadFile(fileMock())
+        const uploadFileAction2 = core.uploadFile(fileMock())
+        const uploadFileAction3 = core.uploadFile(fileMock())
         const fileId2 = uploadFileAction2.payload.fileId
-        const multiFileUploadScenario = testDispatch([
+
+        const stateBeforeUploadProgress = [
           uploadFileAction1,
           uploadFileAction2,
           uploadFileAction3
-        ])
-        const orderBeforeDispatch = selectUploadingModels(multiFileUploadScenario.state).map(
+        ].reduce((currentState, action) => reducer(getModel(currentState), action), undefined)
+        const orderBeforeDispatch = selectUploadingModels(getModel(stateBeforeUploadProgress)).map(
           m => m.fileId
         )
-        const {state} = multiFileUploadScenario.dispatch(core.uploadProgress(fileId2, 30))
-        const orderAfterDispatch = selectUploadingModels(state).map(m => m.fileId)
 
-        expect(orderBeforeDispatch.length, 'to be', 3) // safe guard against empty arrays
+        const stateAfterUploadProgress = reducer(
+          getModel(stateBeforeUploadProgress),
+          core.uploadProgress(fileId2, 42)
+        )
+        const orderAfterDispatch = selectUploadingModels(getModel(stateAfterUploadProgress)).map(
+          m => m.fileId
+        )
+
         expect(orderBeforeDispatch, 'to equal', orderAfterDispatch)
       })
     })
   })
 
   describe('uploadComplete()', () => {
+    let fileId
+    let state
+
+    beforeEach(() => {
+      const uploadFileAction = core.uploadFile(fileMock())
+
+      fileId = uploadFileAction.payload.fileId
+      state = [uploadFileAction, core.uploadComplete(fileId, uploadModelMock)].reduce(
+        (currentState, action) => reducer(getModel(currentState), action),
+        undefined
+      )
+    })
+
     describe('using selectUploadingModels() selector', () => {
       it('does not return the model with the given file id', () => {
-        const uploadFileAction = core.uploadFile(file)
-        const fileId = uploadFileAction.payload.fileId
-        const backendModel = {}
-        const {state} = testDispatch([uploadFileAction, core.uploadComplete(fileId, backendModel)])
-        const model = selectUploadingModels(state).find(m => m.fileId === fileId)
+        const model = selectUploadingModels(getModel(state)).find(m => m.fileId === fileId)
 
         expect(model, 'to be', undefined)
       })
     })
-  })
 
-  describe('using selectModels() selector', () => {
-    it('throws an error if the file id is unknown', () => {
-      expect(
-        () => testDispatch(core.uploadComplete('does-not-exit', {})),
-        'to throw',
-        new Error('Could not complete file upload: File does-not-exit is unknown')
-      )
-    })
+    describe('using selectModels() selector', () => {
+      it('returns the given backend model with a quantity property', () => {
+        const model = selectModels(getModel(state)).find(m => m.modelId === uploadModelMock.modelId)
 
-    it('returns the given backend model with a quantity property', () => {
-      const uploadFileAction = core.uploadFile(file)
-      const fileId = uploadFileAction.payload.fileId
-      const backendModel = {
-        modelId: 'model-id-1'
-      }
-      const {state} = testDispatch([uploadFileAction, core.uploadComplete(fileId, backendModel)])
-      const model = selectModels(state).find(m => m.modelId === backendModel.modelId)
-
-      expect(model, 'to satisfy', {
-        ...backendModel,
-        quantity: 1
+        expect(model, 'to satisfy', {
+          ...uploadModelMock,
+          quantity: 1
+        })
       })
     })
   })

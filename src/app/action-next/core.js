@@ -1,6 +1,8 @@
 // @flow
 
 import uniqueId from 'lodash/uniqueId'
+import cloneDeep from 'lodash/cloneDeep'
+import {generateMaterialIds} from 'App/lib/material'
 import type {Action, MaterialGroup, BackendModel} from 'App/type-next'
 
 type UpdateMaterialGroupsAction = Action<'CORE.UPDATE_MATERIAL_GROUPS', Array<MaterialGroup>>
@@ -20,7 +22,8 @@ export const updateMaterialGroups = (
   materialGroups: Array<MaterialGroup>
 ): UpdateMaterialGroupsAction => ({
   type: 'CORE.UPDATE_MATERIAL_GROUPS',
-  payload: materialGroups
+  // TODO: Move cloneDeep() to generateMaterialIds
+  payload: generateMaterialIds(cloneDeep(materialGroups))
 })
 
 export const uploadFile = (file: File): UploadFileAction => ({

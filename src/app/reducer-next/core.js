@@ -1,10 +1,8 @@
 // @flow
 
 import {loop, Cmd} from 'redux-loop'
-import cloneDeep from 'lodash/cloneDeep'
-
+import invariant from 'invariant'
 import {listMaterials, uploadModel} from 'App/lib/printing-engine'
-import {generateMaterialIds} from 'App/lib/material'
 import type {Model, UploadingModel, MaterialGroup} from 'App/type-next'
 import type {AppAction} from 'App/action-next'
 import * as core from 'App/action-next/core'
@@ -32,16 +30,10 @@ const loadMaterialGroups = (state, action) =>
     })
   )
 
-const updateMaterialGroups = (state, action) => {
-  const materialGroups = cloneDeep(action.payload)
-
-  generateMaterialIds(materialGroups)
-
-  return {
-    ...state,
-    materialGroups
-  }
-}
+const updateMaterialGroups = (state, action) => ({
+  ...state,
+  materialGroups: action.payload
+})
 
 const uploadFile = (state, {payload}) => {
   const {fileId, file} = payload
@@ -79,9 +71,8 @@ const uploadProgress = (state, {payload}) => {
   const uploadingModels = state.uploadingModels
   const i = uploadingModels.findIndex(m => m.fileId === fileId)
 
-  if (i === -1) {
-    throw new Error(`Could not update file upload progress: File ${fileId} is unknown`)
-  }
+  invariant(i !== -1, `Could not update file upload progress: File ${fileId} is unknown`)
+
   const modelToUpdate = uploadingModels[i]
 
   return loop(
@@ -120,9 +111,10 @@ const uploadComplete = (state, {payload}) => {
     uploadingModel => uploadingModel.fileId !== fileId
   )
 
-  if (state.uploadingModels.length === uploadingModels.length) {
-    throw new Error(`Could not complete file upload: File ${fileId} is unknown`)
-  }
+  invariant(
+    state.uploadingModels.length !== uploadingModels.length,
+    `Could not complete file upload: File ${fileId} is unknown`
+  )
 
   // TODO: same modelId issue
 
