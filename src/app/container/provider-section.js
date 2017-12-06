@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
 import {buildClassArray} from 'Lib/build-class-name'
-import {selectOffersForSelectedMaterialConfig} from 'Lib/selector'
+import {selectOffersForSelectedMaterialConfig, selectMaterialByMaterialConfigId} from 'Lib/selector'
 import {formatPrice, formatDeliveryTime} from 'Lib/formatter'
 
 import Section from 'Component/section'
@@ -11,6 +11,8 @@ import Headline from 'Component/headline'
 import ProviderList from 'Component/provider-list'
 import ProviderItem from 'Component/provider-item'
 import Button from 'Component/button'
+import Info from 'Component/info'
+import Paragraph from 'Component/paragraph'
 
 import {selectOffer} from 'Action/price'
 import {goToAddress} from 'Action/navigation'
@@ -25,7 +27,8 @@ const ProviderSection = ({
   onSelectOffer,
   onGoToAddress,
   onCreateConfiguration,
-  features
+  features,
+  state
 }) => {
   const disabled = !selectedMaterialConfig || !offers
   const headlineModifiers = buildClassArray({
@@ -33,14 +36,35 @@ const ProviderSection = ({
     disabled
   })
 
-  // TODO: add the process from the material config
+  const getOfferProcess = offer => {
+    const {material: {properties: {printingMethodShort = ''}}} = selectMaterialByMaterialConfigId(
+      state,
+      offer.materialConfigId
+    )
+    return printingMethodShort
+  }
+
+  const getProviderInfo = offer => {
+    const {material: {properties: {printingServiceName = []}}} = selectMaterialByMaterialConfigId(
+      state,
+      offer.materialConfigId
+    )
+    return (
+      <Info modifiers={['minor']}>
+        <Headline modifiers={['s']} label={`${offer.printingService} calls this material:`} />
+        <Paragraph>{printingServiceName[offer.printingService] || 'unknown'}</Paragraph>
+      </Info>
+    )
+  }
+
   const renderProviderList = () => (
     <ProviderList>
       {offers.sort((a, b) => a.totalPrice > b.totalPrice).map(offer => (
         <ProviderItem
           key={offer.offerId}
-          process="SLS"
+          process={getOfferProcess(offer)}
           provider={offer.printingService}
+          providerInfo={getProviderInfo(offer)}
           price={formatPrice(
             offer.subTotalPrice + offer.vatPrice,
             offer.currency,
@@ -79,7 +103,8 @@ const ProviderSection = ({
 const mapStateToProps = state => ({
   configurationId: state.configuration.configurationId,
   selectedMaterialConfig: state.material.selectedMaterialConfig,
-  offers: selectOffersForSelectedMaterialConfig(state)
+  offers: selectOffersForSelectedMaterialConfig(state),
+  state
 })
 
 const mapDispatchToProps = {
