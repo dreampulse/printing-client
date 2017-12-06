@@ -4,71 +4,80 @@ import * as modal from 'App/action-next/modal'
 import * as user from 'App/action-next/user'
 import {listMaterials} from 'App/lib/printing-engine'
 import {getLocationByIp} from 'App/lib/geolocation'
-import {
-  selectModels,
-  selectUploadingModels,
-  selectMaterialGroups,
-  selectUserId,
-  selectCurrency,
-  isModalOpen,
-  selectModalConfig
-} from 'App/selector'
+import * as selector from 'App/selector'
+import reducer from 'App/reducer-next'
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
 import geolocationSuccessResponse from '../../../../test-data/mock/geolocation-success-response.json'
 
-describe.skip('init action', () => {
-  describe(init.TYPE.INIT, () => {
+describe('init action', () => {
+  describe('init()', () => {
+    let selectorsToTest
+    let state
+
+    before(() => {
+      selectorsToTest = Object.values(selector)
+    })
+
+    beforeEach(() => {
+      state = reducer(undefined, init.init())
+    })
+
+    after(() => {
+      if (selectorsToTest.length > 0) {
+        throw new Error(`Missing init test for selector ${selectorsToTest[0].name}()`)
+      }
+    })
     ;[
-      [selectModels, []],
-      [selectUploadingModels, []],
-      [selectMaterialGroups, []],
-      [selectUserId, null],
-      [selectCurrency, 'USD'],
-      [isModalOpen, false],
-      [selectModalConfig, {isCloseable: true, content: null, contentProps: null}]
+      [selector.selectModels, []],
+      [selector.selectUploadingModels, []],
+      [selector.selectMaterialGroups, []],
+      [selector.selectUserId, null],
+      [selector.selectCurrency, 'USD'],
+      [selector.isModalOpen, false],
+      [selector.selectModalConfig, {isCloseable: true, content: null, contentProps: null}]
     ].forEach(([selector, expected]) => {
-      it(`${selector.name}(state) returns the expected result after execution`, () => {
-        const {state} = testDispatch(init.init())
-        expect(selector(state), 'to equal', expected)
+      it(`${selector.name}() returns the expected result after execution`, () => {
+        expect(selector(getModel(state)), 'to equal', expected)
+        selectorsToTest = selectorsToTest.filter(s => s !== selector)
       })
     })
 
     it(`triggers the core.updateMaterialGroups() action with the result from listMaterials`, () => {
-      const {actions} = testDispatch(init.init()).simulate({
-        func: listMaterials,
-        args: [],
+      const cmd = findCmd(state, listMaterials, [])
+      const action = cmd.simulate({
+        success: true,
         result: materialListResponse
       })
-      expect(actions, 'to contain', core.updateMaterialGroups(materialListResponse))
+      expect(action, 'to equal', core.updateMaterialGroups(materialListResponse.materialStructure))
     })
 
     it(`triggers the modal.openFatalErrorModal() action with the given error when listMaterials failed`, () => {
       const err = new Error('Some error')
-      const {actions} = testDispatch(init.init()).simulate({
-        func: listMaterials,
-        args: [],
+      const cmd = findCmd(state, listMaterials, [])
+      const action = cmd.simulate({
+        success: false,
         result: err
       })
-      expect(actions, 'to contain', modal.openFatalErrorModal(err))
+      expect(action, 'to equal', modal.openFatalErrorModal(err))
     })
 
     it(`triggers the user.updateLocation() action with the result from getLocationByIp`, () => {
-      const {actions} = testDispatch(init.init()).simulate({
-        func: getLocationByIp,
-        args: [],
+      const cmd = findCmd(state, getLocationByIp, [])
+      const action = cmd.simulate({
+        success: true,
         result: geolocationSuccessResponse
       })
-      expect(actions, 'to contain', user.updateLocation(geolocationSuccessResponse))
+      expect(action, 'to equal', user.updateLocation(geolocationSuccessResponse))
     })
 
     it(`triggers the modal.openPickLocationModal() action when getLocationByIp failed`, () => {
       const err = new Error('Some error')
-      const {actions} = testDispatch(init.init()).simulate({
-        func: getLocationByIp,
-        args: [],
+      const cmd = findCmd(state, getLocationByIp, [])
+      const action = cmd.simulate({
+        success: false,
         result: err
       })
-      expect(actions, 'to contain', modal.openPickLocationModal())
+      expect(action, 'to equal', modal.openPickLocationModal())
     })
   })
 })

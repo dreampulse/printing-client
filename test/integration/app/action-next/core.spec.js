@@ -22,10 +22,8 @@ describe('core action', () => {
     let state
 
     beforeEach(() => {
-      const stateBefore = undefined
-
       materialGroups = materialListResponse.materialStructure
-      state = reducer(stateBefore, core.updateMaterialGroups(materialGroups))
+      state = reducer(undefined, core.updateMaterialGroups(materialGroups))
     })
 
     it('assigns material ids to all material groups', () => {
@@ -49,9 +47,8 @@ describe('core action', () => {
     let state
 
     beforeEach(() => {
-      const stateBefore = undefined
       uploadFileAction = core.uploadFile(fileMock())
-      state = reducer(stateBefore, uploadFileAction)
+      state = reducer(undefined, uploadFileAction)
     })
 
     it('creates unique fileIds', () => {
@@ -117,9 +114,8 @@ describe('core action', () => {
     let state
 
     beforeEach(() => {
-      const stateBefore = undefined
       const uploadFileAction = core.uploadFile(fileMock())
-      const stateBeforeUploadProgress = reducer(stateBefore, uploadFileAction)
+      const stateBeforeUploadProgress = reducer(undefined, uploadFileAction)
 
       fileId = uploadFileAction.payload.fileId
       state = reducer(getModel(stateBeforeUploadProgress), core.uploadProgress(fileId, 42))
