@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'recompose'
+import {getCurrencies} from 'Service/currency'
 
 import {selectMaterialByMaterialConfigId, selectPrintingServiceRequests} from 'Lib/selector'
 import {getBestOfferForMaterialConfig} from 'Lib/material'
@@ -12,7 +13,7 @@ import {openMaterialModal} from 'Action/modal'
 import {selectMaterialConfig} from 'Action/material'
 import {selectOffer} from 'Action/price'
 import {goToAddress} from 'Action/navigation'
-import {updateLocation} from 'Action/user'
+import {updateLocation, updateCurrency} from 'Action/user'
 
 import ConfigurationHeader from 'Component/configuration-header'
 import LabeledField from 'Component/labeled-field'
@@ -35,6 +36,7 @@ import config from '../../../config'
 
 const DirectConfigurationPage = ({
   address,
+  currency,
   models,
   selectedMaterial,
   offers,
@@ -43,7 +45,8 @@ const DirectConfigurationPage = ({
   onSelectMaterialConfig,
   onSelectOffer,
   onGoToAddress,
-  onUpdateLocation
+  onUpdateLocation,
+  onUpdateCurrency
 }) => {
   const {finishGroup, materialConfig} = selectedMaterial
   const colorValues = finishGroup.materialConfigs
@@ -128,6 +131,9 @@ const DirectConfigurationPage = ({
     />
   )
 
+  const currencies = getCurrencies()
+  const selectedCurrencyValue = currencies.find(({value}) => value === currency)
+  const currencyMenu = <SelectMenu values={currencies || []} />
   const configurationHeader = (
     <ConfigurationHeader>
       <LabeledField label="Shipping:" modifiers={['block']}>
@@ -135,6 +141,13 @@ const DirectConfigurationPage = ({
           value={formatAddress(address)}
           googleMapsApiKey={config.googleMapsApiKey}
           onChange={place => onUpdateLocation(convertPlaceToLocation(place))}
+        />
+        <SelectField
+          menu={currencyMenu}
+          value={selectedCurrencyValue}
+          disabled={!address.countryCode}
+          onChange={({value}) => onUpdateCurrency(value)}
+          modifiers={['currency']}
         />
       </LabeledField>
     </ConfigurationHeader>
@@ -162,6 +175,7 @@ const DirectConfigurationPage = ({
 
 const mapStateToProps = state => ({
   address: state.user.user.shippingAddress,
+  currency: state.user.user.currency,
   models: state.model.models,
   offers: state.price.offers || [],
   selectedMaterial: selectMaterialByMaterialConfigId(state, state.material.selectedMaterialConfig),
@@ -173,7 +187,8 @@ const mapDispatchToProps = {
   onSelectMaterialConfig: selectMaterialConfig,
   onSelectOffer: selectOffer,
   onGoToAddress: goToAddress,
-  onUpdateLocation: updateLocation
+  onUpdateLocation: updateLocation,
+  onUpdateCurrency: updateCurrency
 }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(DirectConfigurationPage)

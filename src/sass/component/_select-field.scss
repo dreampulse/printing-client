@@ -82,6 +82,10 @@
     box-shadow: none;
   }
 
+  &--currency {
+    max-width: 110px;
+  }
+
   &:focus:not(:disabled) {
     box-shadow: $box-shadow-focus;
     border-color: $color-primary;

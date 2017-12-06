@@ -18,15 +18,34 @@
       &:not(:last-child) {
         margin-bottom: $space-base;
       }
+
+      &:nth-child(2n) {
+        @include span(6);
+      }
+
+      &:last-child {
+        @include span(6);
+        padding-right: 0;
+        & > * {
+          float: right;
+        }
+      }
     }
 
     @include respond-to(medium) {
       @include span(6);
 
-      &:nth-child(2n+1) {
+      &:first-child {
+        @include span(6);
+      }
+
+      &:nth-child(2n) {
+        @include span(2);
         padding-left: 0;
       }
-      &:nth-child(2n) {
+
+      &:last-child {
+        @include span(4);
         padding-right: 0;
         & > * {
           float: right;
