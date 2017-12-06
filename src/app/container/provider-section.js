@@ -65,11 +65,7 @@ const ProviderSection = ({
           process={getOfferProcess(offer)}
           provider={offer.printingService}
           providerInfo={getProviderInfo(offer)}
-          price={formatPrice(
-            offer.subTotalPrice + offer.vatPrice,
-            offer.currency,
-            offer.priceEstimated
-          )}
+          price={formatPrice(offer.subTotalPrice, offer.currency, offer.priceEstimated)}
           deliveryTime={formatDeliveryTime(offer.shipping.deliveryTime)}
           deliveryProvider={offer.shipping.name}
           shipping={formatPrice(offer.shipping.price, offer.currency)}
