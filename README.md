@@ -17,7 +17,6 @@ There are various commands available via NPM for use during development and to c
 - `npm run build`: Build the production version of the source code into `/dist`.
 - `npm run start` : Starts a production webserver with the distribution build.
 - `npm run start:dev` : Starts a development server with hot reloading.
-- `npm run start:dev:stubs` : Starts a development server with hot reloading and stubs the API.
 - `npm run start:storybook` : Starts react storybook.
 - `npm run test`: Lint the source code and run all available tests cases (unit tests, integration tests and e2e tests) and collect coverage information.
 - `npm run test:dev`: Run unit tests without test coverage.

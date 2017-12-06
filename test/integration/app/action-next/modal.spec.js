@@ -1,7 +1,7 @@
 import * as modal from 'App/action-next/modal'
 import {isModalOpen, selectModalConfig} from 'App/selector'
 
-describe('modal action', () => {
+describe.skip('modal action', () => {
   describe('openModal()', () => {
     const contentArgs = {}
     ;[

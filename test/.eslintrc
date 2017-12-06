@@ -7,6 +7,10 @@
     "expect": true,
     "sinon": true,
     "mockStore": true,
+    "getModel": true,
+    "getCmd": true,
+    "findCmd": true,
+    // Remove testDispatch after test refactorings
     "testDispatch": true
   },
   "env": {
