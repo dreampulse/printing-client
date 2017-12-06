@@ -25,7 +25,7 @@ describe.skip('init action', () => {
       [selectUserId, null],
       [selectCurrency, 'USD'],
       [isModalOpen, false],
-      [selectModalConfig, {isCloseable: true, content: null, contentArgs: null}]
+      [selectModalConfig, {isCloseable: true, content: null, contentProps: null}]
     ].forEach(([selector, expected]) => {
       it(`${selector.name}(state) returns the expected result after execution`, () => {
         const {state} = testDispatch(init.init())

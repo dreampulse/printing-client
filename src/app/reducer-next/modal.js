@@ -10,14 +10,14 @@ const initialState: ModalState = {
   isOpen: false,
   isCloseable: true,
   content: null,
-  contentArgs: null
+  contentProps: null
 }
 
 const openModal = (state, action) => ({
   isOpen: true,
   isCloseable: action.payload.isCloseable,
   content: action.payload.content,
-  contentArgs: action.payload.contentArgs
+  contentProps: action.payload.contentProps
 })
 
 const closeModal = (state, action) => initialState
