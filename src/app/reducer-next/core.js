@@ -78,6 +78,10 @@ const uploadProgress = (state, {payload}) => {
   const fileId = payload.fileId
   const uploadingModels = state.uploadingModels
   const i = uploadingModels.findIndex(m => m.fileId === fileId)
+
+  if (i === -1) {
+    throw new Error(`Could not update file upload progress: File ${fileId} is unknown`)
+  }
   const modelToUpdate = uploadingModels[i]
 
   return loop(
@@ -105,6 +109,7 @@ const uploadProgress = (state, {payload}) => {
 }
 
 const uploadComplete = (state, {payload}) => {
+  const fileId = payload.fileId
   const model: Model = {
     ...payload.model,
     quantity: 1
@@ -112,8 +117,12 @@ const uploadComplete = (state, {payload}) => {
 
   // Remove the now uploaded model from the list of uploading Models
   const uploadingModels = state.uploadingModels.filter(
-    uploadingModel => uploadingModel.fileId !== payload.fileId
+    uploadingModel => uploadingModel.fileId !== fileId
   )
+
+  if (state.uploadingModels.length === uploadingModels.length) {
+    throw new Error(`Could not complete file upload: File ${fileId} is unknown`)
+  }
 
   // TODO: same modelId issue
 
@@ -125,9 +134,10 @@ const uploadComplete = (state, {payload}) => {
 }
 
 const uploadFail = (state, {payload}) => {
+  const fileId = payload.fileId
   const uploadingModels = state.uploadingModels.map(uploadingModel => {
     // The upload of this model has failed
-    if (uploadingModel.fileId === payload.fileId) {
+    if (uploadingModel.fileId === fileId) {
       return {...uploadingModel, error: true, errorMessage: payload.error.message}
     }
     return uploadingModel

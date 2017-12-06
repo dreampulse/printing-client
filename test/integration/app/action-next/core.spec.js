@@ -2,7 +2,7 @@ import {Cmd} from 'redux-loop'
 import cloneDeep from 'lodash/cloneDeep'
 import * as core from 'App/action-next/core'
 import {generateMaterialIds} from 'App/lib/material'
-import {selectMaterialGroups, selectUploadingModels} from 'App/selector'
+import {selectMaterialGroups, selectUploadingModels, selectModels} from 'App/selector'
 import {uploadModel} from 'App/lib/printing-engine'
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
 import {testDispatch} from '../../../helper'
@@ -103,7 +103,7 @@ describe('core action', () => {
         expect(
           actions,
           'to have an item satisfying',
-          core.uploadComplete(expect.it('to be', uploadFileAction.payload.fileId), uploadResult)
+          core.uploadComplete(uploadFileAction.payload.fileId, uploadResult)
         )
       })
 
@@ -118,13 +118,21 @@ describe('core action', () => {
         expect(
           actions,
           'to have an item satisfying',
-          core.uploadFail(expect.it('to be', uploadFileAction.payload.fileId), error)
+          core.uploadFail(uploadFileAction.payload.fileId, error)
         )
       })
     })
   })
 
   describe('uploadProgress()', () => {
+    it('throws an error if the file id is unknown', () => {
+      expect(
+        () => testDispatch(core.uploadProgress('does-not-exit', 30)),
+        'to throw',
+        new Error('Could not update file upload progress: File does-not-exit is unknown')
+      )
+    })
+
     describe('using selectUploadingModels() selector', () => {
       it('updates the model with the given file id', () => {
         const uploadFileAction = core.uploadFile(file)
@@ -151,7 +159,47 @@ describe('core action', () => {
         const {state} = multiFileUploadScenario.dispatch(core.uploadProgress(fileId2, 30))
         const orderAfterDispatch = selectUploadingModels(state).map(m => m.fileId)
 
+        expect(orderBeforeDispatch.length, 'to be', 3) // safe guard against empty arrays
         expect(orderBeforeDispatch, 'to equal', orderAfterDispatch)
+      })
+    })
+  })
+
+  describe('uploadComplete()', () => {
+    describe('using selectUploadingModels() selector', () => {
+      it('does not return the model with the given file id', () => {
+        const uploadFileAction = core.uploadFile(file)
+        const fileId = uploadFileAction.payload.fileId
+        const backendModel = {}
+        const {state} = testDispatch([uploadFileAction, core.uploadComplete(fileId, backendModel)])
+        const model = selectUploadingModels(state).find(m => m.fileId === fileId)
+
+        expect(model, 'to be', undefined)
+      })
+    })
+  })
+
+  describe('using selectModels() selector', () => {
+    it('throws an error if the file id is unknown', () => {
+      expect(
+        () => testDispatch(core.uploadComplete('does-not-exit', {})),
+        'to throw',
+        new Error('Could not complete file upload: File does-not-exit is unknown')
+      )
+    })
+
+    it('returns the given backend model with a quantity property', () => {
+      const uploadFileAction = core.uploadFile(file)
+      const fileId = uploadFileAction.payload.fileId
+      const backendModel = {
+        modelId: 'model-id-1'
+      }
+      const {state} = testDispatch([uploadFileAction, core.uploadComplete(fileId, backendModel)])
+      const model = selectModels(state).find(m => m.modelId === backendModel.modelId)
+
+      expect(model, 'to satisfy', {
+        ...backendModel,
+        quantity: 1
       })
     })
   })
