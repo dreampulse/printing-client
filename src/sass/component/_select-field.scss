@@ -14,7 +14,7 @@
   box-shadow: $box-shadow-base;
   outline: 0;
   text-align: left;
-  background: $color-bg-highlight;
+  background: $color-bg;
   color: $color-minor;
 
   & > .color-square {
@@ -79,6 +79,7 @@
   &--disabled {
     opacity: .5;
     cursor: not-allowed;
+    box-shadow: none;
   }
 
   &:focus:not(:disabled) {

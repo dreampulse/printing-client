@@ -1,13 +1,13 @@
 .payment-section {
   padding: $space-l;
-  background-color: $color-bg-highlight;
+  border: 1px solid $color-border-minor;
 
   &__price-components {
     list-style: none;
     margin: 0;
     padding: 0 0 $space-l;
     margin-bottom: $space-l;
-    border-bottom: 1px solid $color-border;
+    border-bottom: 1px solid $color-border-minor;
   }
 
   &__price-component,
@@ -41,6 +41,7 @@
     margin: $space-l 0 0;
     .payment-section__price-value {
       font-size: $font-size-xxl;
+      font-weight: $font-weight-bold;
     }
   }
 

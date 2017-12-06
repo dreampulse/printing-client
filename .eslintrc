@@ -18,11 +18,15 @@
     "no-plusplus": 0,
     "no-param-reassign": 0,
     "no-shadow": 1,
-    "react/require-default-props": 1,  // This need refactoring
+    "react/require-default-props": 0,
     "prefer-destructuring": 0,
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/anchor-is-valid": 0,
     "jsx-a11y/label-has-for": 0,
+    "no-unused-vars": ["error", {
+      "args": "none",
+      "vars": "all"
+      }],
     "prettier/prettier": ["error", {
       "parser": "flow",
       "semi": false,

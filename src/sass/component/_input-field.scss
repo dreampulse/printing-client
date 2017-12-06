@@ -13,7 +13,6 @@
     width: 100%;
     height: $field-height;
     border: $border-width solid $color-border;
-    box-shadow: $box-shadow-base;
     border-radius: $border-radius;
     font-size: $font-size-l;
     padding: {
@@ -28,10 +27,6 @@
     &:focus {
       border-color: $color-field-focus;
       box-shadow: $box-shadow-focus;
-    }
-
-    &:active {
-      box-shadow: $box-shadow-active;
     }
 
     &:invalid {

@@ -13,8 +13,7 @@ import type {State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
 import {openFatalErrorModal} from './modal'
 
-// Syncron actions
-
+// Sync actions
 const orderStarted = createAction(TYPE.ORDER.STARTED)
 const payed = createAction(TYPE.ORDER.PAYED, (paymentToken: string) => ({paymentToken}))
 const aborted = createAction(TYPE.ORDER.ABORTED)
@@ -24,11 +23,7 @@ const ordered = createAction(
 )
 
 // Async actions
-
-const createOrder = (type: string, token: string) => async (
-  dispatch: Dispatch<*>,
-  getState: () => State
-) => {
+const createOrder = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const {user: {userId}, price: {priceId, selectedOffer}} = getState()
 
   if (!selectedOffer) throw new Error('No offer selected')
@@ -38,16 +33,17 @@ const createOrder = (type: string, token: string) => async (
     const {orderId, orderNumber} = await printingEngine.order({
       userId,
       priceId,
-      offerId,
-      type,
-      token
+      offerIds: [offerId]
     })
 
     dispatch(ordered({orderId, orderNumber}))
+    return {orderId, orderNumber}
   } catch (error) {
     dispatch(
       openFatalErrorModal(new AppError(ERROR_TYPE.ORDER_FAILED, 'Failed to process the order'))
     )
+
+    return null
   }
 }
 
@@ -60,6 +56,8 @@ export const payWithStripe = () => async (dispatch: Dispatch<*>, getState: () =>
   const amount = offer.totalPrice
   const email = getState().user.user.emailAddress
 
+  await dispatch(createOrder())
+
   try {
     const tokenObject = await stripe.checkout({amount, currency, email})
     const paymentToken = tokenObject.id
@@ -70,30 +68,60 @@ export const payWithStripe = () => async (dispatch: Dispatch<*>, getState: () =>
   }
 }
 
-export const payWithPaypal = () => (dispatch: Dispatch<*>, getState: () => State) => {
-  const {price} = getState()
+export const payWithPaypal = () => async (dispatch: Dispatch<any>, getState: () => State) => {
+  const {price, user} = getState()
+
+  const order = await dispatch(createOrder())
+
   if (!price.selectedOffer) throw new Error('No offer selected')
-  const {totalPrice, currency, offerId} = price.selectedOffer
-  return paypal.createPayment({amount: totalPrice, currency, offerId})
+
+  const {totalPrice, currency, vatPrice, shipping, subTotalPrice} = price.selectedOffer
+  const {orderId, orderNumber} = order
+
+  const {paymentId, providerFields} = await paypal.createPayment({
+    amount: totalPrice,
+    currency,
+    orderId,
+    subTotal: subTotalPrice,
+    vat: vatPrice,
+    orderNumber,
+    shipping: shipping.price,
+    shippingAddress: user.user.shippingAddress
+  })
+
+  dispatch(payed(paymentId))
+
+  return providerFields.paymentId
 }
 
-export const createOrderWithStripe = () => (dispatch: Dispatch<*>, getState: () => State) => {
+export const createOrderWithStripe = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const token = getState().order.paymentToken
+  const orderId = getState().order.orderId
+
   if (!token) throw new Error('Payment token missing')
-  return dispatch(createOrder('stripe', token))
+
+  // execute optimistic in background without waiting
+  try {
+    await printingEngine.createStripePayment({token, orderId})
+  } catch (err) {
+    throw new Error(`Stripe payment failed: ${err.message}`)
+  }
 }
 
-export const createOrderWithPaypal = (data: any, actions: any) => async (dispatch: Dispatch<*>) => {
-  const payment = await paypal.executePayment({actions})
-  const token = payment.id
-
-  await dispatch(createOrder('paypal', token))
+export const createOrderWithPaypal = (data: any) => async (
+  dispatch: Dispatch<*>,
+  getState: () => State
+) => {
+  const paymentId = getState().order.paymentToken
+  const payment = await paypal.executePayment({data, paymentId})
   return payment
 }
 
 // This actions are only available by using the 'invoice'-feature flag
 
-export const payWithInvoice = () => (dispatch: Dispatch<*>, getState: () => State) => {
+export const payWithInvoice = () => async (dispatch: Dispatch<any>, getState: () => State) => {
+  await dispatch(createOrder())
+
   const query = selectLocationQuery(getState())
   const invoiceKey = query.get('invoice_key')
   if (!invoiceKey) throw new Error('Invoice key missing')
@@ -103,6 +131,8 @@ export const payWithInvoice = () => (dispatch: Dispatch<*>, getState: () => Stat
 
 export const createOrderWithInvoice = () => (dispatch: Dispatch<*>, getState: () => State) => {
   const token = getState().order.paymentToken
+  const orderId = getState().order.orderId
   if (!token) throw new Error('Payment token missing')
-  return dispatch(createOrder('invoice', token))
+
+  return printingEngine.createInvoicePayment({token, orderId})
 }

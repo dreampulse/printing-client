@@ -8,7 +8,7 @@
   line-height: $height;
   padding: 0 $space-base 0 (2 * $space-base + $font-size-base);
   outline: 0;
-  background: $color-bg-highlight;
+  background: $color-bg;
   text-align: left;
   font-size: $font-size-base;
 
@@ -36,6 +36,6 @@
   }
 
   &:hover:not(.select-menu-item--selected) {
-    background: $color-gray-4;
+    background: $color-gray-5;
   }
 }

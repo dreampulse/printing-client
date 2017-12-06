@@ -16,22 +16,22 @@ describe('generateMaterialIds()', () => {
   })
 
   it('adds ids to material groups', () => {
-    generateMaterialIds(materials)
+    generateMaterialIds(materials.materialStructure)
     expect(materials.materialStructure[0].id, 'to be defined')
   })
 
   it('adds unique ids to material groups', () => {
-    generateMaterialIds(materials)
+    generateMaterialIds(materials.materialStructure)
     expect(materials.materialStructure[0].id, 'not to equal', materials.materialStructure[1].id)
   })
 
   it('adds ids to materials', () => {
-    generateMaterialIds(materials)
+    generateMaterialIds(materials.materialStructure)
     expect(materials.materialStructure[0].materials[0].id, 'to be defined')
   })
 
   it('adds unique ids to materials', () => {
-    generateMaterialIds(materials)
+    generateMaterialIds(materials.materialStructure)
     expect(
       materials.materialStructure[0].materials[0].id,
       'not to equal',
@@ -40,12 +40,12 @@ describe('generateMaterialIds()', () => {
   })
 
   it('adds ids to finish groups', () => {
-    generateMaterialIds(materials)
+    generateMaterialIds(materials.materialStructure)
     expect(materials.materialStructure[0].materials[0].finishGroups[0].id, 'to be defined')
   })
 
   it('adds unique ids to finish groups', () => {
-    generateMaterialIds(materials)
+    generateMaterialIds(materials.materialStructure)
     expect(
       materials.materialStructure[0].materials[0].finishGroups[0].id,
       'not to equal',

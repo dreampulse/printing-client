@@ -1,5 +1,5 @@
-export function generateMaterialIds(materials) {
-  materials.materialStructure.forEach((materialGroup, groupIndex) => {
+export function generateMaterialIds(materialGroups) {
+  materialGroups.forEach((materialGroup, groupIndex) => {
     materialGroup.id = `group-${groupIndex}`
 
     materialGroup.materials.forEach((material, materialIndex) => {
@@ -10,6 +10,8 @@ export function generateMaterialIds(materials) {
       })
     })
   })
+
+  return materialGroups
 }
 
 export function hasMaterialMultipleConfigs(material) {

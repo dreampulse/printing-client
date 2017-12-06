@@ -34,13 +34,13 @@
 
   &[disabled] {
     cursor: not-allowed;
-    background-color: $color-gray-4;
+    background-color: $color-gray-5;
     color: $color-minor;
     box-shadow: none;
   }
 
   &--selected {
-    background-color: $color-gray-4;
+    background-color: $color-gray-5;
     color: $color-minor;
     box-shadow: none;
 
@@ -51,7 +51,7 @@
     &:hover:not([disabled]),
     &:focus:not([disabled]),
     &:active:not([disabled]) {
-      background-color: $color-gray-4;
+      background-color: $color-gray-5;
       color: $color-minor;
       box-shadow: none;
     }
