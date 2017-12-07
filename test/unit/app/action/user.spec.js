@@ -1,4 +1,4 @@
-import {reviewOrder, updateLocation} from 'Action/user'
+import {reviewOrder, updateLocation, updateCurrency} from 'Action/user'
 import * as priceActions from 'Action/price'
 import * as modalActions from 'Action/modal'
 import * as navigationActions from 'Action/navigation'
@@ -7,7 +7,6 @@ import * as normalize from 'Lib/normalize'
 import * as geolocation from 'Lib/geolocation'
 import TYPE from '../../../../src/app/action-type'
 import {resolveAsyncThunk, createMockStore} from '../../../helper'
-import { updateCurrency } from '../../../../src/app/action/user';
 
 describe('User actions', () => {
   let sandbox
@@ -204,7 +203,12 @@ describe('User actions', () => {
       it('dispatches expected actions, when no user exists', async () => {
         initialState = {
           user: {
-            userId: undefined
+            userId: undefined,
+            user: {
+              shippingAddress: {
+                countryCode: 'some-country-code'
+              }
+            }
           }
         }
         store = mockStore(initialState)
@@ -223,7 +227,12 @@ describe('User actions', () => {
       it('dispatches expected actions, when user exists', async () => {
         initialState = {
           user: {
-            userId: 'some-user-id'
+            userId: 'some-user-id',
+            user: {
+              shippingAddress: {
+                countryCode: 'some-country-code'
+              }
+            }
           }
         }
         store = mockStore(initialState)
@@ -234,7 +243,15 @@ describe('User actions', () => {
             type: 'USER.SHIPPING_ADDRESS_CHANGED',
             payload: {address: 'some-address'}
           },
-          {type: 'USER.UPDATED'},
+          {
+            type: 'USER.UPDATED',
+            payload: {
+              shippingAddress: {
+                countryCode: 'some-country-code'
+              },
+              currency: 'USD'
+            }
+          },
           {type: 'create-price-request-action'}
         ])
       })
@@ -242,7 +259,6 @@ describe('User actions', () => {
   })
 
   describe('updateCurrency()', () => {
-    let currency
     let store
     let initialState
 
