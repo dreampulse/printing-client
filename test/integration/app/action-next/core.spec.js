@@ -189,4 +189,40 @@ describe('core action', () => {
       })
     })
   })
+
+  describe('uploadFail()', () => {
+    let fileId
+    let error
+    let state
+
+    beforeEach(() => {
+      const uploadFileAction = core.uploadFile(fileMock())
+
+      error = new Error('Some error')
+      fileId = uploadFileAction.payload.fileId
+      state = [uploadFileAction, core.uploadFail(fileId, error)].reduce(
+        (currentState, action) => reducer(getModel(currentState), action),
+        undefined
+      )
+    })
+
+    describe('using selectUploadingModels() selector', () => {
+      it('contains the uploading model with an error flag and errorMessage', () => {
+        const model = selectUploadingModels(getModel(state)).find(m => m.fileId === fileId)
+
+        expect(model, 'to satisfy', {
+          error: true,
+          errorMessage: error.message
+        })
+      })
+    })
+
+    describe('using selectModels() selector', () => {
+      it('does not contain the model', () => {
+        const model = selectModels(getModel(state)).find(m => m.modelId === uploadModelMock.modelId)
+
+        expect(model, 'to equal', undefined)
+      })
+    })
+  })
 })
