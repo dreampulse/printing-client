@@ -123,4 +123,4 @@ $box-shadow-error: 0px 0px 4px 0 rgba($color-error, 0.5);
 $transition-duration: .4s;
 $transition-duration-fast: .15s;
 
-$global-stacking: app, select-menu, tooltip, overlay;
+$global-stacking: app, tooltip, overlay, select-menu;
