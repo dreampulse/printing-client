@@ -70,7 +70,7 @@ export const updateLocation = (address: Address) => async (
       await dispatch(createUser())
     } else {
       const user = getState().user.user
-      user.currency = getCurrencyForCountry(user.shippingAddress.countryCode)
+      user.currency = getCurrencyForCountry(address.countryCode)
       await dispatch(updateUser(getState().user.user))
     }
 

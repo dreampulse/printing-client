@@ -235,13 +235,18 @@ describe('User actions', () => {
             }
           }
         }
+        address = {countryCode: 'some-country-code'}
         store = mockStore(initialState)
         await store.dispatch(updateLocation(address))
 
         expect(store.getActions(), 'to equal', [
           {
             type: 'USER.SHIPPING_ADDRESS_CHANGED',
-            payload: {address: 'some-address'}
+            payload: {
+              address: {
+                countryCode: 'some-country-code'
+              }
+            }
           },
           {
             type: 'USER.UPDATED',
