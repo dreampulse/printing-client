@@ -15,7 +15,7 @@ export const openFatalErrorModal = (error: Error): OpenModalAction =>
   openModal({
     isCloseable: false,
     content: 'FATAL_ERROR',
-    contentArgs: {
+    contentProps: {
       error
     }
   })
@@ -24,7 +24,7 @@ export const openPickLocationModal = (): OpenModalAction =>
   openModal({
     isCloseable: false,
     content: 'PICK_LOCATION',
-    contentArgs: null
+    contentProps: null
   })
 
 export const closeModal = (): CloseModalAction => ({
