@@ -35,10 +35,10 @@ describe('init action', () => {
       [selector.selectCurrency, 'USD'],
       [selector.isModalOpen, false],
       [selector.selectModalConfig, {isCloseable: true, content: null, contentProps: null}]
-    ].forEach(([selector, expected]) => {
-      it(`${selector.name}() returns the expected result after execution`, () => {
-        expect(selector(getModel(state)), 'to equal', expected)
-        selectorsToTest = selectorsToTest.filter(s => s !== selector)
+    ].forEach(([testSelector, expected]) => {
+      it(`${testSelector.name}() returns the expected result after execution`, () => {
+        expect(testSelector(getModel(state)), 'to equal', expected)
+        selectorsToTest = selectorsToTest.filter(s => s !== testSelector)
       })
     })
 
