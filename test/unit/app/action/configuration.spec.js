@@ -131,15 +131,20 @@ describe('Configuration actions', () => {
     })
 
     it('dispatches expected actions', async () => {
-      printingEngine.getConfiguration
-        .withArgs('some-configuration-id')
-        .returns('some-configuration')
+      const configMock = {
+        materialConfigId: 'material-1'
+      }
+      printingEngine.getConfiguration.withArgs('some-configuration-id').returns(configMock)
 
       await store.dispatch(restoreConfiguration('some-configuration-id', features))
       expect(store.getActions(), 'to equal', [
         {
           type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
-          payload: 'some-configuration'
+          payload: configMock
+        },
+        {
+          type: 'MATERIAL.CONFIG_SELECTED',
+          payload: 'material-1'
         },
         {
           type: 'some-create-price-request-action'
