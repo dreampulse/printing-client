@@ -1,22 +1,29 @@
 // @flow
 
+import omit from 'lodash/omit'
 import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
 import {listMaterials, uploadModel} from 'App/lib/printing-engine'
-import type {Model, UploadingModel, MaterialGroup} from 'App/type-next'
+import type {BasketItem, UploadingFiles, Model, MaterialGroup} from 'App/type-next'
 import type {AppAction} from 'App/action-next'
 import * as core from 'App/action-next/core'
 import * as modal from 'App/action-next/modal'
 
 export type CoreState = {
-  models: Array<Model>,
-  uploadingModels: Array<UploadingModel>,
+  models: {[id: string]: Model},
+  uploadingFiles: {[id: string]: UploadingFiles},
+  basket: {
+    items: Array<BasketItem>
+  },
   materialGroups: Array<MaterialGroup> // This is the material-structure-Tree
 }
 
 const initialState: CoreState = {
-  models: [],
-  uploadingModels: [],
+  models: {},
+  uploadingFiles: {},
+  basket: {
+    items: []
+  },
   materialGroups: []
 }
 
@@ -36,23 +43,33 @@ const updateMaterialGroups = (state, action) => ({
 })
 
 const uploadFile = (state, {payload}) => {
-  const {fileId, file} = payload
-  const fileName = file.name
-  const fileSize = file.size
+  const fileId = payload.fileId
+
+  const file = {
+    fileId,
+    fileName: payload.file.name,
+    fileSize: payload.file.size,
+    progress: 0,
+    error: false
+  }
 
   return loop(
     {
       ...state,
-      uploadingModels: [
-        ...state.uploadingModels,
-        {
-          fileId,
-          fileName,
-          fileSize,
-          progress: 0,
-          error: false
-        }
-      ]
+      uploadingFiles: {
+        ...state.uploadingFiles,
+        [fileId]: file
+      },
+      basket: {
+        items: [
+          ...state.basket.items,
+          {
+            id: state.basket.items.length,
+            pending: true,
+            fileId
+          }
+        ]
+      }
     },
     Cmd.run(uploadModel, {
       args: [
@@ -68,24 +85,22 @@ const uploadFile = (state, {payload}) => {
 
 const uploadProgress = (state, {payload}) => {
   const fileId = payload.fileId
-  const uploadingModels = state.uploadingModels
-  const i = uploadingModels.findIndex(m => m.fileId === fileId)
 
-  invariant(i !== -1, `Could not update file upload progress: File ${fileId} is unknown`)
-
-  const modelToUpdate = uploadingModels[i]
+  invariant(
+    state.uploadingFiles[fileId],
+    `Could not update file upload progress: File ${fileId} is unknown`
+  )
 
   return loop(
     {
       ...state,
-      uploadingModels: [
-        ...uploadingModels.slice(0, i),
-        {
-          ...modelToUpdate,
+      uploadingFiles: {
+        ...state.uploadingFiles,
+        [fileId]: {
+          ...state.uploadingFiles[fileId],
           progress: payload.progress
-        },
-        ...uploadingModels.slice(i + 1)
-      ]
+        }
+      }
     },
     Cmd.run(uploadModel, {
       args: [
@@ -101,43 +116,52 @@ const uploadProgress = (state, {payload}) => {
 
 const uploadComplete = (state, {payload}) => {
   const fileId = payload.fileId
-  const model: Model = {
-    ...payload.model,
-    quantity: 1
-  }
-
-  // Remove the now uploaded model from the list of uploading Models
-  const uploadingModels = state.uploadingModels.filter(
-    uploadingModel => uploadingModel.fileId !== fileId
-  )
+  const model = payload.model
 
   invariant(
-    state.uploadingModels.length !== uploadingModels.length,
-    `Could not complete file upload: File ${fileId} is unknown`
+    state.uploadingFiles[fileId],
+    `Could not update file upload progress: File ${fileId} is unknown`
   )
 
-  // TODO: same modelId issue
+  const updateBasketItem = item => {
+    if (item.pending && item.fileId === fileId)
+      return {
+        id: item.id,
+        pending: false,
+        quantity: 1,
+        modelId: model.modelId,
+        material: null // No material selected
+      }
+
+    return item
+  }
 
   return {
     ...state,
-    uploadingModels,
-    models: [...state.models, model]
+    uploadingFiles: omit(state.uploadingFiles, fileId),
+    models: {
+      ...state.models,
+      [model.modelId]: model
+    },
+    basket: {
+      items: state.basket.items.map(updateBasketItem)
+    }
   }
 }
 
 const uploadFail = (state, {payload}) => {
   const fileId = payload.fileId
-  const uploadingModels = state.uploadingModels.map(uploadingModel => {
-    // The upload of this model has failed
-    if (uploadingModel.fileId === fileId) {
-      return {...uploadingModel, error: true, errorMessage: payload.error.message}
-    }
-    return uploadingModel
-  })
 
   return {
     ...state,
-    uploadingModels
+    uploadingFiles: {
+      ...state.uploadingFiles,
+      [fileId]: {
+        ...state.uploadingFiles[fileId],
+        error: true,
+        errorMessage: payload.error.message
+      }
+    }
   }
 }
 

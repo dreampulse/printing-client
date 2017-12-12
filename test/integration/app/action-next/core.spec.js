@@ -1,6 +1,11 @@
 import {Cmd} from 'redux-loop'
 import * as core from 'App/action-next/core'
-import {selectMaterialGroups, selectUploadingModels, selectModels} from 'App/selector'
+import {
+  selectMaterialGroups,
+  selectUploadingFiles,
+  selectModels,
+  selectBasketItems
+} from 'App/selector'
 import {uploadModel} from 'App/lib/printing-engine'
 import reducer from 'App/reducer-next'
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
@@ -61,9 +66,9 @@ describe('core action', () => {
       expect(uploadFileAction1.payload.fileId, 'not to equal', uploadFileAction2.payload.fileId)
     })
 
-    describe('using selectUploadingModels() selector', () => {
-      it('returns the uploaded models', () => {
-        expect(selectUploadingModels(getModel(state)), 'to have an item satisfying', {
+    describe('using selectUploadingFiles() selector', () => {
+      it('contains the uploaded file', () => {
+        expect(selectUploadingFiles(getModel(state)), 'to have an item satisfying', {
           fileId: expect.it('to be a', 'string'),
           fileName: 'some-file-name',
           fileSize: 42,
@@ -71,6 +76,8 @@ describe('core action', () => {
           error: false
         })
       })
+
+      it('adds the item into the basket')
 
       it('triggers the core.uploadProgress() action as soon as uploadModel() has a progress', () => {
         const uploadModelCmd = findCmd(state, uploadModel)
@@ -127,7 +134,7 @@ describe('core action', () => {
 
     describe('using selectUploadingModels() selector', () => {
       it('updates the model with the given file id', () => {
-        const model = selectUploadingModels(getModel(state)).find(m => m.fileId === fileId)
+        const model = selectUploadingFiles(getModel(state)).find(m => m.fileId === fileId)
 
         expect(model, 'to satisfy', {progress: 42})
       })
@@ -143,7 +150,7 @@ describe('core action', () => {
           uploadFileAction2,
           uploadFileAction3
         ].reduce((currentState, action) => reducer(getModel(currentState), action), undefined)
-        const orderBeforeDispatch = selectUploadingModels(getModel(stateBeforeUploadProgress)).map(
+        const orderBeforeDispatch = selectUploadingFiles(getModel(stateBeforeUploadProgress)).map(
           m => m.fileId
         )
 
@@ -151,12 +158,14 @@ describe('core action', () => {
           getModel(stateBeforeUploadProgress),
           core.uploadProgress(fileId2, 42)
         )
-        const orderAfterDispatch = selectUploadingModels(getModel(stateAfterUploadProgress)).map(
+        const orderAfterDispatch = selectUploadingFiles(getModel(stateAfterUploadProgress)).map(
           m => m.fileId
         )
 
         expect(orderBeforeDispatch, 'to equal', orderAfterDispatch)
       })
+
+      it('does not change the basket items')
     })
   })
 
@@ -175,8 +184,8 @@ describe('core action', () => {
     })
 
     describe('using selectUploadingModels() selector', () => {
-      it('does not return the model with the given file id', () => {
-        const model = selectUploadingModels(getModel(state)).find(m => m.fileId === fileId)
+      it('does not return the file anymore', () => {
+        const model = selectUploadingFiles(getModel(state)).find(m => m.fileId === fileId)
 
         expect(model, 'to be', undefined)
       })
@@ -186,10 +195,15 @@ describe('core action', () => {
       it('returns the given backend model with a quantity property', () => {
         const model = selectModels(getModel(state)).find(m => m.modelId === uploadModelMock.modelId)
 
-        expect(model, 'to satisfy', {
-          ...uploadModelMock,
-          quantity: 1
-        })
+        expect(model, 'to satisfy', uploadModelMock)
+      })
+    })
+
+    describe('using selectBasketItems() selector', () => {
+      it('works', () => {
+        const basketItems = selectBasketItems(getModel(state))
+        console.log('getModel(state)', getModel(state))
+        // console.log('basketItems', basketItems)
       })
     })
   })
