@@ -106,7 +106,7 @@ export type ModalContent = 'PICK_LOCATION' | 'FATAL_ERROR'
 type _ModalConfig<C> = {
   isCloseable: boolean,
   content: C,
-  contentArgs: any
+  contentProps: any
 }
 
 export type ModalConfig = _ModalConfig<null | ModalContent>

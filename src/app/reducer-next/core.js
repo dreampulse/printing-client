@@ -32,7 +32,7 @@ const loadMaterialGroups = (state, action) =>
     state,
     Cmd.run(listMaterials, {
       args: [],
-      successActionCreator: core.updateMaterialGroups,
+      successActionCreator: res => core.updateMaterialGroups(res.materialStructure),
       failActionCreator: modal.openFatalErrorModal
     })
   )

@@ -27,10 +27,8 @@ describe('core action', () => {
     let state
 
     beforeEach(() => {
-      const stateBefore = undefined
-
       materialGroups = materialListResponse.materialStructure
-      state = reducer(stateBefore, core.updateMaterialGroups(materialGroups))
+      state = reducer(undefined, core.updateMaterialGroups(materialGroups))
     })
 
     it('assigns material ids to all material groups', () => {
@@ -54,9 +52,8 @@ describe('core action', () => {
     let state
 
     beforeEach(() => {
-      const stateBefore = undefined
       uploadFileAction = core.uploadFile(fileMock())
-      state = reducer(stateBefore, uploadFileAction)
+      state = reducer(undefined, uploadFileAction)
     })
 
     it('creates unique fileIds', () => {
@@ -124,9 +121,8 @@ describe('core action', () => {
     let state
 
     beforeEach(() => {
-      const stateBefore = undefined
       const uploadFileAction = core.uploadFile(fileMock())
-      const stateBeforeUploadProgress = reducer(stateBefore, uploadFileAction)
+      const stateBeforeUploadProgress = reducer(undefined, uploadFileAction)
 
       fileId = uploadFileAction.payload.fileId
       state = reducer(getModel(stateBeforeUploadProgress), core.uploadProgress(fileId, 42))
@@ -204,6 +200,42 @@ describe('core action', () => {
         const basketItems = selectBasketItems(getModel(state))
         console.log('getModel(state)', getModel(state))
         // console.log('basketItems', basketItems)
+      })
+    })
+  })
+
+  describe('uploadFail()', () => {
+    let fileId
+    let error
+    let state
+
+    beforeEach(() => {
+      const uploadFileAction = core.uploadFile(fileMock())
+
+      error = new Error('Some error')
+      fileId = uploadFileAction.payload.fileId
+      state = [uploadFileAction, core.uploadFail(fileId, error)].reduce(
+        (currentState, action) => reducer(getModel(currentState), action),
+        undefined
+      )
+    })
+
+    describe('using selectUploadingModels() selector', () => {
+      it('contains the uploading model with an error flag and errorMessage', () => {
+        const model = selectUploadingModels(getModel(state)).find(m => m.fileId === fileId)
+
+        expect(model, 'to satisfy', {
+          error: true,
+          errorMessage: error.message
+        })
+      })
+    })
+
+    describe('using selectModels() selector', () => {
+      it('does not contain the model', () => {
+        const model = selectModels(getModel(state)).find(m => m.modelId === uploadModelMock.modelId)
+
+        expect(model, 'to equal', undefined)
       })
     })
   })
