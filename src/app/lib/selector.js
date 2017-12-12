@@ -233,14 +233,15 @@ export const selectSearchParams = (state: State) =>
   new URLSearchParams(get(state, 'routing.location.search') || '')
 
 export const selectFeatures = (state: State): Features => {
-  const query = selectSearchParams(state)
+  const searchParams = selectSearchParams(state)
   const features: Features = {}
 
-  return Array.from(query.keys())
+  Array.from(searchParams.keys())
     .filter(name => /^feature:/.test(name))
     .map(name => name.substr('feature:'.length))
-    .reduce((agg: Features, name: string) => {
-      agg[name] = true
-      return agg
-    }, features)
+    .forEach((name: string) => {
+      features[name] = true
+    })
+
+  return features
 }
