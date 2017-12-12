@@ -7,7 +7,7 @@ import * as stripe from 'Service/stripe'
 import * as paypal from 'Service/paypal'
 import * as printingEngine from 'Lib/printing-engine'
 import {AppError} from 'Lib/error'
-import {selectLocationQuery} from 'Lib/selector'
+import {selectSearchParams} from 'Lib/selector'
 
 import type {State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
@@ -122,7 +122,7 @@ export const createOrderWithPaypal = (data: any) => async (
 export const payWithInvoice = () => async (dispatch: Dispatch<any>, getState: () => State) => {
   await dispatch(createOrder())
 
-  const query = selectLocationQuery(getState())
+  const query = selectSearchParams(getState())
   const invoiceKey = query.get('invoice_key')
   if (!invoiceKey) throw new Error('Invoice key missing')
 

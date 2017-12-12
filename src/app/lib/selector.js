@@ -229,11 +229,11 @@ export const selectAreAllUploadsFinished = (state: State) => {
   return numberOfUploads === 0 && models.length > 0
 }
 
-export const selectLocationQuery = (state: State) =>
+export const selectSearchParams = (state: State) =>
   new URLSearchParams(get(state, 'routing.location.search') || '')
 
 export const selectFeatures = (state: State): Features => {
-  const query = selectLocationQuery(state)
+  const query = selectSearchParams(state)
   const features: Features = {}
 
   return Array.from(query.keys())
