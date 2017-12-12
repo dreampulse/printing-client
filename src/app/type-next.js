@@ -64,13 +64,11 @@ export type Model = {
 }
 
 type PendingItem = {
-  id: number,
   pending: true,
   fileId: string
 }
 
 type FinishedItem = {
-  id: number,
   pending: false,
   quantity: number,
   modelId: string,

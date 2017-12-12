@@ -10,6 +10,7 @@ type UploadFileAction = Action<'CORE.UPLOAD_FILE', {fileId: string, file: File}>
 type UploadProgressAction = Action<'CORE.UPLOAD_PROGRESS', {fileId: string, progress: number}>
 type UploadCompleteAction = Action<'CORE.UPLOAD_COMPLETE', {fileId: string, model: Model}>
 type UploadFailAction = Action<'CORE.UPLOAD_FAIL', {fileId: string, error: Error}>
+type DeleteBasketItemAction = Action<'CORE.DELETE_BASKET_ITEM', {itemId: number}>
 
 export type CoreAction =
   | UpdateMaterialGroupsAction
@@ -17,6 +18,7 @@ export type CoreAction =
   | UploadProgressAction
   | UploadCompleteAction
   | UploadFailAction
+  | DeleteBasketItemAction
 
 export const updateMaterialGroups = (
   materialGroups: Array<MaterialGroup>
@@ -49,5 +51,12 @@ export const uploadFail = (fileId: string, error: Error): UploadFailAction => ({
   payload: {
     fileId,
     error
+  }
+})
+
+export const deleteBasketItem = (itemId: number): DeleteBasketItemAction => ({
+  type: 'CORE.DELETE_BASKET_ITEM',
+  payload: {
+    itemId
   }
 })

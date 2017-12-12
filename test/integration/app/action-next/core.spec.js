@@ -212,13 +212,15 @@ describe('core action', () => {
       it('returns the basket items containing the model', () => {
         const basketItems = selectBasketItems(getModel(state))
         const model = selectModels(getModel(state))[0]
-        expect(basketItems, 'to contain', {
-          id: 0,
-          pending: false,
-          quantity: 1,
-          material: null,
-          model
-        })
+        expect(basketItems, 'to equal', [
+          {
+            id: 0, // The id is the index of the array
+            pending: false,
+            quantity: 1,
+            material: null,
+            model
+          }
+        ])
       })
     })
   })

@@ -64,7 +64,6 @@ const uploadFile = (state, {payload}) => {
         items: [
           ...state.basket.items,
           {
-            id: state.basket.items.length,
             pending: true,
             fileId
           }
@@ -126,7 +125,6 @@ const uploadComplete = (state, {payload}) => {
   const updateBasketItem = item => {
     if (item.pending && item.fileId === fileId)
       return {
-        id: item.id,
         pending: false,
         quantity: 1,
         modelId: model.modelId,
@@ -165,6 +163,18 @@ const uploadFail = (state, {payload}) => {
   }
 }
 
+const deleteBasketItem = (state, {payload}) => {
+  // delete from models if last
+
+  invariant(
+    payload.itemId >= 0 && state.basket.items.length > payload.itemId,
+    `Invalid basket item id`
+  )
+  //
+
+  return state
+}
+
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
     case 'INIT.INIT':
@@ -179,6 +189,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return uploadComplete(state, action)
     case 'CORE.UPLOAD_FAIL':
       return uploadFail(state, action)
+    case 'CORE.DELETE_BASKET_ITEM':
+      return deleteBasketItem(state, action)
     default:
       return state
   }

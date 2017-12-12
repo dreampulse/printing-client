@@ -13,15 +13,15 @@ export const selectUploadingFiles = (state: AppState): Array<UploadingFile> =>
 
 export const selectBasketItems = (state: AppState) =>
   state.core.basket.items.map(
-    item =>
+    (item, index) =>
       item.pending
         ? {
-            id: item.id,
+            id: index,
             pending: true,
             file: state.core.uploadingFiles[item.fileId]
           }
         : {
-            id: item.id,
+            id: index,
             pending: false,
             quantity: item.quantity,
             material: item.material,
