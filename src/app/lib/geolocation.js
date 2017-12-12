@@ -8,6 +8,19 @@ import type {Location, Address, GoogleMapsPlace} from '../type-next'
 
 const URL = `https://pro.ip-api.com/json/?key=${config.ipApiKey}`
 
+const findInGoogleMapsPlace = (property: string) => (
+  place: GoogleMapsPlace,
+  type: string
+): string => {
+  const addressComponents = place.address_components
+  if (!addressComponents) return ''
+  const component = addressComponents.find(c => c.types.find(t => t === type))
+  if (!component) return ''
+  return component[property] || ''
+}
+const shortNameFrom = findInGoogleMapsPlace('short_name')
+const longNameFrom = findInGoogleMapsPlace('long_name')
+
 export const getLocationByIp = async (): Promise<Location> => {
   const {city, zip, region, countryCode} = await timeout(request(URL), config.fetchTimout)
 
@@ -24,23 +37,13 @@ export const getLocationByIp = async (): Promise<Location> => {
   }
 }
 
-export const convertPlaceToLocation = (place: GoogleMapsPlace): string | Location => {
-  const findType = query => {
-    const addressComponents = place.address_components
-    if (!addressComponents) return ''
-    const components = addressComponents.filter(c => c.types.find(t => t === query))
-    if (components.length > 0) return components[0].short_name
-    return ''
-  }
-
-  return {
-    houseNumber: findType('street_number'),
-    street: findType('route'),
-    city: findType('locality'),
-    zipCode: findType('postal_code'),
-    stateCode: findType('administrative_area_level_1'),
-    countryCode: findType('country')
-  }
-}
+export const convertPlaceToLocation = (place: GoogleMapsPlace): Location => ({
+  houseNumber: shortNameFrom(place, 'street_number'),
+  street: longNameFrom(place, 'route'),
+  city: longNameFrom(place, 'locality'),
+  zipCode: shortNameFrom(place, 'postal_code'),
+  stateCode: shortNameFrom(place, 'administrative_area_level_1'),
+  countryCode: shortNameFrom(place, 'country')
+})
 
 export const isAddressValid = (address: Address) => address.countryCode

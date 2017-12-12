@@ -85,7 +85,8 @@ export type Address = Location & {
 export type GoogleMapsPlace = {
   address_components: ?Array<{
     types: Array<string>,
-    short_name: string
+    short_name: string,
+    long_name: string
   }>
 }
 
