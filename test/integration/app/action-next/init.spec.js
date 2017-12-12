@@ -29,8 +29,9 @@ describe('init action', () => {
     })
     ;[
       [selector.selectModels, []],
-      [selector.selectUploadingModels, []],
+      [selector.selectUploadingFiles, []],
       [selector.selectMaterialGroups, []],
+      [selector.selectBasketItems, []],
       [selector.selectUserId, null],
       [selector.selectCurrency, 'USD'],
       [selector.isModalOpen, false],
