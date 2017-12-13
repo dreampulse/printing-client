@@ -1,2 +1,7 @@
-export const track = action =>
-  global.ga && global.ga('send', 'event', 'printing-engine-client', action)
+// @flow
+
+const ga = global.ga
+
+export const track = (action: string): void => {
+  ga('send', 'event', 'printing-engine-client', action)
+}
