@@ -26,6 +26,14 @@
     white-space: nowrap;
   }
 
+  &__prefix {
+    color: $color-minor;
+    font-style: italic;
+    font-size: $font-size-base;
+    font-weight: $font-weight-regular;
+    margin-right: $space-s;
+  }
+
   &__meta {
     @include scut-truncate();
     color: $color-minor;

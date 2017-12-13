@@ -12,15 +12,6 @@
   line-height: $info-size;
   font-family: AmericanTypewriter, sans-serif;
   outline: 0;
-  transition:
-    background-color $transition-duration-fast ease-in-out,
-    border-color $transition-duration-fast ease-in-out,
-    color $transition-duration-fast ease-in-out;
-
-  &:hover {
-    border-color: $color-primary-active;
-    background: $color-primary-active;
-  }
 
   &:before {
     content: 'i';
@@ -43,12 +34,6 @@
 
   &--minor {
     background: transparent;
-    color: $color-primary;
-
-    &:hover {
-      border-color: $color-primary-active;
-      color: $color-primary-active;
-      background: transparent;
-    }
+    color: $color-link;
   }
 }

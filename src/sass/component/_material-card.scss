@@ -1,8 +1,4 @@
 .material-card {
-  // Fixed height: border + price + select + shipping + spacing
-  $shipping-height: $font-size-base * $line-height-base;
-  $footer-height: 1px + 30px + 40px + $shipping-height + 50px + 4 * $space-base;
-
   max-width: $screen-sm-max;
   border-radius: $border-radius;
   box-shadow: $box-shadow-base;
@@ -21,68 +17,54 @@
 
   &__content {
     padding: $space-l;
+    display: flex;
+    flex-direction: column;
+    height: 270px; // Design decision
   }
 
   &__header {
-    border-bottom: 1px solid $color-border;
+    flex-shrink: 0;
+    position: relative;
+    margin-bottom: $space-l;
 
     & > .headline {
       @include scut-truncate();
+      margin-bottom: 0;
+      margin-right: 1em; // Space for info
+    }
+
+    & > .info {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
     }
   }
 
-  &__subline {
-    @include scut-truncate();
-    display: block;
-    margin: 0 0 $space-base;
-    font-size: $font-size-l;
-    line-height: $font-size-l;
-  }
-
   &__body {
+    flex-shrink: 0;
+    border-top: 1px solid $color-border-minor;
     line-height: $line-height-base;
-    margin: $space-base 0;
-    height: 3 * $font-size-base * $line-height-base;
+    padding: $space-base 0;
+    height: 2 * $font-size-base * $line-height-base;
+    box-sizing: content-box;
     overflow: hidden;
   }
 
   &__footer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-end;
     position: relative;
-    border-top: 1px solid $color-border;
+    border-top: 1px solid $color-border-minor;
     padding-top: $space-base;
-    height: $footer-height;
     line-height: 0;
   }
 
   &__color {
-    margin-bottom: $space-base;
-  }
-
-  &__shipping {
-    @include scut-truncate();
-    max-width: 100%;
-    display: inline-block;
-    position: relative;
-    padding: 0 $font-size-base + $space-base 0 $font-size-base + $space-s;
-    line-height: $line-height-base;
-    height: $shipping-height;
-    margin-bottom: $space-base;
-
-    & > .icon {
-      @include scut-center-transform(y);
-      display: block;
-      font-size: $font-size-base;
-      position: absolute;
-      left: 0;
-    }
-
-    & > .info {
-      @include scut-center-transform(y);
-      display: block;
-      font-size: $font-size-base;
-      position: absolute;
-      right: 0;
-    }
+    margin-top: $space-s;
+    margin-bottom: $space-l;
   }
 
   &__unavailable {
