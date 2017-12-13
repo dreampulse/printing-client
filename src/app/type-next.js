@@ -107,4 +107,5 @@ export type Action<Type, Payload> = {
 }
 
 export type AppAction = _AppAction
+
 export type AppState = _AppState
