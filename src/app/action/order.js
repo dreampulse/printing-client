@@ -24,7 +24,7 @@ const ordered = createAction(
 
 // Async actions
 const createOrder = () => async (dispatch: Dispatch<*>, getState: () => State) => {
-  const {user: {userId}, price: {priceId, selectedOffer}} = getState()
+  const {user: {userId, utmParams}, price: {priceId, selectedOffer}} = getState()
 
   if (!selectedOffer) throw new Error('No offer selected')
   const offerId = selectedOffer.offerId
@@ -33,7 +33,8 @@ const createOrder = () => async (dispatch: Dispatch<*>, getState: () => State) =
     const {orderId, orderNumber} = await printingEngine.order({
       userId,
       priceId,
-      offerIds: [offerId]
+      offerIds: [offerId],
+      utmSource: utmParams.source
     })
 
     dispatch(ordered({orderId, orderNumber}))
