@@ -39,6 +39,7 @@ const info = (
 
 const card = ({title = 'Polyamide'}) => (
   <MaterialCard
+    key={title}
     title={title}
     shipping="2-5 days, no express"
     subline="Solid, raw"

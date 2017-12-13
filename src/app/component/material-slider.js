@@ -1,15 +1,20 @@
 // import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 import clamp from 'lodash/clamp'
+import range from 'lodash/range'
+import find from 'lodash/find'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
 import {tweenFromTo, easeInOutQuad} from 'Service/animate'
 
 import SliderButton from './slider-button'
+import Dot from './dot'
 
-const ITEM_WIDTH = 250 + 20
-const SCROLL_ANIMATION_DURATION = 300
+const ITEM_WIDTH = 245 + 20
+// Shift item scroll pos to have nice space for navigation buttons
+const ITEM_SCROLL_SHIFT = 0.5 * (1160 - Math.floor(1160 / ITEM_WIDTH) * ITEM_WIDTH)
+const SCROLL_ANIMATION_DURATION = 500
 
 export default class MaterialSlider extends Component {
   static propTypes = {
@@ -18,25 +23,36 @@ export default class MaterialSlider extends Component {
 
   state = {
     showBack: false,
-    showNext: false
+    showNext: false,
+    currentDotIndex: 0
   }
 
   componentDidMount() {
     this.canvasDom.addEventListener('scroll', this.updateButtonVisibilityState)
+    this.canvasDom.addEventListener('scroll', this.updateCurrentDotIndex)
     global.addEventListener('resize', this.updateButtonVisibilityState)
+    global.addEventListener('resize', this.updateCurrentDotIndex)
 
     this.updateButtonVisibilityState()
+    this.updateCurrentDotIndex()
   }
 
   componentWillUnmount() {
     this.canvasDom.removeEventListener('scroll', this.updateButtonVisibilityState)
+    this.canvasDom.removeEventListener('scroll', this.updateCurrentDotIndex)
     global.removeEventListener('resize', this.updateButtonVisibilityState)
+    global.removeEventListener('resize', this.updateCurrentDotIndex)
   }
 
   getPageSize = () => {
     const sliderWidth = this.sliderDom.offsetWidth
     // Assume that at least one item is partially visible
     return Math.max(1, Math.floor(sliderWidth / ITEM_WIDTH))
+  }
+
+  getNumPages = () => {
+    const numChildren = React.Children.count(this.props.children)
+    return Math.ceil(numChildren / this.getPageSize())
   }
 
   getCurrentItemIndex = () => {
@@ -47,6 +63,15 @@ export default class MaterialSlider extends Component {
   getCurrentPageIndex = () => {
     const index = this.getCurrentItemIndex()
     return Math.ceil(index / this.getPageSize())
+  }
+
+  getTargetPositionByIndex = indexOfItem => {
+    const index = Math.max(0, indexOfItem)
+    return clamp(
+      index * ITEM_WIDTH - ITEM_SCROLL_SHIFT,
+      0,
+      this.canvasDom.scrollWidth - this.canvasDom.clientWidth
+    )
   }
 
   updateButtonVisibilityState = () => {
@@ -79,6 +104,27 @@ export default class MaterialSlider extends Component {
     }
   }
 
+  updateCurrentDotIndex = () => {
+    const scrollLeft = this.canvasDom.scrollLeft
+    const numPages = this.getNumPages()
+    const pageSize = this.getPageSize()
+
+    let nextDotIndex =
+      find(range(numPages), index => this.getTargetPositionByIndex(index * pageSize) > scrollLeft) -
+      1
+
+    // Edge case with last page
+    if (scrollLeft >= this.canvasDom.scrollWidth - this.canvasDom.clientWidth) {
+      nextDotIndex = numPages - 1
+    }
+
+    if (this.state.currentDotIndex !== nextDotIndex) {
+      this.setState({
+        currentDotIndex: nextDotIndex
+      })
+    }
+  }
+
   startScrollAnimation = (startPosition, targetPosition) => {
     if (this.currentTween) {
       // Abort possible running animation
@@ -97,15 +143,8 @@ export default class MaterialSlider extends Component {
   }
 
   scrollTo = indexOfItem => {
-    const index = Math.max(0, indexOfItem)
     const startPosition = this.canvasDom.scrollLeft
-    const targetPosition = clamp(
-      index * ITEM_WIDTH,
-      0,
-      this.canvasDom.scrollWidth - this.canvasDom.clientWidth
-    )
-
-    this.startScrollAnimation(startPosition, targetPosition)
+    this.startScrollAnimation(startPosition, this.getTargetPositionByIndex(indexOfItem))
   }
 
   handleBackClick = () => {
@@ -125,6 +164,30 @@ export default class MaterialSlider extends Component {
         <SliderButton onClick={this.handleNextClick} />
       </div>
     ]
+  }
+
+  renderDots() {
+    // Needs a second render cycle
+    if (!this.canvasDom) {
+      return null
+    }
+
+    const pageSize = this.getPageSize()
+    const numPages = this.getNumPages()
+
+    return (
+      <ul className="material-slider__dots" role="presentation">
+        {range(numPages).map(index => (
+          <li key={index} role="presentation">
+            <Dot
+              modifiers={this.state.currentDotIndex === index ? ['active'] : undefined}
+              index={index + 1}
+              onClick={() => this.scrollTo(index * pageSize)}
+            />
+          </li>
+        ))}
+      </ul>
+    )
   }
 
   render() {
@@ -160,6 +223,7 @@ export default class MaterialSlider extends Component {
           </ul>
         </div>
         {this.renderNavigationButtons()}
+        {this.renderDots()}
       </div>
     )
   }

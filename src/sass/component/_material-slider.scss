@@ -99,6 +99,19 @@
     right: 0;
   }
 
+  &__dots {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+
+    & > li {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 0.5em;
+    }
+  }
+
   &--show-back {
     .material-slider__back {
       opacity: 1;

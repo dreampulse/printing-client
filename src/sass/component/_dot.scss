@@ -1,0 +1,15 @@
+.dot {
+  $size: 10px;
+
+  @include scut-image-replace; // Hide text
+  width: $size;
+  height: $size;
+  background: $color-gray-3;
+  border-radius: 50%;
+  outline: 0;
+  vertical-align: middle;
+
+  &--active {
+    background: $color-primary;
+  }
+}
