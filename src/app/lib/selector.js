@@ -230,6 +230,7 @@ export const selectAreAllUploadsFinished = (state: State) => {
 }
 
 export const selectSearchParams = (state: State) =>
+  // TODO: This should be part of our own state
   new URLSearchParams(get(state, 'routing.location.search') || '')
 
 export const selectFeatures = (state: State): Features => {
