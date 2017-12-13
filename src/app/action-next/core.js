@@ -62,3 +62,5 @@ export const deleteBasketItem = (itemId: number): DeleteBasketItemAction => ({
 })
 
 // TODO: add a method to duplicate a basket item
+
+// TODO: add a method to remove a file when the upload failed

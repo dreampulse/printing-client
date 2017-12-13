@@ -10,8 +10,8 @@ import {uploadModel} from 'App/lib/printing-engine'
 import reducer from 'App/reducer-next'
 import {withOneUploadedModel} from '../../../scenario'
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
-import uploadModelMock from '../../../mock/printing-engine/upload-model'
-import fileMock from '../../../mock/file'
+import getUploadModelMock from '../../../mock/printing-engine/upload-model'
+import getFileMock from '../../../mock/file'
 
 describe('core action', () => {
   let sandbox
@@ -53,13 +53,13 @@ describe('core action', () => {
     let state
 
     beforeEach(() => {
-      uploadFileAction = core.uploadFile(fileMock())
+      uploadFileAction = core.uploadFile(getFileMock())
       state = reducer(undefined, uploadFileAction)
     })
 
     it('creates unique fileIds', () => {
-      const uploadFileAction1 = core.uploadFile(fileMock())
-      const uploadFileAction2 = core.uploadFile(fileMock())
+      const uploadFileAction1 = core.uploadFile(getFileMock())
+      const uploadFileAction2 = core.uploadFile(getFileMock())
 
       expect(uploadFileAction1.payload.fileId, 'not to equal', uploadFileAction2.payload.fileId)
     })
@@ -89,27 +89,27 @@ describe('core action', () => {
 
       it('triggers the core.uploadComplete() action with the file id and the result from uploadModel()', () => {
         const cmd = findCmd(state, uploadModel, [
-          fileMock,
+          getFileMock,
           {unit: 'mm'},
           expect.it('to be a', 'function')
         ])
-        const action = cmd.simulate({success: true, result: uploadModelMock()})
+        const action = cmd.simulate({success: true, result: getUploadModelMock()})
 
         expect(
           action,
           'to equal',
-          core.uploadComplete(uploadFileAction.payload.fileId, uploadModelMock())
+          core.uploadComplete(uploadFileAction.payload.fileId, getUploadModelMock())
         )
       })
 
       it('triggers the core.uploadFail() action with the file id and the error from uploadModel()', () => {
         const cmd = findCmd(state, uploadModel)
-        const action = cmd.simulate({success: false, result: uploadModelMock()})
+        const action = cmd.simulate({success: false, result: getUploadModelMock()})
 
         expect(
           action,
           'to equal',
-          core.uploadFail(uploadFileAction.payload.fileId, uploadModelMock())
+          core.uploadFail(uploadFileAction.payload.fileId, getUploadModelMock())
         )
       })
     })
@@ -126,7 +126,7 @@ describe('core action', () => {
     let state
 
     beforeEach(() => {
-      const uploadFileAction = core.uploadFile(fileMock())
+      const uploadFileAction = core.uploadFile(getFileMock())
       fileId = uploadFileAction.payload.fileId
       const uploadProgressAction = core.uploadProgress(fileId, 42)
 
@@ -142,9 +142,9 @@ describe('core action', () => {
       })
 
       it('does not change the order (or manipulate the array unexpectedly)', () => {
-        const uploadFileAction1 = core.uploadFile(fileMock())
-        const uploadFileAction2 = core.uploadFile(fileMock())
-        const uploadFileAction3 = core.uploadFile(fileMock())
+        const uploadFileAction1 = core.uploadFile(getFileMock())
+        const uploadFileAction2 = core.uploadFile(getFileMock())
+        const uploadFileAction3 = core.uploadFile(getFileMock())
         const fileId2 = uploadFileAction2.payload.fileId
 
         const stateBefore = [uploadFileAction1, uploadFileAction2, uploadFileAction3].reduce(
@@ -185,10 +185,10 @@ describe('core action', () => {
     describe('using selectModels() selector', () => {
       it('returns the given backend model with a quantity property', () => {
         const model = selectModels(getModel(state)).find(
-          m => m.modelId === uploadModelMock().modelId
+          m => m.modelId === getUploadModelMock().modelId
         )
 
-        expect(model, 'to satisfy', uploadModelMock)
+        expect(model, 'to satisfy', getUploadModelMock())
       })
     })
 
@@ -199,7 +199,7 @@ describe('core action', () => {
         expect(basketItems, 'to equal', [
           {
             id: 0, // The id is the index of the array
-            pending: false,
+            modelId: 'some-model-id',
             quantity: 1,
             material: null,
             model
@@ -215,7 +215,7 @@ describe('core action', () => {
     let state
 
     beforeEach(() => {
-      const uploadFileAction = core.uploadFile(fileMock())
+      const uploadFileAction = core.uploadFile(getFileMock())
       error = new Error('Some error')
       fileId = uploadFileAction.payload.fileId
       const uploadFailAction = core.uploadFail(fileId, error)
@@ -239,7 +239,9 @@ describe('core action', () => {
 
     describe('using selectModels() selector', () => {
       it('does not contain the model', () => {
-        const model = selectModels(getModel(state)).find(m => m.modelId === uploadModelMock.modelId)
+        const model = selectModels(getModel(state)).find(
+          m => m.modelId === getUploadModelMock.modelId
+        )
 
         expect(model, 'to equal', undefined)
       })
@@ -273,7 +275,7 @@ describe('core action', () => {
     describe('when the item is twice in the basket', () => {
       it('still contains the model')
 
-      it('just contain the item once')
+      it('just contains the item once')
     })
   })
 })

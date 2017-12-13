@@ -76,10 +76,7 @@ const uploadFile = (state, {payload}) => {
 const uploadProgress = (state, {payload}) => {
   const fileId = payload.fileId
 
-  invariant(
-    state.uploadingFiles[fileId],
-    `Could not update file upload progress: File ${fileId} is unknown`
-  )
+  invariant(state.uploadingFiles[fileId], `Error in uploadProgress(): File ${fileId} is unknown`)
 
   return loop(
     {
@@ -108,10 +105,7 @@ const uploadComplete = (state, {payload}) => {
   const fileId = payload.fileId
   const model = payload.model
 
-  invariant(
-    state.uploadingFiles[fileId],
-    `Could not update file upload progress: File ${fileId} is unknown`
-  )
+  invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
 
   return {
     ...state,
@@ -124,7 +118,6 @@ const uploadComplete = (state, {payload}) => {
       items: [
         ...state.basket.items,
         {
-          pending: false,
           quantity: 1,
           modelId: model.modelId,
           material: null // No material selected
@@ -136,6 +129,8 @@ const uploadComplete = (state, {payload}) => {
 
 const uploadFail = (state, {payload}) => {
   const fileId = payload.fileId
+
+  invariant(state.uploadingFiles[fileId], `Error in uploadFail(): File ${fileId} is unknown`)
 
   return {
     ...state,
@@ -150,32 +145,21 @@ const uploadFail = (state, {payload}) => {
   }
 }
 
-const deleteBasketItem = (state: CoreState, {payload}): CoreState => {
+const deleteBasketItem = (state, {payload}) => {
   invariant(
     payload.itemId >= 0 && state.basket.items.length > payload.itemId,
     `Invalid basket item id`
   )
 
-  const modelToDelete = state.basket.items[payload.itemId]
-  const itemsToDelete = state.basket.items.filter(item => item.modelId === modelToDelete.modelId)
-
+  const itemToDelete = state.basket.items[payload.itemId]
+  const modelItems = state.basket.items.filter(item => item.modelId === itemToDelete.modelId)
   const updatedItems = state.basket.items.filter((item, itemId) => itemId !== payload.itemId)
 
-  if (itemsToDelete.length > 1) {
-    // In this case we just need to remove the basket item
+  const models = modelItems.length === 1 ? omit(state.models, itemToDelete.modelId) : state.models
 
-    return {
-      ...state,
-      basket: {
-        items: updatedItems
-      }
-    }
-  }
-
-  // In this case we need to remove the model too
   return {
     ...state,
-    models: omit(state.models, modelToDelete.modelId),
+    models,
     basket: {
       items: updatedItems
     }
