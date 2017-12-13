@@ -63,19 +63,11 @@ export type Model = {
   thumbnailUrl: string
 }
 
-type PendingItem = {
-  pending: true,
-  fileId: string
-}
-
-type FinishedItem = {
-  pending: false,
+export type BasketItem = {
   quantity: number,
   modelId: string,
   material: any // @TODO: This is the configuration
 }
-
-export type BasketItem = PendingItem | FinishedItem
 
 export type Location = {
   city: string,

@@ -59,15 +59,6 @@ const uploadFile = (state, {payload}) => {
       uploadingFiles: {
         ...state.uploadingFiles,
         [fileId]: file
-      },
-      basket: {
-        items: [
-          ...state.basket.items,
-          {
-            pending: true,
-            fileId
-          }
-        ]
       }
     },
     Cmd.run(uploadModel, {
@@ -122,18 +113,6 @@ const uploadComplete = (state, {payload}) => {
     `Could not update file upload progress: File ${fileId} is unknown`
   )
 
-  const updateBasketItem = item => {
-    if (item.pending && item.fileId === fileId)
-      return {
-        pending: false,
-        quantity: 1,
-        modelId: model.modelId,
-        material: null // No material selected
-      }
-
-    return item
-  }
-
   return {
     ...state,
     uploadingFiles: omit(state.uploadingFiles, fileId),
@@ -142,7 +121,15 @@ const uploadComplete = (state, {payload}) => {
       [model.modelId]: model
     },
     basket: {
-      items: state.basket.items.map(updateBasketItem)
+      items: [
+        ...state.basket.items,
+        {
+          pending: false,
+          quantity: 1,
+          modelId: model.modelId,
+          material: null // No material selected
+        }
+      ]
     }
   }
 }
@@ -163,16 +150,36 @@ const uploadFail = (state, {payload}) => {
   }
 }
 
-const deleteBasketItem = (state, {payload}) => {
-  // delete from models if last
-
+const deleteBasketItem = (state: CoreState, {payload}): CoreState => {
   invariant(
     payload.itemId >= 0 && state.basket.items.length > payload.itemId,
     `Invalid basket item id`
   )
-  //
 
-  return state
+  const modelToDelete = state.basket.items[payload.itemId]
+  const itemsToDelete = state.basket.items.filter(item => item.modelId === modelToDelete.modelId)
+
+  const updatedItems = state.basket.items.filter((item, itemId) => itemId !== payload.itemId)
+
+  if (itemsToDelete.length > 1) {
+    // In this case we just need to remove the basket item
+
+    return {
+      ...state,
+      basket: {
+        items: updatedItems
+      }
+    }
+  }
+
+  // In this case we need to remove the model too
+  return {
+    ...state,
+    models: omit(state.models, modelToDelete.modelId),
+    basket: {
+      items: updatedItems
+    }
+  }
 }
 
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {

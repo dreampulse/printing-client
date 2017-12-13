@@ -12,19 +12,10 @@ export const selectUploadingFiles = (state: AppState): Array<UploadingFile> =>
   Object.keys(state.core.uploadingFiles).map(id => state.core.uploadingFiles[id])
 
 export const selectBasketItems = (state: AppState) =>
-  state.core.basket.items.map(
-    (item, index) =>
-      item.pending
-        ? {
-            id: index,
-            pending: true,
-            file: state.core.uploadingFiles[item.fileId]
-          }
-        : {
-            id: index,
-            pending: false,
-            quantity: item.quantity,
-            material: item.material,
-            model: state.core.models[item.modelId]
-          }
-  )
+  state.core.basket.items.map((item, index) => ({
+    id: index,
+    pending: false,
+    quantity: item.quantity,
+    material: item.material,
+    model: state.core.models[item.modelId]
+  }))

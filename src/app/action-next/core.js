@@ -60,3 +60,5 @@ export const deleteBasketItem = (itemId: number): DeleteBasketItemAction => ({
     itemId
   }
 })
+
+// TODO: add a method to duplicate a basket item

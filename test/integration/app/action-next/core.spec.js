@@ -8,6 +8,7 @@ import {
 } from 'App/selector'
 import {uploadModel} from 'App/lib/printing-engine'
 import reducer from 'App/reducer-next'
+import {withOneUploadedModel} from '../../../scenario'
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
 import uploadModelMock from '../../../mock/printing-engine/upload-model'
 import fileMock from '../../../mock/file'
@@ -114,18 +115,8 @@ describe('core action', () => {
     })
 
     describe('using selectBasketItems() selector', () => {
-      it('adds the item into the basket', () => {
-        expect(selectBasketItems(getModel(state)), 'to have an item satisfying', {
-          id: 0,
-          pending: true,
-          file: {
-            fileId: expect.it('to be a', 'string'),
-            fileName: 'some-file-name',
-            fileSize: 42,
-            progress: 0,
-            error: false
-          }
-        })
+      it('does not add an item into the basket', () => {
+        expect(selectBasketItems(getModel(state)), 'to equal', [])
       })
     })
   })
@@ -180,14 +171,7 @@ describe('core action', () => {
     let state
 
     beforeEach(() => {
-      const uploadFileAction = core.uploadFile(fileMock())
-      fileId = uploadFileAction.payload.fileId
-      const uploadCompleteAction = core.uploadComplete(fileId, uploadModelMock())
-
-      state = [uploadFileAction, uploadCompleteAction].reduce(
-        (currentState, action) => reducer(getModel(currentState), action),
-        undefined
-      )
+      state = withOneUploadedModel()
     })
 
     describe('using selectUploadingModels() selector', () => {
@@ -232,10 +216,11 @@ describe('core action', () => {
 
     beforeEach(() => {
       const uploadFileAction = core.uploadFile(fileMock())
-
       error = new Error('Some error')
       fileId = uploadFileAction.payload.fileId
-      state = [uploadFileAction, core.uploadFail(fileId, error)].reduce(
+      const uploadFailAction = core.uploadFail(fileId, error)
+
+      state = [uploadFileAction, uploadFailAction].reduce(
         (currentState, action) => reducer(getModel(currentState), action),
         undefined
       )
@@ -258,6 +243,37 @@ describe('core action', () => {
 
         expect(model, 'to equal', undefined)
       })
+    })
+  })
+
+  describe('deleteBasketItem()', () => {
+    describe('when the item is once in the basket', () => {
+      let state
+
+      beforeEach(() => {
+        const deleteBasketItemAction = core.deleteBasketItem(0)
+        state = reducer(getModel(withOneUploadedModel()), deleteBasketItemAction)
+      })
+
+      describe('using selectModels() selector', () => {
+        it('does not contain the model any more', () => {
+          const models = selectModels(getModel(state))
+          expect(models, 'to equal', [])
+        })
+      })
+
+      describe('using selectBasketItems() selector', () => {
+        it('does not contain the model any more', () => {
+          const basketItems = selectBasketItems(getModel(state))
+          expect(basketItems, 'to equal', [])
+        })
+      })
+    })
+
+    describe('when the item is twice in the basket', () => {
+      it('still contains the model')
+
+      it('just contain the item once')
     })
   })
 })
