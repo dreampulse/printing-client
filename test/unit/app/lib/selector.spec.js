@@ -6,6 +6,7 @@ import {
   selectMaterialByName,
   selectFinishGroup,
   selectCurrentMaterial,
+  selectCurrentMaterialIds,
   selectOffersForSelectedMaterialConfig,
   selectPrintingServiceRequests,
   selectMaterialByMaterialConfigId,
@@ -284,6 +285,15 @@ describe('Selector lib', () => {
 
       expect(selectMaterial(state, 'material-2'), 'to be', null)
     })
+
+    it('returns null if the given material id is undefined', () => {
+      materials.materialStructure = undefined
+      const state = {
+        material: {materials}
+      }
+
+      expect(selectMaterial(state), 'to be', null)
+    })
   })
 
   describe('selectMaterialByName()', () => {
@@ -487,6 +497,114 @@ describe('Selector lib', () => {
         id: 'material-1',
         name: 'Material 1'
       })
+    })
+  })
+
+  describe('selectCurrentMaterialIds()', () => {
+    let materials
+
+    beforeEach(() => {
+      materials = {
+        materialStructure: [
+          {
+            materials: [
+              {
+                id: 'material-1',
+                name: config.defaultSelectedMaterial,
+                finishGroups: [
+                  {
+                    materialConfigs: [
+                      {
+                        id: 'material-1-config-1'
+                      },
+                      {
+                        id: 'material-1-config-2'
+                      },
+                      {
+                        id: 'material-1-config-3'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                id: 'material-2',
+                name: 'Other name',
+                finishGroups: [
+                  {
+                    materialConfigs: [
+                      {
+                        id: 'material-2-config-1'
+                      },
+                      {
+                        id: 'material-2-config-2'
+                      },
+                      {
+                        id: 'material-2-config-3'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    })
+
+    it('returns an array with just the selected material config id if there is currently one selected', () => {
+      const state = {
+        material: {
+          selectedMaterialConfig: 'material-1'
+        }
+      }
+
+      expect(selectCurrentMaterialIds(state), 'to equal', ['material-1'])
+    })
+
+    it('returns an empty array if there is currently no material selected', () => {
+      const state = {
+        material: {}
+      }
+
+      expect(selectCurrentMaterialIds(state), 'to equal', [])
+    })
+
+    it('returns an empty array if there is no material loaded yet', () => {
+      const state = {
+        material: {}
+      }
+
+      expect(selectCurrentMaterialIds(state), 'to equal', [])
+    })
+
+    it('returns the material config ids from the default selected material if no material has been selected yet', () => {
+      const state = {
+        material: {
+          materials
+        }
+      }
+
+      expect(selectCurrentMaterialIds(state), 'to equal', [
+        'material-1-config-1',
+        'material-1-config-2',
+        'material-1-config-3'
+      ])
+    })
+
+    it('returns the material config ids from the selected material', () => {
+      const state = {
+        material: {
+          materials,
+          selectedMaterial: 'material-2'
+        }
+      }
+
+      expect(selectCurrentMaterialIds(state), 'to equal', [
+        'material-2-config-1',
+        'material-2-config-2',
+        'material-2-config-3'
+      ])
     })
   })
 
