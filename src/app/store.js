@@ -1,5 +1,6 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import {routerMiddleware} from 'react-router-redux'
+import {install as installReduxLoop} from 'redux-loop'
 import {track as trackMixpanel} from 'Service/mixpanel'
 import {track as trackGoogleAnalytics} from 'Service/google-analytics'
 import {ravenMiddleware} from 'Service/logging'
@@ -42,7 +43,11 @@ export default (history, initialState = {}) => {
     /* eslint global-require: 0 */
     /* eslint import/no-extraneous-dependencies: 0 */
     // Enable redux dev-tools
-    middleware = compose(middleware, global.devToolsExtension ? global.devToolsExtension() : f => f)
+    middleware = compose(
+      middleware,
+      installReduxLoop(),
+      global.devToolsExtension ? global.devToolsExtension() : f => f
+    )
   }
 
   // This initialState is empty, because each reducer has its own initial state
