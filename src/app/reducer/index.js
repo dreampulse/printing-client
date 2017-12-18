@@ -19,9 +19,13 @@ const rootReducer = combineReducers({
     price,
     order,
     configuration,
+    // Some legacy containers and selectors require these third-party states
     routing: routerReducer,
     form: formReducer
-  })
+  }),
+  // third-party modules expect their state to be at the top-level
+  routing: routerReducer,
+  form: formReducer
 })
 
 export default rootReducer
