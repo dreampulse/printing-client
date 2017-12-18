@@ -15,7 +15,9 @@ describe('init action', () => {
     let state
 
     before(() => {
-      selectorsToTest = Object.values(selector)
+      // We don't want to test the selectLegacyState() selector
+      // TODO: Remove .filter() after legacy state has been removed
+      selectorsToTest = Object.values(selector).filter(s => s !== selector.selectLegacyState)
     })
 
     beforeEach(() => {

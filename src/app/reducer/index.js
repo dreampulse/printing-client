@@ -11,15 +11,17 @@ import order from './order'
 import configuration from './configuration'
 
 const rootReducer = combineReducers({
-  user,
-  modal,
-  model,
-  material,
-  price,
-  order,
-  configuration,
-  routing: routerReducer,
-  form: formReducer
+  legacy: combineReducers({
+    user,
+    modal,
+    model,
+    material,
+    price,
+    order,
+    configuration,
+    routing: routerReducer,
+    form: formReducer
+  })
 })
 
 export default rootReducer

@@ -1,3 +1,5 @@
+import createStore from '../src/app/store'
+
 export const resolveAsyncThunk = (type, payload) => dispatch => {
   const action = {type, payload}
   return Promise.resolve(action).then(dispatch)
@@ -27,6 +29,17 @@ export const createMockStore = (initialState, nextStates = []) => {
       nextStatePos++
     }
   })
+
+  return store
+}
+
+export const createLegacyStore = (history, initialLegacyState) => {
+  const store = createStore(history, {
+    legacy: initialLegacyState
+  })
+  const getState = store.getState
+
+  store.getState = () => getState.call(store).legacy
 
   return store
 }

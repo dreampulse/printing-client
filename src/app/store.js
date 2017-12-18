@@ -1,11 +1,22 @@
 import {createStore, applyMiddleware, compose} from 'redux'
-import thunk from 'redux-thunk'
 import {routerMiddleware} from 'react-router-redux'
 import {track as trackMixpanel} from 'Service/mixpanel'
 import {track as trackGoogleAnalytics} from 'Service/google-analytics'
 import {ravenMiddleware} from 'Service/logging'
 
 import rootReducer from './reducer'
+
+function legacyThunk({dispatch, getState}) {
+  const getLegacyState = () => getState().legacy
+
+  return next => action => {
+    if (typeof action === 'function') {
+      return action(dispatch, getLegacyState)
+    }
+
+    return next(action)
+  }
+}
 
 function trackingReduxMiddleware() {
   return next => action => {
@@ -21,7 +32,7 @@ function trackingReduxMiddleware() {
 
 export default (history, initialState = {}) => {
   let middleware = applyMiddleware(
-    thunk,
+    legacyThunk,
     routerMiddleware(history),
     trackingReduxMiddleware,
     ravenMiddleware

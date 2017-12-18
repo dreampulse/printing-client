@@ -234,7 +234,5 @@ export type State = {
   material: MaterialState,
   model: ModelState,
   modal: ModalState,
-  configuration: ConfigurationState,
-  routing: any, // Managed by react-router-redux
-  form: any // Managed by redux-form
+  configuration: ConfigurationState
 }

@@ -68,7 +68,7 @@ describe('Configuration actions', () => {
           payload: {method: 'push', args: ['/configuration/some-configuration-id']}
         },
         {
-          type: 'DIRECT_SALES.CREATE_CONFIGURATION',
+          type: 'LEGACY.DIRECT_SALES.CREATE_CONFIGURATION',
           payload: 'http://example.com/configuration/some-configuration-id'
         }
       ])
@@ -98,7 +98,7 @@ describe('Configuration actions', () => {
           payload: {method: 'push', args: ['/configuration/some-configuration-id']}
         },
         {
-          type: 'DIRECT_SALES.CREATE_CONFIGURATION',
+          type: 'LEGACY.DIRECT_SALES.CREATE_CONFIGURATION',
           payload: 'http://example.com/configuration/some-configuration-id'
         }
       ])
@@ -139,11 +139,11 @@ describe('Configuration actions', () => {
       await store.dispatch(restoreConfiguration('some-configuration-id', features))
       expect(store.getActions(), 'to equal', [
         {
-          type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
+          type: 'LEGACY.DIRECT_SALES.RESTORE_CONFIGURATION',
           payload: configMock
         },
         {
-          type: 'MATERIAL.CONFIG_SELECTED',
+          type: 'LEGACY.MATERIAL.CONFIG_SELECTED',
           payload: 'material-1'
         },
         {
@@ -168,7 +168,7 @@ describe('Configuration actions', () => {
       await store.dispatch(restoreConfiguration('some-configuration-id', features))
       expect(store.getActions(), 'to equal', [
         {
-          type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
+          type: 'LEGACY.DIRECT_SALES.RESTORE_CONFIGURATION',
           payload: 'some-configuration'
         }
       ])

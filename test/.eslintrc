@@ -10,8 +10,7 @@
     "getModel": true,
     "getCmd": true,
     "findCmd": true,
-    // Remove testDispatch after test refactorings
-    "testDispatch": true
+    "createLegacyStore": true
   },
   "env": {
     "mocha": true
