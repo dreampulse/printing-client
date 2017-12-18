@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
 import App from 'Component/app'
@@ -13,6 +12,7 @@ import Link from 'Component/link'
 
 import {goToHome, goToAddress} from 'Action/navigation'
 
+import {connectLegacy} from './util/connectLegacy'
 import Modal from './modal'
 
 const AppLayout = ({
@@ -85,6 +85,6 @@ const mapDispatchToProps = {
   onGoToAddress: goToAddress
 }
 
-const enhance = compose(connect(mapStateToProps, mapDispatchToProps))
+const enhance = compose(connectLegacy(mapStateToProps, mapDispatchToProps))
 
 export default enhance(AppLayout)

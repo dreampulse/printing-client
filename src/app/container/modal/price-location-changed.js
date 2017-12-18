@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 
 import Overlay from 'Component/overlay'
 import Headline from 'Component/headline'
@@ -9,6 +8,8 @@ import Button from 'Component/button'
 import {getCountryName} from 'Service/country'
 
 import {goToCart} from 'Action/navigation'
+
+import {connectLegacy} from '../util/connectLegacy'
 
 const PriceLocationChangedModal = ({oldShippingAddress, newShippingAddress, onClose}) => {
   const headline = <Headline label="Prices have changed" modifiers={['l', 'warning']} />
@@ -47,4 +48,4 @@ const mapDispatchToProps = {
   onClose: goToCart
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PriceLocationChangedModal)
+export default connectLegacy(mapStateToProps, mapDispatchToProps)(PriceLocationChangedModal)

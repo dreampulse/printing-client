@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
 import {buildClassArray} from 'Lib/build-class-name'
@@ -16,6 +15,7 @@ import {selectOffer} from 'Action/price'
 import {goToAddress} from 'Action/navigation'
 import {createConfiguration} from 'Action/configuration'
 
+import {connectLegacy} from './util/connectLegacy'
 import {getFeatures} from './util/feature'
 
 const ProviderSection = ({
@@ -80,4 +80,6 @@ const mapDispatchToProps = {
   onCreateConfiguration: createConfiguration
 }
 
-export default compose(getFeatures, connect(mapStateToProps, mapDispatchToProps))(ProviderSection)
+export default compose(getFeatures, connectLegacy(mapStateToProps, mapDispatchToProps))(
+  ProviderSection
+)

@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 import {getStateName, getCountryName} from 'Service/country'
 import getCloudinaryUrl from 'Lib/cloudinary'
@@ -42,6 +41,7 @@ import {openFatalErrorModal} from 'Action/modal'
 import {guard} from './util/guard'
 import {getFeatures} from './util/feature'
 import AppLayout from './app-layout'
+import {connectLegacy} from './util/connectLegacy'
 
 const CartPage = ({
   user,
@@ -292,9 +292,9 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  guard(state => state.price.selectedOffer),
+  guard(state => state.legacy.price.selectedOffer),
   getFeatures,
-  connect(mapStateToProps, mapDispatchToProps)
+  connectLegacy(mapStateToProps, mapDispatchToProps)
 )
 
 export default enhance(CartPage)

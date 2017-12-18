@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 
 import {selectMaterial, selectFinishGroup} from 'Lib/selector'
 import getCloudinaryUrl from 'Lib/cloudinary'
@@ -17,6 +16,8 @@ import FeatureListItem from 'Component/feature-list-item'
 import Grid from 'Component/grid'
 import Column from 'Component/column'
 import Image from 'Component/image'
+
+import {connectLegacy} from '../util/connectLegacy'
 
 const MaterialModal = ({material, finishGroup, onClose}) => {
   const headline = <Headline label={material.name} modifiers={['l']} />
@@ -91,4 +92,4 @@ const mapDispatchToProps = {
   onClose: close
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MaterialModal)
+export default connectLegacy(mapStateToProps, mapDispatchToProps)(MaterialModal)

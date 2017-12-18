@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 
 import Overlay from 'Component/overlay'
 import Headline from 'Component/headline'
@@ -7,6 +6,8 @@ import RichText from 'Component/rich-text'
 import Button from 'Component/button'
 
 import {goToCart} from 'Action/navigation'
+
+import {connectLegacy} from '../util/connectLegacy'
 
 const PriceChangedModal = ({onClose}) => {
   const headline = <Headline label="Prices have changed" modifiers={['l', 'warning']} />
@@ -34,4 +35,4 @@ const mapDispatchToProps = {
   onClose: goToCart
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PriceChangedModal)
+export default connectLegacy(mapStateToProps, mapDispatchToProps)(PriceChangedModal)

@@ -1,6 +1,5 @@
 import React from 'react'
 import {compose} from 'recompose'
-import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
 import {getCountriesMenu, getStateName, getStates, getCountryName} from 'Service/country'
 
@@ -21,6 +20,7 @@ import {reviewOrder} from 'Action/user'
 import {goToHome} from 'Action/navigation'
 
 import {renderField} from './util/form'
+import {connectLegacy} from './util/connectLegacy'
 import {guard} from './util/guard'
 import AppLayout from './app-layout'
 
@@ -410,8 +410,8 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  guard(state => state.price.selectedOffer),
-  connect(mapStateToProps, mapDispatchToProps),
+  guard(state => state.legacy.price.selectedOffer),
+  connectLegacy(mapStateToProps, mapDispatchToProps),
   reduxForm({form: FORM_NAME})
 )
 
