@@ -32,26 +32,25 @@ function trackingReduxMiddleware() {
 }
 
 export default (history, initialState = {}) => {
-  let middleware = applyMiddleware(
-    legacyThunk,
-    routerMiddleware(history),
-    trackingReduxMiddleware,
-    ravenMiddleware
+  let enhancer = compose(
+    applyMiddleware(
+      legacyThunk,
+      routerMiddleware(history),
+      trackingReduxMiddleware,
+      ravenMiddleware
+    ),
+    installReduxLoop()
   )
 
   if (process.env.NODE_ENV !== 'production') {
     /* eslint global-require: 0 */
     /* eslint import/no-extraneous-dependencies: 0 */
     // Enable redux dev-tools
-    middleware = compose(
-      middleware,
-      installReduxLoop(),
-      global.devToolsExtension ? global.devToolsExtension() : f => f
-    )
+    enhancer = compose(enhancer, global.devToolsExtension ? global.devToolsExtension() : f => f)
   }
 
   // This initialState is empty, because each reducer has its own initial state
-  const store = createStore(rootReducer, initialState, middleware)
+  const store = createStore(rootReducer, initialState, enhancer)
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
