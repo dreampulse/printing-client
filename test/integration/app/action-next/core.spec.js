@@ -134,7 +134,7 @@ describe('core action', () => {
       state = reducer(getModel(stateBeforeUploadProgress), uploadProgressAction)
     })
 
-    describe('using selectUploadingModels() selector', () => {
+    describe('using selectUploadingFiles() selector', () => {
       it('updates the model with the given file id', () => {
         const model = selectUploadingFiles(getModel(state)).find(m => m.fileId === fileId)
 
@@ -174,7 +174,7 @@ describe('core action', () => {
       state = withOneUploadedModel()
     })
 
-    describe('using selectUploadingModels() selector', () => {
+    describe('using selectUploadingFiles() selector', () => {
       it('does not return the file anymore', () => {
         const model = selectUploadingFiles(getModel(state)).find(m => m.fileId === fileId)
 
