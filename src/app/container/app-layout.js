@@ -12,7 +12,7 @@ import Link from 'Component/link'
 
 import {goToHome, goToAddress} from 'Action/navigation'
 
-import {connectLegacy} from './util/connectLegacy'
+import {connectLegacy} from './util/connect-legacy'
 import Modal from './modal'
 
 const AppLayout = ({

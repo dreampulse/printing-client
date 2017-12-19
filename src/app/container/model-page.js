@@ -18,7 +18,7 @@ import {selectCommonQuantity} from 'Lib/selector'
 import {formatAddress} from 'Lib/formatter'
 import {convertPlaceToLocation} from 'Lib/geolocation'
 
-import {connectLegacy} from './util/connectLegacy'
+import {connectLegacy} from './util/connect-legacy'
 import config from '../../../config'
 
 const ModelPage = ({address, commonQuantity, onChangeQuantity, onUpdateLocation}) => {

@@ -20,7 +20,7 @@ import {reviewOrder} from 'Action/user'
 import {goToHome} from 'Action/navigation'
 
 import {renderField} from './util/form'
-import {connectLegacy} from './util/connectLegacy'
+import {connectLegacy} from './util/connect-legacy'
 import {guard} from './util/guard'
 import AppLayout from './app-layout'
 

@@ -15,7 +15,7 @@ import {selectOffer} from 'Action/price'
 import {goToAddress} from 'Action/navigation'
 import {createConfiguration} from 'Action/configuration'
 
-import {connectLegacy} from './util/connectLegacy'
+import {connectLegacy} from './util/connect-legacy'
 import {getFeatures} from './util/feature'
 
 const ProviderSection = ({

@@ -9,7 +9,7 @@ import {getCountryName} from 'Service/country'
 
 import {goToCart} from 'Action/navigation'
 
-import {connectLegacy} from '../util/connectLegacy'
+import {connectLegacy} from '../util/connect-legacy'
 
 const PriceLocationChangedModal = ({oldShippingAddress, newShippingAddress, onClose}) => {
   const headline = <Headline label="Prices have changed" modifiers={['l', 'warning']} />

@@ -33,7 +33,7 @@ import {
 } from 'Action/material'
 import {openMaterialModal} from 'Action/modal'
 
-import {connectLegacy} from './util/connectLegacy'
+import {connectLegacy} from './util/connect-legacy'
 
 const MaterialSection = ({
   areAllUploadsFinished,

@@ -7,7 +7,7 @@ import Button from 'Component/button'
 
 import {goToCart} from 'Action/navigation'
 
-import {connectLegacy} from '../util/connectLegacy'
+import {connectLegacy} from '../util/connect-legacy'
 
 const PriceChangedModal = ({onClose}) => {
   const headline = <Headline label="Prices have changed" modifiers={['l', 'warning']} />

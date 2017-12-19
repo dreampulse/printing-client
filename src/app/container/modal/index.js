@@ -1,7 +1,7 @@
 import React, {createElement} from 'react'
 import Portal from 'react-portal'
 import {close} from 'Action/modal'
-import {connectLegacy} from '../util/connectLegacy'
+import {connectLegacy} from '../util/connect-legacy'
 import {MODAL_TYPE} from '../../action-type'
 import ShippingAddressModal from './shipping-address'
 import MaterialModal from './material'

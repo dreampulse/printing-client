@@ -8,7 +8,7 @@ import Headline from 'Component/headline'
 import Paragraph from 'Component/paragraph'
 import ProviderImage from 'Component/provider-image'
 
-import {connectLegacy} from './util/connectLegacy'
+import {connectLegacy} from './util/connect-legacy'
 import {guard} from './util/guard'
 import AppLayout from './app-layout'
 

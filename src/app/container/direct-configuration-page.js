@@ -29,7 +29,7 @@ import SelectField from 'Component/select-field'
 import SelectMenu from 'Component/select-menu'
 
 import AppLayout from './app-layout'
-import {connectLegacy} from './util/connectLegacy'
+import {connectLegacy} from './util/connect-legacy'
 import config from '../../../config'
 
 const DirectConfigurationPage = ({

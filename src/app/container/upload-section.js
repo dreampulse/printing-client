@@ -21,7 +21,7 @@ import Button from 'Component/button'
 import {uploadFiles, deleteFile, changeIndividualQuantity, changeUnit} from 'Action/model'
 import {createConfiguration} from 'Action/configuration'
 
-import {connectLegacy} from './util/connectLegacy'
+import {connectLegacy} from './util/connect-legacy'
 import {getFeatures} from './util/feature'
 
 const UploadSection = ({

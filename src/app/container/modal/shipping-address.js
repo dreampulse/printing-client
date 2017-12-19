@@ -13,7 +13,7 @@ import {isAddressValid, convertPlaceToLocation} from 'Lib/geolocation'
 import {updateLocation} from 'Action/user'
 import {close} from 'Action/modal'
 
-import {connectLegacy} from '../util/connectLegacy'
+import {connectLegacy} from '../util/connect-legacy'
 
 import config from '../../../../config'
 

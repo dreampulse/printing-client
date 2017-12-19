@@ -5,7 +5,7 @@ import {restoreConfiguration} from 'Action/configuration'
 
 import LoadingContainer from 'Component/loading-container'
 
-import {connectLegacy} from './util/connectLegacy'
+import {connectLegacy} from './util/connect-legacy'
 import ModelPage from './model-page'
 import DirectConfigurationPage from './direct-configuration-page'
 

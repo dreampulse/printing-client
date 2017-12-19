@@ -41,7 +41,7 @@ import {openFatalErrorModal} from 'Action/modal'
 import {guard} from './util/guard'
 import {getFeatures} from './util/feature'
 import AppLayout from './app-layout'
-import {connectLegacy} from './util/connectLegacy'
+import {connectLegacy} from './util/connect-legacy'
 
 const CartPage = ({
   user,

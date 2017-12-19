@@ -17,7 +17,7 @@ import Grid from 'Component/grid'
 import Column from 'Component/column'
 import Image from 'Component/image'
 
-import {connectLegacy} from '../util/connectLegacy'
+import {connectLegacy} from '../util/connect-legacy'
 
 const MaterialModal = ({material, finishGroup, onClose}) => {
   const headline = <Headline label={material.name} modifiers={['l']} />
