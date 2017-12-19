@@ -34,7 +34,7 @@ const createOrder = () => async (dispatch: Dispatch<*>, getState: () => State) =
       userId,
       priceId,
       offerIds: [offerId],
-      utmSource: utmParams.source
+      utmParams
     })
 
     dispatch(ordered({orderId, orderNumber}))
