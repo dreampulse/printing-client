@@ -3,7 +3,6 @@ import createHistory from 'history/createMemoryHistory'
 import {getMaterials, selectMaterialConfig} from 'Action/material'
 import * as printingEngine from 'Lib/printing-engine'
 import * as materialLib from 'Lib/material'
-import Store from '../../../../src/app/store'
 
 describe('Material Integration Test', () => {
   let sandbox
@@ -14,7 +13,7 @@ describe('Material Integration Test', () => {
     sandbox.stub(printingEngine)
     sandbox.stub(materialLib)
 
-    store = Store(createHistory())
+    store = createLegacyStore(createHistory())
   })
 
   afterEach(() => {
