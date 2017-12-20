@@ -51,6 +51,16 @@ describe('Selector lib', () => {
 
       expect(selectCommonQuantity(state), 'to be', undefined)
     })
+
+    it('returns undefined if a model has no quantity', () => {
+      const state = {
+        model: {
+          models: [{}, {quantity: 1}]
+        }
+      }
+
+      expect(selectCommonQuantity(state), 'to be', undefined)
+    })
   })
 
   describe('selectMaterialMenuValues()', () => {
@@ -727,6 +737,11 @@ describe('Selector lib', () => {
     it('returns empty object if it does not find a materialConfig', () => {
       expect(selectMaterialByMaterialConfigId(state, 'some-3rd-material-config-id'), 'to equal', {})
     })
+
+    it('returns null if materials are not defined', () => {
+      state.material.materials = undefined
+      expect(selectMaterialByMaterialConfigId(state, 'some-material-config-id'), 'to be', null)
+    })
   })
 
   describe('selectedOfferMaterial', () => {
@@ -772,6 +787,11 @@ describe('Selector lib', () => {
         materialConfig
       })
     })
+
+    it('returns null if there is no selected offer', () => {
+      state.price.selectedOffer = undefined
+      expect(selectedOfferMaterial(state), 'to be', null)
+    })
   })
 
   describe('selectModelByModelId', () => {
@@ -780,7 +800,7 @@ describe('Selector lib', () => {
     beforeEach(() => {
       state = {
         model: {
-          models: [{modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
+          models: [{}, {modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
         }
       }
     })
@@ -841,6 +861,11 @@ describe('Selector lib', () => {
           fileName: 'some-other-model-name'
         }
       ])
+    })
+
+    it('returns null if there is no selected offer', () => {
+      state.price.selectedOffer = undefined
+      expect(selectOfferItems(state), 'to be', null)
     })
   })
 

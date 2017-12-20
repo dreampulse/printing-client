@@ -34,6 +34,7 @@ describe('init action', () => {
       [selector.selectBasketItems, []],
       [selector.selectUserId, null],
       [selector.selectCurrency, 'USD'],
+      [selector.selectLocation, null],
       [selector.isModalOpen, false],
       [selector.selectModalConfig, {isCloseable: true, content: null, contentProps: null}]
     ].forEach(([testSelector, expected]) => {

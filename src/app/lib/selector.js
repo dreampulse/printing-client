@@ -103,7 +103,9 @@ export const selectMaterialByName = (state: State, name: string) => {
 export const selectMaterialByMaterialConfigId = (state: State, materialConfigId: string) => {
   const materials = state.material.materials
 
-  if (!materials) throw new Error('Material structure not loaded')
+  if (!materials) {
+    return null
+  }
 
   let selectedMaterial
   let selectedFinishGroup
@@ -134,7 +136,9 @@ export const selectMaterialByMaterialConfigId = (state: State, materialConfigId:
 }
 
 export const selectedOfferMaterial = (state: State) => {
-  if (!state.price.selectedOffer) throw new Error('No offer selected')
+  if (!state.price.selectedOffer) {
+    return null
+  }
 
   const materialConfigId = state.price.selectedOffer.materialConfigId
   return selectMaterialByMaterialConfigId(state, materialConfigId)
@@ -202,14 +206,15 @@ export const selectModelByModelId = (state: State, modelId: string) => {
 }
 
 export const selectOfferItems = (state: State) => {
-  if (!state.price.selectedOffer) throw new Error('No offer selected')
+  if (!state.price.selectedOffer) {
+    return null
+  }
 
   const items = state.price.selectedOffer.items
 
   return items.map(item => {
     const model = selectModelByModelId(state, item.modelId)
 
-    // TODO: this is because of type Model = ModelCompleted | ModelUploading
     let thumbnailUrl = null
     if (model && model.thumbnailUrl) {
       thumbnailUrl = model.thumbnailUrl

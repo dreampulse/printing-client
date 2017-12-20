@@ -18,6 +18,7 @@ const findInGoogleMapsPlace = (property: string) => (
   if (!component) return ''
   return component[property] || ''
 }
+
 const shortNameFrom = findInGoogleMapsPlace('short_name')
 const longNameFrom = findInGoogleMapsPlace('long_name')
 
