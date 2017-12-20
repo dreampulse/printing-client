@@ -61,7 +61,7 @@ export const selectMaterialMenuValues = (state: State) => {
 export const selectMaterial = (state: State, materialId: ?string) => {
   const {material: {materials}} = state
 
-  if (!materials || !materials.materialStructure) {
+  if (!materials || !materials.materialStructure || !materialId) {
     return null
   }
 
@@ -165,6 +165,29 @@ export const selectCurrentMaterial = (state: State) => {
     selectMaterial(state, selectedMaterial) ||
     selectMaterialByName(state, config.defaultSelectedMaterial)
   )
+}
+
+export const selectCurrentMaterialIds = (state: State): Array<string> => {
+  const selectedMaterialConfigId = state.material.selectedMaterialConfig
+
+  if (selectedMaterialConfigId) {
+    return [selectedMaterialConfigId]
+  }
+
+  const selectedMaterial = selectCurrentMaterial(state)
+
+  if (!selectedMaterial) {
+    return []
+  }
+
+  const materialConfigIds = []
+  selectedMaterial.finishGroups.forEach(finishGroup => {
+    finishGroup.materialConfigs.forEach(materialConfig => {
+      materialConfigIds.push(materialConfig.id)
+    })
+  })
+
+  return materialConfigIds
 }
 
 export const selectModelByModelId = (state: State, modelId: string) => {

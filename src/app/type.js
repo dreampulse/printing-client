@@ -220,8 +220,13 @@ export type ConfigurationState = {
 
 export type MaterialState = {
   materials: ?Materials,
-  selectedMaterial?: string, // The material-Dropdown sets this generated materialConfig-id
-  selectedMaterialConfig?: string, // This is the id of the selected material config
+  // This value reflects the material selection from the material dropdown
+  selectedMaterial?: string,
+  // This value reflects the actual user selection after the user
+  // clicked the 'Select' button on a material card
+  selectedMaterialConfig?: string,
+  // This object stores the current color selection for each material card.
+  // It does not reflect the final user selection.
   selectedMaterialConfigs?: any
 }
 

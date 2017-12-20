@@ -5,7 +5,7 @@ import * as user from 'App/action-next/user'
 import {listMaterials} from 'App/lib/printing-engine'
 import {getLocationByIp} from 'App/lib/geolocation'
 import * as selector from 'App/selector'
-import reducer from 'App/reducer-next'
+import reducer from 'App/reducer'
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
 import geolocationSuccessResponse from '../../../../test-data/mock/geolocation-success-response.json'
 
@@ -29,8 +29,9 @@ describe('init action', () => {
     })
     ;[
       [selector.selectModels, []],
-      [selector.selectUploadingModels, []],
+      [selector.selectUploadingFiles, []],
       [selector.selectMaterialGroups, []],
+      [selector.selectBasketItems, []],
       [selector.selectUserId, null],
       [selector.selectCurrency, 'USD'],
       [selector.isModalOpen, false],

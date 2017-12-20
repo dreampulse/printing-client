@@ -1,5 +1,4 @@
 import createHistory from 'history/createMemoryHistory'
-
 import {
   uploadFiles,
   deleteFile,
@@ -9,7 +8,6 @@ import {
 } from 'Action/model'
 import * as printingEngine from 'Lib/printing-engine'
 import {resetPollState} from 'Lib/poll'
-import Store from '../../../../src/app/store'
 import {ERROR_TYPE} from '../../../../src/app/action-type'
 
 import config from '../../../../config'
@@ -19,7 +17,7 @@ describe('Model Integration Test', () => {
   let sandbox
 
   beforeEach(() => {
-    store = Store({})
+    store = createLegacyStore({})
 
     resetPollState()
 
@@ -70,7 +68,7 @@ describe('Model Integration Test', () => {
         }
       }) // Finished polling
 
-      store = Store(createHistory(), {
+      store = createLegacyStore(createHistory(), {
         material: {
           materials: {
             materialStructure: [
@@ -162,7 +160,7 @@ describe('Model Integration Test', () => {
 
   describe('changeQuantity()', () => {
     it('changes quanity and creates a price request', async () => {
-      store = Store(createHistory(), {
+      store = createLegacyStore(createHistory(), {
         model: {
           models: [
             {
@@ -251,7 +249,7 @@ describe('Model Integration Test', () => {
 
   describe('changeIndividualQuantity()', () => {
     it('changes quanity and creates a price request', async () => {
-      store = Store(createHistory(), {
+      store = createLegacyStore(createHistory(), {
         model: {
           models: [
             {
@@ -347,7 +345,7 @@ describe('Model Integration Test', () => {
 
   describe('deleteFile()', () => {
     it('deletes file and creates a price request', async () => {
-      store = Store(createHistory(), {
+      store = createLegacyStore(createHistory(), {
         model: {
           models: [{fileId: 1, uploadFinished: true}, {fileId: 2, uploadFinished: true}]
         },
