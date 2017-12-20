@@ -827,6 +827,9 @@ describe('Selector lib', () => {
               },
               {
                 modelId: 'some-other-model-id'
+              },
+              {
+                modelId: 'some-unknown-id'
               }
             ]
           }
@@ -841,6 +844,10 @@ describe('Selector lib', () => {
             {
               modelId: 'some-other-model-id',
               thumbnailUrl: 'some-other-thumbnail-url',
+              fileName: 'some-other-model-name'
+            },
+            {
+              modelId: 'some-other-model-id',
               fileName: 'some-other-model-name'
             }
           ]
@@ -859,7 +866,8 @@ describe('Selector lib', () => {
           modelId: 'some-other-model-id',
           thumbnailUrl: 'some-other-thumbnail-url',
           fileName: 'some-other-model-name'
-        }
+        },
+        {modelId: 'some-unknown-id', thumbnailUrl: null, fileName: null}
       ])
     })
 

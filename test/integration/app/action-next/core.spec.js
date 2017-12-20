@@ -75,44 +75,44 @@ describe('core action', () => {
           error: false
         })
       })
+    })
 
-      it('triggers the core.uploadProgress() action as soon as uploadModel() has a progress', () => {
-        const uploadModelCmd = findCmd(state, uploadModel)
-        const onProgress = uploadModelCmd.args[2]
+    it('triggers the core.uploadProgress() action as soon as uploadModel() has a progress', () => {
+      const uploadModelCmd = findCmd(state, uploadModel)
+      const onProgress = uploadModelCmd.args[2]
 
-        sandbox.spy(Cmd, 'dispatch')
-        onProgress(30)
+      sandbox.spy(Cmd, 'dispatch')
+      onProgress(30)
 
-        expect(Cmd.dispatch, 'to have a call satisfying', [
-          core.uploadProgress(uploadFileAction.payload.fileId, 30)
-        ])
-      })
+      expect(Cmd.dispatch, 'to have a call satisfying', [
+        core.uploadProgress(uploadFileAction.payload.fileId, 30)
+      ])
+    })
 
-      it('triggers the core.uploadComplete() action with the file id and the result from uploadModel()', () => {
-        const cmd = findCmd(state, uploadModel, [
-          getFileMock,
-          {unit: 'mm'},
-          expect.it('to be a', 'function')
-        ])
-        const action = cmd.simulate({success: true, result: getUploadModelMock()})
+    it('triggers the core.uploadComplete() action with the file id and the result from uploadModel()', () => {
+      const cmd = findCmd(state, uploadModel, [
+        getFileMock,
+        {unit: 'mm'},
+        expect.it('to be a', 'function')
+      ])
+      const action = cmd.simulate({success: true, result: getUploadModelMock()})
 
-        expect(
-          action,
-          'to equal',
-          core.uploadComplete(uploadFileAction.payload.fileId, getUploadModelMock())
-        )
-      })
+      expect(
+        action,
+        'to equal',
+        core.uploadComplete(uploadFileAction.payload.fileId, getUploadModelMock())
+      )
+    })
 
-      it('triggers the core.uploadFail() action with the file id and the error from uploadModel()', () => {
-        const cmd = findCmd(state, uploadModel)
-        const action = cmd.simulate({success: false, result: getUploadModelMock()})
+    it('triggers the core.uploadFail() action with the file id and the error from uploadModel()', () => {
+      const cmd = findCmd(state, uploadModel)
+      const action = cmd.simulate({success: false, result: getUploadModelMock()})
 
-        expect(
-          action,
-          'to equal',
-          core.uploadFail(uploadFileAction.payload.fileId, getUploadModelMock())
-        )
-      })
+      expect(
+        action,
+        'to equal',
+        core.uploadFail(uploadFileAction.payload.fileId, getUploadModelMock())
+      )
     })
 
     describe('using selectBasketItems() selector', () => {
@@ -164,6 +164,34 @@ describe('core action', () => {
 
         expect(orderBeforeDispatch, 'to equal', orderAfterDispatch)
       })
+    })
+
+    it('triggers the core.uploadProgress() action as soon as uploadModel() has a progress', () => {
+      const uploadModelCmd = findCmd(state, uploadModel)
+      const onProgress = uploadModelCmd.args[2]
+
+      sandbox.spy(Cmd, 'dispatch')
+      onProgress(30)
+
+      expect(Cmd.dispatch, 'to have a call satisfying', [core.uploadProgress(fileId, 30)])
+    })
+
+    it('triggers the core.uploadComplete() action with the file id and the result from uploadModel()', () => {
+      const cmd = findCmd(state, uploadModel, [
+        getFileMock,
+        {unit: 'mm'},
+        expect.it('to be a', 'function')
+      ])
+      const action = cmd.simulate({success: true, result: getUploadModelMock()})
+
+      expect(action, 'to equal', core.uploadComplete(fileId, getUploadModelMock()))
+    })
+
+    it('triggers the core.uploadFail() action with the file id and the error from uploadModel()', () => {
+      const cmd = findCmd(state, uploadModel)
+      const action = cmd.simulate({success: false, result: getUploadModelMock()})
+
+      expect(action, 'to equal', core.uploadFail(fileId, getUploadModelMock()))
     })
   })
 

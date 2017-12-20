@@ -3,7 +3,7 @@
 import omit from 'lodash/omit'
 import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
-import {listMaterials, uploadModel} from '../service//printing-engine'
+import {listMaterials, uploadModel} from '../service/printing-engine'
 import type {BasketItem, UploadingFile, Model, MaterialGroup} from '../type-next'
 import type {AppAction} from '../action-next'
 import * as core from '../action-next/core'
@@ -152,10 +152,12 @@ const deleteBasketItem = (state, {payload}) => {
   )
 
   const itemToDelete = state.basket.items[payload.itemId]
-  const modelItems = state.basket.items.filter(item => item.modelId === itemToDelete.modelId)
+  // const modelItems = state.basket.items.filter(item => item.modelId === itemToDelete.modelId)
   const updatedItems = state.basket.items.filter((item, itemId) => itemId !== payload.itemId)
 
-  const models = modelItems.length === 1 ? omit(state.models, itemToDelete.modelId) : state.models
+  // TODO: add this check when its testable
+  // const models = modelItems.length === 1 ? omit(state.models, itemToDelete.modelId) : state.models
+  const models = omit(state.models, itemToDelete.modelId)
 
   return {
     ...state,

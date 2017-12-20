@@ -1,5 +1,3 @@
-import {Cmd} from 'redux-loop'
-
 import * as userAction from '../../../../src/app/action-next/user'
 import {selectLocation} from '../../../../src/app/selector'
 import reducer from '../../../../src/app/reducer'
