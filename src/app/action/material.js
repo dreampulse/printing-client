@@ -38,6 +38,7 @@ export const selectMaterial = (materialId: string) => async (dispatch: Dispatch<
 
   await dispatch(createPriceRequest())
 }
+
 export const getMaterials = () => async (dispatch: Dispatch<*>) => {
   const materials = cloneDeep(await printingEngine.listMaterials())
   generateMaterialIds(materials.materialStructure)

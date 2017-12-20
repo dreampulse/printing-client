@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
 import ConfigurationHeader from 'Component/configuration-header'
@@ -19,6 +18,7 @@ import {selectCommonQuantity} from 'Lib/selector'
 import {formatAddress} from 'Lib/formatter'
 import {convertPlaceToLocation} from 'Lib/geolocation'
 
+import {connectLegacy} from './util/connect-legacy'
 import config from '../../../config'
 
 const ModelPage = ({address, commonQuantity, onChangeQuantity, onUpdateLocation}) => {
@@ -60,4 +60,4 @@ const mapDispatchToProps = {
   onUpdateLocation: updateLocation
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(ModelPage)
+export default compose(connectLegacy(mapStateToProps, mapDispatchToProps))(ModelPage)

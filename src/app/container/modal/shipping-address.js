@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose, withState} from 'recompose'
 
 import Button from 'Component/button'
@@ -13,6 +12,8 @@ import {isAddressValid, convertPlaceToLocation} from 'Lib/geolocation'
 
 import {updateLocation} from 'Action/user'
 import {close} from 'Action/modal'
+
+import {connectLegacy} from '../util/connect-legacy'
 
 import config from '../../../../config'
 
@@ -51,6 +52,6 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connectLegacy(mapStateToProps, mapDispatchToProps),
   withState('address', 'setAddress', props => props.address)
 )(ShippingAddressModal)

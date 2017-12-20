@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 import toArray from 'lodash/toArray'
 
@@ -22,6 +21,7 @@ import Button from 'Component/button'
 import {uploadFiles, deleteFile, changeIndividualQuantity, changeUnit} from 'Action/model'
 import {createConfiguration} from 'Action/configuration'
 
+import {connectLegacy} from './util/connect-legacy'
 import {getFeatures} from './util/feature'
 
 const UploadSection = ({
@@ -149,4 +149,6 @@ const mapDispatchToProps = {
   onCreateConfiguration: createConfiguration
 }
 
-export default compose(getFeatures, connect(mapStateToProps, mapDispatchToProps))(UploadSection)
+export default compose(getFeatures, connectLegacy(mapStateToProps, mapDispatchToProps))(
+  UploadSection
+)

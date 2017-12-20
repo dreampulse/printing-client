@@ -7,6 +7,7 @@ import {routerActions} from 'react-router-redux'
 import {getBaseUrl} from 'Service/location'
 
 import {createPriceRequest} from './price'
+import {selectMaterialConfig} from './material'
 
 import type {State, Configuration} from '../type'
 import TYPE from '../action-type'
@@ -60,6 +61,7 @@ export const restoreConfiguration = (configurationId: string) => async (
   const configuration = await printingEngine.getConfiguration(configurationId)
   dispatch(restoreConfigurationAction(configuration))
   if (getState().user.userId) {
+    dispatch(selectMaterialConfig(configuration.materialConfigId))
     dispatch(createPriceRequest())
   }
 }
