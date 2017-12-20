@@ -191,7 +191,7 @@ export type MaterialSelectedAction = {
 }
 
 export type MaterialGroupSelectedAction = {
-  type: 'MATERIAL.GROUP_SELECTED',
+  type: 'LEGACY.MATERIAL.GROUP_SELECTED',
   payload: string
 }
 
