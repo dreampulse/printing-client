@@ -289,10 +289,6 @@ describe('User actions', () => {
           payload: 'USD'
         },
         {
-          type: 'LEGACY.USER.UPDATED',
-          payload: {}
-        },
-        {
           type: 'create-price-request-action'
         }
       ])
