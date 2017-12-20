@@ -4,7 +4,6 @@ import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 import {getLocationByIp, isAddressValid} from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
-import {getCurrencyForCountry} from 'Service/currency'
 import {identify, peopleSet} from 'Service/mixpanel'
 import {setUserContext} from 'Service/logging'
 import {normalizeTelephoneNumber} from 'Lib/normalize'
@@ -30,6 +29,7 @@ const shippingAddressChanged = createAction(
 )
 const userCreated = createAction(TYPE.USER.CREATED, (userId: string) => ({userId}))
 const userUpdated = createAction(TYPE.USER.UPDATED, (user: User) => user)
+const currencyChanged = createAction(TYPE.USER.CURRENCY_CHANGED, (currency: string) => currency)
 
 // Async actions
 
@@ -40,7 +40,6 @@ export const detectAddress = () => async (dispatch: Dispatch<*>) => {
 
 export const createUser = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const user = getState().user.user
-  user.currency = getCurrencyForCountry(user.shippingAddress.countryCode)
   const {userId} = await printingEngine.createUser({user})
   identify(userId) // Send user information to Mixpanel
   setUserContext({
@@ -69,8 +68,6 @@ export const updateLocation = (address: Address) => async (
       // No user created so far
       await dispatch(createUser())
     } else {
-      const user = getState().user.user
-      user.currency = getCurrencyForCountry(address.countryCode)
       await dispatch(updateUser(getState().user.user))
     }
 
@@ -83,8 +80,8 @@ export const updateCurrency = (currency: string) => async (
   dispatch: Dispatch<any>,
   getState: () => State
 ) => {
+  dispatch(currencyChanged(currency))
   const user = getState().user.user
-  user.currency = currency
   await dispatch(updateUser(user))
 
   // Update prices

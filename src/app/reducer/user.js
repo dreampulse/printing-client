@@ -62,6 +62,16 @@ function handleUserUpdated(state, {payload}) {
   }
 }
 
+function handleCurrencyChanged(state, {payload: currency}) {
+  return {
+    ...state,
+    currency,
+    user: {
+      ...state.user
+    }
+  }
+}
+
 const reducer = (state: UserState = initialState, action: Action): UserState => {
   switch (action.type) {
     case TYPE.USER.SHIPPING_ADDRESS_CHANGED:
@@ -70,6 +80,8 @@ const reducer = (state: UserState = initialState, action: Action): UserState => 
       return handleUserCreated(state, action)
     case TYPE.USER.UPDATED:
       return handleUserUpdated(state, action)
+    case TYPE.USER.CURRENCY_CHANGED:
+      return handleCurrencyChanged(state, action)
     default:
       return state
   }

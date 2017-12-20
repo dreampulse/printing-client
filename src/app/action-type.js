@@ -32,6 +32,11 @@ export type UserUpdatedAction = {
   payload: User
 }
 
+export type UserCurrencyChangedAction = {
+  type: 'USER.CURRENCY_CHANGED',
+  payload: string
+}
+
 // Order actions
 
 export type OrderStartedAction = {
@@ -211,6 +216,7 @@ export type Action =
   | UserShippingAddressChangedAction
   | UserCreatedAction
   | UserUpdatedAction
+  | UserCurrencyChangedAction
   | OrderStartedAction
   | OrderPayedAction
   | OrderAbortedAction
@@ -270,7 +276,8 @@ export default {
     SHIPPING_ADDRESS_CHANGED: 'USER.SHIPPING_ADDRESS_CHANGED',
     CREATED: 'USER.CREATED',
     UPDATED: 'USER.UPDATED',
-    SET_BILLING_ADDRESS: 'USER.SET_BILLING_ADDRESS'
+    SET_BILLING_ADDRESS: 'USER.SET_BILLING_ADDRESS',
+    CURRENCY_CHANGED: 'USER.CURRENCY_CHANGED'
   },
   ORDER: {
     ORDERED: 'ORDER.ORDERED',

@@ -253,8 +253,7 @@ describe('User actions', () => {
             payload: {
               shippingAddress: {
                 countryCode: 'some-country-code'
-              },
-              currency: 'USD'
+              }
             }
           },
           {type: 'create-price-request-action'}
@@ -286,8 +285,12 @@ describe('User actions', () => {
 
       expect(store.getActions(), 'to equal', [
         {
+          type: 'USER.CURRENCY_CHANGED',
+          payload: 'USD'
+        },
+        {
           type: 'USER.UPDATED',
-          payload: {currency: 'USD'}
+          payload: {}
         },
         {
           type: 'create-price-request-action'
