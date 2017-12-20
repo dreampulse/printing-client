@@ -40,7 +40,7 @@ export type MaterialGroup = {
   }>
 }
 
-export type UploadingModel = {
+export type UploadingFile = {
   fileId: string,
   fileName: string,
   fileSize: number,
@@ -49,7 +49,7 @@ export type UploadingModel = {
   errorMessage?: string
 }
 
-export type BackendModel = {
+export type Model = {
   modelId: string,
   fileName: string,
   fileUnit: 'mm' | 'cm' | 'in',
@@ -63,8 +63,10 @@ export type BackendModel = {
   thumbnailUrl: string
 }
 
-export type Model = BackendModel & {
-  quantity: number
+export type BasketItem = {
+  quantity: number,
+  modelId: string,
+  material: any // @TODO: This is the configuration
 }
 
 export type Location = {
