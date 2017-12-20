@@ -237,16 +237,6 @@ describe('core action', () => {
         })
       })
     })
-
-    describe('using selectModels() selector', () => {
-      it('does not contain the model', () => {
-        const model = selectModels(getModel(state)).find(
-          m => m.modelId === getUploadModelMock.modelId
-        )
-
-        expect(model, 'to equal', undefined)
-      })
-    })
   })
 
   describe('deleteBasketItem()', () => {
