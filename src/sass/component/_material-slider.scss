@@ -1,12 +1,13 @@
 .material-slider {
-  $item-width: 245px; // TODO
+  $item-width: 245px;
   $item-gutter: $space-l;
+  $item-space-top: 2px; // Due to material card shadow
   $wide-nav-width: container() - 2 * gutter() - 4 * ($item-width + $item-gutter) + 0.5 * $item-gutter;
   $stacking: edge, button;
 
   position: relative;
   // Additional spacing to keep shadow of cards visible
-  margin: (-1 * $item-gutter) (-0.5 * $item-gutter) $space-base;
+  margin: 0 (-0.5 * $item-gutter) $space-base;
 
   &__slider {
     overflow: hidden;
@@ -17,7 +18,7 @@
     width: 100%;
     margin: 0;
     padding: 0;
-    padding-top: $item-gutter; // Just to keep shadow of card visible
+    padding-top: $item-space-top; // Just to keep shadow of card visible
     padding-bottom: $space-base + 50px; // To push the scrollbar out of root div
     margin-bottom: -50px; // To crop the scrollbar out of root div
     overflow-x: scroll;
@@ -40,7 +41,7 @@
     align-items: center;
     width: $wide-nav-width;
     position: absolute;
-    top: $item-gutter;
+    top: 0;
     bottom: 0;
     opacity: 0;
     pointer-events: none;

@@ -217,6 +217,7 @@ export type ConfigurationState = {
 
 export type MaterialState = {
   materials: ?Materials,
+  selectedMaterialGroup?: string, // Index of the material group within the materialStructure array
   selectedMaterial?: string, // The material-Dropdown sets this generated materialConfig-id
   selectedMaterialConfig?: string, // This is the id of the selected material config
   selectedMaterialConfigs?: any

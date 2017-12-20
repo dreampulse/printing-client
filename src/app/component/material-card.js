@@ -57,8 +57,8 @@ const MaterialCard = ({
       {image && <div className="material-card__image" style={imageStyle} />}
       <div className="material-card__content">
         <header className="material-card__header">
-          <Headline label={title} tag="strong" />
           {info}
+          <Headline label={title} tag="strong" />
         </header>
         {Boolean(description) && (
           <div className="material-card__body">

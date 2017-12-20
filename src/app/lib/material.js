@@ -60,3 +60,16 @@ export function getMaterialByName(materials, name) {
 
   return foundMaterial
 }
+
+export function getMaterialConfigIdsOfMaterialGroup(materialGroup) {
+  const materialConfigIds = []
+  materialGroup.materials.forEach(material => {
+    material.finishGroups.forEach(finishGroup => {
+      finishGroup.materialConfigs.forEach(materialConfig => {
+        materialConfigIds.push(materialConfig.id)
+      })
+    })
+  })
+
+  return materialConfigIds
+}

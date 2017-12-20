@@ -10,6 +10,7 @@ import NumberField from 'Component/number-field'
 import AppLayout from 'Container/app-layout'
 import UploadSection from 'Container/upload-section'
 import MaterialSection from 'Container/material-section'
+import FinishSection from 'Container/finish-section'
 import ProviderSection from 'Container/provider-section'
 
 import {changeQuantity} from 'Action/model'
@@ -45,6 +46,7 @@ const ModelPage = ({address, commonQuantity, onChangeQuantity, onUpdateLocation}
     <AppLayout currentStep={0} configurationHeader={configurationHeader}>
       <UploadSection />
       <MaterialSection />
+      <FinishSection />
       <ProviderSection />
     </AppLayout>
   )

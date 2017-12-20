@@ -5,6 +5,7 @@ import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   materials: undefined,
+  selectedMaterialGroup: undefined,
   selectedMaterial: undefined,
   selectedMaterialConfig: undefined,
   selectedMaterialConfigs: {}
@@ -24,10 +25,20 @@ function handleReceivedMaterials(state, {payload}) {
   }
 }
 
+function handleSelectedMaterialGroup(state, {payload}) {
+  return {
+    ...state,
+    selectedMaterialGroup: payload,
+    selectedMaterial: undefined,
+    selectedMaterialConfig: undefined
+  }
+}
+
 function handleSelectedMaterial(state, {payload}) {
   return {
     ...state,
-    selectedMaterial: payload
+    selectedMaterial: payload,
+    selectedMaterialConfig: undefined
   }
 }
 
@@ -55,6 +66,8 @@ const reducer = (state: MaterialState = initialState, action: Action): MaterialS
       return handleReceivedMaterials(state, action)
     case TYPE.MATERIAL.SELECTED:
       return handleSelectedMaterial(state, action)
+    case TYPE.MATERIAL.GROUP_SELECTED:
+      return handleSelectedMaterialGroup(state, action)
     case TYPE.MATERIAL.CONFIG_SELECTED:
       return handleSelectedMaterialConfig(state, action)
     case TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED:

@@ -190,6 +190,11 @@ export type MaterialSelectedAction = {
   payload: string // This (in the frontend generated) materialId
 }
 
+export type MaterialGroupSelectedAction = {
+  type: 'MATERIAL.GROUP_SELECTED',
+  payload: string
+}
+
 export type MaterialConfigForFinishGroupSelectedAction = {
   type: 'MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED',
   payload: {[finishGroupId: string]: string} // @TODO: why so strage?
@@ -233,8 +238,8 @@ export type Action =
   | ConfigurationRestoredAction
   | ConfigurationCreatedAction
   | MaterialSelectedAction
+  | MaterialGroupSelectedAction
   | MaterialConfigForFinishGroupSelectedAction
-  | MaterialConfigSelectedAction
   | MaterialConfigSelectedAction
   | MaterialReceivedAction
 
@@ -256,6 +261,7 @@ export default {
   MATERIAL: {
     RECEIVED: 'MATERIAL.RECEIVED',
     SELECTED: 'MATERIAL.SELECTED',
+    GROUP_SELECTED: 'MATERIAL.GROUP_SELECTED',
     CONFIG_SELECTED: 'MATERIAL.CONFIG_SELECTED',
     CONFIG_FOR_FINISH_GROUP_SELECTED: 'MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED'
   },

@@ -266,12 +266,12 @@ describe('Price actions', () => {
             {
               modelId: 'model-1',
               quantity: 1,
-              materialConfigIds: ['material-config-1']
+              materialConfigIds: ['material-config-1', 'material-config-2']
             },
             {
               modelId: 'model-2',
               quantity: 2,
-              materialConfigIds: ['material-config-1']
+              materialConfigIds: ['material-config-1', 'material-config-2']
             }
           ]
         }

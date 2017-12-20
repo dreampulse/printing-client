@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import clamp from 'lodash/clamp'
 import range from 'lodash/range'
 import find from 'lodash/find'
+import isEqual from 'lodash/isEqual'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'
@@ -24,24 +25,37 @@ export default class MaterialSlider extends Component {
   state = {
     showBack: false,
     showNext: false,
+    numDots: 0,
     currentDotIndex: 0
   }
 
   componentDidMount() {
     this.canvasDom.addEventListener('scroll', this.updateButtonVisibilityState)
-    this.canvasDom.addEventListener('scroll', this.updateCurrentDotIndex)
+    this.canvasDom.addEventListener('scroll', this.updateDots)
     global.addEventListener('resize', this.updateButtonVisibilityState)
-    global.addEventListener('resize', this.updateCurrentDotIndex)
+    global.addEventListener('resize', this.updateDots)
 
-    this.updateButtonVisibilityState()
-    this.updateCurrentDotIndex()
+    this.reset()
+  }
+
+  componentDidUpdate(prevProps) {
+    // Check if children changed
+    // The only easy check is to test for MaterialCard titles
+    if (
+      prevProps.children.length !== this.props.children.length ||
+      !prevProps.children.every(
+        (child, index) => child.props.title === this.props.children[index].props.title
+      )
+    ) {
+      this.reset()
+    }
   }
 
   componentWillUnmount() {
     this.canvasDom.removeEventListener('scroll', this.updateButtonVisibilityState)
-    this.canvasDom.removeEventListener('scroll', this.updateCurrentDotIndex)
+    this.canvasDom.removeEventListener('scroll', this.updateDots)
     global.removeEventListener('resize', this.updateButtonVisibilityState)
-    global.removeEventListener('resize', this.updateCurrentDotIndex)
+    global.removeEventListener('resize', this.updateDots)
   }
 
   getPageSize = () => {
@@ -104,7 +118,7 @@ export default class MaterialSlider extends Component {
     }
   }
 
-  updateCurrentDotIndex = () => {
+  updateDots = () => {
     const scrollLeft = this.canvasDom.scrollLeft
     const numPages = this.getNumPages()
     const pageSize = this.getPageSize()
@@ -116,6 +130,12 @@ export default class MaterialSlider extends Component {
     // Edge case with last page
     if (scrollLeft >= this.canvasDom.scrollWidth - this.canvasDom.clientWidth) {
       nextDotIndex = numPages - 1
+    }
+
+    if (this.state.numDots !== numPages) {
+      this.setState({
+        numDots: numPages
+      })
     }
 
     if (this.state.currentDotIndex !== nextDotIndex) {
@@ -147,6 +167,18 @@ export default class MaterialSlider extends Component {
     this.startScrollAnimation(startPosition, this.getTargetPositionByIndex(indexOfItem))
   }
 
+  reset = () => {
+    if (this.currentTween) {
+      // Abort possible running animation
+      this.currentTween.abort()
+    }
+
+    this.canvasDom.scrollLeft = 0
+
+    this.updateButtonVisibilityState()
+    this.updateDots()
+  }
+
   handleBackClick = () => {
     this.scrollTo((this.getCurrentPageIndex() - 1) * this.getPageSize())
   }
@@ -173,11 +205,10 @@ export default class MaterialSlider extends Component {
     }
 
     const pageSize = this.getPageSize()
-    const numPages = this.getNumPages()
 
     return (
       <ul className="material-slider__dots" role="presentation">
-        {range(numPages).map(index => (
+        {range(this.state.numDots).map(index => (
           <li key={index} role="presentation">
             <Dot
               modifiers={this.state.currentDotIndex === index ? ['active'] : undefined}

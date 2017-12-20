@@ -1,10 +1,11 @@
 import URLSearchParams from 'url-search-params'
 import {
   selectCommonQuantity,
-  selectMaterialMenuValues,
+  selectMaterialGroup,
   selectMaterial,
   selectMaterialByName,
   selectFinishGroup,
+  selectCurrentMaterialGroup,
   selectCurrentMaterial,
   selectOffersForSelectedMaterialConfig,
   selectPrintingServiceRequests,
@@ -16,8 +17,6 @@ import {
   selectFeatures,
   selectLocationQuery
 } from 'Lib/selector'
-import * as materialLib from 'Lib/material'
-import config from '../../../../config'
 
 describe('Selector lib', () => {
   describe('selectCommonQuantity', () => {
@@ -52,186 +51,47 @@ describe('Selector lib', () => {
     })
   })
 
-  describe('selectMaterialMenuValues()', () => {
-    let sandbox
-    let offers
+  describe('selectMaterialGroup()', () => {
     let materials
-    let material1
-    let material2
-    let material3
 
     beforeEach(() => {
-      sandbox = sinon.sandbox.create()
-      sandbox.stub(materialLib)
-
-      material1 = {
-        id: 'material-1',
-        name: 'Material 1'
-      }
-      material2 = {
-        id: 'material-2',
-        name: 'Material 2'
-      }
-      material3 = {
-        id: 'material-3',
-        name: 'Material 3'
-      }
-
-      offers = ['some', 'offers']
       materials = {
         materialStructure: [
           {
-            name: 'Group 1',
-            materials: [material1]
+            id: 'group-1'
           },
           {
-            name: 'Group 2',
-            materials: [material2, material3]
+            id: 'group-2'
           }
         ]
       }
     })
 
-    afterEach(() => {
-      sandbox.restore()
-    })
-
-    it('returns expected material menu values', () => {
-      materialLib.getBestOfferForMaterial.withArgs(offers, material1).returns({
-        totalPrice: 10,
-        currency: 'USD'
-      })
-      materialLib.getBestOfferForMaterial.withArgs(offers, material2).returns(null)
-      materialLib.getBestOfferForMaterial.withArgs(offers, material3).returns(null)
-
-      materialLib.hasMaterialMultipleConfigs.withArgs(material1).returns(true)
-      materialLib.hasMaterialMultipleConfigs.withArgs(material2).returns(false)
-      materialLib.hasMaterialMultipleConfigs.withArgs(material3).returns(false)
-
+    it('returns expected material group', () => {
       const state = {
-        price: {
-          offers
-        },
-        material: {
-          materials
-        }
+        material: {materials}
       }
 
-      const menuValues = selectMaterialMenuValues(state)
-
-      expect(menuValues, 'to equal', [
-        {
-          type: 'group',
-          label: 'Group 1',
-          children: [
-            {
-              type: 'material',
-              value: 'material-1',
-              label: 'Material 1',
-              hasColor: true,
-              price: 'From 10.00 $'
-            }
-          ]
-        },
-        {
-          type: 'group',
-          label: 'Group 2',
-          children: [
-            {
-              type: 'material',
-              value: 'material-2',
-              label: 'Material 2',
-              hasColor: false,
-              price: undefined
-            },
-            {
-              type: 'material',
-              value: 'material-3',
-              label: 'Material 3',
-              hasColor: false,
-              price: undefined
-            }
-          ]
-        }
-      ])
+      expect(selectMaterialGroup(state, 'group-2'), 'to equal', {id: 'group-2'})
     })
 
-    it('returns material menu values without price when offers are null', () => {
-      materialLib.hasMaterialMultipleConfigs.returns(false)
-
+    it('returns null if there are no materials in state', () => {
       const state = {
-        price: {
-          offers: null
-        },
-        material: {
-          materials
-        }
-      }
-
-      const menuValues = selectMaterialMenuValues(state)
-
-      expect(menuValues, 'to equal', [
-        {
-          type: 'group',
-          label: 'Group 1',
-          children: [
-            {
-              type: 'material',
-              value: 'material-1',
-              label: 'Material 1',
-              hasColor: false,
-              price: undefined
-            }
-          ]
-        },
-        {
-          type: 'group',
-          label: 'Group 2',
-          children: [
-            {
-              type: 'material',
-              value: 'material-2',
-              label: 'Material 2',
-              hasColor: false,
-              price: undefined
-            },
-            {
-              type: 'material',
-              value: 'material-3',
-              label: 'Material 3',
-              hasColor: false,
-              price: undefined
-            }
-          ]
-        }
-      ])
-    })
-
-    it('returns empty array if there are no materials in state', () => {
-      const state = {
-        price: {
-          offers
-        },
         material: {
           materials: undefined
         }
       }
 
-      expect(selectMaterialMenuValues(state), 'to equal', [])
+      expect(selectMaterialGroup(state, 'group-2'), 'to be', null)
     })
 
-    it('returns empty array if materialStructure is undefined', () => {
+    it('returns null if materialStructure is undefined', () => {
       materials.materialStructure = undefined
       const state = {
-        price: {
-          offers
-        },
-        material: {
-          materials
-        }
+        material: {materials}
       }
 
-      expect(selectMaterialMenuValues(state), 'to equal', [])
+      expect(selectMaterialGroup(state, 'group-2'), 'to be', null)
     })
   })
 
@@ -405,6 +265,77 @@ describe('Selector lib', () => {
     })
   })
 
+  describe('selectCurrentMaterialGroup()', () => {
+    let materials
+    let sandbox
+
+    beforeEach(() => {
+      sandbox = sinon.sandbox.create()
+
+      materials = {
+        materialStructure: [
+          {
+            id: 'group-1'
+          },
+          {
+            id: 'group-2'
+          }
+        ]
+      }
+    })
+
+    afterEach(() => {
+      sandbox.restore()
+    })
+
+    it('returns expected material group', () => {
+      const state = {
+        material: {
+          materials,
+          selectedMaterialGroup: 'group-2'
+        }
+      }
+
+      expect(selectCurrentMaterialGroup(state), 'to equal', {
+        id: 'group-2'
+      })
+    })
+
+    it('returns null if there are no materials in state', () => {
+      const state = {
+        material: {
+          materials: undefined,
+          selectedMaterialGroup: 'group-2'
+        }
+      }
+
+      expect(selectCurrentMaterialGroup(state), 'to be', null)
+    })
+
+    it('returns null if materialStructure is undefined', () => {
+      materials.materialStructure = undefined
+      const state = {
+        material: {
+          materials,
+          selectedMaterialGroup: 'group-2'
+        }
+      }
+
+      expect(selectCurrentMaterialGroup(state), 'to be', null)
+    })
+
+    it('returns first material if selected material is undefined', () => {
+      const state = {
+        material: {
+          materials,
+          selectedMaterialGroup: undefined
+        }
+      }
+
+      expect(selectCurrentMaterialGroup(state), 'to equal', {id: 'group-1'})
+    })
+  })
+
   describe('selectCurrentMaterial()', () => {
     let materials
     let sandbox
@@ -474,8 +405,7 @@ describe('Selector lib', () => {
       expect(selectCurrentMaterial(state), 'to be', null)
     })
 
-    it('returns default material from config if selected material is undefined', () => {
-      sandbox.stub(config, 'defaultSelectedMaterial').value('Material 1')
+    it('returns null if selected material is undefined', () => {
       const state = {
         material: {
           materials,
@@ -483,10 +413,7 @@ describe('Selector lib', () => {
         }
       }
 
-      expect(selectCurrentMaterial(state), 'to equal', {
-        id: 'material-1',
-        name: 'Material 1'
-      })
+      expect(selectCurrentMaterial(state), 'to be', null)
     })
   })
 

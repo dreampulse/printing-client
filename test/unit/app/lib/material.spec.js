@@ -4,7 +4,8 @@ import {
   hasMaterialMultipleConfigs,
   getBestOfferForMaterialConfig,
   getBestOfferForMaterial,
-  getMaterialByName
+  getMaterialByName,
+  getMaterialConfigIdsOfMaterialGroup
 } from 'Lib/material'
 import materialResponse from '../../../../test-data/mock/material-list-response.json'
 
@@ -218,5 +219,46 @@ describe('getMaterialByName()', () => {
       id: 'material-3',
       name: 'Material 3'
     })
+  })
+})
+
+describe('getMaterialConfigIdsOfMaterialGroup()', () => {
+  let materialGroup
+
+  beforeEach(() => {
+    materialGroup = {
+      name: 'Group 1',
+      materials: [
+        {
+          id: 'material-1',
+          name: 'Material 1',
+          finishGroups: [
+            {
+              materialConfigs: [{id: 'config-1'}]
+            },
+            {
+              materialConfigs: [{id: 'config-2'}]
+            }
+          ]
+        },
+        {
+          id: 'material-2',
+          name: 'Material 2',
+          finishGroups: [
+            {
+              materialConfigs: [{id: 'config-3'}]
+            }
+          ]
+        }
+      ]
+    }
+  })
+
+  it('returns array of material config ids', () => {
+    expect(getMaterialConfigIdsOfMaterialGroup(materialGroup), 'to equal', [
+      'config-1',
+      'config-2',
+      'config-3'
+    ])
   })
 })

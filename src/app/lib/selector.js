@@ -3,12 +3,7 @@
 import get from 'lodash/get'
 import URLSearchParams from 'url-search-params'
 
-import {hasMaterialMultipleConfigs, getBestOfferForMaterial} from 'Lib/material'
-import {formatPrice} from 'Lib/formatter'
-
 import type {State, Features} from '../type'
-
-import config from '../../../config'
 
 export const selectCommonQuantity = (state: State) => {
   // Common quantity exists only if all models have the same individual quantity
@@ -33,29 +28,23 @@ export const selectCommonQuantity = (state: State) => {
   }, null)
 }
 
-export const selectMaterialMenuValues = (state: State) => {
-  const {price: {offers}, material: {materials}} = state
+export const selectMaterialGroup = (state: State, groupId: ?string) => {
+  const {material: {materials}} = state
 
   if (!materials || !materials.materialStructure) {
-    return []
+    return null
   }
 
-  return materials.materialStructure.map(materialGroup => ({
-    type: 'group',
-    label: materialGroup.name,
-    children: materialGroup.materials.map(material => {
-      const offer = offers && getBestOfferForMaterial(offers, material)
-      return {
-        type: 'material',
-        value: material.id,
-        label: material.name,
-        hasColor: hasMaterialMultipleConfigs(material),
-        price: offer
-          ? `From ${formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}`
-          : undefined
-      }
-    })
-  }))
+  // Search for group by id
+  let materialGroup = null
+
+  materials.materialStructure.forEach(item => {
+    if (item.id === groupId) {
+      materialGroup = item
+    }
+  })
+
+  return materialGroup
 }
 
 export const selectMaterial = (state: State, materialId: ?string) => {
@@ -158,13 +147,22 @@ export const selectFinishGroup = (state: State, materialId: string, finishGroupI
   return finishGroup
 }
 
-export const selectCurrentMaterial = (state: State) => {
-  const selectedMaterial = state.material.selectedMaterial
+export const selectCurrentMaterialGroup = (state: State) => {
+  if (!state.material.materials || !state.material.materials.materialStructure) {
+    return null
+  }
+
+  const selectedMaterialGroup = state.material.selectedMaterialGroup
+  const materialStructure = state.material.materials.materialStructure
 
   return (
-    selectMaterial(state, selectedMaterial) ||
-    selectMaterialByName(state, config.defaultSelectedMaterial)
+    selectMaterialGroup(state, selectedMaterialGroup) || materialStructure[0] // Use first group per default
   )
+}
+
+export const selectCurrentMaterial = (state: State) => {
+  const selectedMaterial = state.material.selectedMaterial
+  return selectMaterial(state, selectedMaterial)
 }
 
 export const selectModelByModelId = (state: State, modelId: string) => {
