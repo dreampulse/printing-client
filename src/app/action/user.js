@@ -81,9 +81,6 @@ export const updateCurrency = (currency: string) => async (
   getState: () => State
 ) => {
   dispatch(currencyChanged(currency))
-  const user = getState().user.user
-  await dispatch(updateUser(user))
-
   // Update prices
   dispatch(createPriceRequest())
 }

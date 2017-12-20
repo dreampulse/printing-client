@@ -1,6 +1,6 @@
 import React from 'react'
 import {compose, withState} from 'recompose'
-import {getCurrencies, getCurrencyForCountry} from 'Service/currency'
+import {getCurrencies} from 'Service/currency'
 
 import Button from 'Component/button'
 import Overlay from 'Component/overlay'
@@ -59,7 +59,6 @@ const ShippingAddressModal = ({
             onChange={place => {
               const location = convertPlaceToLocation(place)
               setAddress(location)
-              setCurrency(getCurrencyForCountry(location.countryCode))
             }}
           />
         </Column>
@@ -78,7 +77,8 @@ const ShippingAddressModal = ({
 }
 
 const mapStateToProps = state => ({
-  address: state.user.user.shippingAddress
+  address: state.user.user.shippingAddress,
+  currency: state.user.currency
 })
 
 const mapDispatchToProps = {
@@ -90,5 +90,5 @@ const mapDispatchToProps = {
 export default compose(
   connectLegacy(mapStateToProps, mapDispatchToProps),
   withState('address', 'setAddress', props => props.address),
-  withState('currency', 'setCurrency', props => getCurrencyForCountry(props.address.countryCode))
+  withState('currency', 'setCurrency', props => props.currency)
 )(ShippingAddressModal)
