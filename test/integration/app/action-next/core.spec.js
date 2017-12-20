@@ -1,14 +1,14 @@
 import {Cmd} from 'redux-loop'
-import * as core from 'App/action-next/core'
+import * as core from '../../../../src/app/action-next/core'
 import {
   selectMaterialGroups,
   selectUploadingFiles,
   selectModels,
   selectBasketItems
-} from 'App/selector'
-import {uploadModel} from 'App/lib/printing-engine'
+} from '../../../../src/app/selector'
+import {uploadModel} from '../../../../src/app/service/printing-engine'
 
-import reducer from 'App/reducer'
+import reducer from '../../../../src/app/reducer'
 import {withOneUploadedModel} from '../../../scenario'
 import materialListResponse from '../../../../test-data/mock/material-list-response.json'
 import getUploadModelMock from '../../../mock/printing-engine/upload-model'

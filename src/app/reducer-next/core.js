@@ -3,11 +3,11 @@
 import omit from 'lodash/omit'
 import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
-import {listMaterials, uploadModel} from 'App/lib/printing-engine'
-import type {BasketItem, UploadingFile, Model, MaterialGroup} from 'App/type-next'
-import type {AppAction} from 'App/action-next'
-import * as core from 'App/action-next/core'
-import * as modal from 'App/action-next/modal'
+import {listMaterials, uploadModel} from '../service//printing-engine'
+import type {BasketItem, UploadingFile, Model, MaterialGroup} from '../type-next'
+import type {AppAction} from '../action-next'
+import * as core from '../action-next/core'
+import * as modal from '../action-next/modal'
 
 export type CoreState = {
   models: {[id: string]: Model},

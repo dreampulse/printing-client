@@ -1,5 +1,5 @@
-import * as core from 'App/action-next/core'
-import reducer from 'App/reducer'
+import * as core from '../src/app/action-next/core'
+import reducer from '../src/app/reducer'
 import getUploadModelMock from './mock/printing-engine/upload-model'
 import getFileMock from './mock/file'
 

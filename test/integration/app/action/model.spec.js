@@ -6,7 +6,7 @@ import {
   changeIndividualQuantity,
   changeUnit
 } from 'Action/model'
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import {resetPollState} from 'Lib/poll'
 import {ERROR_TYPE} from '../../../../src/app/action-type'
 

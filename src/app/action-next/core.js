@@ -2,8 +2,8 @@
 
 import uniqueId from 'lodash/uniqueId'
 import cloneDeep from 'lodash/cloneDeep'
-import {generateMaterialIds} from 'App/lib/material'
-import type {Action, MaterialGroup, Model} from 'App/type-next'
+import {generateMaterialIds} from '../lib/material'
+import type {Action, MaterialGroup, Model} from '../type-next'
 
 type UpdateMaterialGroupsAction = Action<'CORE.UPDATE_MATERIAL_GROUPS', Array<MaterialGroup>>
 type UploadFileAction = Action<'CORE.UPLOAD_FILE', {fileId: string, file: File}>

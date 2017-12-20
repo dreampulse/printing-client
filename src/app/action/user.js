@@ -3,7 +3,7 @@
 import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 import {getLocationByIp, isAddressValid} from 'Lib/geolocation'
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import {identify, peopleSet} from 'Service/mixpanel'
 import {setUserContext} from 'Service/logging'
 import {normalizeTelephoneNumber} from 'Lib/normalize'

@@ -4,7 +4,7 @@ import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 import uniqueId from 'lodash/uniqueId'
 
-import {uploadModel} from 'Lib/printing-engine'
+import {uploadModel} from 'Service/printing-engine'
 import {FileUploadError} from 'Lib/error'
 import {createPriceRequest, createDebouncedPriceRequest} from './price'
 

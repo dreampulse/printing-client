@@ -1,7 +1,7 @@
 // @flow
 
 import type {Dispatch} from 'redux'
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import {createAction} from 'redux-actions'
 import {routerActions} from 'react-router-redux'
 import {getBaseUrl} from 'Service/location'

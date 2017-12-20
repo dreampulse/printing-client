@@ -3,7 +3,7 @@ import {detectAddress, createUser, updateUser} from 'Action/user'
 import * as navigation from 'Action/navigation'
 import * as modal from 'Action/modal'
 import * as price from 'Action/price'
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import * as geolocation from 'Lib/geolocation'
 
 describe('User Integration Test', () => {
