@@ -4,6 +4,7 @@ import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 import {getLocationByIp, isAddressValid} from 'Lib/geolocation'
 import * as printingEngine from 'Lib/printing-engine'
+import * as searchParams from 'Lib/search-params'
 import {identify, peopleSet} from 'Service/mixpanel'
 import {setUserContext} from 'Service/logging'
 import {normalizeTelephoneNumber} from 'Lib/normalize'
@@ -29,6 +30,9 @@ const shippingAddressChanged = createAction(
 )
 const userCreated = createAction(TYPE.USER.CREATED, (userId: string) => ({userId}))
 const userUpdated = createAction(TYPE.USER.UPDATED, (user: User) => user)
+export const setUtmParams = createAction(TYPE.USER.UTM_PARAMS_SET, () =>
+  searchParams.getUtmParams()
+)
 
 // Async actions
 
