@@ -2,16 +2,22 @@
 
 import type {Action, Location} from '../type-next'
 
-type UpdateLocationAction = Action<'USER.UPDATE_LOCATION', Location>
+type LocationDetectedAction = Action<'USER.LOCATION_DETECTED', Location>
 type DetectLocationAction = Action<'USER.DETECT_LOCATION', void>
-export type UserAction = UpdateLocationAction | DetectLocationAction
+type UserCreatedAction = Action<'USER.CREATED', void>
+export type UserAction = LocationDetectedAction | DetectLocationAction | UserCreatedAction
 
-export const updateLocation = (location: Location): UpdateLocationAction => ({
-  type: 'USER.UPDATE_LOCATION',
+export const locationDetected = (location: Location): LocationDetectedAction => ({
+  type: 'USER.LOCATION_DETECTED',
   payload: location
 })
 
 export const detectLocation = (): DetectLocationAction => ({
   type: 'USER.DETECT_LOCATION',
+  payload: undefined
+})
+
+export const userCreated = (): UserCreatedAction => ({
+  type: 'USER.CREATED',
   payload: undefined
 })

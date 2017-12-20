@@ -11,6 +11,7 @@ type UploadProgressAction = Action<'CORE.UPLOAD_PROGRESS', {fileId: string, prog
 type UploadCompleteAction = Action<'CORE.UPLOAD_COMPLETE', {fileId: string, model: Model}>
 type UploadFailAction = Action<'CORE.UPLOAD_FAIL', {fileId: string, error: Error}>
 type DeleteBasketItemAction = Action<'CORE.DELETE_BASKET_ITEM', {itemId: number}>
+type FatalErrorAction = Action<'CORE.FATAL_ERROR', {message: string}>
 
 export type CoreAction =
   | UpdateMaterialGroupsAction
@@ -19,6 +20,7 @@ export type CoreAction =
   | UploadCompleteAction
   | UploadFailAction
   | DeleteBasketItemAction
+  | FatalErrorAction
 
 export const updateMaterialGroups = (
   materialGroups: Array<MaterialGroup>
@@ -64,3 +66,10 @@ export const deleteBasketItem = (itemId: number): DeleteBasketItemAction => ({
 // TODO: add a method to duplicate a basket item
 
 // TODO: add a method to remove a file when the upload failed
+
+export const fatalError = (message: string): FatalErrorAction => ({
+  type: 'CORE.FATAL_ERROR',
+  payload: {
+    message
+  }
+})
