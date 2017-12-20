@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose, lifecycle} from 'recompose'
 
 import scrollTo from 'Service/scroll-to'
@@ -32,6 +31,8 @@ import {
   selectMaterialConfigForFinishGroup
 } from 'Action/material'
 import {openMaterialModal} from 'Action/modal'
+
+import {connectLegacy} from './util/connect-legacy'
 
 const MaterialSection = ({
   areAllUploadsFinished,
@@ -146,7 +147,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connectLegacy(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidUpdate(prevProps) {
       if (!prevProps.areAllUploadsFinished && this.props.areAllUploadsFinished) {

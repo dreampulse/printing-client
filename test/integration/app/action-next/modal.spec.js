@@ -1,88 +1,86 @@
 import * as modal from 'App/action-next/modal'
 import {isModalOpen, selectModalConfig} from 'App/selector'
+import reducer from 'App/reducer'
 
 describe('modal action', () => {
   describe('openModal()', () => {
-    const contentArgs = {}
-    ;[
-      [isModalOpen, true],
-      [
-        selectModalConfig,
-        {
-          isCloseable: false,
-          content: 'CONTENT_TYPE',
-          contentArgs
-        }
-      ]
-    ].forEach(([selector, expected]) => {
-      it(`${selector.name}(state) returns the expected result after execution`, () => {
-        const {state} = testDispatch(
-          modal.openModal({
-            isCloseable: false,
-            content: 'CONTENT_TYPE',
-            contentArgs
-          })
-        )
-        expect(selector(state), 'to equal', expected)
-      })
+    let modalConfiguration
+    let state
+
+    beforeEach(() => {
+      modalConfiguration = {
+        isCloseable: false,
+        content: 'CONTENT_TYPE',
+        contentProps: {}
+      }
+      state = reducer(undefined, modal.openModal(modalConfiguration))
+    })
+
+    describe('using isModalOpen() selector', () => {
+      it('returns true', () => expect(isModalOpen(getModel(state)), 'to be', true))
+    })
+
+    describe('using selectModalConfig() selector', () => {
+      it('returns the specified modal configuration', () =>
+        expect(selectModalConfig(getModel(state)), 'to satisfy', modalConfiguration))
     })
   })
 
   describe('openFatalErrorModal()', () => {
-    const error = new Error('Fatal error')
-    ;[
-      [isModalOpen, true],
-      [
-        selectModalConfig,
-        {
+    let error
+    let state
+
+    beforeEach(() => {
+      error = new Error('Fatal error')
+      state = reducer(undefined, modal.openFatalErrorModal(error))
+    })
+
+    describe('using isModalOpen() selector', () => {
+      it('returns true', () => expect(isModalOpen(getModel(state)), 'to be', true))
+    })
+
+    describe('using selectModalConfig() selector', () => {
+      it('returns the expected modal configuration', () =>
+        expect(selectModalConfig(getModel(state)), 'to satisfy', {
           isCloseable: false,
           content: 'FATAL_ERROR',
-          contentArgs: {error}
-        }
-      ]
-    ].forEach(([selector, expected]) => {
-      it(`${selector.name}(state) returns the expected result after execution`, () => {
-        const {state} = testDispatch(modal.openFatalErrorModal(error))
-        expect(selector(state), 'to equal', expected)
-      })
+          contentProps: {
+            error
+          }
+        }))
     })
   })
 
   describe('openPickLocationModal()', () => {
-    ;[
-      [isModalOpen, true],
-      [
-        selectModalConfig,
-        {
+    let state
+
+    beforeEach(() => {
+      state = reducer(undefined, modal.openPickLocationModal())
+    })
+
+    describe('using isModalOpen() selector', () => {
+      it('returns true', () => expect(isModalOpen(getModel(state)), 'to be', true))
+    })
+
+    describe('using selectModalConfig() selector', () => {
+      it('returns the expected modal configuration', () =>
+        expect(selectModalConfig(getModel(state)), 'to satisfy', {
           isCloseable: false,
           content: 'PICK_LOCATION',
-          contentArgs: null
-        }
-      ]
-    ].forEach(([selector, expected]) => {
-      it(`${selector.name}(state) returns the expected result after execution`, () => {
-        const {state} = testDispatch(modal.openPickLocationModal())
-        expect(selector(state), 'to equal', expected)
-      })
+          contentProps: null
+        }))
     })
   })
 
   describe('closeModal()', () => {
-    ;[
-      [isModalOpen, false],
-      [
-        selectModalConfig,
-        {
-          isCloseable: true,
-          content: null,
-          contentArgs: null
-        }
-      ]
-    ].forEach(([selector, expected]) => {
-      it(`${selector.name}(state) returns the expected result after execution`, () => {
-        const {state} = testDispatch(modal.closeModal())
-        expect(selector(state), 'to equal', expected)
-      })
+    let state
+
+    beforeEach(() => {
+      state = reducer(undefined, modal.closeModal())
+    })
+
+    describe('using isModalOpen() selector', () => {
+      it('returns false', () => expect(isModalOpen(getModel(state)), 'to be', false))
     })
   })
 })

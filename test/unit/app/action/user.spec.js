@@ -180,7 +180,7 @@ describe('User actions', () => {
 
         expect(store.getActions(), 'to equal', [
           {
-            type: 'USER.SHIPPING_ADDRESS_CHANGED',
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
             payload: {address: 'some-address'}
           },
           {
@@ -212,10 +212,10 @@ describe('User actions', () => {
 
         expect(store.getActions(), 'to equal', [
           {
-            type: 'USER.SHIPPING_ADDRESS_CHANGED',
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
             payload: {address: 'some-address'}
           },
-          {type: 'USER.CREATED', payload: {userId: 'some-new-user-id'}},
+          {type: 'LEGACY.USER.CREATED', payload: {userId: 'some-new-user-id'}},
           {type: 'create-price-request-action'}
         ])
       })
@@ -231,10 +231,10 @@ describe('User actions', () => {
 
         expect(store.getActions(), 'to equal', [
           {
-            type: 'USER.SHIPPING_ADDRESS_CHANGED',
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
             payload: {address: 'some-address'}
           },
-          {type: 'USER.UPDATED'},
+          {type: 'LEGACY.USER.UPDATED'},
           {type: 'create-price-request-action'}
         ])
       })

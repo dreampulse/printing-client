@@ -7,7 +7,6 @@ import {
   openFetchingPriceModal,
   openMaterialModal
 } from '../../../../src/app/action/modal'
-import Store from '../../../../src/app/store'
 
 import {MODAL_TYPE} from '../../../../src/app/action-type'
 
@@ -15,7 +14,7 @@ describe('Modal Integration Test', () => {
   let store
 
   beforeEach(() => {
-    store = Store(createHistory())
+    store = createLegacyStore(createHistory())
   })
 
   describe('open()', () => {

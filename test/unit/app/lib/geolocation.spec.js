@@ -74,7 +74,7 @@ describe('geolocation lib', () => {
           },
           {
             long_name: 'Ulm',
-            short_name: 'Ulm',
+            short_name: 'UL',
             types: ['locality', 'political']
           },
           {
@@ -115,7 +115,7 @@ describe('geolocation lib', () => {
         address_components: [
           {
             long_name: 'Ulm',
-            short_name: 'Ulm',
+            short_name: 'UL',
             types: ['locality', 'political']
           },
           {

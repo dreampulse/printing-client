@@ -6,8 +6,6 @@ import {init} from 'Action/init'
 import * as printingEngine from 'Lib/printing-engine'
 import * as geolocation from 'Lib/geolocation'
 
-import Store from '../../../../src/app/store'
-
 import materialList from '../../../../test-data/mock/material-list-response.json'
 
 deepFreeze(materialList)
@@ -17,7 +15,7 @@ describe('Init action integration test', () => {
   let store
 
   beforeEach(() => {
-    store = Store(createHistory())
+    store = createLegacyStore(createHistory())
 
     sandbox = sinon.sandbox.create()
     sandbox.stub(printingEngine)

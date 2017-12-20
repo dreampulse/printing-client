@@ -53,7 +53,6 @@ export const createPriceRequest = (
   const state = getState()
   if (!state.material.materials) throw new Error('Materials structure missing')
   const {model: {models}, user: {userId}} = state
-  const {refresh} = selectFeatures(state)
 
   // Abort if user did not upload any models yet
   if (models.length === 0) {
@@ -64,7 +63,7 @@ export const createPriceRequest = (
 
   const selectedMaterialGroup = selectCurrentMaterialGroup(state)
   const materialConfigIds = getMaterialConfigIdsOfMaterialGroup(selectedMaterialGroup)
-
+  const {refresh} = selectFeatures(state)
   const items = models.map(model => {
     if (!model.uploadFinished) throw new Error('Upload still in progress')
     const {modelId, quantity} = model

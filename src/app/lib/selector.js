@@ -50,7 +50,7 @@ export const selectMaterialGroup = (state: State, groupId: ?string) => {
 export const selectMaterial = (state: State, materialId: ?string) => {
   const {material: {materials}} = state
 
-  if (!materials || !materials.materialStructure) {
+  if (!materials || !materials.materialStructure || !materialId) {
     return null
   }
 

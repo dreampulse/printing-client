@@ -217,9 +217,15 @@ export type ConfigurationState = {
 
 export type MaterialState = {
   materials: ?Materials,
-  selectedMaterialGroup?: string, // Index of the material group within the materialStructure array
-  selectedMaterial?: string, // The material-Dropdown sets this generated materialConfig-id
-  selectedMaterialConfig?: string, // This is the id of the selected material config
+  // Id of the selected material group
+  selectedMaterialGroup?: string,
+  // This value reflects the material selection from the first material slider
+  selectedMaterial?: string,
+  // This value reflects the actual user selection after the user
+  // clicked the 'Select' button on the finish material slider
+  selectedMaterialConfig?: string,
+  // This object stores the current color selection for each material card.
+  // It does not reflect the final user selection.
   selectedMaterialConfigs?: any
 }
 
