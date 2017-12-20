@@ -26,9 +26,7 @@ import RadioButton from 'Component/radio-button'
 
 import {
   selectMaterialGroup,
-  selectMaterial,
-  selectMaterialConfig,
-  selectMaterialConfigForFinishGroup
+  selectMaterial
 } from 'Action/material'
 import {openMaterialModal} from 'Action/modal'
 
@@ -38,16 +36,11 @@ const MaterialSection = ({
   areAllUploadsFinished,
   offers,
   materials,
-  materialMenuValues,
   selectedMaterialGroup,
   selectedMaterial,
   printingServiceRequests,
-  selectedMaterialConfigs,
-  selectedMaterialConfig,
   onSelectMaterial,
   onSelectMaterialGroup,
-  onSelectMaterialConfig,
-  onSelectMaterialConfigForFinishGroup,
   onOpenMaterialModal
 }) => {
   const headlineModifiers = buildClassArray({
@@ -133,16 +126,12 @@ const mapStateToProps = state => ({
   materials: state.material.materials,
   selectedMaterialGroup: selectCurrentMaterialGroup(state),
   selectedMaterial: selectCurrentMaterial(state),
-  selectedMaterialConfigs: state.material.selectedMaterialConfigs,
-  selectedMaterialConfig: state.material.selectedMaterialConfig,
   printingServiceRequests: selectPrintingServiceRequests(state)
 })
 
 const mapDispatchToProps = {
   onSelectMaterial: selectMaterial,
   onSelectMaterialGroup: selectMaterialGroup,
-  onSelectMaterialConfig: selectMaterialConfig,
-  onSelectMaterialConfigForFinishGroup: selectMaterialConfigForFinishGroup,
   onOpenMaterialModal: openMaterialModal
 }
 

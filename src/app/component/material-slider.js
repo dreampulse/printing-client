@@ -3,7 +3,6 @@ import React, {Component} from 'react'
 import clamp from 'lodash/clamp'
 import range from 'lodash/range'
 import find from 'lodash/find'
-import isEqual from 'lodash/isEqual'
 
 import propTypes from 'Lib/prop-types'
 import buildClassName from 'Lib/build-class-name'

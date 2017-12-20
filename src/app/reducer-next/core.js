@@ -27,7 +27,7 @@ const initialState: CoreState = {
   materialGroups: []
 }
 
-const loadMaterialGroups = (state, action) =>
+const loadMaterialGroups = (state, _action) =>
   loop(
     state,
     Cmd.run(listMaterials, {
