@@ -14,48 +14,48 @@ import type {
 // User actions
 
 export type UserShippingAddressChangedAction = {
-  type: 'USER.SHIPPING_ADDRESS_CHANGED',
+  type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
   payload: {
     address: Address
   }
 }
 
 export type UserCreatedAction = {
-  type: 'USER.CREATED',
+  type: 'LEGACY.USER.CREATED',
   payload: {
     userId: string
   }
 }
 
 export type UserUpdatedAction = {
-  type: 'USER.UPDATED',
+  type: 'LEGACY.USER.UPDATED',
   payload: User
 }
 
 export type UserCurrencyChangedAction = {
-  type: 'USER.CURRENCY_CHANGED',
+  type: 'LEGACY.USER.CURRENCY_CHANGED',
   payload: string
 }
 
 // Order actions
 
 export type OrderStartedAction = {
-  type: 'ORDER.STARTED'
+  type: 'LEGACY.ORDER.STARTED'
 }
 
 export type OrderPayedAction = {
-  type: 'ORDER.PAYED',
+  type: 'LEGACY.ORDER.PAYED',
   payload: {
     paymentToken: string
   }
 }
 
 export type OrderAbortedAction = {
-  type: 'ORDER.ABORTED'
+  type: 'LEGACY.ORDER.ABORTED'
 }
 
 export type OrderOrderedAction = {
-  type: 'ORDER.ORDERED',
+  type: 'LEGACY.ORDER.ORDERED',
   payload: {
     orderId: string,
     orderNumber: string
@@ -65,18 +65,18 @@ export type OrderOrderedAction = {
 // Price actions
 
 export type PriceOfferCleardAction = {
-  type: 'PRICE.CLEAR_OFFERS' // @TODO rename
+  type: 'LEGACY.PRICE.CLEAR_OFFERS' // @TODO rename
 }
 
 export type PriceRequestedAction = {
-  type: 'PRICE.REQUESTED',
+  type: 'LEGACY.PRICE.REQUESTED',
   payload: {
     priceId: string
   }
 }
 
 export type PriceReceivedAction = {
-  type: 'PRICE.RECEIVED',
+  type: 'LEGACY.PRICE.RECEIVED',
   payload: {
     price: Price,
     isComplete: boolean
@@ -84,11 +84,11 @@ export type PriceReceivedAction = {
 }
 
 export type PriceTimedOutAction = {
-  type: 'PRICE.TIMEOUT' // @TODO rename
+  type: 'LEGACY.PRICE.TIMEOUT' // @TODO rename
 }
 
 export type PriceOfferSelectedAction = {
-  type: 'PRICE.SELECT_OFFER', // @TODO rename
+  type: 'LEGACY.PRICE.SELECT_OFFER', // @TODO rename
   payload: {
     offer: ?Offer
   }
@@ -97,14 +97,14 @@ export type PriceOfferSelectedAction = {
 // Model actions
 
 export type ModelQuantityChangedAction = {
-  type: 'MODEL.QUANTITIY_CHANGED',
+  type: 'LEGACY.MODEL.QUANTITIY_CHANGED',
   payload: {
     quantity: number
   }
 }
 
 export type ModelIndividualQuantityChangedAction = {
-  type: 'MODEL.INDIVIDUAL_QUANTITIY_CHANGED',
+  type: 'LEGACY.MODEL.INDIVIDUAL_QUANTITIY_CHANGED',
   payload: {
     modelId: string,
     quantity: number
@@ -112,7 +112,7 @@ export type ModelIndividualQuantityChangedAction = {
 }
 
 export type ModelFileUploadStartedAction = {
-  type: 'MODEL.FILE_UPLOAD_STARTED',
+  type: 'LEGACY.MODEL.FILE_UPLOAD_STARTED',
   payload: {
     fileId: string,
     fileName: string,
@@ -121,7 +121,7 @@ export type ModelFileUploadStartedAction = {
 }
 
 export type ModelFileUploadProgressedAction = {
-  type: 'MODEL.FILE_UPLOAD_PROGRESSED',
+  type: 'LEGACY.MODEL.FILE_UPLOAD_PROGRESSED',
   payload: {
     fileId: string,
     progress: number
@@ -129,7 +129,7 @@ export type ModelFileUploadProgressedAction = {
 }
 
 export type ModelFileUploadFailedAction = {
-  type: 'MODEL.FILE_UPLOAD_FAILED',
+  type: 'LEGACY.MODEL.FILE_UPLOAD_FAILED',
   payload: {
     fileId: string,
     error: Error
@@ -137,7 +137,7 @@ export type ModelFileUploadFailedAction = {
 }
 
 export type ModelFileUploadedAction = {
-  type: 'MODEL.FILE_UPLOADED',
+  type: 'LEGACY.MODEL.FILE_UPLOADED',
   payload: ModelBackend & {
     // @TODO: improve payload datastructure
     fileId: number
@@ -145,14 +145,14 @@ export type ModelFileUploadedAction = {
 }
 
 export type ModelFileDeletedAction = {
-  type: 'MODEL.FILE_DELETED',
+  type: 'LEGACY.MODEL.FILE_DELETED',
   payload: {
     fileId: string
   }
 }
 
 export type ModelUnitChangedAction = {
-  type: 'MODEL.UNIT_CHANGED',
+  type: 'LEGACY.MODEL.UNIT_CHANGED',
   payload: {
     unit: 'mm' | 'cm' | 'in'
   }
@@ -162,7 +162,7 @@ export type ModelUnitChangedAction = {
 // Modal actions
 
 export type ModalOpenedAction = {
-  type: 'MODAL.OPEN', // @TODO: past!
+  type: 'LEGACY.MODAL.OPEN', // @TODO: past!
   payload: {
     contentType: ModalStateContentType,
     contentProps: any,
@@ -171,7 +171,7 @@ export type ModalOpenedAction = {
 }
 
 export type ModalClosedAction = {
-  type: 'MODAL.CLOSE' // @TODO: past!
+  type: 'LEGACY.MODAL.CLOSE' // @TODO: past!
 }
 
 //
@@ -179,34 +179,34 @@ export type ModalClosedAction = {
 
 // @TODO: rename -> direct_sales -> Configuration
 export type ConfigurationRestoredAction = {
-  type: 'DIRECT_SALES.RESTORE_CONFIGURATION', // @TODO: rename
+  type: 'LEGACY.DIRECT_SALES.RESTORE_CONFIGURATION', // @TODO: rename
   payload: Configuration
 }
 
 export type ConfigurationCreatedAction = {
-  type: 'DIRECT_SALES.CREATE_CONFIGURATION', // @TODO: rename
+  type: 'LEGACY.DIRECT_SALES.CREATE_CONFIGURATION', // @TODO: rename
   payload: Configuration
 }
 
 //
 // Materials actions
 export type MaterialSelectedAction = {
-  type: 'MATERIAL.SELECTED',
+  type: 'LEGACY.MATERIAL.SELECTED',
   payload: string // This (in the frontend generated) materialId
 }
 
 export type MaterialConfigForFinishGroupSelectedAction = {
-  type: 'MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED',
+  type: 'LEGACY.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED',
   payload: {[finishGroupId: string]: string} // @TODO: why so strage?
 }
 
 export type MaterialConfigSelectedAction = {
-  type: 'MATERIAL.CONFIG_SELECTED',
+  type: 'LEGACY.MATERIAL.CONFIG_SELECTED',
   payload: string // This is the materialId
 }
 
 export type MaterialReceivedAction = {
-  type: 'MATERIAL.RECEIVED',
+  type: 'LEGACY.MATERIAL.RECEIVED',
   payload: Materials
 }
 
@@ -246,65 +246,65 @@ export type Action =
 
 export default {
   MODAL: {
-    OPEN: 'MODAL.OPEN',
-    CLOSE: 'MODAL.CLOSE'
+    OPEN: 'LEGACY.MODAL.OPEN',
+    CLOSE: 'LEGACY.MODAL.CLOSE'
   },
   MODEL: {
-    FILE_UPLOAD_PROGRESSED: 'MODEL.FILE_UPLOAD_PROGRESSED',
-    FILE_UPLOAD_STARTED: 'MODEL.FILE_UPLOAD_STARTED',
-    FILE_UPLOAD_FAILED: 'MODEL.FILE_UPLOAD_FAILED',
-    FILE_UPLOADED: 'MODEL.FILE_UPLOADED',
-    FILE_DELETED: 'MODEL.FILE_DELETED',
-    QUANTITIY_CHANGED: 'MODEL.QUANTITIY_CHANGED',
-    INDIVIDUAL_QUANTITIY_CHANGED: 'MODEL.INDIVIDUAL_QUANTITIY_CHANGED',
-    UNIT_CHANGED: 'MODEL.UNIT_CHANGED'
+    FILE_UPLOAD_PROGRESSED: 'LEGACY.MODEL.FILE_UPLOAD_PROGRESSED',
+    FILE_UPLOAD_STARTED: 'LEGACY.MODEL.FILE_UPLOAD_STARTED',
+    FILE_UPLOAD_FAILED: 'LEGACY.MODEL.FILE_UPLOAD_FAILED',
+    FILE_UPLOADED: 'LEGACY.MODEL.FILE_UPLOADED',
+    FILE_DELETED: 'LEGACY.MODEL.FILE_DELETED',
+    QUANTITIY_CHANGED: 'LEGACY.MODEL.QUANTITIY_CHANGED',
+    INDIVIDUAL_QUANTITIY_CHANGED: 'LEGACY.MODEL.INDIVIDUAL_QUANTITIY_CHANGED',
+    UNIT_CHANGED: 'LEGACY.MODEL.UNIT_CHANGED'
   },
   MATERIAL: {
-    RECEIVED: 'MATERIAL.RECEIVED',
-    SELECTED: 'MATERIAL.SELECTED',
-    CONFIG_SELECTED: 'MATERIAL.CONFIG_SELECTED',
-    CONFIG_FOR_FINISH_GROUP_SELECTED: 'MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED'
+    RECEIVED: 'LEGACY.MATERIAL.RECEIVED',
+    SELECTED: 'LEGACY.MATERIAL.SELECTED',
+    CONFIG_SELECTED: 'LEGACY.MATERIAL.CONFIG_SELECTED',
+    CONFIG_FOR_FINISH_GROUP_SELECTED: 'LEGACY.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED'
   },
   PRICE: {
-    SELECT_OFFER: 'PRICE.SELECT_OFFER',
-    CLEAR_OFFERS: 'PRICE.CLEAR_OFFERS',
-    REQUESTED: 'PRICE.REQUESTED',
-    RECEIVED: 'PRICE.RECEIVED',
-    TIMEOUT: 'PRICE.TIMEOUT'
+    SELECT_OFFER: 'LEGACY.PRICE.SELECT_OFFER',
+    CLEAR_OFFERS: 'LEGACY.PRICE.CLEAR_OFFERS',
+    REQUESTED: 'LEGACY.PRICE.REQUESTED',
+    RECEIVED: 'LEGACY.PRICE.RECEIVED',
+    TIMEOUT: 'LEGACY.PRICE.TIMEOUT'
   },
   USER: {
-    SHIPPING_ADDRESS_CHANGED: 'USER.SHIPPING_ADDRESS_CHANGED',
-    CREATED: 'USER.CREATED',
-    UPDATED: 'USER.UPDATED',
-    SET_BILLING_ADDRESS: 'USER.SET_BILLING_ADDRESS',
-    CURRENCY_CHANGED: 'USER.CURRENCY_CHANGED'
+    SHIPPING_ADDRESS_CHANGED: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
+    CREATED: 'LEGACY.USER.CREATED',
+    UPDATED: 'LEGACY.USER.UPDATED',
+    SET_BILLING_ADDRESS: 'LEGACY.USER.SET_BILLING_ADDRESS',
+    CURRENCY_CHANGED: 'LEGACY.USER.CURRENCY_CHANGED'
   },
   ORDER: {
-    ORDERED: 'ORDER.ORDERED',
-    PAYED: 'ORDER.PAYED',
-    STARTED: 'ORDER.STARTED',
-    ABORTED: 'ORDER.ABORTED'
+    ORDERED: 'LEGACY.ORDER.ORDERED',
+    PAYED: 'LEGACY.ORDER.PAYED',
+    STARTED: 'LEGACY.ORDER.STARTED',
+    ABORTED: 'LEGACY.ORDER.ABORTED'
   },
   DIRECT_SALES: {
-    RESTORE_CONFIGURATION: 'DIRECT_SALES.RESTORE_CONFIGURATION',
-    CREATE_CONFIGURATION: 'DIRECT_SALES.CREATE_CONFIGURATION'
+    RESTORE_CONFIGURATION: 'LEGACY.DIRECT_SALES.RESTORE_CONFIGURATION',
+    CREATE_CONFIGURATION: 'LEGACY.DIRECT_SALES.CREATE_CONFIGURATION'
   }
 }
 
 export const MODAL_TYPE = {
-  SHIPPING_ADDRESS: 'MODAL.SHIPPING_ADDRESS',
-  FETCHING_PRICE: 'MODAL.FETCHING_PRICE',
-  PRICE_CHANGED: 'MODAL.PRICE_CHANGED',
-  PRICE_LOCATION_CHANGED: 'MODAL.PRICE_LOCATION_CHANGED',
-  MATERIAL: 'MODAL.MATERIAL',
-  FATAL_ERROR: 'MODAL.FATAL_ERROR'
+  SHIPPING_ADDRESS: 'LEGACY.MODAL.SHIPPING_ADDRESS',
+  FETCHING_PRICE: 'LEGACY.MODAL.FETCHING_PRICE',
+  PRICE_CHANGED: 'LEGACY.MODAL.PRICE_CHANGED',
+  PRICE_LOCATION_CHANGED: 'LEGACY.MODAL.PRICE_LOCATION_CHANGED',
+  MATERIAL: 'LEGACY.MODAL.MATERIAL',
+  FATAL_ERROR: 'LEGACY.MODAL.FATAL_ERROR'
 }
 
 export const ERROR_TYPE = {
-  POLL_TIMEOUT: 'POLL_TIMEOUT',
-  POLL_STOPPED: 'POLL_STOPPED',
-  POLL_OVERWRITTEN: 'POLL_OVERWRITTEN',
-  FILE_UPLOAD_FAILED: 'FILE_UPLOAD_FAILED',
-  GET_PRICE_FAILED: 'GET_PRICE_FAILED',
-  ORDER_FAILED: 'ORDER_FAILED'
+  POLL_TIMEOUT: 'LEGACY.POLL_TIMEOUT',
+  POLL_STOPPED: 'LEGACY.POLL_STOPPED',
+  POLL_OVERWRITTEN: 'LEGACY.POLL_OVERWRITTEN',
+  FILE_UPLOAD_FAILED: 'LEGACY.FILE_UPLOAD_FAILED',
+  GET_PRICE_FAILED: 'LEGACY.GET_PRICE_FAILED',
+  ORDER_FAILED: 'LEGACY.ORDER_FAILED'
 }

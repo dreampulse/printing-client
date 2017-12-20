@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 import {getCurrencies} from 'Service/currency'
 
@@ -22,6 +21,7 @@ import {selectCommonQuantity} from 'Lib/selector'
 import {formatAddress} from 'Lib/formatter'
 import {convertPlaceToLocation} from 'Lib/geolocation'
 
+import {connectLegacy} from './util/connect-legacy'
 import config from '../../../config'
 
 const ModelPage = ({
@@ -83,4 +83,4 @@ const mapDispatchToProps = {
   onUpdateCurrency: updateCurrency
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(ModelPage)
+export default compose(connectLegacy(mapStateToProps, mapDispatchToProps))(ModelPage)

@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose, withState} from 'recompose'
 import {getCurrencies, getCurrencyForCountry} from 'Service/currency'
 
@@ -18,6 +17,8 @@ import {isAddressValid, convertPlaceToLocation} from 'Lib/geolocation'
 
 import {updateLocation, updateCurrency} from 'Action/user'
 import {close} from 'Action/modal'
+
+import {connectLegacy} from '../util/connect-legacy'
 
 import config from '../../../../config'
 
@@ -87,7 +88,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connectLegacy(mapStateToProps, mapDispatchToProps),
   withState('address', 'setAddress', props => props.address),
   withState('currency', 'setCurrency', props => getCurrencyForCountry(props.address.countryCode))
 )(ShippingAddressModal)

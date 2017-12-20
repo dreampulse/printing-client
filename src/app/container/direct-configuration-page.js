@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 import {getCurrencies} from 'Service/currency'
 
@@ -31,7 +30,7 @@ import SelectField from 'Component/select-field'
 import SelectMenu from 'Component/select-menu'
 
 import AppLayout from './app-layout'
-
+import {connectLegacy} from './util/connect-legacy'
 import config from '../../../config'
 
 const DirectConfigurationPage = ({
@@ -191,4 +190,4 @@ const mapDispatchToProps = {
   onUpdateCurrency: updateCurrency
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(DirectConfigurationPage)
+export default compose(connectLegacy(mapStateToProps, mapDispatchToProps))(DirectConfigurationPage)

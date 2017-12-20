@@ -1,9 +1,7 @@
 import React, {createElement} from 'react'
-import {connect} from 'react-redux'
 import Portal from 'react-portal'
-
 import {close} from 'Action/modal'
-
+import {connectLegacy} from '../util/connect-legacy'
 import {MODAL_TYPE} from '../../action-type'
 import ShippingAddressModal from './shipping-address'
 import MaterialModal from './material'
@@ -49,4 +47,4 @@ const mapDispatchToProps = {
   onModalClose: close
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Modal)
+export default connectLegacy(mapStateToProps, mapDispatchToProps)(Modal)

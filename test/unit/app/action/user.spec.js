@@ -143,7 +143,7 @@ describe('User actions', () => {
           type: 'some-open-fetching-price-modal'
         },
         {
-          type: 'USER.UPDATED',
+          type: 'LEGACY.USER.UPDATED',
           payload: form
         },
         {
@@ -179,7 +179,7 @@ describe('User actions', () => {
 
         expect(store.getActions(), 'to equal', [
           {
-            type: 'USER.SHIPPING_ADDRESS_CHANGED',
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
             payload: {address: 'some-address'}
           },
           {
@@ -216,10 +216,10 @@ describe('User actions', () => {
 
         expect(store.getActions(), 'to equal', [
           {
-            type: 'USER.SHIPPING_ADDRESS_CHANGED',
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
             payload: {address: 'some-address'}
           },
-          {type: 'USER.CREATED', payload: {userId: 'some-new-user-id'}},
+          {type: 'LEGACY.USER.CREATED', payload: {userId: 'some-new-user-id'}},
           {type: 'create-price-request-action'}
         ])
       })
@@ -241,7 +241,7 @@ describe('User actions', () => {
 
         expect(store.getActions(), 'to equal', [
           {
-            type: 'USER.SHIPPING_ADDRESS_CHANGED',
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
             payload: {
               address: {
                 countryCode: 'some-country-code'
@@ -249,7 +249,7 @@ describe('User actions', () => {
             }
           },
           {
-            type: 'USER.UPDATED',
+            type: 'LEGACY.USER.UPDATED',
             payload: {
               shippingAddress: {
                 countryCode: 'some-country-code'
@@ -285,11 +285,11 @@ describe('User actions', () => {
 
       expect(store.getActions(), 'to equal', [
         {
-          type: 'USER.CURRENCY_CHANGED',
+          type: 'LEGACY.USER.CURRENCY_CHANGED',
           payload: 'USD'
         },
         {
-          type: 'USER.UPDATED',
+          type: 'LEGACY.USER.UPDATED',
           payload: {}
         },
         {
