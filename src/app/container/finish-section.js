@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
 import scrollTo from 'Service/scroll-to'
@@ -20,6 +19,7 @@ import Paragraph from 'Component/paragraph'
 import Info from 'Component/info'
 
 import {selectMaterialConfig, selectMaterialConfigForFinishGroup} from 'Action/material'
+import {connectLegacy} from './util/connect-legacy'
 
 const FinishSection = ({
   offers,
@@ -90,7 +90,7 @@ const FinishSection = ({
     )
 
     const info = (
-      <Info>
+      <Info modifiers={['minor']}>
         <Headline modifiers={['s']} label={finishGroup.name} />
         <Paragraph>{finishGroup.summary}</Paragraph>
       </Info>
@@ -147,4 +147,4 @@ const mapDispatchToProps = {
   onSelectMaterialConfigForFinishGroup: selectMaterialConfigForFinishGroup
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(FinishSection)
+export default compose(connectLegacy(mapStateToProps, mapDispatchToProps))(FinishSection)
