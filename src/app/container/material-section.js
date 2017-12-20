@@ -24,10 +24,7 @@ import Price from 'Component/price'
 import RadioButtonGroup from 'Component/radio-button-group'
 import RadioButton from 'Component/radio-button'
 
-import {
-  selectMaterialGroup,
-  selectMaterial
-} from 'Action/material'
+import {selectMaterialGroup, selectMaterial} from 'Action/material'
 import {openMaterialModal} from 'Action/modal'
 
 import {connectLegacy} from './util/connect-legacy'
