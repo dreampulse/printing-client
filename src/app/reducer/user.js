@@ -5,10 +5,10 @@ import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   userId: null,
+  currency: 'USD',
   user: {
     emailAddress: '',
     phoneNumber: '',
-    currency: 'USD',
     isCompany: false,
     companyName: undefined,
     vatId: '',

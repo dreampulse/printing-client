@@ -5,10 +5,10 @@ describe('User reducer', () => {
   it('returns the initial state', () => {
     expect(reducer(undefined, {}), 'to equal', {
       userId: null,
+      currency: 'USD',
       user: {
         emailAddress: '',
         phoneNumber: '',
-        currency: 'USD',
         isCompany: false,
         companyName: undefined,
         vatId: '',

@@ -73,7 +73,7 @@ const ModelPage = ({
 
 const mapStateToProps = state => ({
   address: state.user.user.shippingAddress,
-  currency: state.user.user.currency,
+  currency: state.user.currency,
   commonQuantity: selectCommonQuantity(state)
 })
 

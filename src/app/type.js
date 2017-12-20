@@ -13,7 +13,6 @@ export type Address = {
 }
 
 export type User = {
-  currency: string,
   shippingAddress: Address,
   emailAddress: string,
   isCompany: boolean,
@@ -167,6 +166,7 @@ export type Features = {
 
 export type UserState = {
   userId: ?string,
+  currency: string,
   user: User
 }
 

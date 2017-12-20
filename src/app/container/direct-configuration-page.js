@@ -175,7 +175,7 @@ const DirectConfigurationPage = ({
 
 const mapStateToProps = state => ({
   address: state.user.user.shippingAddress,
-  currency: state.user.user.currency,
+  currency: state.user.currency,
   models: state.model.models,
   offers: state.price.offers || [],
   selectedMaterial: selectMaterialByMaterialConfigId(state, state.material.selectedMaterialConfig),

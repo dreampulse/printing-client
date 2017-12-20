@@ -44,10 +44,10 @@ describe('Init action integration test', () => {
     expect(store.getState(), 'to satisfy', {
       user: {
         userId: 'some-user-id',
+        currency: 'USD',
         user: {
           emailAddress: '',
           phoneNumber: '',
-          currency: 'USD',
           isCompany: false,
           vatId: '',
           shippingAddress: {
