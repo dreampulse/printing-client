@@ -3,7 +3,7 @@ import {selectLocation} from '../../../../src/app/selector'
 import reducer from '../../../../src/app/reducer'
 
 describe('user action', () => {
-  describe('updateLocation()', () => {
+  describe('locationDetected()', () => {
     let location
     let state
 
@@ -14,7 +14,7 @@ describe('user action', () => {
         stateCode: 'some-state-code',
         countryCode: 'some-country-code'
       }
-      state = reducer(undefined, userAction.updateLocation(location))
+      state = reducer(undefined, userAction.locationDetected(location))
     })
 
     describe('using selectLocation() selector', () => {

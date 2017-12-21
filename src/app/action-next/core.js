@@ -5,7 +5,7 @@ import {generateMaterialIds} from '../lib/material'
 import type {Action, MaterialGroup} from '../type-next'
 
 type UpdateMaterialGroupsAction = Action<'CORE.UPDATE_MATERIAL_GROUPS', Array<MaterialGroup>>
-type FatalErrorAction = Action<'CORE.FATAL_ERROR', {message: string}>
+type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 
 export type CoreAction = UpdateMaterialGroupsAction | FatalErrorAction
 
@@ -17,9 +17,7 @@ export const updateMaterialGroups = (
   payload: generateMaterialIds(cloneDeep(materialGroups))
 })
 
-export const fatalError = (message: string): FatalErrorAction => ({
+export const fatalError = (error: Error): FatalErrorAction => ({
   type: 'CORE.FATAL_ERROR',
-  payload: {
-    message
-  }
+  payload: error
 })

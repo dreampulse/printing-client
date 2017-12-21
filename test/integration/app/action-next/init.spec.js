@@ -57,14 +57,14 @@ describe('init action', () => {
       )
     })
 
-    it(`triggers the modalAction.openFatalErrorModal() action with the given error when listMaterials failed`, () => {
+    it(`triggers the coreAction.fatalError() action with the given error when listMaterials failed`, () => {
       const err = new Error('Some error')
       const cmd = findCmd(state, listMaterials, [])
       const action = cmd.simulate({
         success: false,
         result: err
       })
-      expect(action, 'to equal', modalAction.openFatalErrorModal(err))
+      expect(action, 'to equal', coreAction.fatalError(err))
     })
 
     it(`triggers the userAction.locationDetected() action with the result from getLocationByIp`, () => {

@@ -4,8 +4,7 @@ import {loop, Cmd} from 'redux-loop'
 import {listMaterials} from '../service/printing-engine'
 import type {MaterialGroup} from '../type-next'
 import type {AppAction} from '../action-next'
-import * as core from '../action-next/core'
-import * as modal from '../action-next/modal'
+import * as coreAction from '../action-next/core'
 
 export type CoreState = {
   materialGroups: Array<MaterialGroup> // This is the material-structure-Tree
@@ -20,8 +19,8 @@ const loadMaterialGroups = (state, action) =>
     state,
     Cmd.run(listMaterials, {
       args: [],
-      successActionCreator: res => core.updateMaterialGroups(res.materialStructure),
-      failActionCreator: modal.openFatalErrorModal
+      successActionCreator: res => coreAction.updateMaterialGroups(res.materialStructure),
+      failActionCreator: coreAction.fatalError
     })
   )
 
