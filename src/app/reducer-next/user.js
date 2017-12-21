@@ -52,13 +52,14 @@ const created = (state, {payload}) =>
       userId: payload.userId
     },
     Cmd.run(userLib.userCreated, {
-      args: [state.userId]
+      args: [payload.userId]
     })
   )
 
 export const reducer = (state: UserState = initialState, action: AppAction): UserState => {
   switch (action.type) {
     case 'INIT.INIT':
+      // case 'USER.DETECT_LOCATION':  <- not needed right now
       return detectLocation(state, action)
     case 'USER.LOCATION_DETECTED':
       return locationDetected(state, action)

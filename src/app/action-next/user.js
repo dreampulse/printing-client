@@ -14,11 +14,14 @@ export const locationDetected = (location: Location): LocationDetectedAction => 
   }
 })
 
-/* TODO: write reducer handler */
+/*
+// Not needed right now
+// But it is already tested (because its used by the init()-action)
 export const detectLocation = (): DetectLocationAction => ({
   type: 'USER.DETECT_LOCATION',
   payload: undefined
 })
+*/
 
 export const userCreated = (userId: string): UserCreatedAction => ({
   type: 'USER.CREATED',
