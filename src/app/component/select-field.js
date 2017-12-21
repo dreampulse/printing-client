@@ -3,13 +3,13 @@ import React, {Component, cloneElement} from 'react'
 import ReactDOM from 'react-dom'
 import Portal from 'react-portal'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName from 'Lib/build-class-name'
+import propTypes from '../lib/prop-types'
+import buildClassName from '../lib/build-class-name'
 
-import Icon from 'Component/icon'
-import ColorSquare from 'Component/color-square'
+import Icon from './icon'
+import ColorSquare from './color-square'
 
-import arrowIcon from 'Icon/arrow-down.svg'
+import arrowIcon from '../../asset/icon/arrow-down.svg'
 
 export default class SelectField extends Component {
   static propTypes = {

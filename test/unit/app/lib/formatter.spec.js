@@ -5,7 +5,7 @@ import {
   formatShipping,
   formatAddress,
   formatDimensions
-} from 'Lib/formatter'
+} from '../../../../src/app/lib/formatter'
 
 describe('formatCurrency()', () => {
   it('returns symbol for EUR currency', () => {

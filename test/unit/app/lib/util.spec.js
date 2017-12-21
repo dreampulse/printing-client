@@ -1,4 +1,4 @@
-import {updateArrayItems} from 'Lib/util'
+import {updateArrayItems} from '../../../../src/app/lib/util'
 
 describe('Util lib', () => {
   describe('updateArrayItems()', () => {

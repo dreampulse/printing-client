@@ -1,8 +1,8 @@
 import React from 'react'
 
-import Overlay from 'Component/overlay'
-import Headline from 'Component/headline'
-import LabeledLoadingIndicator from 'Component/labeled-loading-indicator'
+import Overlay from '../../component/overlay'
+import Headline from '../../component/headline'
+import LabeledLoadingIndicator from '../../component/labeled-loading-indicator'
 
 const headline = <Headline label="Check shipping prices" modifiers={['l', 'warning']} />
 

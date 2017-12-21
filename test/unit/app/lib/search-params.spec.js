@@ -1,6 +1,6 @@
 import URLSearchParams from 'url-search-params'
-import * as searchParams from 'App/service/search-params'
-import {getSearchParams, getUtmParams} from 'App/lib/search-params'
+import * as searchParams from '../../../../src/app/service/search-params'
+import {getSearchParams, getUtmParams} from '../../../../src/app/lib/search-params'
 
 describe('Search Params Lib', () => {
   let sandbox

@@ -1,4 +1,4 @@
-import {getUpdatedOffer, getCheapestOfferFor} from 'Lib/offer'
+import {getUpdatedOffer, getCheapestOfferFor} from '../../../../src/app/lib/offer'
 
 describe('Offer unit tests', () => {
   describe('getUpdatedOffer()', () => {

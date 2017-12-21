@@ -1,3 +1,4 @@
+// TODO: this is not a service. Should be a tested lib.
 import 'whatwg-fetch'
 
 export const fetch = global.fetch

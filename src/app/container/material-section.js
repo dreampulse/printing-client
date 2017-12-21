@@ -1,37 +1,37 @@
 import React from 'react'
 import {compose, lifecycle} from 'recompose'
 
-import scrollTo from 'Service/scroll-to'
-import {buildClassArray} from 'Lib/build-class-name'
+import scrollTo from '../service/scroll-to'
+import {buildClassArray} from '../lib/build-class-name'
 import {
   selectMaterialMenuValues,
   selectCurrentMaterial,
   selectPrintingServiceRequests,
   selectAreAllUploadsFinished
-} from 'Lib/selector'
-import {getBestOfferForMaterialConfig, getMaterialByName} from 'Lib/material'
-import {formatPrice, formatDeliveryTime} from 'Lib/formatter'
-import getCloudinaryUrl from 'Lib/cloudinary'
+} from '../lib/selector'
+import {getBestOfferForMaterialConfig, getMaterialByName} from '../lib/material'
+import {formatPrice, formatDeliveryTime} from '../lib/formatter'
+import getCloudinaryUrl from '../lib/cloudinary'
 
-import Section from 'Component/section'
-import Grid from 'Component/grid'
-import Column from 'Component/column'
-import Headline from 'Component/headline'
-import ProviderProgressBar from 'Component/provider-progress-bar'
-import SelectMenu from 'Component/select-menu'
-import SelectField from 'Component/select-field'
-import MaterialCardList from 'Component/material-card-list'
-import MaterialCard from 'Component/material-card'
-import Price from 'Component/price'
-import Paragraph from 'Component/paragraph'
-import Info from 'Component/info'
+import Section from '../component/section'
+import Grid from '../component/grid'
+import Column from '../component/column'
+import Headline from '../component/headline'
+import ProviderProgressBar from '../component/provider-progress-bar'
+import SelectMenu from '../component/select-menu'
+import SelectField from '../component/select-field'
+import MaterialCardList from '../component/material-card-list'
+import MaterialCard from '../component/material-card'
+import Price from '../component/price'
+import Paragraph from '../component/paragraph'
+import Info from '../component/info'
 
 import {
   selectMaterial,
   selectMaterialConfig,
   selectMaterialConfigForFinishGroup
-} from 'Action/material'
-import {openMaterialModal} from 'Action/modal'
+} from '../action/material'
+import {openMaterialModal} from '../action/modal'
 
 import {connectLegacy} from './util/connect-legacy'
 

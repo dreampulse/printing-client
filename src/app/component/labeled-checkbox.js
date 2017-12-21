@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName, {buildClassArray} from 'Lib/build-class-name'
-import CheckboxField from 'Component/checkbox-field'
+import propTypes from '../lib/prop-types'
+import buildClassName, {buildClassArray} from '../lib/build-class-name'
+import CheckboxField from './checkbox-field'
 
 const LabeledCheckbox = ({
   classNames,

@@ -1,6 +1,6 @@
 // @flow
 
-import {request} from 'Service/http'
+import {request} from '../service/http'
 import timeout from './timeout'
 import config from '../../../config'
 

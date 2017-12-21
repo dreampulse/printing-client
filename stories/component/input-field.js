@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import InputField from 'Component/input-field'
+import InputField from '../../src/app/component/input-field'
 import HandleValue from '../util/handle-value'
 
 storiesOf('Input Field', module)

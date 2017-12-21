@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import CheckboxField from 'Component/checkbox-field'
+import CheckboxField from '../../src/app/component/checkbox-field'
 import HandleChecked from '../util/handle-checked'
 
 storiesOf('Checkbox Field', module)

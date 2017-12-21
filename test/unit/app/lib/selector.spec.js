@@ -16,8 +16,8 @@ import {
   selectAreAllUploadsFinished,
   selectFeatures,
   selectSearchParams
-} from 'Lib/selector'
-import * as materialLib from 'Lib/material'
+} from '../../../../src/app/lib/selector'
+import * as materialLib from '../../../../src/app/lib/material'
 import config from '../../../../config'
 
 describe('Selector lib', () => {

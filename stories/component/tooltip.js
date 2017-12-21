@@ -2,9 +2,9 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import centered from '@storybook/addon-centered'
 
-import Tooltip from 'Component/tooltip'
-import Headline from 'Component/headline'
-import Paragraph from 'Component/paragraph'
+import Tooltip from '../../src/app/component/tooltip'
+import Headline from '../../src/app/component/headline'
+import Paragraph from '../../src/app/component/paragraph'
 
 storiesOf('Tooltip', module)
   .addDecorator(centered)

@@ -1,9 +1,9 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import {routerMiddleware} from 'react-router-redux'
 import {install as installReduxLoop} from 'redux-loop'
-import {track as trackMixpanel} from 'Service/mixpanel'
-import {track as trackGoogleAnalytics} from 'Service/google-analytics'
-import {ravenMiddleware} from 'Service/logging'
+import {track as trackMixpanel} from './service/mixpanel'
+import {track as trackGoogleAnalytics} from './service/google-analytics'
+import {ravenMiddleware} from './service/logging'
 
 import rootReducer from './reducer'
 

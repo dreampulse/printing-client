@@ -3,8 +3,8 @@
 import get from 'lodash/get'
 import URLSearchParams from 'url-search-params'
 
-import {hasMaterialMultipleConfigs, getBestOfferForMaterial} from 'Lib/material'
-import {formatPrice} from 'Lib/formatter'
+import {hasMaterialMultipleConfigs, getBestOfferForMaterial} from './material'
+import {formatPrice} from './formatter'
 
 import type {State, Features} from '../type'
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import FormLayout from 'Component/form-layout'
-import FormRow from 'Component/form-row'
+import FormLayout from '../../src/app/component/form-layout'
+import FormRow from '../../src/app/component/form-row'
 
 const style = {
   backgroundColor: '#fff'
