@@ -3,11 +3,11 @@
 import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 
-import * as printingEngine from 'Service/printing-engine'
-import {getUpdatedOffer, getCheapestOfferFor} from 'Lib/offer'
-import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
-import {selectCurrentMaterialIds, selectFeatures} from 'Lib/selector'
-import {AppError} from 'Lib/error'
+import * as printingEngine from '../service/printing-engine'
+import {getUpdatedOffer, getCheapestOfferFor} from '../lib/offer'
+import {poll, debouncedPoll, stopPoll} from '../lib/poll'
+import {selectCurrentMaterialIds, selectFeatures} from '../lib/selector'
+import {AppError} from '../lib/error'
 
 import type {Offer, Price, State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'

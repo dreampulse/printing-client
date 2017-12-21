@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React, {cloneElement} from 'react'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName, {buildClassArray} from 'Lib/build-class-name'
+import propTypes from '../lib/prop-types'
+import buildClassName, {buildClassArray} from '../lib/build-class-name'
 
 const ProcessStepBar = ({classNames, modifiers, children, currentStep = 0}) => {
   const modifiedChildren = React.Children.map(children, (child, index) =>

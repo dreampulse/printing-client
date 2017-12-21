@@ -1,8 +1,8 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import ProcessStep from 'Component/process-step'
-import ProcessStepBar from 'Component/process-step-bar'
+import ProcessStep from '../../src/app/component/process-step'
+import ProcessStepBar from '../../src/app/component/process-step-bar'
 import invert from '../decorator/invert'
 
 storiesOf('Process Step Bar', module)

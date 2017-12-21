@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import Section from 'Component/section'
+import Section from '../../src/app/component/section'
 
 storiesOf('Section', module)
   .add('default', () => (

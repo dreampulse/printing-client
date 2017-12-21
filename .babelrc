@@ -20,7 +20,6 @@
   "env": {
     "test": {
       "plugins": [
-        [ "babel-plugin-webpack-alias" ],
         "istanbul"
       ],
       "sourceMaps": "inline"

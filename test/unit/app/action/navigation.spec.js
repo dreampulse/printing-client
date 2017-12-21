@@ -1,7 +1,7 @@
 import {routerActions} from 'react-router-redux'
 
-import {goToCart, goToSuccess, goToAddress, goToHome} from 'Action/navigation'
-import * as userActions from 'Action/user'
+import {goToCart, goToSuccess, goToAddress, goToHome} from '../../../../src/app/action/navigation'
+import * as userActions from '../../../../src/app/action/user'
 import {resolveAsyncThunk} from '../../../helper'
 
 describe('Navigation actions', () => {

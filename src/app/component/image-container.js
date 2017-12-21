@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName from 'Lib/build-class-name'
-import preloadImage from 'Service/preload-image'
+import propTypes from '../lib/prop-types'
+import buildClassName from '../lib/build-class-name'
+import preloadImage from '../service/preload-image'
 
-import LoadingIndicator from 'Component/loading-indicator'
+import LoadingIndicator from './loading-indicator'
 
 export default class ImageContainer extends Component {
   static propTypes = {

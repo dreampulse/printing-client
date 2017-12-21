@@ -1,4 +1,4 @@
-import {normalizeTelephoneNumber} from 'Lib/normalize'
+import {normalizeTelephoneNumber} from '../../../../src/app/lib/normalize'
 
 describe('normalizeTelephoneNumber()', () => {
   it('normalizes a telephone number', () =>

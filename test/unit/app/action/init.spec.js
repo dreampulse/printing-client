@@ -1,8 +1,8 @@
-import {init} from 'Action/init'
-import * as userActions from 'Action/user'
-import * as materialActions from 'Action/material'
-import * as modalActions from 'Action/modal'
-import {AppError} from 'Lib/error'
+import {init} from '../../../../src/app/action/init'
+import * as userActions from '../../../../src/app/action/user'
+import * as materialActions from '../../../../src/app/action/material'
+import * as modalActions from '../../../../src/app/action/modal'
+import {AppError} from '../../../../src/app/lib/error'
 
 import {resolveAsyncThunk, rejectAsyncThunk} from '../../../helper'
 

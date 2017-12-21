@@ -1,5 +1,9 @@
-import {getLocationByIp, convertPlaceToLocation, isAddressValid} from 'Lib/geolocation'
-import * as http from 'Service/http'
+import {
+  getLocationByIp,
+  convertPlaceToLocation,
+  isAddressValid
+} from '../../../../src/app/lib/geolocation'
+import * as http from '../../../../src/app/service/http'
 import config from '../../../../config'
 
 describe('geolocation lib', () => {

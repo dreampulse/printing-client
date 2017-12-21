@@ -5,9 +5,9 @@ import {
   changeQuantity,
   changeIndividualQuantity,
   changeUnit
-} from 'Action/model'
-import * as printingEngine from 'Service/printing-engine'
-import {resetPollState} from 'Lib/poll'
+} from '../../../../src/app/action/model'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
+import {resetPollState} from '../../../../src/app/lib/poll'
 import {ERROR_TYPE} from '../../../../src/app/action-type'
 
 import config from '../../../../config'

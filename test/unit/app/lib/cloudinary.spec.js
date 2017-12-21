@@ -1,4 +1,4 @@
-import getCloudinaryUrl from 'Lib/cloudinary'
+import getCloudinaryUrl from '../../../../src/app/lib/cloudinary'
 import config from '../../../../config'
 
 describe('getCloudinaryUrl()', () => {

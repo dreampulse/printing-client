@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import LocationField from 'Component/location-field'
+import LocationField from '../../src/app/component/location-field'
 import HandleValue from '../util/handle-value'
 import {googleMapsApiKey} from '../util/data'
 

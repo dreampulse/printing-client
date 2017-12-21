@@ -4,8 +4,8 @@ import type {Dispatch} from 'redux'
 import cloneDeep from 'lodash/cloneDeep'
 import {createAction} from 'redux-actions'
 
-import * as printingEngine from 'Service/printing-engine'
-import {generateMaterialIds} from 'Lib/material'
+import * as printingEngine from '../service/printing-engine'
+import {generateMaterialIds} from '../lib/material'
 
 import type {Materials} from '../type'
 import TYPE from '../action-type'
