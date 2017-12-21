@@ -35,10 +35,11 @@ const initialState = {
       stateCode: '',
       countryCode: ''
     }
-  }
+  },
+  utmParams: {}
 }
 
-function handleShippingAddressChange(state, {payload: {address}}) {
+function handleShippingAddressChanged(state, {payload: {address}}) {
   return {
     ...state,
     user: {
@@ -62,14 +63,23 @@ function handleUserUpdated(state, {payload}) {
   }
 }
 
+function handleUtmParamsSet(state, {payload}) {
+  return {
+    ...state,
+    utmParams: payload
+  }
+}
+
 const reducer = (state: UserState = initialState, action: Action): UserState => {
   switch (action.type) {
     case TYPE.USER.SHIPPING_ADDRESS_CHANGED:
-      return handleShippingAddressChange(state, action)
+      return handleShippingAddressChanged(state, action)
     case TYPE.USER.CREATED:
       return handleUserCreated(state, action)
     case TYPE.USER.UPDATED:
       return handleUserUpdated(state, action)
+    case TYPE.USER.UTM_PARAMS_SET:
+      return handleUtmParamsSet(state, action)
     default:
       return state
   }

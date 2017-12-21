@@ -7,7 +7,7 @@ import * as stripe from 'Service/stripe'
 import * as paypal from 'Service/paypal'
 import * as printingEngine from 'Service/printing-engine'
 import {AppError} from 'Lib/error'
-import {selectLocationQuery} from 'Lib/selector'
+import {selectSearchParams} from 'Lib/selector'
 
 import type {State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
@@ -24,7 +24,7 @@ const ordered = createAction(
 
 // Async actions
 const createOrder = () => async (dispatch: Dispatch<*>, getState: () => State) => {
-  const {user: {userId}, price: {priceId, selectedOffer}} = getState()
+  const {user: {userId, utmParams}, price: {priceId, selectedOffer}} = getState()
 
   if (!selectedOffer) throw new Error('No offer selected')
   const offerId = selectedOffer.offerId
@@ -33,7 +33,8 @@ const createOrder = () => async (dispatch: Dispatch<*>, getState: () => State) =
     const {orderId, orderNumber} = await printingEngine.order({
       userId,
       priceId,
-      offerIds: [offerId]
+      offerIds: [offerId],
+      utmParams
     })
 
     dispatch(ordered({orderId, orderNumber}))
@@ -122,7 +123,7 @@ export const createOrderWithPaypal = (data: any) => async (
 export const payWithInvoice = () => async (dispatch: Dispatch<any>, getState: () => State) => {
   await dispatch(createOrder())
 
-  const query = selectLocationQuery(getState())
+  const query = selectSearchParams(getState())
   const invoiceKey = query.get('invoice_key')
   if (!invoiceKey) throw new Error('Invoice key missing')
 

@@ -15,7 +15,7 @@ import {
   selectOfferItems,
   selectAreAllUploadsFinished,
   selectFeatures,
-  selectLocationQuery
+  selectSearchParams
 } from 'Lib/selector'
 import * as materialLib from 'Lib/material'
 import config from '../../../../config'
@@ -969,16 +969,16 @@ describe('Selector lib', () => {
     })
   })
 
-  describe('selectLocationQuery()', () => {
+  describe('selectSearchParams()', () => {
     describe('when there is no location query', () => {
       it('returns an instance of URLSearchParams', () => {
-        const params = selectLocationQuery({})
+        const params = selectSearchParams({})
 
         expect(params instanceof URLSearchParams, 'to equal', true)
       })
 
       it('returns an empty URLSearchParams', () => {
-        const params = selectLocationQuery({})
+        const params = selectSearchParams({})
 
         expect([...params.entries()], 'to equal', [])
       })
@@ -986,13 +986,13 @@ describe('Selector lib', () => {
 
     describe('when there is a location query', () => {
       it('returns an instance of URLSearchParams', () => {
-        const params = selectLocationQuery({})
+        const params = selectSearchParams({})
 
         expect(params instanceof URLSearchParams, 'to equal', true)
       })
 
       it('returns a params object that provides access to the query params', () => {
-        const params = selectLocationQuery({
+        const params = selectSearchParams({
           routing: {
             location: {
               search: 'a&b=false&c=2'

@@ -5,6 +5,7 @@ import {init} from 'Action/init'
 
 import * as printingEngine from 'Service/printing-engine'
 import * as geolocation from 'Lib/geolocation'
+import * as searchParams from 'Lib/search-params'
 
 import materialList from '../../../../test-data/mock/material-list-response.json'
 
@@ -20,6 +21,7 @@ describe('Init action integration test', () => {
     sandbox = sinon.sandbox.create()
     sandbox.stub(printingEngine)
     sandbox.stub(geolocation)
+    sandbox.stub(searchParams)
   })
 
   afterEach(() => {
@@ -35,6 +37,7 @@ describe('Init action integration test', () => {
       stateCode: 'some-state-code',
       countryCode: 'some-country-code'
     })
+    searchParams.getUtmParams.returns({})
 
     await store.dispatch(init())
 
@@ -65,7 +68,8 @@ describe('Init action integration test', () => {
             stateCode: '',
             countryCode: ''
           }
-        }
+        },
+        utmParams: {}
       }
     })
 
