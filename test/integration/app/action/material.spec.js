@@ -1,7 +1,7 @@
 import createHistory from 'history/createMemoryHistory'
 
 import {getMaterials, selectMaterialConfig} from 'Action/material'
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import * as materialLib from 'Lib/material'
 
 describe('Material Integration Test', () => {

@@ -1,5 +1,5 @@
 import {createConfiguration, restoreConfiguration} from 'Action/configuration'
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import * as location from 'Service/location'
 import * as priceActions from 'Action/price'
 

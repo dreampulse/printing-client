@@ -3,7 +3,7 @@
 import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import {getUpdatedOffer, getCheapestOfferFor} from 'Lib/offer'
 import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
 import {selectCurrentMaterialIds, selectFeatures} from 'Lib/selector'

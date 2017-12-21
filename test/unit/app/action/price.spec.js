@@ -6,7 +6,7 @@ import {
   createDebouncedPriceRequest
 } from 'Action/price'
 import * as pollLib from 'Lib/poll'
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import * as offerLib from 'Lib/offer'
 import * as modalActions from 'Action/modal'
 import {AppError} from 'Lib/error'

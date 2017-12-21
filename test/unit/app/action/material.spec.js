@@ -1,6 +1,6 @@
 import {selectMaterial} from 'Action/material'
 import * as priceActions from 'Action/price'
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import * as materialLib from 'Lib/material'
 import TYPE from '../../../../src/app/action-type'
 

@@ -5,7 +5,7 @@ import {createAction} from 'redux-actions'
 
 import * as stripe from 'Service/stripe'
 import * as paypal from 'Service/paypal'
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import {AppError} from 'Lib/error'
 import {selectSearchParams} from 'Lib/selector'
 

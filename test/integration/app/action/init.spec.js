@@ -3,7 +3,7 @@ import createHistory from 'history/createMemoryHistory'
 
 import {init} from 'Action/init'
 
-import * as printingEngine from 'Lib/printing-engine'
+import * as printingEngine from 'Service/printing-engine'
 import * as geolocation from 'Lib/geolocation'
 import * as searchParams from 'Lib/search-params'
 

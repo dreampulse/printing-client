@@ -156,6 +156,38 @@ describe('geolocation lib', () => {
         countryCode: ''
       })
     })
+
+    it('handels missing property', () => {
+      const exampleResponse = {
+        address_components: [
+          {
+            short_name: 'UL',
+            types: ['locality', 'political']
+          },
+          {
+            short_name: 'TÜ',
+            types: ['administrative_area_level_2', 'political']
+          },
+          {
+            short_name: 'BW',
+            types: ['administrative_area_level_1', 'political']
+          },
+          {
+            short_name: 'DE',
+            types: ['country', 'political']
+          }
+        ]
+      }
+
+      expect(convertPlaceToLocation(exampleResponse), 'to equal', {
+        street: '',
+        houseNumber: '',
+        city: '',
+        zipCode: '',
+        stateCode: 'BW',
+        countryCode: 'DE'
+      })
+    })
   })
 
   describe('isAddressValid()', () => {
