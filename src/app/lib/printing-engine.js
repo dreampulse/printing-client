@@ -42,13 +42,14 @@ export const createShoppingCart = cart =>
 
 export const getFinalCartPrice = ({cartId}) => requestJson(`${baseUrl}/cart/${cartId}`)
 
-export const order = ({userId, priceId, offerIds}) =>
+export const order = ({userId, priceId, offerIds, utmParams}) =>
   requestJson(`${baseUrl}/order`, {
     method: 'POST',
     body: {
       userId,
       priceId,
-      offerIds
+      offerIds,
+      utmParams
     }
   })
 
