@@ -20,6 +20,7 @@ describe('Init actions', () => {
     sandbox = sinon.sandbox.create()
     sandbox.stub(userActions, 'detectAddress')
     sandbox.stub(userActions, 'createUser')
+    sandbox.stub(userActions, 'setUtmParams')
     sandbox.stub(materialActions, 'getMaterials')
     sandbox.stub(modalActions, 'openAddressModal')
     sandbox.stub(modalActions, 'openFatalErrorModal')
@@ -32,6 +33,9 @@ describe('Init actions', () => {
   describe('init()', () => {
     it('dispatches expected actions, when everything succeeds', async () => {
       userActions.detectAddress.withArgs().returns(resolveAsyncThunk('some-address-deteced'))
+      userActions.setUtmParams.withArgs().returns({
+        type: 'some-utm-params-set'
+      })
 
       materialActions.getMaterials.withArgs().returns({type: 'got-some-materials'})
 
@@ -39,6 +43,7 @@ describe('Init actions', () => {
 
       await store.dispatch(init())
       expect(store.getActions(), 'to equal', [
+        {type: 'some-utm-params-set'},
         {type: 'got-some-materials'},
         {type: 'some-address-deteced'},
         {type: 'some-user-created'}
@@ -51,6 +56,9 @@ describe('Init actions', () => {
         .returns(
           rejectAsyncThunk('some-address-deteced', new AppError(ERROR_TYPE.DETECT_ADDRESS_FAILED))
         )
+      userActions.setUtmParams.withArgs().returns({
+        type: 'some-utm-params-set'
+      })
 
       materialActions.getMaterials.withArgs().returns({type: 'got-some-materials'})
 
@@ -64,6 +72,9 @@ describe('Init actions', () => {
     it('rejects promise when error occurs', () => {
       const error = new Error('some-error')
       userActions.detectAddress.withArgs().returns(resolveAsyncThunk('some-address-deteced'))
+      userActions.setUtmParams.withArgs().returns({
+        type: 'some-utm-params-set'
+      })
 
       materialActions.getMaterials.returns(rejectAsyncThunk('got-some-materials', error))
 

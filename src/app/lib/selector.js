@@ -257,18 +257,20 @@ export const selectAreAllUploadsFinished = (state: State) => {
   return numberOfUploads === 0 && models.length > 0
 }
 
-export const selectLocationQuery = (state: State) =>
+export const selectSearchParams = (state: State) =>
+  // TODO: This should be part of our own state
   new URLSearchParams(get(state, 'routing.location.search') || '')
 
 export const selectFeatures = (state: State): Features => {
-  const query = selectLocationQuery(state)
+  const searchParams = selectSearchParams(state)
   const features: Features = {}
 
-  return Array.from(query.keys())
+  Array.from(searchParams.keys())
     .filter(name => /^feature:/.test(name))
     .map(name => name.substr('feature:'.length))
-    .reduce((agg: Features, name: string) => {
-      agg[name] = true
-      return agg
-    }, features)
+    .forEach((name: string) => {
+      features[name] = true
+    })
+
+  return features
 }
