@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
 import React, {cloneElement} from 'react'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName, {buildClassArray} from 'Lib/build-class-name'
+import propTypes from '../lib/prop-types'
+import buildClassName, {buildClassArray} from '../lib/build-class-name'
 
-import Button from 'Component/button'
-import Headline from 'Component/headline'
-import Icon from 'Component/icon'
-import Link from 'Component/link'
+import Button from './button'
+import Headline from './headline'
+import Icon from './icon'
+import Link from './link'
 
-import shippingIcon from 'Icon/shipping.svg'
+import shippingIcon from '../../asset/icon/shipping.svg'
 
 const MaterialCard = ({
   classNames,

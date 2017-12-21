@@ -2,9 +2,9 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import Link from 'Component/link'
+import Link from '../../src/app/component/link'
 
-import backIcon from 'Icon/back.svg'
+import backIcon from '../../src/asset/icon/back.svg'
 
 storiesOf('Link', module)
   .add('default', () => <Link label="Default Link" href="#" onClick={action('click')} />)

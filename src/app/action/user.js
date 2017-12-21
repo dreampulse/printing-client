@@ -2,12 +2,13 @@
 
 import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
-import {getLocationByIp, isAddressValid} from 'Lib/geolocation'
-import * as printingEngine from 'Lib/printing-engine'
-import * as searchParams from 'Lib/search-params'
-import {identify, peopleSet} from 'Service/mixpanel'
-import {setUserContext} from 'Service/logging'
-import {normalizeTelephoneNumber} from 'Lib/normalize'
+
+import * as printingEngine from '../service/printing-engine'
+import {identify, peopleSet} from '../service/mixpanel'
+import {setUserContext} from '../service/logging'
+import {normalizeTelephoneNumber} from '../lib/normalize'
+import {getLocationByIp, isAddressValid} from '../lib/geolocation'
+import * as searchParams from '../lib/search-params'
 
 import type {Address, User, State} from '../type'
 import type {Location} from '../type-next'

@@ -1,6 +1,6 @@
 // @flow
 
-import type {UtmParams} from 'App/lib/search-params'
+import type {UtmParams} from './lib/search-params'
 import type {
   Address,
   User,

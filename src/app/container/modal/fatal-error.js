@@ -1,14 +1,14 @@
 import React from 'react'
 
-import Button from 'Component/button'
-import Overlay from 'Component/overlay'
-import Headline from 'Component/headline'
-import Paragraph from 'Component/paragraph'
-import Grid from 'Component/grid'
-import Column from 'Component/column'
-import Image from 'Component/image'
+import Button from '../../component/button'
+import Overlay from '../../component/overlay'
+import Headline from '../../component/headline'
+import Paragraph from '../../component/paragraph'
+import Grid from '../../component/grid'
+import Column from '../../component/column'
+import Image from '../../component/image'
 
-import {reloadPage} from 'Service/location'
+import {reloadPage} from '../../service//location'
 
 import errorImage from '../../../asset/image/error.svg'
 

@@ -3,10 +3,10 @@
 import {loop, Cmd} from 'redux-loop'
 import type {AppAction, Location} from '../type-next'
 import {getLocationByIp} from '../lib/geolocation'
-import {createUser} from '../lib/printing-engine'
+import * as printingEngine from '../service/printing-engine'
 import * as userAction from '../action-next/user'
-import * as modal from '../action-next/modal'
-import * as core from '../action-next/core'
+import * as modalAction from '../action-next/modal'
+import * as coreAction from '../action-next/core'
 
 import * as userLib from '../lib/user'
 
@@ -27,7 +27,7 @@ const detectLocation = (state, action) =>
     state,
     Cmd.run(getLocationByIp, {
       successActionCreator: userAction.locationDetected,
-      failActionCreator: modal.openPickLocationModal,
+      failActionCreator: modalAction.openPickLocationModal,
       args: []
     })
   )
@@ -38,9 +38,9 @@ const locationDetected = (state, {payload}) =>
       ...state,
       location: payload.location
     },
-    Cmd.run(createUser, {
+    Cmd.run(printingEngine.createUser, {
       successActionCreator: user => userAction.userCreated(user.userId),
-      failActionCreator: () => core.fatalError('Failed to create the user'),
+      failActionCreator: () => coreAction.fatalError('Failed to create the user'),
       args: [state.currency, payload.location]
     })
   )

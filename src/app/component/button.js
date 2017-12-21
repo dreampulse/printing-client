@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName from 'Lib/build-class-name'
+import propTypes from '../lib/prop-types'
+import buildClassName from '../lib/build-class-name'
 
-import Icon from 'Component/icon'
+import Icon from './icon'
 
-import selectedIcon from 'Icon/selected.svg'
+import selectedIcon from '../../asset/icon/selected.svg'
 
 const Button = ({
   classNames,

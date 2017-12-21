@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName from 'Lib/build-class-name'
+import propTypes from '../lib/prop-types'
+import buildClassName from '../lib/build-class-name'
 
-import SelectMenuItem from 'Component/select-menu-item'
-import SelectMenuMaterialItem from 'Component/select-menu-material-item'
-import SelectMenuGroupItem from 'Component/select-menu-group-item'
+import SelectMenuItem from './select-menu-item'
+import SelectMenuMaterialItem from './select-menu-material-item'
+import SelectMenuGroupItem from './select-menu-group-item'
 
 const getMenuItem = type => {
   if (type === 'material') {

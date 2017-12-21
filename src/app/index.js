@@ -7,7 +7,7 @@ import browserUpdate from 'browser-update'
 
 import 'babel-polyfill'
 
-import 'Service/logging'
+import './service/logging'
 
 import Store from './store'
 import Router from './router'
@@ -15,7 +15,7 @@ import Router from './router'
 import '../sass/main.scss'
 
 import {init} from './action-next/init'
-import {init as initLeggacy} from './action/init'
+import {init as initLeggacy} from './action/init'  // TODO: remove that
 
 // Warn if the browser is one version behind
 browserUpdate({notify: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers

@@ -14,6 +14,7 @@ export const locationDetected = (location: Location): LocationDetectedAction => 
   }
 })
 
+/* TODO: write reducer handler */
 export const detectLocation = (): DetectLocationAction => ({
   type: 'USER.DETECT_LOCATION',
   payload: undefined

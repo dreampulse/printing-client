@@ -1,4 +1,4 @@
-import {getCountryName} from 'Service/country'
+import {getCountryName} from '../service/country'
 
 const CURRENCY_SYMBOL = {
   EUR: '€',

@@ -1,17 +1,17 @@
 import React from 'react'
 import {compose, withState} from 'recompose'
 
-import Button from 'Component/button'
-import Overlay from 'Component/overlay'
-import Headline from 'Component/headline'
-import Paragraph from 'Component/paragraph'
-import LocationField from 'Component/location-field'
+import Button from '../../component/button'
+import Overlay from '../../component/overlay'
+import Headline from '../../component/headline'
+import Paragraph from '../../component/paragraph'
+import LocationField from '../../component/location-field'
 
-import {formatAddress} from 'Lib/formatter'
-import {isAddressValid, convertPlaceToLocation} from 'Lib/geolocation'
+import {formatAddress} from '../../lib/formatter'
+import {isAddressValid, convertPlaceToLocation} from '../..//lib/geolocation'
 
-import {updateLocation} from 'Action/user'
-import {close} from 'Action/modal'
+import {updateLocation} from '../../action/user'
+import {close} from '../../action/modal'
 
 import {connectLegacy} from '../util/connect-legacy'
 

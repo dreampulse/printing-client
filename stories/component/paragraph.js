@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import Paragraph from 'Component/paragraph'
+import Paragraph from '../../src/app/component/paragraph'
 
 storiesOf('Paragraph', module)
   .add('default', () => (

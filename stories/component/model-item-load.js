@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import ModelItemLoad from 'Component/model-item-load'
+import ModelItemLoad from '../../src/app/component/model-item-load'
 
 storiesOf('Model Item Load', module)
   .add('default', () => (

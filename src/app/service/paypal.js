@@ -1,4 +1,6 @@
-import * as printingEngine from '../lib/printing-engine'
+// TODO: this should not be a service, put in lib and write tests!
+
+import * as printingEngine from './printing-engine'
 
 export function createPayment({
   amount,

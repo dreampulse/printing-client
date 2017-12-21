@@ -1,4 +1,4 @@
-import timeout from 'Lib/timeout'
+import timeout from '../../../../src/app/lib/timeout'
 
 describe('timeout lib', () => {
   it('works for resolving promise', async () => {

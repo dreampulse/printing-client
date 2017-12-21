@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import LabeledLoadingIndicator from 'Component/labeled-loading-indicator'
+import LabeledLoadingIndicator from '../../src/app/component/labeled-loading-indicator'
 
 storiesOf('Labeled Loading Indicator', module).add('default', () => (
   <LabeledLoadingIndicator>

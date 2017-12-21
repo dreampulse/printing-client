@@ -1,4 +1,4 @@
-import reducer from 'Reducer/price'
+import reducer from '../../../../src/app/reducer/price'
 import TYPE from '../../../../src/app/action-type'
 
 describe('Price reducer', () => {

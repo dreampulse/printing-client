@@ -1,4 +1,4 @@
-import buildClassName, {buildClassArray} from 'Lib/build-class-name'
+import buildClassName, {buildClassArray} from '../../../../src/app/lib/build-class-name'
 
 describe('buildClassArray()', () => {
   it('returns expected array when single string is given', () => {

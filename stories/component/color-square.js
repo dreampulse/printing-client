@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import ColorSquare from 'Component/color-square'
+import ColorSquare from '../../src/app/component/color-square'
 
 storiesOf('Color Square', module)
   .add('default', () => <ColorSquare color="#ff0000" />)

@@ -5,7 +5,7 @@ import {
   getBestOfferForMaterialConfig,
   getBestOfferForMaterial,
   getMaterialByName
-} from 'Lib/material'
+} from '../../../../src/app/lib/material'
 import materialResponse from '../../../../test-data/mock/material-list-response.json'
 
 describe('generateMaterialIds()', () => {

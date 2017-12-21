@@ -1,4 +1,4 @@
-import {resetPollState, poll, debouncedPoll, stopPoll} from 'Lib/poll'
+import {resetPollState, poll, debouncedPoll, stopPoll} from '../../../../src/app/lib/poll'
 import {ERROR_TYPE} from '../../../../src/app/action-type'
 import config from '../../../../config'
 
