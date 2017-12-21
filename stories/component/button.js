@@ -2,9 +2,9 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import Button from 'Component/button'
+import Button from '../../src/app/component/button'
 
-import placeholderIcon from 'Icon/placeholder.svg'
+import placeholderIcon from '../../src/asset/icon/placeholder.svg'
 
 storiesOf('Button', module)
   .add('default', () => <Button label="Default Button" onClick={action('click')} />)

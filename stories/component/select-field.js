@@ -1,8 +1,8 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import SelectMenu from 'Component/select-menu'
-import SelectField from 'Component/select-field'
+import SelectMenu from '../../src/app/component/select-menu'
+import SelectField from '../../src/app/component/select-field'
 
 import HandleValue from '../util/handle-value'
 import {selectMenuValues, selectMenuColorValues, selectMenuMaterialValues} from '../util/data'

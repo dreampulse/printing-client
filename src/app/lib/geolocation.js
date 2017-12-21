@@ -1,6 +1,6 @@
 // @flow
 
-import {request} from 'Service/http'
+import {request} from '../service/http'
 import timeout from './timeout'
 import config from '../../../config'
 
@@ -18,6 +18,7 @@ const findInGoogleMapsPlace = (property: string) => (
   if (!component) return ''
   return component[property] || ''
 }
+
 const shortNameFrom = findInGoogleMapsPlace('short_name')
 const longNameFrom = findInGoogleMapsPlace('long_name')
 

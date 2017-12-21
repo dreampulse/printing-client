@@ -1,8 +1,8 @@
 import createHistory from 'history/createMemoryHistory'
 
-import {getMaterials, selectMaterialConfig} from 'Action/material'
-import * as printingEngine from 'Lib/printing-engine'
-import * as materialLib from 'Lib/material'
+import {getMaterials, selectMaterialConfig} from '../../../../src/app/action/material'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
+import * as materialLib from '../../../../src/app/lib/material'
 
 describe('Material Integration Test', () => {
   let sandbox

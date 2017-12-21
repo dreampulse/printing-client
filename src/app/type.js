@@ -1,3 +1,5 @@
+import type {UtmParams} from './lib/search-params'
+
 // @flow
 
 export type Address = {
@@ -166,8 +168,9 @@ export type Features = {
 
 export type UserState = {
   userId: ?string,
-  currency: string,
-  user: User
+  user: User,
+  utmParams: UtmParams,
+  currency: string
 }
 
 export type OrderState = {

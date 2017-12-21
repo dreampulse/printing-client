@@ -2,9 +2,9 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import Header from 'Component/header'
-import ProcessStep from 'Component/process-step'
-import ProcessStepBar from 'Component/process-step-bar'
+import Header from '../../src/app/component/header'
+import ProcessStep from '../../src/app/component/process-step'
+import ProcessStepBar from '../../src/app/component/process-step-bar'
 
 storiesOf('Header', module).add('default', () => (
   <Header onClickIdentity={action('click identity')}>

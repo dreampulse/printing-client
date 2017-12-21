@@ -1,6 +1,6 @@
 // @flow
 
-import type {Action, OpenModalConfig} from 'App/type-next'
+import type {Action, OpenModalConfig} from '../type-next'
 
 type OpenModalAction = Action<'MODAL.OPEN_MODAL', OpenModalConfig>
 type CloseModalAction = Action<'MODAL.CLOSE_MODAL', void>

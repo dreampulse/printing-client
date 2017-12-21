@@ -1,4 +1,4 @@
-import reducer from 'Reducer/order'
+import reducer from '../../../../src/app/reducer/order'
 import TYPE from '../../../../src/app/action-type'
 
 describe('Order reducer', () => {

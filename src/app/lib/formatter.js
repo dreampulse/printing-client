@@ -1,5 +1,5 @@
-import {getCountryName} from 'Service/country'
-import {formatCurrency} from 'Service/currency'
+import {getCountryName} from '../service/country'
+import {formatCurrency} from '../service/currency'
 
 export function formatPrice(value, currency, estimated = false) {
   return `${estimated ? '~' : ''}${formatCurrency(value.toFixed(2), currency)}`

@@ -1,10 +1,10 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import ModelItem from 'Component/model-item'
-import ModelItemError from 'Component/model-item-error'
-import ModelItemLoad from 'Component/model-item-load'
-import ModelItemList from 'Component/model-item-list'
+import ModelItem from '../../src/app/component/model-item'
+import ModelItemError from '../../src/app/component/model-item-error'
+import ModelItemLoad from '../../src/app/component/model-item-load'
+import ModelItemList from '../../src/app/component/model-item-list'
 
 storiesOf('Model Item List', module).add('default', () => (
   <ModelItemList>

@@ -4,7 +4,7 @@ import {
   formatShipping,
   formatAddress,
   formatDimensions
-} from 'Lib/formatter'
+} from '../../../../src/app/lib/formatter'
 
 describe('formatPrice()', () => {
   it('returns formatted string with price and currency', () => {

@@ -1,4 +1,4 @@
-import reducer from 'Reducer/user'
+import reducer from '../../../../src/app/reducer/user'
 import TYPE from '../../../../src/app/action-type'
 
 describe('User reducer', () => {
@@ -35,7 +35,8 @@ describe('User reducer', () => {
           stateCode: '',
           countryCode: ''
         }
-      }
+      },
+      utmParams: {}
     })
   })
 
@@ -99,6 +100,24 @@ describe('User reducer', () => {
       expect(reducer(state, action), 'to equal', {
         some: 'old-state',
         user: 'some-user'
+      })
+    })
+  })
+
+  describe('handles TYPE.USER.UTM_PARAMS_SET:', () => {
+    it('sets expected state', () => {
+      const state = {
+        some: 'old-state'
+      }
+
+      const action = {
+        type: TYPE.USER.UTM_PARAMS_SET,
+        payload: 'some-utm-params'
+      }
+
+      expect(reducer(state, action), 'to equal', {
+        some: 'old-state',
+        utmParams: 'some-utm-params'
       })
     })
   })

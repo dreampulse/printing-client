@@ -1,10 +1,11 @@
 import deepFreeze from 'deep-freeze'
 import createHistory from 'history/createMemoryHistory'
 
-import {init} from 'Action/init'
+import {init} from '../../../../src/app/action/init'
 
-import * as printingEngine from 'Lib/printing-engine'
-import * as geolocation from 'Lib/geolocation'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
+import * as geolocation from '../../../../src/app/lib/geolocation'
+import * as searchParams from '../../../../src/app/lib/search-params'
 
 import materialList from '../../../../test-data/mock/material-list-response.json'
 
@@ -20,6 +21,7 @@ describe('Init action integration test', () => {
     sandbox = sinon.sandbox.create()
     sandbox.stub(printingEngine)
     sandbox.stub(geolocation)
+    sandbox.stub(searchParams)
   })
 
   afterEach(() => {
@@ -35,6 +37,7 @@ describe('Init action integration test', () => {
       stateCode: 'some-state-code',
       countryCode: 'some-country-code'
     })
+    searchParams.getUtmParams.returns({})
 
     await store.dispatch(init())
 
@@ -65,7 +68,8 @@ describe('Init action integration test', () => {
             stateCode: '',
             countryCode: ''
           }
-        }
+        },
+        utmParams: {}
       }
     })
 

@@ -1,5 +1,6 @@
 // @flow
 
+import type {UtmParams} from './lib/search-params'
 import type {
   Address,
   User,
@@ -30,6 +31,11 @@ export type UserCreatedAction = {
 export type UserUpdatedAction = {
   type: 'LEGACY.USER.UPDATED',
   payload: User
+}
+
+export type UserUtmParamsSetAction = {
+  type: 'LEGACY.USER.UTM_PARAMS_SET',
+  payload: UtmParams
 }
 
 export type UserCurrencyChangedAction = {
@@ -217,6 +223,7 @@ export type Action =
   | UserCreatedAction
   | UserUpdatedAction
   | UserCurrencyChangedAction
+  | UserUtmParamsSetAction
   | OrderStartedAction
   | OrderPayedAction
   | OrderAbortedAction
@@ -277,6 +284,7 @@ export default {
     CREATED: 'LEGACY.USER.CREATED',
     UPDATED: 'LEGACY.USER.UPDATED',
     SET_BILLING_ADDRESS: 'LEGACY.USER.SET_BILLING_ADDRESS',
+    UTM_PARAMS_SET: 'LEGACY.USER.UTM_PARAMS_SET',
     CURRENCY_CHANGED: 'LEGACY.USER.CURRENCY_CHANGED'
   },
   ORDER: {

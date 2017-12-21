@@ -1,5 +1,9 @@
-import {getLocationByIp, convertPlaceToLocation, isAddressValid} from 'Lib/geolocation'
-import * as http from 'Service/http'
+import {
+  getLocationByIp,
+  convertPlaceToLocation,
+  isAddressValid
+} from '../../../../src/app/lib/geolocation'
+import * as http from '../../../../src/app/service/http'
 import config from '../../../../config'
 
 describe('geolocation lib', () => {
@@ -154,6 +158,38 @@ describe('geolocation lib', () => {
         zipCode: '',
         stateCode: '',
         countryCode: ''
+      })
+    })
+
+    it('handels missing property', () => {
+      const exampleResponse = {
+        address_components: [
+          {
+            short_name: 'UL',
+            types: ['locality', 'political']
+          },
+          {
+            short_name: 'TÜ',
+            types: ['administrative_area_level_2', 'political']
+          },
+          {
+            short_name: 'BW',
+            types: ['administrative_area_level_1', 'political']
+          },
+          {
+            short_name: 'DE',
+            types: ['country', 'political']
+          }
+        ]
+      }
+
+      expect(convertPlaceToLocation(exampleResponse), 'to equal', {
+        street: '',
+        houseNumber: '',
+        city: '',
+        zipCode: '',
+        stateCode: 'BW',
+        countryCode: 'DE'
       })
     })
   })
