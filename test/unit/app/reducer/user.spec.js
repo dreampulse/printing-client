@@ -1,4 +1,4 @@
-import reducer from 'Reducer/user'
+import reducer from '../../../../src/app/reducer/user'
 import TYPE from '../../../../src/app/action-type'
 
 describe('User reducer', () => {

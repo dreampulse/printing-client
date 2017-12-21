@@ -1,10 +1,11 @@
 // @flow
 
 import type {Dispatch} from 'redux'
-import * as printingEngine from 'Service/printing-engine'
 import {createAction} from 'redux-actions'
 import {routerActions} from 'react-router-redux'
-import {getBaseUrl} from 'Service/location'
+
+import * as printingEngine from '../service/printing-engine'
+import {getBaseUrl} from '../service/location'
 
 import {createPriceRequest} from './price'
 import {selectMaterialConfig} from './material'

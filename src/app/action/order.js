@@ -3,11 +3,11 @@
 import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 
-import * as stripe from 'Service/stripe'
-import * as paypal from 'Service/paypal'
-import * as printingEngine from 'Service/printing-engine'
-import {AppError} from 'Lib/error'
-import {selectSearchParams} from 'Lib/selector'
+import * as stripe from '../service/stripe'
+import * as paypal from '../service/paypal'
+import * as printingEngine from '../service/printing-engine'
+import {AppError} from '../lib/error'
+import {selectSearchParams} from '../lib/selector'
 
 import type {State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'

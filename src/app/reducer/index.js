@@ -3,6 +3,7 @@
 import {combineReducers} from 'redux-loop'
 import {routerReducer as routing} from 'react-router-redux'
 import {reducer as form} from 'redux-form'
+
 import type {State as LegacyState} from '../type'
 import core from '../reducer-next/core'
 import type {CoreState} from '../reducer-next/core'

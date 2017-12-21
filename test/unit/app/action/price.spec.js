@@ -4,12 +4,12 @@ import {
   createPriceRequest,
   recalculateSelectedOffer,
   createDebouncedPriceRequest
-} from 'Action/price'
-import * as pollLib from 'Lib/poll'
-import * as printingEngine from 'Service/printing-engine'
-import * as offerLib from 'Lib/offer'
-import * as modalActions from 'Action/modal'
-import {AppError} from 'Lib/error'
+} from '../../../../src/app/action/price'
+import * as modalActions from '../../../../src/app/action/modal'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
+import * as pollLib from '../../../../src/app/lib/poll'
+import * as offerLib from '../../../../src/app/lib/offer'
+import {AppError} from '../../../../src/app/lib/error'
 import config from '../../../../config'
 import TYPE, {ERROR_TYPE} from '../../../../src/app/action-type'
 

@@ -1,6 +1,11 @@
-import {changeQuantity, changeIndividualQuantity, uploadFiles, deleteFile} from 'Action/model'
-import * as priceActions from 'Action/price'
-import * as printingEngine from 'Service/printing-engine'
+import {
+  changeQuantity,
+  changeIndividualQuantity,
+  uploadFiles,
+  deleteFile
+} from '../../../../src/app/action/model'
+import * as priceActions from '../../../../src/app/action/price'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
 import TYPE, {ERROR_TYPE} from '../../../../src/app/action-type'
 import {resolveAsyncThunk} from '../../../helper'
 
