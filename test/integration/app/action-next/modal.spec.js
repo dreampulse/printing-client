@@ -1,4 +1,4 @@
-import * as modal from '../../../../src/app/action-next/modal'
+import * as modalAction from '../../../../src/app/action-next/modal'
 import {isModalOpen, selectModalConfig} from '../../../../src/app/selector'
 import reducer from '../../../../src/app/reducer'
 
@@ -13,7 +13,7 @@ describe('modal action', () => {
         content: 'CONTENT_TYPE',
         contentProps: {}
       }
-      state = reducer(undefined, modal.openModal(modalConfiguration))
+      state = reducer(undefined, modalAction.openModal(modalConfiguration))
     })
 
     describe('using isModalOpen() selector', () => {
@@ -32,7 +32,7 @@ describe('modal action', () => {
 
     beforeEach(() => {
       error = new Error('Fatal error')
-      state = reducer(undefined, modal.openFatalErrorModal(error))
+      state = reducer(undefined, modalAction.openFatalErrorModal(error))
     })
 
     describe('using isModalOpen() selector', () => {
@@ -55,7 +55,7 @@ describe('modal action', () => {
     let state
 
     beforeEach(() => {
-      state = reducer(undefined, modal.openPickLocationModal())
+      state = reducer(undefined, modalAction.openPickLocationModal())
     })
 
     describe('using isModalOpen() selector', () => {
@@ -76,7 +76,7 @@ describe('modal action', () => {
     let state
 
     beforeEach(() => {
-      state = reducer(undefined, modal.closeModal())
+      state = reducer(undefined, modalAction.closeModal())
     })
 
     describe('using isModalOpen() selector', () => {
