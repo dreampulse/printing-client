@@ -6,6 +6,19 @@ const currencies = [
   {value: 'AUD', label: 'AUD'}
 ]
 
+const currencySymbols = {
+  USD: '$',
+  EUR: '€',
+  GBP: '£',
+  CAD: 'C$',
+  AUD: 'A$'
+}
+
 export function getCurrencies() {
   return currencies
+}
+
+export function formatCurrency(value, currency) {
+  const symbol = currencySymbols[currency] || currency
+  return `${symbol}${value}`
 }
