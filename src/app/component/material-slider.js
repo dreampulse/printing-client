@@ -198,8 +198,10 @@ export default class MaterialSlider extends Component {
   }
 
   renderDots() {
+    const { numDots } = this.state
+
     // Needs a second render cycle
-    if (!this.canvasDom) {
+    if (!this.canvasDom || numDots <= 1) {
       return null
     }
 
@@ -207,7 +209,7 @@ export default class MaterialSlider extends Component {
 
     return (
       <ul className="material-slider__dots" role="presentation">
-        {range(this.state.numDots).map(index => (
+        {range(numDots).map(index => (
           <li key={index} role="presentation">
             <Dot
               modifiers={this.state.currentDotIndex === index ? ['active'] : undefined}
