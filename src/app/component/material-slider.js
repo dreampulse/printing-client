@@ -198,7 +198,7 @@ export default class MaterialSlider extends Component {
   }
 
   renderDots() {
-    const { numDots } = this.state
+    const {numDots} = this.state
 
     // Needs a second render cycle
     if (!this.canvasDom || numDots <= 1) {
