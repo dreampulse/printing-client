@@ -4,16 +4,15 @@ import {loop, Cmd} from 'redux-loop'
 import type {AppAction, Location} from '../type-next'
 import {getLocationByIp} from '../lib/geolocation'
 import {createUser} from '../lib/printing-engine'
-import * as user from '../action-next/user'
+import * as userAction from '../action-next/user'
 import * as modal from '../action-next/modal'
 import * as core from '../action-next/core'
 
-import {identify} from '../service/mixpanel'
-import {setUserContext} from '../service/logging'
+import * as userLib from '../lib/user'
 
 export type UserState = {
-  userId: string | null,
-  location: Location | null,
+  userId: ?string,
+  location: ?Location,
   currency: string
 }
 
@@ -27,39 +26,34 @@ const detectLocation = (state, action) =>
   loop(
     state,
     Cmd.run(getLocationByIp, {
-      successActionCreator: user.locationDetected,
+      successActionCreator: userAction.locationDetected,
       failActionCreator: modal.openPickLocationModal,
       args: []
     })
   )
 
-const locationDetected = (state, action) =>
+const locationDetected = (state, {payload}) =>
   loop(
     {
       ...state,
-      location: action.payload
+      location: payload.location
     },
     Cmd.run(createUser, {
-      successActionCreator: user.userCreated,
+      successActionCreator: user => userAction.userCreated(user.userId),
       failActionCreator: () => core.fatalError('Failed to create the user'),
-      args: [state.userId]
+      args: [state.currency, payload.location]
     })
   )
 
-const created = (state, action) =>
+const created = (state, {payload}) =>
   loop(
-    state,
-    Cmd.run(
-      userId => {
-        identify(userId) // Send user information to Mixpanel
-        setUserContext({
-          id: userId
-        })
-      },
-      {
-        args: [state.userId]
-      }
-    )
+    {
+      ...state,
+      userId: payload.userId
+    },
+    Cmd.run(userLib.userCreated, {
+      args: [state.userId]
+    })
   )
 
 export const reducer = (state: UserState = initialState, action: AppAction): UserState => {
