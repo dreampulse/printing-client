@@ -12,7 +12,7 @@ describe('formatPrice()', () => {
   })
 
   it('adds two 0s', () => {
-    expect(formatPrice(10, 'AUD'), 'to equal', 'A$10.00')
+    expect(formatPrice(10, 'USD'), 'to equal', '$10.00')
   })
 
   it('rounds value down', () => {
@@ -20,7 +20,7 @@ describe('formatPrice()', () => {
   })
 
   it('rounds value up', () => {
-    expect(formatPrice(19.995, 'CAD'), 'to equal', 'C$20.00')
+    expect(formatPrice(19.995, 'USD'), 'to equal', '$20.00')
   })
 
   it('returns estimated price', () => {
