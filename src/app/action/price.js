@@ -53,6 +53,7 @@ export const createPriceRequest = (
   const state = getState()
   if (!state.material.materials) throw new Error('Materials structure missing')
   const {model: {models}, user: {userId}} = state
+  // TODO: update the selectors to deal with the new state
   const materialConfigIds = selectCurrentMaterialIds(state)
 
   if (materialConfigIds.length === 0) {

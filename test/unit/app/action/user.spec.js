@@ -193,7 +193,7 @@ describe('User actions', () => {
     describe('when address is valid', () => {
       beforeEach(() => {
         geolocation.isAddressValid.returns(true)
-        printingEngine.createUser.resolves({
+        printingEngine.createUserOld.resolves({
           userId: 'some-new-user-id'
         })
         priceActions.createPriceRequest.returns({
