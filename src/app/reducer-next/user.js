@@ -3,8 +3,8 @@
 import {loop, Cmd} from 'redux-loop'
 import type {AppAction, Location} from '../type-next'
 import {getLocationByIp} from '../lib/geolocation'
-import * as user from '../action-next/user'
-import * as modal from '../action-next/modal'
+import * as userAction from '../action-next/user'
+import * as modalAction from '../action-next/modal'
 
 export type UserState = {
   userId: string | null,
@@ -22,8 +22,8 @@ const detectLocation = (state, action) =>
   loop(
     state,
     Cmd.run(getLocationByIp, {
-      successActionCreator: user.updateLocation,
-      failActionCreator: modal.openPickLocationModal,
+      successActionCreator: userAction.updateLocation,
+      failActionCreator: modalAction.openPickLocationModal,
       args: []
     })
   )
