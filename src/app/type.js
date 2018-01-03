@@ -1,6 +1,6 @@
-import type {UtmParams} from './lib/search-params'
-
 // @flow
+
+import type {UtmParams} from './lib/search-params'
 
 export type Address = {
   firstName: string,
