@@ -46,3 +46,9 @@ export const selectMenuMaterialValues = [
 ]
 
 export const googleMapsApiKey = 'AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo'
+
+export const currencies = [
+  {value: 'USD', label: 'USD'},
+  {value: 'EUR', label: 'EUR'},
+  {value: 'GBP', label: 'GBP'}
+]

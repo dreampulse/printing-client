@@ -19,10 +19,8 @@ import Checked from '../../src/app/component/checked'
 import SelectField from '../../src/app/component/select-field'
 import SelectMenu from '../../src/app/component/select-menu'
 
-import {getCurrencies} from '../../src/app/lib/currency'
-
 import errorImage from '../../src/asset/image/error.svg'
-import {googleMapsApiKey} from '../util/data'
+import {googleMapsApiKey, currencies} from '../util/data'
 
 import HandleValue from '../util/handle-value'
 
@@ -118,7 +116,6 @@ storiesOf('Overlay', module)
     )
   })
   .add('Shipping address', () => {
-    const currencies = getCurrencies()
     const pricesChangedHeadline = <Headline label="Shipping address" modifiers={['l']} />
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>

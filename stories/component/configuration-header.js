@@ -8,12 +8,8 @@ import NumberField from '../../src/app/component/number-field'
 import SelectField from '../../src/app/component/select-field'
 import SelectMenu from '../../src/app/component/select-menu'
 
-import {getCurrencies} from '../../src/app/lib/currency'
-
 import HandleValue from '../util/handle-value'
-import {googleMapsApiKey} from '../util/data'
-
-const currencies = getCurrencies()
+import {googleMapsApiKey, currencies} from '../util/data'
 
 storiesOf('Configuration Header', module).add('default', () => (
   <ConfigurationHeader>
