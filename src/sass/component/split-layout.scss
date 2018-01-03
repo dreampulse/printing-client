@@ -1,0 +1,11 @@
+.split-layout {
+  @include grid;
+
+  &__content {
+    @include span(12);
+
+    @include respond-to(medium) {
+      @include span(6);
+    }
+  }
+}
