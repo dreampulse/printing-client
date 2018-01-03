@@ -1,6 +1,6 @@
 import React from 'react'
 import {compose, withState} from 'recompose'
-import {getCurrencies} from '../../service/currency'
+import {getCurrencies} from '../../lib/currency'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'

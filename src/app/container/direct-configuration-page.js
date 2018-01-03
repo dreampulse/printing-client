@@ -1,6 +1,6 @@
 import React from 'react'
 import {compose} from 'recompose'
-import {getCurrencies} from '../service/currency'
+import {getCurrencies} from '../lib/currency'
 
 import {selectMaterialByMaterialConfigId, selectPrintingServiceRequests} from '../lib/selector'
 import {getBestOfferForMaterialConfig} from '../lib/material'
