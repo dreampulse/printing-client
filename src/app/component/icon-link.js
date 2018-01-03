@@ -9,7 +9,6 @@ import Icon from './icon'
 const IconLink = ({
   classNames,
   modifiers = [],
-  label,
   icon,
   disabled = false,
   href = '#',
@@ -29,9 +28,9 @@ const IconLink = ({
 
 IconLink.propTypes = {
   ...propTypes.component,
-  source: PropTypes.shape({
+  icon: PropTypes.shape({
     id: PropTypes.string
-  }),
+  }).isRequired,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   href: PropTypes.string,
