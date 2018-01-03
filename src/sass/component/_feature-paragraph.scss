@@ -1,0 +1,19 @@
+.feature-paragraph {
+  display: flex;
+  align-items: flex-start;
+  margin: 0 0 $space-xl;
+  color: $color-text-label;
+  font-size: $font-size-l;
+  font-weight: $font-weight-light;
+
+  & > .image {
+    flex-shrink: 0;
+    flex-grow: 0;
+    width: 5em;
+    margin-right: $space-xl;
+  }
+
+  &__content {
+    flex-grow: 1;
+  }
+}
