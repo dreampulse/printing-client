@@ -4,7 +4,7 @@ import {compose} from 'recompose'
 import App from '../component/app'
 import StickyContainer from '../component/sticky-container'
 import Container from '../component/container'
-import Header from '../component/header'
+import NavBar from '../component/nav-bar'
 import ProcessStepBar from '../component/process-step-bar'
 import ProcessStep from '../component/process-step'
 import Footer from '../component/footer'
@@ -43,9 +43,9 @@ const AppLayout = ({
     </ProcessStepBar>
   )
   const header = (
-    <Header key="header" onClickIdentity={onGoToHome}>
+    <NavBar key="header" onClickIdentity={onGoToHome}>
       {currentStep >= 0 ? processStepBar : <div />}
-    </Header>
+    </NavBar>
   )
 
   const footer = (
