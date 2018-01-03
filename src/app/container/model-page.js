@@ -34,7 +34,7 @@ const ModelPage = ({
 }) => {
   const currencies = getCurrencies()
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
-  const currencyMenu = <SelectMenu values={currencies || []} />
+  const currencyMenu = <SelectMenu values={currencies} />
 
   const configurationHeader = (
     <ConfigurationHeader>
