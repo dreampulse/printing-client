@@ -81,7 +81,7 @@ export const updateLocation = (address: Address) => async (
   }
 }
 
-export const updateCurrency = (currency: string) => async (
+export const updateCurrency = (currency: string) => (
   dispatch: Dispatch<any>,
   getState: () => State
 ) => {
