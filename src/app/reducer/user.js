@@ -66,10 +66,7 @@ function handleUserUpdated(state, {payload}) {
 function handleCurrencyChanged(state, {payload: currency}) {
   return {
     ...state,
-    currency,
-    user: {
-      ...state.user
-    }
+    currency
   }
 }
 
