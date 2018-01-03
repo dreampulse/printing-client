@@ -1,6 +1,5 @@
 import React from 'react'
 import {compose, withState} from 'recompose'
-import {getCurrencies} from '../../lib/currency'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -31,7 +30,7 @@ const ShippingAddressModal = ({
   onUpdateCurrency,
   onClose
 }) => {
-  const currencies = getCurrencies()
+  const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
   const currencyMenu = <SelectMenu values={currencies || []} />
 

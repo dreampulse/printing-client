@@ -1,6 +1,5 @@
 import React from 'react'
 import {compose} from 'recompose'
-import {getCurrencies} from '../lib/currency'
 
 import ConfigurationHeader from '../component/configuration-header'
 import LabeledField from '../component/labeled-field'
@@ -32,7 +31,7 @@ const ModelPage = ({
   onUpdateLocation,
   onUpdateCurrency
 }) => {
-  const currencies = getCurrencies()
+  const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
   const currencyMenu = <SelectMenu values={currencies} />
 

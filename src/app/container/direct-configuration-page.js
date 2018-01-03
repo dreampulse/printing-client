@@ -1,6 +1,5 @@
 import React from 'react'
 import {compose} from 'recompose'
-import {getCurrencies} from '../lib/currency'
 
 import {selectMaterialByMaterialConfigId, selectPrintingServiceRequests} from '../lib/selector'
 import {getBestOfferForMaterialConfig} from '../lib/material'
@@ -130,9 +129,9 @@ const DirectConfigurationPage = ({
     />
   )
 
-  const currencies = getCurrencies()
+  const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
-  const currencyMenu = <SelectMenu values={currencies || []} />
+  const currencyMenu = <SelectMenu values={currencies} />
   const configurationHeader = (
     <ConfigurationHeader>
       <LabeledField label="Shipping:" modifiers={['block']}>
