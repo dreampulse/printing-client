@@ -170,12 +170,6 @@ export const selectCurrentMaterial = (state: State) => {
 }
 
 export const selectCurrentMaterialIds = (state: State): Array<string> => {
-  const selectedMaterialConfigId = state.material.selectedMaterialConfig
-
-  if (selectedMaterialConfigId) {
-    return [selectedMaterialConfigId]
-  }
-
   const selectedMaterial = selectCurrentMaterial(state)
 
   if (!selectedMaterial) {

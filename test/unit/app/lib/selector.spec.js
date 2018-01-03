@@ -562,16 +562,6 @@ describe('Selector lib', () => {
       }
     })
 
-    it('returns an array with just the selected material config id if there is currently one selected', () => {
-      const state = {
-        material: {
-          selectedMaterialConfig: 'material-1'
-        }
-      }
-
-      expect(selectCurrentMaterialIds(state), 'to equal', ['material-1'])
-    })
-
     it('returns an empty array if there is currently no material selected', () => {
       const state = {
         material: {}
