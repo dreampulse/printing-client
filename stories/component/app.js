@@ -13,12 +13,14 @@ import LocationField from '../../src/app/component/location-field'
 import NumberField from '../../src/app/component/number-field'
 import Button from '../../src/app/component/button'
 import IconLink from '../../src/app/component/icon-link'
+import SelectField from '../../src/app/component/select-field'
+import SelectMenu from '../../src/app/component/select-menu'
 
 import helpIcon from '../../src/asset/icon/help.svg'
 import cartIcon from '../../src/asset/icon/cart.svg'
 
 import HandleValue from '../util/handle-value'
-import {googleMapsApiKey} from '../util/data'
+import {googleMapsApiKey, currencies} from '../util/data'
 
 const navBar = (currentStep = 0) => (
   <NavBar key="navbar">
@@ -35,6 +37,9 @@ const configurationHeader = (
         <LocationField googleMapsApiKey={googleMapsApiKey} />
       </HandleValue>
     </LabeledField>
+    <HandleValue initialValue={{value: 'USD', label: 'USD'}}>
+      <SelectField menu={<SelectMenu values={currencies} />} />
+    </HandleValue>
     <LabeledField label="Quantity:">
       <HandleValue initialValue={1}>
         <NumberField />
