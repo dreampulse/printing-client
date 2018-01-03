@@ -1,9 +1,18 @@
 .upload-area {
-  padding: $space-l;
+  $border-image: url(../asset/image/upload-area-border.svg);
+
+  padding: $space-xxl $space-l;
   margin-bottom: $space-base;
   text-align: center;
   font-size: $font-size-l;
-  border: 2px dashed $color-primary;
+  border: 1px dashed $color-primary;
+
+  @supports (border-image: $border-image) {
+    border-image: $border-image;
+    border-image-slice: 33% 33%;
+    border-image-repeat: round;
+    border-width: 10px;
+  }
 
   & > .icon {
     font-size: 55px;
@@ -34,5 +43,12 @@
   &--drag {
     border-style: solid;
     background: $color-blue-very-light;
+
+    @supports (border-image: $border-image) {
+      border-image: none;
+      border-width: 1px;
+      // Compensate for missing pixels when setting border image to none
+      padding: $space-xxl + 9px $space-l + 9px;
+    }
   }
 }
