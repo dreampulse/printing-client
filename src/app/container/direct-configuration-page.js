@@ -146,7 +146,6 @@ const DirectConfigurationPage = ({
           value={selectedCurrencyValue}
           disabled={!address.countryCode}
           onChange={({value}) => onUpdateCurrency(value)}
-          modifiers={['currency']}
         />
       </LabeledField>
     </ConfigurationHeader>

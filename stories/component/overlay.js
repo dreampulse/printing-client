@@ -136,7 +136,7 @@ storiesOf('Overlay', module)
           </Column>
           <Column sm={3}>
             <HandleValue initialValue={{value: 'USD', label: 'USD'}}>
-              <SelectField menu={<SelectMenu values={currencies} />} modifiers={['currency']} />
+              <SelectField menu={<SelectMenu values={currencies} />} />
             </HandleValue>
           </Column>
         </Grid>

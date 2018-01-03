@@ -68,7 +68,6 @@ const ShippingAddressModal = ({
             value={selectedCurrencyValue}
             disabled={!isAddressValid(address)}
             onChange={({value}) => setCurrency(value)}
-            modifiers={['currency']}
           />
         </Column>
       </Grid>

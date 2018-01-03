@@ -50,7 +50,6 @@ const ModelPage = ({
         value={selectedCurrencyValue}
         disabled={!address.countryCode}
         onChange={({value}) => onUpdateCurrency(value)}
-        modifiers={['currency']}
       />
       <LabeledField label="Quantity:">
         <NumberField

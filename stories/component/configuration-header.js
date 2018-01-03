@@ -23,7 +23,7 @@ storiesOf('Configuration Header', module).add('default', () => (
       </HandleValue>
     </LabeledField>
     <HandleValue initialValue={{value: 'USD', label: 'USD'}}>
-      <SelectField menu={<SelectMenu values={currencies} />} modifiers={['currency']} />
+      <SelectField menu={<SelectMenu values={currencies} />} />
     </HandleValue>
     <LabeledField label="Quantity:">
       <HandleValue initialValue={1}>
