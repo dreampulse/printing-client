@@ -7,8 +7,20 @@ import {
 } from '../../../../src/app/lib/formatter'
 
 describe('formatPrice()', () => {
-  it('returns formatted string with price and currency', () => {
+  it('returns formatted string with price and currency USD', () => {
     expect(formatPrice(19.99, 'USD'), 'to equal', '$19.99')
+  })
+
+  it('returns formatted string with price and currency EUR', () => {
+    expect(formatPrice(19.99, 'EUR'), 'to equal', '€19.99')
+  })
+
+  it('returns formatted string with price and currency GBP', () => {
+    expect(formatPrice(19.99, 'GBP'), 'to equal', '£19.99')
+  })
+
+  it('returns formatted string with price and unsupported currency', () => {
+    expect(formatPrice(19.99, 'AUD', true), 'to equal', 'AUD19.99')
   })
 
   it('adds two 0s', () => {
@@ -16,15 +28,11 @@ describe('formatPrice()', () => {
   })
 
   it('rounds value down', () => {
-    expect(formatPrice(19.994, 'EUR'), 'to equal', '€19.99')
+    expect(formatPrice(19.994, 'USD'), 'to equal', '$19.99')
   })
 
   it('rounds value up', () => {
     expect(formatPrice(19.995, 'USD'), 'to equal', '$20.00')
-  })
-
-  it('returns estimated price', () => {
-    expect(formatPrice(19.99, 'GBP', true), 'to equal', '~£19.99')
   })
 })
 

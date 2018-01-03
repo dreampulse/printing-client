@@ -1,8 +1,10 @@
 import {getCountryName} from '../service/country'
-import {formatCurrency} from '../lib/currency'
+import config from '../../../config'
 
-export function formatPrice(value, currency, estimated = false) {
-  return `${estimated ? '~' : ''}${formatCurrency(value.toFixed(2), currency)}`
+export function formatPrice(value, currency) {
+  const supportedCurrency = config.currencies.find(c => c.value === currency)
+  const prefix = supportedCurrency ? supportedCurrency.symbol : currency
+  return `${prefix}${value.toFixed(2)}`
 }
 
 export function formatDeliveryTime(deliveryTime) {

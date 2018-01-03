@@ -92,11 +92,7 @@ const MaterialSection = ({
     const colorMenu = colorValues.length > 1 ? <SelectMenu values={colorValues} /> : undefined
     const materialPrice = (
       <Price
-        value={
-          bestOffer
-            ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
-            : undefined
-        }
+        value={bestOffer ? formatPrice(bestOffer.totalPrice, bestOffer.currency) : undefined}
         meta="incl. tax & shipping"
       />
     )

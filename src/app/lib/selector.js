@@ -50,9 +50,7 @@ export const selectMaterialMenuValues = (state: State) => {
         value: material.id,
         label: material.name,
         hasColor: hasMaterialMultipleConfigs(material),
-        price: offer
-          ? `From ${formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}`
-          : undefined
+        price: offer ? `From ${formatPrice(offer.totalPrice, offer.currency)}` : undefined
       }
     })
   }))
