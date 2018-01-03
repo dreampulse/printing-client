@@ -4,27 +4,28 @@ import {storiesOf} from '@storybook/react'
 import App from '../../src/app/component/app'
 import StickyContainer from '../../src/app/component/sticky-container'
 import Container from '../../src/app/component/container'
-import Header from '../../src/app/component/header'
-import ProcessStepBar from '../../src/app/component/process-step-bar'
-import ProcessStep from '../../src/app/component/process-step'
+import NavBar from '../../src/app/component/nav-bar'
 import Footer from '../../src/app/component/footer'
 import Link from '../../src/app/component/link'
 import ConfigurationHeader from '../../src/app/component/configuration-header'
 import LabeledField from '../../src/app/component/labeled-field'
 import LocationField from '../../src/app/component/location-field'
 import NumberField from '../../src/app/component/number-field'
+import Button from '../../src/app/component/button'
+import IconLink from '../../src/app/component/icon-link'
+
+import helpIcon from '../../src/asset/icon/help.svg'
+import cartIcon from '../../src/asset/icon/cart.svg'
 
 import HandleValue from '../util/handle-value'
 import {googleMapsApiKey} from '../util/data'
 
-const header = (currentStep = 0) => (
-  <Header key="header">
-    <ProcessStepBar currentStep={currentStep}>
-      <ProcessStep label="Your Order" />
-      <ProcessStep label="Address" />
-      <ProcessStep label="Review and Pay" />
-    </ProcessStepBar>
-  </Header>
+const navBar = (currentStep = 0) => (
+  <NavBar key="navbar">
+    <Button modifiers={['invert', 'compact']} label="Upload" />
+    <IconLink modifiers={['invert']} icon={cartIcon} disabled />
+    <IconLink modifiers={['invert']} icon={helpIcon} />
+  </NavBar>
 )
 
 const configurationHeader = (
@@ -51,7 +52,7 @@ const footer = (
 
 storiesOf('App', module).add('default', () => (
   <App
-    header={[header(), <StickyContainer key="configHeader">{configurationHeader}</StickyContainer>]}
+    header={[navBar(), <StickyContainer key="configHeader">{configurationHeader}</StickyContainer>]}
     footer={footer}
   >
     <Container>

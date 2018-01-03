@@ -12,7 +12,7 @@ storiesOf('Link', module)
     <Link label="Link with Icon" href="#" icon={backIcon} onClick={action('click')} />
   ))
   .add('invert', () => (
-    <div className="u-invert" style={{width: '100%', height: '100%'}}>
-      <Link label="Inverted Link" href="#" onClick={action('click')} />
+    <div className="u-invert" style={{width: '100%', 'min-height': '100vh'}}>
+      <Link label="Inverted Link" modifiers={['invert']} href="#" onClick={action('click')} />
     </div>
   ))
