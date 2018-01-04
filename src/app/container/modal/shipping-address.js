@@ -32,7 +32,7 @@ const ShippingAddressModal = ({
 }) => {
   const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
-  const currencyMenu = <SelectMenu values={currencies || []} />
+  const currencyMenu = <SelectMenu values={currencies} />
 
   const headline = <Headline label="Shipping address required" modifiers={['l']} />
   const buttons = [
