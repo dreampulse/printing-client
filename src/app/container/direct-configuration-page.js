@@ -136,13 +136,13 @@ const DirectConfigurationPage = ({
           googleMapsApiKey={config.googleMapsApiKey}
           onChange={place => onUpdateLocation(convertPlaceToLocation(place))}
         />
+        <SelectField
+          menu={currencyMenu}
+          value={selectedCurrencyValue}
+          disabled={!address.countryCode}
+          onChange={({value}) => onUpdateCurrency(value)}
+        />
       </LabeledField>
-      <SelectField
-        menu={currencyMenu}
-        value={selectedCurrencyValue}
-        disabled={!address.countryCode}
-        onChange={({value}) => onUpdateCurrency(value)}
-      />
     </ConfigurationHeader>
   )
 
