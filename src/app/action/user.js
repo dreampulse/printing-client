@@ -94,23 +94,8 @@ export const updateLocationWithCurrency = (address: Address, currency: string) =
   dispatch: Dispatch<any>,
   getState: () => State
 ) => {
-  dispatch(shippingAddressChanged(address))
   dispatch(currencyChanged(currency))
-
-  if (!isAddressValid(address)) {
-    // Open address modal if address is not valid
-    dispatch(openAddressModal())
-  } else {
-    if (!getState().user.userId) {
-      // No user created so far
-      await dispatch(createUser())
-    } else {
-      await dispatch(updateUser(getState().user.user))
-    }
-
-    // Update prices
-    dispatch(createPriceRequest())
-  }
+  await dispatch(updateLocation(address))
 }
 
 // @TODO update type

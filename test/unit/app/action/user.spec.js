@@ -323,12 +323,12 @@ describe('User actions', () => {
 
         expect(store.getActions(), 'to equal', [
           {
-            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
-            payload: {address: 'some-address'}
-          },
-          {
             type: 'LEGACY.USER.CURRENCY_CHANGED',
             payload: 'EUR'
+          },
+          {
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
+            payload: {address: 'some-address'}
           },
           {
             type: 'open-address-modal-action'
@@ -365,12 +365,12 @@ describe('User actions', () => {
 
         expect(store.getActions(), 'to equal', [
           {
-            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
-            payload: {address: 'some-address'}
-          },
-          {
             type: 'LEGACY.USER.CURRENCY_CHANGED',
             payload: 'EUR'
+          },
+          {
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
+            payload: {address: 'some-address'}
           },
           {type: 'LEGACY.USER.CREATED', payload: {userId: 'some-new-user-id'}},
           {type: 'create-price-request-action'}
@@ -395,16 +395,16 @@ describe('User actions', () => {
 
         expect(store.getActions(), 'to equal', [
           {
+            type: 'LEGACY.USER.CURRENCY_CHANGED',
+            payload: 'EUR'
+          },
+          {
             type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
             payload: {
               address: {
                 countryCode: 'some-country-code'
               }
             }
-          },
-          {
-            type: 'LEGACY.USER.CURRENCY_CHANGED',
-            payload: 'EUR'
           },
           {
             type: 'LEGACY.USER.UPDATED',
