@@ -326,6 +326,23 @@ describe('Price actions', () => {
       ])
     })
 
+    it('aborts if there is no user id', async () => {
+      const store = mockStore({
+        material,
+        user: {
+          userId: null
+        },
+        model,
+        price: {
+          offers: null
+        }
+      })
+
+      await store.dispatch(createPriceRequest())
+
+      expect(printingEngine.createPriceRequest, 'was not called')
+    })
+
     it('aborts if there are no uploaded models', async () => {
       const store = mockStore({
         material,
