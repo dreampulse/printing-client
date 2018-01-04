@@ -53,8 +53,6 @@ export const createPriceRequest = (
   const state = getState()
   if (!state.material.materials) throw new Error('Materials structure missing')
   const {model: {models}, user: {userId, currency}} = state
-  // Abort if userId is not yet set
-  if (!userId) return Promise.resolve()
   const materialConfigIds = selectCurrentMaterialIds(state)
 
   if (materialConfigIds.length === 0) {
