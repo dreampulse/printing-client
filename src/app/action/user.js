@@ -90,6 +90,29 @@ export const updateCurrency = (currency: string) => (
   dispatch(createPriceRequest())
 }
 
+export const updateLocationWithCurrency = (address: Address, currency: string) => async (
+  dispatch: Dispatch<any>,
+  getState: () => State
+) => {
+  dispatch(shippingAddressChanged(address))
+  dispatch(currencyChanged(currency))
+
+  if (!isAddressValid(address)) {
+    // Open address modal if address is not valid
+    dispatch(openAddressModal())
+  } else {
+    if (!getState().user.userId) {
+      // No user created so far
+      await dispatch(createUser())
+    } else {
+      await dispatch(updateUser(getState().user.user))
+    }
+
+    // Update prices
+    dispatch(createPriceRequest())
+  }
+}
+
 // @TODO update type
 export const reviewOrder = (form: any) => async (dispatch: Dispatch<*>, getState: () => State) => {
   const user = getState().user.user

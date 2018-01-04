@@ -1,4 +1,9 @@
-import {reviewOrder, updateLocation, updateCurrency} from '../../../../src/app/action/user'
+import {
+  reviewOrder,
+  updateLocation,
+  updateCurrency,
+  updateLocationWithCurrency
+} from '../../../../src/app/action/user'
 import * as priceActions from '../../../../src/app/action/price'
 import * as modalActions from '../../../../src/app/action/modal'
 import * as navigationActions from '../../../../src/app/action/navigation'
@@ -292,6 +297,126 @@ describe('User actions', () => {
           type: 'create-price-request-action'
         }
       ])
+    })
+  })
+
+  describe('updateLocationWithCurrency()', () => {
+    let store
+    let address
+    let initialState
+
+    beforeEach(() => {
+      initialState = {}
+      address = 'some-address'
+    })
+
+    describe('when address is not valid', () => {
+      it('dispatches expected actions', async () => {
+        geolocation.isAddressValid.returns(false)
+
+        modalActions.openAddressModal.returns({
+          type: 'open-address-modal-action'
+        })
+
+        store = mockStore(initialState)
+        await store.dispatch(updateLocationWithCurrency(address, 'EUR'))
+
+        expect(store.getActions(), 'to equal', [
+          {
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
+            payload: {address: 'some-address'}
+          },
+          {
+            type: 'LEGACY.USER.CURRENCY_CHANGED',
+            payload: 'EUR'
+          },
+          {
+            type: 'open-address-modal-action'
+          }
+        ])
+      })
+    })
+
+    describe('when address is valid', () => {
+      beforeEach(() => {
+        geolocation.isAddressValid.returns(true)
+        printingEngine.createUser.resolves({
+          userId: 'some-new-user-id'
+        })
+        priceActions.createPriceRequest.returns({
+          type: 'create-price-request-action'
+        })
+      })
+
+      it('dispatches expected actions, when no user exists', async () => {
+        initialState = {
+          user: {
+            userId: undefined,
+            currency: 'USD',
+            user: {
+              shippingAddress: {
+                countryCode: 'some-country-code'
+              }
+            }
+          }
+        }
+        store = mockStore(initialState)
+        await store.dispatch(updateLocationWithCurrency(address, 'EUR'))
+
+        expect(store.getActions(), 'to equal', [
+          {
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
+            payload: {address: 'some-address'}
+          },
+          {
+            type: 'LEGACY.USER.CURRENCY_CHANGED',
+            payload: 'EUR'
+          },
+          {type: 'LEGACY.USER.CREATED', payload: {userId: 'some-new-user-id'}},
+          {type: 'create-price-request-action'}
+        ])
+      })
+
+      it('dispatches expected actions, when user exists', async () => {
+        initialState = {
+          user: {
+            userId: 'some-user-id',
+            currency: 'USD',
+            user: {
+              shippingAddress: {
+                countryCode: 'some-country-code'
+              }
+            }
+          }
+        }
+        address = {countryCode: 'some-country-code'}
+        store = mockStore(initialState)
+        await store.dispatch(updateLocationWithCurrency(address, 'EUR'))
+
+        expect(store.getActions(), 'to equal', [
+          {
+            type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
+            payload: {
+              address: {
+                countryCode: 'some-country-code'
+              }
+            }
+          },
+          {
+            type: 'LEGACY.USER.CURRENCY_CHANGED',
+            payload: 'EUR'
+          },
+          {
+            type: 'LEGACY.USER.UPDATED',
+            payload: {
+              shippingAddress: {
+                countryCode: 'some-country-code'
+              }
+            }
+          },
+          {type: 'create-price-request-action'}
+        ])
+      })
     })
   })
 })
