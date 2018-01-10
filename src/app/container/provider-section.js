@@ -2,7 +2,10 @@ import React from 'react'
 import {compose} from 'recompose'
 
 import {buildClassArray} from '../lib/build-class-name'
-import {selectOffersForSelectedMaterialConfig, selectMaterialByMaterialConfigId} from '../lib/selector'
+import {
+  selectOffersForSelectedMaterialConfig,
+  selectMaterialByMaterialConfigId
+} from '../lib/selector'
 import {formatPrice, formatShipping, formatDeliveryTime} from '../lib/formatter'
 
 import Section from '../component/section'
