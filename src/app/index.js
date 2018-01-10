@@ -14,8 +14,7 @@ import Router from './router'
 
 import '../sass/main.scss'
 
-import {init} from './action-next/init'
-import {init as initLegacy} from './action/init' // TODO: remove that
+import {init as initLegacy} from './action/init'
 
 // Warn if the browser is one version behind
 browserUpdate({notify: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
@@ -32,11 +31,6 @@ function renderApp(CurrentRouter) {
     </AppContainer>,
     global.document.getElementById('root')
   )
-}
-
-// TODO: temporary for better debugging
-if (process.env.NODE_ENV !== 'production') {
-  store.dispatch(init())
 }
 
 store.dispatch(initLegacy()).then(() => {
