@@ -5,10 +5,10 @@ import TYPE, {type Action} from '../action-type'
 
 const initialState = {
   userId: null,
+  currency: 'USD',
   user: {
     emailAddress: '',
     phoneNumber: '',
-    currency: 'USD',
     isCompany: false,
     companyName: undefined,
     vatId: '',
@@ -63,6 +63,13 @@ function handleUserUpdated(state, {payload}) {
   }
 }
 
+function handleCurrencyChanged(state, {payload: currency}) {
+  return {
+    ...state,
+    currency
+  }
+}
+
 function handleUtmParamsSet(state, {payload}) {
   return {
     ...state,
@@ -78,6 +85,8 @@ const reducer = (state: UserState = initialState, action: Action): UserState => 
       return handleUserCreated(state, action)
     case TYPE.USER.UPDATED:
       return handleUserUpdated(state, action)
+    case TYPE.USER.CURRENCY_CHANGED:
+      return handleCurrencyChanged(state, action)
     case TYPE.USER.UTM_PARAMS_SET:
       return handleUtmParamsSet(state, action)
     default:

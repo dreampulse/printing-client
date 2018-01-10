@@ -58,6 +58,7 @@ $color-tooltip-bg: rgba(0, 0, 0, 0.89);
 $color-tooltip-text: $color-white;
 $color-invert-bg: $color-blue-light;
 $color-invert-text: $color-white;
+$color-invert-disabled: #82BCEE;
 
 
 // Layout & Grid
@@ -123,4 +124,4 @@ $box-shadow-error: 0px 0px 4px 0 rgba($color-error, 0.5);
 $transition-duration: .4s;
 $transition-duration-fast: .15s;
 
-$global-stacking: app, select-menu, tooltip, overlay;
+$global-stacking: app, tooltip, overlay, select-menu;

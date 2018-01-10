@@ -20,7 +20,8 @@ import SelectField from '../../src/app/component/select-field'
 import SelectMenu from '../../src/app/component/select-menu'
 
 import errorImage from '../../src/asset/image/error.svg'
-import {googleMapsApiKey, selectMenuValues} from '../util/data'
+
+import {googleMapsApiKey, currencies, selectMenuValues} from '../util/data'
 import HandleValue from '../util/handle-value'
 import LabeledField from '../../src/app/component/labeled-field'
 import WarningIcon from '../../src/app/component/warning-icon'
@@ -120,19 +121,24 @@ storiesOf('Overlay', module)
     const pricesChangedHeadline = <Headline label="Shipping address" modifiers={['l']} />
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
-        <RichText modifiers={['l']}>
-          <p>
-            <em>We need this to calculate the right price.</em>
-          </p>
-        </RichText>
-        <HandleValue>
-          <LocationField
-            classNames={['u-margin-bottom']}
-            placeholder="Set your location"
-            googleMapsApiKey={googleMapsApiKey}
-            onChange={action('change')}
-          />
-        </HandleValue>
+        <Paragraph>We need your address and currency to calculate the shipping prices</Paragraph>
+        <Grid>
+          <Column sm={9}>
+            <HandleValue>
+              <LocationField
+                placeholder="Set your location"
+                googleMapsApiKey={googleMapsApiKey}
+                onChange={action('change')}
+                classNames={['u-margin-bottom']}
+              />
+            </HandleValue>
+          </Column>
+          <Column sm={3}>
+            <HandleValue initialValue={{value: 'USD', label: 'USD'}}>
+              <SelectField menu={<SelectMenu values={currencies} />} />
+            </HandleValue>
+          </Column>
+        </Grid>
       </Overlay>
     )
   })

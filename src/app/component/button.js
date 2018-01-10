@@ -35,7 +35,7 @@ const Button = ({
 Button.propTypes = {
   ...propTypes.component,
   label: PropTypes.string,
-  source: PropTypes.shape({
+  icon: PropTypes.shape({
     id: PropTypes.string
   }),
   type: PropTypes.string,
