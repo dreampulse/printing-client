@@ -5,6 +5,14 @@ import ConfigurationHeader from '../component/configuration-header'
 import LabeledField from '../component/labeled-field'
 import LocationField from '../component/location-field'
 import NumberField from '../component/number-field'
+import ProviderTeaser from '../component/provider-teaser'
+import ProviderImage from '../component/provider-image'
+import Section from '../component/section'
+import SplitLayout from '../component/split-layout'
+import Headline from '../component/headline'
+import Baloon from '../component/baloon'
+import FeatureParagraph from '../component/feature-paragraph'
+import Image from '../component/image'
 import SelectField from '../component/select-field'
 import SelectMenu from '../component/select-menu'
 
@@ -19,6 +27,11 @@ import {updateLocation, updateCurrency} from '../action/user'
 import {selectCommonQuantity} from '../lib/selector'
 import {formatAddress} from '../lib/formatter'
 import {convertPlaceToLocation} from '../lib/geolocation'
+
+// TODO: Use final svg images here!
+import feature1Image from '../../asset/image/feature1.png'
+import feature2Image from '../../asset/image/feature2.png'
+// import feature3Image from '../../../asset/image/feature3.png'
 
 import {connectLegacy} from './util/connect-legacy'
 import config from '../../../config'
@@ -65,6 +78,42 @@ const ModelPage = ({
       <UploadSection />
       <MaterialSection />
       <ProviderSection />
+      <Section>
+        <Headline
+          label="Save up to 70% on professional 3D printing"
+          modifiers={['l', 'light']}
+          classNames={['u-margin-bottom-xxl']}
+        />
+        <SplitLayout
+          leftContent={[
+            <FeatureParagraph key="feature1" image={<Image src={feature1Image} />}>
+              Compare offers from the top providers and order instantly
+            </FeatureParagraph>,
+            <FeatureParagraph key="feature2" image={<Image src={feature2Image} />}>
+              The widest material choice and the fastest delivery
+            </FeatureParagraph>
+            /*
+            <FeatureParagraph key="feature3" image={feature3Image}>
+              Split your order accross multiple providers, effortlessly
+            </FeatureParagraph>
+            */
+          ]}
+          rightContent={[
+            <Baloon key="baloon1">
+              Impossible! My favorite printing service is always the cheapest.
+            </Baloon>,
+            <Baloon key="baloon2" modifiers={['right']}>
+              Not Always! Prices vary hugely based on model and material. Here you will always find
+              the best deal.
+            </Baloon>
+          ]}
+        />
+      </Section>
+      <ProviderTeaser>
+        <ProviderImage name="shapeways" />
+        <ProviderImage name="imaterialise" />
+        <ProviderImage name="sculpteo" />
+      </ProviderTeaser>
     </AppLayout>
   )
 }
