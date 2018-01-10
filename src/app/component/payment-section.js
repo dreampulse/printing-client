@@ -48,11 +48,11 @@ const PaymentSection = ({
     <ul className="payment-section__links">
       <li className="payment-section__link">
         <Headline modifiers={['xs']} label="Need different payment option?" />
-        <Link target="_blank" label="Contact us." href="mailto:contact@all3dp.com" />
+        <Link label="Contact us." href="mailto:contact@all3dp.com" />
       </li>
       <li className="payment-section__link">
         <Headline modifiers={['xs']} label="Any questions?" />
-        <Link target="_blank" label="Get in touch." href="mailto:contact@all3dp.com" />
+        <Link label="Get in touch." href="mailto:contact@all3dp.com" />
       </li>
       <li className="payment-section__link">
         <Link
