@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import Dot from 'Component/dot'
+import Dot from '../../src/app/component/dot'
 
 storiesOf('Dot', module)
   .add('default', () => <Dot index={1} onClick={action('click')} />)

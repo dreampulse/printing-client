@@ -23,6 +23,7 @@ import MaterialCard from '../component/material-card'
 import Price from '../component/price'
 import RadioButton from '../component/radio-button'
 import RadioButtonGroup from '../component/radio-button-group'
+import MaterialSlider from '../component/material-slider'
 
 import {selectMaterial} from '../action/material'
 import {openMaterialModal} from '../action/modal'

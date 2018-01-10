@@ -4,9 +4,9 @@ import clamp from 'lodash/clamp'
 import range from 'lodash/range'
 import find from 'lodash/find'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName from 'Lib/build-class-name'
-import {tweenFromTo, easeInOutQuad} from 'Service/animate'
+import propTypes from '../lib/prop-types'
+import buildClassName from '../lib/build-class-name'
+import {tweenFromTo, easeInOutQuad} from '../service/animate'
 
 import SliderButton from './slider-button'
 import Dot from './dot'
