@@ -1,14 +1,12 @@
 // @flow
 
 import type {Dispatch} from 'redux'
-import cloneDeep from 'lodash/cloneDeep'
 import {createAction} from 'redux-actions'
 
 import * as printingEngine from '../service/printing-engine'
-import {generateMaterialIds} from '../lib/material'
 
-import type {Materials} from '../type'
 import TYPE from '../action-type'
+import type {MaterialGroup} from '../type-next'
 import {createPriceRequest} from './price'
 
 // Sync actions
@@ -42,7 +40,10 @@ export const selectMaterialConfig = createAction(
   (materialConfigId: string) => materialConfigId
 )
 
-const materialReceived = createAction(TYPE.MATERIAL.RECEIVED, (materials: Materials) => materials)
+const materialReceived = createAction(
+  TYPE.MATERIAL.RECEIVED,
+  (materialGroups: Array<MaterialGroup>) => materialGroups
+)
 
 // Async actions
 
@@ -53,8 +54,6 @@ export const selectMaterialGroup = (groupId: string) => async (dispatch: Dispatc
 }
 
 export const getMaterials = () => async (dispatch: Dispatch<*>) => {
-  const materials = cloneDeep(await printingEngine.listMaterials())
-  generateMaterialIds(materials.materialStructure)
-
-  return dispatch(materialReceived(materials))
+  const materialResponse = await printingEngine.listMaterials()
+  return dispatch(materialReceived(materialResponse.materialStructure))
 }

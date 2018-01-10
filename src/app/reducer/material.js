@@ -4,7 +4,7 @@ import type {MaterialState} from '../type'
 import TYPE, {type Action} from '../action-type'
 
 const initialState = {
-  materials: undefined,
+  materialGroups: undefined,
   selectedMaterialGroup: undefined,
   selectedMaterial: undefined,
   selectedMaterialConfig: undefined,
@@ -21,7 +21,7 @@ function handleRestoreConfiguration(state, {payload: {materialConfigId}}) {
 function handleReceivedMaterials(state, {payload}) {
   return {
     ...state,
-    materials: payload
+    materialGroups: payload
   }
 }
 

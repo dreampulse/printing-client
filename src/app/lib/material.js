@@ -1,19 +1,3 @@
-export function generateMaterialIds(materialGroups) {
-  materialGroups.forEach((materialGroup, groupIndex) => {
-    materialGroup.id = `group-${groupIndex}`
-
-    materialGroup.materials.forEach((material, materialIndex) => {
-      material.id = `material-${groupIndex}-${materialIndex}`
-
-      material.finishGroups.forEach((finishGroup, finishGroupIndex) => {
-        finishGroup.id = `finishgroup-${groupIndex}-${materialIndex}-${finishGroupIndex}`
-      })
-    })
-  })
-
-  return materialGroups
-}
-
 export function hasMaterialMultipleConfigs(material) {
   return !material.finishGroups.every(finishGroup => finishGroup.materialConfigs.length <= 1)
 }
@@ -47,10 +31,10 @@ export function getBestOfferForMaterial(offers, material) {
     }, null)
 }
 
-export function getMaterialByName(materials, name) {
+export function getMaterialByName(materialGroups, name) {
   let foundMaterial = null
 
-  materials.materialStructure.forEach(materialGroup => {
+  materialGroups.forEach(materialGroup => {
     materialGroup.materials.forEach(material => {
       if (material.name === name) {
         foundMaterial = material

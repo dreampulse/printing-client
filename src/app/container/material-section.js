@@ -7,8 +7,7 @@ import {
   selectCurrentMaterial,
   selectCurrentMaterialGroup,
   selectPrintingServiceRequests,
-  selectAreAllUploadsFinished,
-  selectMaterialGroup
+  selectAreAllUploadsFinished
 } from '../lib/selector'
 import {getBestOfferForMaterial} from '../lib/material'
 import {formatPrice} from '../lib/formatter'
@@ -25,7 +24,7 @@ import RadioButton from '../component/radio-button'
 import RadioButtonGroup from '../component/radio-button-group'
 import MaterialSlider from '../component/material-slider'
 
-import {selectMaterial} from '../action/material'
+import {selectMaterial, selectMaterialGroup} from '../action/material'
 import {openMaterialModal} from '../action/modal'
 
 import {connectLegacy} from './util/connect-legacy'
@@ -33,7 +32,7 @@ import {connectLegacy} from './util/connect-legacy'
 const MaterialSection = ({
   areAllUploadsFinished,
   offers,
-  materials,
+  materialGroups,
   selectedMaterialGroup,
   selectedMaterial,
   printingServiceRequests,
@@ -48,6 +47,7 @@ const MaterialSection = ({
 
   function renderMaterialCard(material) {
     const bestOffer = getBestOfferForMaterial(offers, material)
+    console.log(bestOffer, offers, material)
     const price = (
       <Price
         value={bestOffer ? formatPrice(bestOffer.totalPrice, bestOffer.currency) : undefined}
@@ -91,7 +91,7 @@ const MaterialSection = ({
               value={selectedMaterialGroup.id}
               onChange={value => onSelectMaterialGroup(value)}
             >
-              {materials.materialStructure.map(group => (
+              {materialGroups.map(group => (
                 <RadioButton key={group.id} value={group.id} label={group.name} />
               ))}
             </RadioButtonGroup>
@@ -117,7 +117,7 @@ const MaterialSection = ({
 const mapStateToProps = state => ({
   areAllUploadsFinished: selectAreAllUploadsFinished(state),
   offers: state.price.offers || [],
-  materials: state.material.materials,
+  materialGroups: state.material.materialGroups,
   selectedMaterialGroup: selectCurrentMaterialGroup(state),
   selectedMaterial: selectCurrentMaterial(state),
   printingServiceRequests: selectPrintingServiceRequests(state)

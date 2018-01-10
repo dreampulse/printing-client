@@ -8,7 +8,7 @@ import type {
   Price,
   ModelBackend,
   Configuration,
-  Materials,
+  MaterialGroup,
   ModalStateContentType
 } from './type'
 
@@ -218,7 +218,7 @@ export type MaterialConfigSelectedAction = {
 
 export type MaterialReceivedAction = {
   type: 'LEGACY.MATERIAL.RECEIVED',
-  payload: Materials
+  payload: Array<MaterialGroup>
 }
 
 //

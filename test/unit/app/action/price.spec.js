@@ -15,38 +15,36 @@ import TYPE, {ERROR_TYPE} from '../../../../src/app/action-type'
 
 describe('Price actions', () => {
   const material = {
-    materials: {
-      materialStructure: [
-        {
-          materials: [
-            {
-              id: 'material-1',
-              finishGroups: [
-                {
-                  materialConfigs: [
-                    {
-                      id: 'material-config-1'
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              id: 'material-2',
-              finishGroups: [
-                {
-                  materialConfigs: [
-                    {
-                      id: 'material-config-2'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
+    materialGroups: [
+      {
+        materials: [
+          {
+            id: 'material-1',
+            finishGroups: [
+              {
+                materialConfigs: [
+                  {
+                    id: 'material-config-1'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            id: 'material-2',
+            finishGroups: [
+              {
+                materialConfigs: [
+                  {
+                    id: 'material-config-2'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
     selectedMaterial: 'material-1'
   }
   const model = {

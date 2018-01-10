@@ -1,59 +1,10 @@
-import cloneDeep from 'lodash/cloneDeep'
 import {
-  generateMaterialIds,
   hasMaterialMultipleConfigs,
   getBestOfferForMaterialConfig,
   getBestOfferForMaterial,
   getMaterialByName,
   getMaterialConfigIdsOfMaterialGroup
 } from '../../../../src/app/lib/material'
-import materialResponse from '../../../../test-data/mock/material-list-response.json'
-
-describe('generateMaterialIds()', () => {
-  let materials
-
-  beforeEach(() => {
-    materials = cloneDeep(materialResponse)
-  })
-
-  it('adds ids to material groups', () => {
-    generateMaterialIds(materials.materialStructure)
-    expect(materials.materialStructure[0].id, 'to be defined')
-  })
-
-  it('adds unique ids to material groups', () => {
-    generateMaterialIds(materials.materialStructure)
-    expect(materials.materialStructure[0].id, 'not to equal', materials.materialStructure[1].id)
-  })
-
-  it('adds ids to materials', () => {
-    generateMaterialIds(materials.materialStructure)
-    expect(materials.materialStructure[0].materials[0].id, 'to be defined')
-  })
-
-  it('adds unique ids to materials', () => {
-    generateMaterialIds(materials.materialStructure)
-    expect(
-      materials.materialStructure[0].materials[0].id,
-      'not to equal',
-      materials.materialStructure[0].materials[1].id
-    )
-  })
-
-  it('adds ids to finish groups', () => {
-    generateMaterialIds(materials.materialStructure)
-    expect(materials.materialStructure[0].materials[0].finishGroups[0].id, 'to be defined')
-  })
-
-  it('adds unique ids to finish groups', () => {
-    generateMaterialIds(materials.materialStructure)
-    expect(
-      materials.materialStructure[0].materials[0].finishGroups[0].id,
-      'not to equal',
-      materials.materialStructure[0].materials[0].finishGroups[1].id
-    )
-  })
-})
 
 describe('hasMaterialMultipleConfigs()', () => {
   it('returns true if at least one finish group has multiple configs', () => {
@@ -179,43 +130,41 @@ describe('getBestOfferForMaterial()', () => {
 })
 
 describe('getMaterialByName()', () => {
-  let materials
+  let materialGroups
 
   beforeEach(() => {
-    materials = {
-      materialStructure: [
-        {
-          name: 'Group 1',
-          materials: [
-            {
-              id: 'material-1',
-              name: 'Material 1'
-            }
-          ]
-        },
-        {
-          name: 'Group 2',
-          materials: [
-            {
-              id: 'material-2',
-              name: 'Material 2'
-            },
-            {
-              id: 'material-3',
-              name: 'Material 3'
-            }
-          ]
-        }
-      ]
-    }
+    materialGroups = [
+      {
+        name: 'Group 1',
+        materials: [
+          {
+            id: 'material-1',
+            name: 'Material 1'
+          }
+        ]
+      },
+      {
+        name: 'Group 2',
+        materials: [
+          {
+            id: 'material-2',
+            name: 'Material 2'
+          },
+          {
+            id: 'material-3',
+            name: 'Material 3'
+          }
+        ]
+      }
+    ]
   })
 
   it('returns null if material cannot be found', () => {
-    expect(getMaterialByName(materials, 'some-other-material'), 'to be', null)
+    expect(getMaterialByName(materialGroups, 'some-other-material'), 'to be', null)
   })
 
   it('returns expected material', () => {
-    expect(getMaterialByName(materials, 'Material 3'), 'to equal', {
+    expect(getMaterialByName(materialGroups, 'Material 3'), 'to equal', {
       id: 'material-3',
       name: 'Material 3'
     })

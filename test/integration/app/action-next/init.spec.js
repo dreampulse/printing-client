@@ -6,7 +6,7 @@ import {listMaterials} from '../../../../src/app/service/printing-engine'
 import {getLocationByIp} from '../../../../src/app/lib/geolocation'
 import * as selector from '../../../../src/app/selector'
 import reducer from '../../../../src/app/reducer'
-import materialListResponse from '../../../../test-data/mock/material-list-response.json'
+import materialResponse from '../../../../test-data/mock/material-response.json'
 import geolocationSuccessResponse from '../../../../test-data/mock/geolocation-success-response.json'
 
 describe('init action', () => {
@@ -48,12 +48,12 @@ describe('init action', () => {
       const cmd = findCmd(state, listMaterials, [])
       const action = cmd.simulate({
         success: true,
-        result: materialListResponse
+        result: materialResponse
       })
       expect(
         action,
         'to equal',
-        coreAction.updateMaterialGroups(materialListResponse.materialStructure)
+        coreAction.updateMaterialGroups(materialResponse.materialStructure)
       )
     })
 

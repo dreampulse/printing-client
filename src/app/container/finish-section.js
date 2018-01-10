@@ -15,8 +15,6 @@ import SelectField from '../component/select-field'
 import MaterialSlider from '../component/material-slider'
 import MaterialCard from '../component/material-card'
 import Price from '../component/price'
-import Paragraph from '../component/paragraph'
-import Info from '../component/info'
 
 import {selectMaterialConfig, selectMaterialConfigForFinishGroup} from '../action/material'
 import {connectLegacy} from './util/connect-legacy'
@@ -89,19 +87,11 @@ const FinishSection = ({
       />
     )
 
-    const info = (
-      <Info modifiers={['minor']}>
-        <Headline modifiers={['s']} label={finishGroup.name} />
-        <Paragraph>{finishGroup.summary}</Paragraph>
-      </Info>
-    )
-
     return (
       <MaterialCard
         key={finishGroup.id}
         title={finishGroup.name}
         price={materialPrice}
-        info={info}
         image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
         colorSelect={colorSelect}
         selected={selectedColorValue && selectedColorValue.value === selectedMaterialConfig}

@@ -62,43 +62,32 @@ describe('Selector lib', () => {
   })
 
   describe('selectMaterialGroup()', () => {
-    let materials
+    let materialGroups
 
     beforeEach(() => {
-      materials = {
-        materialStructure: [
-          {
-            id: 'group-1'
-          },
-          {
-            id: 'group-2'
-          }
-        ]
-      }
+      materialGroups = [
+        {
+          id: 'group-1'
+        },
+        {
+          id: 'group-2'
+        }
+      ]
     })
 
     it('returns expected material group', () => {
       const state = {
-        material: {materials}
+        material: {materialGroups}
       }
 
       expect(selectMaterialGroup(state, 'group-2'), 'to equal', {id: 'group-2'})
     })
 
-    it('returns null if there are no materials in state', () => {
+    it('returns null if there are no materialGroups in state', () => {
       const state = {
         material: {
-          materials: undefined
+          materialGroups: undefined
         }
-      }
-
-      expect(selectMaterialGroup(state, 'group-2'), 'to be', null)
-    })
-
-    it('returns null if materialStructure is undefined', () => {
-      materials.materialStructure = undefined
-      const state = {
-        material: {materials}
       }
 
       expect(selectMaterialGroup(state, 'group-2'), 'to be', null)
@@ -106,59 +95,47 @@ describe('Selector lib', () => {
   })
 
   describe('selectMaterial()', () => {
-    let materials
+    let materialGroups
 
     beforeEach(() => {
-      materials = {
-        materialStructure: [
-          {
-            materials: []
-          },
-          {
-            materials: [
-              {
-                id: 'material-1'
-              },
-              {
-                id: 'material-2'
-              }
-            ]
-          }
-        ]
-      }
+      materialGroups = [
+        {
+          materials: []
+        },
+        {
+          materials: [
+            {
+              id: 'material-1'
+            },
+            {
+              id: 'material-2'
+            }
+          ]
+        }
+      ]
     })
 
     it('returns expected material', () => {
       const state = {
-        material: {materials}
+        material: {materialGroups}
       }
 
       expect(selectMaterial(state, 'material-2'), 'to equal', {id: 'material-2'})
     })
 
-    it('returns null if there are no materials in state', () => {
+    it('returns null if there are no materialGroups in state', () => {
       const state = {
         material: {
-          materials: undefined
+          materialGroups: undefined
         }
       }
 
       expect(selectMaterial(state, 'material-2'), 'to be', null)
     })
 
-    it('returns null if materialStructure is undefined', () => {
-      materials.materialStructure = undefined
-      const state = {
-        material: {materials}
-      }
-
-      expect(selectMaterial(state, 'material-2'), 'to be', null)
-    })
-
     it('returns null if the given material id is undefined', () => {
-      materials.materialStructure = undefined
       const state = {
-        material: {materials}
+        material: {materialGroups}
       }
 
       expect(selectMaterial(state), 'to be', null)
@@ -166,33 +143,31 @@ describe('Selector lib', () => {
   })
 
   describe('selectMaterialByName()', () => {
-    let materials
+    let materialGroups
 
     beforeEach(() => {
-      materials = {
-        materialStructure: [
-          {
-            materials: []
-          },
-          {
-            materials: [
-              {
-                id: 'material-1',
-                name: 'Material 1'
-              },
-              {
-                id: 'material-2',
-                name: 'Material 2'
-              }
-            ]
-          }
-        ]
-      }
+      materialGroups = [
+        {
+          materials: []
+        },
+        {
+          materials: [
+            {
+              id: 'material-1',
+              name: 'Material 1'
+            },
+            {
+              id: 'material-2',
+              name: 'Material 2'
+            }
+          ]
+        }
+      ]
     })
 
     it('returns expected material', () => {
       const state = {
-        material: {materials}
+        material: {materialGroups}
       }
 
       expect(selectMaterialByName(state, 'Material 2'), 'to equal', {
@@ -201,20 +176,11 @@ describe('Selector lib', () => {
       })
     })
 
-    it('returns null if there are no materials in state', () => {
+    it('returns null if there are no materialGroups in state', () => {
       const state = {
         material: {
-          materials: undefined
+          materialGroups: undefined
         }
-      }
-
-      expect(selectMaterialByName(state, 'Material 2'), 'to be', null)
-    })
-
-    it('returns null if materialStructure is undefined', () => {
-      materials.materialStructure = undefined
-      const state = {
-        material: {materials}
       }
 
       expect(selectMaterialByName(state, 'Material 2'), 'to be', null)
@@ -222,44 +188,42 @@ describe('Selector lib', () => {
   })
 
   describe('selectFinishGroup()', () => {
-    let materials
+    let materialGroups
 
     beforeEach(() => {
-      materials = {
-        materialStructure: [
-          {
-            materials: []
-          },
-          {
-            materials: [
-              {
-                id: 'material-1',
-                finishGroups: [
-                  {
-                    id: 'finish-group-1'
-                  }
-                ]
-              },
-              {
-                id: 'material-2',
-                finishGroups: [
-                  {
-                    id: 'finish-group-2'
-                  },
-                  {
-                    id: 'finish-group-3'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
+      materialGroups = [
+        {
+          materials: []
+        },
+        {
+          materials: [
+            {
+              id: 'material-1',
+              finishGroups: [
+                {
+                  id: 'finish-group-1'
+                }
+              ]
+            },
+            {
+              id: 'material-2',
+              finishGroups: [
+                {
+                  id: 'finish-group-2'
+                },
+                {
+                  id: 'finish-group-3'
+                }
+              ]
+            }
+          ]
+        }
+      ]
     })
 
     it('returns expected finish group', () => {
       const state = {
-        material: {materials}
+        material: {materialGroups}
       }
 
       expect(selectFinishGroup(state, 'material-2', 'finish-group-2'), 'to equal', {
@@ -267,9 +231,9 @@ describe('Selector lib', () => {
       })
     })
 
-    it('returns null if material does not exist', () => {
+    it('returns null if materialGroups does not exist', () => {
       const state = {
-        material: {materials}
+        material: {materialGroups}
       }
 
       expect(selectFinishGroup(state, 'some-other-material', 'finish-group-2'), 'to be', null)
@@ -277,7 +241,7 @@ describe('Selector lib', () => {
 
     it('returns null if finish group does not exist', () => {
       const state = {
-        material: {materials}
+        material: {materialGroups}
       }
 
       expect(selectFinishGroup(state, 'material-2', 'some-other-finish-group'), 'to be', null)
@@ -285,22 +249,20 @@ describe('Selector lib', () => {
   })
 
   describe('selectCurrentMaterialGroup()', () => {
-    let materials
+    let materialGroups
     let sandbox
 
     beforeEach(() => {
       sandbox = sinon.sandbox.create()
 
-      materials = {
-        materialStructure: [
-          {
-            id: 'group-1'
-          },
-          {
-            id: 'group-2'
-          }
-        ]
-      }
+      materialGroups = [
+        {
+          id: 'group-1'
+        },
+        {
+          id: 'group-2'
+        }
+      ]
     })
 
     afterEach(() => {
@@ -310,7 +272,7 @@ describe('Selector lib', () => {
     it('returns expected material group', () => {
       const state = {
         material: {
-          materials,
+          materialGroups,
           selectedMaterialGroup: 'group-2'
         }
       }
@@ -320,22 +282,10 @@ describe('Selector lib', () => {
       })
     })
 
-    it('returns null if there are no materials in state', () => {
+    it('returns null if there are no materialGroups in state', () => {
       const state = {
         material: {
-          materials: undefined,
-          selectedMaterialGroup: 'group-2'
-        }
-      }
-
-      expect(selectCurrentMaterialGroup(state), 'to be', null)
-    })
-
-    it('returns null if materialStructure is undefined', () => {
-      materials.materialStructure = undefined
-      const state = {
-        material: {
-          materials,
+          materialGroups: undefined,
           selectedMaterialGroup: 'group-2'
         }
       }
@@ -346,7 +296,7 @@ describe('Selector lib', () => {
     it('returns first material if selected material is undefined', () => {
       const state = {
         material: {
-          materials,
+          materialGroups,
           selectedMaterialGroup: undefined
         }
       }
@@ -356,31 +306,29 @@ describe('Selector lib', () => {
   })
 
   describe('selectCurrentMaterial()', () => {
-    let materials
+    let materialGroups
     let sandbox
 
     beforeEach(() => {
       sandbox = sinon.sandbox.create()
 
-      materials = {
-        materialStructure: [
-          {
-            materials: []
-          },
-          {
-            materials: [
-              {
-                id: 'material-1',
-                name: 'Material 1'
-              },
-              {
-                id: 'material-2',
-                name: 'Material 2'
-              }
-            ]
-          }
-        ]
-      }
+      materialGroups = [
+        {
+          materials: []
+        },
+        {
+          materials: [
+            {
+              id: 'material-1',
+              name: 'Material 1'
+            },
+            {
+              id: 'material-2',
+              name: 'Material 2'
+            }
+          ]
+        }
+      ]
     })
 
     afterEach(() => {
@@ -390,7 +338,7 @@ describe('Selector lib', () => {
     it('returns expected material', () => {
       const state = {
         material: {
-          materials,
+          materialGroups,
           selectedMaterial: 'material-2'
         }
       }
@@ -401,23 +349,11 @@ describe('Selector lib', () => {
       })
     })
 
-    it('returns null if there are no materials in state', () => {
+    it('returns null if there are no materialGroups in state', () => {
       const state = {
         material: {
-          materials: undefined,
+          materialGroups: undefined,
           selectedMaterial: 'material-2'
-        }
-      }
-
-      expect(selectCurrentMaterial(state), 'to be', null)
-    })
-
-    it('returns null if materialStructure is undefined', () => {
-      materials.materialStructure = undefined
-      const state = {
-        material: {
-          materials,
-          selectedMaterial: undefined
         }
       }
 
@@ -427,7 +363,7 @@ describe('Selector lib', () => {
     it('returns null if selected material is undefined', () => {
       const state = {
         material: {
-          materials,
+          materialGroups,
           selectedMaterial: undefined
         }
       }
@@ -531,13 +467,11 @@ describe('Selector lib', () => {
       }
       state = {
         material: {
-          materials: {
-            materialStructure: [
-              {
-                materials: [material]
-              }
-            ]
-          }
+          materialGroups: [
+            {
+              materials: [material]
+            }
+          ]
         }
       }
     })
@@ -556,8 +490,8 @@ describe('Selector lib', () => {
       expect(selectMaterialByMaterialConfigId(state, 'some-3rd-material-config-id'), 'to equal', {})
     })
 
-    it('returns null if materials are not defined', () => {
-      state.material.materials = undefined
+    it('returns null if materialGroups are not defined', () => {
+      state.material.materialGroups = undefined
       expect(selectMaterialByMaterialConfigId(state, 'some-material-config-id'), 'to be', null)
     })
   })
@@ -585,13 +519,11 @@ describe('Selector lib', () => {
           }
         },
         material: {
-          materials: {
-            materialStructure: [
-              {
-                materials: [material]
-              }
-            ]
-          }
+          materialGroups: [
+            {
+              materials: [material]
+            }
+          ]
         }
       }
     })
