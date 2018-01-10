@@ -15,10 +15,7 @@ const PaymentSection = ({
   shippingPrice,
   shippingName,
   vat,
-  total,
-  contactLink,
-  getInTouchLink,
-  termsLink
+  total
 }) => (
   <section className={buildClassName('payment-section', modifiers, classNames)}>
     <ul className="payment-section__price-components">
@@ -49,23 +46,21 @@ const PaymentSection = ({
       ))}
     </ul>
     <ul className="payment-section__links">
-      {contactLink && (
-        <li className="payment-section__link">
-          <Headline modifiers={['xs']} label="Need different payment option?" />
-          <Link label="Contact us." href={contactLink} />
-        </li>
-      )}
-      {getInTouchLink && (
-        <li className="payment-section__link">
-          <Headline modifiers={['xs']} label="Any questions?" />
-          <Link label="Get in touch." href={getInTouchLink} />
-        </li>
-      )}
-      {termsLink && (
-        <li className="payment-section__link">
-          <Link label="Terms of service" href={termsLink} />
-        </li>
-      )}
+      <li className="payment-section__link">
+        <Headline modifiers={['xs']} label="Need different payment option?" />
+        <Link target="_blank" label="Contact us." href="mailto:contact@all3dp.com" />
+      </li>
+      <li className="payment-section__link">
+        <Headline modifiers={['xs']} label="Any questions?" />
+        <Link target="_blank" label="Get in touch." href="mailto:contact@all3dp.com" />
+      </li>
+      <li className="payment-section__link">
+        <Link
+          target="_blank"
+          label="Terms of service"
+          href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
+        />
+      </li>
     </ul>
   </section>
 )
