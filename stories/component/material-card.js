@@ -42,7 +42,9 @@ storiesOf('Material Card', module)
   ))
   .add('with colorSelect', () => (
     <MaterialCard
+      modifiers={['tall']}
       title="Polyamide"
+      description="Best all-round material"
       price={price}
       image="http://placehold.it/260x170/cccccc"
       onMoreClick={action('onMoreClick')}

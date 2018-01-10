@@ -11,8 +11,7 @@ export const uploadModel = (file, params, onProgress) =>
 
 export const listMaterials = () => requestJson(`${baseUrl}/material`)
 
-export const createUser = ({user}) =>
-  requestJson(`${baseUrl}/user`, {method: 'POST', body: user})
+export const createUser = ({user}) => requestJson(`${baseUrl}/user`, {method: 'POST', body: user})
 
 export const updateUser = ({userId, user}) =>
   requestJson(`${baseUrl}/user/${userId}`, {method: 'PUT', body: user})

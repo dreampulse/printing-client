@@ -16,6 +16,7 @@ import MaterialSlider from '../component/material-slider'
 import MaterialCard from '../component/material-card'
 import Price from '../component/price'
 
+import {openFinishGroupModal} from '../action/modal'
 import {selectMaterialConfig, selectMaterialConfigForFinishGroup} from '../action/material'
 import {connectLegacy} from './util/connect-legacy'
 
@@ -26,7 +27,8 @@ const FinishSection = ({
   selectedMaterialConfigs,
   selectedMaterialConfig,
   onSelectMaterialConfig,
-  onSelectMaterialConfigForFinishGroup
+  onSelectMaterialConfigForFinishGroup,
+  onOpenFinishGroupModal
 }) => {
   const disabled = !selectedMaterial || !offers
   const headlineModifiers = buildClassArray({
@@ -89,8 +91,10 @@ const FinishSection = ({
 
     return (
       <MaterialCard
+        modifiers={['tall']}
         key={finishGroup.id}
         title={finishGroup.name}
+        description={finishGroup.descriptionShort}
         price={materialPrice}
         image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
         colorSelect={colorSelect}
@@ -108,6 +112,12 @@ const FinishSection = ({
             scrollTo('#section-provider')
           })
         }
+        onMoreClick={() => {
+          onOpenFinishGroupModal({
+            materialId: finishGroup.materialId,
+            finishGroupId: finishGroup.id
+          })
+        }}
       />
     )
   }
@@ -134,7 +144,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onSelectMaterialConfig: selectMaterialConfig,
-  onSelectMaterialConfigForFinishGroup: selectMaterialConfigForFinishGroup
+  onSelectMaterialConfigForFinishGroup: selectMaterialConfigForFinishGroup,
+  onOpenFinishGroupModal: openFinishGroupModal
 }
 
 export default compose(connectLegacy(mapStateToProps, mapDispatchToProps))(FinishSection)

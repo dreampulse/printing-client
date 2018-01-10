@@ -5,7 +5,8 @@ import {
   close,
   openAddressModal,
   openFetchingPriceModal,
-  openMaterialModal
+  openMaterialModal,
+  openFinishGroupModal
 } from '../../../../src/app/action/modal'
 
 import {MODAL_TYPE} from '../../../../src/app/action-type'
@@ -86,6 +87,26 @@ describe('Modal Integration Test', () => {
         contentType: MODAL_TYPE.MATERIAL,
         contentProps: {
           materialId: 'some-material'
+        }
+      })
+    })
+  })
+
+  describe('openFinishGroupModal()', () => {
+    it('opens finish group modal', () => {
+      store.dispatch(
+        openFinishGroupModal({
+          materialId: 'some-material',
+          finishGroupId: 'some-finish-group'
+        })
+      )
+      expect(store.getState().modal, 'to equal', {
+        isOpen: true,
+        isCloseable: true,
+        contentType: MODAL_TYPE.FINISH_GROUP,
+        contentProps: {
+          materialId: 'some-material',
+          finishGroupId: 'some-finish-group'
         }
       })
     })

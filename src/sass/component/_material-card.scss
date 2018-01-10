@@ -62,7 +62,6 @@
     position: relative;
     border-top: 1px solid $color-border-minor;
     padding-top: $space-base;
-    line-height: 0;
   }
 
   &__color {
@@ -73,9 +72,6 @@
   &__unavailable {
     font-size: $font-size-l;
     font-weight: $font-weight-bold;
-    position: absolute;
-    bottom: 0;
-    left: 0;
   }
 
   &--unavailable {
@@ -85,6 +81,12 @@
 
     .material-card__image {
       filter: grayscale(100%);
+    }
+  }
+
+  &--tall {
+    .material-card__content {
+      height: 340px;
     }
   }
 }
