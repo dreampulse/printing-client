@@ -1,14 +1,14 @@
 .upload-area {
-  $border-image: url('../asset/image/upload-area-border.svg');
+  $border-image: url('../asset/image/upload-area-border.gif');
 
   padding: $space-xxl $space-l;
   margin-bottom: $space-base;
   text-align: center;
   font-size: $font-size-l;
+  border: 1px dashed $color-primary;
   border-image: $border-image;
-  border-image-slice: 33% 33%;
+  border-image-slice: 1;
   border-image-repeat: round;
-  border-width: 10px;
 
   & > .icon {
     font-size: 55px;
@@ -38,10 +38,6 @@
 
   &--drag {
     background: $color-blue-very-light;
-    border-style: solid;
     border-image: none;
-    border-width: 1px;
-    // Compensate for missing pixels when setting border image to none
-    padding: $space-xxl + 9px $space-l + 9px;
   }
 }

@@ -17,6 +17,8 @@ export default {
   currencies: [
     {value: 'USD', label: 'USD', symbol: '$'},
     {value: 'EUR', label: 'EUR', symbol: '€'},
-    {value: 'GBP', label: 'GBP', symbol: '£'}
+    {value: 'GBP', label: 'GBP', symbol: '£'},
+    {value: 'CAD', label: 'CAD', symbol: 'CDN$'},
+    {value: 'AUD', label: 'AUD', symbol: 'AU$'}
   ]
 }
