@@ -40,18 +40,16 @@ const ProviderSection = ({
   })
 
   const getOfferProcess = offer => {
-    const {material: {properties: {printingMethodShort = ''}}} = selectMaterialByMaterialConfigId(
-      state,
-      offer.materialConfigId
-    )
+    const {
+      finishGroup: {properties: {printingMethodShort = ''}}
+    } = selectMaterialByMaterialConfigId(state, offer.materialConfigId)
     return printingMethodShort
   }
 
   const getProviderInfo = offer => {
-    const {material: {properties: {printingServiceName = []}}} = selectMaterialByMaterialConfigId(
-      state,
-      offer.materialConfigId
-    )
+    const {
+      finishGroup: {properties: {printingServiceName = []}}
+    } = selectMaterialByMaterialConfigId(state, offer.materialConfigId)
     return (
       <Info modifiers={['minor']}>
         <Headline modifiers={['s']} label={`${offer.printingService} calls this material:`} />
