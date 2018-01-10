@@ -47,7 +47,6 @@ const MaterialSection = ({
 
   function renderMaterialCard(material) {
     const bestOffer = getBestOfferForMaterial(offers, material)
-    console.log(bestOffer, offers, material)
     const price = (
       <Price
         value={bestOffer ? formatPrice(bestOffer.totalPrice, bestOffer.currency) : undefined}
