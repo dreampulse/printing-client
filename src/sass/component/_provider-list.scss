@@ -13,18 +13,17 @@
 
   &__provider,
   &__price,
+  &__delivery,
   &__shipping,
+  &__process,
   &__checkout {
     width: 25%;
     padding: $space-base $space-xl;
     text-align: left;
+  }
 
-    & > .info {
-      position: relative;
-      top: -0.1em;
-      vertical-align: middle;
-      margin-left: 0.5em;
-    }
+  &__provider {
+    width: 260px;
   }
 
   &__checkout {

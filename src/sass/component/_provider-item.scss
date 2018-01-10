@@ -4,10 +4,28 @@
   &__provider,
   &__price,
   &__shipping,
-  &__checkout {
+  &__checkout,
+  &__delivery,
+  &__process {
     padding: $space-l $space-xl;
     vertical-align: middle;
     font-size: $font-size-l;
     text-align: left;
+  }
+
+  &__provider {
+    white-space: nowrap;
+
+    & > .provider-image {
+      display: inline-block;
+      max-width: 165px; // This should fit next to info box
+    }
+
+    & > .info {
+      position: relative;
+      margin-top: .3em;
+      margin-left: 0.5em;
+      float: right;
+    }
   }
 }
