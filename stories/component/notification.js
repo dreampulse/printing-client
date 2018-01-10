@@ -5,7 +5,13 @@ import {action} from '@storybook/addon-actions'
 import Notification from '../../src/app/component/notification'
 import Button from '../../src/app/component/button'
 
-const button = <Button label="Notification Button" onClick={action('onClick')} />
+const button = (
+  <Button
+    label="Notification Button"
+    onClick={action('onClick')}
+    modifiers={['compact', 'minor']}
+  />
+)
 
 storiesOf('Notification', module)
   .add('default', () => <Notification message="A success notification" />)

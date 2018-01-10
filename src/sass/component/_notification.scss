@@ -1,17 +1,45 @@
 .notification {
-  border: 1px solid $color-border;
-  display: flex;
-  align-items: center;
-  padding: $space-base;
+  $border: 1px solid $color-border;
 
-  &__message {
-    color: $color-success;
-  }
+  border: $border;
+  display: flex;
+  flex-direction: row;
+  padding: 0 $space-l;
 
   &__icon {
+    display: flex;
+    align-items: center;
     font-size: 45px;
     line-height: 0;
     color: $color-success;
+    padding: $space-base 0;
+    margin-right: $space-l;
+  }
+
+  &__message {
+    display: flex;
+    align-items: center;
+    color: $color-success;
+    font-size: $font-size-l;
+    font-weight: $font-weight-bold;
+    margin-right: $space-xl;
+    padding: $space-base 0;
+  }
+
+  &__body {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    border-left: $border;
+    margin-right: $space-l;
+    padding: $space-base 0 $space-base $space-xl;
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    padding: $space-base 0;
+    margin-left: auto;
   }
 
   &--warning {
