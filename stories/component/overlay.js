@@ -20,9 +20,11 @@ import SelectField from '../../src/app/component/select-field'
 import SelectMenu from '../../src/app/component/select-menu'
 
 import errorImage from '../../src/asset/image/error.svg'
-import {googleMapsApiKey, currencies} from '../util/data'
 
+import {googleMapsApiKey, currencies, selectMenuValues} from '../util/data'
 import HandleValue from '../util/handle-value'
+import LabeledField from '../../src/app/component/labeled-field'
+import WarningIcon from '../../src/app/component/warning-icon'
 
 const headline = <Headline label="Warning Headline" modifiers={['l']} />
 const headlineOther = <Headline label="Overlay Headline" modifiers={['l']} />
@@ -195,6 +197,38 @@ storiesOf('Overlay', module)
             <Image src="http://placehold.it/360x270" alt="Polyamide" />
           </Column>
         </Grid>
+      </Overlay>
+    )
+  })
+  .add('Change country', () => {
+    const pricesChangedHeadline = <Headline label="Change country" modifiers={['l']} />
+    return (
+      <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
+        <Grid>
+          <Column sm={2}>
+            <WarningIcon />
+          </Column>
+          <Column sm={10}>
+            <Paragraph modifiers={['l', 'strong']} classNames={['u-no-margin']}>
+              WARNING: Changing country requires starting over with the order configuration
+            </Paragraph>
+            <Paragraph modifiers={['l', 'minor']}>
+              Material choice and shipping provider are country dependent
+            </Paragraph>
+          </Column>
+        </Grid>
+        <LabeledField
+          label="Select country:"
+          modifiers={['block']}
+          classNames={['u-margin-bottom']}
+        >
+          <HandleValue>
+            <SelectField
+              placeholder="Placeholder"
+              menu={<SelectMenu values={selectMenuValues} />}
+            />
+          </HandleValue>
+        </LabeledField>
       </Overlay>
     )
   })
