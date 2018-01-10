@@ -31,6 +31,7 @@ const shippingAddressChanged = createAction(
 )
 const userCreated = createAction(TYPE.USER.CREATED, (userId: string) => ({userId}))
 const userUpdated = createAction(TYPE.USER.UPDATED, (user: User) => user)
+const currencyChanged = createAction(TYPE.USER.CURRENCY_CHANGED, (currency: string) => currency)
 export const setUtmParams = createAction(TYPE.USER.UTM_PARAMS_SET, () =>
   searchParams.getUtmParams()
 )
@@ -78,6 +79,15 @@ export const updateLocation = (address: Address) => async (
     // Update prices
     dispatch(createPriceRequest())
   }
+}
+
+export const updateCurrency = (currency: string) => (
+  dispatch: Dispatch<any>,
+  getState: () => State
+) => {
+  dispatch(currencyChanged(currency))
+  // Update prices
+  dispatch(createPriceRequest())
 }
 
 // @TODO update type

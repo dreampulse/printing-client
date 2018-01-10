@@ -39,7 +39,7 @@ const ProviderSection = ({
         <ProviderItem
           key={offer.offerId}
           provider={offer.printingService}
-          price={formatPrice(offer.totalPrice, offer.currency, offer.priceEstimated)}
+          price={formatPrice(offer.totalPrice, offer.currency)}
           shipping={formatShipping(offer.shipping)}
           onCheckoutClick={() => {
             onSelectOffer(offer)

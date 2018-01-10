@@ -1,0 +1,52 @@
+.icon-link {
+  $shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+
+  position: relative;
+  display: inline-block;
+  color: $color-primary;
+  font-size: $font-size-xxl;
+  line-height: 1;
+  filter: drop-shadow($shadow);
+  outline: 0;
+  vertical-align: middle;
+  transition: color $transition-duration-fast ease-in-out;
+
+  &__cart-count {
+    position: absolute;
+    color: $color-yellow;
+    top: 0.8em;
+    left: 0.3em;
+    right: 0;
+    text-align: center;
+    font-size: 0.33em;
+    font-weight: $font-weight-bold;
+  }
+
+  &:hover:not([aria-disabled="true"]),
+  &:focus:not([aria-disabled="true"]) {
+    color: $color-primary-active;
+  }
+
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+    color: $color-disabled;
+    filter: none;
+
+    .icon-link__cart-count {
+      display: none;
+    }
+  }
+
+  &--invert {
+    color: $color-invert-text;
+
+    &:hover:not([aria-disabled="true"]),
+    &:focus:not([aria-disabled="true"]) {
+      color: $color-invert-text;
+    }
+
+    &[aria-disabled="true"] {
+      color: $color-invert-disabled;
+    }
+  }
+}
