@@ -14,13 +14,10 @@ export const listMaterials = () => requestJson(`${baseUrl}/material`)
 export const createUserOld = ({user}) =>
   requestJson(`${baseUrl}/user`, {method: 'POST', body: user})
 
-export const createUser = (currency, shippingAddress) =>
+export const createUser = user =>
   requestJson(`${baseUrl}/user`, {
     method: 'POST',
-    body: {
-      currency,
-      shippingAddress
-    }
+    body: user
   })
 
 export const updateUser = ({userId, user}) =>

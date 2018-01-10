@@ -41,7 +41,12 @@ const locationDetected = (state, {payload}) =>
     Cmd.run(printingEngine.createUser, {
       successActionCreator: user => userAction.userCreated(user.userId),
       failActionCreator: coreAction.fatalError,
-      args: [state.currency, payload.location]
+      args: [
+        {
+          currency: state.currency,
+          location: payload.location
+        }
+      ]
     })
   )
 

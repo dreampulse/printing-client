@@ -46,8 +46,6 @@ export const createLegacyStore = (history, initialLegacyState) => {
 
 export const findCmd = (state, func, args) => {
   const cmd = getCmd(state).cmds.find(c => {
-    // We need to compare the function source because
-    // in mocha's watch mode, strict equality checks won't work
     if (c.func !== func) return false
     if (!args) return true
 

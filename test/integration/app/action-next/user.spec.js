@@ -25,8 +25,10 @@ describe('user action', () => {
 
     it('triggers the userAction.userCreated() action with the result from createUser', () => {
       const cmd = findCmd(state, printingEngine.createUser, [
-        getModel(state).user.currency,
-        location
+        {
+          currency: getModel(state).user.currency,
+          location
+        }
       ])
       const action = cmd.simulate({
         success: true,
@@ -38,8 +40,10 @@ describe('user action', () => {
     it('triggers the coreAction.fatalError() action when createUser failed', () => {
       const err = new Error('some-error')
       const cmd = findCmd(state, printingEngine.createUser, [
-        getModel(state).user.currency,
-        location
+        {
+          currency: getModel(state).user.currency,
+          location
+        }
       ])
       const action = cmd.simulate({
         success: false,
