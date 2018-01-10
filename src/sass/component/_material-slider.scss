@@ -1,0 +1,156 @@
+.material-slider {
+  $item-width: 245px;
+  $item-gutter: $space-l;
+  $item-space-top: 2px; // Due to material card shadow
+  $wide-nav-width: container() - 2 * gutter() - 4 * ($item-width + $item-gutter) + 0.5 * $item-gutter;
+  $stacking: edge, button;
+
+  position: relative;
+  // Additional spacing to keep shadow of cards visible
+  margin: 0 (-0.5 * $item-gutter) $space-base;
+
+  &__slider {
+    overflow: hidden;
+  }
+
+  &__canvas {
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    padding-top: $item-space-top; // Just to keep shadow of card visible
+    padding-bottom: $space-base + 50px; // To push the scrollbar out of root div
+    margin-bottom: -50px; // To crop the scrollbar out of root div
+    overflow-x: scroll;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__item {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    white-space: normal;
+    width: $item-width;
+    margin: 0 (0.5 * $item-gutter);
+  }
+
+  &__back,
+  &__next {
+    display: flex;
+    align-items: center;
+    width: $wide-nav-width;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity $transition-duration-fast linear;
+    z-index: z($stacking, button);
+    overflow: hidden;
+
+    &:before {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background: rgba($color-bg, 0.75);
+      z-index: -1;
+    }
+  }
+  &__back {
+    justify-content: flex-start;
+    left: 0.5 * $item-gutter;
+    padding-left: $space-s;
+
+    &:before {
+      transform: translateX(-100%);
+    }
+  }
+  &__next {
+    justify-content: flex-end;
+    right: 0.5 * $item-gutter;
+    padding-right: $space-s;
+
+    &:before {
+      transform: translateX(100%);
+    }
+  }
+
+  // Small hack to hide the edges when cards are scrolled
+  // but still keep shadows visible when scroll area is at the end or at the beginning.
+  &:before,
+  &:after {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0.5 * $item-gutter;
+    background: $color-bg;
+    z-index: z($stacking, edge);
+  }
+  &:before {
+    left: 0;
+  }
+  &:after {
+    right: 0;
+  }
+
+  &__dots {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+
+    & > li {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 0.5em;
+    }
+  }
+
+  &--show-back {
+    .material-slider__back {
+      opacity: 1;
+      pointer-events: initial;
+
+      &:before {
+        transform: none;
+      }
+    }
+
+    &:before {
+      display: block;
+    }
+  }
+
+  &--show-next {
+    .material-slider__next {
+      opacity: 1;
+      pointer-events: initial;
+
+      &:before {
+        transform: none;
+      }
+    }
+
+    &:after {
+      display: block;
+    }
+  }
+
+  // Use less space for navigation if both are visible
+  &.material-slider--show-back.material-slider--show-next {
+    .material-slider__back:before {
+      transform: translateX(-50%);
+    }
+
+    .material-slider__next:before {
+      transform: translateX(50%);
+    }
+  }
+}

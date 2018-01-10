@@ -5,4 +5,6 @@ import Icon from '../../src/app/component/icon'
 
 import icon from '../../src/asset/icon/placeholder.svg'
 
-storiesOf('Icon', module).add('default', () => <Icon source={icon} />)
+storiesOf('Icon', module)
+  .add('default', () => <Icon source={icon} />)
+  .add('block', () => <Icon source={icon} modifiers={['block']} />)

@@ -7,9 +7,9 @@ import * as printingEngine from '../../../../src/app/service/printing-engine'
 import * as geolocation from '../../../../src/app/lib/geolocation'
 import * as searchParams from '../../../../src/app/lib/search-params'
 
-import materialList from '../../../../test-data/mock/material-list-response.json'
+import materialResponse from '../../../../test-data/mock/material-response.json'
 
-deepFreeze(materialList)
+deepFreeze(materialResponse)
 
 describe('Init action integration test', () => {
   let sandbox
@@ -29,7 +29,7 @@ describe('Init action integration test', () => {
   })
 
   it('initializes the reducer correctly', async () => {
-    printingEngine.listMaterials.resolves(materialList)
+    printingEngine.listMaterials.resolves(materialResponse)
     printingEngine.createUser.resolves({userId: 'some-user-id'})
     geolocation.getLocationByIp.resolves({
       city: 'some-city',
@@ -73,7 +73,6 @@ describe('Init action integration test', () => {
       }
     })
 
-    // it generates some material ids
-    expect(store.getState().material.materials.materialStructure[0].id, 'to be ok')
+    expect(store.getState().material.materialGroups, 'to equal', materialResponse.materialStructure)
   })
 })

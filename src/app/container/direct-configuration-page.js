@@ -7,7 +7,7 @@ import {formatDimensions, formatPrice, formatDeliveryTime, formatAddress} from '
 import getCloudinaryUrl from '../lib/cloudinary'
 import {convertPlaceToLocation} from '../lib/geolocation'
 
-import {openMaterialModal} from '../action/modal'
+import {openFinishGroupModal} from '../action/modal'
 import {selectMaterialConfig} from '../action/material'
 import {selectOffer} from '../action/price'
 import {goToAddress} from '../action/navigation'
@@ -39,7 +39,7 @@ const DirectConfigurationPage = ({
   selectedMaterial,
   offers,
   printingServiceRequests,
-  onOpenMaterialModal,
+  onOpenFinishGroupModal,
   onSelectMaterialConfig,
   onSelectOffer,
   onGoToAddress,
@@ -79,7 +79,7 @@ const DirectConfigurationPage = ({
     />
   )
   const info = (
-    <Info>
+    <Info modifiers={['minor']}>
       <Headline modifiers={['s']} label="Delivery Time" />
       <Paragraph>
         The delivery time is an approximate summary of production time and shipping time. Please
@@ -93,11 +93,12 @@ const DirectConfigurationPage = ({
 
   const materialSection = (
     <MaterialCard
-      key={finishGroup.name}
+      modifiers={['tall']}
+      key={finishGroup.id}
       title={finishGroup.name}
       subline={finishGroup.materialName}
       shipping={(bestOffer && formatDeliveryTime(bestOffer.shipping.deliveryTime)) || undefined}
-      description={finishGroup.summary}
+      description={finishGroup.descriptionShort}
       price={materialPrice}
       info={info}
       colorSelect={colorSelect}
@@ -117,7 +118,7 @@ const DirectConfigurationPage = ({
         undefined
       }
       onMoreClick={() => {
-        onOpenMaterialModal({
+        onOpenFinishGroupModal({
           materialId: selectedMaterial.material.id,
           finishGroupId: selectedMaterial.finishGroup.id
         })
@@ -136,13 +137,13 @@ const DirectConfigurationPage = ({
           googleMapsApiKey={config.googleMapsApiKey}
           onChange={place => onUpdateLocation(convertPlaceToLocation(place))}
         />
-        <SelectField
-          menu={currencyMenu}
-          value={selectedCurrencyValue}
-          disabled={!address.countryCode}
-          onChange={({value}) => onUpdateCurrency(value)}
-        />
       </LabeledField>
+      <SelectField
+        menu={currencyMenu}
+        value={selectedCurrencyValue}
+        disabled={!address.countryCode}
+        onChange={({value}) => onUpdateCurrency(value)}
+      />
     </ConfigurationHeader>
   )
 
@@ -176,7 +177,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onOpenMaterialModal: openMaterialModal,
+  onOpenFinishGroupModal: openFinishGroupModal,
   onSelectMaterialConfig: selectMaterialConfig,
   onSelectOffer: selectOffer,
   onGoToAddress: goToAddress,

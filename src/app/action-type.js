@@ -8,7 +8,7 @@ import type {
   Price,
   ModelBackend,
   Configuration,
-  Materials,
+  MaterialGroup,
   ModalStateContentType
 } from './type'
 
@@ -201,6 +201,11 @@ export type MaterialSelectedAction = {
   payload: string // This (in the frontend generated) materialId
 }
 
+export type MaterialGroupSelectedAction = {
+  type: 'LEGACY.MATERIAL.GROUP_SELECTED',
+  payload: string
+}
+
 export type MaterialConfigForFinishGroupSelectedAction = {
   type: 'LEGACY.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED',
   payload: {[finishGroupId: string]: string} // @TODO: why so strage?
@@ -213,7 +218,7 @@ export type MaterialConfigSelectedAction = {
 
 export type MaterialReceivedAction = {
   type: 'LEGACY.MATERIAL.RECEIVED',
-  payload: Materials
+  payload: Array<MaterialGroup>
 }
 
 //
@@ -246,8 +251,8 @@ export type Action =
   | ConfigurationRestoredAction
   | ConfigurationCreatedAction
   | MaterialSelectedAction
+  | MaterialGroupSelectedAction
   | MaterialConfigForFinishGroupSelectedAction
-  | MaterialConfigSelectedAction
   | MaterialConfigSelectedAction
   | MaterialReceivedAction
 
@@ -269,6 +274,7 @@ export default {
   MATERIAL: {
     RECEIVED: 'LEGACY.MATERIAL.RECEIVED',
     SELECTED: 'LEGACY.MATERIAL.SELECTED',
+    GROUP_SELECTED: 'LEGACY.MATERIAL.GROUP_SELECTED',
     CONFIG_SELECTED: 'LEGACY.MATERIAL.CONFIG_SELECTED',
     CONFIG_FOR_FINISH_GROUP_SELECTED: 'LEGACY.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED'
   },
@@ -305,6 +311,7 @@ export const MODAL_TYPE = {
   PRICE_CHANGED: 'LEGACY.MODAL.PRICE_CHANGED',
   PRICE_LOCATION_CHANGED: 'LEGACY.MODAL.PRICE_LOCATION_CHANGED',
   MATERIAL: 'LEGACY.MODAL.MATERIAL',
+  FINISH_GROUP: 'LEGACY.MODAL.FINISH_GROUP',
   FATAL_ERROR: 'LEGACY.MODAL.FATAL_ERROR'
 }
 

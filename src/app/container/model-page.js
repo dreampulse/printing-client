@@ -19,6 +19,7 @@ import SelectMenu from '../component/select-menu'
 import AppLayout from '../container/app-layout'
 import UploadSection from '../container/upload-section'
 import MaterialSection from '../container/material-section'
+import FinishSection from '../container/finish-section'
 import ProviderSection from '../container/provider-section'
 
 import {changeQuantity} from '../action/model'
@@ -77,6 +78,7 @@ const ModelPage = ({
     <AppLayout currentStep={0} configurationHeader={configurationHeader}>
       <UploadSection />
       <MaterialSection />
+      <FinishSection />
       <ProviderSection />
       <Section>
         <Headline

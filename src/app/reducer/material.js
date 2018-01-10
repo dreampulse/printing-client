@@ -4,7 +4,8 @@ import type {MaterialState} from '../type'
 import TYPE, {type Action} from '../action-type'
 
 const initialState = {
-  materials: undefined,
+  materialGroups: undefined,
+  selectedMaterialGroup: undefined,
   selectedMaterial: undefined,
   selectedMaterialConfig: undefined,
   selectedMaterialConfigs: {}
@@ -20,14 +21,24 @@ function handleRestoreConfiguration(state, {payload: {materialConfigId}}) {
 function handleReceivedMaterials(state, {payload}) {
   return {
     ...state,
-    materials: payload
+    materialGroups: payload
+  }
+}
+
+function handleSelectedMaterialGroup(state, {payload}) {
+  return {
+    ...state,
+    selectedMaterialGroup: payload,
+    selectedMaterial: undefined,
+    selectedMaterialConfig: undefined
   }
 }
 
 function handleSelectedMaterial(state, {payload}) {
   return {
     ...state,
-    selectedMaterial: payload
+    selectedMaterial: payload,
+    selectedMaterialConfig: undefined
   }
 }
 
@@ -55,6 +66,8 @@ const reducer = (state: MaterialState = initialState, action: Action): MaterialS
       return handleReceivedMaterials(state, action)
     case TYPE.MATERIAL.SELECTED:
       return handleSelectedMaterial(state, action)
+    case TYPE.MATERIAL.GROUP_SELECTED:
+      return handleSelectedMaterialGroup(state, action)
     case TYPE.MATERIAL.CONFIG_SELECTED:
       return handleSelectedMaterialConfig(state, action)
     case TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED:

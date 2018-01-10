@@ -169,7 +169,7 @@ const CartPage = ({
           <Headline modifiers={['minor', 's']} label="Material" />
           <Paragraph modifiers={['l']}>
             {selectedMaterial.material.name},&nbsp;
-            {selectedMaterial.material.properties.printingMethod}
+            {selectedMaterial.finishGroup.properties.printingMethod}
             <br />
             <ColorSquare
               color={selectedMaterial.materialConfig.colorCode}

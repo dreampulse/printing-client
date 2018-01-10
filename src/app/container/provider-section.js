@@ -52,7 +52,7 @@ const ProviderSection = ({
 
   return (
     <Section id="section-provider">
-      <Headline label="3. Choose a provider and shipping option" modifiers={headlineModifiers} />
+      <Headline label="4. Choose a provider and shipping option" modifiers={headlineModifiers} />
       {!disabled && renderProviderList()}
       {features.share &&
         !disabled &&

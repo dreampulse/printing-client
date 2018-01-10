@@ -31,12 +31,15 @@ export const openPriceLocationChangedModal = (
 
 export const openPriceChangedModal = () => open(MODAL_TYPE.PRICE_CHANGED)
 
-export const openMaterialModal = ({
+export const openMaterialModal = ({materialId}: {materialId: string}) =>
+  open(MODAL_TYPE.MATERIAL, {materialId})
+
+export const openFinishGroupModal = ({
   materialId,
   finishGroupId
 }: {
   materialId: string,
   finishGroupId: string
-}) => open(MODAL_TYPE.MATERIAL, {materialId, finishGroupId})
+}) => open(MODAL_TYPE.FINISH_GROUP, {materialId, finishGroupId})
 
 export const openFatalErrorModal = (error: Error) => open(MODAL_TYPE.FATAL_ERROR, {error}, false)
