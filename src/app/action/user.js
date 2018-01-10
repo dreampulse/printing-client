@@ -45,11 +45,9 @@ export const detectAddress = () => async (dispatch: Dispatch<*>) => {
 
 export const createUser = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const user = getState().user.user
-  const {userId} = await printingEngine.createUser({user})
+  const {userId} = await printingEngine.createUserOld({user})
   identify(userId) // Send user information to Mixpanel
-  setUserContext({
-    id: userId
-  })
+  setUserContext(userId)
   return dispatch(userCreated(userId))
 }
 

@@ -1,9 +1,14 @@
 .upload-area {
-  padding: $space-l;
+  $border-image: url('../asset/image/upload-area-border.gif');
+
+  padding: $space-xxl $space-l;
   margin-bottom: $space-base;
   text-align: center;
   font-size: $font-size-l;
-  border: 2px dashed $color-primary;
+  border: 1px dashed $color-primary;
+  border-image: $border-image;
+  border-image-slice: 1;
+  border-image-repeat: round;
 
   & > .icon {
     font-size: 55px;
@@ -32,7 +37,7 @@
   }
 
   &--drag {
-    border-style: solid;
     background: $color-blue-very-light;
+    border-image: none;
   }
 }

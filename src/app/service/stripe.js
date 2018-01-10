@@ -5,15 +5,15 @@ export function checkout({amount, currency, email}) {
     const checkoutHandler = global.StripeCheckout.configure({
       key: config.stripePublicKey,
       image: config.stripeCheckoutImage,
-      name: 'All3DP',
+      name: config.stripeName,
       bitcoin: false,
       token: token => resolve(token),
       closed: () => reject(new Error('Payment aborted by user.'))
     })
 
     checkoutHandler.open({
-      name: 'All3DP',
-      description: 'Printing Engine Client',
+      name: config.stripeName,
+      description: config.stripeDescription,
       amount: amount * 100,
       currency,
       email

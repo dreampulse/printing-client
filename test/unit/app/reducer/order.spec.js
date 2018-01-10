@@ -28,8 +28,7 @@ describe('Order reducer', () => {
       expect(reducer(state, action), 'to equal', {
         some: 'thing',
         orderId: 'some-order-id',
-        orderNumber: 'some-order-number',
-        orderInProgress: false
+        orderNumber: 'some-order-number'
       })
     })
   })
@@ -47,7 +46,8 @@ describe('Order reducer', () => {
 
       expect(reducer(state, action), 'to equal', {
         some: 'thing',
-        paymentToken: 'some-token'
+        paymentToken: 'some-token',
+        orderInProgress: false
       })
     })
   })
