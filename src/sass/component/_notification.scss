@@ -1,0 +1,26 @@
+.notification {
+  border: 1px solid $color-border;
+  display: flex;
+  align-items: center;
+  padding: $space-base;
+
+  &__message {
+    color: $color-success;
+  }
+
+  &__icon {
+    font-size: 45px;
+    line-height: 0;
+    color: $color-success;
+  }
+
+  &--warning {
+    .notification__icon {
+      color: $color-warning;
+    }
+
+    .notification__message {
+      color: $color-text;
+    }
+  }
+}
