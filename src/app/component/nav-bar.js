@@ -8,27 +8,27 @@ import Container from './container'
 
 import logoImage from '../../asset/image/logo.svg'
 
-const Header = ({classNames, modifiers, children, onClickIdentity = () => {}}) => (
-  <header className={buildClassName('header', modifiers, classNames)}>
+const NavBar = ({classNames, modifiers, children, onClickIdentity = () => {}}) => (
+  <header className={buildClassName('nav-bar', modifiers, classNames)}>
     <Container>
-      <div className="header__grid">
-        <button className="header__identity" type="button" onClick={onClickIdentity}>
-          <img className="header__logo" src={logoImage} alt="All3DP" />
-          <strong className="header__subline">
+      <div className="nav-bar__grid">
+        <button className="nav-bar__identity" type="button" onClick={onClickIdentity}>
+          <img className="nav-bar__logo" src={logoImage} alt="All3DP" />
+          <strong className="nav-bar__subline">
             3D Printing Service<br />
             for the Best Price
           </strong>
         </button>
-        <div className="header__content">{children}</div>
+        <div className="nav-bar__content">{children}</div>
       </div>
     </Container>
   </header>
 )
 
-Header.propTypes = {
+NavBar.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
   onClickIdentity: PropTypes.func
 }
 
-export default Header
+export default NavBar

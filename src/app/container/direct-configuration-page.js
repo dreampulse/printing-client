@@ -11,7 +11,7 @@ import {openMaterialModal} from '../action/modal'
 import {selectMaterialConfig} from '../action/material'
 import {selectOffer} from '../action/price'
 import {goToAddress} from '../action/navigation'
-import {updateLocation} from '../action/user'
+import {updateLocation, updateCurrency} from '../action/user'
 
 import ConfigurationHeader from '../component/configuration-header'
 import LabeledField from '../component/labeled-field'
@@ -34,6 +34,7 @@ import config from '../../../config'
 
 const DirectConfigurationPage = ({
   address,
+  currency,
   models,
   selectedMaterial,
   offers,
@@ -42,7 +43,8 @@ const DirectConfigurationPage = ({
   onSelectMaterialConfig,
   onSelectOffer,
   onGoToAddress,
-  onUpdateLocation
+  onUpdateLocation,
+  onUpdateCurrency
 }) => {
   const {finishGroup, materialConfig} = selectedMaterial
   const colorValues = finishGroup.materialConfigs
@@ -64,11 +66,7 @@ const DirectConfigurationPage = ({
   const colorMenu = colorValues.length > 1 ? <SelectMenu values={colorValues} /> : undefined
   const materialPrice = (
     <Price
-      value={
-        bestOffer
-          ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
-          : undefined
-      }
+      value={bestOffer ? formatPrice(bestOffer.totalPrice, bestOffer.currency) : undefined}
       meta="incl. tax & shipping"
     />
   )
@@ -127,6 +125,9 @@ const DirectConfigurationPage = ({
     />
   )
 
+  const currencies = config.currencies
+  const selectedCurrencyValue = currencies.find(({value}) => value === currency)
+  const currencyMenu = <SelectMenu values={currencies} />
   const configurationHeader = (
     <ConfigurationHeader>
       <LabeledField label="Shipping:" modifiers={['block']}>
@@ -134,6 +135,12 @@ const DirectConfigurationPage = ({
           value={formatAddress(address)}
           googleMapsApiKey={config.googleMapsApiKey}
           onChange={place => onUpdateLocation(convertPlaceToLocation(place))}
+        />
+        <SelectField
+          menu={currencyMenu}
+          value={selectedCurrencyValue}
+          disabled={!address.countryCode}
+          onChange={({value}) => onUpdateCurrency(value)}
         />
       </LabeledField>
     </ConfigurationHeader>
@@ -161,6 +168,7 @@ const DirectConfigurationPage = ({
 
 const mapStateToProps = state => ({
   address: state.user.user.shippingAddress,
+  currency: state.user.currency,
   models: state.model.models,
   offers: state.price.offers || [],
   selectedMaterial: selectMaterialByMaterialConfigId(state, state.material.selectedMaterialConfig),
@@ -172,7 +180,8 @@ const mapDispatchToProps = {
   onSelectMaterialConfig: selectMaterialConfig,
   onSelectOffer: selectOffer,
   onGoToAddress: goToAddress,
-  onUpdateLocation: updateLocation
+  onUpdateLocation: updateLocation,
+  onUpdateCurrency: updateCurrency
 }
 
 export default compose(connectLegacy(mapStateToProps, mapDispatchToProps))(DirectConfigurationPage)

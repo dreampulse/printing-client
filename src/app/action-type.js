@@ -38,6 +38,11 @@ export type UserUtmParamsSetAction = {
   payload: UtmParams
 }
 
+export type UserCurrencyChangedAction = {
+  type: 'LEGACY.USER.CURRENCY_CHANGED',
+  payload: string
+}
+
 // Order actions
 
 export type OrderStartedAction = {
@@ -217,6 +222,7 @@ export type Action =
   | UserShippingAddressChangedAction
   | UserCreatedAction
   | UserUpdatedAction
+  | UserCurrencyChangedAction
   | UserUtmParamsSetAction
   | OrderStartedAction
   | OrderPayedAction
@@ -278,7 +284,8 @@ export default {
     CREATED: 'LEGACY.USER.CREATED',
     UPDATED: 'LEGACY.USER.UPDATED',
     SET_BILLING_ADDRESS: 'LEGACY.USER.SET_BILLING_ADDRESS',
-    UTM_PARAMS_SET: 'LEGACY.USER.UTM_PARAMS_SET'
+    UTM_PARAMS_SET: 'LEGACY.USER.UTM_PARAMS_SET',
+    CURRENCY_CHANGED: 'LEGACY.USER.CURRENCY_CHANGED'
   },
   ORDER: {
     ORDERED: 'LEGACY.ORDER.ORDERED',

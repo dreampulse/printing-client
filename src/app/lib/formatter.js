@@ -1,20 +1,10 @@
 import {getCountryName} from '../service/country'
+import config from '../../../config'
 
-const CURRENCY_SYMBOL = {
-  EUR: '€',
-  USD: '$'
-}
-
-export function formatCurrency(currency) {
-  const symbol = CURRENCY_SYMBOL[currency]
-  if (!symbol) {
-    throw new Error(`There is no preconfigured symbol for given currency ${currency}!`)
-  }
-  return symbol
-}
-
-export function formatPrice(value, currency, estimated = false) {
-  return `${estimated ? '~' : ''}${value.toFixed(2)} ${formatCurrency(currency)}`
+export function formatPrice(value, currency) {
+  const supportedCurrency = config.currencies.find(c => c.value === currency)
+  const prefix = supportedCurrency ? supportedCurrency.symbol : currency
+  return `${prefix}${value.toFixed(2)}`
 }
 
 export function formatDeliveryTime(deliveryTime) {

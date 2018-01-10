@@ -52,7 +52,7 @@ export const createPriceRequest = (
 
   const state = getState()
   if (!state.material.materials) throw new Error('Materials structure missing')
-  const {model: {models}, user: {userId}} = state
+  const {model: {models}, user: {userId, currency}} = state
   const materialConfigIds = selectCurrentMaterialIds(state)
 
   if (materialConfigIds.length === 0) {
@@ -82,7 +82,8 @@ export const createPriceRequest = (
     caching: true, // cache prices for next user
     refresh, // force refresh when requested
     userId,
-    items
+    items,
+    currency
   }
 
   const usePoll = debounce ? debouncedPoll : poll
@@ -122,7 +123,7 @@ export const createPriceRequest = (
 }
 
 export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: () => State) => {
-  const {model: {models}, price: {selectedOffer}, user: {userId}} = getState()
+  const {model: {models}, price: {selectedOffer}, user: {userId, currency}} = getState()
 
   if (!selectedOffer) throw new Error('No offer selected')
 
@@ -144,7 +145,8 @@ export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: 
     caching: false, // do not cache price recalc with a single material/vendor
     vendorId: selectedOffer.printingService,
     userId,
-    items
+    items,
+    currency
   }
 
   return poll(
