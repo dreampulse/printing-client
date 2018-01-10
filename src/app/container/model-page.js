@@ -5,7 +5,6 @@ import ConfigurationHeader from '../component/configuration-header'
 import LabeledField from '../component/labeled-field'
 import LocationField from '../component/location-field'
 import NumberField from '../component/number-field'
-<<<<<<< HEAD
 import ProviderTeaser from '../component/provider-teaser'
 import ProviderImage from '../component/provider-image'
 import Section from '../component/section'
@@ -14,10 +13,8 @@ import Headline from '../component/headline'
 import Baloon from '../component/baloon'
 import FeatureParagraph from '../component/feature-paragraph'
 import Image from '../component/image'
-=======
 import SelectField from '../component/select-field'
 import SelectMenu from '../component/select-menu'
->>>>>>> master
 
 import AppLayout from '../container/app-layout'
 import UploadSection from '../container/upload-section'
