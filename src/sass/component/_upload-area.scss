@@ -6,12 +6,9 @@
   text-align: center;
   font-size: $font-size-l;
   border: 1px dashed $color-primary;
-
-  @supports (border-image: $border-image) {
-    border-image: $border-image;
-    border-image-slice: 1;
-    border-image-repeat: round;
-  }
+  border-image: $border-image;
+  border-image-slice: 1;
+  border-image-repeat: round;
 
   & > .icon {
     font-size: 55px;
@@ -40,11 +37,7 @@
   }
 
   &--drag {
-    border-style: solid;
     background: $color-blue-very-light;
-
-    @supports (border-image: $border-image) {
-      border-image: none;
-    }
+    border-image: none;
   }
 }
