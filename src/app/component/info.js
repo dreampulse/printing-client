@@ -3,10 +3,10 @@ import React, {Component} from 'react'
 import Portal from 'react-portal'
 import ReactDOM from 'react-dom'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName, {buildClassArray} from 'Lib/build-class-name'
+import propTypes from '../lib/prop-types'
+import buildClassName, {buildClassArray} from '../lib/build-class-name'
 
-import Tooltip from 'Component/tooltip'
+import Tooltip from './tooltip'
 
 export default class Info extends Component {
   static propTypes = {

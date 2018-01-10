@@ -7,7 +7,7 @@ import browserUpdate from 'browser-update'
 
 import 'babel-polyfill'
 
-import 'Service/logging'
+import './service/logging'
 
 import Store from './store'
 import Router from './router'

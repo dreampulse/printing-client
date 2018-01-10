@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import UploadArea from 'Component/upload-area'
+import UploadArea from '../../src/app/component/upload-area'
 
 storiesOf('Upload Area', module).add('default', () => (
   <UploadArea

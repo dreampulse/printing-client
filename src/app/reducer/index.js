@@ -3,6 +3,7 @@
 import {combineReducers} from 'redux-loop'
 import {routerReducer as routing} from 'react-router-redux'
 import {reducer as form} from 'redux-form'
+
 import type {State as LegacyState} from '../type'
 import core from '../reducer-next/core'
 import type {CoreState} from '../reducer-next/core'
@@ -10,6 +11,8 @@ import user from '../reducer-next/user'
 import type {UserState} from '../reducer-next/user'
 import modal from '../reducer-next/modal'
 import type {ModalState} from '../reducer-next/modal'
+import model from '../reducer-next/model'
+import type {ModelState} from '../reducer-next/model'
 import legacyUser from './user'
 import legacyModal from './modal'
 import legacyModel from './model'
@@ -20,6 +23,7 @@ import legacyConfiguration from './configuration'
 
 export type AppState = {
   core: CoreState,
+  model: ModelState,
   modal: ModalState,
   user: UserState,
   legacy: LegacyState,
@@ -31,6 +35,7 @@ const rootReducer = combineReducers({
   core,
   user,
   modal,
+  model,
   legacy: combineReducers({
     user: legacyUser,
     modal: legacyModal,

@@ -1,9 +1,9 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import Icon from 'Component/icon'
+import Icon from '../../src/app/component/icon'
 
-import icon from 'Icon/placeholder.svg'
+import icon from '../../src/asset/icon/placeholder.svg'
 
 storiesOf('Icon', module)
   .add('default', () => <Icon source={icon} />)

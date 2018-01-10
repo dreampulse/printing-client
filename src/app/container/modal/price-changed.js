@@ -1,11 +1,11 @@
 import React from 'react'
 
-import Overlay from 'Component/overlay'
-import Headline from 'Component/headline'
-import RichText from 'Component/rich-text'
-import Button from 'Component/button'
+import Overlay from '../../component/overlay'
+import Headline from '../../component/headline'
+import RichText from '../../component/rich-text'
+import Button from '../../component/button'
 
-import {goToCart} from 'Action/navigation'
+import {goToCart} from '../../action/navigation'
 
 import {connectLegacy} from '../util/connect-legacy'
 

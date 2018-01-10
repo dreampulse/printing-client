@@ -1,6 +1,6 @@
 // @flow
 
-import type {AppAction, ModalConfig} from 'App/type-next'
+import type {AppAction, ModalConfig} from '../type-next'
 
 export type ModalState = ModalConfig & {
   isOpen: boolean

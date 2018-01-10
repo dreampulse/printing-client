@@ -3,12 +3,12 @@
 import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 
-import * as printingEngine from 'Lib/printing-engine'
-import {getUpdatedOffer, getCheapestOfferFor} from 'Lib/offer'
-import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
-import {selectCurrentMaterialGroup, selectFeatures} from 'Lib/selector'
-import {getMaterialConfigIdsOfMaterialGroup} from 'Lib/material'
-import {AppError} from 'Lib/error'
+import * as printingEngine from '../service/printing-engine'
+import {getUpdatedOffer, getCheapestOfferFor} from '../lib/offer'
+import {poll, debouncedPoll, stopPoll} from '../lib/poll'
+import {selectCurrentMaterialGroup, selectFeatures} from '../lib/selector'
+import {getMaterialConfigIdsOfMaterialGroup} from '../lib/material'
+import {AppError} from '../lib/error'
 
 import type {Offer, Price, State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
@@ -52,7 +52,7 @@ export const createPriceRequest = (
 
   const state = getState()
   if (!state.material.materials) throw new Error('Materials structure missing')
-  const {model: {models}, user: {userId}} = state
+  const {model: {models}, user: {userId, currency}} = state
 
   // Abort if user did not upload any models yet
   if (models.length === 0) {
@@ -79,7 +79,8 @@ export const createPriceRequest = (
     caching: true, // cache prices for next user
     refresh, // force refresh when requested
     userId,
-    items
+    items,
+    currency
   }
 
   const usePoll = debounce ? debouncedPoll : poll
@@ -119,7 +120,7 @@ export const createPriceRequest = (
 }
 
 export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: () => State) => {
-  const {model: {models}, price: {selectedOffer}, user: {userId}} = getState()
+  const {model: {models}, price: {selectedOffer}, user: {userId, currency}} = getState()
 
   if (!selectedOffer) throw new Error('No offer selected')
 
@@ -141,7 +142,8 @@ export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: 
     caching: false, // do not cache price recalc with a single material/vendor
     vendorId: selectedOffer.printingService,
     userId,
-    items
+    items,
+    currency
   }
 
   return poll(

@@ -3,12 +3,12 @@ import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 import range from 'lodash/range'
 
-import MaterialCardList from 'Component/material-card-list'
-import MaterialCard from 'Component/material-card'
-import Price from 'Component/price'
-import Info from 'Component/info'
-import Headline from 'Component/headline'
-import Paragraph from 'Component/paragraph'
+import MaterialCardList from '../../src/app/component/material-card-list'
+import MaterialCard from '../../src/app/component/material-card'
+import Price from '../../src/app/component/price'
+import Info from '../../src/app/component/info'
+import Headline from '../../src/app/component/headline'
+import Paragraph from '../../src/app/component/paragraph'
 
 const price = <Price value="$19.99" prefix="From" />
 

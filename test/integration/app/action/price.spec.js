@@ -1,6 +1,6 @@
 import createHistory from 'history/createMemoryHistory'
-import {createPriceRequest, refreshSelectedOffer} from 'Action/price'
-import * as printingEngine from 'Lib/printing-engine'
+import {createPriceRequest, refreshSelectedOffer} from '../../../../src/app/action/price'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
 
 describe('Price Integration Test', () => {
   let sandbox

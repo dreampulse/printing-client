@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import LabeledCheckbox from 'Component/labeled-checkbox'
+import LabeledCheckbox from '../../src/app/component/labeled-checkbox'
 import HandleChecked from '../util/handle-checked'
 
 storiesOf('Labeled Checkbox', module)

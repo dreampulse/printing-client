@@ -1,9 +1,9 @@
 import React from 'react'
 import {compose, lifecycle, renderComponent, branch, withState} from 'recompose'
 
-import {restoreConfiguration} from 'Action/configuration'
+import {restoreConfiguration} from '../action/configuration'
 
-import LoadingContainer from 'Component/loading-container'
+import LoadingContainer from '../component/loading-container'
 
 import {connectLegacy} from './util/connect-legacy'
 import ModelPage from './model-page'

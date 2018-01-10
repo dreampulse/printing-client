@@ -15,8 +15,8 @@ import {
   selectOfferItems,
   selectAreAllUploadsFinished,
   selectFeatures,
-  selectLocationQuery
-} from 'Lib/selector'
+  selectSearchParams
+} from '../../../../src/app/lib/selector'
 
 describe('Selector lib', () => {
   describe('selectCommonQuantity', () => {
@@ -44,6 +44,16 @@ describe('Selector lib', () => {
       const state = {
         model: {
           models: []
+        }
+      }
+
+      expect(selectCommonQuantity(state), 'to be', undefined)
+    })
+
+    it('returns undefined if a model has no quantity', () => {
+      const state = {
+        model: {
+          models: [{}, {quantity: 1}]
         }
       }
 
@@ -545,6 +555,11 @@ describe('Selector lib', () => {
     it('returns empty object if it does not find a materialConfig', () => {
       expect(selectMaterialByMaterialConfigId(state, 'some-3rd-material-config-id'), 'to equal', {})
     })
+
+    it('returns null if materials are not defined', () => {
+      state.material.materials = undefined
+      expect(selectMaterialByMaterialConfigId(state, 'some-material-config-id'), 'to be', null)
+    })
   })
 
   describe('selectedOfferMaterial', () => {
@@ -590,6 +605,11 @@ describe('Selector lib', () => {
         materialConfig
       })
     })
+
+    it('returns null if there is no selected offer', () => {
+      state.price.selectedOffer = undefined
+      expect(selectedOfferMaterial(state), 'to be', null)
+    })
   })
 
   describe('selectModelByModelId', () => {
@@ -598,7 +618,7 @@ describe('Selector lib', () => {
     beforeEach(() => {
       state = {
         model: {
-          models: [{modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
+          models: [{}, {modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
         }
       }
     })
@@ -625,6 +645,9 @@ describe('Selector lib', () => {
               },
               {
                 modelId: 'some-other-model-id'
+              },
+              {
+                modelId: 'some-unknown-id'
               }
             ]
           }
@@ -639,6 +662,10 @@ describe('Selector lib', () => {
             {
               modelId: 'some-other-model-id',
               thumbnailUrl: 'some-other-thumbnail-url',
+              fileName: 'some-other-model-name'
+            },
+            {
+              modelId: 'some-other-model-id',
               fileName: 'some-other-model-name'
             }
           ]
@@ -657,8 +684,14 @@ describe('Selector lib', () => {
           modelId: 'some-other-model-id',
           thumbnailUrl: 'some-other-thumbnail-url',
           fileName: 'some-other-model-name'
-        }
+        },
+        {modelId: 'some-unknown-id', thumbnailUrl: null, fileName: null}
       ])
+    })
+
+    it('returns null if there is no selected offer', () => {
+      state.price.selectedOffer = undefined
+      expect(selectOfferItems(state), 'to be', null)
     })
   })
 
@@ -754,16 +787,16 @@ describe('Selector lib', () => {
     })
   })
 
-  describe('selectLocationQuery()', () => {
+  describe('selectSearchParams()', () => {
     describe('when there is no location query', () => {
       it('returns an instance of URLSearchParams', () => {
-        const params = selectLocationQuery({})
+        const params = selectSearchParams({})
 
         expect(params instanceof URLSearchParams, 'to equal', true)
       })
 
       it('returns an empty URLSearchParams', () => {
-        const params = selectLocationQuery({})
+        const params = selectSearchParams({})
 
         expect([...params.entries()], 'to equal', [])
       })
@@ -771,13 +804,13 @@ describe('Selector lib', () => {
 
     describe('when there is a location query', () => {
       it('returns an instance of URLSearchParams', () => {
-        const params = selectLocationQuery({})
+        const params = selectSearchParams({})
 
         expect(params instanceof URLSearchParams, 'to equal', true)
       })
 
       it('returns a params object that provides access to the query params', () => {
-        const params = selectLocationQuery({
+        const params = selectSearchParams({
           routing: {
             location: {
               search: 'a&b=false&c=2'

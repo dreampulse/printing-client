@@ -1,7 +1,7 @@
-import {selectMaterial, selectMaterialGroup} from 'Action/material'
-import * as priceActions from 'Action/price'
-import * as printingEngine from 'Lib/printing-engine'
-import * as materialLib from 'Lib/material'
+import {selectMaterial, selectMaterialGroup} from '../../../../src/app/action/material'
+import * as priceActions from '../../../../src/app/action/price'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
+import * as materialLib from '../../../../src/app/lib/material'
 import TYPE from '../../../../src/app/action-type'
 
 describe('Material actions', () => {

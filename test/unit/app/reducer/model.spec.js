@@ -1,5 +1,5 @@
-import reducer from 'Reducer/model'
-import {FileUploadError} from 'Lib/error'
+import reducer from '../../../../src/app/reducer/model'
+import {FileUploadError} from '../../../../src/app/lib/error'
 import TYPE from '../../../../src/app/action-type'
 
 describe('Model reducer', () => {

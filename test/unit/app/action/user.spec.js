@@ -1,10 +1,10 @@
-import {reviewOrder, updateLocation} from 'Action/user'
-import * as priceActions from 'Action/price'
-import * as modalActions from 'Action/modal'
-import * as navigationActions from 'Action/navigation'
-import * as printingEngine from 'Lib/printing-engine'
-import * as normalize from 'Lib/normalize'
-import * as geolocation from 'Lib/geolocation'
+import {reviewOrder, updateLocation, updateCurrency} from '../../../../src/app/action/user'
+import * as priceActions from '../../../../src/app/action/price'
+import * as modalActions from '../../../../src/app/action/modal'
+import * as navigationActions from '../../../../src/app/action/navigation'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
+import * as normalize from '../../../../src/app/lib/normalize'
+import * as geolocation from '../../../../src/app/lib/geolocation'
 import TYPE from '../../../../src/app/action-type'
 import {resolveAsyncThunk, createMockStore} from '../../../helper'
 
@@ -143,7 +143,7 @@ describe('User actions', () => {
           type: 'some-open-fetching-price-modal'
         },
         {
-          type: TYPE.USER.UPDATED,
+          type: 'LEGACY.USER.UPDATED',
           payload: form
         },
         {
@@ -162,7 +162,6 @@ describe('User actions', () => {
     let initialState
 
     beforeEach(() => {
-      address = {}
       initialState = {}
       address = 'some-address'
     })
@@ -204,7 +203,12 @@ describe('User actions', () => {
       it('dispatches expected actions, when no user exists', async () => {
         initialState = {
           user: {
-            userId: undefined
+            userId: undefined,
+            user: {
+              shippingAddress: {
+                countryCode: 'some-country-code'
+              }
+            }
           }
         }
         store = mockStore(initialState)
@@ -223,21 +227,71 @@ describe('User actions', () => {
       it('dispatches expected actions, when user exists', async () => {
         initialState = {
           user: {
-            userId: 'some-user-id'
+            userId: 'some-user-id',
+            user: {
+              shippingAddress: {
+                countryCode: 'some-country-code'
+              }
+            }
           }
         }
+        address = {countryCode: 'some-country-code'}
         store = mockStore(initialState)
         await store.dispatch(updateLocation(address))
 
         expect(store.getActions(), 'to equal', [
           {
             type: 'LEGACY.USER.SHIPPING_ADDRESS_CHANGED',
-            payload: {address: 'some-address'}
+            payload: {
+              address: {
+                countryCode: 'some-country-code'
+              }
+            }
           },
-          {type: 'LEGACY.USER.UPDATED'},
+          {
+            type: 'LEGACY.USER.UPDATED',
+            payload: {
+              shippingAddress: {
+                countryCode: 'some-country-code'
+              }
+            }
+          },
           {type: 'create-price-request-action'}
         ])
       })
+    })
+  })
+
+  describe('updateCurrency()', () => {
+    let store
+    let initialState
+
+    beforeEach(() => {
+      initialState = {
+        user: {
+          userId: 'some-user-id',
+          user: {}
+        }
+      }
+
+      priceActions.createPriceRequest.returns({
+        type: 'create-price-request-action'
+      })
+    })
+
+    it('dispatches expected actions', async () => {
+      store = mockStore(initialState)
+      await store.dispatch(updateCurrency('USD'))
+
+      expect(store.getActions(), 'to equal', [
+        {
+          type: 'LEGACY.USER.CURRENCY_CHANGED',
+          payload: 'USD'
+        },
+        {
+          type: 'create-price-request-action'
+        }
+      ])
     })
   })
 })

@@ -1,31 +1,31 @@
 import React from 'react'
 import {compose, lifecycle} from 'recompose'
 
-import scrollTo from 'Service/scroll-to'
-import {buildClassArray} from 'Lib/build-class-name'
+import scrollTo from '../service/scroll-to'
+import {buildClassArray} from '../lib/build-class-name'
 import {
   selectCurrentMaterial,
   selectCurrentMaterialGroup,
   selectPrintingServiceRequests,
-  selectAreAllUploadsFinished
-} from 'Lib/selector'
-import {getBestOfferForMaterial} from 'Lib/material'
-import {formatPrice} from 'Lib/formatter'
-import getCloudinaryUrl from 'Lib/cloudinary'
+  selectAreAllUploadsFinished,
+  selectMaterialGroup
+} from '../lib/selector'
+import {getBestOfferForMaterial} from '../lib/material'
+import {formatPrice} from '../lib/formatter'
+import getCloudinaryUrl from '../lib/cloudinary'
 
-import Section from 'Component/section'
-import Grid from 'Component/grid'
-import Column from 'Component/column'
-import Headline from 'Component/headline'
-import ProviderProgressBar from 'Component/provider-progress-bar'
-import MaterialCard from 'Component/material-card'
-import MaterialSlider from 'Component/material-slider'
-import Price from 'Component/price'
-import RadioButtonGroup from 'Component/radio-button-group'
-import RadioButton from 'Component/radio-button'
+import Section from '../component/section'
+import Grid from '../component/grid'
+import Column from '../component/column'
+import Headline from '../component/headline'
+import ProviderProgressBar from '../component/provider-progress-bar'
+import MaterialCard from '../component/material-card'
+import Price from '../component/price'
+import RadioButton from '../component/radio-button'
+import RadioButtonGroup from '../component/radio-button-group'
 
-import {selectMaterialGroup, selectMaterial} from 'Action/material'
-import {openMaterialModal} from 'Action/modal'
+import {selectMaterial} from '../action/material'
+import {openMaterialModal} from '../action/modal'
 
 import {connectLegacy} from './util/connect-legacy'
 
@@ -49,11 +49,7 @@ const MaterialSection = ({
     const bestOffer = getBestOfferForMaterial(offers, material)
     const price = (
       <Price
-        value={
-          bestOffer
-            ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
-            : undefined
-        }
+        value={bestOffer ? formatPrice(bestOffer.totalPrice, bestOffer.currency) : undefined}
         prefix="From"
       />
     )

@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import SelectMenuItem from 'Component/select-menu-item'
+import SelectMenuItem from '../../src/app/component/select-menu-item'
 
 storiesOf('Select Menu Item', module)
   .add('default', () => (

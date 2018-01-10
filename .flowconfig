@@ -12,12 +12,3 @@
 
 [options]
 module.name_mapper='^.*\.sass$' -> 'empty/object'
-module.name_mapper='^Image' -> '<PROJECT_ROOT>/src/asset/image'
-module.name_mapper='^Icon' -> '<PROJECT_ROOT>/src/asset/icon'
-module.name_mapper='^Action' -> '<PROJECT_ROOT>/src/app/action'
-module.name_mapper='^Component' -> '<PROJECT_ROOT>/src/app/component'
-module.name_mapper='^Container' -> '<PROJECT_ROOT>/src/app/container'
-module.name_mapper='^Lib' -> '<PROJECT_ROOT>/src/app/lib'
-module.name_mapper='^Reducer' -> '<PROJECT_ROOT>/src/app/reducer'
-module.name_mapper='^Service' -> '<PROJECT_ROOT>/src/app/service'
-module.name_mapper='^App' -> '<PROJECT_ROOT>/src/app'

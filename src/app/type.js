@@ -1,5 +1,7 @@
 // @flow
 
+import type {UtmParams} from './lib/search-params'
+
 export type Address = {
   firstName: string,
   lastName: string,
@@ -13,7 +15,6 @@ export type Address = {
 }
 
 export type User = {
-  currency: string,
   shippingAddress: Address,
   emailAddress: string,
   isCompany: boolean,
@@ -167,7 +168,9 @@ export type Features = {
 
 export type UserState = {
   userId: ?string,
-  user: User
+  user: User,
+  utmParams: UtmParams,
+  currency: string
 }
 
 export type OrderState = {

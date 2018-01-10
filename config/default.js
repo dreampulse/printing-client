@@ -12,5 +12,10 @@ export default {
   stripeCheckoutImage: 'asset/image/checkout-logo.png',
   ravenUrl: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
   ravenRelease: process.env.SENTRY_RELEASE_VERSION,
-  ipApiKey: '0TrLHRAixWyJhe3'
+  ipApiKey: '0TrLHRAixWyJhe3',
+  currencies: [
+    {value: 'USD', label: 'USD', symbol: '$'},
+    {value: 'EUR', label: 'EUR', symbol: '€'},
+    {value: 'GBP', label: 'GBP', symbol: '£'}
+  ]
 }

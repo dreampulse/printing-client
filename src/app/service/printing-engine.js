@@ -1,3 +1,6 @@
+// TODO refactor into a easily testable lib with API v3
+// DEPRECATED!
+
 import config from '../../../config'
 import {upload, requestJson, requestWithResponse, fetch} from '../service/http'
 
@@ -42,13 +45,14 @@ export const createShoppingCart = cart =>
 
 export const getFinalCartPrice = ({cartId}) => requestJson(`${baseUrl}/cart/${cartId}`)
 
-export const order = ({userId, priceId, offerIds}) =>
+export const order = ({userId, priceId, offerIds, utmParams}) =>
   requestJson(`${baseUrl}/order`, {
     method: 'POST',
     body: {
       userId,
       priceId,
-      offerIds
+      offerIds,
+      utmParams
     }
   })
 

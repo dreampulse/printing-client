@@ -1,4 +1,4 @@
-.header {
+.nav-bar {
   $logo-height: 40px;
 
   padding: $space-l 0;
@@ -19,18 +19,27 @@
     margin-bottom: $space-l;
     text-align: left;
     outline: 0;
+    height: $logo-height;
 
     @include respond-to(large) {
       @include span(6);
       margin-bottom: 0;
-      text-align: left;
+      justify-content: flex-start;
     }
   }
 
   &__content {
     @include span(12);
+    text-align: center;
+    height: $logo-height; // To keep fixed nav bar height event if content doesn't fit
+
     @include respond-to(large) {
       @include span(6);
+      text-align: right;
+    }
+
+    & > * + * {
+      margin-left: $space-l;
     }
   }
 
@@ -46,5 +55,7 @@
   &__subline {
     font-weight: inherit;
     line-height: $line-height-s;
+    margin-top: -1em; // Center subline and let it overflow
+    margin-bottom: -1em;
   }
 }

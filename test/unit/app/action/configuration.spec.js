@@ -1,7 +1,7 @@
-import {createConfiguration, restoreConfiguration} from 'Action/configuration'
-import * as printingEngine from 'Lib/printing-engine'
-import * as location from 'Service/location'
-import * as priceActions from 'Action/price'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
+import * as location from '../../../../src/app/service/location'
+import * as priceActions from '../../../../src/app/action/price'
+import {createConfiguration, restoreConfiguration} from '../../../../src/app/action/configuration'
 
 describe('Configuration actions', () => {
   let initialStoreData
