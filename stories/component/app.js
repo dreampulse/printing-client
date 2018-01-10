@@ -22,7 +22,7 @@ import cartIcon from '../../src/asset/icon/cart.svg'
 import HandleValue from '../util/handle-value'
 import {googleMapsApiKey, currencies} from '../util/data'
 
-const navBar = (currentStep = 0) => (
+const navBar = () => (
   <NavBar key="navbar">
     <Button modifiers={['invert', 'compact']} label="Upload" />
     <IconLink modifiers={['invert']} icon={cartIcon} disabled />

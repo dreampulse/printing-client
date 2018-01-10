@@ -20,7 +20,7 @@ const openModal = (state, action) => ({
   contentProps: action.payload.contentProps
 })
 
-const closeModal = (state, action) => initialState
+const closeModal = (_state, _action) => initialState
 
 const reducer = (state: ModalState = initialState, action: AppAction): ModalState => {
   switch (action.type) {

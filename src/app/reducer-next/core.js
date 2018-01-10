@@ -15,12 +15,12 @@ const initialState: CoreState = {
   materialGroups: []
 }
 
-const loadMaterialGroups = (state, action) =>
+const loadMaterialGroups = (state, _action) =>
   loop(
     state,
     Cmd.run(listMaterials, {
       args: [],
-      successActionCreator: res => core.updateMaterialGroups(res.materialStructure),
+      successActionCreator: response => core.updateMaterialGroups(response.materialStructure),
       failActionCreator: modal.openFatalErrorModal
     })
   )

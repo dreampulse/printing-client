@@ -18,7 +18,7 @@ const initialState: UserState = {
   currency: 'USD'
 }
 
-const detectLocation = (state, action) =>
+const detectLocation = (state, _action) =>
   loop(
     state,
     Cmd.run(getLocationByIp, {

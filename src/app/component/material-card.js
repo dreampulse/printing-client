@@ -6,10 +6,7 @@ import buildClassName, {buildClassArray} from '../lib/build-class-name'
 
 import Button from './button'
 import Headline from './headline'
-import Icon from './icon'
 import Link from './link'
-
-import shippingIcon from '../../asset/icon/shipping.svg'
 
 const MaterialCard = ({
   classNames,
@@ -17,14 +14,12 @@ const MaterialCard = ({
   price,
   info,
   title,
-  subline,
   description,
   colorSelect,
   loading = false,
   selected = false,
   unavailable = false,
   image,
-  shipping,
   onMoreClick = () => {},
   onSelectClick,
   selectLabel = 'Select'
@@ -37,14 +32,7 @@ const MaterialCard = ({
   const availableFooter = (
     <footer className="material-card__footer">
       {price ? cloneElement(price, {loading}) : null}
-      {shipping && !loading ? (
-        <div className="material-card__shipping">
-          <Icon source={shippingIcon} /> {shipping} {info}
-        </div>
-      ) : (
-        <div className="material-card__shipping" />
-      )}
-      <div className="material-card__color">{colorSelect}</div>
+      {colorSelect ? <div className="material-card__color">{colorSelect}</div> : null}
       <Button
         modifiers={buttonModifiers}
         disabled={!onSelectClick}
@@ -69,19 +57,21 @@ const MaterialCard = ({
       {image && <div className="material-card__image" style={imageStyle} />}
       <div className="material-card__content">
         <header className="material-card__header">
-          <Headline label={title} tag="h3" classNames={['u-margin-bottom-s']} />
-          <small className="material-card__subline">{subline}</small>
+          {info}
+          <Headline label={title} tag="strong" />
         </header>
-        <div className="material-card__body">
-          {description}{' '}
-          <Link
-            onClick={event => {
-              event.preventDefault()
-              onMoreClick()
-            }}
-            label="Learn more"
-          />
-        </div>
+        {Boolean(description) && (
+          <div className="material-card__body">
+            {description}{' '}
+            <Link
+              onClick={event => {
+                event.preventDefault()
+                onMoreClick()
+              }}
+              label="Learn more"
+            />
+          </div>
+        )}
         {unavailable ? unavailableFooter : availableFooter}
       </div>
     </article>
@@ -93,13 +83,11 @@ MaterialCard.propTypes = {
   price: PropTypes.node,
   info: PropTypes.node,
   title: PropTypes.string.isRequired,
-  subline: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  colorSelect: PropTypes.node.isRequired,
+  description: PropTypes.string,
+  colorSelect: PropTypes.node,
   loading: PropTypes.bool,
   selected: PropTypes.bool,
   unavailable: PropTypes.bool,
-  shipping: PropTypes.string,
   onMoreClick: PropTypes.func,
   onSelectClick: PropTypes.func,
   image: PropTypes.string,
