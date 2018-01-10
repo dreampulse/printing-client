@@ -43,6 +43,10 @@
     color: $color-minor;
   }
 
+  &--light {
+    color: $color-text-label;
+  }
+
   &--warning {
     & > .icon {
       color: $color-warning;

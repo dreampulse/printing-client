@@ -5,4 +5,12 @@
     font-size: $font-size-l;
     margin: 0 0 $space-l;
   }
+
+  &--strong {
+    font-weight: $font-weight-bold;
+  }
+
+  &--minor {
+    color: $color-minor;
+  }
 }

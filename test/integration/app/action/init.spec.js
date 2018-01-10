@@ -30,7 +30,7 @@ describe('Init action integration test', () => {
 
   it('initializes the reducer correctly', async () => {
     printingEngine.listMaterials.resolves(materialResponse)
-    printingEngine.createUser.resolves({userId: 'some-user-id'})
+    printingEngine.createUserOld.resolves({userId: 'some-user-id'})
     geolocation.getLocationByIp.resolves({
       city: 'some-city',
       zipCode: 'some-zip-code',

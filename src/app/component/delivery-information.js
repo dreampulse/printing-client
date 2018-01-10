@@ -7,7 +7,7 @@ import buildClassName from '../lib/build-class-name'
 const DeliveryInformation = ({classNames, modifiers, duration, provider = ''}) => (
   <div className={buildClassName('delivery-information', modifiers, classNames)}>
     <span className="delivery-information__duration">{duration}</span>
-    <span className="delivery-information__provider">{provider}</span>
+    {provider && <span className="delivery-information__provider">{provider}</span>}
   </div>
 )
 
