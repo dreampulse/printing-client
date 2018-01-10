@@ -23,7 +23,7 @@ storiesOf('Button', module)
     <Button label="Selected Button" modifiers={['selected']} onClick={action('click')} />
   ))
   .add('minor', () => (
-    <Button label="Selected Button" modifiers={['minor']} onClick={action('click')} />
+    <Button disabled label="Selected Button" modifiers={['minor']} onClick={action('click')} />
   ))
   .add('invert', () => (
     <div className="u-invert" style={{width: '100%', 'min-height': '100vh'}}>

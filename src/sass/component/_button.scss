@@ -112,5 +112,13 @@
       color: $color-primary-active;
       border-color: $color-primary-active;
     }
+
+    &[disabled] {
+      cursor: not-allowed;
+      background-color: inherit;
+      color: $color-minor;
+      border-color: $color-minor;
+      box-shadow: none;
+    }
   }
 }
