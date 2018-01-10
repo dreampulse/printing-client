@@ -4,6 +4,9 @@ import React from 'react'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
+import Link from './link'
+import Headline from './headline'
+
 const PaymentSection = ({
   classNames,
   modifiers,
@@ -12,7 +15,10 @@ const PaymentSection = ({
   shippingPrice,
   shippingName,
   vat,
-  total
+  total,
+  contactLink,
+  getInTouchLink,
+  termsLink
 }) => (
   <section className={buildClassName('payment-section', modifiers, classNames)}>
     <ul className="payment-section__price-components">
@@ -41,6 +47,25 @@ const PaymentSection = ({
           {child}
         </li>
       ))}
+    </ul>
+    <ul className="payment-section__links">
+      {contactLink && (
+        <li className="payment-section__link">
+          <Headline modifiers={['xs']} label="Need different payment option?" />
+          <Link label="Contact us." href={contactLink} />
+        </li>
+      )}
+      {getInTouchLink && (
+        <li className="payment-section__link">
+          <Headline modifiers={['xs']} label="Any questions?" />
+          <Link label="Get in touch." href={getInTouchLink} />
+        </li>
+      )}
+      {termsLink && (
+        <li className="payment-section__link">
+          <Link label="Terms of service" href={termsLink} />
+        </li>
+      )}
     </ul>
   </section>
 )

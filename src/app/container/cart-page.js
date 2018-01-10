@@ -246,6 +246,9 @@ const CartPage = ({
       shippingName={offer.shipping.name}
       vat={formatPrice(offer.vatPrice, offer.currency)}
       total={formatPrice(offer.totalPrice, offer.currency)}
+      termsLink="https://all3dp.com/3dp-price-comparison-terms-of-service/"
+      contactLink="mailto:contact@all3dp.com"
+      getInTouchLink="mailto:contact@all3dp.com"
     >
       {order.orderInProgress ? (
         <div className="u-align-center u-font-size-l ">
