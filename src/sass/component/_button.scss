@@ -12,8 +12,8 @@
   outline: 0;
   transition:
     background-color $transition-duration-fast ease-in-out,
-    box-shadow $transition-duration-fast ease-in-out,
     color $transition-duration-fast ease-in-out;
+  vertical-align: middle;
 
   & > .icon {
     position: relative;
@@ -75,5 +75,28 @@
   &--block {
     display: block;
     width: 100%;
+  }
+
+  &--compact {
+    height: $compact-field-height;
+    line-height: $compact-field-height;
+    padding: 0 1.5em;
+  }
+
+  &--invert {
+    color: $color-primary;
+    background: $color-bg;
+
+    &:hover:not([disabled]),
+    &:focus:not([disabled]) {
+      color: $color-primary;
+      background: $color-bg;
+    }
+
+    &:active:not([disabled]) {
+      color: $color-primary;
+      background: $color-bg;
+      box-shadow: $box-shadow-active;
+    }
   }
 }
