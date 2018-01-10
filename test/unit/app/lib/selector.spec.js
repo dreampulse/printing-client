@@ -6,6 +6,7 @@ import {
   selectMaterialByName,
   selectFinishGroup,
   selectCurrentMaterial,
+  selectCurrentMaterialIds,
   selectOffersForSelectedMaterialConfig,
   selectPrintingServiceRequests,
   selectMaterialByMaterialConfigId,
@@ -14,9 +15,9 @@ import {
   selectOfferItems,
   selectAreAllUploadsFinished,
   selectFeatures,
-  selectLocationQuery
-} from 'Lib/selector'
-import * as materialLib from 'Lib/material'
+  selectSearchParams
+} from '../../../../src/app/lib/selector'
+import * as materialLib from '../../../../src/app/lib/material'
 import config from '../../../../config'
 
 describe('Selector lib', () => {
@@ -45,6 +46,16 @@ describe('Selector lib', () => {
       const state = {
         model: {
           models: []
+        }
+      }
+
+      expect(selectCommonQuantity(state), 'to be', undefined)
+    })
+
+    it('returns undefined if a model has no quantity', () => {
+      const state = {
+        model: {
+          models: [{}, {quantity: 1}]
         }
       }
 
@@ -129,7 +140,7 @@ describe('Selector lib', () => {
               value: 'material-1',
               label: 'Material 1',
               hasColor: true,
-              price: 'From 10.00 $'
+              price: 'From $10.00'
             }
           ]
         },
@@ -283,6 +294,15 @@ describe('Selector lib', () => {
       }
 
       expect(selectMaterial(state, 'material-2'), 'to be', null)
+    })
+
+    it('returns null if the given material id is undefined', () => {
+      materials.materialStructure = undefined
+      const state = {
+        material: {materials}
+      }
+
+      expect(selectMaterial(state), 'to be', null)
     })
   })
 
@@ -490,6 +510,104 @@ describe('Selector lib', () => {
     })
   })
 
+  describe('selectCurrentMaterialIds()', () => {
+    let materials
+
+    beforeEach(() => {
+      materials = {
+        materialStructure: [
+          {
+            materials: [
+              {
+                id: 'material-1',
+                name: config.defaultSelectedMaterial,
+                finishGroups: [
+                  {
+                    materialConfigs: [
+                      {
+                        id: 'material-1-config-1'
+                      },
+                      {
+                        id: 'material-1-config-2'
+                      },
+                      {
+                        id: 'material-1-config-3'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                id: 'material-2',
+                name: 'Other name',
+                finishGroups: [
+                  {
+                    materialConfigs: [
+                      {
+                        id: 'material-2-config-1'
+                      },
+                      {
+                        id: 'material-2-config-2'
+                      },
+                      {
+                        id: 'material-2-config-3'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    })
+
+    it('returns an empty array if there is currently no material selected', () => {
+      const state = {
+        material: {}
+      }
+
+      expect(selectCurrentMaterialIds(state), 'to equal', [])
+    })
+
+    it('returns an empty array if there is no material loaded yet', () => {
+      const state = {
+        material: {}
+      }
+
+      expect(selectCurrentMaterialIds(state), 'to equal', [])
+    })
+
+    it('returns the material config ids from the default selected material if no material has been selected yet', () => {
+      const state = {
+        material: {
+          materials
+        }
+      }
+
+      expect(selectCurrentMaterialIds(state), 'to equal', [
+        'material-1-config-1',
+        'material-1-config-2',
+        'material-1-config-3'
+      ])
+    })
+
+    it('returns the material config ids from the selected material', () => {
+      const state = {
+        material: {
+          materials,
+          selectedMaterial: 'material-2'
+        }
+      }
+
+      expect(selectCurrentMaterialIds(state), 'to equal', [
+        'material-2-config-1',
+        'material-2-config-2',
+        'material-2-config-3'
+      ])
+    })
+  })
+
   describe('selectPrintingServiceRequests()', () => {
     let state
 
@@ -609,6 +727,11 @@ describe('Selector lib', () => {
     it('returns empty object if it does not find a materialConfig', () => {
       expect(selectMaterialByMaterialConfigId(state, 'some-3rd-material-config-id'), 'to equal', {})
     })
+
+    it('returns null if materials are not defined', () => {
+      state.material.materials = undefined
+      expect(selectMaterialByMaterialConfigId(state, 'some-material-config-id'), 'to be', null)
+    })
   })
 
   describe('selectedOfferMaterial', () => {
@@ -654,6 +777,11 @@ describe('Selector lib', () => {
         materialConfig
       })
     })
+
+    it('returns null if there is no selected offer', () => {
+      state.price.selectedOffer = undefined
+      expect(selectedOfferMaterial(state), 'to be', null)
+    })
   })
 
   describe('selectModelByModelId', () => {
@@ -662,7 +790,7 @@ describe('Selector lib', () => {
     beforeEach(() => {
       state = {
         model: {
-          models: [{modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
+          models: [{}, {modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
         }
       }
     })
@@ -689,6 +817,9 @@ describe('Selector lib', () => {
               },
               {
                 modelId: 'some-other-model-id'
+              },
+              {
+                modelId: 'some-unknown-id'
               }
             ]
           }
@@ -703,6 +834,10 @@ describe('Selector lib', () => {
             {
               modelId: 'some-other-model-id',
               thumbnailUrl: 'some-other-thumbnail-url',
+              fileName: 'some-other-model-name'
+            },
+            {
+              modelId: 'some-other-model-id',
               fileName: 'some-other-model-name'
             }
           ]
@@ -721,8 +856,14 @@ describe('Selector lib', () => {
           modelId: 'some-other-model-id',
           thumbnailUrl: 'some-other-thumbnail-url',
           fileName: 'some-other-model-name'
-        }
+        },
+        {modelId: 'some-unknown-id', thumbnailUrl: null, fileName: null}
       ])
+    })
+
+    it('returns null if there is no selected offer', () => {
+      state.price.selectedOffer = undefined
+      expect(selectOfferItems(state), 'to be', null)
     })
   })
 
@@ -818,16 +959,16 @@ describe('Selector lib', () => {
     })
   })
 
-  describe('selectLocationQuery()', () => {
+  describe('selectSearchParams()', () => {
     describe('when there is no location query', () => {
       it('returns an instance of URLSearchParams', () => {
-        const params = selectLocationQuery({})
+        const params = selectSearchParams({})
 
         expect(params instanceof URLSearchParams, 'to equal', true)
       })
 
       it('returns an empty URLSearchParams', () => {
-        const params = selectLocationQuery({})
+        const params = selectSearchParams({})
 
         expect([...params.entries()], 'to equal', [])
       })
@@ -835,13 +976,13 @@ describe('Selector lib', () => {
 
     describe('when there is a location query', () => {
       it('returns an instance of URLSearchParams', () => {
-        const params = selectLocationQuery({})
+        const params = selectSearchParams({})
 
         expect(params instanceof URLSearchParams, 'to equal', true)
       })
 
       it('returns a params object that provides access to the query params', () => {
-        const params = selectLocationQuery({
+        const params = selectSearchParams({
           routing: {
             location: {
               search: 'a&b=false&c=2'

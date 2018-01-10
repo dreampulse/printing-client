@@ -1,6 +1,6 @@
 // @flow
 
-import type {Offer} from 'App/type'
+import type {Offer} from '../type'
 
 export const getUpdatedOffer = (selectedOffer: Offer, offers: Array<Offer>) =>
   offers.find(

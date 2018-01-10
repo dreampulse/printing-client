@@ -1,9 +1,9 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import SidebarLayout from 'Component/sidebar-layout'
-import Section from 'Component/section'
-import Paragraph from 'Component/paragraph'
+import SidebarLayout from '../../src/app/component/sidebar-layout'
+import Section from '../../src/app/component/section'
+import Paragraph from '../../src/app/component/paragraph'
 
 storiesOf('Sidebar Layout', module).add('default', () => {
   const sidebar = (

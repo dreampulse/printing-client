@@ -1,11 +1,23 @@
 import {createStore, applyMiddleware, compose} from 'redux'
-import thunk from 'redux-thunk'
 import {routerMiddleware} from 'react-router-redux'
-import {track as trackMixpanel} from 'Service/mixpanel'
-import {track as trackGoogleAnalytics} from 'Service/google-analytics'
-import {ravenMiddleware} from 'Service/logging'
+import {install as installReduxLoop} from 'redux-loop'
+import {track as trackMixpanel} from './service/mixpanel'
+import {track as trackGoogleAnalytics} from './service/google-analytics'
+import {ravenMiddleware} from './service/logging'
 
 import rootReducer from './reducer'
+
+function legacyThunk({dispatch, getState}) {
+  const getLegacyState = () => getState().legacy
+
+  return next => action => {
+    if (typeof action === 'function') {
+      return action(dispatch, getLegacyState)
+    }
+
+    return next(action)
+  }
+}
 
 function trackingReduxMiddleware() {
   return next => action => {
@@ -20,22 +32,25 @@ function trackingReduxMiddleware() {
 }
 
 export default (history, initialState = {}) => {
-  let middleware = applyMiddleware(
-    thunk,
-    routerMiddleware(history),
-    trackingReduxMiddleware,
-    ravenMiddleware
+  let enhancer = compose(
+    applyMiddleware(
+      legacyThunk,
+      routerMiddleware(history),
+      trackingReduxMiddleware,
+      ravenMiddleware
+    ),
+    installReduxLoop()
   )
 
   if (process.env.NODE_ENV !== 'production') {
     /* eslint global-require: 0 */
     /* eslint import/no-extraneous-dependencies: 0 */
     // Enable redux dev-tools
-    middleware = compose(middleware, global.devToolsExtension ? global.devToolsExtension() : f => f)
+    enhancer = compose(enhancer, global.devToolsExtension ? global.devToolsExtension() : f => f)
   }
 
   // This initialState is empty, because each reducer has its own initial state
-  const store = createStore(rootReducer, initialState, middleware)
+  const store = createStore(rootReducer, initialState, enhancer)
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers

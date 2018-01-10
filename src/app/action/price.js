@@ -3,11 +3,11 @@
 import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
 
-import * as printingEngine from 'Lib/printing-engine'
-import {getUpdatedOffer, getCheapestOfferFor} from 'Lib/offer'
-import {poll, debouncedPoll, stopPoll} from 'Lib/poll'
-import {selectCurrentMaterial, selectFeatures} from 'Lib/selector'
-import {AppError} from 'Lib/error'
+import * as printingEngine from '../service/printing-engine'
+import {getUpdatedOffer, getCheapestOfferFor} from '../lib/offer'
+import {poll, debouncedPoll, stopPoll} from '../lib/poll'
+import {selectCurrentMaterialIds, selectFeatures} from '../lib/selector'
+import {AppError} from '../lib/error'
 
 import type {Offer, Price, State} from '../type'
 import TYPE, {ERROR_TYPE} from '../action-type'
@@ -52,11 +52,10 @@ export const createPriceRequest = (
 
   const state = getState()
   if (!state.material.materials) throw new Error('Materials structure missing')
-  const {model: {models}, user: {userId}} = state
-  const selectedMaterial = selectCurrentMaterial(state)
-  const {refresh} = selectFeatures(state)
+  const {model: {models}, user: {userId, currency}} = state
+  const materialConfigIds = selectCurrentMaterialIds(state)
 
-  if (!selectedMaterial) {
+  if (materialConfigIds.length === 0) {
     throw new Error('No material selected')
   }
 
@@ -67,12 +66,7 @@ export const createPriceRequest = (
     return Promise.resolve()
   }
 
-  const materialConfigIds = []
-  selectedMaterial.finishGroups.forEach(finishGroup => {
-    finishGroup.materialConfigs.forEach(materialConfig => {
-      materialConfigIds.push(materialConfig.id)
-    })
-  })
+  const {refresh} = selectFeatures(state)
   const items = models.map(model => {
     if (!model.uploadFinished) throw new Error('Upload still in progress')
     const {modelId, quantity} = model
@@ -88,7 +82,8 @@ export const createPriceRequest = (
     caching: true, // cache prices for next user
     refresh, // force refresh when requested
     userId,
-    items
+    items,
+    currency
   }
 
   const usePoll = debounce ? debouncedPoll : poll
@@ -128,7 +123,7 @@ export const createPriceRequest = (
 }
 
 export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: () => State) => {
-  const {model: {models}, price: {selectedOffer}, user: {userId}} = getState()
+  const {model: {models}, price: {selectedOffer}, user: {userId, currency}} = getState()
 
   if (!selectedOffer) throw new Error('No offer selected')
 
@@ -150,7 +145,8 @@ export const recalculateSelectedOffer = () => (dispatch: Dispatch<*>, getState: 
     caching: false, // do not cache price recalc with a single material/vendor
     vendorId: selectedOffer.printingService,
     userId,
-    items
+    items,
+    currency
   }
 
   return poll(

@@ -1,40 +1,40 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
-import {selectMaterialByMaterialConfigId, selectPrintingServiceRequests} from 'Lib/selector'
-import {getBestOfferForMaterialConfig} from 'Lib/material'
-import {formatDimensions, formatPrice, formatDeliveryTime, formatAddress} from 'Lib/formatter'
-import getCloudinaryUrl from 'Lib/cloudinary'
-import {convertPlaceToLocation} from 'Lib/geolocation'
+import {selectMaterialByMaterialConfigId, selectPrintingServiceRequests} from '../lib/selector'
+import {getBestOfferForMaterialConfig} from '../lib/material'
+import {formatDimensions, formatPrice, formatDeliveryTime, formatAddress} from '../lib/formatter'
+import getCloudinaryUrl from '../lib/cloudinary'
+import {convertPlaceToLocation} from '../lib/geolocation'
 
-import {openMaterialModal} from 'Action/modal'
-import {selectMaterialConfig} from 'Action/material'
-import {selectOffer} from 'Action/price'
-import {goToAddress} from 'Action/navigation'
-import {updateLocation} from 'Action/user'
+import {openMaterialModal} from '../action/modal'
+import {selectMaterialConfig} from '../action/material'
+import {selectOffer} from '../action/price'
+import {goToAddress} from '../action/navigation'
+import {updateLocation, updateCurrency} from '../action/user'
 
-import ConfigurationHeader from 'Component/configuration-header'
-import LabeledField from 'Component/labeled-field'
-import LocationField from 'Component/location-field'
-import SidebarLayout from 'Component/sidebar-layout'
-import PageHeader from 'Component/page-header'
-import ModelQuantityItem from 'Component/model-quantity-item'
-import ModelQuantityItemList from 'Component/model-quantity-item-list'
-import MaterialCard from 'Component/material-card'
-import Info from 'Component/info'
-import Headline from 'Component/headline'
-import Paragraph from 'Component/paragraph'
-import Price from 'Component/price'
-import SelectField from 'Component/select-field'
-import SelectMenu from 'Component/select-menu'
+import ConfigurationHeader from '../component/configuration-header'
+import LabeledField from '../component/labeled-field'
+import LocationField from '../component/location-field'
+import SidebarLayout from '../component/sidebar-layout'
+import PageHeader from '../component/page-header'
+import ModelQuantityItem from '../component/model-quantity-item'
+import ModelQuantityItemList from '../component/model-quantity-item-list'
+import MaterialCard from '../component/material-card'
+import Info from '../component/info'
+import Headline from '../component/headline'
+import Paragraph from '../component/paragraph'
+import Price from '../component/price'
+import SelectField from '../component/select-field'
+import SelectMenu from '../component/select-menu'
 
 import AppLayout from './app-layout'
-
+import {connectLegacy} from './util/connect-legacy'
 import config from '../../../config'
 
 const DirectConfigurationPage = ({
   address,
+  currency,
   models,
   selectedMaterial,
   offers,
@@ -43,7 +43,8 @@ const DirectConfigurationPage = ({
   onSelectMaterialConfig,
   onSelectOffer,
   onGoToAddress,
-  onUpdateLocation
+  onUpdateLocation,
+  onUpdateCurrency
 }) => {
   const {finishGroup, materialConfig} = selectedMaterial
   const colorValues = finishGroup.materialConfigs
@@ -65,11 +66,7 @@ const DirectConfigurationPage = ({
   const colorMenu = colorValues.length > 1 ? <SelectMenu values={colorValues} /> : undefined
   const materialPrice = (
     <Price
-      value={
-        bestOffer
-          ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
-          : undefined
-      }
+      value={bestOffer ? formatPrice(bestOffer.totalPrice, bestOffer.currency) : undefined}
       meta="incl. tax & shipping"
     />
   )
@@ -128,6 +125,9 @@ const DirectConfigurationPage = ({
     />
   )
 
+  const currencies = config.currencies
+  const selectedCurrencyValue = currencies.find(({value}) => value === currency)
+  const currencyMenu = <SelectMenu values={currencies} />
   const configurationHeader = (
     <ConfigurationHeader>
       <LabeledField label="Shipping:" modifiers={['block']}>
@@ -135,6 +135,12 @@ const DirectConfigurationPage = ({
           value={formatAddress(address)}
           googleMapsApiKey={config.googleMapsApiKey}
           onChange={place => onUpdateLocation(convertPlaceToLocation(place))}
+        />
+        <SelectField
+          menu={currencyMenu}
+          value={selectedCurrencyValue}
+          disabled={!address.countryCode}
+          onChange={({value}) => onUpdateCurrency(value)}
         />
       </LabeledField>
     </ConfigurationHeader>
@@ -162,6 +168,7 @@ const DirectConfigurationPage = ({
 
 const mapStateToProps = state => ({
   address: state.user.user.shippingAddress,
+  currency: state.user.currency,
   models: state.model.models,
   offers: state.price.offers || [],
   selectedMaterial: selectMaterialByMaterialConfigId(state, state.material.selectedMaterialConfig),
@@ -173,7 +180,8 @@ const mapDispatchToProps = {
   onSelectMaterialConfig: selectMaterialConfig,
   onSelectOffer: selectOffer,
   onGoToAddress: goToAddress,
-  onUpdateLocation: updateLocation
+  onUpdateLocation: updateLocation,
+  onUpdateCurrency: updateCurrency
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(DirectConfigurationPage)
+export default compose(connectLegacy(mapStateToProps, mapDispatchToProps))(DirectConfigurationPage)

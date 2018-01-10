@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import buildClassName from 'Lib/build-class-name'
+import buildClassName from '../lib/build-class-name'
 
 export default class InputField extends Component {
   static propTypes = {

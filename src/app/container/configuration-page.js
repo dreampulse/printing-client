@@ -1,10 +1,11 @@
 import React from 'react'
 import {compose, lifecycle, renderComponent, branch, withState} from 'recompose'
-import {connect} from 'react-redux'
 
-import {restoreConfiguration} from 'Action/configuration'
+import {restoreConfiguration} from '../action/configuration'
 
-import LoadingContainer from 'Component/loading-container'
+import LoadingContainer from '../component/loading-container'
+
+import {connectLegacy} from './util/connect-legacy'
 import ModelPage from './model-page'
 import DirectConfigurationPage from './direct-configuration-page'
 
@@ -18,7 +19,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connectLegacy(mapStateToProps, mapDispatchToProps),
   withState('isLoading', 'setIsLoading', true),
   lifecycle({
     componentWillMount() {

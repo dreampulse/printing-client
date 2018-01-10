@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName from 'Lib/build-class-name'
+import propTypes from '../lib/prop-types'
+import buildClassName from '../lib/build-class-name'
 
-import Icon from 'Component/icon'
+import Icon from './icon'
 
-import warningIcon from 'Icon/warning.svg'
+import warningIcon from '../../asset/icon/warning.svg'
 
 const Headline = ({modifiers = [], classNames, label, tag = 'h1', icon}) => {
   const finalIcon = modifiers.indexOf('warning') >= 0 ? warningIcon : icon

@@ -1,14 +1,14 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
-import PageHeader from 'Component/page-header'
-import Link from 'Component/link'
-import Section from 'Component/section'
-import Headline from 'Component/headline'
-import Paragraph from 'Component/paragraph'
-import ProviderImage from 'Component/provider-image'
+import PageHeader from '../component/page-header'
+import Link from '../component/link'
+import Section from '../component/section'
+import Headline from '../component/headline'
+import Paragraph from '../component/paragraph'
+import ProviderImage from '../component/provider-image'
 
+import {connectLegacy} from './util/connect-legacy'
 import {guard} from './util/guard'
 import AppLayout from './app-layout'
 
@@ -54,8 +54,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {}
 
 const enhance = compose(
-  guard(state => state.price.selectedOffer),
-  connect(mapStateToProps, mapDispatchToProps)
+  guard(state => state.legacy.price.selectedOffer),
+  connectLegacy(mapStateToProps, mapDispatchToProps)
 )
 
 export default enhance(CartPage)

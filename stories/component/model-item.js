@@ -2,9 +2,9 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import ModelItem from 'Component/model-item'
-import ModelItemError from 'Component/model-item-error'
-import ModelItemLoad from 'Component/model-item-load'
+import ModelItem from '../../src/app/component/model-item'
+import ModelItemError from '../../src/app/component/model-item-error'
+import ModelItemLoad from '../../src/app/component/model-item-load'
 
 storiesOf('Model Item', module)
   .add('default', () => (

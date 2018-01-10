@@ -7,7 +7,10 @@
     "expect": true,
     "sinon": true,
     "mockStore": true,
-    "testDispatch": true
+    "getModel": true,
+    "getCmd": true,
+    "findCmd": true,
+    "createLegacyStore": true
   },
   "env": {
     "mocha": true

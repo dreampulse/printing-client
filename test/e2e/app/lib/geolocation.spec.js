@@ -1,4 +1,4 @@
-import {getLocationByIp} from 'Lib/geolocation'
+import {getLocationByIp} from '../../../../src/app/lib/geolocation'
 
 describe('Geolocation e2e Test', function test() {
   this.timeout(20000)

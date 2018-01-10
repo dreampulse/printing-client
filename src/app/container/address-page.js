@@ -1,26 +1,26 @@
 import React from 'react'
 import {compose} from 'recompose'
-import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
-import {getCountriesMenu, getStateName, getStates, getCountryName} from 'Service/country'
 
-import FormLayout from 'Component/form-layout'
-import FormRow from 'Component/form-row'
-import InputField from 'Component/input-field'
-import LabeledCheckbox from 'Component/labeled-checkbox'
-import Button from 'Component/button'
-import SelectMenu from 'Component/select-menu'
-import SelectField from 'Component/select-field'
-import Headline from 'Component/headline'
-import PageHeader from 'Component/page-header'
-import Link from 'Component/link'
+import FormLayout from '../component/form-layout'
+import FormRow from '../component/form-row'
+import InputField from '../component/input-field'
+import LabeledCheckbox from '../component/labeled-checkbox'
+import Button from '../component/button'
+import SelectMenu from '../component/select-menu'
+import SelectField from '../component/select-field'
+import Headline from '../component/headline'
+import PageHeader from '../component/page-header'
+import Link from '../component/link'
 
-import backIcon from 'Icon/back.svg'
+import backIcon from '../../asset/icon/back.svg'
 
-import {reviewOrder} from 'Action/user'
-import {goToHome} from 'Action/navigation'
+import {reviewOrder} from '../action/user'
+import {goToHome} from '../action/navigation'
 
+import {getCountriesMenu, getStateName, getStates, getCountryName} from '../service//country'
 import {renderField} from './util/form'
+import {connectLegacy} from './util/connect-legacy'
 import {guard} from './util/guard'
 import AppLayout from './app-layout'
 
@@ -410,8 +410,8 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  guard(state => state.price.selectedOffer),
-  connect(mapStateToProps, mapDispatchToProps),
+  guard(state => state.legacy.price.selectedOffer),
+  connectLegacy(mapStateToProps, mapDispatchToProps),
   reduxForm({form: FORM_NAME})
 )
 

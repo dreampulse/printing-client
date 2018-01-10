@@ -1,6 +1,6 @@
 import {routerActions} from 'react-router-redux'
 
-import {createUser} from 'Action/user'
+import {createUser} from '../action/user'
 
 // Push the new path without overwriting the search-query
 const pushPath = pathname => (dispatch, getState) => {

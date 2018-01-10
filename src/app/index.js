@@ -7,7 +7,7 @@ import browserUpdate from 'browser-update'
 
 import 'babel-polyfill'
 
-import 'Service/logging'
+import './service/logging'
 
 import Store from './store'
 import Router from './router'
@@ -18,9 +18,6 @@ import {init} from './action/init'
 
 // Warn if the browser is one version behind
 browserUpdate({notify: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
-
-// Stub backend during development. Webpack will remove this in production
-if (process.env.NODE_ENV === 'development-with-stubs') require('../../test-data/server-stubs') // eslint-disable-line
 
 const history = createHistory()
 const store = Store(history)

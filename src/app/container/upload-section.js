@@ -1,27 +1,27 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 import toArray from 'lodash/toArray'
 
-import {formatDimensions} from 'Lib/formatter'
+import {formatDimensions} from '../lib/formatter'
 
-import Section from 'Component/section'
-import Grid from 'Component/grid'
-import Column from 'Component/column'
-import Headline from 'Component/headline'
-import RadioButtonGroup from 'Component/radio-button-group'
-import RadioButton from 'Component/radio-button'
-import UploadArea from 'Component/upload-area'
-import ModelItem from 'Component/model-item'
-import ModelItemLoad from 'Component/model-item-load'
-import ModelItemError from 'Component/model-item-error'
-import ModelItemList from 'Component/model-item-list'
-import LabeledField from 'Component/labeled-field'
-import Button from 'Component/button'
+import Section from '../component/section'
+import Grid from '../component/grid'
+import Column from '../component/column'
+import Headline from '../component/headline'
+import RadioButtonGroup from '../component/radio-button-group'
+import RadioButton from '../component/radio-button'
+import UploadArea from '../component/upload-area'
+import ModelItem from '../component/model-item'
+import ModelItemLoad from '../component/model-item-load'
+import ModelItemError from '../component/model-item-error'
+import ModelItemList from '../component/model-item-list'
+import LabeledField from '../component/labeled-field'
+import Button from '../component/button'
 
-import {uploadFiles, deleteFile, changeIndividualQuantity, changeUnit} from 'Action/model'
-import {createConfiguration} from 'Action/configuration'
+import {uploadFiles, deleteFile, changeIndividualQuantity, changeUnit} from '../action/model'
+import {createConfiguration} from '../action/configuration'
 
+import {connectLegacy} from './util/connect-legacy'
 import {getFeatures} from './util/feature'
 
 const UploadSection = ({
@@ -149,4 +149,6 @@ const mapDispatchToProps = {
   onCreateConfiguration: createConfiguration
 }
 
-export default compose(getFeatures, connect(mapStateToProps, mapDispatchToProps))(UploadSection)
+export default compose(getFeatures, connectLegacy(mapStateToProps, mapDispatchToProps))(
+  UploadSection
+)

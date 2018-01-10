@@ -1,13 +1,10 @@
 import createHistory from 'history/createMemoryHistory'
-
-import {detectAddress, createUser, updateUser} from 'Action/user'
-import * as navigation from 'Action/navigation'
-import * as modal from 'Action/modal'
-import * as price from 'Action/price'
-import * as printingEngine from 'Lib/printing-engine'
-import * as geolocation from 'Lib/geolocation'
-
-import Store from '../../../../src/app/store'
+import {detectAddress, createUser, updateUser} from '../../../../src/app/action/user'
+import * as navigation from '../../../../src/app/action/navigation'
+import * as modal from '../../../../src/app/action/modal'
+import * as price from '../../../../src/app/action/price'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
+import * as geolocation from '../../../../src/app/lib/geolocation'
 
 describe('User Integration Test', () => {
   let sandbox
@@ -22,7 +19,7 @@ describe('User Integration Test', () => {
     sandbox.stub(modal)
     sandbox.stub(price)
 
-    store = Store(createHistory())
+    store = createLegacyStore(createHistory())
   })
 
   afterEach(() => {
@@ -62,7 +59,7 @@ describe('User Integration Test', () => {
       const userId = '789'
       const user = {someUserInfo: 'something'}
 
-      store = Store(createHistory(), {
+      store = createLegacyStore(createHistory(), {
         user: {
           userId
         }

@@ -1,6 +1,6 @@
 // @flow
 
-import type {Action, OpenModalConfig} from 'App/type-next'
+import type {Action, OpenModalConfig} from '../type-next'
 
 type OpenModalAction = Action<'MODAL.OPEN_MODAL', OpenModalConfig>
 type CloseModalAction = Action<'MODAL.CLOSE_MODAL', void>
@@ -15,7 +15,7 @@ export const openFatalErrorModal = (error: Error): OpenModalAction =>
   openModal({
     isCloseable: false,
     content: 'FATAL_ERROR',
-    contentArgs: {
+    contentProps: {
       error
     }
   })
@@ -24,7 +24,7 @@ export const openPickLocationModal = (): OpenModalAction =>
   openModal({
     isCloseable: false,
     content: 'PICK_LOCATION',
-    contentArgs: null
+    contentProps: null
   })
 
 export const closeModal = (): CloseModalAction => ({

@@ -2,13 +2,13 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {compose, withState} from 'recompose'
 
-import propTypes from 'Lib/prop-types'
-import buildClassName from 'Lib/build-class-name'
+import propTypes from '../lib/prop-types'
+import buildClassName from '../lib/build-class-name'
 
-import Icon from 'Component/icon'
+import Icon from './icon'
 
-import plusIcon from 'Icon/plus.svg'
-import minusIcon from 'Icon/minus.svg'
+import plusIcon from '../../asset/icon/plus.svg'
+import minusIcon from '../../asset/icon/minus.svg'
 
 const NumberField = ({
   classNames,

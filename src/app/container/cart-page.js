@@ -1,34 +1,33 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
-import {getStateName, getCountryName} from 'Service/country'
-import getCloudinaryUrl from 'Lib/cloudinary'
-import {selectedOfferMaterial, selectOfferItems} from 'Lib/selector'
 import compact from 'lodash/compact'
 
-import {formatPrice} from 'Lib/formatter'
+import {getStateName, getCountryName} from '../service/country'
+import getCloudinaryUrl from '../lib/cloudinary'
+import {selectedOfferMaterial, selectOfferItems} from '../lib/selector'
+import {formatPrice} from '../lib/formatter'
 
-import PageHeader from 'Component/page-header'
-import Link from 'Component/link'
-import SidebarLayout from 'Component/sidebar-layout'
-import Section from 'Component/section'
-import Headline from 'Component/headline'
-import Button from 'Component/button'
-import Grid from 'Component/grid'
-import Column from 'Component/column'
-import Paragraph from 'Component/paragraph'
-import ProviderImage from 'Component/provider-image'
-import PaymentSection from 'Component/payment-section'
-import ModelQuantityItem from 'Component/model-quantity-item'
-import ModelQuantityItemList from 'Component/model-quantity-item-list'
-import ColorSquare from 'Component/color-square'
-import LoadingIndicator from 'Component/loading-indicator'
-import PaypalButton from 'Component/paypal-button'
+import PageHeader from '../component/page-header'
+import Link from '../component/link'
+import SidebarLayout from '../component/sidebar-layout'
+import Section from '../component/section'
+import Headline from '../component/headline'
+import Button from '../component/button'
+import Grid from '../component/grid'
+import Column from '../component/column'
+import Paragraph from '../component/paragraph'
+import ProviderImage from '../component/provider-image'
+import PaymentSection from '../component/payment-section'
+import ModelQuantityItem from '../component/model-quantity-item'
+import ModelQuantityItemList from '../component/model-quantity-item-list'
+import ColorSquare from '../component/color-square'
+import LoadingIndicator from '../component/loading-indicator'
+import PaypalButton from '../component/paypal-button'
 
-import backIcon from 'Icon/back.svg'
-import creditCardIcon from 'Icon/credit-card.svg'
+import backIcon from '../../asset/icon/back.svg'
+import creditCardIcon from '../../asset/icon/credit-card.svg'
 
-import {goToAddress, goToHome, goToSuccess} from 'Action/navigation'
+import {goToAddress, goToHome, goToSuccess} from '../action/navigation'
 import {
   payWithStripe,
   createOrderWithStripe,
@@ -36,12 +35,13 @@ import {
   createOrderWithPaypal,
   payWithInvoice,
   createOrderWithInvoice
-} from 'Action/order'
-import {openFatalErrorModal} from 'Action/modal'
+} from '../action/order'
+import {openFatalErrorModal} from '../action/modal'
 
 import {guard} from './util/guard'
 import {getFeatures} from './util/feature'
 import AppLayout from './app-layout'
+import {connectLegacy} from './util/connect-legacy'
 
 const CartPage = ({
   user,
@@ -292,9 +292,9 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  guard(state => state.price.selectedOffer),
+  guard(state => state.legacy.price.selectedOffer),
   getFeatures,
-  connect(mapStateToProps, mapDispatchToProps)
+  connectLegacy(mapStateToProps, mapDispatchToProps)
 )
 
 export default enhance(CartPage)

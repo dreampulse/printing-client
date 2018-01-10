@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import NumberField from 'Component/number-field'
+import NumberField from '../../src/app/component/number-field'
 import HandleValue from '../util/handle-value'
 
 storiesOf('Number Field', module)

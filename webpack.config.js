@@ -33,19 +33,6 @@ module.exports = {
     // As a result, their source folders are merged with ours which can be confusing
     devtoolModuleFilenameTemplate: '/all3dp/printing-engine-client/[resource-path]'
   },
-  resolve: {
-    alias: {
-      Image: path.resolve(projectRoot, './src/asset/image'),
-      Icon: path.resolve(projectRoot, './src/asset/icon'),
-      Action: path.resolve(projectRoot, './src/app/action'),
-      Component: path.resolve(projectRoot, './src/app/component'),
-      Container: path.resolve(projectRoot, './src/app/container'),
-      Lib: path.resolve(projectRoot, './src/app/lib'),
-      Reducer: path.resolve(projectRoot, './src/app/reducer'),
-      Service: path.resolve(projectRoot, './src/app/service'),
-      App: path.resolve(projectRoot, './src/app')
-    }
-  },
   module: {
     // Throw an error in production build if an export can be found
     // See https://github.com/webpack/webpack/pull/4348

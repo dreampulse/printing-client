@@ -1,4 +1,4 @@
-import reducer from 'Reducer/configuration'
+import reducer from '../../../../src/app/reducer/configuration'
 import TYPE from '../../../../src/app/action-type'
 
 describe('Configuration reducer', () => {

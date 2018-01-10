@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import StickyContainer from 'Component/sticky-container'
+import StickyContainer from '../../src/app/component/sticky-container'
 
 storiesOf('Sticky Container', module).add('default', () => (
   <div style={{height: '1000px'}}>

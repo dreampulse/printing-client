@@ -4,8 +4,8 @@ import type {Dispatch} from 'redux'
 import cloneDeep from 'lodash/cloneDeep'
 import {createAction} from 'redux-actions'
 
-import * as printingEngine from 'Lib/printing-engine'
-import {generateMaterialIds} from 'Lib/material'
+import * as printingEngine from '../service/printing-engine'
+import {generateMaterialIds} from '../lib/material'
 
 import type {Materials} from '../type'
 import TYPE from '../action-type'
@@ -38,6 +38,7 @@ export const selectMaterial = (materialId: string) => async (dispatch: Dispatch<
 
   await dispatch(createPriceRequest())
 }
+
 export const getMaterials = () => async (dispatch: Dispatch<*>) => {
   const materials = cloneDeep(await printingEngine.listMaterials())
   generateMaterialIds(materials.materialStructure)

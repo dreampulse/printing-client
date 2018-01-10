@@ -1,23 +1,23 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
-import {buildClassArray} from 'Lib/build-class-name'
-import {selectOffersForSelectedMaterialConfig, selectMaterialByMaterialConfigId} from 'Lib/selector'
-import {formatPrice, formatDeliveryTime} from 'Lib/formatter'
+import {buildClassArray} from '../lib/build-class-name'
+import {selectOffersForSelectedMaterialConfig, selectMaterialByMaterialConfigId} from '../lib/selector'
+import {formatPrice, formatShipping, formatDeliveryTime} from '../lib/formatter'
 
-import Section from 'Component/section'
-import Headline from 'Component/headline'
-import ProviderList from 'Component/provider-list'
-import ProviderItem from 'Component/provider-item'
-import Button from 'Component/button'
-import Info from 'Component/info'
-import Paragraph from 'Component/paragraph'
+import Section from '../component/section'
+import Headline from '../component/headline'
+import ProviderList from '../component/provider-list'
+import ProviderItem from '../component/provider-item'
+import Button from '../component/button'
+import Info from '../component/info'
+import Paragraph from '../component/paragraph'
 
-import {selectOffer} from 'Action/price'
-import {goToAddress} from 'Action/navigation'
-import {createConfiguration} from 'Action/configuration'
+import {selectOffer} from '../action/price'
+import {goToAddress} from '../action/navigation'
+import {createConfiguration} from '../action/configuration'
 
+import {connectLegacy} from './util/connect-legacy'
 import {getFeatures} from './util/feature'
 
 const ProviderSection = ({
@@ -65,10 +65,10 @@ const ProviderSection = ({
           process={getOfferProcess(offer)}
           provider={offer.printingService}
           providerInfo={getProviderInfo(offer)}
-          price={formatPrice(offer.subTotalPrice, offer.currency, offer.priceEstimated)}
+          price={formatPrice(offer.totalPrice, offer.currency)}
           deliveryTime={formatDeliveryTime(offer.shipping.deliveryTime)}
           deliveryProvider={offer.shipping.name}
-          shipping={formatPrice(offer.shipping.price, offer.currency)}
+          shipping={formatShipping(offer.shipping)}
           onCheckoutClick={() => {
             onSelectOffer(offer)
             onGoToAddress()
@@ -109,4 +109,6 @@ const mapDispatchToProps = {
   onCreateConfiguration: createConfiguration
 }
 
-export default compose(getFeatures, connect(mapStateToProps, mapDispatchToProps))(ProviderSection)
+export default compose(getFeatures, connectLegacy(mapStateToProps, mapDispatchToProps))(
+  ProviderSection
+)

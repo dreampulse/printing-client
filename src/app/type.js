@@ -1,5 +1,7 @@
 // @flow
 
+import type {UtmParams} from './lib/search-params'
+
 export type Address = {
   firstName: string,
   lastName: string,
@@ -13,7 +15,6 @@ export type Address = {
 }
 
 export type User = {
-  currency: string,
   shippingAddress: Address,
   emailAddress: string,
   isCompany: boolean,
@@ -167,7 +168,9 @@ export type Features = {
 
 export type UserState = {
   userId: ?string,
-  user: User
+  user: User,
+  utmParams: UtmParams,
+  currency: string
 }
 
 export type OrderState = {
@@ -217,8 +220,13 @@ export type ConfigurationState = {
 
 export type MaterialState = {
   materials: ?Materials,
-  selectedMaterial?: string, // The material-Dropdown sets this generated materialConfig-id
-  selectedMaterialConfig?: string, // This is the id of the selected material config
+  // This value reflects the material selection from the material dropdown
+  selectedMaterial?: string,
+  // This value reflects the actual user selection after the user
+  // clicked the 'Select' button on a material card
+  selectedMaterialConfig?: string,
+  // This object stores the current color selection for each material card.
+  // It does not reflect the final user selection.
   selectedMaterialConfigs?: any
 }
 

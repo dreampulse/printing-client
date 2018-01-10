@@ -1,22 +1,23 @@
 import React from 'react'
-import {connect} from 'react-redux'
 
-import {selectMaterial, selectFinishGroup} from 'Lib/selector'
-import getCloudinaryUrl from 'Lib/cloudinary'
+import {selectMaterial, selectFinishGroup} from '../../lib/selector'
+import getCloudinaryUrl from '../../lib/cloudinary'
 
-import {close} from 'Action/modal'
+import {close} from '../../action/modal'
 
-import Button from 'Component/button'
-import Overlay from 'Component/overlay'
-import Headline from 'Component/headline'
-import Paragraph from 'Component/paragraph'
-import StarRating from 'Component/star-rating'
-import Checked from 'Component/checked'
-import FeatureList from 'Component/feature-list'
-import FeatureListItem from 'Component/feature-list-item'
-import Grid from 'Component/grid'
-import Column from 'Component/column'
-import Image from 'Component/image'
+import Button from '../../component/button'
+import Overlay from '../../component/overlay'
+import Headline from '../../component/headline'
+import Paragraph from '../../component/paragraph'
+import StarRating from '../../component/star-rating'
+import Checked from '../../component/checked'
+import FeatureList from '../../component/feature-list'
+import FeatureListItem from '../../component/feature-list-item'
+import Grid from '../../component/grid'
+import Column from '../../component/column'
+import Image from '../../component/image'
+
+import {connectLegacy} from '../util/connect-legacy'
 
 const MaterialModal = ({material, finishGroup, onClose}) => {
   const headline = <Headline label={material.name} modifiers={['l']} />
@@ -91,4 +92,4 @@ const mapDispatchToProps = {
   onClose: close
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MaterialModal)
+export default connectLegacy(mapStateToProps, mapDispatchToProps)(MaterialModal)

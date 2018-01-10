@@ -1,8 +1,8 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import Grid from 'Component/grid'
-import Column from 'Component/column'
+import Grid from '../../src/app/component/grid'
+import Column from '../../src/app/component/column'
 
 storiesOf('Grid & Column', module).add('default', () => (
   <Grid>

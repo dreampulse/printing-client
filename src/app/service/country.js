@@ -1,3 +1,4 @@
+// TODO: split this file into a config part and a lib and test it!
 import createCountryList from 'country-list'
 
 const usStates = {
@@ -123,6 +124,22 @@ const jpStates = {
   '06': 'Yamagata'
 }
 
+const caStates = {
+  AB: 'Alberta',
+  BC: 'British Columbia',
+  MB: 'Manitoba',
+  NB: 'New Brunswick',
+  NL: 'Newfoundland and Labrador',
+  NS: 'Nova Scotia',
+  NT: 'Northwest Territories',
+  NU: 'Nunavut',
+  ON: 'Ontario',
+  PE: 'Prince Edward Island',
+  QC: 'Québec',
+  SK: 'Saskatchewan',
+  YT: 'Yukon'
+}
+
 const countryList = createCountryList()
 
 export function getCountriesMenu() {
@@ -151,6 +168,8 @@ export function getStateName(countryCode, stateCode) {
       return auStates[stateCode]
     case 'JP':
       return jpStates[stateCode]
+    case 'CA':
+      return caStates[stateCode]
     default:
       return null
   }
@@ -164,6 +183,8 @@ export function getStates(countryCode) {
       return getStateList(auStates)
     case 'JP':
       return getStateList(jpStates)
+    case 'CA':
+      return getStateList(caStates)
     default:
       return null
   }

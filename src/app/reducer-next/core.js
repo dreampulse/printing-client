@@ -1,24 +1,17 @@
 // @flow
 
 import {loop, Cmd} from 'redux-loop'
-import cloneDeep from 'lodash/cloneDeep'
-
-import {listMaterials} from 'App/lib/printing-engine'
-import {generateMaterialIds} from 'App/lib/material'
-import type {Model, UploadingModel, MaterialGroup} from 'App/type-next'
-import type {AppAction} from 'App/action-next'
-import * as core from 'App/action-next/core'
-import * as modal from 'App/action-next/modal'
+import {listMaterials} from '../service/printing-engine'
+import type {MaterialGroup} from '../type-next'
+import type {AppAction} from '../action-next'
+import * as core from '../action-next/core'
+import * as modal from '../action-next/modal'
 
 export type CoreState = {
-  models: Array<Model>,
-  uploadingModels: Array<UploadingModel>,
-  materialGroups: Array<MaterialGroup>
+  materialGroups: Array<MaterialGroup> // This is the material-structure-Tree
 }
 
 const initialState: CoreState = {
-  models: [],
-  uploadingModels: [],
   materialGroups: []
 }
 
@@ -26,22 +19,16 @@ const loadMaterialGroups = (state, action) =>
   loop(
     state,
     Cmd.run(listMaterials, {
-      successActionCreator: core.updateMaterialGroups,
-      failActionCreator: (err: Error) => modal.openFatalErrorModal(err),
-      args: []
+      args: [],
+      successActionCreator: res => core.updateMaterialGroups(res.materialStructure),
+      failActionCreator: modal.openFatalErrorModal
     })
   )
 
-const updateMaterialGroups = (state, action) => {
-  const materialGroups = cloneDeep(action.payload)
-
-  generateMaterialIds(materialGroups)
-
-  return {
-    ...state,
-    materialGroups
-  }
-}
+const updateMaterialGroups = (state, action) => ({
+  ...state,
+  materialGroups: action.payload
+})
 
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {

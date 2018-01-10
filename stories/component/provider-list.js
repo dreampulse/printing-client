@@ -2,11 +2,11 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import ProviderList from 'Component/provider-list'
-import ProviderItem from 'Component/provider-item'
-import Info from 'Component/info'
-import Headline from 'Component/headline'
-import Paragraph from 'Component/paragraph'
+import ProviderList from '../../src/app/component/provider-list'
+import ProviderItem from '../../src/app/component/provider-item'
+import Info from '../../src/app/component/info'
+import Headline from '../../src/app/component/headline'
+import Paragraph from '../../src/app/component/paragraph'
 
 const providerInfo = (
   <Info modifiers={['minor']}>

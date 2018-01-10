@@ -1,26 +1,28 @@
 {
-    "check-coverage": true,
-    "per-file": false,
-    "sourceMap": false,
-    "instrument": false,
-    "cache": true,
-    "statements": 80,
-    "branches": 80,
-    "functions": 80,
-    "lines": 80,
-    "include": [
-      "src/**/*.js"
-    ],
-    "exclude": [
-      "src/app/*.js",
-      "src/app/service/*.js"
-    ],
-    "reporter": [
-      "text",
-      "lcov",
-      "html"
-    ],
-    "extension": [
-      ".js"
-    ]
+  "check-coverage": true,
+  "per-file": false,
+  "sourceMap": false,
+  "instrument": false,
+  "cache": true,
+  "statements": 100,
+  "branches": 100,
+  "functions": 100,
+  "lines": 100,
+  "include": [
+    "src/**/*.js"
+  ],
+  "exclude": [
+    "src/app/*.js",
+    "src/app/service/*.js",
+    "src/app/action/*.js",
+    "src/app/reducer/*.js"
+  ],
+  "reporter": [
+    "text",
+    "lcov",
+    "html"
+  ],
+  "extension": [
+    ".js"
+  ]
 }

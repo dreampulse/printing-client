@@ -17,14 +17,14 @@ There are various commands available via NPM for use during development and to c
 - `npm run build`: Build the production version of the source code into `/dist`.
 - `npm run start` : Starts a production webserver with the distribution build.
 - `npm run start:dev` : Starts a development server with hot reloading.
-- `npm run start:dev:stubs` : Starts a development server with hot reloading and stubs the API.
 - `npm run start:storybook` : Starts react storybook.
-- `npm run test`: Lint the source code and run all available tests cases (unit tests, integration tests and e2e tests).
-- `npm run test:coverage`: Run unit and integration tests and collect coverage Information.
+- `npm run test`: Lint the source code and run all available tests cases (unit tests, integration tests and e2e tests) and collect coverage information.
+- `npm run test:dev`: Run unit tests without test coverage.
 - `npm run test:dev:watch`: Run unit tests in watch mode.
 - `npm run changes`: Show current changes which will go into next release.
 - `npm run release [<newversion> | major | minor | patch | prerelease]`: Create a new release by increasing the version number. Changelog is generated automatically from pull requests.
 - `npm run prettier`: Update the code to our code syntax rules.
+- `npm run update-types`: Update flow types. Especially necessary when requiring new external packages in source code.
 
 ## Start Dist Build
 

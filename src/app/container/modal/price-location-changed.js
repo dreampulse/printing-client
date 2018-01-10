@@ -1,14 +1,15 @@
 import React from 'react'
-import {connect} from 'react-redux'
 
-import Overlay from 'Component/overlay'
-import Headline from 'Component/headline'
-import RichText from 'Component/rich-text'
-import Button from 'Component/button'
+import Overlay from '../../component/overlay'
+import Headline from '../../component/headline'
+import RichText from '../../component/rich-text'
+import Button from '../../component/button'
 
-import {getCountryName} from 'Service/country'
+import {getCountryName} from '../../service/country'
 
-import {goToCart} from 'Action/navigation'
+import {goToCart} from '../../action/navigation'
+
+import {connectLegacy} from '../util/connect-legacy'
 
 const PriceLocationChangedModal = ({oldShippingAddress, newShippingAddress, onClose}) => {
   const headline = <Headline label="Prices have changed" modifiers={['l', 'warning']} />
@@ -47,4 +48,4 @@ const mapDispatchToProps = {
   onClose: goToCart
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PriceLocationChangedModal)
+export default connectLegacy(mapStateToProps, mapDispatchToProps)(PriceLocationChangedModal)

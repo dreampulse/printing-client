@@ -1,18 +1,18 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {compose} from 'recompose'
 
-import App from 'Component/app'
-import StickyContainer from 'Component/sticky-container'
-import Container from 'Component/container'
-import Header from 'Component/header'
-import ProcessStepBar from 'Component/process-step-bar'
-import ProcessStep from 'Component/process-step'
-import Footer from 'Component/footer'
-import Link from 'Component/link'
+import App from '../component/app'
+import StickyContainer from '../component/sticky-container'
+import Container from '../component/container'
+import NavBar from '../component/nav-bar'
+import ProcessStepBar from '../component/process-step-bar'
+import ProcessStep from '../component/process-step'
+import Footer from '../component/footer'
+import Link from '../component/link'
 
-import {goToHome, goToAddress} from 'Action/navigation'
+import {goToHome, goToAddress} from '../action/navigation'
 
+import {connectLegacy} from './util/connect-legacy'
 import Modal from './modal'
 
 const AppLayout = ({
@@ -43,9 +43,9 @@ const AppLayout = ({
     </ProcessStepBar>
   )
   const header = (
-    <Header key="header" onClickIdentity={onGoToHome}>
+    <NavBar key="header" onClickIdentity={onGoToHome}>
       {currentStep >= 0 ? processStepBar : <div />}
-    </Header>
+    </NavBar>
   )
 
   const footer = (
@@ -85,6 +85,6 @@ const mapDispatchToProps = {
   onGoToAddress: goToAddress
 }
 
-const enhance = compose(connect(mapStateToProps, mapDispatchToProps))
+const enhance = compose(connectLegacy(mapStateToProps, mapDispatchToProps))
 
 export default enhance(AppLayout)

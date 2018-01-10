@@ -1,7 +1,7 @@
-import {createConfiguration, restoreConfiguration} from 'Action/configuration'
-import * as printingEngine from 'Lib/printing-engine'
-import * as location from 'Service/location'
-import * as priceActions from 'Action/price'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
+import * as location from '../../../../src/app/service/location'
+import * as priceActions from '../../../../src/app/action/price'
+import {createConfiguration, restoreConfiguration} from '../../../../src/app/action/configuration'
 
 describe('Configuration actions', () => {
   let initialStoreData
@@ -68,7 +68,7 @@ describe('Configuration actions', () => {
           payload: {method: 'push', args: ['/configuration/some-configuration-id']}
         },
         {
-          type: 'DIRECT_SALES.CREATE_CONFIGURATION',
+          type: 'LEGACY.DIRECT_SALES.CREATE_CONFIGURATION',
           payload: 'http://example.com/configuration/some-configuration-id'
         }
       ])
@@ -98,7 +98,7 @@ describe('Configuration actions', () => {
           payload: {method: 'push', args: ['/configuration/some-configuration-id']}
         },
         {
-          type: 'DIRECT_SALES.CREATE_CONFIGURATION',
+          type: 'LEGACY.DIRECT_SALES.CREATE_CONFIGURATION',
           payload: 'http://example.com/configuration/some-configuration-id'
         }
       ])
@@ -131,15 +131,20 @@ describe('Configuration actions', () => {
     })
 
     it('dispatches expected actions', async () => {
-      printingEngine.getConfiguration
-        .withArgs('some-configuration-id')
-        .returns('some-configuration')
+      const configMock = {
+        materialConfigId: 'material-1'
+      }
+      printingEngine.getConfiguration.withArgs('some-configuration-id').returns(configMock)
 
       await store.dispatch(restoreConfiguration('some-configuration-id', features))
       expect(store.getActions(), 'to equal', [
         {
-          type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
-          payload: 'some-configuration'
+          type: 'LEGACY.DIRECT_SALES.RESTORE_CONFIGURATION',
+          payload: configMock
+        },
+        {
+          type: 'LEGACY.MATERIAL.CONFIG_SELECTED',
+          payload: 'material-1'
         },
         {
           type: 'some-create-price-request-action'
@@ -163,7 +168,7 @@ describe('Configuration actions', () => {
       await store.dispatch(restoreConfiguration('some-configuration-id', features))
       expect(store.getActions(), 'to equal', [
         {
-          type: 'DIRECT_SALES.RESTORE_CONFIGURATION',
+          type: 'LEGACY.DIRECT_SALES.RESTORE_CONFIGURATION',
           payload: 'some-configuration'
         }
       ])

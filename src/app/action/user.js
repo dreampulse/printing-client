@@ -2,11 +2,13 @@
 
 import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
-import {getLocationByIp, isAddressValid} from 'Lib/geolocation'
-import * as printingEngine from 'Lib/printing-engine'
-import {identify, peopleSet} from 'Service/mixpanel'
-import {setUserContext} from 'Service/logging'
-import {normalizeTelephoneNumber} from 'Lib/normalize'
+
+import * as printingEngine from '../service/printing-engine'
+import {identify, peopleSet} from '../service/mixpanel'
+import {setUserContext} from '../service/logging'
+import {normalizeTelephoneNumber} from '../lib/normalize'
+import {getLocationByIp, isAddressValid} from '../lib/geolocation'
+import * as searchParams from '../lib/search-params'
 
 import type {Address, User, State} from '../type'
 import type {Location} from '../type-next'
@@ -29,6 +31,10 @@ const shippingAddressChanged = createAction(
 )
 const userCreated = createAction(TYPE.USER.CREATED, (userId: string) => ({userId}))
 const userUpdated = createAction(TYPE.USER.UPDATED, (user: User) => user)
+const currencyChanged = createAction(TYPE.USER.CURRENCY_CHANGED, (currency: string) => currency)
+export const setUtmParams = createAction(TYPE.USER.UTM_PARAMS_SET, () =>
+  searchParams.getUtmParams()
+)
 
 // Async actions
 
@@ -73,6 +79,15 @@ export const updateLocation = (address: Address) => async (
     // Update prices
     dispatch(createPriceRequest())
   }
+}
+
+export const updateCurrency = (currency: string) => (
+  dispatch: Dispatch<any>,
+  getState: () => State
+) => {
+  dispatch(currencyChanged(currency))
+  // Update prices
+  dispatch(createPriceRequest())
 }
 
 // @TODO update type

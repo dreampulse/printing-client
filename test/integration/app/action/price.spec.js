@@ -1,8 +1,6 @@
 import createHistory from 'history/createMemoryHistory'
-
-import {createPriceRequest, refreshSelectedOffer} from 'Action/price'
-import * as printingEngine from 'Lib/printing-engine'
-import Store from '../../../../src/app/store'
+import {createPriceRequest, refreshSelectedOffer} from '../../../../src/app/action/price'
+import * as printingEngine from '../../../../src/app/service/printing-engine'
 
 describe('Price Integration Test', () => {
   let sandbox
@@ -40,7 +38,7 @@ describe('Price Integration Test', () => {
     })
 
     it('refreshes selected offer', async () => {
-      store = Store(createHistory(), state)
+      store = createLegacyStore(createHistory(), state)
       await store.dispatch(refreshSelectedOffer())
 
       expect(store.getState().price, 'to satisfy', {
@@ -147,7 +145,7 @@ describe('Price Integration Test', () => {
     })
 
     it('handles price request and updates selected offer', async () => {
-      store = Store(createHistory(), state)
+      store = createLegacyStore(createHistory(), state)
       await store.dispatch(createPriceRequest())
 
       expect(printingEngine.createPriceRequest, 'was called with', {
@@ -192,7 +190,7 @@ describe('Price Integration Test', () => {
       const error = new Error('some-error')
       printingEngine.getPriceWithStatus.rejects(error)
 
-      store = Store(createHistory(), state)
+      store = createLegacyStore(createHistory(), state)
       return store.dispatch(createPriceRequest()).catch(() => {
         expect(store.getState().price, 'to satisfy', {
           priceId: null,
