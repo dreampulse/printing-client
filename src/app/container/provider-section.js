@@ -69,7 +69,7 @@ const ProviderSection = ({
           price={formatPrice(offer.totalPrice, offer.currency)}
           deliveryTime={formatDeliveryTime(offer.shipping.deliveryTime)}
           deliveryProvider={offer.shipping.name}
-          shipping={formatPrice(offer.shipping.price, offer.currency)}
+          shippingPrice={formatPrice(offer.shipping.price, offer.currency)}
           onCheckoutClick={() => {
             onSelectOffer(offer)
             onGoToAddress()
