@@ -49,7 +49,7 @@ const MaterialSection = ({
     const bestOffer = getBestOfferForMaterial(offers, material)
     const price = (
       <Price
-        value={bestOffer ? formatPrice(bestOffer.totalPrice, bestOffer.currency) : undefined}
+        value={bestOffer ? formatPrice(bestOffer.subTotalPrice, bestOffer.currency) : undefined}
         prefix="From"
       />
     )

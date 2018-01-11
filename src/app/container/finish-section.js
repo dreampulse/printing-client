@@ -70,7 +70,7 @@ const FinishSection = ({
       <Price
         value={
           bestOffer
-            ? formatPrice(bestOffer.totalPrice, bestOffer.currency, bestOffer.priceEstimated)
+            ? formatPrice(bestOffer.subTotalPrice, bestOffer.currency, bestOffer.priceEstimated)
             : undefined
         }
         prefix="From"
