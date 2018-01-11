@@ -60,13 +60,13 @@ const ProviderSection = ({
 
   const renderProviderList = () => (
     <ProviderList>
-      {offers.sort((a, b) => a.totalPrice > b.totalPrice).map(offer => (
+      {offers.sort((a, b) => a.subTotalPrice > b.subTotalPrice).map(offer => (
         <ProviderItem
           key={offer.offerId}
           process={getOfferProcess(offer)}
           provider={offer.printingService}
           providerInfo={getProviderInfo(offer)}
-          price={formatPrice(offer.totalPrice, offer.currency)}
+          price={formatPrice(offer.subTotalPrice, offer.currency)}
           deliveryTime={formatDeliveryTime(offer.shipping.deliveryTime)}
           deliveryProvider={offer.shipping.name}
           shippingPrice={formatPrice(offer.shipping.price, offer.currency)}
