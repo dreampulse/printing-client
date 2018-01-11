@@ -17,11 +17,13 @@
     white-space: nowrap;
 
     & > .provider-image {
-      display: inline-block;
+      float: left;
+      display: block;
       max-width: 165px; // This should fit next to info box
     }
 
     & > .info {
+      display: block;
       position: relative;
       margin-top: .3em;
       margin-left: 0.5em;

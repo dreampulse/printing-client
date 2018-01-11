@@ -1,7 +1,6 @@
 import {
   formatPrice,
   formatDeliveryTime,
-  formatShipping,
   formatAddress,
   formatDimensions
 } from '../../../../src/app/lib/formatter'
@@ -51,24 +50,6 @@ describe('formatDeliveryTime()', () => {
 
   it('returns formatted string for other than single day delivery', () => {
     expect(formatDeliveryTime('2-5'), 'to equal', '2-5 days')
-  })
-})
-
-describe('formatShipping()', () => {
-  it('returns formatted string', () => {
-    expect(
-      formatShipping({name: 'Standard', deliveryTime: '2-5'}),
-      'to equal',
-      'Standard (2-5 days)'
-    )
-  })
-
-  it('returns formatted display name', () => {
-    expect(
-      formatShipping({name: 'UPS Standard', deliveryTime: '2-5'}),
-      'to equal',
-      'UPS Standard (2-5 days)'
-    )
   })
 })
 
