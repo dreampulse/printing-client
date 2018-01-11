@@ -15,7 +15,7 @@ const ProviderItem = ({
   modifiers,
   provider,
   price,
-  shipping,
+  shippingPrice,
   process,
   deliveryTime,
   deliveryProvider,
@@ -29,7 +29,7 @@ const ProviderItem = ({
     </td>
     <td className="provider-item__process">{process}</td>
     <td className="provider-item__price">{price}</td>
-    <td className="provider-item__shipping">{shipping}</td>
+    <td className="provider-item__shipping-price">{shippingPrice}</td>
     <td className="provider-item__delivery">
       <DeliveryInformation duration={deliveryTime} provider={deliveryProvider} />
     </td>
@@ -48,7 +48,7 @@ ProviderItem.propTypes = {
   ...propTypes.component,
   provider: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
-  shipping: PropTypes.string.isRequired,
+  shippingPrice: PropTypes.string.isRequired,
   onCheckoutClick: PropTypes.func.isRequired,
   process: PropTypes.string.isRequired,
   deliveryTime: PropTypes.string.isRequired,

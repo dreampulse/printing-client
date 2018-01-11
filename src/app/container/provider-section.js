@@ -6,7 +6,7 @@ import {
   selectOffersForSelectedMaterialConfig,
   selectMaterialByMaterialConfigId
 } from '../lib/selector'
-import {formatPrice, formatShipping, formatDeliveryTime} from '../lib/formatter'
+import {formatPrice, formatDeliveryTime} from '../lib/formatter'
 
 import Section from '../component/section'
 import Headline from '../component/headline'
@@ -69,7 +69,7 @@ const ProviderSection = ({
           price={formatPrice(offer.totalPrice, offer.currency)}
           deliveryTime={formatDeliveryTime(offer.shipping.deliveryTime)}
           deliveryProvider={offer.shipping.name}
-          shipping={formatShipping(offer.shipping)}
+          shippingPrice={formatPrice(offer.shipping.price, offer.currency)}
           onCheckoutClick={() => {
             onSelectOffer(offer)
             onGoToAddress()
