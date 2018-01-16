@@ -14,7 +14,7 @@ import SelectMenu from '../../component/select-menu'
 import {formatAddress} from '../../lib/formatter'
 import {isAddressValid, convertPlaceToLocation} from '../..//lib/geolocation'
 
-import {updateLocation, updateCurrency} from '../../action/user'
+import {updateLocationWithCurrency} from '../../action/user'
 import {close} from '../../action/modal'
 
 import {connectLegacy} from '../util/connect-legacy'
@@ -26,13 +26,12 @@ const ShippingAddressModal = ({
   setAddress,
   currency,
   setCurrency,
-  onUpdateLocation,
-  onUpdateCurrency,
+  onUpdateLocationWithCurrency,
   onClose
 }) => {
   const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
-  const currencyMenu = <SelectMenu values={currencies || []} />
+  const currencyMenu = <SelectMenu values={currencies} />
 
   const headline = <Headline label="Shipping address required" modifiers={['l']} />
   const buttons = [
@@ -40,8 +39,7 @@ const ShippingAddressModal = ({
       label="OK"
       disabled={!isAddressValid(address) || !currency}
       onClick={() => {
-        onUpdateLocation(address)
-        onUpdateCurrency(currency)
+        onUpdateLocationWithCurrency(address, currency)
         onClose()
       }}
     />
@@ -80,8 +78,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onUpdateLocation: updateLocation,
-  onUpdateCurrency: updateCurrency,
+  onUpdateLocationWithCurrency: updateLocationWithCurrency,
   onClose: close
 }
 

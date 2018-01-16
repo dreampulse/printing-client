@@ -85,6 +85,13 @@ export const updateCurrency = (currency: string) => (dispatch: Dispatch<any>) =>
   dispatch(createPriceRequest())
 }
 
+export const updateLocationWithCurrency = (address: Address, currency: string) => async (
+  dispatch: Dispatch<any>
+) => {
+  dispatch(currencyChanged(currency))
+  await dispatch(updateLocation(address))
+}
+
 // @TODO update type
 export const reviewOrder = (form: any) => async (dispatch: Dispatch<*>, getState: () => State) => {
   const user = getState().user.user
