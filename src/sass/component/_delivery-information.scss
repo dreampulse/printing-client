@@ -1,0 +1,15 @@
+.delivery-information {
+  &__duration {
+    @include scut-truncate();
+    color: $color-text;
+    font-size: $font-size-l;
+    display: block;
+  }
+
+  &__provider {
+    @include scut-truncate();
+    color: $color-minor;
+    font-size: $font-size-s;
+    display: block;
+  }
+}

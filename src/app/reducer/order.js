@@ -14,15 +14,15 @@ function handleOrderOrdered(state, {payload: {orderId, orderNumber}}) {
   return {
     ...state,
     orderId,
-    orderNumber,
-    orderInProgress: false
+    orderNumber
   }
 }
 
 function handleOrderPayed(state, {payload: {paymentToken}}) {
   return {
     ...state,
-    paymentToken
+    paymentToken,
+    orderInProgress: false
   }
 }
 

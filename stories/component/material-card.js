@@ -14,7 +14,7 @@ import HandleValue from '../util/handle-value'
 import {selectMenuColorValues} from '../util/data'
 
 const colorMenu = <SelectMenu values={selectMenuColorValues} />
-const price = <Price value="$19.99" meta="incl. tax & shipping" />
+const price = <Price value="$19.99" prefix="From" />
 const colorSelect = (
   <HandleValue>
     <SelectField modifiers={['compact']} placeholder="Placeholder" menu={colorMenu} />
@@ -32,12 +32,21 @@ storiesOf('Material Card', module)
   .add('default', () => (
     <MaterialCard
       title="Polyamide"
-      shipping="2-5 days, no express"
-      subline="Solid, raw"
       description="Best all-round material"
       price={price}
       info={info}
-      image="http://placehold.it/260x170/ff0000"
+      image="http://placehold.it/260x170/cccccc"
+      onMoreClick={action('onMoreClick')}
+      onSelectClick={action('onSelectClick')}
+    />
+  ))
+  .add('with colorSelect', () => (
+    <MaterialCard
+      modifiers={['tall']}
+      title="Polyamide"
+      description="Best all-round material"
+      price={price}
+      image="http://placehold.it/260x170/cccccc"
       onMoreClick={action('onMoreClick')}
       colorSelect={colorSelect}
       onSelectClick={action('onSelectClick')}
@@ -46,27 +55,21 @@ storiesOf('Material Card', module)
   .add('without image', () => (
     <MaterialCard
       title="Polyamide"
-      shipping="2-5 days, no express"
-      subline="Solid, raw"
       description="Best all-round material"
       price={price}
       info={info}
       onMoreClick={action('onMoreClick')}
-      colorSelect={colorSelect}
       onSelectClick={action('onSelectClick')}
     />
   ))
   .add('alternative label', () => (
     <MaterialCard
       title="Polyamide"
-      shipping="2-5 days, no express"
-      subline="Solid, raw"
       description="Best all-round material"
       price={price}
       info={info}
-      image="http://placehold.it/260x170/ff0000"
+      image="http://placehold.it/260x170/cccccc"
       onMoreClick={action('onMoreClick')}
-      colorSelect={colorSelect}
       onSelectClick={action('onSelectClick')}
       selectLabel="Checkout"
     />
@@ -74,44 +77,35 @@ storiesOf('Material Card', module)
   .add('selected', () => (
     <MaterialCard
       selected
-      shipping="2-5 days"
       title="Polyamide"
-      subline="Solid, raw"
       description="Best all-round material"
       price={price}
       info={info}
-      image="http://placehold.it/260x170/ff0000"
+      image="http://placehold.it/260x170/cccccc"
       onMoreClick={action('onMoreClick')}
-      colorSelect={colorSelect}
       onSelectClick={action('onSelectClick')}
     />
   ))
   .add('loading', () => (
     <MaterialCard
       loading
-      shipping="2-5 days"
       title="Polyamide"
-      subline="Solid, raw"
       description="Best all-round material"
       price={price}
       info={info}
-      image="http://placehold.it/260x170/ff0000"
+      image="http://placehold.it/260x170/cccccc"
       onMoreClick={action('onMoreClick')}
-      colorSelect={colorSelect}
       onSelectClick={action('onSelectClick')}
     />
   ))
   .add('disabled button', () => (
     <MaterialCard
       loading
-      shipping="2-5 days"
       title="Polyamide"
-      subline="Solid, raw"
       description="Best all-round material"
       price={price}
       info={info}
-      image="http://placehold.it/260x170/ff0000"
-      colorSelect={colorSelect}
+      image="http://placehold.it/260x170/cccccc"
       onMoreClick={action('onMoreClick')}
     />
   ))
@@ -124,10 +118,8 @@ storiesOf('Material Card', module)
         shipping="2-5 days"
         title="Polyamide"
         subline="Solid, raw"
-        description="Best all-round material"
         price={price}
-        info={info}
-        image="http://placehold.it/260x170/ff0000"
+        image="http://placehold.it/260x170/cccccc"
         onMoreClick={action('onMoreClick')}
         colorSelect={colorSelectConstant}
         onSelectClick={action('onSelectClick')}
@@ -137,13 +129,11 @@ storiesOf('Material Card', module)
   .add('unavailable', () => (
     <MaterialCard
       unavailable
-      shipping="2-5 days"
       title="Polyamide"
-      subline="Solid, raw"
       description="Best all-round material"
       price={price}
       info={info}
-      image="http://placehold.it/260x170/ff0000"
+      image="http://placehold.it/260x170/cccccc"
       onMoreClick={action('onMoreClick')}
       colorSelect={colorSelect}
       onSelectClick={action('onSelectClick')}

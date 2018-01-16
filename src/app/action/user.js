@@ -45,11 +45,9 @@ export const detectAddress = () => async (dispatch: Dispatch<*>) => {
 
 export const createUser = () => async (dispatch: Dispatch<*>, getState: () => State) => {
   const user = getState().user.user
-  const {userId} = await printingEngine.createUser({user})
+  const {userId} = await printingEngine.createUser(user)
   identify(userId) // Send user information to Mixpanel
-  setUserContext({
-    id: userId
-  })
+  setUserContext(userId)
   return dispatch(userCreated(userId))
 }
 
@@ -81,10 +79,7 @@ export const updateLocation = (address: Address) => async (
   }
 }
 
-export const updateCurrency = (currency: string) => (
-  dispatch: Dispatch<any>,
-  getState: () => State
-) => {
+export const updateCurrency = (currency: string) => (dispatch: Dispatch<any>) => {
   dispatch(currencyChanged(currency))
   // Update prices
   dispatch(createPriceRequest())

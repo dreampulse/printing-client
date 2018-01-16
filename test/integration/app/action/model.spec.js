@@ -70,26 +70,24 @@ describe('Model Integration Test', () => {
 
       store = createLegacyStore(createHistory(), {
         material: {
-          materials: {
-            materialStructure: [
-              {
-                materials: [
-                  {
-                    id: 'some-material-1',
-                    finishGroups: [
-                      {
-                        materialConfigs: [
-                          {
-                            id: 'material-config-1'
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
+          materialGroups: [
+            {
+              materials: [
+                {
+                  id: 'some-material-1',
+                  finishGroups: [
+                    {
+                      materialConfigs: [
+                        {
+                          id: 'material-config-1'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
           selectedMaterial: 'some-material-1'
         },
         user: {
@@ -171,26 +169,24 @@ describe('Model Integration Test', () => {
           ]
         },
         material: {
-          materials: {
-            materialStructure: [
-              {
-                materials: [
-                  {
-                    id: 'some-material-1',
-                    finishGroups: [
-                      {
-                        materialConfigs: [
-                          {
-                            id: 'material-config-1'
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
+          materialGroups: [
+            {
+              materials: [
+                {
+                  id: 'some-material-1',
+                  finishGroups: [
+                    {
+                      materialConfigs: [
+                        {
+                          id: 'material-config-1'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
           selectedMaterial: 'some-material-1'
         },
         user: {
@@ -260,26 +256,24 @@ describe('Model Integration Test', () => {
           ]
         },
         material: {
-          materials: {
-            materialStructure: [
-              {
-                materials: [
-                  {
-                    id: 'some-material-1',
-                    finishGroups: [
-                      {
-                        materialConfigs: [
-                          {
-                            id: 'material-config-1'
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
+          materialGroups: [
+            {
+              materials: [
+                {
+                  id: 'some-material-1',
+                  finishGroups: [
+                    {
+                      materialConfigs: [
+                        {
+                          id: 'material-config-1'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
           selectedMaterial: 'some-material-1'
         },
         user: {
@@ -350,26 +344,24 @@ describe('Model Integration Test', () => {
           models: [{fileId: 1, uploadFinished: true}, {fileId: 2, uploadFinished: true}]
         },
         material: {
-          materials: {
-            materialStructure: [
-              {
-                materials: [
-                  {
-                    id: 'some-material-1',
-                    finishGroups: [
-                      {
-                        materialConfigs: [
-                          {
-                            id: 'material-config-1'
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
+          materialGroups: [
+            {
+              materials: [
+                {
+                  id: 'some-material-1',
+                  finishGroups: [
+                    {
+                      materialConfigs: [
+                        {
+                          id: 'material-config-1'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
           selectedMaterial: 'some-material-1'
         },
         user: {

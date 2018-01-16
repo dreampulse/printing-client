@@ -6,7 +6,7 @@ import {listMaterials} from '../../../../src/app/service/printing-engine'
 import {getLocationByIp} from '../../../../src/app/lib/geolocation'
 import * as selector from '../../../../src/app/selector'
 import reducer from '../../../../src/app/reducer'
-import materialListResponse from '../../../../test-data/mock/material-list-response.json'
+import materialResponse from '../../../../test-data/mock/material-response.json'
 import geolocationSuccessResponse from '../../../../test-data/mock/geolocation-success-response.json'
 
 describe('init action', () => {
@@ -48,32 +48,32 @@ describe('init action', () => {
       const cmd = findCmd(state, listMaterials, [])
       const action = cmd.simulate({
         success: true,
-        result: materialListResponse
+        result: materialResponse
       })
       expect(
         action,
         'to equal',
-        coreAction.updateMaterialGroups(materialListResponse.materialStructure)
+        coreAction.updateMaterialGroups(materialResponse.materialStructure)
       )
     })
 
-    it(`triggers the modalAction.openFatalErrorModal() action with the given error when listMaterials failed`, () => {
+    it(`triggers the coreAction.fatalError() action with the given error when listMaterials failed`, () => {
       const err = new Error('Some error')
       const cmd = findCmd(state, listMaterials, [])
       const action = cmd.simulate({
         success: false,
         result: err
       })
-      expect(action, 'to equal', modalAction.openFatalErrorModal(err))
+      expect(action, 'to equal', coreAction.fatalError(err))
     })
 
-    it(`triggers the userAction.updateLocation() action with the result from getLocationByIp`, () => {
+    it(`triggers the userAction.locationDetected() action with the result from getLocationByIp`, () => {
       const cmd = findCmd(state, getLocationByIp, [])
       const action = cmd.simulate({
         success: true,
         result: geolocationSuccessResponse
       })
-      expect(action, 'to equal', userAction.updateLocation(geolocationSuccessResponse))
+      expect(action, 'to equal', userAction.locationDetected(geolocationSuccessResponse))
     })
 
     it(`triggers the modalAction.openPickLocationModal() action when getLocationByIp failed`, () => {

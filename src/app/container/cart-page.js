@@ -21,7 +21,6 @@ import PaymentSection from '../component/payment-section'
 import ModelQuantityItem from '../component/model-quantity-item'
 import ModelQuantityItemList from '../component/model-quantity-item-list'
 import ColorSquare from '../component/color-square'
-import LoadingIndicator from '../component/loading-indicator'
 import PaypalButton from '../component/paypal-button'
 
 import backIcon from '../../asset/icon/back.svg'
@@ -170,7 +169,7 @@ const CartPage = ({
           <Headline modifiers={['minor', 's']} label="Material" />
           <Paragraph modifiers={['l']}>
             {selectedMaterial.material.name},&nbsp;
-            {selectedMaterial.material.properties.printingMethod}
+            {selectedMaterial.finishGroup.properties.printingMethod}
             <br />
             <ColorSquare
               color={selectedMaterial.materialConfig.colorCode}
@@ -203,6 +202,7 @@ const CartPage = ({
       key="payment-button-stripe"
       modifiers={['block']}
       icon={creditCardIcon}
+      disabled={order.orderInProgress}
       label="Pay with Credit Card"
       onClick={async () => {
         try {
@@ -229,6 +229,7 @@ const CartPage = ({
       <Button
         key="payment-button-invoice"
         modifiers={['block']}
+        disabled={order.orderInProgress}
         label="Pay with Invoice"
         onClick={async () => {
           await onPayWithInvoice()
@@ -247,13 +248,7 @@ const CartPage = ({
       vat={formatPrice(offer.vatPrice, offer.currency)}
       total={formatPrice(offer.totalPrice, offer.currency)}
     >
-      {order.orderInProgress ? (
-        <div className="u-align-center u-font-size-l ">
-          <LoadingIndicator />
-        </div>
-      ) : (
-        paymentButtons
-      )}
+      {paymentButtons}
     </PaymentSection>
   )
 

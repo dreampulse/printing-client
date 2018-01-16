@@ -83,36 +83,34 @@ describe('Price Integration Test', () => {
           ]
         },
         material: {
-          materials: {
-            materialStructure: [
-              {
-                materials: [
-                  {
-                    id: 'some-material-1',
-                    finishGroups: [
-                      {
-                        materialConfigs: [
-                          {
-                            id: 'material-config-1'
-                          },
-                          {
-                            id: 'material-config-2'
-                          }
-                        ]
-                      },
-                      {
-                        materialConfigs: [
-                          {
-                            id: 'material-config-3'
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
+          materialGroups: [
+            {
+              materials: [
+                {
+                  id: 'some-material-1',
+                  finishGroups: [
+                    {
+                      materialConfigs: [
+                        {
+                          id: 'material-config-1'
+                        },
+                        {
+                          id: 'material-config-2'
+                        }
+                      ]
+                    },
+                    {
+                      materialConfigs: [
+                        {
+                          id: 'material-config-3'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
           selectedMaterial: 'some-material-1'
         },
         user: {

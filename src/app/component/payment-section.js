@@ -4,6 +4,9 @@ import React from 'react'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
+import Link from './link'
+import Headline from './headline'
+
 const PaymentSection = ({
   classNames,
   modifiers,
@@ -41,6 +44,23 @@ const PaymentSection = ({
           {child}
         </li>
       ))}
+    </ul>
+    <ul className="payment-section__links">
+      <li className="payment-section__link">
+        <Headline modifiers={['xs']} label="Need different payment option?" />
+        <Link label="Contact us." href="mailto:contact@all3dp.com" />
+      </li>
+      <li className="payment-section__link">
+        <Headline modifiers={['xs']} label="Any questions?" />
+        <Link label="Get in touch." href="mailto:contact@all3dp.com" />
+      </li>
+      <li className="payment-section__link">
+        <Link
+          target="_blank"
+          label="Terms of service"
+          href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
+        />
+      </li>
     </ul>
   </section>
 )

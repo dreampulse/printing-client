@@ -40,7 +40,6 @@ Button.propTypes = {
   }),
   type: PropTypes.string,
   disabled: PropTypes.bool,
-  selected: PropTypes.bool,
   onClick: PropTypes.func
 }
 

@@ -6,7 +6,8 @@ import {createAction} from 'redux-actions'
 import * as printingEngine from '../service/printing-engine'
 import {getUpdatedOffer, getCheapestOfferFor} from '../lib/offer'
 import {poll, debouncedPoll, stopPoll} from '../lib/poll'
-import {selectCurrentMaterialIds, selectFeatures} from '../lib/selector'
+import {selectCurrentMaterialGroup, selectFeatures} from '../lib/selector'
+import {getMaterialConfigIdsOfMaterialGroup} from '../lib/material'
 import {AppError} from '../lib/error'
 
 import type {Offer, Price, State} from '../type'
@@ -44,20 +45,16 @@ export const createPriceRequest = (
   {
     debounce = false
   }: {
-    refresh: boolean,
     debounce: boolean
   } = {}
 ) => (dispatch: Dispatch<*>, getState: () => State): Promise<any> => {
   dispatch(clearOffers())
 
   const state = getState()
-  if (!state.material.materials) throw new Error('Materials structure missing')
-  const {model: {models}, user: {userId, currency}} = state
-  const materialConfigIds = selectCurrentMaterialIds(state)
-
-  if (materialConfigIds.length === 0) {
-    throw new Error('No material selected')
+  if (!state.material.materialGroups) {
+    throw new Error('Material groups missing')
   }
+  const {model: {models}, user: {userId, currency}} = state
 
   // Abort if user did not upload any models yet
   if (models.length === 0) {
@@ -66,9 +63,13 @@ export const createPriceRequest = (
     return Promise.resolve()
   }
 
+  const selectedMaterialGroup = selectCurrentMaterialGroup(state)
+  const materialConfigIds = getMaterialConfigIdsOfMaterialGroup(selectedMaterialGroup)
   const {refresh} = selectFeatures(state)
   const items = models.map(model => {
-    if (!model.uploadFinished) throw new Error('Upload still in progress')
+    if (!model.uploadFinished) {
+      throw new Error('Upload still in progress')
+    }
     const {modelId, quantity} = model
     return {
       modelId,

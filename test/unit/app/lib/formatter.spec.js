@@ -1,7 +1,6 @@
 import {
   formatPrice,
   formatDeliveryTime,
-  formatShipping,
   formatAddress,
   formatDimensions
 } from '../../../../src/app/lib/formatter'
@@ -19,8 +18,16 @@ describe('formatPrice()', () => {
     expect(formatPrice(19.99, 'GBP'), 'to equal', '£19.99')
   })
 
+  it('returns formatted string with price and currency CAD', () => {
+    expect(formatPrice(19.99, 'CAD'), 'to equal', 'CDN$19.99')
+  })
+
+  it('returns formatted string with price and currency AUD', () => {
+    expect(formatPrice(19.99, 'AUD'), 'to equal', 'AU$19.99')
+  })
+
   it('returns formatted string with price and unsupported currency', () => {
-    expect(formatPrice(19.99, 'AUD', true), 'to equal', 'AUD19.99')
+    expect(formatPrice(19.99, 'ZAR', true), 'to equal', 'ZAR19.99')
   })
 
   it('adds two 0s', () => {
@@ -43,24 +50,6 @@ describe('formatDeliveryTime()', () => {
 
   it('returns formatted string for other than single day delivery', () => {
     expect(formatDeliveryTime('2-5'), 'to equal', '2-5 days')
-  })
-})
-
-describe('formatShipping()', () => {
-  it('returns formatted string', () => {
-    expect(
-      formatShipping({name: 'Standard', deliveryTime: '2-5'}),
-      'to equal',
-      'Standard (2-5 days)'
-    )
-  })
-
-  it('returns formatted display name', () => {
-    expect(
-      formatShipping({name: 'UPS Standard', deliveryTime: '2-5'}),
-      'to equal',
-      'UPS Standard (2-5 days)'
-    )
   })
 })
 

@@ -1,0 +1,16 @@
+.slider-button {
+  display: inline-block;
+  vertical-align: middle;
+  background-color: $color-primary;
+  color: $color-invert-text;
+  box-shadow: $box-shadow-base;
+  font-size: $font-size-base;
+  padding: 0.5em;
+  outline: 0;
+  border-radius: 50%;
+
+  &:hover,
+  &:focus {
+    background-color: $color-primary-active;
+  }
+}

@@ -3,12 +3,7 @@
 import get from 'lodash/get'
 import URLSearchParams from 'url-search-params'
 
-import {hasMaterialMultipleConfigs, getBestOfferForMaterial} from './material'
-import {formatPrice} from './formatter'
-
 import type {State, Features} from '../type'
-
-import config from '../../../config'
 
 export const selectCommonQuantity = (state: State) => {
   // Common quantity exists only if all models have the same individual quantity
@@ -33,40 +28,36 @@ export const selectCommonQuantity = (state: State) => {
   }, null)
 }
 
-export const selectMaterialMenuValues = (state: State) => {
-  const {price: {offers}, material: {materials}} = state
+export const selectMaterialGroup = (state: State, groupId: ?string) => {
+  const {material: {materialGroups}} = state
 
-  if (!materials || !materials.materialStructure) {
-    return []
+  if (!materialGroups) {
+    return null
   }
 
-  return materials.materialStructure.map(materialGroup => ({
-    type: 'group',
-    label: materialGroup.name,
-    children: materialGroup.materials.map(material => {
-      const offer = offers && getBestOfferForMaterial(offers, material)
-      return {
-        type: 'material',
-        value: material.id,
-        label: material.name,
-        hasColor: hasMaterialMultipleConfigs(material),
-        price: offer ? `From ${formatPrice(offer.totalPrice, offer.currency)}` : undefined
-      }
-    })
-  }))
+  // Search for group by id
+  let materialGroup = null
+
+  materialGroups.forEach(item => {
+    if (item.id === groupId) {
+      materialGroup = item
+    }
+  })
+
+  return materialGroup
 }
 
 export const selectMaterial = (state: State, materialId: ?string) => {
-  const {material: {materials}} = state
+  const {material: {materialGroups}} = state
 
-  if (!materials || !materials.materialStructure || !materialId) {
+  if (!materialGroups || !materialId) {
     return null
   }
 
   // Search for material by id
   let material = null
 
-  materials.materialStructure.forEach(materialGroup => {
+  materialGroups.forEach(materialGroup => {
     materialGroup.materials.forEach(item => {
       if (item.id === materialId) {
         material = item
@@ -78,16 +69,16 @@ export const selectMaterial = (state: State, materialId: ?string) => {
 }
 
 export const selectMaterialByName = (state: State, name: string) => {
-  const {material: {materials}} = state
+  const {material: {materialGroups}} = state
 
-  if (!materials || !materials.materialStructure) {
+  if (!materialGroups) {
     return null
   }
 
   // Search for material by name
   let material = null
 
-  materials.materialStructure.forEach(materialGroup => {
+  materialGroups.forEach(materialGroup => {
     materialGroup.materials.forEach(item => {
       if (item.name === name) {
         material = item
@@ -99,16 +90,16 @@ export const selectMaterialByName = (state: State, name: string) => {
 }
 
 export const selectMaterialByMaterialConfigId = (state: State, materialConfigId: string) => {
-  const materials = state.material.materials
+  const materialGroups = state.material.materialGroups
 
-  if (!materials) {
+  if (!materialGroups) {
     return null
   }
 
   let selectedMaterial
   let selectedFinishGroup
   let selectedMaterialConfig
-  materials.materialStructure.every(materialGroup => {
+  materialGroups.every(materialGroup => {
     materialGroup.materials.every(material => {
       material.finishGroups.every(finishGroup => {
         finishGroup.materialConfigs.every(materialConfig => {
@@ -160,30 +151,21 @@ export const selectFinishGroup = (state: State, materialId: string, finishGroupI
   return finishGroup
 }
 
-export const selectCurrentMaterial = (state: State) => {
-  const selectedMaterial = state.material.selectedMaterial
+export const selectCurrentMaterialGroup = (state: State) => {
+  const {material: {materialGroups, selectedMaterialGroup}} = state
+
+  if (!materialGroups) {
+    return null
+  }
 
   return (
-    selectMaterial(state, selectedMaterial) ||
-    selectMaterialByName(state, config.defaultSelectedMaterial)
+    selectMaterialGroup(state, selectedMaterialGroup) || materialGroups[0] // Use first group per default
   )
 }
 
-export const selectCurrentMaterialIds = (state: State): Array<string> => {
-  const selectedMaterial = selectCurrentMaterial(state)
-
-  if (!selectedMaterial) {
-    return []
-  }
-
-  const materialConfigIds = []
-  selectedMaterial.finishGroups.forEach(finishGroup => {
-    finishGroup.materialConfigs.forEach(materialConfig => {
-      materialConfigIds.push(materialConfig.id)
-    })
-  })
-
-  return materialConfigIds
+export const selectCurrentMaterial = (state: State) => {
+  const selectedMaterial = state.material.selectedMaterial
+  return selectMaterial(state, selectedMaterial)
 }
 
 export const selectModelByModelId = (state: State, modelId: string) => {

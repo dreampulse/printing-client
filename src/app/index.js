@@ -14,7 +14,7 @@ import Router from './router'
 
 import '../sass/main.scss'
 
-import {init} from './action/init'
+import {init as initLegacy} from './action/init'
 
 // Warn if the browser is one version behind
 browserUpdate({notify: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
@@ -33,7 +33,7 @@ function renderApp(CurrentRouter) {
   )
 }
 
-store.dispatch(init()).then(() => {
+store.dispatch(initLegacy()).then(() => {
   renderApp(Router)
 
   const bootsplash = global.document.getElementById('bootsplash')

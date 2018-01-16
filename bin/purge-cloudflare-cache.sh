@@ -5,8 +5,10 @@ set -eu
 
 ZONE="924763cc40afc8b78600536e6eb5c652"
 
-FILES="[\"https://print.all3dp.com/bundle.js\", \
-        \"https://print.all3dp.com\"]"
+FILES="[\"https://print.all3dp.com/app.css\", \
+        \"https://print.all3dp.com/\", \
+        \"https://print.all3dp.com/index.html\", \
+        \"https://print.all3dp.com/bundle.js\"]"
 
 curl -X DELETE "https://api.cloudflare.com/client/v4/zones/$ZONE/purge_cache" \
 -H "X-Auth-Key:$CLOUDFLARE_API_KEY" \
