@@ -10,8 +10,8 @@ import Link from './link'
 import Headline from './headline'
 
 const onOpenIntercom = event => {
-  event.preventDefault()
   openIntercom()
+  event.preventDefault()
 }
 
 const PaymentSection = ({
@@ -55,11 +55,11 @@ const PaymentSection = ({
     <ul className="payment-section__links">
       <li className="payment-section__link">
         <Headline modifiers={['xs']} label="Need different payment option?" />
-        <Link label="Contact us." onClick={onOpenIntercom} />
+        <Link label="Contact us." href="mailto:contact@all3dp.com" onClick={onOpenIntercom} />
       </li>
       <li className="payment-section__link">
         <Headline modifiers={['xs']} label="Any questions?" />
-        <Link label="Get in touch." onClick={onOpenIntercom} />
+        <Link label="Get in touch." href="mailto:contact@all3dp.com" onClick={onOpenIntercom} />
       </li>
       <li className="payment-section__link">
         <Link
