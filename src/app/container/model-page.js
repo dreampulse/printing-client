@@ -82,7 +82,7 @@ const ModelPage = ({
       <ProviderSection />
       <Section>
         <Headline
-          label="Save up to 70% on professional 3D printing"
+          label="Save up to 70% on industrial 3D printing"
           modifiers={['l', 'light']}
           classNames={['u-margin-bottom-xxl']}
         />
