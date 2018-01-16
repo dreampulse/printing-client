@@ -49,7 +49,7 @@ const configurationHeader = (
 )
 
 const footer = (
-  <Footer copyline="© Copyright 2017 ALL3DP GmbH">
+  <Footer copyline="© 2018 All3DP">
     <Link label="Terms and conditions" href="#" />
     <Link label="Imprint" href="#" />
   </Footer>
