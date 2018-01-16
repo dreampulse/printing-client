@@ -4,8 +4,15 @@ import React from 'react'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
+import {openIntercom} from '../service/intercom'
+
 import Link from './link'
 import Headline from './headline'
+
+const onOpenIntercom = event => {
+  event.preventDefault()
+  openIntercom()
+}
 
 const PaymentSection = ({
   classNames,
@@ -48,11 +55,11 @@ const PaymentSection = ({
     <ul className="payment-section__links">
       <li className="payment-section__link">
         <Headline modifiers={['xs']} label="Need different payment option?" />
-        <Link label="Contact us." href="mailto:contact@all3dp.com" />
+        <Link label="Contact us." onClick={onOpenIntercom} />
       </li>
       <li className="payment-section__link">
         <Headline modifiers={['xs']} label="Any questions?" />
-        <Link label="Get in touch." href="mailto:contact@all3dp.com" />
+        <Link label="Get in touch." onClick={onOpenIntercom} />
       </li>
       <li className="payment-section__link">
         <Link
