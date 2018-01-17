@@ -75,45 +75,44 @@ const ModelPage = ({
     </ConfigurationHeader>
   )
 
-  const renderPromotionSection = () =>
-    models.length === 0 && [
-      <Section key={0}>
-        <Headline
-          label="Save up to 70% on industrial 3D printing"
-          modifiers={['l', 'light']}
-          classNames={['u-margin-bottom-xxl']}
-        />
-        <SplitLayout
-          leftContent={[
-            <FeatureParagraph key="feature1" image={<Image src={feature1Image} />}>
-              Compare offers from the top providers and order instantly
-            </FeatureParagraph>,
-            <FeatureParagraph key="feature2" image={<Image src={feature2Image} />}>
-              The widest material choice and the fastest delivery
-            </FeatureParagraph>
-            /*
+  const renderPromotionSection = () => [
+    <Section key={0}>
+      <Headline
+        label="Save up to 70% on industrial 3D printing"
+        modifiers={['l', 'light']}
+        classNames={['u-margin-bottom-xxl']}
+      />
+      <SplitLayout
+        leftContent={[
+          <FeatureParagraph key="feature1" image={<Image src={feature1Image} />}>
+            Compare offers from the top providers and order instantly
+          </FeatureParagraph>,
+          <FeatureParagraph key="feature2" image={<Image src={feature2Image} />}>
+            The widest material choice and the fastest delivery
+          </FeatureParagraph>
+          /*
             <FeatureParagraph key="feature3" image={feature3Image}>
               Split your order accross multiple providers, effortlessly
             </FeatureParagraph>
             */
-          ]}
-          rightContent={[
-            <Baloon key="baloon1">
-              Impossible! My favorite printing service is always the cheapest.
-            </Baloon>,
-            <Baloon key="baloon2" modifiers={['right']}>
-              Not Always! Prices vary hugely based on model and material. Here you will always find
-              the best deal.
-            </Baloon>
-          ]}
-        />
-      </Section>,
-      <ProviderTeaser key={1}>
-        <ProviderImage name="shapeways" />
-        <ProviderImage name="imaterialise" />
-        <ProviderImage name="sculpteo" />
-      </ProviderTeaser>
-    ]
+        ]}
+        rightContent={[
+          <Baloon key="baloon1">
+            Impossible! My favorite printing service is always the cheapest.
+          </Baloon>,
+          <Baloon key="baloon2" modifiers={['right']}>
+            Not Always! Prices vary hugely based on model and material. Here you will always find
+            the best deal.
+          </Baloon>
+        ]}
+      />
+    </Section>,
+    <ProviderTeaser key={1}>
+      <ProviderImage name="shapeways" />
+      <ProviderImage name="imaterialise" />
+      <ProviderImage name="sculpteo" />
+    </ProviderTeaser>
+  ]
 
   return (
     <AppLayout currentStep={0} configurationHeader={configurationHeader}>
@@ -121,7 +120,7 @@ const ModelPage = ({
       <MaterialSection />
       <FinishSection />
       <ProviderSection />
-      {renderPromotionSection()}
+      {models.length === 0 && renderPromotionSection()}
     </AppLayout>
   )
 }
