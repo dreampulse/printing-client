@@ -1,5 +1,6 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
+import {action} from '@storybook/addon-actions'
 
 import PaymentSection from '../../src/app/component/payment-section'
 import Button from '../../src/app/component/button'
@@ -14,7 +15,7 @@ storiesOf('Payment Section', module).add('default', () => (
     shippingName="DHL"
     vat="$50.00"
     total="$345.00"
-    onContactLinkClick={() => {}}
+    onContactLinkClick={action('click')}
   >
     <Button modifiers={['block']} icon={creditCardIcon} label="Pay by credit card" />
     <Button modifiers={['block']} icon={paypalIcon} label="Pay with Paypal" />
