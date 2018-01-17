@@ -43,7 +43,8 @@ const ModelPage = ({
   commonQuantity,
   onChangeQuantity,
   onUpdateLocation,
-  onUpdateCurrency
+  onUpdateCurrency,
+  models
 }) => {
   const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
@@ -74,13 +75,9 @@ const ModelPage = ({
     </ConfigurationHeader>
   )
 
-  return (
-    <AppLayout currentStep={0} configurationHeader={configurationHeader}>
-      <UploadSection />
-      <MaterialSection />
-      <FinishSection />
-      <ProviderSection />
-      <Section>
+  const renderPromotionSection = () =>
+    models.length === 0 && [
+      <Section key={0}>
         <Headline
           label="Save up to 70% on industrial 3D printing"
           modifiers={['l', 'light']}
@@ -110,12 +107,21 @@ const ModelPage = ({
             </Baloon>
           ]}
         />
-      </Section>
-      <ProviderTeaser>
+      </Section>,
+      <ProviderTeaser key={1}>
         <ProviderImage name="shapeways" />
         <ProviderImage name="imaterialise" />
         <ProviderImage name="sculpteo" />
       </ProviderTeaser>
+    ]
+
+  return (
+    <AppLayout currentStep={0} configurationHeader={configurationHeader}>
+      <UploadSection />
+      <MaterialSection />
+      <FinishSection />
+      <ProviderSection />
+      {renderPromotionSection()}
     </AppLayout>
   )
 }
@@ -123,6 +129,7 @@ const ModelPage = ({
 const mapStateToProps = state => ({
   address: state.user.user.shippingAddress,
   currency: state.user.currency,
+  models: state.model.models,
   commonQuantity: selectCommonQuantity(state)
 })
 
