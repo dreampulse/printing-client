@@ -12,4 +12,9 @@ storiesOf('Headline', module)
   .add('disabled', () => <Headline label="Disabled Headline" modifiers={['xl', 'disabled']} />)
   .add('minor', () => <Headline label="Minor Headline" modifiers={['minor']} />)
   .add('light', () => <Headline label="Light Headline" modifiers={['light']} />)
+  .add('invert', () => (
+    <div className="u-invert" style={{width: '100%', 'min-height': '100vh'}}>
+      <Headline label="Inverted Headline" modifiers={['invert']} />
+    </div>
+  ))
   .add('warning', () => <Headline label="Warning Headline" modifiers={['l', 'warning']} />)
