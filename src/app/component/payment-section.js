@@ -59,7 +59,9 @@ const PaymentSection = ({
       </li>
       <li className="payment-section__link">
         <Headline modifiers={['xs']} label="Any questions?" />
-        <Link label="Get in touch." href="mailto:contact@all3dp.com" onClick={onOpenIntercom} />
+        <Link label="Get in touch" href="mailto:contact@all3dp.com" onClick={onOpenIntercom} />
+        {' or '}
+        <Link label="search our knowledge base." href="https://help.all3dp.com" target="_blank" />
       </li>
       <li className="payment-section__link">
         <Link
