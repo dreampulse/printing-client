@@ -43,7 +43,8 @@ const ModelPage = ({
   commonQuantity,
   onChangeQuantity,
   onUpdateLocation,
-  onUpdateCurrency
+  onUpdateCurrency,
+  models
 }) => {
   const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
@@ -74,48 +75,52 @@ const ModelPage = ({
     </ConfigurationHeader>
   )
 
+  const renderPromotionSection = () => [
+    <Section key={0}>
+      <Headline
+        label="Save up to 70% on industrial 3D printing"
+        modifiers={['l', 'light']}
+        classNames={['u-margin-bottom-xxl']}
+      />
+      <SplitLayout
+        leftContent={[
+          <FeatureParagraph key="feature1" image={<Image src={feature1Image} />}>
+            Compare offers from the top providers and order instantly
+          </FeatureParagraph>,
+          <FeatureParagraph key="feature2" image={<Image src={feature2Image} />}>
+            The widest material choice and the fastest delivery
+          </FeatureParagraph>
+          /*
+            <FeatureParagraph key="feature3" image={feature3Image}>
+              Split your order accross multiple providers, effortlessly
+            </FeatureParagraph>
+            */
+        ]}
+        rightContent={[
+          <Baloon key="baloon1">
+            Impossible! My favorite printing service is always the cheapest.
+          </Baloon>,
+          <Baloon key="baloon2" modifiers={['right']}>
+            Not Always! Prices vary hugely based on model and material. Here you will always find
+            the best deal.
+          </Baloon>
+        ]}
+      />
+    </Section>,
+    <ProviderTeaser key={1}>
+      <ProviderImage name="shapeways" />
+      <ProviderImage name="imaterialise" />
+      <ProviderImage name="sculpteo" />
+    </ProviderTeaser>
+  ]
+
   return (
     <AppLayout currentStep={0} configurationHeader={configurationHeader}>
       <UploadSection />
       <MaterialSection />
       <FinishSection />
       <ProviderSection />
-      <Section>
-        <Headline
-          label="Save up to 70% on industrial 3D printing"
-          modifiers={['l', 'light']}
-          classNames={['u-margin-bottom-xxl']}
-        />
-        <SplitLayout
-          leftContent={[
-            <FeatureParagraph key="feature1" image={<Image src={feature1Image} />}>
-              Compare offers from the top providers and order instantly
-            </FeatureParagraph>,
-            <FeatureParagraph key="feature2" image={<Image src={feature2Image} />}>
-              The widest material choice and the fastest delivery
-            </FeatureParagraph>
-            /*
-            <FeatureParagraph key="feature3" image={feature3Image}>
-              Split your order accross multiple providers, effortlessly
-            </FeatureParagraph>
-            */
-          ]}
-          rightContent={[
-            <Baloon key="baloon1">
-              Impossible! My favorite printing service is always the cheapest.
-            </Baloon>,
-            <Baloon key="baloon2" modifiers={['right']}>
-              Not Always! Prices vary hugely based on model and material. Here you will always find
-              the best deal.
-            </Baloon>
-          ]}
-        />
-      </Section>
-      <ProviderTeaser>
-        <ProviderImage name="shapeways" />
-        <ProviderImage name="imaterialise" />
-        <ProviderImage name="sculpteo" />
-      </ProviderTeaser>
+      {models.length === 0 && renderPromotionSection()}
     </AppLayout>
   )
 }
@@ -123,6 +128,7 @@ const ModelPage = ({
 const mapStateToProps = state => ({
   address: state.user.user.shippingAddress,
   currency: state.user.currency,
+  models: state.model.models,
   commonQuantity: selectCommonQuantity(state)
 })
 
