@@ -3,8 +3,23 @@
 
   border: $border;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: 0 $space-l;
+
+  @include respond-to(medium) {
+    flex-direction: row;
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__content {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+  }
 
   &__icon {
     display: flex;
@@ -30,9 +45,20 @@
     display: flex;
     flex-grow: 1;
     align-items: center;
-    border-left: $border;
     margin-right: $space-l;
-    padding: $space-base 0 $space-base $space-xl;
+    font-size: $font-size-l;
+    font-weight: $font-weight-bold;
+    padding: $space-base 0;
+    color: $color-minor;
+
+    & > strong {
+      color: $color-text;
+    }
+
+    @include respond-to(medium) {
+      border-left: $border;
+      padding-left: $space-xl;
+    }
   }
 
   &__button {

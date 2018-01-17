@@ -18,12 +18,16 @@ const Notification = ({classNames, modifiers = [], message, warning = false, but
   ]
   return (
     <div className={buildClassName('notification', finalModifiers, classNames)}>
-      <div className="notification__icon">
-        {warning ? <Icon source={warningIcon} /> : <Icon source={checkIcon} />}
+      <div className="notification__title">
+        <div className="notification__icon">
+          {warning ? <Icon source={warningIcon} /> : <Icon source={checkIcon} />}
+        </div>
+        <div className="notification__message">{message}</div>
       </div>
-      <div className="notification__message">{message}</div>
-      {children && <div className="notification__body">{children}</div>}
-      {button && <div className="notification__button">{button}</div>}
+      <div className="notification__content">
+        {children && <div className="notification__body">{children}</div>}
+        {button && <div className="notification__button">{button}</div>}
+      </div>
     </div>
   )
 }
