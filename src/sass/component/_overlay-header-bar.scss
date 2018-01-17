@@ -1,0 +1,41 @@
+.overlay-header-bar {
+  $logo-height: 40px;
+
+  padding: $space-l 0;
+  background: $color-invert-bg;
+  color: $color-invert-text;
+  font-size: $font-size-l;
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include respond-to(medium) {
+      flex-direction: row;
+      height: $nav-bar-content-height;
+    }
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+
+    & > .headline {
+      margin-left: $space-l;
+      margin-bottom: 0;
+    }
+  }
+
+  &__content {
+    width: 100%;
+    margin-top: $space-s;
+
+    @include respond-to(medium) {
+      margin-left: $space-l;
+      margin-top: 0;
+      width: 300px; // Design decision
+    }
+  }
+}
