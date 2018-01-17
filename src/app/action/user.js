@@ -121,9 +121,10 @@ export const reviewOrder = (form: any) => async (dispatch: Dispatch<*>, getState
     await dispatch(updateUser(form))
     await dispatch(recalculateSelectedOffer())
   } catch (error) {
-    return dispatch(
+    dispatch(
       openFatalErrorModal(new AppError(ERROR_TYPE.REVIEW_ORDER_FAILED, 'Review order failed'))
     )
+    return
   }
 
   const newOffer = getState().price.selectedOffer
