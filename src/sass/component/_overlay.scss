@@ -52,7 +52,9 @@
   }
 
   &__content {
-    padding: $space-l 0;
+    padding: 0;
+    padding-top: $space-xl;
+    padding-bottom: $space-xl - $space-base;
   }
 
   &__footer {

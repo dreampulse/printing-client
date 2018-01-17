@@ -61,7 +61,7 @@ storiesOf('Overlay', module)
           We used the location <strong>Munich, Germany</strong> to calculate prices. You have
           entered <strong>New York, USA</strong> as your shipping address.
         </Paragraph>
-        <Paragraph classNames={['u-no-margin']}>
+        <Paragraph>
           Please double check the prices on the order summary or go back to find the best deal for
           your new location.
         </Paragraph>
@@ -82,7 +82,7 @@ storiesOf('Overlay', module)
         buttons={fetchingNewPricesButtons}
         closePortal={action('onClose')}
       >
-        <LabeledLoadingIndicator>
+        <LabeledLoadingIndicator classNames={['u-margin-bottom']}>
           Recalculating prices…<br />
           This might take a few minutes
         </LabeledLoadingIndicator>
@@ -107,7 +107,7 @@ storiesOf('Overlay', module)
               An unexpected error occured. Our technicians have been automatically warned and are
               working to fix the problem.
             </Paragraph>
-            <Paragraph classNames={['u-no-margin']}>Please press OK to reload the app.</Paragraph>
+            <Paragraph>Please press OK to reload the app.</Paragraph>
           </Column>
         </Grid>
       </Overlay>
@@ -125,6 +125,7 @@ storiesOf('Overlay', module)
                 placeholder="Set your location"
                 googleMapsApiKey={googleMapsApiKey}
                 onChange={action('change')}
+                classNames={['u-margin-bottom']}
               />
             </HandleValue>
           </Column>
@@ -212,7 +213,11 @@ storiesOf('Overlay', module)
             </Paragraph>
           </Column>
         </Grid>
-        <LabeledField label="Select country:" modifiers={['block']}>
+        <LabeledField
+          label="Select country:"
+          modifiers={['block']}
+          classNames={['u-margin-bottom']}
+        >
           <HandleValue>
             <SelectField
               placeholder="Placeholder"
@@ -240,7 +245,7 @@ storiesOf('Overlay', module)
             />
           </HandleValue>
         </LabeledField>
-        <Paragraph modifiers={['minor', 'l']} classNames={['u-no-margin']}>
+        <Paragraph modifiers={['minor', 'l']}>
           Why do we need to know this? Printing prices and shipping options depend on your location
         </Paragraph>
       </Overlay>
@@ -258,7 +263,7 @@ storiesOf('Overlay', module)
             <Paragraph modifiers={['l']}>
               By the way: Prices change.. <strong>all! the! time!</strong>
             </Paragraph>
-            <Paragraph modifiers={['l']} classNames={['u-no-margin']}>
+            <Paragraph modifiers={['l']}>
               Come back to All3DP to get the best offers next time you 3D print.
             </Paragraph>
           </Column>
