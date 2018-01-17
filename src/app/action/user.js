@@ -7,12 +7,13 @@ import * as printingEngine from '../service/printing-engine'
 import {identify, peopleSet} from '../service/mixpanel'
 import {setUserContext} from '../service/logging'
 import {normalizeTelephoneNumber} from '../lib/normalize'
+import {AppError} from '../lib/error'
 import {getLocationByIp, isAddressValid} from '../lib/geolocation'
 import * as searchParams from '../lib/search-params'
 
 import type {Address, User, State} from '../type'
 import type {Location} from '../type-next'
-import TYPE from '../action-type'
+import TYPE, {ERROR_TYPE} from '../action-type'
 
 import {goToCart} from './navigation'
 
@@ -20,7 +21,8 @@ import {
   openAddressModal,
   openPriceChangedModal,
   openPriceLocationChangedModal,
-  openFetchingPriceModal
+  openFetchingPriceModal,
+  openFatalErrorModal
 } from './modal'
 import {createPriceRequest, recalculateSelectedOffer} from './price'
 
@@ -92,7 +94,6 @@ export const updateLocationWithCurrency = (address: Address, currency: string) =
   await dispatch(updateLocation(address))
 }
 
-// @TODO update type
 export const reviewOrder = (form: any) => async (dispatch: Dispatch<*>, getState: () => State) => {
   const user = getState().user.user
   const oldShippingAddress = user.shippingAddress
@@ -116,11 +117,17 @@ export const reviewOrder = (form: any) => async (dispatch: Dispatch<*>, getState
   })
 
   dispatch(openFetchingPriceModal())
-  await dispatch(updateUser(form))
-  await dispatch(recalculateSelectedOffer())
+  try {
+    await dispatch(updateUser(form))
+    await dispatch(recalculateSelectedOffer())
+  } catch (error) {
+    return dispatch(
+      openFatalErrorModal(new AppError(ERROR_TYPE.REVIEW_ORDER_FAILED, 'Review order failed'))
+    )
+  }
 
   const newOffer = getState().price.selectedOffer
-  if (!newOffer || !oldOffer) throw new Error('No offer slected')
+  if (!newOffer || !oldOffer) throw new Error('No offer selected')
 
   const hasPriceChanged = oldOffer.totalPrice !== newOffer.totalPrice
   const wasEstimatedPrice = oldOffer.priceEstimated
