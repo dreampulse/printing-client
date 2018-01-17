@@ -1,40 +1,33 @@
-
-.model-item-error {
-  $image-container-width: 130px;
-
+.upload-model-item-error {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: $space-base $space-xl;
-  height: $model-item-height;
+  padding: $space-base $space-xl $space-base $model-item-space-left;
+  height: $upload-model-item-image-width + 2 * $space-base;
   border-top: 1px solid $color-bg;
   border-bottom: 1px solid $color-bg;
   background: $color-red-light;
 
-  & > .number-field {
-    flex-shrink: 0;
-  }
-
   &__image {
-    @include scut-ratio-box(4/3);
+    @include scut-ratio-box(1);
     background-image: url('../asset/image/error.svg');
     background-position: center center;
     background-size: cover;
     flex-shrink: 0;
-    width: $image-container-width;
-    margin-right: $space-xl;
+    width: $upload-model-item-image-width;
+    margin-right: $space-l;
   }
 
-  &__description {
+  &__content {
     flex-grow: 1;
-    margin-left: $space-xl;
     font-size: $font-size-l;
+    margin-right: $space-l;
   }
 
   &__title {
     @include scut-truncate;
     display: block;
-    color:$color-error;
+    color: $color-error;
     font-weight: $font-weight-bold;
   }
 
@@ -45,7 +38,7 @@
   }
 
   &__delete {
-    color: $color-invert-text;
+    color: $color-error;
     outline: 0;
   }
 }
