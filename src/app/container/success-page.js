@@ -19,7 +19,7 @@ const CartPage = ({offer, order}) => {
         label={
           order.orderNumber
             ? `Order number: ${order.orderNumber}`
-            : 'Thank you for ordering at ALL3DP!'
+            : 'Thank you for ordering at All3DP!'
         }
       />
       <Paragraph modifiers={['l']}>
@@ -40,7 +40,7 @@ const CartPage = ({offer, order}) => {
 
   return (
     <AppLayout>
-      <PageHeader label="Thank you for your order at ALL3DP!" />
+      <PageHeader label="Thank you for your order at All3DP!" />
       <SuccessSection />
     </AppLayout>
   )
