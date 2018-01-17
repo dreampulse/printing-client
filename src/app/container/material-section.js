@@ -2,6 +2,7 @@ import React from 'react'
 import {compose, lifecycle} from 'recompose'
 
 import scrollTo from '../service/scroll-to'
+import {openIntercom} from '../service/intercom'
 import {buildClassArray} from '../lib/build-class-name'
 import {
   selectCurrentMaterial,
@@ -23,11 +24,13 @@ import Price from '../component/price'
 import RadioButton from '../component/radio-button'
 import RadioButtonGroup from '../component/radio-button-group'
 import MaterialSlider from '../component/material-slider'
+import Link from '../component/link'
 
 import {selectMaterial, selectMaterialGroup} from '../action/material'
 import {openMaterialModal} from '../action/modal'
 
 import {connectLegacy} from './util/connect-legacy'
+import Paragraph from '../component/paragraph'
 
 const MaterialSection = ({
   areAllUploadsFinished,
@@ -84,7 +87,7 @@ const MaterialSection = ({
       <Headline label="2. Choose a material" modifiers={headlineModifiers} />
       {areAllUploadsFinished && (
         <Grid>
-          <Column lg={8} classNames={['u-margin-bottom-xl']}>
+          <Column lg={8} classNames={['u-margin-bottom-l']}>
             <RadioButtonGroup
               name="material-group"
               value={selectedMaterialGroup.id}
@@ -96,11 +99,26 @@ const MaterialSection = ({
             </RadioButtonGroup>
           </Column>
           {Boolean(printingServiceRequests) && (
-            <Column lg={4} classNames={['u-margin-bottom-xl']}>
-              <ProviderProgressBar
-                currentStep={printingServiceRequests.complete}
-                totalSteps={printingServiceRequests.total}
-              />
+            <Column lg={4} classNames={['u-margin-bottom-l', 'u-align-right']}>
+              {[
+                <ProviderProgressBar
+                  key={0}
+                  classNames={['u-margin-bottom']}
+                  currentStep={printingServiceRequests.complete}
+                  totalSteps={printingServiceRequests.total}
+                />,
+                <Paragraph key={1} classNames={['u-no-margin']}>
+                  {'Not printable? '}
+                  <Link
+                    onClick={event => {
+                      event.preventDefault()
+                      openIntercom()
+                    }}
+                    label="Contact us"
+                  />
+                  {" and let's help you!"}
+                </Paragraph>
+              ]}
             </Column>
           )}
         </Grid>
