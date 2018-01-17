@@ -32,6 +32,8 @@ const email = value =>
 const tel = value =>
   !value || (value && !/^[+]?[0-9\-\s()]*$/i.test(value)) ? 'Invalid phone number' : undefined
 
+const street = value => (!value || value.length > 30 ? 'Street name too long' : undefined)
+
 const AddressPage = ({
   handleSubmit,
   onGoToHome,
@@ -116,7 +118,7 @@ const AddressPage = ({
 
       <FormRow modifiers={['l-s']}>
         <Field
-          validate={required}
+          validate={street}
           component={renderField(InputField)}
           label="Street"
           name="billingAddress.street"
@@ -240,7 +242,7 @@ const AddressPage = ({
 
           <FormRow modifiers={['l-s']}>
             <Field
-              validate={required}
+              validate={street}
               component={renderField(InputField)}
               label="Street"
               name="shippingAddress.street"
