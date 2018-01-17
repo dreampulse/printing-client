@@ -1,22 +1,20 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import ModelItem from '../../src/app/component/model-item'
+import UploadModelItem from '../../src/app/component/upload-model-item'
 import UploadModelItemError from '../../src/app/component/upload-model-item-error'
 import UploadModelItemLoad from '../../src/app/component/upload-model-item-load'
 import ModelItemList from '../../src/app/component/model-item-list'
 
 storiesOf('Model Item List', module).add('default', () => (
   <ModelItemList>
-    <ModelItem
+    <UploadModelItem
       imageSource="http://placehold.it/130x98"
-      quantity={1}
       title="model_item_title.stl"
       subline="42 x 42 x 42 mm"
     />
-    <ModelItem
+    <UploadModelItem
       imageSource="http://placehold.it/130x98"
-      quantity={1}
       title="model_item_title.stl"
       subline="42 x 42 x 42 mm"
     />
