@@ -116,7 +116,7 @@ const MaterialSection = ({
                     }}
                     label="Contact us"
                   />
-                  {" and let's help you!"}
+                  {' and let’s help you!'}
                 </Paragraph>
               ]}
             </Column>
