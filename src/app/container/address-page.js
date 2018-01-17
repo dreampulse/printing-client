@@ -32,7 +32,10 @@ const email = value =>
 const tel = value =>
   !value || (value && !/^[+]?[0-9\-\s()]*$/i.test(value)) ? 'Invalid phone number' : undefined
 
-const street = value => (!value || value.length > 30 ? 'Street name too long' : undefined)
+const maxLength = max => value => (!value || value.length > max ? 'Field too long' : undefined)
+
+const validateStreet = maxLength(30)
+const validateName = maxLength(20)
 
 const AddressPage = ({
   handleSubmit,
@@ -103,13 +106,13 @@ const AddressPage = ({
 
       <FormRow modifiers={['half-half']}>
         <Field
-          validate={required}
+          validate={validateName}
           component={renderField(InputField)}
           label="First name"
           name="billingAddress.firstName"
         />
         <Field
-          validate={required}
+          validate={validateName}
           component={renderField(InputField)}
           label="Last name"
           name="billingAddress.lastName"
@@ -118,7 +121,7 @@ const AddressPage = ({
 
       <FormRow modifiers={['l-s']}>
         <Field
-          validate={street}
+          validate={validateStreet}
           component={renderField(InputField)}
           label="Street"
           name="billingAddress.street"
@@ -194,13 +197,13 @@ const AddressPage = ({
 
           <FormRow modifiers={['half-half']}>
             <Field
-              validate={required}
+              validate={validateName}
               component={renderField(InputField)}
               label="First name"
               name="shippingAddress.firstName"
             />
             <Field
-              validate={required}
+              validate={validateName}
               component={renderField(InputField)}
               label="Last name"
               name="shippingAddress.lastName"
@@ -242,7 +245,7 @@ const AddressPage = ({
 
           <FormRow modifiers={['l-s']}>
             <Field
-              validate={street}
+              validate={validateStreet}
               component={renderField(InputField)}
               label="Street"
               name="shippingAddress.street"
