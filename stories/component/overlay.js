@@ -57,18 +57,14 @@ storiesOf('Overlay', module)
     )
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
-        <RichText>
-          <p>
-            We used the location <strong>Munich, Germany</strong> to calculate prices. You have
-            entered <strong>New York, USA</strong> as your shipping address.
-          </p>
-        </RichText>
-        <RichText>
-          <p>
-            Please double check the prices on the order summary or go back to find the best deal for
-            your new location.
-          </p>
-        </RichText>
+        <Paragraph>
+          We used the location <strong>Munich, Germany</strong> to calculate prices. You have
+          entered <strong>New York, USA</strong> as your shipping address.
+        </Paragraph>
+        <Paragraph classNames={['u-no-margin']}>
+          Please double check the prices on the order summary or go back to find the best deal for
+          your new location.
+        </Paragraph>
       </Overlay>
     )
   })
@@ -111,7 +107,7 @@ storiesOf('Overlay', module)
               An unexpected error occured. Our technicians have been automatically warned and are
               working to fix the problem.
             </Paragraph>
-            <Paragraph>Please press OK to reload the app.</Paragraph>
+            <Paragraph classNames={['u-no-margin']}>Please press OK to reload the app.</Paragraph>
           </Column>
         </Grid>
       </Overlay>
@@ -129,7 +125,6 @@ storiesOf('Overlay', module)
                 placeholder="Set your location"
                 googleMapsApiKey={googleMapsApiKey}
                 onChange={action('change')}
-                classNames={['u-margin-bottom']}
               />
             </HandleValue>
           </Column>
@@ -217,11 +212,7 @@ storiesOf('Overlay', module)
             </Paragraph>
           </Column>
         </Grid>
-        <LabeledField
-          label="Select country:"
-          modifiers={['block']}
-          classNames={['u-margin-bottom']}
-        >
+        <LabeledField label="Select country:" modifiers={['block']}>
           <HandleValue>
             <SelectField
               placeholder="Placeholder"
@@ -229,6 +220,49 @@ storiesOf('Overlay', module)
             />
           </HandleValue>
         </LabeledField>
+      </Overlay>
+    )
+  })
+  .add('Confirm location', () => {
+    const pricesChangedHeadline = <Headline label="Confirm your location" modifiers={['l']} />
+    return (
+      <Overlay headline={pricesChangedHeadline}>
+        <LabeledField
+          label="Shipping to:"
+          modifiers={['block']}
+          classNames={['u-margin-bottom-xxl']}
+        >
+          <HandleValue>
+            <LocationField
+              placeholder="Set your location"
+              googleMapsApiKey={googleMapsApiKey}
+              onChange={action('change')}
+            />
+          </HandleValue>
+        </LabeledField>
+        <Paragraph modifiers={['minor', 'l']} classNames={['u-no-margin']}>
+          Why do we need to know this? Printing prices and shipping options depend on your location
+        </Paragraph>
+      </Overlay>
+    )
+  })
+  .add('Thank you', () => {
+    const pricesChangedHeadline = <Headline label="Thank you for using All3DP" modifiers={['l']} />
+    return (
+      <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
+        <Grid>
+          <Column sm={3}>
+            <Image src="http://placehold.it/200x200" alt="Thank you image" />
+          </Column>
+          <Column sm={9}>
+            <Paragraph modifiers={['l']}>
+              By the way: Prices change.. <strong>all! the! time!</strong>
+            </Paragraph>
+            <Paragraph modifiers={['l']} classNames={['u-no-margin']}>
+              Come back to All3DP to get the best offers next time you 3D print.
+            </Paragraph>
+          </Column>
+        </Grid>
       </Overlay>
     )
   })
