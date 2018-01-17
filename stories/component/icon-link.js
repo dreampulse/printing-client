@@ -11,12 +11,12 @@ storiesOf('Icon Link', module)
   .add('default', () => <IconLink icon={placeholderIcon} onClick={action('click')} />)
   .add('disabled', () => <IconLink icon={placeholderIcon} disabled onClick={action('click')} />)
   .add('invert', () => (
-    <div className="u-invert" style={{width: '100%', 'min-height': '100vh'}}>
+    <div className="u-invert" style={{width: '100%', minHeight: '100vh'}}>
       <IconLink icon={placeholderIcon} modifiers={['invert']} onClick={action('click')} />
     </div>
   ))
   .add('invert & disabled', () => (
-    <div className="u-invert" style={{width: '100%', 'min-height': '100vh'}}>
+    <div className="u-invert" style={{width: '100%', minHeight: '100vh'}}>
       <IconLink icon={placeholderIcon} modifiers={['invert']} disabled onClick={action('click')} />
     </div>
   ))
