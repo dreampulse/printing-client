@@ -3,6 +3,7 @@ import {compose} from 'recompose'
 import compact from 'lodash/compact'
 
 import {getStateName, getCountryName} from '../service/country'
+import {openIntercom} from '../service/intercom'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {selectedOfferMaterial, selectOfferItems} from '../lib/selector'
 import {formatPrice} from '../lib/formatter'
@@ -247,6 +248,10 @@ const CartPage = ({
       shippingName={offer.shipping.name}
       vat={formatPrice(offer.vatPrice, offer.currency)}
       total={formatPrice(offer.totalPrice, offer.currency)}
+      onContactLinkClick={event => {
+        openIntercom()
+        event.preventDefault()
+      }}
     >
       {paymentButtons}
     </PaymentSection>

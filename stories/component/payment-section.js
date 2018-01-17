@@ -14,6 +14,7 @@ storiesOf('Payment Section', module).add('default', () => (
     shippingName="DHL"
     vat="$50.00"
     total="$345.00"
+    onContactLinkClick={() => {}}
   >
     <Button modifiers={['block']} icon={creditCardIcon} label="Pay by credit card" />
     <Button modifiers={['block']} icon={paypalIcon} label="Pay with Paypal" />
