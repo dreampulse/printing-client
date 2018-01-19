@@ -78,7 +78,7 @@ const ModelPage = ({
   const renderPromotionSection = () => [
     <Section key={0}>
       <Headline
-        label="Save up to 70% on industrial 3D printing"
+        label="Save up to 70% on industrial grade 3D printing"
         modifiers={['l', 'light']}
         classNames={['u-margin-bottom-xxl']}
       />
