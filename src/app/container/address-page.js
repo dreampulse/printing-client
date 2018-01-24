@@ -105,12 +105,14 @@ const AddressPage = ({
           component={renderField(InputField)}
           label="First name"
           name="billingAddress.firstName"
+          maxLength="20"
         />
         <Field
           validate={required}
           component={renderField(InputField)}
           label="Last name"
           name="billingAddress.lastName"
+          maxLength="20"
         />
       </FormRow>
 
@@ -120,6 +122,7 @@ const AddressPage = ({
           component={renderField(InputField)}
           label="Address"
           name="billingAddress.address"
+          maxLength="30"
         />
       </FormRow>
 
@@ -190,12 +193,14 @@ const AddressPage = ({
               component={renderField(InputField)}
               label="First name"
               name="shippingAddress.firstName"
+              maxLength="20"
             />
             <Field
               validate={required}
               component={renderField(InputField)}
               label="Last name"
               name="shippingAddress.lastName"
+              maxLength="20"
             />
           </FormRow>
 
@@ -238,6 +243,7 @@ const AddressPage = ({
               component={renderField(InputField)}
               label="Address"
               name="shippingAddress.address"
+              maxLength="30"
             />
           </FormRow>
 
