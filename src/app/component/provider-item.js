@@ -13,7 +13,8 @@ import checkoutIcon from '../../asset/icon/checkout.svg'
 const ProviderItem = ({
   classNames,
   modifiers,
-  provider,
+  providerSlug,
+  providerName,
   price,
   shippingPrice,
   process,
@@ -24,7 +25,7 @@ const ProviderItem = ({
 }) => (
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
     <td className="provider-item__provider">
-      <ProviderImage name={provider} />
+      <ProviderImage slug={providerSlug} name={providerName} />
       {providerInfo}
     </td>
     <td className="provider-item__process">{process}</td>
@@ -46,7 +47,8 @@ const ProviderItem = ({
 
 ProviderItem.propTypes = {
   ...propTypes.component,
-  provider: PropTypes.string.isRequired,
+  providerSlug: PropTypes.string.isRequired,
+  providerName: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   shippingPrice: PropTypes.string.isRequired,
   onCheckoutClick: PropTypes.func.isRequired,

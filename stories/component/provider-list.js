@@ -18,7 +18,8 @@ const providerInfo = (
 storiesOf('Provider List & Provider Item', module).add('default', () => (
   <ProviderList>
     <ProviderItem
-      provider="imaterialise"
+      providerSlug="imaterialise"
+      providerName="i.Materialise"
       process="DLS"
       price="$350.23"
       shippingPrice="$20.00"
@@ -28,7 +29,8 @@ storiesOf('Provider List & Provider Item', module).add('default', () => (
       onCheckoutClick={action('click')}
     />
     <ProviderItem
-      provider="sculpteo"
+      providerSlug="sculpteo"
+      providerName="Sculpteo"
       process="SLS"
       price="$370.58"
       shippingPrice="$10.00"
@@ -38,7 +40,8 @@ storiesOf('Provider List & Provider Item', module).add('default', () => (
       onCheckoutClick={action('click')}
     />
     <ProviderItem
-      provider="shapeways"
+      providerSlug="shapeways"
+      providerName="Shapeways"
       process="DLP"
       price="$410.11"
       shippingPrice="$15.00"

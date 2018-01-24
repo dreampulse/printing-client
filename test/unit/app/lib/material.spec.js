@@ -3,7 +3,8 @@ import {
   getBestOfferForMaterialConfig,
   getBestOfferForMaterial,
   getMaterialByName,
-  getMaterialConfigIdsOfMaterialGroup
+  getMaterialConfigIdsOfMaterialGroup,
+  getMaterialFinishGroupProviderNames
 } from '../../../../src/app/lib/material'
 
 describe('hasMaterialMultipleConfigs()', () => {
@@ -209,5 +210,44 @@ describe('getMaterialConfigIdsOfMaterialGroup()', () => {
       'config-2',
       'config-3'
     ])
+  })
+})
+
+describe('getMaterialFinishGroupProviderNames()', () => {
+  let material
+  let result
+
+  beforeEach(() => {
+    material = {
+      finishGroups: [
+        {
+          properties: {
+            printingServiceName: {
+              printingServiceSlug1: 'name1',
+              printingServiceSlug2: 'name2'
+            }
+          }
+        },
+        {
+          properties: {
+            printingServiceName: {
+              printingServiceSlug1: 'name4',
+              printingServiceSlug2: 'name2',
+              printingServiceSlug3: 'name5'
+            }
+          }
+        }
+      ]
+    }
+
+    result = getMaterialFinishGroupProviderNames(material)
+  })
+
+  it('returns a unique list of printing service names', () => {
+    expect(result, 'to equal', {
+      printingServiceSlug1: ['name1', 'name4'],
+      printingServiceSlug2: ['name2'],
+      printingServiceSlug3: ['name5']
+    })
   })
 })

@@ -6,7 +6,7 @@ import {
   selectOffersForSelectedMaterialConfig,
   selectMaterialByMaterialConfigId
 } from '../lib/selector'
-import {formatPrice, formatDeliveryTime} from '../lib/formatter'
+import {formatPrice, formatDeliveryTime, formatProviderName} from '../lib/formatter'
 
 import Section from '../component/section'
 import Headline from '../component/headline'
@@ -64,7 +64,8 @@ const ProviderSection = ({
         <ProviderItem
           key={offer.offerId}
           process={getOfferProcess(offer)}
-          provider={offer.printingService}
+          providerSlug={offer.printingService}
+          providerName={formatProviderName(offer.printingService)}
           providerInfo={getProviderInfo(offer)}
           price={formatPrice(offer.subTotalPrice, offer.currency)}
           deliveryTime={formatDeliveryTime(offer.shipping.deliveryTime)}

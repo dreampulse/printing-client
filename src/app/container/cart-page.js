@@ -6,7 +6,7 @@ import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {selectedOfferMaterial, selectOfferItems} from '../lib/selector'
-import {formatPrice} from '../lib/formatter'
+import {formatPrice, formatProviderName} from '../lib/formatter'
 
 import PageHeader from '../component/page-header'
 import Link from '../component/link'
@@ -164,7 +164,10 @@ const CartPage = ({
       <Grid>
         <Column md={6}>
           <Headline modifiers={['minor', 's']} label="Provider" />
-          <ProviderImage name={offer.printingService} />
+          <ProviderImage
+            slug={offer.printingService}
+            name={formatProviderName(offer.printingService)}
+          />
         </Column>
         <Column md={6}>
           <Headline modifiers={['minor', 's']} label="Material" />

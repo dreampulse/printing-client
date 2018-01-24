@@ -31,3 +31,14 @@ export function formatDimensions({x, y, z}, unit) {
 
   return `${round(x)} × ${round(y)}${zStr} ${unit}`
 }
+
+export function formatProviderName(providerSlug) {
+  return config.providerNames[providerSlug] || providerSlug
+}
+
+export function formatFinishGroupProviderNames(finishGroupProviderNames) {
+  return Object.keys(finishGroupProviderNames).reduce((acc, providerSlug) => {
+    acc[formatProviderName(providerSlug)] = finishGroupProviderNames[providerSlug]
+    return acc
+  }, {})
+}

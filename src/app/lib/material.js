@@ -1,3 +1,6 @@
+import flatten from 'lodash/flatten'
+import uniq from 'lodash/uniq'
+
 export function hasMaterialMultipleConfigs(material) {
   return !material.finishGroups.every(finishGroup => finishGroup.materialConfigs.length <= 1)
 }
@@ -56,4 +59,25 @@ export function getMaterialConfigIdsOfMaterialGroup(materialGroup) {
   })
 
   return materialConfigIds
+}
+
+export function getMaterialProviders(material) {
+  return uniq(
+    flatten(
+      material.finishGroups.map(finishGroup =>
+        Object.keys(finishGroup.properties.printingServiceName)
+      )
+    )
+  )
+}
+
+export function getMaterialFinishGroupProviderNames(material) {
+  return material.finishGroups.reduce((acc, finishGroup) => {
+    Object.keys(finishGroup.properties.printingServiceName).forEach(printingService => {
+      if (!acc[printingService]) acc[printingService] = []
+      acc[printingService].push(finishGroup.properties.printingServiceName[printingService])
+      acc[printingService] = uniq(acc[printingService])
+    })
+    return acc
+  }, {})
 }

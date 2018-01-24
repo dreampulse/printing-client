@@ -2,8 +2,12 @@ import {
   formatPrice,
   formatDeliveryTime,
   formatAddress,
-  formatDimensions
+  formatDimensions,
+  formatProviderName,
+  formatFinishGroupProviderNames
 } from '../../../../src/app/lib/formatter'
+
+import config from '../../../../config/index'
 
 describe('formatPrice()', () => {
   it('returns formatted string with price and currency USD', () => {
@@ -92,5 +96,60 @@ describe('formatDimensions', () => {
 
   it('returns null if all parameter are undefined', () => {
     expect(formatDimensions({x: null, y: null, z: null}), 'to be null')
+  })
+})
+
+describe('formatProviderName()', () => {
+  let sandbox
+
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create()
+
+    sandbox.stub(config, 'providerNames').value({
+      providerSlug1: 'providerName1',
+      providerSlug2: 'providerName2'
+    })
+  })
+
+  afterEach(() => {
+    sandbox.restore()
+  })
+
+  it('returns the provider name for a given provider slug', () => {
+    expect(formatProviderName('providerSlug1'), 'to equal', 'providerName1')
+  })
+
+  it('returns the provider slug as fallback', () => {
+    expect(formatProviderName('providerSlugX'), 'to equal', 'providerSlugX')
+  })
+})
+
+describe('formatFinishGroupProviderNames()', () => {
+  let sandbox
+  let finishGroupProviderNames
+
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create()
+
+    sandbox.stub(config, 'providerNames').value({
+      providerSlug1: 'providerName1',
+      providerSlug2: 'providerName2'
+    })
+
+    finishGroupProviderNames = {
+      providerSlug1: ['name1', 'name4'],
+      providerSlug2: ['name2']
+    }
+  })
+
+  afterEach(() => {
+    sandbox.restore()
+  })
+
+  it('returns the provider name for a given provider slug', () => {
+    expect(formatFinishGroupProviderNames(finishGroupProviderNames), 'to equal', {
+      providerName1: ['name1', 'name4'],
+      providerName2: ['name2']
+    })
   })
 })

@@ -11,6 +11,7 @@ import ProviderImage from '../component/provider-image'
 import {connectLegacy} from './util/connect-legacy'
 import {guard} from './util/guard'
 import AppLayout from './app-layout'
+import {formatProviderName} from '../lib/formatter'
 
 const CartPage = ({offer, order}) => {
   const SuccessSection = () => (
@@ -29,7 +30,10 @@ const CartPage = ({offer, order}) => {
         Please note that your order will be produced and sent from:
       </Paragraph>
       <Paragraph modifiers={['l']}>
-        <ProviderImage name={offer.printingService} />
+        <ProviderImage
+          slug={offer.printingService}
+          name={formatProviderName(offer.printingService)}
+        />
       </Paragraph>
       <Headline label="Any questions?" />
       <Paragraph modifiers={['l']}>

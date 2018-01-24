@@ -21,5 +21,10 @@ export default {
     {value: 'GBP', label: 'GBP', symbol: '£'},
     {value: 'CAD', label: 'CAD', symbol: 'CDN$'},
     {value: 'AUD', label: 'AUD', symbol: 'AU$'}
-  ]
+  ],
+  providerNames: {
+    imaterialise: 'i.Materialise',
+    sculpteo: 'Sculpteo',
+    shapeways: 'Shapeways'
+  }
 }
