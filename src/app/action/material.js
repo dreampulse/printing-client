@@ -45,6 +45,8 @@ const materialReceived = createAction(
   (materialGroups: Array<MaterialGroup>) => materialGroups
 )
 
+export const filterMaterials = createAction(TYPE.MATERIAL.FILTER, (filter: string) => filter)
+
 // Async actions
 
 export const selectMaterialGroup = (groupId: string) => async (dispatch: Dispatch<*>) => {

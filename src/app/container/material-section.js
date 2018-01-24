@@ -1,5 +1,8 @@
 import React from 'react'
-import {compose, lifecycle} from 'recompose'
+import compose from 'recompose/compose'
+import lifecycle from 'recompose/lifecycle'
+import withPropsOnChange from 'recompose/withPropsOnChange'
+import flatten from 'lodash/flatten'
 
 import scrollTo from '../service/scroll-to'
 import {openIntercom} from '../service/intercom'
@@ -27,9 +30,10 @@ import MaterialSlider from '../component/material-slider'
 import Link from '../component/link'
 import SearchField from '../component/search-field'
 
-import {selectMaterial, selectMaterialGroup} from '../action/material'
+import {selectMaterial, selectMaterialGroup, filterMaterials} from '../action/material'
 import {openMaterialModal} from '../action/modal'
 
+import {createMaterialSearch} from '../service/search'
 import {connectLegacy} from './util/connect-legacy'
 import Paragraph from '../component/paragraph'
 
@@ -37,17 +41,24 @@ const MaterialSection = ({
   areAllUploadsFinished,
   offers,
   materialGroups,
+  filteredMaterials,
   selectedMaterialGroup,
   selectedMaterial,
   printingServiceRequests,
   onSelectMaterial,
   onSelectMaterialGroup,
-  onOpenMaterialModal
+  onOpenMaterialModal,
+  onFilterMaterials
 }) => {
   const headlineModifiers = buildClassArray({
     xl: true,
     disabled: !areAllUploadsFinished
   })
+
+  const materials =
+    filteredMaterials ||
+    (selectedMaterialGroup && selectedMaterialGroup.materials) ||
+    flatten(materialGroups.map(group => group.materials))
 
   function renderMaterialCard(material) {
     const bestOffer = getBestOfferForMaterial(offers, material)
@@ -89,14 +100,21 @@ const MaterialSection = ({
       {areAllUploadsFinished && (
         <Grid>
           <Column lg={3} classNames={['u-margin-bottom']}>
-            <SearchField name="material-search" placeholder="Search…" />
+            {/* Use key to force rerender to clear state when selectedMaterialGroup changes */}
+            <SearchField
+              key={selectedMaterialGroup && selectedMaterialGroup.id}
+              name="material-search"
+              placeholder="Search…"
+              onChange={onFilterMaterials}
+            />
           </Column>
           <Column lg={5} classNames={['u-margin-bottom']}>
             <RadioButtonGroup
               name="material-group"
-              value={selectedMaterialGroup.id}
+              value={(selectedMaterialGroup && selectedMaterialGroup.id) || undefined}
               onChange={value => onSelectMaterialGroup(value)}
             >
+              <RadioButton key="__ALL__" value={undefined} label="All" />
               {materialGroups.map(group => (
                 <RadioButton key={group.id} value={group.id} label={group.name} />
               ))}
@@ -128,8 +146,14 @@ const MaterialSection = ({
         </Grid>
       )}
       {areAllUploadsFinished &&
-        selectedMaterialGroup && (
-          <MaterialSlider>{selectedMaterialGroup.materials.map(renderMaterialCard)}</MaterialSlider>
+        materials.length > 0 && (
+          <MaterialSlider>{materials.map(renderMaterialCard)}</MaterialSlider>
+        )}
+      {areAllUploadsFinished &&
+        materials.length === 0 && (
+          <Paragraph modifiers={['l']} classNames={['u-align-center']}>
+            No materials found.
+          </Paragraph>
         )}
     </Section>
   )
@@ -139,6 +163,7 @@ const mapStateToProps = state => ({
   areAllUploadsFinished: selectAreAllUploadsFinished(state),
   offers: state.price.offers || [],
   materialGroups: state.material.materialGroups,
+  materialFilter: state.material.materialFilter,
   selectedMaterialGroup: selectCurrentMaterialGroup(state),
   selectedMaterial: selectCurrentMaterial(state),
   printingServiceRequests: selectPrintingServiceRequests(state)
@@ -147,6 +172,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onSelectMaterial: selectMaterial,
   onSelectMaterialGroup: selectMaterialGroup,
+  onFilterMaterials: filterMaterials,
   onOpenMaterialModal: openMaterialModal
 }
 
@@ -158,5 +184,11 @@ export default compose(
         scrollTo('#section-material')
       }
     }
-  })
+  }),
+  withPropsOnChange(['materialGroups'], ({materialGroups}) => ({
+    materialSearch: createMaterialSearch(flatten(materialGroups.map(group => group.materials)))
+  })),
+  withPropsOnChange(['materialFilter', 'materialSearch'], ({materialFilter, materialSearch}) => ({
+    filteredMaterials: materialFilter.length > 0 ? materialSearch.search(materialFilter) : undefined
+  }))
 )(MaterialSection)
