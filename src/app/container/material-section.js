@@ -26,7 +26,7 @@ import RadioButtonGroup from '../component/radio-button-group'
 import MaterialSlider from '../component/material-slider'
 import Link from '../component/link'
 
-import {selectMaterial, materialGroupSelected} from '../action/material'
+import {selectMaterial, selectMaterialGroup} from '../action/material'
 import {openMaterialModal} from '../action/modal'
 
 import {connectLegacy} from './util/connect-legacy'
@@ -142,7 +142,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onSelectMaterial: selectMaterial,
-  onSelectMaterialGroup: materialGroupSelected,
+  onSelectMaterialGroup: selectMaterialGroup,
   onOpenMaterialModal: openMaterialModal
 }
 

@@ -15,7 +15,7 @@ export const selectMaterial = createAction(
   (materialId: string) => materialId
 )
 
-export const materialGroupSelected = createAction(
+export const selectMaterialGroup = createAction(
   TYPE.MATERIAL.GROUP_SELECTED,
   (groupId: string) => groupId
 )
