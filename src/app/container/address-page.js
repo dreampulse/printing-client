@@ -32,11 +32,6 @@ const email = value =>
 const tel = value =>
   !value || (value && !/^[+]?[0-9\-\s()]*$/i.test(value)) ? 'Invalid phone number' : undefined
 
-const maxLength = max => value => (!value || value.length > max ? 'Field too long' : undefined)
-
-const validateStreet = maxLength(30)
-const validateName = maxLength(20)
-
 const AddressPage = ({
   handleSubmit,
   onGoToHome,
@@ -106,25 +101,28 @@ const AddressPage = ({
 
       <FormRow modifiers={['half-half']}>
         <Field
-          validate={validateName}
+          validate={required}
           component={renderField(InputField)}
           label="First name"
           name="billingAddress.firstName"
+          maxLength="20"
         />
         <Field
-          validate={validateName}
+          validate={required}
           component={renderField(InputField)}
           label="Last name"
           name="billingAddress.lastName"
+          maxLength="20"
         />
       </FormRow>
 
       <FormRow modifiers={['l-s']}>
         <Field
-          validate={validateStreet}
+          validate={required}
           component={renderField(InputField)}
           label="Street"
           name="billingAddress.street"
+          maxLength="30"
         />
         <Field
           validate={required}
@@ -197,16 +195,18 @@ const AddressPage = ({
 
           <FormRow modifiers={['half-half']}>
             <Field
-              validate={validateName}
+              validate={required}
               component={renderField(InputField)}
               label="First name"
               name="shippingAddress.firstName"
+              maxLength="20"
             />
             <Field
-              validate={validateName}
+              validate={required}
               component={renderField(InputField)}
               label="Last name"
               name="shippingAddress.lastName"
+              maxLength="20"
             />
           </FormRow>
 
@@ -245,10 +245,11 @@ const AddressPage = ({
 
           <FormRow modifiers={['l-s']}>
             <Field
-              validate={validateStreet}
+              validate={required}
               component={renderField(InputField)}
               label="Street"
               name="shippingAddress.street"
+              maxLength="30"
             />
             <Field
               validate={required}
