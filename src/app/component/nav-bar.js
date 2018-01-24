@@ -15,8 +15,8 @@ const NavBar = ({classNames, modifiers, children, onClickIdentity = () => {}}) =
         <button className="nav-bar__identity" type="button" onClick={onClickIdentity}>
           <img className="nav-bar__logo" src={logoImage} alt="All3DP" />
           <strong className="nav-bar__subline">
-            Price Comparison Service<br />
-            for Industrial 3D Printing
+            3D Printing Price Check<br />
+            for Industrial Grade 3D Printing
           </strong>
         </button>
         <div className="nav-bar__content">{children}</div>
