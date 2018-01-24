@@ -99,8 +99,7 @@ export type Location = {
 export type Address = Location & {
   firstName: string,
   lastName: string,
-  street: string,
-  houseNumber: string,
+  address: string,
   addressLine2: string
 }
 

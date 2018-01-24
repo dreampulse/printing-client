@@ -5,8 +5,7 @@ import type {UtmParams} from './lib/search-params'
 export type Address = {
   firstName: string,
   lastName: string,
-  street: string,
-  houseNumber: string,
+  address: string,
   addressLine2: string,
   city: string,
   zipCode: string,

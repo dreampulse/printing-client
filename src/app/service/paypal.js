@@ -15,8 +15,7 @@ export function createPayment({
   const {
     firstName,
     lastName,
-    street,
-    houseNumber,
+    address,
     addressLine2,
     city,
     zipCode,
@@ -46,7 +45,7 @@ export function createPayment({
         ],
         shipping_address: {
           recipient_name: `${firstName} ${lastName}`,
-          line1: `${street} ${houseNumber}`,
+          line1: address,
           line2: addressLine2,
           city,
           country_code: countryCode,
