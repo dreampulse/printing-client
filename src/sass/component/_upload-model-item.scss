@@ -33,4 +33,24 @@
     display: block;
     color: $color-minor;
   }
+
+  &__buttons {
+    position: absolute;
+    right: $space-xl;
+    bottom: $space-base;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity $transition-duration ease;
+  }
+
+  &--show-buttons {
+    .upload-model-item__buttons {
+      opacity: 1;
+      pointer-events: initial;
+
+      & > :last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
