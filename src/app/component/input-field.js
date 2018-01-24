@@ -25,26 +25,18 @@ export default class InputField extends Component {
     value: ''
   }
 
-  id = uniqueId('uid-')
-
   render() {
-    const inputId = this.props.id || this.id
+    const {id, modifiers, classNames, ...inputFieldProps} = this.props
+
+    const inputId = id || uniqueId('uid-')
     const finalModifiers = [
-      ...this.props.modifiers,
+      ...modifiers,
       {empty: !this.props.value},
       {disabled: this.props.disabled}
     ]
     return (
-      <div className={buildClassName('input-field', finalModifiers, this.props.classNames)}>
-        <input
-          disabled={this.props.disabled}
-          name={this.props.name}
-          id={inputId}
-          className="input-field__input"
-          type={this.props.type}
-          value={this.props.value}
-          onChange={this.props.onChange}
-        />
+      <div className={buildClassName('input-field', finalModifiers, classNames)}>
+        <input id={inputId} className="input-field__input" {...inputFieldProps} />
         <label htmlFor={inputId} className="input-field__label">
           {this.props.label}
         </label>

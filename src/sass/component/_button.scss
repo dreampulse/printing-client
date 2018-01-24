@@ -99,4 +99,26 @@
       box-shadow: $box-shadow-active;
     }
   }
+
+  &--minor {
+    background: $color-bg;
+    color: $color-primary;
+    border: 1px solid $color-primary;
+
+    &:hover:not([disabled]),
+    &:focus:not([disabled]),
+    &:active:not([disabled]) {
+      background-color: inherit;
+      color: $color-primary-active;
+      border-color: $color-primary-active;
+    }
+
+    &[disabled] {
+      cursor: not-allowed;
+      background-color: inherit;
+      color: $color-minor;
+      border-color: $color-minor;
+      box-shadow: none;
+    }
+  }
 }
