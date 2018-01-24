@@ -1,4 +1,3 @@
-import flatten from 'lodash/flatten'
 import uniq from 'lodash/uniq'
 
 export function hasMaterialMultipleConfigs(material) {
