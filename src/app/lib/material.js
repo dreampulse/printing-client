@@ -61,16 +61,6 @@ export function getMaterialConfigIdsOfMaterialGroup(materialGroup) {
   return materialConfigIds
 }
 
-export function getMaterialProviders(material) {
-  return uniq(
-    flatten(
-      material.finishGroups.map(finishGroup =>
-        Object.keys(finishGroup.properties.printingServiceName)
-      )
-    )
-  )
-}
-
 export function getMaterialFinishGroupProviderNames(material) {
   return material.finishGroups.reduce((acc, finishGroup) => {
     Object.keys(finishGroup.properties.printingServiceName).forEach(printingService => {
