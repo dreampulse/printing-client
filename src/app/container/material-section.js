@@ -25,6 +25,7 @@ import RadioButton from '../component/radio-button'
 import RadioButtonGroup from '../component/radio-button-group'
 import MaterialSlider from '../component/material-slider'
 import Link from '../component/link'
+import SearchField from '../component/search-field'
 
 import {selectMaterial, selectMaterialGroup} from '../action/material'
 import {openMaterialModal} from '../action/modal'
@@ -87,7 +88,10 @@ const MaterialSection = ({
       <Headline label="2. Choose a material" modifiers={headlineModifiers} />
       {areAllUploadsFinished && (
         <Grid>
-          <Column lg={8} classNames={['u-margin-bottom-l']}>
+          <Column lg={3} classNames={['u-margin-bottom']}>
+            <SearchField name="material-search" placeholder="Search…" />
+          </Column>
+          <Column lg={5} classNames={['u-margin-bottom']}>
             <RadioButtonGroup
               name="material-group"
               value={selectedMaterialGroup.id}

@@ -2,12 +2,12 @@ import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
+import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
 export default class InputField extends Component {
   static propTypes = {
-    modifiers: PropTypes.arrayOf(PropTypes.string),
-    classNames: PropTypes.arrayOf(PropTypes.string),
+    ...propTypes.component,
     label: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.number.isRequired]),
     name: PropTypes.string,
@@ -18,7 +18,7 @@ export default class InputField extends Component {
   }
 
   static defaultProps = {
-    modifiers: [],
+    modifiers: [], // eslint-disable-line react/default-props-match-prop-types
     type: 'text',
     onChange: () => {},
     name: '',

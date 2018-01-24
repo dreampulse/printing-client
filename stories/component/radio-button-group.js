@@ -3,6 +3,7 @@ import {storiesOf} from '@storybook/react'
 
 import RadioButtonGroup from '../../src/app/component/radio-button-group'
 import RadioButton from '../../src/app/component/radio-button'
+import SearchField from '../../src/app/component/search-field'
 
 import HandleValue from '../util/handle-value'
 
