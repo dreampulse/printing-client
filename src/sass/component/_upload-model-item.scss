@@ -22,7 +22,6 @@
   &__title {
     @include scut-truncate;
 
-    display: block;
     color: $color-text;
     font-weight: $font-weight-bold;
   }
@@ -30,7 +29,6 @@
   &__subline {
     @include scut-truncate;
 
-    display: block;
     color: $color-minor;
   }
 
@@ -41,16 +39,16 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity $transition-duration ease;
+
+    & > :last-child {
+      margin-bottom: 0;
+    }
   }
 
-  &--show-buttons {
+  &:hover {
     .upload-model-item__buttons {
       opacity: 1;
       pointer-events: initial;
-
-      & > :last-child {
-        margin-bottom: 0;
-      }
     }
   }
 }
