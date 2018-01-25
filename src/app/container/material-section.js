@@ -28,14 +28,15 @@ import RadioButton from '../component/radio-button'
 import RadioButtonGroup from '../component/radio-button-group'
 import MaterialSlider from '../component/material-slider'
 import Link from '../component/link'
-import SearchField from '../component/search-field'
+import Paragraph from '../component/paragraph'
+
+import MaterialFilterPartial from './material-filter-partial'
 
 import {selectMaterial, selectMaterialGroup, filterMaterials} from '../action/material'
 import {openMaterialModal} from '../action/modal'
 
 import {createMaterialSearch} from '../service/search'
 import {connectLegacy} from './util/connect-legacy'
-import Paragraph from '../component/paragraph'
 
 const MaterialSection = ({
   areAllUploadsFinished,
@@ -47,8 +48,7 @@ const MaterialSection = ({
   printingServiceRequests,
   onSelectMaterial,
   onSelectMaterialGroup,
-  onOpenMaterialModal,
-  onFilterMaterials
+  onOpenMaterialModal
 }) => {
   const headlineModifiers = buildClassArray({
     xl: true,
@@ -100,13 +100,7 @@ const MaterialSection = ({
       {areAllUploadsFinished && (
         <Grid>
           <Column lg={3} classNames={['u-margin-bottom']}>
-            {/* Use key to force rerender to clear state when selectedMaterialGroup changes */}
-            <SearchField
-              key={selectedMaterialGroup && selectedMaterialGroup.id}
-              name="material-search"
-              placeholder="Search…"
-              onChange={onFilterMaterials}
-            />
+            <MaterialFilterPartial />
           </Column>
           <Column lg={5} classNames={['u-margin-bottom']}>
             <RadioButtonGroup

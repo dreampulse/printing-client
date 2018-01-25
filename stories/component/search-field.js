@@ -15,8 +15,3 @@ storiesOf('Search Field', module)
       <SearchField placeholder="Search…" disabled />
     </HandleValue>
   ))
-  .add('in radio button group', () => (
-    <HandleValue>
-      <SearchField modifiers={['in-radio-button-group']} placeholder="Search…" />
-    </HandleValue>
-  ))

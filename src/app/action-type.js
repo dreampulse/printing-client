@@ -220,6 +220,10 @@ export type MaterialReceivedAction = {
   type: 'LEGACY.MATERIAL.RECEIVED',
   payload: Array<MaterialGroup>
 }
+export type MaterialFilterAction = {
+  type: 'LEGACY.MATERIAL.FILTER',
+  payload: string
+}
 
 //
 // All actions combined
@@ -255,6 +259,7 @@ export type Action =
   | MaterialConfigForFinishGroupSelectedAction
   | MaterialConfigSelectedAction
   | MaterialReceivedAction
+  | MaterialFilterAction
 
 export default {
   MODAL: {
