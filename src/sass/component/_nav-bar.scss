@@ -43,11 +43,7 @@
 
   &__logo {
     height: $nav-bar-content-height;
-    margin-right: $space-l;
-
-    @include respond-to(large) {
-      margin-right: $space-xxl;
-    }
+    margin-right: $space-base;
   }
 
   &__subline {
