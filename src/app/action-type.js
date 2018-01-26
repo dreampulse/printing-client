@@ -220,6 +220,10 @@ export type MaterialReceivedAction = {
   type: 'LEGACY.MATERIAL.RECEIVED',
   payload: Array<MaterialGroup>
 }
+export type MaterialFilterAction = {
+  type: 'LEGACY.MATERIAL.FILTER',
+  payload: string
+}
 
 //
 // All actions combined
@@ -255,6 +259,7 @@ export type Action =
   | MaterialConfigForFinishGroupSelectedAction
   | MaterialConfigSelectedAction
   | MaterialReceivedAction
+  | MaterialFilterAction
 
 export default {
   MODAL: {
@@ -276,7 +281,8 @@ export default {
     SELECTED: 'LEGACY.MATERIAL.SELECTED',
     GROUP_SELECTED: 'LEGACY.MATERIAL.GROUP_SELECTED',
     CONFIG_SELECTED: 'LEGACY.MATERIAL.CONFIG_SELECTED',
-    CONFIG_FOR_FINISH_GROUP_SELECTED: 'LEGACY.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED'
+    CONFIG_FOR_FINISH_GROUP_SELECTED: 'LEGACY.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED',
+    FILTER: 'LEGACY.MATERIAL.FILTER'
   },
   PRICE: {
     SELECT_OFFER: 'LEGACY.PRICE.SELECT_OFFER',

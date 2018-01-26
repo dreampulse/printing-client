@@ -3,7 +3,8 @@ import createHistory from 'history/createMemoryHistory'
 import {
   getMaterials,
   selectMaterialGroup,
-  selectMaterialConfig
+  selectMaterialConfig,
+  filterMaterials
 } from '../../../../src/app/action/material'
 import * as printingEngine from '../../../../src/app/service/printing-engine'
 
@@ -45,6 +46,13 @@ describe('Material Integration Test', () => {
     it('should work', () => {
       store.dispatch(selectMaterialConfig('some-config-id'))
       expect(store.getState().material.selectedMaterialConfig, 'to equal', 'some-config-id')
+    })
+  })
+
+  describe('filterMaterials()', () => {
+    it('should work', () => {
+      store.dispatch(filterMaterials('term'))
+      expect(store.getState().material.materialFilter, 'to equal', 'term')
     })
   })
 })
