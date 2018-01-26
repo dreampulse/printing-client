@@ -8,7 +8,6 @@ export const createMaterialSearch = materials => {
 
   const fuse = new Fuse(materials, {
     shouldSort: true,
-    includeScore: true,
     threshold: 0.6,
     location: 0,
     distance: 100,
