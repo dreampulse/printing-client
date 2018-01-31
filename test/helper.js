@@ -76,3 +76,14 @@ export const findCmd = (state, func, args) => {
 
   return cmd
 }
+
+export const findAction = (state, action) =>
+  getCmd(state).cmds.find(c => {
+    try {
+      expect(c.actionToDispatch, 'to satisfy', action)
+
+      return true
+    } catch (err) {
+      return false
+    }
+  })
