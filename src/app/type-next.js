@@ -122,7 +122,6 @@ type _ModalConfig<C> = {
 }
 
 export type ModalConfig = _ModalConfig<null | ModalContent>
-
 export type OpenModalConfig = _ModalConfig<ModalContent>
 
 export type Action<Type, Payload> = {
@@ -130,6 +129,8 @@ export type Action<Type, Payload> = {
   payload: Payload
 }
 
-export type AppAction = _AppAction
+export type TimeoutId = string
+export type TimeoutOnEndAction = Action<string, {}>
 
+export type AppAction = _AppAction
 export type AppState = _AppState
