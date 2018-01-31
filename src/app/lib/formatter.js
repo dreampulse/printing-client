@@ -17,6 +17,13 @@ export function formatDeliveryTime(deliveryTime) {
   return `${deliveryTime} days`
 }
 
+export function formatTimeRange(from, to) {
+  if (!from) return '–'
+  if ((+from === 1 && !to) || (+from === 1 && +to === +from)) return `${from} day`
+  if ((+from && !to) || (+from && +from === +to)) return `${from} days`
+  return `${+from}–${+to} days`
+}
+
 export function formatAddress(address) {
   if (address.city && address.countryCode) {
     return `${address.city}, ${getCountryName(address.countryCode)}`
