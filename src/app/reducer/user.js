@@ -15,8 +15,7 @@ const initialState = {
     shippingAddress: {
       firstName: '',
       lastName: '',
-      street: '',
-      houseNumber: '',
+      address: '',
       addressLine2: '',
       city: '',
       zipCode: '',
@@ -27,8 +26,7 @@ const initialState = {
     billingAddress: {
       firstName: '',
       lastName: '',
-      street: '',
-      houseNumber: '',
+      address: '',
       addressLine2: '',
       city: '',
       zipCode: '',

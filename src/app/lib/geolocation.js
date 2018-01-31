@@ -39,8 +39,6 @@ export const getLocationByIp = async (): Promise<Location> => {
 }
 
 export const convertPlaceToLocation = (place: GoogleMapsPlace): Location => ({
-  houseNumber: shortNameFrom(place, 'street_number'),
-  street: longNameFrom(place, 'route'),
   city: longNameFrom(place, 'locality'),
   zipCode: shortNameFrom(place, 'postal_code'),
   stateCode: shortNameFrom(place, 'administrative_area_level_1'),
