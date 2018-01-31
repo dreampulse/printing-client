@@ -7,6 +7,8 @@ import buildClassName from '../lib/build-class-name'
 import Button from './button'
 import ProviderImage from './provider-image'
 import AnnotatedTableCell from './annotated-table-cell'
+import Info from './info'
+import Paragraph from './paragraph'
 
 import checkoutIcon from '../../asset/icon/checkout.svg'
 
@@ -26,18 +28,25 @@ const ProviderItem = ({
 }) => (
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
     <td className="provider-item__provider">
-      <ProviderImage name={provider} />
-      {providerInfo}
+      <AnnotatedTableCell annotation={providerInfo}>
+        <ProviderImage name={provider} />
+      </AnnotatedTableCell>
+    </td>
+    <td className="provider-item__total-price">
+      <AnnotatedTableCell annotation={includesVat ? 'incl. 19% VAT' : ''}>
+        {totalPrice}
+      </AnnotatedTableCell>
+    </td>
+    <td className="provider-item__price">{price}</td>
+    <td className="provider-item__shipping-price">
+      <AnnotatedTableCell annotation={deliveryTime}>
+        {shippingPrice}
+        <Info modifiers={['minor']}>
+          <Paragraph>{deliveryProvider}</Paragraph>
+        </Info>
+      </AnnotatedTableCell>
     </td>
     <td className="provider-item__process">{process}</td>
-    <td className="provider-item__price">{price}</td>
-    <td className="provider-item__shipping-price">{shippingPrice}</td>
-    <td className="provider-item__total-price">
-      <AnnotatedTableCell value={totalPrice} annotation={includesVat ? 'incl. Vat' : ''} />
-    </td>
-    <td className="provider-item__delivery">
-      <AnnotatedTableCell value={deliveryTime} annotation={deliveryProvider} />
-    </td>
     <td className="provider-item__checkout">
       <Button
         icon={checkoutIcon}
@@ -59,7 +68,7 @@ ProviderItem.propTypes = {
   onCheckoutClick: PropTypes.func.isRequired,
   process: PropTypes.string.isRequired,
   deliveryTime: PropTypes.string.isRequired,
-  providerInfo: PropTypes.node,
+  providerInfo: PropTypes.string,
   deliveryProvider: PropTypes.string
 }
 

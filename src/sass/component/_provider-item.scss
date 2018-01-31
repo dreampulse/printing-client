@@ -6,27 +6,38 @@
   &__shipping-price,
   &__total-price,
   &__checkout,
-  &__delivery,
   &__process {
-    padding: $space-l $space-base;
+    padding: $space-l $space-l;
     vertical-align: middle;
     font-size: $font-size-l;
     text-align: left;
   }
 
+  &__checkout {
+    padding-right: 0;
+  }
+
+  &__shipping-price {
+    .info {
+      font-size: $font-size-base;
+      margin-left: $space-s;
+    }
+  }
+
   &__provider {
     white-space: nowrap;
+    padding-left: $space-base;
 
     & > .provider-image {
       float: left;
       display: block;
-      max-width: 165px; // This should fit next to info box
+      max-width: 110px; // This should fit next to info box
     }
 
     & > .info {
+      font-size: 16px;
       display: block;
       position: relative;
-      margin-top: .3em;
       margin-left: 0.5em;
       float: right;
     }

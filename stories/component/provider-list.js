@@ -4,16 +4,6 @@ import {action} from '@storybook/addon-actions'
 
 import ProviderList from '../../src/app/component/provider-list'
 import ProviderItem from '../../src/app/component/provider-item'
-import Info from '../../src/app/component/info'
-import Headline from '../../src/app/component/headline'
-import Paragraph from '../../src/app/component/paragraph'
-
-const providerInfo = (
-  <Info modifiers={['minor']}>
-    <Headline modifiers={['s']} label="Headline" />
-    <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
-  </Info>
-)
 
 storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
   <ProviderList>
@@ -25,7 +15,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       deliveryTime="3-4 Days"
       totalPrice="$40.00"
       deliveryProvider="DHL Express"
-      providerInfo={providerInfo}
+      providerInfo="Provider Material Name"
       onCheckoutClick={action('click')}
     />
     <ProviderItem
@@ -37,7 +27,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       includesVat
       totalPrice="$40.00"
       deliveryProvider="DHL"
-      providerInfo={providerInfo}
+      providerInfo="Provider Material Name"
       onCheckoutClick={action('click')}
     />
     <ProviderItem
@@ -48,7 +38,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       deliveryTime="1-2 Days"
       totalPrice="$40.00"
       deliveryProvider="UPS"
-      providerInfo={providerInfo}
+      providerInfo="Provider Material Name"
       onCheckoutClick={action('click')}
     />
   </ProviderList>

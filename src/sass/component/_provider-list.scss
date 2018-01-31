@@ -18,16 +18,18 @@
   &__shipping,
   &__process,
   &__checkout {
-    width: 25%;
-    padding: $space-base $space-base;
+    width: 20%;
+    padding: $space-base $space-l;
     text-align: left;
   }
 
   &__provider {
-    width: 260px;
+    width: 170px;
+    padding-left: $space-base;
   }
 
   &__checkout {
-    width: 270px;
+    width: 230px;
+    padding-right: 0;
   }
 }

@@ -2,13 +2,12 @@ import {getCountryName} from '../service/country'
 import config from '../../../config'
 
 export function formatPrice(value, currency) {
+  const formattedValue = value.toFixed(2)
   const supportedCurrency = config.currencies.find(c => c.value === currency)
-  if (supportedCurrency && supportedCurrency.prefix) {
-    return `${supportedCurrency.symbol}${value.toFixed(2)}`
-  } else if (supportedCurrency && !supportedCurrency.prefix) {
-    return `${value.toFixed(2)}${supportedCurrency.symbol}`
-  }
-  return `${currency}${value.toFixed(2)}`
+  const prefix = supportedCurrency ? supportedCurrency.prefix : true
+  const symbol = supportedCurrency ? supportedCurrency.symbol : currency
+
+  return prefix ? `${symbol}${formattedValue}` : `${formattedValue}${symbol}`
 }
 
 export function formatDeliveryTime(deliveryTime) {
