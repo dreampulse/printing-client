@@ -13,12 +13,13 @@
 
   &__provider,
   &__price,
+  &__total-price,
   &__delivery,
   &__shipping,
   &__process,
   &__checkout {
     width: 25%;
-    padding: $space-base $space-xl;
+    padding: $space-base $space-base;
     text-align: left;
   }
 

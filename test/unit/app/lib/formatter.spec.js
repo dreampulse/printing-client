@@ -11,7 +11,7 @@ describe('formatPrice()', () => {
   })
 
   it('returns formatted string with price and currency EUR', () => {
-    expect(formatPrice(19.99, 'EUR'), 'to equal', '€19.99')
+    expect(formatPrice(19.99, 'EUR'), 'to equal', '19.99€')
   })
 
   it('returns formatted string with price and currency GBP', () => {

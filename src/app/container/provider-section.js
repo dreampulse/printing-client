@@ -60,7 +60,7 @@ const ProviderSection = ({
 
   const renderProviderList = () => (
     <ProviderList>
-      {offers.sort((a, b) => a.subTotalPrice > b.subTotalPrice).map(offer => (
+      {offers.sort((a, b) => a.totalPrice > b.totalPrice).map(offer => (
         <ProviderItem
           key={offer.offerId}
           process={getOfferProcess(offer)}
@@ -70,6 +70,8 @@ const ProviderSection = ({
           deliveryTime={formatDeliveryTime(offer.shipping.deliveryTime)}
           deliveryProvider={offer.shipping.name}
           shippingPrice={formatPrice(offer.shipping.price, offer.currency)}
+          totalPrice={formatPrice(offer.totalPrice, offer.currency)}
+          includesVat={!!offer.vatPrice}
           onCheckoutClick={() => {
             onSelectOffer(offer)
             onGoToAddress()

@@ -6,7 +6,7 @@ import buildClassName from '../lib/build-class-name'
 
 import Button from './button'
 import ProviderImage from './provider-image'
-import DeliveryInformation from './delivery-information'
+import AnnotatedTableCell from './annotated-table-cell'
 
 import checkoutIcon from '../../asset/icon/checkout.svg'
 
@@ -16,6 +16,8 @@ const ProviderItem = ({
   provider,
   price,
   shippingPrice,
+  totalPrice,
+  includesVat = false,
   process,
   deliveryTime,
   deliveryProvider,
@@ -30,8 +32,11 @@ const ProviderItem = ({
     <td className="provider-item__process">{process}</td>
     <td className="provider-item__price">{price}</td>
     <td className="provider-item__shipping-price">{shippingPrice}</td>
+    <td className="provider-item__total-price">
+      <AnnotatedTableCell value={totalPrice} annotation={includesVat ? 'incl. Vat' : ''} />
+    </td>
     <td className="provider-item__delivery">
-      <DeliveryInformation duration={deliveryTime} provider={deliveryProvider} />
+      <AnnotatedTableCell value={deliveryTime} annotation={deliveryProvider} />
     </td>
     <td className="provider-item__checkout">
       <Button
@@ -48,6 +53,8 @@ ProviderItem.propTypes = {
   ...propTypes.component,
   provider: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
+  totalPrice: PropTypes.string.isRequired,
+  includesVat: PropTypes.bool,
   shippingPrice: PropTypes.string.isRequired,
   onCheckoutClick: PropTypes.func.isRequired,
   process: PropTypes.string.isRequired,

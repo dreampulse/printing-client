@@ -3,8 +3,12 @@ import config from '../../../config'
 
 export function formatPrice(value, currency) {
   const supportedCurrency = config.currencies.find(c => c.value === currency)
-  const prefix = supportedCurrency ? supportedCurrency.symbol : currency
-  return `${prefix}${value.toFixed(2)}`
+  if (supportedCurrency && supportedCurrency.prefix) {
+    return `${supportedCurrency.symbol}${value.toFixed(2)}`
+  } else if (supportedCurrency && !supportedCurrency.prefix) {
+    return `${value.toFixed(2)}${supportedCurrency.symbol}`
+  }
+  return `${currency}${value.toFixed(2)}`
 }
 
 export function formatDeliveryTime(deliveryTime) {

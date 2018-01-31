@@ -15,7 +15,7 @@ const providerInfo = (
   </Info>
 )
 
-storiesOf('Provider List & Provider Item', module).add('default', () => (
+storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
   <ProviderList>
     <ProviderItem
       provider="imaterialise"
@@ -23,6 +23,7 @@ storiesOf('Provider List & Provider Item', module).add('default', () => (
       price="$350.23"
       shippingPrice="$20.00"
       deliveryTime="3-4 Days"
+      totalPrice="$40.00"
       deliveryProvider="DHL Express"
       providerInfo={providerInfo}
       onCheckoutClick={action('click')}
@@ -33,6 +34,8 @@ storiesOf('Provider List & Provider Item', module).add('default', () => (
       price="$370.58"
       shippingPrice="$10.00"
       deliveryTime="6-10 Days"
+      includesVat
+      totalPrice="$40.00"
       deliveryProvider="DHL"
       providerInfo={providerInfo}
       onCheckoutClick={action('click')}
@@ -43,6 +46,7 @@ storiesOf('Provider List & Provider Item', module).add('default', () => (
       price="$410.11"
       shippingPrice="$15.00"
       deliveryTime="1-2 Days"
+      totalPrice="$40.00"
       deliveryProvider="UPS"
       providerInfo={providerInfo}
       onCheckoutClick={action('click')}

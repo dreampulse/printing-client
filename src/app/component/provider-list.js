@@ -12,6 +12,7 @@ const ProviderList = ({classNames, modifiers, children}) => (
         <th className="provider-list__process">Process</th>
         <th className="provider-list__price">Price</th>
         <th className="provider-list__shipping">Shipping</th>
+        <th className="provider-list__total-price">Total price</th>
         <th className="provider-list__delivery">Delivery time</th>
         <th className="provider-list__checkout" />
       </tr>

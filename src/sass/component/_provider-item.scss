@@ -4,10 +4,11 @@
   &__provider,
   &__price,
   &__shipping-price,
+  &__total-price,
   &__checkout,
   &__delivery,
   &__process {
-    padding: $space-l $space-xl;
+    padding: $space-l $space-base;
     vertical-align: middle;
     font-size: $font-size-l;
     text-align: left;
