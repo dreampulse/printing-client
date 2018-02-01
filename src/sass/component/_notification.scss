@@ -1,0 +1,81 @@
+.notification {
+  $border: 1px solid $color-border;
+
+  border: $border;
+  display: flex;
+  flex-direction: column;
+  padding: 0 $space-l;
+
+  @include respond-to(medium) {
+    flex-direction: row;
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__content {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    font-size: 45px;
+    line-height: 0;
+    color: $color-success;
+    padding: $space-base 0;
+    margin-right: $space-l;
+  }
+
+  &__message {
+    display: flex;
+    align-items: center;
+    color: $color-success;
+    font-size: $font-size-l;
+    font-weight: $font-weight-bold;
+    margin-right: $space-xl;
+    padding: $space-base 0;
+  }
+
+  &__body {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    margin-right: $space-l;
+    font-size: $font-size-l;
+    font-weight: $font-weight-bold;
+    padding: $space-base 0;
+    color: $color-minor;
+
+    & > strong {
+      color: $color-text;
+    }
+
+    @include respond-to(medium) {
+      border-left: $border;
+      padding-left: $space-xl;
+    }
+  }
+
+  &__button {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: $space-base 0;
+    margin-left: auto;
+  }
+
+  &--warning {
+    .notification__icon {
+      color: $color-warning;
+    }
+
+    .notification__message {
+      color: $color-text;
+    }
+  }
+}
