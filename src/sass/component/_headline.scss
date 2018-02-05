@@ -47,6 +47,10 @@
     color: $color-text-label;
   }
 
+  &--invert {
+    color: $color-invert-text;
+  }
+
   &--warning {
     & > .icon {
       color: $color-warning;

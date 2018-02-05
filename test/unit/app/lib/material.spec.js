@@ -43,19 +43,19 @@ describe('getBestOfferForMaterialConfig()', () => {
     offers = [
       {
         materialConfigId: 'config-1',
-        totalPrice: 20
+        subTotalPrice: 20
       },
       {
         materialConfigId: 'config-2',
-        totalPrice: 10
+        subTotalPrice: 10
       },
       {
         materialConfigId: 'config-1',
-        totalPrice: 10
+        subTotalPrice: 10
       },
       {
         materialConfigId: 'config-1',
-        totalPrice: 30
+        subTotalPrice: 30
       }
     ]
   })
@@ -64,7 +64,7 @@ describe('getBestOfferForMaterialConfig()', () => {
     const bestOffer = getBestOfferForMaterialConfig(offers, 'config-1')
     expect(bestOffer, 'to equal', {
       materialConfigId: 'config-1',
-      totalPrice: 10
+      subTotalPrice: 10
     })
   })
 })
@@ -77,23 +77,23 @@ describe('getBestOfferForMaterial()', () => {
     offers = [
       {
         materialConfigId: 'config-1',
-        totalPrice: 40
+        subTotalPrice: 40
       },
       {
         materialConfigId: 'config-2',
-        totalPrice: 30
+        subTotalPrice: 30
       },
       {
         materialConfigId: 'config-3',
-        totalPrice: 20
+        subTotalPrice: 20
       },
       {
         materialConfigId: 'config-4',
-        totalPrice: 10
+        subTotalPrice: 10
       },
       {
         materialConfigId: 'config-1',
-        totalPrice: 30
+        subTotalPrice: 30
       }
     ]
 
@@ -124,7 +124,7 @@ describe('getBestOfferForMaterial()', () => {
     const bestOffer = getBestOfferForMaterial(offers, material)
     expect(bestOffer, 'to equal', {
       materialConfigId: 'config-3',
-      totalPrice: 20
+      subTotalPrice: 20
     })
   })
 })

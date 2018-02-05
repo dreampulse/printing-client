@@ -8,7 +8,7 @@ const headline = <Headline label="Check shipping prices" modifiers={['l', 'warni
 
 const FetchingPriceModal = () => (
   <Overlay headline={headline} closeable={false}>
-    <LabeledLoadingIndicator>
+    <LabeledLoadingIndicator classNames={['u-margin-bottom']}>
       Recalculating prices for new shipping address…<br />
       This might take a few seconds
     </LabeledLoadingIndicator>

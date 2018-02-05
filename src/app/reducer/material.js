@@ -8,7 +8,8 @@ const initialState = {
   selectedMaterialGroup: undefined,
   selectedMaterial: undefined,
   selectedMaterialConfig: undefined,
-  selectedMaterialConfigs: {}
+  selectedMaterialConfigs: {},
+  materialFilter: ''
 }
 
 function handleRestoreConfiguration(state, {payload: {materialConfigId}}) {
@@ -29,6 +30,7 @@ function handleSelectedMaterialGroup(state, {payload}) {
   return {
     ...state,
     selectedMaterialGroup: payload,
+    materialFilter: '',
     selectedMaterial: undefined,
     selectedMaterialConfig: undefined
   }
@@ -60,6 +62,16 @@ function handleSelectedMaterialConfigForFinishGroup(state, {payload}) {
   }
 }
 
+function handleFilterMaterials(state, {payload}) {
+  return {
+    ...state,
+    materialFilter: payload,
+    selectedMaterialGroup: undefined,
+    selectedMaterial: undefined,
+    selectedMaterialConfig: undefined
+  }
+}
+
 const reducer = (state: MaterialState = initialState, action: Action): MaterialState => {
   switch (action.type) {
     case TYPE.MATERIAL.RECEIVED:
@@ -72,6 +84,8 @@ const reducer = (state: MaterialState = initialState, action: Action): MaterialS
       return handleSelectedMaterialConfig(state, action)
     case TYPE.MATERIAL.CONFIG_FOR_FINISH_GROUP_SELECTED:
       return handleSelectedMaterialConfigForFinishGroup(state, action)
+    case TYPE.MATERIAL.FILTER:
+      return handleFilterMaterials(state, action)
     case TYPE.DIRECT_SALES.RESTORE_CONFIGURATION:
       return handleRestoreConfiguration(state, action)
 
