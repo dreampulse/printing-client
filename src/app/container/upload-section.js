@@ -14,7 +14,7 @@ import UploadArea from '../component/upload-area'
 // import ModelItem from '../component/model-item'
 // import ModelItemLoad from '../component/model-item-load'
 // import ModelItemError from '../component/model-item-error'
-import ModelItemList from '../component/model-item-list'
+// import ModelItemList from '../component/model-item-list'
 import LabeledField from '../component/labeled-field'
 import Button from '../component/button'
 
