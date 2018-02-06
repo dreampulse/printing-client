@@ -28,6 +28,7 @@ const UploadModelItem = ({
 
 UploadModelItem.propTypes = {
   ...propTypes.component,
+  id: PropTypes.string.isRequired, // Necessary for ModelList
   imageSource: PropTypes.string.isRequired,
   title: PropTypes.string,
   subline: PropTypes.string,

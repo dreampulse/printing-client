@@ -1,0 +1,22 @@
+.close-button {
+  $size: 20px;
+  $size-l: 30px;
+
+  display: inline-block;
+  width: $size;
+  height: $size;
+  font-size: $size;
+  color: $color-minor;
+  outline: 0;
+  vertical-align: middle;
+
+  &--invert {
+    color: $color-invert-text;
+  }
+
+  &--l {
+    width: $size-l;
+    height: $size-l;
+    font-size: $size-l;
+  }
+}

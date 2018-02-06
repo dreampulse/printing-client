@@ -2,8 +2,8 @@
   $stacking: bar, content;
 
   position: relative;
-  height: $field-height;
-  line-height: $field-height;
+  height: $nav-bar-content-height;
+  line-height: $nav-bar-content-height;
   padding: 0 $space-base;
   background: $color-bg;
 
@@ -12,20 +12,18 @@
     z-index: z($stacking, content);
     width: 100%;
     height: 100%;
-    color: $color-minor;
-    font-size: $font-size-l;
+    color: $color-primary;
+    font-size: $font-size-base;
     text-align: left;
-    font-weight: $font-weight-light;
 
     & > .icon {
-      color: $color-green;
-      margin-right: 1em;
-      font-size: $font-size-xl;
+      margin-right: $space-base;
+      font-size: $font-size-l;
     }
 
     & > .loading-indicator {
-      margin-right: 1em;
-      font-size: $font-size-xl;
+      margin-right: $space-base;
+      font-size: $font-size-l;
     }
   }
 
@@ -36,7 +34,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: $color-blue-very-light;
+    background: $color-blue-lighter;
     transform-origin: 0 0;
     transition: transform $transition-duration-fast ease-in-out;
   }

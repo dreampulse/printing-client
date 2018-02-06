@@ -293,7 +293,7 @@ describe('Selector lib', () => {
       expect(selectCurrentMaterialGroup(state), 'to be', null)
     })
 
-    it('returns first material if selected material is undefined', () => {
+    it('returns null if selected material is undefined', () => {
       const state = {
         material: {
           materialGroups,
@@ -301,7 +301,7 @@ describe('Selector lib', () => {
         }
       }
 
-      expect(selectCurrentMaterialGroup(state), 'to equal', {id: 'group-1'})
+      expect(selectCurrentMaterialGroup(state), 'to be', null)
     })
   })
 

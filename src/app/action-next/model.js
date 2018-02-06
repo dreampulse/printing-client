@@ -1,12 +1,13 @@
 // @flow
 
 import uniqueId from 'lodash/uniqueId'
-import type {Action, Model} from '../type-next'
+import type {Action, Model, FileId} from '../type-next'
 
-type UploadFileAction = Action<'MODEL.UPLOAD_FILE', {fileId: string, file: File}>
-type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, progress: number}>
-type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: string, model: Model}>
-type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
+type UploadFileAction = Action<'MODEL.UPLOAD_FILE', {fileId: FileId, file: File}>
+type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: FileId, progress: number}>
+type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: FileId, model: Model}>
+type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: FileId, error: Error}>
+// TODO: Change itemId to a string id
 type DeleteBasketItemAction = Action<'MODEL.DELETE_BASKET_ITEM', {itemId: number}>
 
 export type ModelAction =
@@ -24,17 +25,17 @@ export const uploadFile = (file: File): UploadFileAction => ({
   }
 })
 
-export const uploadProgress = (fileId: string, progress: number): UploadProgressAction => ({
+export const uploadProgress = (fileId: FileId, progress: number): UploadProgressAction => ({
   type: 'MODEL.UPLOAD_PROGRESS',
   payload: {progress, fileId}
 })
 
-export const uploadComplete = (fileId: string, model: Model): UploadCompleteAction => ({
+export const uploadComplete = (fileId: FileId, model: Model): UploadCompleteAction => ({
   type: 'MODEL.UPLOAD_COMPLETE',
   payload: {fileId, model}
 })
 
-export const uploadFail = (fileId: string, error: Error): UploadFailAction => ({
+export const uploadFail = (fileId: FileId, error: Error): UploadFailAction => ({
   type: 'MODEL.UPLOAD_FAIL',
   payload: {
     fileId,

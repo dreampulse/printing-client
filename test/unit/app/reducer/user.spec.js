@@ -15,8 +15,7 @@ describe('User reducer', () => {
         shippingAddress: {
           firstName: '',
           lastName: '',
-          street: '',
-          houseNumber: '',
+          address: '',
           addressLine2: '',
           city: '',
           zipCode: '',
@@ -27,8 +26,7 @@ describe('User reducer', () => {
         billingAddress: {
           firstName: '',
           lastName: '',
-          street: '',
-          houseNumber: '',
+          address: '',
           addressLine2: '',
           city: '',
           zipCode: '',

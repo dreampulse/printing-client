@@ -60,8 +60,7 @@ describe('Init action integration test', () => {
           billingAddress: {
             firstName: '',
             lastName: '',
-            street: '',
-            houseNumber: '',
+            address: '',
             addressLine2: '',
             city: '',
             zipCode: '',

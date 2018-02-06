@@ -1,10 +1,10 @@
 // @flow
 
-import type {Action, Location} from '../type-next'
+import type {Action, Location, ModelId} from '../type-next'
 
 type LocationDetectedAction = Action<'USER.LOCATION_DETECTED', {location: Location}>
 type DetectLocationAction = Action<'USER.DETECT_LOCATION', void>
-type UserCreatedAction = Action<'USER.CREATED', {userId: string}>
+type UserCreatedAction = Action<'USER.CREATED', {userId: ModelId}>
 export type UserAction = LocationDetectedAction | DetectLocationAction | UserCreatedAction
 
 export const locationDetected = (location: Location): LocationDetectedAction => ({
@@ -23,7 +23,7 @@ export const detectLocation = (): DetectLocationAction => ({
 })
 */
 
-export const userCreated = (userId: string): UserCreatedAction => ({
+export const userCreated = (userId: ModelId): UserCreatedAction => ({
   type: 'USER.CREATED',
   payload: {
     userId

@@ -57,18 +57,14 @@ storiesOf('Overlay', module)
     )
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
-        <RichText>
-          <p>
-            We used the location <strong>Munich, Germany</strong> to calculate prices. You have
-            entered <strong>New York, USA</strong> as your shipping address.
-          </p>
-        </RichText>
-        <RichText>
-          <p>
-            Please double check the prices on the order summary or go back to find the best deal for
-            your new location.
-          </p>
-        </RichText>
+        <Paragraph>
+          We used the location <strong>Munich, Germany</strong> to calculate prices. You have
+          entered <strong>New York, USA</strong> as your shipping address.
+        </Paragraph>
+        <Paragraph>
+          Please double check the prices on the order summary or go back to find the best deal for
+          your new location.
+        </Paragraph>
       </Overlay>
     )
   })
@@ -86,7 +82,7 @@ storiesOf('Overlay', module)
         buttons={fetchingNewPricesButtons}
         closePortal={action('onClose')}
       >
-        <LabeledLoadingIndicator>
+        <LabeledLoadingIndicator classNames={['u-margin-bottom']}>
           Recalculating prices…<br />
           This might take a few minutes
         </LabeledLoadingIndicator>
@@ -229,6 +225,49 @@ storiesOf('Overlay', module)
             />
           </HandleValue>
         </LabeledField>
+      </Overlay>
+    )
+  })
+  .add('Confirm location', () => {
+    const pricesChangedHeadline = <Headline label="Confirm your location" modifiers={['l']} />
+    return (
+      <Overlay headline={pricesChangedHeadline}>
+        <LabeledField
+          label="Shipping to:"
+          modifiers={['block']}
+          classNames={['u-margin-bottom-xxl']}
+        >
+          <HandleValue>
+            <LocationField
+              placeholder="Set your location"
+              googleMapsApiKey={googleMapsApiKey}
+              onChange={action('change')}
+            />
+          </HandleValue>
+        </LabeledField>
+        <Paragraph modifiers={['minor', 'l']}>
+          Why do we need to know this? Printing prices and shipping options depend on your location
+        </Paragraph>
+      </Overlay>
+    )
+  })
+  .add('Thank you', () => {
+    const pricesChangedHeadline = <Headline label="Thank you for using All3DP" modifiers={['l']} />
+    return (
+      <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
+        <Grid>
+          <Column sm={3}>
+            <Image src="http://placehold.it/200x200" alt="Thank you image" />
+          </Column>
+          <Column sm={9}>
+            <Paragraph modifiers={['l']}>
+              By the way: Prices change.. <strong>all! the! time!</strong>
+            </Paragraph>
+            <Paragraph modifiers={['l']}>
+              Come back to All3DP to get the best offers next time you 3D print.
+            </Paragraph>
+          </Column>
+        </Grid>
       </Overlay>
     )
   })

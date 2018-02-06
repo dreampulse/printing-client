@@ -2,11 +2,12 @@
 
 import type {Dispatch} from 'redux'
 import {createAction} from 'redux-actions'
+import flatten from 'lodash/flatten'
 
 import * as printingEngine from '../service/printing-engine'
 import {getUpdatedOffer, getCheapestOfferFor} from '../lib/offer'
 import {poll, debouncedPoll, stopPoll} from '../lib/poll'
-import {selectCurrentMaterialGroup, selectFeatures} from '../lib/selector'
+import {selectFeatures} from '../lib/selector'
 import {getMaterialConfigIdsOfMaterialGroup} from '../lib/material'
 import {AppError} from '../lib/error'
 
@@ -54,22 +55,25 @@ export const createPriceRequest = (
   if (!state.material.materialGroups) {
     throw new Error('Material groups missing')
   }
-  const {model: {models}, user: {userId, currency}} = state
+  const {material: {materialGroups}, model: {models}, user: {userId, currency}} = state
+  const uploadStillInProgress = models.some(m => m.uploadFinished === false)
 
   // Abort if user did not upload any models yet
-  if (models.length === 0) {
+  if (models.length === 0 || uploadStillInProgress) {
     // Just to be sure, stop any running price polls
     stopPoll(POLL_NAME)
     return Promise.resolve()
   }
 
-  const selectedMaterialGroup = selectCurrentMaterialGroup(state)
-  const materialConfigIds = getMaterialConfigIdsOfMaterialGroup(selectedMaterialGroup)
+  const materialConfigIds = flatten(materialGroups.map(getMaterialConfigIdsOfMaterialGroup))
   const {refresh} = selectFeatures(state)
   const items = models.map(model => {
-    if (!model.uploadFinished) {
-      throw new Error('Upload still in progress')
-    }
+    // Makes Flow happy because according to our type specification, `models` may contain
+    // models that have not been uploaded yet. We know, however, that `models` contains
+    // fully uploaded models only at this point.
+    // This will get better as soon as we've defined separate model types.
+    if (!model.uploadFinished) throw new Error('Upload still in progress')
+
     const {modelId, quantity} = model
     return {
       modelId,

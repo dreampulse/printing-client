@@ -12,9 +12,10 @@ export type QuoteId = string
 export type VendorId = string
 export type ConfigId = string
 export type ShippingId = string
+export type ModelId = string
 
 export type MaterialConfig = {
-  id: string,
+  id: MaterialConfigId,
   name: string,
   color: string,
   colorCode: string,
@@ -22,7 +23,7 @@ export type MaterialConfig = {
 }
 
 export type FinishGroup = {
-  id: string,
+  id: FinishGroupId,
   name: string,
   description: string,
   descriptionShort: string,
@@ -39,7 +40,7 @@ export type FinishGroup = {
     printingMethod: string,
     printingMethodShort: string,
     printingServiceName: {
-      [string]: string
+      [PrintingServiceId]: string
     },
     strength: number
   },
@@ -47,17 +48,17 @@ export type FinishGroup = {
 }
 
 export type Material = {
-  id: string,
+  id: MaterialId,
   name: string,
   description: string,
   descriptionShort: string,
-  materialGroupId: string,
+  materialGroupId: MaterialGroupId,
   featuredImage: string,
   finishGroups: Array<FinishGroup>
 }
 
 export type MaterialGroup = {
-  id: string,
+  id: MaterialGroupId,
   name: string,
   materials: Array<{
     id: MaterialId,
@@ -79,8 +80,6 @@ export type UploadingFile = {
   errorMessage?: string
 }
 
-export type ModelId = string
-
 export type BackendModel = {
   modelId: ModelId,
   fileName: string,
@@ -95,12 +94,6 @@ export type BackendModel = {
   thumbnailUrl: string
 }
 
-type ModelConfigUploading = {
-  type: 'UPLOADING',
-  quantity: number,
-  id: ConfigId
-}
-
 export type BackendQuote = {
   quoteId: QuoteId,
   vendorId: VendorId,
@@ -110,6 +103,12 @@ export type BackendQuote = {
   quantity: number,
   currency: string,
   isPrintable: boolean
+}
+
+type ModelConfigUploading = {
+  type: 'UPLOADING',
+  quantity: number,
+  id: ConfigId
 }
 
 type ModelConfigUploaded = {
@@ -133,8 +132,7 @@ export type Location = {
 export type Address = Location & {
   firstName: string,
   lastName: string,
-  street: string,
-  houseNumber: string,
+  address: string,
   addressLine2: string
 }
 
