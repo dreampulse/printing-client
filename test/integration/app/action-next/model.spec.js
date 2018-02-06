@@ -4,7 +4,8 @@ import {
   selectUploadingFiles,
   selectModels,
   selectBasketItems,
-  selectSelectedModelConfigs
+  selectSelectedModelConfigs,
+  selectModelConfigs
 } from '../../../../src/app/selector'
 import {uploadModel} from '../../../../src/app/service/printing-engine'
 
@@ -241,34 +242,24 @@ describe('model action', () => {
     })
   })
 
-  describe('deleteBasketItem()', () => {
-    describe('when the item is once in the basket', () => {
-      let state
+  describe('deleteModelConfigs()', () => {
+    let state
 
-      beforeEach(() => {
-        const deleteBasketItemAction = modelAction.deleteBasketItem(0)
-        state = reducer(getModel(withOneUploadedModel()), deleteBasketItemAction)
-      })
+    beforeEach(() => {
+      const action = modelAction.deleteModelConfigs(['model-id-1'])
+      state = reducer(getModel(withOneUploadedModel()), action)
+    })
 
-      describe('using selectModels() selector', () => {
-        it('does not contain the model any more', () => {
-          const models = selectModels(getModel(state))
-          expect(models, 'to equal', [])
-        })
-      })
-
-      describe('using selectBasketItems() selector', () => {
-        it('does not contain the model any more', () => {
-          const basketItems = selectBasketItems(getModel(state))
-          expect(basketItems, 'to equal', [])
-        })
+    describe('using selectModels() selector', () => {
+      it('does not contain the model anymore', () => {
+        const models = selectModels(getModel(state))
+        expect(models, 'to equal', [])
       })
     })
 
-    describe('when the item is twice in the basket', () => {
-      it('still contains the model')
-
-      it('just contains the item once')
+    it('deletes given model config', () => {
+      const modelConfigs = selectModelConfigs(getModel(state))
+      expect(modelConfigs, 'to equal', [])
     })
   })
 

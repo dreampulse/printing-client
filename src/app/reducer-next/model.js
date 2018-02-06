@@ -18,7 +18,8 @@ const initialState: ModelState = {
   models: {},
   uploadingFiles: {},
   basketItems: [],
-  selectedModelIds: []
+  modelConfigs: [],
+  selectedModelConfigs: []
 }
 
 const uploadFile = (state, {payload}) => {
@@ -122,30 +123,29 @@ const uploadFail = (state, {payload}) => {
   }
 }
 
-const deleteBasketItem = (state, {payload}) => {
-  invariant(
-    payload.itemId >= 0 && state.basketItems.length > payload.itemId,
-    `Invalid basket item id`
-  )
-
-  const itemToDelete = state.basketItems[payload.itemId]
-  // const modelItems = state.basketItems.filter(item => item.modelId === itemToDelete.modelId)
-  const updatedItems = state.basketItems.filter((item, itemId) => itemId !== payload.itemId)
-
-  // TODO: add this check when its testable
-  // const models = modelItems.length === 1 ? omit(state.models, itemToDelete.modelId) : state.models
-  const models = omit(state.models, itemToDelete.modelId)
-
-  return {
-    ...state,
-    models,
-    basketItems: updatedItems
-  }
-}
+const deleteModelConfigs = (state, {payload}) => ({
+  ...state,
+  uploadingFiles: omit(state.uploadingFiles, payload.ids),
+  backendModels: omit(state.backendModels, payload.ids),
+  modelConfigs: state.modelConfigs.filter(modelConfig => payload.ids.indexOf(modelConfig.id) === -1)
+})
 
 const updateSelectedModelConfigs = (state, {payload}) => ({
   ...state,
   selectedModelConfigs: payload.ids
+})
+
+const updateQuantities = (state, {payload}) => ({
+  ...state,
+  modelConfigs: state.modelConfigs.map(modelConfig => {
+    if (modelConfig.type === 'UPLOADING' || payload.ids.indexOf(modelConfig.id) !== -1) {
+      return modelConfig
+    }
+    return {
+      ...modelConfig,
+      quantity: payload.quantity
+    }
+  })
 })
 
 export const reducer = (state: ModelState = initialState, action: AppAction): ModelState => {
@@ -158,10 +158,12 @@ export const reducer = (state: ModelState = initialState, action: AppAction): Mo
       return uploadComplete(state, action)
     case 'MODEL.UPLOAD_FAIL':
       return uploadFail(state, action)
-    case 'MODEL.DELETE_BASKET_ITEM':
-      return deleteBasketItem(state, action)
+    case 'MODEL.DELETE_MODEL_CONFIGS':
+      return deleteModelConfigs(state, action)
     case 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS':
       return updateSelectedModelConfigs(state, action)
+    case 'MODEL.UPDATE_QUANTITIES':
+      return updateQuantities(state, action)
     default:
       return state
   }

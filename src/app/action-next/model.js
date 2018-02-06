@@ -7,10 +7,14 @@ type UploadFileAction = Action<'MODEL.UPLOAD_FILE', {fileId: string, file: File}
 type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, progress: number}>
 type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: string, model: Model}>
 type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
-type DeleteBasketItemAction = Action<'MODEL.DELETE_BASKET_ITEM', {itemId: number}>
+type DeleteModelConfigsAction = Action<'MODEL.DELETE_MODEL_CONFIGS', {ids: Array<ConfigIds>}>
 type UpdateSelectedModelConfigsAction = Action<
   'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
   {ids: Array<ConfigIds>}
+>
+type UpdateQuantitiesAction = Action<
+  'MODEL.UPDATE_QUANTITIES',
+  {ids: Array<ConfigIds>, quantity: number}
 >
 
 export type ModelAction =
@@ -18,8 +22,9 @@ export type ModelAction =
   | UploadProgressAction
   | UploadCompleteAction
   | UploadFailAction
-  | DeleteBasketItemAction
+  | DeleteModelConfigsAction
   | UpdateSelectedModelConfigsAction
+  | UpdateQuantitiesAction
 
 export const uploadFile = (file: File): UploadFileAction => ({
   type: 'MODEL.UPLOAD_FILE',
@@ -47,10 +52,10 @@ export const uploadFail = (fileId: string, error: Error): UploadFailAction => ({
   }
 })
 
-export const deleteBasketItem = (itemId: number): DeleteBasketItemAction => ({
-  type: 'MODEL.DELETE_BASKET_ITEM',
+export const deleteModelConfigs = (ids: Array<ConfigIds>): DeleteModelConfigsAction => ({
+  type: 'MODEL.DELETE_MODEL_CONFIGS',
   payload: {
-    itemId
+    ids
   }
 })
 
@@ -60,6 +65,17 @@ export const updateSelectedModelConfigs = (
   type: 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
   payload: {
     ids
+  }
+})
+
+export const updateQuantities = (
+  ids: Array<ConfigIds>,
+  quantity: number
+): UpdateQuantitiesAction => ({
+  type: 'MODEL.UPDATE_QUANTITIES',
+  payload: {
+    ids,
+    quantity
   }
 })
 

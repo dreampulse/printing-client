@@ -14,17 +14,17 @@ import deleteIcon from '../../asset/icon/delete.svg'
 
 const ModelListPartial = ({
   children,
-  selectedModelConfigs,
+  selectedModelConfigIds,
   editMode = false,
   commonQuantity,
   onChangeSelectedModelConfigs,
   onDeleteModelConfigs,
-  onChangeCommonQuantity,
+  onChangeQuantities,
   onChooseMaterial
 }) => {
-  const disabled = selectedModelConfigs.length === 0
+  const disabled = selectedModelConfigIds.length === 0
   const numberOfItems = React.Children.count(children)
-  const numberOfSelectedItems = selectedModelConfigs.length
+  const numberOfSelectedItems = selectedModelConfigIds.length
   const primaryActionCounter = `(${numberOfSelectedItems}/${numberOfItems})`
   const primaryActionLabel = editMode
     ? `Edit Material ${primaryActionCounter} …`
@@ -39,20 +39,20 @@ const ModelListPartial = ({
       disabled={disabled || commonQuantity === undefined}
       key="quantity"
       value={commonQuantity}
-      onChange={quantity => onChangeCommonQuantity(selectedModelConfigs, quantity)}
+      onChange={quantity => onChangeQuantities(selectedModelConfigIds, quantity)}
     />,
     <Button
       disabled={disabled}
       modifiers={['minor']}
       icon={deleteIcon}
       key="delete"
-      onClick={() => onDeleteModelConfigs(selectedModelConfigs)}
+      onClick={() => onDeleteModelConfigs(selectedModelConfigIds)}
     />
   ]
 
   return (
     <ModelList
-      value={selectedModelConfigs}
+      value={selectedModelConfigIds}
       onChange={onChangeSelectedModelConfigs}
       primaryActions={renderPrimaryActions()}
       secondaryActions={renderSecondaryActions()}
@@ -63,14 +63,14 @@ const ModelListPartial = ({
 }
 
 const mapStateToProps = state => ({
-  selectedModelConfigs: selectSelectedModelConfigs(state),
+  selectedModelConfigIds: selectSelectedModelConfigIds(state),
   commonQuantity: /* TODO: selectCommonQuantity(state) */ 99
 })
 
 const mapDispatchToProps = {
   onChangeSelectedModelConfigs: updateSelectedModelConfigs,
-  onDeleteModelConfigs: /* TODO: deleteModelConfigs(selectedModelConfigs) */ () => {},
-  onChangeCommonQuantity: /* TODO: updateCommonQuantity(selectedModelConfigs, quantity) */ () => {},
+  onDeleteModelConfigs: /* TODO: deleteModelConfigs(selectedModelConfigIds) */ () => {},
+  onChangeQuantities: /* TODO: updateQuantities(selectedModelConfigIds, quantity) */ () => {},
   onChooseMaterial: /* TODO: openConfigurationModal() */ () => {}
 }
 
