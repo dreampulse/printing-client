@@ -25,16 +25,18 @@ export type ModelState = {
 }
 
 const initialState: ModelState = {
-  models: {},
   uploadingFiles: {},
-  basketItems: []
+  backendModels: {},
+  quotes: {},
+  modelConfigs: [],
+  selectedModelConfigs: []
 }
 
 const uploadFile = (state, {payload}) => {
-  const fileId = payload.fileId
+  const configId = payload.configId
 
   const file = {
-    fileId,
+    configId,
     fileName: payload.file.name,
     fileSize: payload.file.size,
     progress: 0,
@@ -46,33 +48,43 @@ const uploadFile = (state, {payload}) => {
       ...state,
       uploadingFiles: {
         ...state.uploadingFiles,
-        [fileId]: file
-      }
+        [configId]: file
+      },
+      modelConfigs: [
+        ...state.modelConfigs,
+        {
+          type: 'UPLOADING',
+          id: configId
+        }
+      ]
     },
     Cmd.run(uploadModel, {
       args: [
         payload.file,
         {unit: 'mm'},
-        progress => Cmd.dispatch(modelAction.uploadProgress(fileId, progress))
+        progress => Cmd.dispatch(modelAction.uploadProgress(configId, progress))
       ],
-      successActionCreator: model => modelAction.uploadComplete(fileId, model),
-      failActionCreator: error => modelAction.uploadFail(fileId, error)
+      successActionCreator: model => modelAction.uploadComplete(configId, model),
+      failActionCreator: error => modelAction.uploadFail(configId, error)
     })
   )
 }
 
 const uploadProgress = (state, {payload}) => {
-  const fileId = payload.fileId
+  const configId = payload.configId
 
-  invariant(state.uploadingFiles[fileId], `Error in uploadProgress(): File ${fileId} is unknown`)
+  invariant(
+    state.uploadingFiles[configId],
+    `Error in uploadProgress(): File ${configId} is unknown`
+  )
 
   return loop(
     {
       ...state,
       uploadingFiles: {
         ...state.uploadingFiles,
-        [fileId]: {
-          ...state.uploadingFiles[fileId],
+        [configId]: {
+          ...state.uploadingFiles[configId],
           progress: payload.progress
         }
       }
@@ -81,74 +93,59 @@ const uploadProgress = (state, {payload}) => {
       args: [
         payload,
         {unit: 'mm'},
-        progress => Cmd.dispatch(modelAction.uploadProgress(fileId, progress))
+        progress => Cmd.dispatch(modelAction.uploadProgress(configId, progress))
       ],
-      successActionCreator: model => modelAction.uploadComplete(fileId, model),
-      failActionCreator: error => modelAction.uploadFail(fileId, error)
+      successActionCreator: model => modelAction.uploadComplete(configId, model),
+      failActionCreator: error => modelAction.uploadFail(configId, error)
     })
   )
 }
 
 const uploadComplete = (state, {payload}) => {
-  const fileId = payload.fileId
+  const configId = payload.configId
   const model = payload.model
 
-  invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
+  invariant(
+    state.uploadingFiles[configId],
+    `Error in uploadComplete(): File ${configId} is unknown`
+  )
 
   return {
     ...state,
-    uploadingFiles: omit(state.uploadingFiles, fileId),
-    models: {
-      ...state.models,
-      [model.modelId]: model
+    uploadingFiles: omit(state.uploadingFiles, configId),
+    backendModels: {
+      ...state.backendModels,
+      [configId]: model
     },
-    basketItems: [
-      ...state.basketItems,
+    modelConfigs: [
+      ...state.modelConfigs.filter(modelConfig => modelConfig.id !== configId),
       {
+        type: 'UPLOADED',
         quantity: 1,
         modelId: model.modelId,
-        material: null // No material selected
+        id: configId,
+        quoteId: null,
+        shippingId: null
       }
     ]
   }
 }
 
 const uploadFail = (state, {payload}) => {
-  const fileId = payload.fileId
+  const configId = payload.configId
 
-  invariant(state.uploadingFiles[fileId], `Error in uploadFail(): File ${fileId} is unknown`)
+  invariant(state.uploadingFiles[configId], `Error in uploadFail(): File ${configId} is unknown`)
 
   return {
     ...state,
     uploadingFiles: {
       ...state.uploadingFiles,
-      [fileId]: {
-        ...state.uploadingFiles[fileId],
+      [configId]: {
+        ...state.uploadingFiles[configId],
         error: true,
         errorMessage: payload.error.message
       }
     }
-  }
-}
-
-const deleteBasketItem = (state, {payload}) => {
-  invariant(
-    payload.itemId >= 0 && state.basketItems.length > payload.itemId,
-    `Invalid basket item id`
-  )
-
-  const itemToDelete = state.basketItems[payload.itemId]
-  // const modelItems = state.basketItems.filter(item => item.modelId === itemToDelete.modelId)
-  const updatedItems = state.basketItems.filter((item, itemId) => itemId !== payload.itemId)
-
-  // TODO: add this check when its testable
-  // const models = modelItems.length === 1 ? omit(state.models, itemToDelete.modelId) : state.models
-  const models = omit(state.models, itemToDelete.modelId)
-
-  return {
-    ...state,
-    models,
-    basketItems: updatedItems
   }
 }
 
@@ -162,8 +159,6 @@ export const reducer = (state: ModelState = initialState, action: AppAction): Mo
       return uploadComplete(state, action)
     case 'MODEL.UPLOAD_FAIL':
       return uploadFail(state, action)
-    case 'MODEL.DELETE_BASKET_ITEM':
-      return deleteBasketItem(state, action)
     default:
       return state
   }

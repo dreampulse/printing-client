@@ -107,7 +107,6 @@ export type BackendQuote = {
 
 type ModelConfigUploading = {
   type: 'UPLOADING',
-  quantity: number,
   id: ConfigId
 }
 
