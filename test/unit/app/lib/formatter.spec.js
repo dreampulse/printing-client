@@ -72,11 +72,11 @@ describe('formatTimeRange()', () => {
   })
 
   it('returns formatted string for different values', () => {
-    expect(formatTimeRange(1, 2), 'to equal', '1–2 days')
+    expect(formatTimeRange(1, 2), 'to equal', '1-2 days')
   })
 
   it('returns formatted string for string values', () => {
-    expect(formatTimeRange('1', '2'), 'to equal', '1–2 days')
+    expect(formatTimeRange('1', '2'), 'to equal', '1-2 days')
   })
 
   it('returns `–` if from is undefined', () => {

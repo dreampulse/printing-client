@@ -10,18 +10,18 @@ export function formatPrice(value, currency) {
   return prefix ? `${symbol}${formattedValue}` : `${formattedValue}${symbol}`
 }
 
+function appendDays(n) {
+  return Number(n) === 1 ? 'day' : 'days'
+}
+
 export function formatDeliveryTime(deliveryTime) {
-  if (String(deliveryTime) === '1') {
-    return '1 day'
-  }
-  return `${deliveryTime} days`
+  return `${deliveryTime} ${appendDays(deliveryTime)}`
 }
 
 export function formatTimeRange(from, to) {
-  if (!from) return '–'
-  if ((+from === 1 && !to) || (+from === 1 && +to === +from)) return `${from} day`
-  if ((+from && !to) || (+from && +from === +to)) return `${from} days`
-  return `${+from}–${+to} days`
+  if (arguments.length === 0) return '–'
+  if (arguments.length === 1 || (from && to && +from === +to)) return `${from} ${appendDays(from)}`
+  return `${from}-${to} ${appendDays(to)}`
 }
 
 export function formatAddress(address) {
