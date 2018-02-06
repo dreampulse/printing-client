@@ -7,7 +7,7 @@
     white-space: nowrap;
   }
 
-  & > dt {
+  &__term {
     position: relative;
     display: inline-block;
     font-weight: $font-weight-bold;
@@ -28,7 +28,7 @@
     }
   }
 
-  & > dd {
+  &__definition {
     display: inline;
     margin: 0;
 

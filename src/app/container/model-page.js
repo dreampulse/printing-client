@@ -26,7 +26,8 @@ import {changeQuantity} from '../action/model'
 import {updateLocation, updateCurrency} from '../action/user'
 
 import {selectCommonQuantity} from '../lib/selector'
-import {formatAddress, formatProviderName} from '../lib/formatter'
+import {formatAddress} from '../lib/formatter'
+import {getProviderName} from '../lib/provider-selector'
 import {convertPlaceToLocation} from '../lib/geolocation'
 
 // TODO: Use final svg images here!
@@ -108,9 +109,9 @@ const ModelPage = ({
       />
     </Section>,
     <ProviderTeaser key={1}>
-      <ProviderImage slug="shapeways" name={formatProviderName('shapeways')} />
-      <ProviderImage slug="imaterialise" name={formatProviderName('imaterialise')} />
-      <ProviderImage slug="sculpteo" name={formatProviderName('sculpteo')} />
+      <ProviderImage slug="shapeways" name={getProviderName('shapeways')} />
+      <ProviderImage slug="imaterialise" name={getProviderName('imaterialise')} />
+      <ProviderImage slug="sculpteo" name={getProviderName('sculpteo')} />
     </ProviderTeaser>
   ]
 

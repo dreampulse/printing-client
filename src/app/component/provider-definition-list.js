@@ -7,8 +7,10 @@ import buildClassName from '../lib/build-class-name'
 const ProviderDefinitionList = ({classNames, modifiers, providerValues}) => (
   <dl className={buildClassName('provider-definition-list', modifiers, classNames)}>
     {Object.keys(providerValues).map(providerName => [
-      <dt key={providerName}>{providerName}</dt>,
-      <dd key={`${providerName}-values`}>
+      <dt className="provider-definition-list__term" key={providerName}>
+        {providerName}
+      </dt>,
+      <dd className="provider-definition-list__definition" key={`${providerName}-values`}>
         {providerValues[providerName]
           .map(value => (
             <span key={value} className="provider-definition-list__value">

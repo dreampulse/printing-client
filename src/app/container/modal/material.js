@@ -3,7 +3,7 @@ import React from 'react'
 import {selectMaterial} from '../../lib/selector'
 import getCloudinaryUrl from '../../lib/cloudinary'
 import {getMaterialFinishGroupProviderNames} from '../../lib/material'
-import {formatFinishGroupProviderNames} from '../../lib/formatter'
+import {getFinishGroupProviderNames} from '../../lib/provider-selector'
 
 import {close} from '../../action/modal'
 
@@ -37,7 +37,7 @@ const MaterialModal = ({material, onClose}) => {
         <Column sm={12}>
           <Headline modifiers={['xs']} label="Provider names" />
           <ProviderDefinitionList
-            providerValues={formatFinishGroupProviderNames(
+            providerValues={getFinishGroupProviderNames(
               getMaterialFinishGroupProviderNames(material)
             )}
           />
