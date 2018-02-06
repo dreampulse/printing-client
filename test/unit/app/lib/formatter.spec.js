@@ -90,6 +90,10 @@ describe('formatTimeRange()', () => {
   it('returns `–` if from and to are undefined', () => {
     expect(formatTimeRange(undefined, undefined), 'to equal', '–')
   })
+
+  it('returns `–` if from is 0', () => {
+    expect(formatTimeRange(0), 'to equal', '–')
+  })
 })
 
 describe('formatAddress', () => {
