@@ -19,6 +19,7 @@ storiesOf('Button', module)
   .add('compact', () => (
     <Button label="Compact Button" modifiers={['compact']} onClick={action('click')} />
   ))
+  .add('tiny', () => <Button label="Tiny Button" modifiers={['tiny']} onClick={action('click')} />)
   .add('selected', () => (
     <Button label="Selected Button" modifiers={['selected']} onClick={action('click')} />
   ))
@@ -26,10 +27,34 @@ storiesOf('Button', module)
     <Button label="Minor Button" modifiers={['minor']} onClick={action('click')} />
   ))
   .add('minor & disabled', () => (
-    <Button label="Minor Button" disabled modifiers={['minor']} onClick={action('click')} />
+    <Button
+      label="Disabled Minor Button"
+      disabled
+      modifiers={['minor']}
+      onClick={action('click')}
+    />
+  ))
+  .add('minor & tiny', () => (
+    <Button label="Tiny Minor Button" modifiers={['minor', 'tiny']} onClick={action('click')} />
   ))
   .add('invert', () => (
     <div className="u-invert" style={{width: '100%', minHeight: '100vh'}}>
       <Button label="Inverted Button" modifiers={['invert']} onClick={action('click')} />
     </div>
+  ))
+  .add('circular', () => (
+    <Button icon={placeholderIcon} modifiers={['circular']} onClick={action('click')} />
+  ))
+  .add('circular & compact', () => (
+    <Button icon={placeholderIcon} modifiers={['circular', 'compact']} onClick={action('click')} />
+  ))
+  .add('circular & tiny', () => (
+    <Button icon={placeholderIcon} modifiers={['circular', 'tiny']} onClick={action('click')} />
+  ))
+  .add('circular & tiny & minor', () => (
+    <Button
+      icon={placeholderIcon}
+      modifiers={['circular', 'tiny', 'minor']}
+      onClick={action('click')}
+    />
   ))

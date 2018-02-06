@@ -2,11 +2,11 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import ModelItemLoad from '../../src/app/component/model-item-load'
+import UploadModelItemLoad from '../../src/app/component/upload-model-item-load'
 
-storiesOf('Model Item Load', module)
+storiesOf('Upload Model Item Load', module)
   .add('default', () => (
-    <ModelItemLoad
+    <UploadModelItemLoad
       status={0.7}
       title="Uploading"
       subline="model_item_title.stl"
@@ -14,8 +14,7 @@ storiesOf('Model Item Load', module)
     />
   ))
   .add('no status', () => (
-    <ModelItemLoad
-      modifiers={['processing']}
+    <UploadModelItemLoad
       title="Processing"
       subline="model_item_title.stl"
       onDelete={action('discard')}

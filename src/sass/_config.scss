@@ -31,7 +31,7 @@ $color-blue-dark: #122732;
 $color-blue: #0277bd;
 $color-blue-light: #137BDF;
 $color-blue-lighter: #AAD7FD;
-$color-blue-very-light: #F4F9FC;
+$color-blue-very-light: #E9F5FF;
 $color-yellow: #f6a623;
 $color-red: #ca0f0f;
 $color-red-light: #fcd1d1;
@@ -116,8 +116,11 @@ $mediaqueries: (
 $nav-bar-content-height: 40px;
 $field-height: 50px;
 $compact-field-height: 40px;
+$tiny-field-height: 30px;
 $border-radius: 5px;
 $model-item-height: 127px;
+$model-item-space-left: $space-xxxl;
+$upload-model-item-image-width: 180px;
 $color-square-size: 20px;
 
 $box-shadow-base: 1px 1px 2px 1px rgba(0, 0, 0, 0.15);

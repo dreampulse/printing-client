@@ -1,0 +1,8 @@
+.button-bar {
+  margin-bottom: $space-base;
+  white-space: nowrap;
+
+  & > * + * {
+    margin-left: $space-base;
+  }
+}
