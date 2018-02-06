@@ -8,6 +8,10 @@ type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, pro
 type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: string, model: Model}>
 type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
 type DeleteBasketItemAction = Action<'MODEL.DELETE_BASKET_ITEM', {itemId: number}>
+type UpdateSelectedModelConfigsAction = Action<
+  'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
+  {ids: Array<ConfigIds>}
+>
 
 export type ModelAction =
   | UploadFileAction
@@ -15,6 +19,7 @@ export type ModelAction =
   | UploadCompleteAction
   | UploadFailAction
   | DeleteBasketItemAction
+  | UpdateSelectedModelConfigsAction
 
 export const uploadFile = (file: File): UploadFileAction => ({
   type: 'MODEL.UPLOAD_FILE',
@@ -46,6 +51,15 @@ export const deleteBasketItem = (itemId: number): DeleteBasketItemAction => ({
   type: 'MODEL.DELETE_BASKET_ITEM',
   payload: {
     itemId
+  }
+})
+
+export const updateSelectedModelConfigs = (
+  ids: Array<ConfigIds>
+): UpdateSelectedModelConfigsAction => ({
+  type: 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
+  payload: {
+    ids
   }
 })
 

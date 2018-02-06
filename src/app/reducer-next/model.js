@@ -17,7 +17,8 @@ export type ModelState = {
 const initialState: ModelState = {
   models: {},
   uploadingFiles: {},
-  basketItems: []
+  basketItems: [],
+  selectedModelIds: []
 }
 
 const uploadFile = (state, {payload}) => {
@@ -142,6 +143,11 @@ const deleteBasketItem = (state, {payload}) => {
   }
 }
 
+const updateSelectedModelConfigs = (state, {payload}) => ({
+  ...state,
+  selectedModelConfigs: payload.ids
+})
+
 export const reducer = (state: ModelState = initialState, action: AppAction): ModelState => {
   switch (action.type) {
     case 'MODEL.UPLOAD_FILE':
@@ -154,6 +160,8 @@ export const reducer = (state: ModelState = initialState, action: AppAction): Mo
       return uploadFail(state, action)
     case 'MODEL.DELETE_BASKET_ITEM':
       return deleteBasketItem(state, action)
+    case 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS':
+      return updateSelectedModelConfigs(state, action)
     default:
       return state
   }
