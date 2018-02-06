@@ -6,7 +6,7 @@ import {
   selectOffersForSelectedMaterialConfig,
   selectMaterialByMaterialConfigId
 } from '../lib/selector'
-import {formatPrice, formatDeliveryTime} from '../lib/formatter'
+import {formatPrice, formatDeliveryTime, formatTimeRange} from '../lib/formatter'
 
 import Section from '../component/section'
 import Headline from '../component/headline'
@@ -51,6 +51,15 @@ const ProviderSection = ({
     return printingServiceName[offer.printingService] || ''
   }
 
+  const getProductionTime = offer => {
+    const {materialConfig: {printingService}} = selectMaterialByMaterialConfigId(
+      state,
+      offer.materialConfigId
+    )
+    const {productionTimeFast, productionTimeSlow} = printingService[offer.printingService]
+    return [productionTimeFast, productionTimeSlow]
+  }
+
   const renderProviderList = () => (
     <ProviderList>
       {offers.sort((a, b) => a.totalPrice > b.totalPrice).map(offer => (
@@ -65,6 +74,7 @@ const ProviderSection = ({
           shippingPrice={formatPrice(offer.shipping.price, offer.currency)}
           totalPrice={formatPrice(offer.totalPrice, offer.currency)}
           includesVat={Boolean(offer.vatPrice)}
+          productionTime={formatTimeRange(...getProductionTime(offer))}
           onCheckoutClick={() => {
             onSelectOffer(offer)
             onGoToAddress()

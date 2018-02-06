@@ -24,6 +24,7 @@ const ProviderItem = ({
   deliveryTime,
   deliveryProvider,
   providerInfo,
+  productionTime,
   onCheckoutClick = () => {}
 }) => (
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
@@ -46,6 +47,7 @@ const ProviderItem = ({
         </Info>
       </AnnotatedTableCell>
     </td>
+    <td className="provider-item__production-time">{productionTime}</td>
     <td className="provider-item__process">{process}</td>
     <td className="provider-item__checkout">
       <Button
@@ -68,8 +70,9 @@ ProviderItem.propTypes = {
   onCheckoutClick: PropTypes.func.isRequired,
   process: PropTypes.string.isRequired,
   deliveryTime: PropTypes.string.isRequired,
-  providerInfo: PropTypes.string,
-  deliveryProvider: PropTypes.string
+  providerInfo: PropTypes.string.isRequired,
+  deliveryProvider: PropTypes.string.isRequired,
+  productionTime: PropTypes.string.isRequired
 }
 
 export default ProviderItem

@@ -17,6 +17,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       deliveryProvider="DHL Express"
       providerInfo="Provider Material Name"
       onCheckoutClick={action('click')}
+      productionTime="4-6 days"
     />
     <ProviderItem
       provider="sculpteo"
@@ -29,6 +30,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       deliveryProvider="DHL"
       providerInfo="Provider Material Name"
       onCheckoutClick={action('click')}
+      productionTime="6-10 days"
     />
     <ProviderItem
       provider="shapeways"
@@ -40,6 +42,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       deliveryProvider="UPS"
       providerInfo="Provider Material Name"
       onCheckoutClick={action('click')}
+      productionTime="4-6 days"
     />
   </ProviderList>
 ))
