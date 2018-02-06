@@ -18,7 +18,6 @@
   &__shipping,
   &__process,
   &__checkout {
-    width: 20%;
     padding: $space-base $space-l;
     text-align: left;
   }
@@ -29,7 +28,7 @@
   }
 
   &__checkout {
-    width: 230px;
+    width: 250px;
     padding-right: 0;
   }
 }
