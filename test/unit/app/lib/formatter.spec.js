@@ -75,12 +75,28 @@ describe('formatTimeRange()', () => {
     expect(formatTimeRange(1, 2), 'to equal', '1-2 days')
   })
 
+  it('returns formatted string and orders the arguments', () => {
+    expect(formatTimeRange(2, 1), 'to equal', '1-2 days')
+  })
+
   it('returns formatted string for string values', () => {
     expect(formatTimeRange('1', '2'), 'to equal', '1-2 days')
   })
 
-  it('returns `–` if from is undefined', () => {
+  it('returns `–` if there are no arguments', () => {
     expect(formatTimeRange(), 'to equal', '–')
+  })
+
+  it('returns `–` if from is undefined', () => {
+    expect(formatTimeRange(undefined), 'to equal', '–')
+  })
+
+  it('returns `–` if from and to are undefined', () => {
+    expect(formatTimeRange(undefined, undefined), 'to equal', '–')
+  })
+
+  it('returns `–` if from is 0', () => {
+    expect(formatTimeRange(0), 'to equal', '–')
   })
 })
 

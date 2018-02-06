@@ -19,9 +19,15 @@ export function formatDeliveryTime(deliveryTime) {
 }
 
 export function formatTimeRange(from, to) {
-  if (arguments.length === 0) return '–'
-  if (arguments.length === 1 || (from && to && +from === +to)) return `${from} ${appendDays(from)}`
-  return `${from}-${to} ${appendDays(to)}`
+  const nFrom = Number(from)
+  const nTo = Number(to)
+  const diff = nTo - nFrom
+
+  if (diff === 0) return formatTimeRange(nFrom)
+  if (diff < 0) return formatTimeRange(nTo, nFrom)
+  if (nFrom && nTo) return `${from}-${to} ${appendDays(to)}`
+  if (nFrom) return `${from} ${appendDays(from)}`
+  return '–'
 }
 
 export function formatAddress(address) {
