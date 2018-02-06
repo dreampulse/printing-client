@@ -1,7 +1,7 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
-import {withKnobs, select, number} from '@storybook/addon-knobs/react'
+import {withKnobs, number} from '@storybook/addon-knobs/react'
 
 import {ModelPageComponent} from '../../src/app/container-next/model-page'
 
@@ -65,9 +65,29 @@ const models = {
 
 storiesOf('Container.ModelPage', module)
   .addDecorator(withKnobs)
-  .add('default', () => (
+  .add('modelsEmpty', () => (
     <ModelPageComponent
-      models={models[select('models', Object.keys(models), 'modelsUploading')]}
+      models={models.modelsEmpty}
+      cartCount={number('cartCount', 0)}
+      onGoToHome={action('onGoToHome')}
+      onDeleteFile={action('onDeleteFile')}
+      onDeleteModel={action('onDeleteModel')}
+      onChangeIndividualQuantity={action('onChangeIndividualQuantity')}
+    />
+  ))
+  .add('modelsUploading', () => (
+    <ModelPageComponent
+      models={models.modelsUploading}
+      cartCount={number('cartCount', 0)}
+      onGoToHome={action('onGoToHome')}
+      onDeleteFile={action('onDeleteFile')}
+      onDeleteModel={action('onDeleteModel')}
+      onChangeIndividualQuantity={action('onChangeIndividualQuantity')}
+    />
+  ))
+  .add('modelsCompleted', () => (
+    <ModelPageComponent
+      models={models.modelsCompleted}
       cartCount={number('cartCount', 0)}
       onGoToHome={action('onGoToHome')}
       onDeleteFile={action('onDeleteFile')}
