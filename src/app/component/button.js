@@ -27,7 +27,7 @@ const Button = ({
       onClick={onClick}
     >
       {Boolean(finalIcon) && <Icon source={finalIcon} />}
-      {label}
+      {label && <span className="button__label">{label}</span>}
     </button>
   )
 }

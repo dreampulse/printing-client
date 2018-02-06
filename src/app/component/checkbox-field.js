@@ -41,7 +41,6 @@ const CheckboxField = ({
 CheckboxField.propTypes = {
   ...propTypes.component,
   checked: PropTypes.bool,
-  label: PropTypes.string,
   id: PropTypes.string,
   name: PropTypes.string,
   onChange: PropTypes.func
