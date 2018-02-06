@@ -4,15 +4,8 @@ import React from 'react'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
-import {openIntercom} from '../service/intercom'
-
 import Link from './link'
 import Headline from './headline'
-
-const onOpenIntercom = event => {
-  openIntercom()
-  event.preventDefault()
-}
 
 const PaymentSection = ({
   classNames,
@@ -22,7 +15,8 @@ const PaymentSection = ({
   shippingPrice,
   shippingName,
   vat,
-  total
+  total,
+  onContactLinkClick
 }) => (
   <section className={buildClassName('payment-section', modifiers, classNames)}>
     <ul className="payment-section__price-components">
@@ -55,11 +49,13 @@ const PaymentSection = ({
     <ul className="payment-section__links">
       <li className="payment-section__link">
         <Headline modifiers={['xs']} label="Need different payment option?" />
-        <Link label="Contact us." href="mailto:contact@all3dp.com" onClick={onOpenIntercom} />
+        <Link label="Contact us." href="mailto:contact@all3dp.com" onClick={onContactLinkClick} />
       </li>
       <li className="payment-section__link">
         <Headline modifiers={['xs']} label="Any questions?" />
-        <Link label="Get in touch." href="mailto:contact@all3dp.com" onClick={onOpenIntercom} />
+        <Link label="Get in touch" href="mailto:contact@all3dp.com" onClick={onContactLinkClick} />
+        {' or '}
+        <Link label="search our knowledge base." href="https://help.all3dp.com" target="_blank" />
       </li>
       <li className="payment-section__link">
         <Link
@@ -79,7 +75,8 @@ PaymentSection.propTypes = {
   shippingPrice: PropTypes.string.isRequired,
   shippingName: PropTypes.string.isRequired,
   vat: PropTypes.string.isRequired,
-  total: PropTypes.string.isRequired
+  total: PropTypes.string.isRequired,
+  onContactLinkClick: PropTypes.func.isRequired
 }
 
 export default PaymentSection

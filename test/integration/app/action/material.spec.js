@@ -1,6 +1,11 @@
 import createHistory from 'history/createMemoryHistory'
 
-import {getMaterials, selectMaterialConfig} from '../../../../src/app/action/material'
+import {
+  getMaterials,
+  selectMaterialGroup,
+  selectMaterialConfig,
+  filterMaterials
+} from '../../../../src/app/action/material'
 import * as printingEngine from '../../../../src/app/service/printing-engine'
 
 describe('Material Integration Test', () => {
@@ -18,6 +23,14 @@ describe('Material Integration Test', () => {
     sandbox.restore()
   })
 
+  describe('selectMaterialGroup()', () => {
+    it('should select the given material group', () => {
+      store.dispatch(selectMaterialGroup('some-material-group-2'))
+
+      expect(store.getState().material.selectedMaterialGroup, 'to equal', 'some-material-group-2')
+    })
+  })
+
   describe('getMaterials()', () => {
     it('should work', async () => {
       const materialGroups = [1, 2, 3]
@@ -33,6 +46,13 @@ describe('Material Integration Test', () => {
     it('should work', () => {
       store.dispatch(selectMaterialConfig('some-config-id'))
       expect(store.getState().material.selectedMaterialConfig, 'to equal', 'some-config-id')
+    })
+  })
+
+  describe('filterMaterials()', () => {
+    it('should work', () => {
+      store.dispatch(filterMaterials('term'))
+      expect(store.getState().material.materialFilter, 'to equal', 'term')
     })
   })
 })

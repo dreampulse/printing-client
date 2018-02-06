@@ -14,7 +14,7 @@ const DeleteButton = ({classNames, modifiers, onClick = () => {}}) => (
     className={buildClassName('delete-button', modifiers, classNames)}
     onClick={onClick}
   >
-    {<Icon source={deleteIcon} />}
+    <Icon source={deleteIcon} title="Delete" />
   </button>
 )
 

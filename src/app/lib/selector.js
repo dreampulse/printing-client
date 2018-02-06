@@ -158,9 +158,7 @@ export const selectCurrentMaterialGroup = (state: State) => {
     return null
   }
 
-  return (
-    selectMaterialGroup(state, selectedMaterialGroup) || materialGroups[0] // Use first group per default
-  )
+  return selectMaterialGroup(state, selectedMaterialGroup)
 }
 
 export const selectCurrentMaterial = (state: State) => {

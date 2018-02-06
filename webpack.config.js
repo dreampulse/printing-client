@@ -92,6 +92,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
+        issuer: /\.js$/, // Prevent usage of icon sprite outside of JS
         include: [path.resolve(projectRoot, './src/asset/icon')],
         use: [
           {

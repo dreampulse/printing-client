@@ -4,8 +4,7 @@ import React, {Component, cloneElement} from 'react'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
-import Icon from './icon'
-import closeIcon from '../../asset/icon/close.svg'
+import CloseButton from './close-button'
 
 class Overlay extends Component {
   static propTypes = {
@@ -32,17 +31,13 @@ class Overlay extends Component {
 
   render() {
     return (
-      <div className={buildClassName('overlay', this.props.modifiers, this.props.classNames)}>
+      <section className={buildClassName('overlay', this.props.modifiers, this.props.classNames)}>
         <div className="overlay__mask" onClick={this.props.closePortal}>
           <div className="overlay__modal" onClick={e => e.stopPropagation()}>
             <header className="overlay__header">
               <div className="overlay__headline">
                 {this.props.headline}
-                {this.props.closeable && (
-                  <button onClick={this.props.closePortal} className="overlay__close">
-                    <Icon source={closeIcon} />
-                  </button>
-                )}
+                {this.props.closeable && <CloseButton onClick={this.props.closePortal} />}
               </div>
             </header>
 
@@ -55,7 +50,7 @@ class Overlay extends Component {
             </footer>
           </div>
         </div>
-      </div>
+      </section>
     )
   }
 }

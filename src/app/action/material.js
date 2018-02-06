@@ -7,7 +7,6 @@ import * as printingEngine from '../service/printing-engine'
 
 import TYPE from '../action-type'
 import type {MaterialGroup} from '../type-next'
-import {createPriceRequest} from './price'
 
 // Sync actions
 
@@ -16,7 +15,7 @@ export const selectMaterial = createAction(
   (materialId: string) => materialId
 )
 
-const materialGroupSelected = createAction(
+export const selectMaterialGroup = createAction(
   TYPE.MATERIAL.GROUP_SELECTED,
   (groupId: string) => groupId
 )
@@ -45,13 +44,9 @@ const materialReceived = createAction(
   (materialGroups: Array<MaterialGroup>) => materialGroups
 )
 
+export const filterMaterials = createAction(TYPE.MATERIAL.FILTER, (filter: string) => filter)
+
 // Async actions
-
-export const selectMaterialGroup = (groupId: string) => async (dispatch: Dispatch<*>) => {
-  dispatch(materialGroupSelected(groupId))
-
-  await dispatch(createPriceRequest())
-}
 
 export const getMaterials = () => async (dispatch: Dispatch<*>) => {
   const materialResponse = await printingEngine.listMaterials()
