@@ -1,6 +1,11 @@
 import {Cmd} from 'redux-loop'
 import * as modelAction from '../../../../src/app/action-next/model'
-import {selectUploadingFiles, selectModels, selectBasketItems} from '../../../../src/app/selector'
+import {
+  selectUploadingFiles,
+  selectModels,
+  selectBasketItems,
+  selectSelectedModelConfigs
+} from '../../../../src/app/selector'
 import {uploadModel} from '../../../../src/app/service/printing-engine'
 
 import reducer from '../../../../src/app/reducer'
@@ -264,6 +269,20 @@ describe('model action', () => {
       it('still contains the model')
 
       it('just contains the item once')
+    })
+  })
+
+  describe('updateSelectedModelConfigs()', () => {
+    let state
+
+    beforeEach(() => {
+      const action = modelAction.updateSelectedModelConfigs(['some-model-id'])
+      state = reducer(getModel(withOneUploadedModel()), action)
+    })
+
+    it('does not contain the model any more', () => {
+      const models = selectModels(getModel(state))
+      expect(models, 'to equal', [])
     })
   })
 })

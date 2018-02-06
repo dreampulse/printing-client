@@ -14,3 +14,5 @@ export const selectBasketItems = (state: AppState) =>
     id: index, // TODO: refactor BasketItem to have explicit id
     model: state.model.models[item.modelId]
   }))
+
+export const selectSelectedModelConfigs = (state: AppState) => state.model.selectedModelConfigs
