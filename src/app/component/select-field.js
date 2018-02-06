@@ -103,8 +103,7 @@ export default class SelectField extends Component {
         <span className="select-field__value">{value ? this.getLabel(value) : placeholder}</span>
         <Icon source={arrowIcon} />
 
-        {/* TODO: This need to be fixed to use react-portal V.4 */}
-        {/* {Boolean(menu) && (
+        {Boolean(menu) && (
           <Portal
             closeOnEsc
             closeOnOutsideClick
@@ -125,7 +124,7 @@ export default class SelectField extends Component {
               })}
             </div>
           </Portal>
-        )} */}
+        )}
       </button>
     )
   }
