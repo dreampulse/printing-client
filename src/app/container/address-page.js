@@ -116,19 +116,13 @@ const AddressPage = ({
         />
       </FormRow>
 
-      <FormRow modifiers={['l-s']}>
+      <FormRow>
         <Field
           validate={required}
           component={renderField(InputField)}
-          label="Street"
-          name="billingAddress.street"
+          label="Address"
+          name="billingAddress.address"
           maxLength="30"
-        />
-        <Field
-          validate={required}
-          component={renderField(InputField)}
-          label="House number"
-          name="billingAddress.houseNumber"
         />
       </FormRow>
 
@@ -243,19 +237,13 @@ const AddressPage = ({
             <Headline modifiers={['xs']} label="Shipping address" />
           </FormRow>
 
-          <FormRow modifiers={['l-s']}>
+          <FormRow>
             <Field
               validate={required}
               component={renderField(InputField)}
-              label="Street"
-              name="shippingAddress.street"
+              label="Address"
+              name="shippingAddress.address"
               maxLength="30"
-            />
-            <Field
-              validate={required}
-              component={renderField(InputField)}
-              label="House number"
-              name="shippingAddress.houseNumber"
             />
           </FormRow>
 
@@ -338,8 +326,7 @@ const mapStateToProps = state => ({
   shippingAddress: {
     firstName: selector(state, 'shippingAddress.firstName'),
     lastName: selector(state, 'shippingAddress.lastName'),
-    street: selector(state, 'shippingAddress.street'),
-    houseNumber: selector(state, 'shippingAddress.houseNumber'),
+    address: selector(state, 'shippingAddress.address'),
     addressLine2: selector(state, 'shippingAddress.addressLine2'),
     city: selector(state, 'shippingAddress.city'),
     zipCode: selector(state, 'shippingAddress.zipCode'),
@@ -366,8 +353,7 @@ const mapDispatchToProps = {
     if (useDifferentBillingAddress === false) {
       dispatch(change(FORM_NAME, 'billingAddress.firstName', ''))
       dispatch(change(FORM_NAME, 'billingAddress.lastName', ''))
-      dispatch(change(FORM_NAME, 'billingAddress.street', ''))
-      dispatch(change(FORM_NAME, 'billingAddress.houseNumber', ''))
+      dispatch(change(FORM_NAME, 'billingAddress.address', ''))
       dispatch(change(FORM_NAME, 'billingAddress.addressLine2', ''))
       dispatch(change(FORM_NAME, 'billingAddress.city', ''))
       dispatch(change(FORM_NAME, 'billingAddress.zipCode', ''))
@@ -381,14 +367,7 @@ const mapDispatchToProps = {
         change(FORM_NAME, 'billingAddress.lastName', selector(state, 'shippingAddress.lastName'))
       )
       dispatch(
-        change(FORM_NAME, 'billingAddress.street', selector(state, 'shippingAddress.street'))
-      )
-      dispatch(
-        change(
-          FORM_NAME,
-          'billingAddress.houseNumber',
-          selector(state, 'shippingAddress.houseNumber')
-        )
+        change(FORM_NAME, 'billingAddress.address', selector(state, 'shippingAddress.address'))
       )
       dispatch(
         change(

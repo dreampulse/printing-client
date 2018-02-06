@@ -14,10 +14,6 @@
     text-align: left;
   }
 
-  &__checkout {
-    padding-right: 0;
-  }
-
   &__shipping-price {
     .info {
       font-size: $font-size-base;
@@ -28,19 +24,5 @@
   &__provider {
     white-space: nowrap;
     padding-left: $space-base;
-
-    & > .provider-image {
-      float: left;
-      display: block;
-      max-width: 110px; // This should fit next to info box
-    }
-
-    & > .info {
-      font-size: 16px;
-      display: block;
-      position: relative;
-      margin-left: 0.5em;
-      float: right;
-    }
   }
 }
