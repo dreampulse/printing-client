@@ -19,11 +19,15 @@ describe('model action', () => {
   })
 
   describe('uploadFile()', () => {
+    let fileId
+    let configId
     let uploadFileAction
     let state
 
     beforeEach(() => {
       uploadFileAction = modelAction.uploadFile(getFileMock())
+      fileId = uploadFileAction.payload.fileId
+      configId = uploadFileAction.payload.configId
       state = reducer(undefined, uploadFileAction)
     })
 
@@ -37,7 +41,7 @@ describe('model action', () => {
     describe('using selectModelsOfModelConfigs() selector', () => {
       it('contains the uploaded file', () => {
         expect(selectModelsOfModelConfigs(getModel(state)), 'to have an item satisfying', {
-          fileId: expect.it('to be a', 'string'),
+          fileId,
           fileName: 'some-file-name',
           fileSize: 42,
           progress: 0,
@@ -49,7 +53,7 @@ describe('model action', () => {
     describe('using selectModelConfigs() selector', () => {
       it('contains a model uploading config', () => {
         expect(selectModelConfigs(getModel(state)), 'to have an item satisfying', {
-          id: expect.it('to be a', 'string'),
+          id: configId,
           type: 'UPLOADING'
         })
       })
@@ -115,7 +119,7 @@ describe('model action', () => {
       })
     })
 
-    describe('using selectModelsOfModelConfigs() selector', () => {
+    describe('using selectModelConfigs() selector', () => {
       it('does not change the order (or manipulate the array unexpectedly)', () => {
         const uploadFileAction1 = modelAction.uploadFile(getFileMock())
         const uploadFileAction2 = modelAction.uploadFile(getFileMock())
@@ -193,7 +197,7 @@ describe('model action', () => {
           type: 'UPLOADED',
           quantity: 1,
           modelId: 'model-id-1',
-          id: expect.it('to be a', 'string'),
+          id: 'some-config-id',
           quoteId: null,
           shippingId: null
         })
@@ -220,9 +224,9 @@ describe('model action', () => {
 
     describe('using selectModelsOfModelConfigs() selector', () => {
       it('contains the uploading model with an error flag and errorMessage', () => {
-        const model = selectModelsOfModelConfigs(getModel(state)).find(m => m.fileId === fileId)
+        const model = selectModelsOfModelConfigs(getModel(state))
 
-        expect(model, 'to satisfy', {
+        expect(model, 'to have an item satisfying', {
           error: true,
           errorMessage: error.message
         })
