@@ -22,10 +22,10 @@ import Baloon from '../component/baloon'
 import FeatureParagraph from '../component/feature-paragraph'
 import Image from '../component/image'
 import UploadArea from '../component/upload-area'
-import ModelItemList from '../component/model-item-list'
-import ModelItemError from '../component/model-item-error'
-import ModelItemLoad from '../component/model-item-load'
-import ModelItem from '../component/model-item'
+import ModelList from '../component/model-list'
+import UploadModelItemError from '../component/upload-model-item-error'
+import UploadModelItemLoad from '../component/upload-model-item-load'
+import UploadModelItem from '../component/upload-model-item'
 
 export const ModelPageComponent = ({
   onGoToHome,
@@ -57,7 +57,7 @@ export const ModelPageComponent = ({
   )
 
   const promoSection = () => (
-    <React.Fragment>
+    <div>
       <Section>
         <Headline
           label="Save up to 70% on industrial 3D printing"
@@ -94,7 +94,7 @@ export const ModelPageComponent = ({
         <ProviderImage name="imaterialise" />
         <ProviderImage name="sculpteo" />
       </ProviderTeaser>
-    </React.Fragment>
+    </div>
   )
 
   const uploadSection = () => (
@@ -115,12 +115,11 @@ export const ModelPageComponent = ({
         label={`Uploading (${numModelsUploading}/${numModels})…`}
         modifiers={['l', 'light']}
       />
-      {/* TODO: add bulk operations here */}
-      <ModelItemList>
+      <ModelList>
         {models.map(file => {
           if (file.type === 'UPLOADING') {
             return (
-              <ModelItemLoad
+              <UploadModelItemLoad
                 key={file.id}
                 status={file.progress}
                 title="Uploading"
@@ -131,7 +130,7 @@ export const ModelPageComponent = ({
           }
           if (file.type === 'ERROR') {
             return (
-              <ModelItemError
+              <UploadModelItemError
                 key={file.id}
                 title="Upload failed"
                 subline={file.errorMessage}
@@ -141,10 +140,11 @@ export const ModelPageComponent = ({
           }
           if (file.type === 'MODEL') {
             return (
-              <ModelItem
+              <UploadModelItem
                 key={file.id}
-                imageSource={file.thumbnailUrl}
+                id={file.id}
                 quantity={file.quantity}
+                imageSource={file.thumbnailUrl}
                 title={file.fileName}
                 onDelete={() => onDeleteFile(file.id)}
                 subline={formatDimensions(file.dimensions, file.unit)}
@@ -154,17 +154,16 @@ export const ModelPageComponent = ({
 
           return null
         })}
-      </ModelItemList>
+      </ModelList>
     </Section>
   )
 
   const chooseMaterial = () => (
     <Section>
       <Headline label="Choose material" modifiers={['l', 'light']} />
-      {/* TODO: add bulk operations here */}
-      <ModelItemList>
+      <ModelList>
         {models.map(model => (
-          <ModelItem
+          <UploadModelItem
             key={model.id}
             imageSource={model.thumbnailUrl}
             quantity={model.quantity}
@@ -178,7 +177,7 @@ export const ModelPageComponent = ({
               })}
           />
         ))}
-      </ModelItemList>
+      </ModelList>
     </Section>
   )
 
