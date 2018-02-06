@@ -10,6 +10,9 @@ const HandleValue = ({
   onChangeName = 'onChange'
 }) => {
   const change = input => {
+    if (input.target && typeof input.target.checked !== 'undefined') {
+      return onChange(input.target.checked)
+    }
     if (input.target && typeof input.target.value !== 'undefined') {
       return onChange(input.target.value)
     }
