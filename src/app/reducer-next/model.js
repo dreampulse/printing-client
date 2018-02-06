@@ -1,6 +1,5 @@
 // @flow
 
-import omit from 'lodash/omit'
 import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
 import {uploadModel} from '../service/printing-engine'
@@ -112,7 +111,6 @@ const uploadComplete = (state, {payload}) => {
 
   return {
     ...state,
-    uploadingFiles: omit(state.uploadingFiles, configId),
     backendModels: {
       ...state.backendModels,
       [configId]: model
