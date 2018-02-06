@@ -4,7 +4,7 @@ import {selectModelsOfModelConfigs, selectModelConfigs} from '../../../../src/ap
 import {uploadModel} from '../../../../src/app/service/printing-engine'
 
 import reducer from '../../../../src/app/reducer'
-import {withOneUploadedModel} from '../../../scenario'
+import {withNUploadedModel} from '../../../scenario'
 import getBackendModelMock from '../../../mock/printing-engine/backend-model'
 import getFileMock from '../../../mock/file'
 
@@ -177,7 +177,8 @@ describe('model action', () => {
     let state
 
     beforeEach(() => {
-      state = withOneUploadedModel()
+      // Upload two files -> This tests the behavior if one file is already uploaded
+      state = withNUploadedModel(2)
     })
 
     describe('using selectModelsOfModelConfigs() selector', () => {
@@ -197,7 +198,7 @@ describe('model action', () => {
           type: 'UPLOADED',
           quantity: 1,
           modelId: 'model-id-1',
-          id: 'some-config-id',
+          id: 'config-id-1',
           quoteId: null,
           shippingId: null
         })
