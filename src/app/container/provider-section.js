@@ -13,8 +13,6 @@ import Headline from '../component/headline'
 import ProviderList from '../component/provider-list'
 import ProviderItem from '../component/provider-item'
 import Button from '../component/button'
-import Info from '../component/info'
-import Paragraph from '../component/paragraph'
 
 import {selectOffer} from '../action/price'
 import {goToAddress} from '../action/navigation'
@@ -50,17 +48,12 @@ const ProviderSection = ({
     const {
       finishGroup: {properties: {printingServiceName = []}}
     } = selectMaterialByMaterialConfigId(state, offer.materialConfigId)
-    return (
-      <Info modifiers={['minor']}>
-        <Headline modifiers={['s']} label={`${offer.printingService} calls this material:`} />
-        <Paragraph>{printingServiceName[offer.printingService] || 'unknown'}</Paragraph>
-      </Info>
-    )
+    return printingServiceName[offer.printingService] || ''
   }
 
   const renderProviderList = () => (
     <ProviderList>
-      {offers.sort((a, b) => a.subTotalPrice > b.subTotalPrice).map(offer => (
+      {offers.sort((a, b) => a.totalPrice > b.totalPrice).map(offer => (
         <ProviderItem
           key={offer.offerId}
           process={getOfferProcess(offer)}
@@ -70,6 +63,8 @@ const ProviderSection = ({
           deliveryTime={formatDeliveryTime(offer.shipping.deliveryTime)}
           deliveryProvider={offer.shipping.name}
           shippingPrice={formatPrice(offer.shipping.price, offer.currency)}
+          totalPrice={formatPrice(offer.totalPrice, offer.currency)}
+          includesVat={Boolean(offer.vatPrice)}
           onCheckoutClick={() => {
             onSelectOffer(offer)
             onGoToAddress()
