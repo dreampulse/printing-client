@@ -103,7 +103,7 @@ const CartPage = ({
             ) : null}
             {user.shippingAddress.firstName} {user.shippingAddress.lastName}
             <br />
-            {user.shippingAddress.street} {user.shippingAddress.houseNumber}
+            {user.shippingAddress.address}
             <br />
             {user.shippingAddress.addressLine2}
             <br />
@@ -136,8 +136,7 @@ const CartPage = ({
             {user.billingAddress.firstName || user.shippingAddress.firstName}{' '}
             {user.billingAddress.lastName || user.shippingAddress.lastName}
             <br />
-            {user.billingAddress.street || user.shippingAddress.street}{' '}
-            {user.billingAddress.houseNumber || user.shippingAddress.houseNumber}
+            {user.billingAddress.address || user.shippingAddress.address}
             <br />
             {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}
             <br />
