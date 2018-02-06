@@ -75,6 +75,10 @@ describe('formatTimeRange()', () => {
     expect(formatTimeRange(1, 2), 'to equal', '1-2 days')
   })
 
+  it('returns formatted string and orders the arguments', () => {
+    expect(formatTimeRange(2, 1), 'to equal', '1-2 days')
+  })
+
   it('returns formatted string for string values', () => {
     expect(formatTimeRange('1', '2'), 'to equal', '1-2 days')
   })
