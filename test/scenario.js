@@ -5,9 +5,9 @@ import getFileMock from './mock/file'
 
 export const withOneUploadedModel = () => {
   const uploadFileAction = modelAction.uploadFile(getFileMock())
-  const configId = uploadFileAction.payload.configId
+  const fileId = uploadFileAction.payload.fileId
   const uploadCompleteAction = modelAction.uploadComplete(
-    configId,
+    fileId,
     getUploadModelMock({modelId: 'model-id-1'})
   )
 

@@ -13,6 +13,7 @@ export type VendorId = string
 export type ConfigId = string
 export type ShippingId = string
 export type ModelId = string
+export type FileId = string
 
 export type MaterialConfig = {
   id: MaterialConfigId,
@@ -72,7 +73,7 @@ export type MaterialGroup = {
 }
 
 export type UploadingFile = {
-  configId: ConfigId,
+  fileId: FileId,
   fileName: string,
   fileSize: number,
   progress: number,
@@ -107,6 +108,7 @@ export type BackendQuote = {
 
 type ModelConfigUploading = {
   type: 'UPLOADING',
+  fileId: FileId,
   id: ConfigId
 }
 

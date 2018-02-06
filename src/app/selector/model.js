@@ -12,8 +12,8 @@ export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile
   state.model.modelConfigs.map(
     modelConfig =>
       modelConfig.type === 'UPLOADED'
-        ? state.model.backendModels[modelConfig.id]
-        : state.model.uploadingFiles[modelConfig.id]
+        ? state.model.backendModels[modelConfig.modelId]
+        : state.model.uploadingFiles[modelConfig.fileId]
   )
 
 export const selectModelConfigs = (state: AppState): Array<ModelConfig> => state.model.modelConfigs

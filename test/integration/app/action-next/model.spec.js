@@ -27,17 +27,17 @@ describe('model action', () => {
       state = reducer(undefined, uploadFileAction)
     })
 
-    it('creates unique configIds', () => {
+    it('creates unique fileIds', () => {
       const uploadFileAction1 = modelAction.uploadFile(getFileMock())
       const uploadFileAction2 = modelAction.uploadFile(getFileMock())
 
-      expect(uploadFileAction1.payload.configId, 'not to equal', uploadFileAction2.payload.configId)
+      expect(uploadFileAction1.payload.fileId, 'not to equal', uploadFileAction2.payload.fileId)
     })
 
     describe('using selectModelsOfModelConfigs() selector', () => {
       it('contains the uploaded file', () => {
         expect(selectModelsOfModelConfigs(getModel(state)), 'to have an item satisfying', {
-          configId: expect.it('to be a', 'string'),
+          fileId: expect.it('to be a', 'string'),
           fileName: 'some-file-name',
           fileSize: 42,
           progress: 0,
@@ -63,11 +63,11 @@ describe('model action', () => {
       onProgress(30)
 
       expect(Cmd.dispatch, 'to have a call satisfying', [
-        modelAction.uploadProgress(uploadFileAction.payload.configId, 30)
+        modelAction.uploadProgress(uploadFileAction.payload.fileId, 30)
       ])
     })
 
-    it('triggers the modelAction.uploadComplete() action with the configId and the result from uploadModel()', () => {
+    it('triggers the modelAction.uploadComplete() action with the fileId and the result from uploadModel()', () => {
       const cmd = findCmd(state, uploadModel, [
         getFileMock,
         {unit: 'mm'},
@@ -78,38 +78,38 @@ describe('model action', () => {
       expect(
         action,
         'to equal',
-        modelAction.uploadComplete(uploadFileAction.payload.configId, getBackendModelMock({}))
+        modelAction.uploadComplete(uploadFileAction.payload.fileId, getBackendModelMock({}))
       )
     })
 
-    it('triggers the modelAction.uploadFail() action with the configId and the error from uploadModel()', () => {
+    it('triggers the modelAction.uploadFail() action with the fileId and the error from uploadModel()', () => {
       const cmd = findCmd(state, uploadModel)
       const action = cmd.simulate({success: false, result: getBackendModelMock({})})
 
       expect(
         action,
         'to equal',
-        modelAction.uploadFail(uploadFileAction.payload.configId, getBackendModelMock({}))
+        modelAction.uploadFail(uploadFileAction.payload.fileId, getBackendModelMock({}))
       )
     })
   })
 
   describe('uploadProgress()', () => {
-    let configId
+    let fileId
     let state
 
     beforeEach(() => {
       const uploadFileAction = modelAction.uploadFile(getFileMock())
-      configId = uploadFileAction.payload.configId
-      const uploadProgressAction = modelAction.uploadProgress(configId, 42)
+      fileId = uploadFileAction.payload.fileId
+      const uploadProgressAction = modelAction.uploadProgress(fileId, 42)
 
       const stateBeforeUploadProgress = reducer(undefined, uploadFileAction)
       state = reducer(getModel(stateBeforeUploadProgress), uploadProgressAction)
     })
 
     describe('using selectModelsOfModelConfigs() selector', () => {
-      it('updates the model with the given configId', () => {
-        const model = selectModelsOfModelConfigs(getModel(state)).find(m => m.configId === configId)
+      it('updates the model with the given fileId', () => {
+        const model = selectModelsOfModelConfigs(getModel(state)).find(m => m.fileId === fileId)
 
         expect(model, 'to satisfy', {progress: 42})
       })
@@ -120,7 +120,7 @@ describe('model action', () => {
         const uploadFileAction1 = modelAction.uploadFile(getFileMock())
         const uploadFileAction2 = modelAction.uploadFile(getFileMock())
         const uploadFileAction3 = modelAction.uploadFile(getFileMock())
-        const fileId2 = uploadFileAction2.payload.configId
+        const fileId2 = uploadFileAction2.payload.fileId
 
         const stateBefore = [uploadFileAction1, uploadFileAction2, uploadFileAction3].reduce(
           (currentState, action) => reducer(getModel(currentState), action),
@@ -147,10 +147,10 @@ describe('model action', () => {
       sandbox.spy(Cmd, 'dispatch')
       onProgress(30)
 
-      expect(Cmd.dispatch, 'to have a call satisfying', [modelAction.uploadProgress(configId, 30)])
+      expect(Cmd.dispatch, 'to have a call satisfying', [modelAction.uploadProgress(fileId, 30)])
     })
 
-    it('triggers the modelAction.uploadComplete() action with the configId and the result from uploadModel()', () => {
+    it('triggers the modelAction.uploadComplete() action with the fileId and the result from uploadModel()', () => {
       const cmd = findCmd(state, uploadModel, [
         getFileMock,
         {unit: 'mm'},
@@ -158,14 +158,14 @@ describe('model action', () => {
       ])
       const action = cmd.simulate({success: true, result: getBackendModelMock({})})
 
-      expect(action, 'to equal', modelAction.uploadComplete(configId, getBackendModelMock({})))
+      expect(action, 'to equal', modelAction.uploadComplete(fileId, getBackendModelMock({})))
     })
 
     it('triggers the modelAction.uploadFail() action with the file id and the error from uploadModel()', () => {
       const cmd = findCmd(state, uploadModel)
       const action = cmd.simulate({success: false, result: getBackendModelMock({})})
 
-      expect(action, 'to equal', modelAction.uploadFail(configId, getBackendModelMock({})))
+      expect(action, 'to equal', modelAction.uploadFail(fileId, getBackendModelMock({})))
     })
   })
 
@@ -202,15 +202,15 @@ describe('model action', () => {
   })
 
   describe('uploadFail()', () => {
-    let configId
+    let fileId
     let error
     let state
 
     beforeEach(() => {
       const uploadFileAction = modelAction.uploadFile(getFileMock())
       error = new Error('Some error')
-      configId = uploadFileAction.payload.configId
-      const uploadFailAction = modelAction.uploadFail(configId, error)
+      fileId = uploadFileAction.payload.fileId
+      const uploadFailAction = modelAction.uploadFail(fileId, error)
 
       state = [uploadFileAction, uploadFailAction].reduce(
         (currentState, action) => reducer(getModel(currentState), action),
@@ -220,7 +220,7 @@ describe('model action', () => {
 
     describe('using selectModelsOfModelConfigs() selector', () => {
       it('contains the uploading model with an error flag and errorMessage', () => {
-        const model = selectModelsOfModelConfigs(getModel(state)).find(m => m.configId === configId)
+        const model = selectModelsOfModelConfigs(getModel(state)).find(m => m.fileId === fileId)
 
         expect(model, 'to satisfy', {
           error: true,

@@ -10,14 +10,15 @@ import type {
   QuoteId,
   ModelId,
   ConfigId,
+  FileId,
   ModelConfig
 } from '../type-next'
 import type {AppAction} from '../action-next'
 import * as modelAction from '../action-next/model'
 
 export type ModelState = {
-  uploadingFiles: {[id: ModelId]: UploadingFile},
-  backendModels: {[id: ConfigId]: BackendModel},
+  uploadingFiles: {[id: FileId]: UploadingFile},
+  backendModels: {[id: ModelId]: BackendModel},
   quotes: {[id: QuoteId]: BackendQuote},
   modelConfigs: Array<ModelConfig>,
   selectedModelConfigs: Array<ConfigId>
@@ -32,10 +33,10 @@ const initialState: ModelState = {
 }
 
 const uploadFile = (state, {payload}) => {
-  const configId = payload.configId
+  const fileId = payload.fileId
 
   const file = {
-    configId,
+    fileId,
     fileName: payload.file.name,
     fileSize: payload.file.size,
     progress: 0,
@@ -47,13 +48,14 @@ const uploadFile = (state, {payload}) => {
       ...state,
       uploadingFiles: {
         ...state.uploadingFiles,
-        [configId]: file
+        [fileId]: file
       },
       modelConfigs: [
         ...state.modelConfigs,
         {
           type: 'UPLOADING',
-          id: configId
+          fileId,
+          id: payload.configId
         }
       ]
     },
@@ -61,29 +63,26 @@ const uploadFile = (state, {payload}) => {
       args: [
         payload.file,
         {unit: 'mm'},
-        progress => Cmd.dispatch(modelAction.uploadProgress(configId, progress))
+        progress => Cmd.dispatch(modelAction.uploadProgress(fileId, progress))
       ],
-      successActionCreator: model => modelAction.uploadComplete(configId, model),
-      failActionCreator: error => modelAction.uploadFail(configId, error)
+      successActionCreator: model => modelAction.uploadComplete(fileId, model),
+      failActionCreator: error => modelAction.uploadFail(fileId, error)
     })
   )
 }
 
 const uploadProgress = (state, {payload}) => {
-  const configId = payload.configId
+  const fileId = payload.fileId
 
-  invariant(
-    state.uploadingFiles[configId],
-    `Error in uploadProgress(): File ${configId} is unknown`
-  )
+  invariant(state.uploadingFiles[fileId], `Error in uploadProgress(): File ${fileId} is unknown`)
 
   return loop(
     {
       ...state,
       uploadingFiles: {
         ...state.uploadingFiles,
-        [configId]: {
-          ...state.uploadingFiles[configId],
+        [fileId]: {
+          ...state.uploadingFiles[fileId],
           progress: payload.progress
         }
       }
@@ -92,54 +91,53 @@ const uploadProgress = (state, {payload}) => {
       args: [
         payload,
         {unit: 'mm'},
-        progress => Cmd.dispatch(modelAction.uploadProgress(configId, progress))
+        progress => Cmd.dispatch(modelAction.uploadProgress(fileId, progress))
       ],
-      successActionCreator: model => modelAction.uploadComplete(configId, model),
-      failActionCreator: error => modelAction.uploadFail(configId, error)
+      successActionCreator: model => modelAction.uploadComplete(fileId, model),
+      failActionCreator: error => modelAction.uploadFail(fileId, error)
     })
   )
 }
 
 const uploadComplete = (state, {payload}) => {
-  const configId = payload.configId
+  const fileId = payload.fileId
   const model = payload.model
 
-  invariant(
-    state.uploadingFiles[configId],
-    `Error in uploadComplete(): File ${configId} is unknown`
-  )
+  invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
 
   return {
     ...state,
     backendModels: {
       ...state.backendModels,
-      [configId]: model
+      [model.modelId]: model
     },
-    modelConfigs: [
-      ...state.modelConfigs.filter(modelConfig => modelConfig.id !== configId),
-      {
-        type: 'UPLOADED',
-        quantity: 1,
-        modelId: model.modelId,
-        id: configId,
-        quoteId: null,
-        shippingId: null
-      }
-    ]
+    modelConfigs: state.modelConfigs.map(
+      modelConfig =>
+        modelConfig.type === 'UPLOADING' && modelConfig.fileId === fileId
+          ? {
+              type: 'UPLOADED',
+              quantity: 1,
+              modelId: model.modelId,
+              id: modelConfig.id,
+              quoteId: null,
+              shippingId: null
+            }
+          : modelConfig
+    )
   }
 }
 
 const uploadFail = (state, {payload}) => {
-  const configId = payload.configId
+  const fileId = payload.fileId
 
-  invariant(state.uploadingFiles[configId], `Error in uploadFail(): File ${configId} is unknown`)
+  invariant(state.uploadingFiles[fileId], `Error in uploadFail(): File ${fileId} is unknown`)
 
   return {
     ...state,
     uploadingFiles: {
       ...state.uploadingFiles,
-      [configId]: {
-        ...state.uploadingFiles[configId],
+      [fileId]: {
+        ...state.uploadingFiles[fileId],
         error: true,
         errorMessage: payload.error.message
       }

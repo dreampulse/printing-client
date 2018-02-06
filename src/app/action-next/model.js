@@ -1,15 +1,15 @@
 // @flow
 
 import uniqueId from 'lodash/uniqueId'
-import type {Action, BackendModel, ConfigId} from '../type-next'
+import type {Action, BackendModel, ConfigId, FileId} from '../type-next'
 
-type UploadFileAction = Action<'MODEL.UPLOAD_FILE', {configId: ConfigId, file: File}>
-type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {configId: ConfigId, progress: number}>
-type UploadCompleteAction = Action<
-  'MODEL.UPLOAD_COMPLETE',
-  {configId: ConfigId, model: BackendModel}
+type UploadFileAction = Action<
+  'MODEL.UPLOAD_FILE',
+  {fileId: FileId, configId: ConfigId, file: File}
 >
-type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {configId: ConfigId, error: Error}>
+type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: FileId, progress: number}>
+type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: FileId, model: BackendModel}>
+type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: FileId, error: Error}>
 
 export type ModelAction =
   | UploadFileAction
@@ -21,24 +21,25 @@ export const uploadFile = (file: File): UploadFileAction => ({
   type: 'MODEL.UPLOAD_FILE',
   payload: {
     file,
+    fileId: uniqueId('file-id-'),
     configId: uniqueId('config-id-')
   }
 })
 
-export const uploadProgress = (configId: ConfigId, progress: number): UploadProgressAction => ({
+export const uploadProgress = (fileId: FileId, progress: number): UploadProgressAction => ({
   type: 'MODEL.UPLOAD_PROGRESS',
-  payload: {progress, configId}
+  payload: {progress, fileId}
 })
 
-export const uploadComplete = (configId: ConfigId, model: BackendModel): UploadCompleteAction => ({
+export const uploadComplete = (fileId: FileId, model: BackendModel): UploadCompleteAction => ({
   type: 'MODEL.UPLOAD_COMPLETE',
-  payload: {configId, model}
+  payload: {fileId, model}
 })
 
-export const uploadFail = (configId: ConfigId, error: Error): UploadFailAction => ({
+export const uploadFail = (fileId: FileId, error: Error): UploadFailAction => ({
   type: 'MODEL.UPLOAD_FAIL',
   payload: {
-    configId,
+    fileId,
     error
   }
 })
