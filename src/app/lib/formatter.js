@@ -19,7 +19,7 @@ export function formatDeliveryTime(deliveryTime) {
 }
 
 export function formatTimeRange(from, to) {
-  if (arguments.length === 0) return '–'
+  if (arguments.length === 0 || !from) return '–'
   if (arguments.length === 1 || (from && to && +from === +to)) return `${from} ${appendDays(from)}`
   return `${from}-${to} ${appendDays(to)}`
 }
