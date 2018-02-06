@@ -4,14 +4,24 @@ import omit from 'lodash/omit'
 import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
 import {uploadModel} from '../service/printing-engine'
-import type {UploadingFile, Model, BasketItem} from '../type-next'
+import type {
+  BackendModel,
+  UploadingFile,
+  BackendQuote,
+  QuoteId,
+  ModelId,
+  ConfigId,
+  ModelConfig
+} from '../type-next'
 import type {AppAction} from '../action-next'
 import * as modelAction from '../action-next/model'
 
 export type ModelState = {
-  models: {[id: string]: Model},
-  uploadingFiles: {[id: string]: UploadingFile},
-  basketItems: Array<BasketItem>
+  uploadingFiles: {[id: ModelId]: UploadingFile},
+  backendModels: {[id: ConfigId]: BackendModel},
+  quotes: {[id: QuoteId]: BackendQuote},
+  modelConfigs: Array<ModelConfig>,
+  selectedModelConfigs: Array<ConfigId>
 }
 
 const initialState: ModelState = {
