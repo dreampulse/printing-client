@@ -2,21 +2,21 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 
 import CheckboxField from '../../src/app/component/checkbox-field'
-import HandleChecked from '../util/handle-checked'
+import HandleValue from '../util/handle-value'
 
 storiesOf('Checkbox Field', module)
   .add('default', () => (
-    <HandleChecked checked>
+    <HandleValue valueName="checked">
       <CheckboxField />
-    </HandleChecked>
+    </HandleValue>
   ))
   .add('checked', () => (
-    <HandleChecked checked>
+    <HandleValue initialValue valueName="checked">
       <CheckboxField />
-    </HandleChecked>
+    </HandleValue>
   ))
   .add('error', () => (
-    <HandleChecked checked>
+    <HandleValue valueName="checked">
       <CheckboxField modifiers={['error']} />
-    </HandleChecked>
+    </HandleValue>
   ))
