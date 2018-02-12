@@ -23,7 +23,7 @@ import UploadModelItemError from '../component/upload-model-item-error'
 import UploadModelItemLoad from '../component/upload-model-item-load'
 import UploadModelItem from '../component/upload-model-item'
 
-const ModelPage = ({onUpload, onDeleteModel, onChangeIndividualQuantity, models}) => {
+const UploadPage = ({onUpload, onDeleteModel, onChangeIndividualQuantity, models}) => {
   const isUploadCompleted = models.every(model => model.type === 'MODEL')
   const haveModels = models.length > 1
   const numModels = models.length
@@ -147,4 +147,4 @@ const ModelPage = ({onUpload, onDeleteModel, onChangeIndividualQuantity, models}
 }
 
 // TODO: connect container
-export default ModelPage
+export default UploadPage

@@ -3,7 +3,7 @@ import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 import {withKnobs} from '@storybook/addon-knobs/react'
 
-import ModelPage from '../../src/app/container-next/model-page'
+import UploadPage from '../../src/app/container-next/upload-page'
 
 const models = {
   modelsEmpty: [],
@@ -63,10 +63,10 @@ const models = {
   ]
 }
 
-storiesOf('Container.ModelPage', module)
+storiesOf('Container.UploadPage', module)
   .addDecorator(withKnobs)
   .add('modelsEmpty', () => (
-    <ModelPage
+    <UploadPage
       models={models.modelsEmpty}
       onDeleteFile={action('onDeleteFile')}
       onDeleteModel={action('onDeleteModel')}
@@ -74,7 +74,7 @@ storiesOf('Container.ModelPage', module)
     />
   ))
   .add('modelsUploading', () => (
-    <ModelPage
+    <UploadPage
       models={models.modelsUploading}
       onDeleteFile={action('onDeleteFile')}
       onDeleteModel={action('onDeleteModel')}
@@ -82,7 +82,7 @@ storiesOf('Container.ModelPage', module)
     />
   ))
   .add('modelsCompleted', () => (
-    <ModelPage
+    <UploadPage
       models={models.modelsCompleted}
       onDeleteFile={action('onDeleteFile')}
       onDeleteModel={action('onDeleteModel')}
