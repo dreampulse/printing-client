@@ -1,8 +1,19 @@
 import React from 'react'
-import {storiesOf} from '@storybook/react'
+import {storiesOf, action} from '@storybook/react'
+import {withKnobs, number, boolean} from '@storybook/addon-knobs/react'
 
-import {AppLayoutComponent} from '../../src/app/container-next/app-layout'
+import AppLayout from '../../src/app/container-next/app-layout'
 
-storiesOf('Container.AppLayout', module).add('default', () => (
-  <AppLayoutComponent header="some-header">some-content</AppLayoutComponent>
-))
+storiesOf('Container.AppLayout', module)
+  .addDecorator(withKnobs)
+  .add('default', () => (
+    <AppLayout
+      cartCount={number('cartCount', 0)}
+      onGoToHome={action('onGoToHome')}
+      showUploadButton={boolean('showUploadButton', true)}
+      onUploadButtonClicked={action('onUploadButtonClicked')}
+      onCartClicked={action('onCartClicked')}
+    >
+      some-content
+    </AppLayout>
+  ))

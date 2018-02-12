@@ -1,38 +1,49 @@
 import React from 'react'
 
+import FooterPartial from './footer-partial'
+
+import helpIcon from '../../asset/icon/help.svg'
+import cartIcon from '../../asset/icon/cart.svg'
+
 import App from '../component/app'
-import StickyContainer from '../component/sticky-container'
 import Container from '../component/container'
-import Footer from '../component/footer'
-import Link from '../component/link'
+import NavBar from '../component/nav-bar'
+import IconLink from '../component/icon-link'
+import Button from '../component/button'
 
-export const AppLayoutComponent = ({children, header, configurationHeader = null}) => {
-  const footer = (
-    <Footer copyline="© 2018 All3DP">
-      <Link label="Contact Us" href="mailto:support@all3dp.com" />
-      <Link
-        label="Terms and conditions"
-        target="_blank"
-        href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
-      />
-      <Link label="Imprint" target="_blank" href="https://all3dp.com/terms-of-use/#imprint" />
-    </Footer>
-  )
+const AppLayout = ({
+  children,
+  cartCount,
+  showUploadButton = false,
+  onGoToHome = () => {},
+  onUploadButtonClicked = () => {},
+  onCartClicked = () => {}
+}) => (
+  <App
+    header={[
+      <NavBar key="navbar" onClickIdentity={onGoToHome}>
+        {showUploadButton && (
+          <Button
+            label="Upload"
+            onClick={onUploadButtonClicked}
+            modifiers={['invert', 'compact']}
+          />
+        )}
+        <IconLink
+          modifiers={['invert']}
+          icon={cartIcon}
+          disabled={cartCount < 1}
+          cartCount={cartCount}
+          onClick={onCartClicked}
+        />
+        <IconLink modifiers={['invert']} icon={helpIcon} />
+      </NavBar>
+    ]}
+    footer={<FooterPartial />}
+  >
+    <Container>{children}</Container>
+  </App>
+)
 
-  return (
-    <App
-      header={[
-        header,
-        Boolean(configurationHeader) && (
-          <StickyContainer key="configHeader">{configurationHeader}</StickyContainer>
-        )
-      ]}
-      footer={footer}
-    >
-      <Container>{children}</Container>
-    </App>
-  )
-}
-
-// TODO: connect container
-export default AppLayoutComponent
+// TODO: connect to store
+export default AppLayout
