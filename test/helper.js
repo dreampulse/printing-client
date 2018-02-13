@@ -77,13 +77,17 @@ export const findCmd = (state, func, args) => {
   return cmd
 }
 
-export const findAction = (state, action) =>
-  getCmd(state).cmds.find(c => {
-    try {
-      expect(c.actionToDispatch, 'to satisfy', action)
+export const findAction = (state, actionOrFilter) =>
+  getCmd(state)
+    .cmds.map(c => c.actionToDispatch)
+    .filter(action => Boolean(action))
+    .find(action => {
+      if (typeof actionOrFilter === 'function') return actionOrFilter(action)
+      try {
+        expect(action, 'to satisfy', actionOrFilter)
 
-      return true
-    } catch (err) {
-      return false
-    }
-  })
+        return true
+      } catch (err) {
+        return false
+      }
+    })

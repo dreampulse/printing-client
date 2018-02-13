@@ -7,7 +7,6 @@ import * as printingEngine from '../service/printing-engine'
 import * as userAction from '../action-next/user'
 import * as modalAction from '../action-next/modal'
 import * as coreAction from '../action-next/core'
-
 import * as userLib from '../lib/user'
 
 export type UserState = {
