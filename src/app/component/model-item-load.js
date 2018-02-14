@@ -6,6 +6,7 @@ import buildClassName from '../lib/build-class-name'
 
 import Icon from './icon'
 import LoadingIndicator from './loading-indicator'
+import Progress from './progress'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 
@@ -17,10 +18,10 @@ const ModelItemLoad = ({classNames, modifiers, title, subline, status, onDelete 
 
   const percentage = Math.round(status * 100)
   const loadTitle = title + (status === undefined ? '…' : ` (${percentage}%)`)
-  const scaleX = `scaleX(${status === undefined ? 1 : status})`
 
   return (
     <div className={buildClassName('model-item-load', modifiers, classNames)}>
+      <Progress classNames={['model-item-load__progress']} value={status} />
       <div className="model-item-load__description">
         {Boolean(title) && (
           <strong className="model-item-load__title">
@@ -33,14 +34,6 @@ const ModelItemLoad = ({classNames, modifiers, title, subline, status, onDelete 
       <button type="button" className="model-item-load__delete" onClick={handleDeleteClick}>
         <Icon source={deleteIcon} />
       </button>
-      <div
-        className="model-item-load__progress"
-        style={{
-          transform: scaleX,
-          WebkitTransform: scaleX,
-          opacity: status === undefined ? 0.5 : 1
-        }}
-      />
     </div>
   )
 }
