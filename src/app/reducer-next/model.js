@@ -2,7 +2,7 @@
 
 import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
-import {uploadModel} from '../service/printing-engine'
+import {uploadModel} from '../lib/printing-engine'
 import type {
   BackendModel,
   UploadingFile,
@@ -32,6 +32,7 @@ const initialState: ModelState = {
   selectedModelConfigs: []
 }
 
+// @TODO: should we rename that to uploadModel?
 const uploadFile = (state, {payload}) => {
   const fileId = payload.fileId
 
@@ -63,7 +64,8 @@ const uploadFile = (state, {payload}) => {
       args: [
         payload.file,
         {unit: 'mm'},
-        progress => Cmd.dispatch(modelAction.uploadProgress(fileId, progress))
+        Cmd.dispatch,
+        progress => modelAction.uploadProgress(fileId, progress)
       ],
       successActionCreator: model => modelAction.uploadComplete(fileId, model),
       failActionCreator: error => modelAction.uploadFail(fileId, error)
@@ -76,27 +78,16 @@ const uploadProgress = (state, {payload}) => {
 
   invariant(state.uploadingFiles[fileId], `Error in uploadProgress(): File ${fileId} is unknown`)
 
-  return loop(
-    {
-      ...state,
-      uploadingFiles: {
-        ...state.uploadingFiles,
-        [fileId]: {
-          ...state.uploadingFiles[fileId],
-          progress: payload.progress
-        }
+  return {
+    ...state,
+    uploadingFiles: {
+      ...state.uploadingFiles,
+      [fileId]: {
+        ...state.uploadingFiles[fileId],
+        progress: payload.progress
       }
-    },
-    Cmd.run(uploadModel, {
-      args: [
-        payload,
-        {unit: 'mm'},
-        progress => Cmd.dispatch(modelAction.uploadProgress(fileId, progress))
-      ],
-      successActionCreator: model => modelAction.uploadComplete(fileId, model),
-      failActionCreator: error => modelAction.uploadFail(fileId, error)
-    })
-  )
+    }
+  }
 }
 
 const uploadComplete = (state, {payload}) => {

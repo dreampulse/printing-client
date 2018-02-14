@@ -6,7 +6,7 @@ import {
   selectSelectedModelConfigIds,
   selectSelectedModelConfigs
 } from '../../../../src/app/selector'
-import {uploadModel} from '../../../../src/app/service/printing-engine'
+import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
 import reducer from '../../../../src/app/reducer'
 import {withNUploadedModels} from '../../../scenario'
@@ -43,6 +43,22 @@ describe('model action', () => {
       expect(uploadFileAction1.payload.fileId, 'not to equal', uploadFileAction2.payload.fileId)
     })
 
+    it('uses the correct upload progress action creator (the 4th parameter)', () => {
+      const cmd = findCmd(state, printingEngine.uploadModel, [
+        getFileMock,
+        {unit: 'mm'},
+        Cmd.dispatch,
+        expect.it('to be a', 'function')
+      ])
+
+      const onProgress = cmd.args[3]
+
+      expect(onProgress('some-progress'), 'to satisfy', {
+        type: 'MODEL.UPLOAD_PROGRESS',
+        payload: {progress: 'some-progress', fileId: expect.it('to be a string')}
+      })
+    })
+
     describe('using selectModelsOfModelConfigs() selector', () => {
       it('contains the uploaded file', () => {
         expect(selectModelsOfModelConfigs(getModel(state)), 'to have an item satisfying', {
@@ -64,22 +80,11 @@ describe('model action', () => {
       })
     })
 
-    it('triggers the modelAction.uploadProgress() action as soon as uploadModel() has a progress', () => {
-      const uploadModelCmd = findCmd(state, uploadModel)
-      const onProgress = uploadModelCmd.args[2]
-
-      sandbox.spy(Cmd, 'dispatch')
-      onProgress(30)
-
-      expect(Cmd.dispatch, 'to have a call satisfying', [
-        modelAction.uploadProgress(uploadFileAction.payload.fileId, 30)
-      ])
-    })
-
     it('triggers the modelAction.uploadComplete() action with the fileId and the result from uploadModel()', () => {
-      const cmd = findCmd(state, uploadModel, [
+      const cmd = findCmd(state, printingEngine.uploadModel, [
         getFileMock,
         {unit: 'mm'},
+        Cmd.dispatch,
         expect.it('to be a', 'function')
       ])
       const action = cmd.simulate({success: true, result: getBackendModelMock({})})
@@ -92,7 +97,7 @@ describe('model action', () => {
     })
 
     it('triggers the modelAction.uploadFail() action with the fileId and the error from uploadModel()', () => {
-      const cmd = findCmd(state, uploadModel)
+      const cmd = findCmd(state, printingEngine.uploadModel)
       const action = cmd.simulate({success: false, result: getBackendModelMock({})})
 
       expect(
@@ -146,34 +151,6 @@ describe('model action', () => {
 
         expect(orderBeforeDispatch, 'to equal', orderAfterDispatch)
       })
-    })
-
-    it('triggers the modelAction.uploadProgress() action as soon as uploadModel() has a progress', () => {
-      const uploadModelCmd = findCmd(state, uploadModel)
-      const onProgress = uploadModelCmd.args[2]
-
-      sandbox.spy(Cmd, 'dispatch')
-      onProgress(30)
-
-      expect(Cmd.dispatch, 'to have a call satisfying', [modelAction.uploadProgress(fileId, 30)])
-    })
-
-    it('triggers the modelAction.uploadComplete() action with the fileId and the result from uploadModel()', () => {
-      const cmd = findCmd(state, uploadModel, [
-        getFileMock,
-        {unit: 'mm'},
-        expect.it('to be a', 'function')
-      ])
-      const action = cmd.simulate({success: true, result: getBackendModelMock({})})
-
-      expect(action, 'to equal', modelAction.uploadComplete(fileId, getBackendModelMock({})))
-    })
-
-    it('triggers the modelAction.uploadFail() action with the file id and the error from uploadModel()', () => {
-      const cmd = findCmd(state, uploadModel)
-      const action = cmd.simulate({success: false, result: getBackendModelMock({})})
-
-      expect(action, 'to equal', modelAction.uploadFail(fileId, getBackendModelMock({})))
     })
   })
 
