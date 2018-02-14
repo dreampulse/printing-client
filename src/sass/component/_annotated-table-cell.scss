@@ -11,5 +11,6 @@
     color: $color-minor;
     font-size: $font-size-s;
     display: block;
+    min-height: $font-size-s * $line-height-base;
   }
 }

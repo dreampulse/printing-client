@@ -39,7 +39,9 @@ const ProviderItem = ({
         {totalPrice}
       </AnnotatedTableCell>
     </td>
-    <td className="provider-item__price">{price}</td>
+    <td className="provider-item__price">
+      <AnnotatedTableCell>{price}</AnnotatedTableCell>
+    </td>
     <td className="provider-item__shipping-price">
       <AnnotatedTableCell annotation={deliveryTime}>
         {shippingPrice}
@@ -48,8 +50,12 @@ const ProviderItem = ({
         </Info>
       </AnnotatedTableCell>
     </td>
-    <td className="provider-item__production-time">{productionTime}</td>
-    <td className="provider-item__process">{process}</td>
+    <td className="provider-item__production-time">
+      <AnnotatedTableCell>{productionTime}</AnnotatedTableCell>
+    </td>
+    <td className="provider-item__process">
+      <AnnotatedTableCell>{process}</AnnotatedTableCell>
+    </td>
     <td className="provider-item__checkout">
       <Button
         icon={checkoutIcon}
