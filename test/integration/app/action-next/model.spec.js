@@ -246,7 +246,7 @@ describe('model action', () => {
     let state
 
     beforeEach(() => {
-      const action = modelAction.deleteModelConfigs(['model-id-1'])
+      const action = modelAction.deleteModelConfigs(['config-id-1'])
       state = reducer(getModel(withOneUploadedModel()), action)
     })
 
