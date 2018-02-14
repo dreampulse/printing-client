@@ -35,6 +35,7 @@
   "devDependencies": {
     "@storybook/addon-actions": "^3.2.12",
     "@storybook/addon-centered": "^3.2.12",
+    "@storybook/addon-knobs": "^3.3.11",
     "@storybook/react": "^3.2.12",
     "autoprefixer": "^7.1.5",
     "babel-cli": "^6.18.0",
