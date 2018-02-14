@@ -1,14 +1,10 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 import range from 'lodash/range'
-import {action} from '@storybook/addon-actions'
 
 import ModelItem from '../../src/app/component/model-item'
 import CheckoutModelList from '../../src/app/component/checkout-model-list'
 import SelectField from '../../src/app/component/select-field'
-import Link from '../../src/app/component/link'
-
-import editIcon from '../../src/asset/icon/edit.svg'
 
 const color = () => (
   <SelectField
@@ -17,10 +13,8 @@ const color = () => (
   />
 )
 
-const editLink = <Link label="edit" href="#" icon={editIcon} onClick={action('edit click')} />
-
 storiesOf('Checkout Model List', module).add('default', () => (
-  <CheckoutModelList headline="Your order" editLink={editLink}>
+  <CheckoutModelList>
     {range(5).map(index => (
       <ModelItem
         key={index}

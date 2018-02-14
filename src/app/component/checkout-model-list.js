@@ -4,25 +4,21 @@ import React from 'react'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
-import Headline from './headline'
-
-const CheckoutModelList = ({classNames, modifiers = [], editLink, headline, children}) => (
+const CheckoutModelList = ({classNames, modifiers = [], children}) => (
   <section className={buildClassName('checkout-model-list', modifiers, classNames)}>
-    <div className="checkout-model-list__head">
-      <Headline modifiers={['minor', 'l']} label={headline} />
-      {editLink}
-    </div>
     <ul className="checkout-model-list__list">
-      {React.Children.map(children, child => <li>{child}</li>)}
+      {React.Children.map(children, (child, index) => (
+        <li key={child.props.id || index} className="checkout-model-list__item">
+          {child}
+        </li>
+      ))}
     </ul>
   </section>
 )
 
 CheckoutModelList.propTypes = {
   ...propTypes.component,
-  children: PropTypes.node.isRequired,
-  editLink: PropTypes.node,
-  headline: PropTypes.string.isRequired
+  children: PropTypes.node.isRequired
 }
 
 export default CheckoutModelList
