@@ -27,7 +27,7 @@ const ModelItem = ({
 
   return (
     <div className={buildClassName('model-item', modifiers, classNames)}>
-      <ImageContainer modifiers={['model']} source={imageSource} />
+      <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
       <NumberField modifiers={['compact']} value={quantity} onChange={onQuantityChange} />
       <div className="model-item__description">
         {Boolean(title) && <strong className="model-item__title">{title}</strong>}
