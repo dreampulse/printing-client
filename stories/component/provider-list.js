@@ -4,18 +4,8 @@ import {action} from '@storybook/addon-actions'
 
 import ProviderList from '../../src/app/component/provider-list'
 import ProviderItem from '../../src/app/component/provider-item'
-import Info from '../../src/app/component/info'
-import Headline from '../../src/app/component/headline'
-import Paragraph from '../../src/app/component/paragraph'
 
-const providerInfo = (
-  <Info modifiers={['minor']}>
-    <Headline modifiers={['s']} label="Headline" />
-    <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
-  </Info>
-)
-
-storiesOf('Provider List & Provider Item', module).add('default', () => (
+storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
   <ProviderList>
     <ProviderItem
       providerSlug="imaterialise"
@@ -24,9 +14,11 @@ storiesOf('Provider List & Provider Item', module).add('default', () => (
       price="$350.23"
       shippingPrice="$20.00"
       deliveryTime="3-4 Days"
+      totalPrice="$40.00"
       deliveryProvider="DHL Express"
-      providerInfo={providerInfo}
+      providerInfo="Provider Material Name"
       onCheckoutClick={action('click')}
+      productionTime="4-6 days"
     />
     <ProviderItem
       providerSlug="sculpteo"
@@ -35,9 +27,12 @@ storiesOf('Provider List & Provider Item', module).add('default', () => (
       price="$370.58"
       shippingPrice="$10.00"
       deliveryTime="6-10 Days"
+      includesVat
+      totalPrice="$40.00"
       deliveryProvider="DHL"
-      providerInfo={providerInfo}
+      providerInfo="Provider Material Name"
       onCheckoutClick={action('click')}
+      productionTime="6-10 days"
     />
     <ProviderItem
       providerSlug="shapeways"
@@ -46,9 +41,11 @@ storiesOf('Provider List & Provider Item', module).add('default', () => (
       price="$410.11"
       shippingPrice="$15.00"
       deliveryTime="1-2 Days"
+      totalPrice="$40.00"
       deliveryProvider="UPS"
-      providerInfo={providerInfo}
+      providerInfo="Provider Material Name"
       onCheckoutClick={action('click')}
+      productionTime="4-6 days"
     />
   </ProviderList>
 ))

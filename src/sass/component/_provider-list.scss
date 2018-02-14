@@ -13,20 +13,23 @@
 
   &__provider,
   &__price,
+  &__total-price,
   &__delivery,
   &__shipping,
+  &__production-time,
   &__process,
   &__checkout {
-    width: 25%;
-    padding: $space-base $space-xl;
+    padding: $space-base $space-l;
     text-align: left;
   }
 
   &__provider {
-    width: 260px;
+    width: 170px;
+    padding-left: $space-base;
   }
 
   &__checkout {
-    width: 270px;
+    width: 250px;
+    padding-right: 0;
   }
 }
