@@ -181,6 +181,33 @@ describe('model action', () => {
       state = withNUploadedModel(2)
     })
 
+    describe('using selectModelConfigs() selector', () => {
+      it('does not change the order (or manipulate the array unexpectedly)', () => {
+        const uploadFileAction1 = modelAction.uploadFile(getFileMock())
+        const uploadFileAction2 = modelAction.uploadFile(getFileMock())
+        const uploadFileAction3 = modelAction.uploadFile(getFileMock())
+        const fileId2 = uploadFileAction2.payload.fileId
+
+        const stateBefore = [uploadFileAction1, uploadFileAction2, uploadFileAction3].reduce(
+          (currentState, action) => reducer(getModel(currentState), action),
+          undefined
+        )
+
+        const orderBeforeDispatch = selectModelConfigs(getModel(stateBefore)).map(m => m.id)
+
+        const stateAfterUploadProgress = reducer(
+          getModel(stateBefore),
+          modelAction.uploadComplete(fileId2, getBackendModelMock({}))
+        )
+
+        const orderAfterDispatch = selectModelConfigs(getModel(stateAfterUploadProgress)).map(
+          m => m.id
+        )
+
+        expect(orderBeforeDispatch, 'to equal', orderAfterDispatch)
+      })
+    })
+
     describe('using selectModelsOfModelConfigs() selector', () => {
       it('returns the given backend model with a quantity property', () => {
         const model = selectModelsOfModelConfigs(getModel(state)).find(
