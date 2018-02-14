@@ -7,7 +7,7 @@ import feature2Image from '../../asset/image/feature2.png'
 
 import {formatDimensions} from '../lib/formatter'
 
-import AppLayout from './app-layout'
+import AppLayoutContainer from './app-layout'
 
 import ProviderTeaser from '../component/provider-teaser'
 import ProviderImage from '../component/provider-image'
@@ -23,15 +23,22 @@ import UploadModelItemError from '../component/upload-model-item-error'
 import UploadModelItemLoad from '../component/upload-model-item-load'
 import UploadModelItem from '../component/upload-model-item'
 
-const UploadPage = ({onUpload, onDeleteModel, onChangeIndividualQuantity, models}) => {
-  const isUploadCompleted = models.every(model => model.type === 'MODEL')
-  const haveModels = models.length > 1
+const UploadPage = ({
+  AppLayout = AppLayoutContainer,
+  onUpload,
+  onDeleteModel,
+  onChangeIndividualQuantity,
+  models
+}) => {
   const numModels = models.length
+  const haveModels = numModels > 1
   const numModelsUploading = models.reduce(
     (sum, model) => (model.type === 'UPLOADING' ? sum + 1 : sum),
     0
   )
+  const isUploadCompleted = numModelsUploading === 0
 
+  // TODO: replace with fragments
   const promoSection = () => (
     <div>
       <Section>

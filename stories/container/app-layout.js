@@ -13,6 +13,7 @@ storiesOf('Container.AppLayout', module)
       showUploadButton={boolean('showUploadButton', true)}
       onUploadButtonClicked={action('onUploadButtonClicked')}
       onCartClicked={action('onCartClicked')}
+      onHelpClicked={action('onHelpClicked')}
     >
       some-content
     </AppLayout>

@@ -3,6 +3,7 @@ import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 import {withKnobs} from '@storybook/addon-knobs/react'
 
+import AppLayoutContainer from '../../src/app/container-next/app-layout'
 import UploadPage from '../../src/app/container-next/upload-page'
 
 const models = {
@@ -67,6 +68,7 @@ storiesOf('Container.UploadPage', module)
   .addDecorator(withKnobs)
   .add('modelsEmpty', () => (
     <UploadPage
+      AppLayout={AppLayoutContainer}
       models={models.modelsEmpty}
       onDeleteFile={action('onDeleteFile')}
       onDeleteModel={action('onDeleteModel')}
@@ -75,6 +77,7 @@ storiesOf('Container.UploadPage', module)
   ))
   .add('modelsUploading', () => (
     <UploadPage
+      AppLayout={AppLayoutContainer}
       models={models.modelsUploading}
       onDeleteFile={action('onDeleteFile')}
       onDeleteModel={action('onDeleteModel')}
@@ -83,6 +86,7 @@ storiesOf('Container.UploadPage', module)
   ))
   .add('modelsCompleted', () => (
     <UploadPage
+      AppLayout={AppLayoutContainer}
       models={models.modelsCompleted}
       onDeleteFile={action('onDeleteFile')}
       onDeleteModel={action('onDeleteModel')}

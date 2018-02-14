@@ -13,11 +13,12 @@ import Button from '../component/button'
 
 const AppLayout = ({
   children,
-  cartCount,
+  cartCount = 0,
   showUploadButton = false,
   onGoToHome = () => {},
   onUploadButtonClicked = () => {},
-  onCartClicked = () => {}
+  onCartClicked = () => {},
+  onHelpClicked = () => {}
 }) => (
   <App
     header={[
@@ -36,7 +37,7 @@ const AppLayout = ({
           cartCount={cartCount}
           onClick={onCartClicked}
         />
-        <IconLink modifiers={['invert']} icon={helpIcon} />
+        <IconLink modifiers={['invert']} icon={helpIcon} onClick={onHelpClicked} />
       </NavBar>
     ]}
     footer={<FooterPartial />}
