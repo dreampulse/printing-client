@@ -11,9 +11,9 @@ storiesOf('Container.AppLayout', module)
       cartCount={number('cartCount', 0)}
       onGoToHome={action('onGoToHome')}
       showUploadButton={boolean('showUploadButton', true)}
-      onUploadButtonClicked={action('onUploadButtonClicked')}
-      onCartClicked={action('onCartClicked')}
-      onHelpClicked={action('onHelpClicked')}
+      onUploadButtonClick={action('onUploadButtonClick')}
+      onCartClick={action('onCartClick')}
+      onHelpClick={action('onHelpClick')}
     >
       some-content
     </AppLayout>

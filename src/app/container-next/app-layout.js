@@ -16,28 +16,24 @@ const AppLayout = ({
   cartCount = 0,
   showUploadButton = false,
   onGoToHome = () => {},
-  onUploadButtonClicked = () => {},
-  onCartClicked = () => {},
-  onHelpClicked = () => {}
+  onUploadButtonClick = () => {},
+  onCartClick = () => {},
+  onHelpClick = () => {}
 }) => (
   <App
     header={[
       <NavBar key="navbar" onClickIdentity={onGoToHome}>
         {showUploadButton && (
-          <Button
-            label="Upload"
-            onClick={onUploadButtonClicked}
-            modifiers={['invert', 'compact']}
-          />
+          <Button label="Upload" onClick={onUploadButtonClick} modifiers={['invert', 'compact']} />
         )}
         <IconLink
           modifiers={['invert']}
           icon={cartIcon}
           disabled={cartCount < 1}
           cartCount={cartCount}
-          onClick={onCartClicked}
+          onClick={onCartClick}
         />
-        <IconLink modifiers={['invert']} icon={helpIcon} onClick={onHelpClicked} />
+        <IconLink modifiers={['invert']} icon={helpIcon} onClick={onHelpClick} />
       </NavBar>
     ]}
     footer={<FooterPartial />}
