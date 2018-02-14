@@ -113,9 +113,8 @@ describe('model action', () => {
 
     describe('using selectModelsOfModelConfigs() selector', () => {
       it('updates the model with the given fileId', () => {
-        const model = selectModelsOfModelConfigs(getModel(state)).find(m => m.fileId === fileId)
-
-        expect(model, 'to satisfy', {progress: 42})
+        const models = selectModelsOfModelConfigs(getModel(state))
+        expect(models, 'to have an item satisfying', {progress: 42})
       })
     })
 
