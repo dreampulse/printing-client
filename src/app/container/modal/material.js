@@ -2,6 +2,8 @@ import React from 'react'
 
 import {selectMaterial} from '../../lib/selector'
 import getCloudinaryUrl from '../../lib/cloudinary'
+import {getMaterialFinishGroupProviderNames} from '../../lib/material'
+import {getFinishGroupProviderNames} from '../../lib/provider-selector'
 
 import {close} from '../../action/modal'
 
@@ -12,6 +14,7 @@ import Paragraph from '../../component/paragraph'
 import Grid from '../../component/grid'
 import Column from '../../component/column'
 import Image from '../../component/image'
+import ProviderDefinitionList from '../../component/provider-definition-list'
 
 import {connectLegacy} from '../util/connect-legacy'
 
@@ -29,6 +32,14 @@ const MaterialModal = ({material, onClose}) => {
           <Image
             src={getCloudinaryUrl(material.featuredImage, ['w_360', 'h_270', 'c_limit'])}
             alt="Image of material"
+          />
+        </Column>
+        <Column sm={12}>
+          <Headline modifiers={['xs']} label="Provider names" />
+          <ProviderDefinitionList
+            providerValues={getFinishGroupProviderNames(
+              getMaterialFinishGroupProviderNames(material)
+            )}
           />
         </Column>
       </Grid>
