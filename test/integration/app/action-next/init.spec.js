@@ -28,10 +28,9 @@ describe('init action', () => {
       }
     })
     ;[
-      [selector.selectModels, []],
-      [selector.selectUploadingFiles, []],
+      [selector.selectModelsOfModelConfigs, []],
+      [selector.selectModelConfigs, []],
       [selector.selectMaterialGroups, []],
-      [selector.selectBasketItems, []],
       [selector.selectUserId, null],
       [selector.selectCurrency, 'USD'],
       [selector.selectLocation, null],

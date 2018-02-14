@@ -4,6 +4,16 @@ import type {AppAction as _AppAction} from './action-next'
 import type {AppState as _AppState} from './reducer'
 
 export type MaterialConfigId = string
+export type FinishGroupId = string
+export type MaterialGroupId = string
+export type MaterialId = string
+export type PrintingServiceId = string
+export type QuoteId = string
+export type VendorId = string
+export type ConfigId = string
+export type ShippingId = string
+export type ModelId = string
+export type FileId = string
 
 export type MaterialConfig = {
   id: MaterialConfigId,
@@ -13,11 +23,6 @@ export type MaterialConfig = {
   colorImage: string
 }
 
-export type FinishGroupId = string
-export type MaterialGroupId = string
-export type MaterialId = string
-export type PrintingServiceId = string
-
 export type FinishGroup = {
   id: FinishGroupId,
   name: string,
@@ -25,6 +30,7 @@ export type FinishGroup = {
   descriptionShort: string,
   materialGroupId: MaterialGroupId,
   materialId: MaterialId,
+  materialName: string,
   summary: string,
   featuredImage: string,
   properties: {
@@ -55,10 +61,16 @@ export type Material = {
 export type MaterialGroup = {
   id: MaterialGroupId,
   name: string,
-  materials: Array<Material>
+  materials: Array<{
+    id: MaterialId,
+    name: string,
+    description: string,
+    descriptionShort: string,
+    materialGroupId: MaterialGroupId,
+    featuredImage: string,
+    finishGroups: Array<FinishGroup>
+  }>
 }
-
-export type FileId = string
 
 export type UploadingFile = {
   fileId: FileId,
@@ -69,9 +81,7 @@ export type UploadingFile = {
   errorMessage?: string
 }
 
-export type ModelId = string
-
-export type Model = {
+export type BackendModel = {
   modelId: ModelId,
   fileName: string,
   fileUnit: 'mm' | 'cm' | 'in',
@@ -85,11 +95,33 @@ export type Model = {
   thumbnailUrl: string
 }
 
-export type BasketItem = {
+export type BackendQuote = {
+  quoteId: QuoteId,
+  vendorId: VendorId,
+  modelId: ModelId,
+  materialConfigId: MaterialConfigId,
+  price: number,
+  quantity: number,
+  currency: string,
+  isPrintable: boolean
+}
+
+type ModelConfigUploading = {
+  type: 'UPLOADING',
+  fileId: FileId,
+  id: ConfigId
+}
+
+type ModelConfigUploaded = {
+  type: 'UPLOADED',
   quantity: number,
   modelId: ModelId,
-  material: any // @TODO: This is the configuration
+  id: ConfigId,
+  quoteId: ?QuoteId,
+  shippingId: ?ShippingId
 }
+
+export type ModelConfig = ModelConfigUploading | ModelConfigUploaded
 
 export type Location = {
   city: string,
