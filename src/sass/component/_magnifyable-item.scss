@@ -1,0 +1,21 @@
+.magnifyable-item {
+  @include interface-touchable();
+
+  position: relative;
+  outline: 0;
+
+  &__icon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: $font-size-xxl;
+    transform-origin: right bottom;
+    transition: transform $transition-duration-fast ease-out;
+  }
+
+  &:hover, &:focus {
+    .magnifyable-item__icon {
+      transform: scale(1.3);
+    }
+  }
+}
