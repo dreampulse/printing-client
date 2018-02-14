@@ -6,27 +6,33 @@ import reducer from '../../../../src/app/reducer'
 
 describe('timeout', () => {
   describe('action.start()', () => {
-    const onEndActionCreator = () => ({type: 'SOME.ACTION'})
-    let startAction
-
-    beforeEach(() => {
-      startAction = timeoutAction.start(onEndActionCreator, 42)
-    })
-
-    it('creates a unique timeout id', () => {
-      const otherStartAction = timeoutAction.start(onEndActionCreator)
-
-      expect(startAction.payload.timeoutId, 'not to equal', otherStartAction.payload.timeoutId)
-    })
-
-    describe('when there is no active timeout with the given timeoutId', () => {
+    describe('when used initially without a timeoutId', () => {
+      const onEndActionCreator = () => ({type: 'SOME.ACTION'})
+      let startAction
       let state
 
       beforeEach(() => {
+        startAction = timeoutAction.start(onEndActionCreator, 42)
         state = reducer(undefined, startAction)
       })
 
-      it('triggers timeoutAction.end() when the timeout resolves', () => {
+      it('creates a unique timeoutId', () => {
+        const otherStartAction = timeoutAction.start(onEndActionCreator)
+
+        expect(startAction.payload.timeoutId, 'not to equal', otherStartAction.payload.timeoutId)
+      })
+
+      it('creates a unique timeoutCallId', () => {
+        const otherStartAction = timeoutAction.start(onEndActionCreator)
+
+        expect(
+          startAction.payload.timeoutCallId,
+          'not to equal',
+          otherStartAction.payload.timeoutCallId
+        )
+      })
+
+      it('triggers timeoutAction.end() with the timeoutCallid when the timeout resolves', () => {
         const timeoutCmd = findCmd(state, timeout, [42])
         const action = timeoutCmd.simulate({
           success: true,
@@ -34,7 +40,7 @@ describe('timeout', () => {
           result: undefined
         })
 
-        expect(action, 'to equal', timeoutAction.end(startAction))
+        expect(action, 'to equal', timeoutAction.handleEnd(startAction.payload.timeoutCallId))
       })
 
       describe('selector.isTimeoutActive()', () => {
@@ -44,42 +50,74 @@ describe('timeout', () => {
       })
     })
 
-    // May happen if someone dispatches the same action twice
-    describe('when there is an active timeout with the given timeoutId', () => {
-      it('throws an error', () => {
-        expect(
-          () =>
-            [startAction, startAction].reduce(
-              (currentState, action) => reducer(getModel(currentState), action),
-              undefined
-            ),
-          'to throw',
-          `Error in start(): There is already an active timeout with id ${startAction.payload
-            .timeoutId}`
+    describe('when used to debounce a timeout with a given timeoutId', () => {
+      let startAction
+      let debounceAction
+      let state
+
+      beforeEach(() => {
+        const onEndActionCreator = () => ({type: 'SOME.ACTION'})
+
+        startAction = timeoutAction.start(onEndActionCreator, 42)
+        debounceAction = timeoutAction.start(onEndActionCreator, 42, startAction.payload.timeoutId)
+
+        state = [startAction, debounceAction].reduce(
+          (currentState, action) => reducer(getModel(currentState), action),
+          undefined
         )
+      })
+
+      it('re-uses the given timeoutId', () => {
+        expect(startAction.payload.timeoutId, 'to equal', debounceAction.payload.timeoutId)
+      })
+
+      it('creates a unique timeoutCallId', () => {
+        expect(
+          startAction.payload.timeoutCallId,
+          'not to equal',
+          debounceAction.payload.timeoutCallId
+        )
+      })
+
+      it('triggers timeoutAction.end() with the timeoutCallId from the second start action when the timeout resolves', () => {
+        const timeoutCmd = findCmd(state, timeout, [42])
+        const action = timeoutCmd.simulate({
+          success: true,
+          // The timeout library resolves with no result
+          result: undefined
+        })
+
+        expect(action, 'to equal', timeoutAction.handleEnd(debounceAction.payload.timeoutCallId))
+      })
+
+      describe('selector.isTimeoutActive()', () => {
+        it('returns true for the given timeoutId', () => {
+          expect(isTimeoutActive(getModel(state), debounceAction.payload.timeoutId), 'to be true')
+        })
       })
     })
   })
 
   describe('action.cancel()', () => {
-    const onEndActionCreator = () => ({type: 'SOME.ACTION'})
-    let startAction
-
-    beforeEach(() => {
-      startAction = timeoutAction.start(onEndActionCreator, 42)
-    })
-
     describe('when there is no active timeout with the given timeoutId', () => {
-      it('throws no error', () => {
-        expect(() => reducer(undefined, timeoutAction.cancel('does-not-exist')), 'not to throw')
+      it('does not change the state', () => {
+        // We need to initialize the state with an init action in order to get an initialized state
+        const someInitAction = {}
+        const stateBefore = getModel(reducer(undefined, someInitAction))
+        const stateAfter = getModel(reducer(stateBefore, timeoutAction.cancel('some-timeout-id')))
+
+        expect(stateBefore, 'to be', stateAfter)
       })
     })
 
     describe('when there is an active timeout with the given timeoutId', () => {
+      let startAction
       let cancelAction
       let state
 
       beforeEach(() => {
+        const onEndActionCreator = () => ({type: 'SOME.ACTION'})
+
         startAction = timeoutAction.start(onEndActionCreator, 42)
         cancelAction = timeoutAction.cancel(startAction.payload.timeoutId)
 
@@ -108,142 +146,83 @@ describe('timeout', () => {
     })
   })
 
-  describe('action.debounce()', () => {
-    describe('when there is no active timeout with the given timeoutId', () => {
-      it('throws an error', () => {
-        expect(
-          () => reducer(undefined, timeoutAction.debounce('does-not-exist')),
-          'to throw',
-          'Error in debounce(): There is no active timeout with id does-not-exist'
-        )
-      })
+  describe('action.handleEnd()', () => {
+    const onEndAction = {type: 'SOME.ACTION'}
+    let startAction
+    let handleEndAction
+
+    beforeEach(() => {
+      startAction = timeoutAction.start(() => onEndAction, 42)
+      handleEndAction = timeoutAction.handleEnd(startAction.payload.timeoutCallId)
     })
 
-    describe('when there is an active timeout with the given timeoutId', () => {
-      const onEndActionCreator = () => ({type: 'SOME.ACTION'})
-      let startAction
-      let debounceAction
+    describe('when the timeout has neither been cancelled nor debounced', () => {
       let state
 
       beforeEach(() => {
-        startAction = timeoutAction.start(onEndActionCreator, 42)
-        debounceAction = timeoutAction.debounce(startAction.payload.timeoutId, 4242)
-
-        state = [startAction, debounceAction].reduce(
+        state = [startAction, handleEndAction].reduce(
           (currentState, action) => reducer(getModel(currentState), action),
           undefined
         )
       })
 
-      it('triggers timeoutAction.end() when the new timeout resolves', () => {
-        const timeoutCmd = findCmd(state, timeout, [4242])
-        const action = timeoutCmd.simulate({
-          success: true,
-          // The timeout library resolves with no result
-          result: undefined
-        })
+      it('triggers the given onEndAction returned by the onEndActionCreator', () => {
+        expect(findAction(state, onEndAction), 'to be truthy')
+      })
 
-        expect(action, 'to equal', timeoutAction.end(debounceAction))
+      describe('selector.isTimeoutActive()', () => {
+        it('returns false for the given timeoutId', () => {
+          expect(isTimeoutActive(getModel(state), startAction.payload.timeoutId), 'to be false')
+        })
+      })
+    })
+
+    describe('when the timeout has been cancelled', () => {
+      let state
+
+      beforeEach(() => {
+        const cancelAction = timeoutAction.cancel(startAction.payload.timeoutId)
+
+        state = [startAction, cancelAction, handleEndAction].reduce(
+          (currentState, action) => reducer(getModel(currentState), action),
+          undefined
+        )
+      })
+
+      it('does not trigger the given onEndAction returned by the onEndActionCreator', () => {
+        expect(findAction(state, onEndAction), 'to be falsy')
+      })
+
+      describe('selector.isTimeoutActive()', () => {
+        it('returns false for the given timeoutId', () => {
+          expect(isTimeoutActive(getModel(state), startAction.payload.timeoutId), 'to be false')
+        })
+      })
+    })
+
+    describe('when the timeout has been debounced', () => {
+      let state
+
+      beforeEach(() => {
+        const debounceAction = timeoutAction.start(
+          () => ({type: 'OTHER.ACTION'}),
+          4242,
+          startAction.payload.timeoutId
+        )
+
+        state = [startAction, debounceAction, handleEndAction].reduce(
+          (currentState, action) => reducer(getModel(currentState), action),
+          undefined
+        )
+      })
+
+      it('does not trigger the first onEndAction', () => {
+        expect(findAction(state, onEndAction), 'to be falsy')
       })
 
       describe('selector.isTimeoutActive()', () => {
         it('returns true for the given timeoutId', () => {
           expect(isTimeoutActive(getModel(state), startAction.payload.timeoutId), 'to be true')
-        })
-      })
-    })
-  })
-
-  describe('action.end()', () => {
-    describe('when there is no active timeout with the given timeoutId', () => {
-      it('throws no error', () => {
-        expect(() => reducer(undefined, timeoutAction.cancel('does-not-exist')), 'not to throw')
-      })
-    })
-
-    describe('when there is an active timeout with the given timeoutId', () => {
-      const onEndActionCreator = () => ({type: 'SOME.ACTION'})
-      let startAction
-
-      beforeEach(() => {
-        startAction = timeoutAction.start(onEndActionCreator, 42)
-      })
-
-      describe('when the timeout has neither been cancelled nor debounced', () => {
-        let state
-
-        beforeEach(() => {
-          const endAction = timeoutAction.end(startAction)
-
-          state = [startAction, endAction].reduce(
-            (currentState, action) => reducer(getModel(currentState), action),
-            undefined
-          )
-        })
-
-        it('triggers the given onEndAction returned by the onEndActionCreator', () => {
-          const onEndAction = onEndActionCreator()
-
-          expect(findAction(state, onEndAction), 'to be truthy')
-        })
-
-        describe('selector.isTimeoutActive()', () => {
-          it('returns false for the given timeoutId', () => {
-            expect(isTimeoutActive(getModel(state), startAction.payload.timeoutId), 'to be false')
-          })
-        })
-      })
-
-      describe('when the timeout has been cancelled', () => {
-        let state
-
-        beforeEach(() => {
-          const cancelAction = timeoutAction.cancel(startAction.payload.timeoutId)
-          const endAction = timeoutAction.end(startAction)
-
-          state = [startAction, cancelAction, endAction].reduce(
-            (currentState, action) => reducer(getModel(currentState), action),
-            undefined
-          )
-        })
-
-        it('does not trigger the given onEndAction returned by the onEndActionCreator', () => {
-          const onEndAction = onEndActionCreator()
-
-          expect(findAction(state, onEndAction), 'to be falsy')
-        })
-
-        describe('selector.isTimeoutActive()', () => {
-          it('returns false for the given timeoutId', () => {
-            expect(isTimeoutActive(getModel(state), startAction.payload.timeoutId), 'to be false')
-          })
-        })
-      })
-
-      describe('when the timeout has been debounced', () => {
-        let state
-
-        beforeEach(() => {
-          startAction = timeoutAction.start(onEndActionCreator, 42)
-          const debounceAction = timeoutAction.debounce(startAction.payload.timeoutId, 4242)
-          const endAction = timeoutAction.end(startAction)
-
-          state = [startAction, debounceAction, endAction].reduce(
-            (currentState, action) => reducer(getModel(currentState), action),
-            undefined
-          )
-        })
-
-        it('does not trigger the given onEndAction returned by the original onEndActionCreator', () => {
-          const onEndAction = onEndActionCreator()
-
-          expect(findAction(state, onEndAction), 'to be falsy')
-        })
-
-        describe('selector.isTimeoutActive()', () => {
-          it('returns true for the given timeoutId', () => {
-            expect(isTimeoutActive(getModel(state), startAction.payload.timeoutId), 'to be true')
-          })
         })
       })
     })

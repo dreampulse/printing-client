@@ -130,6 +130,7 @@ export type Action<Type, Payload> = {
 }
 
 export type TimeoutId = string
+export type TimeoutCallId = string
 export type TimeoutOnEndActionCreator = () => _AppAction
 
 export type AppAction = _AppAction

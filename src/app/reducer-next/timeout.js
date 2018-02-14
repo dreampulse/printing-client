@@ -1,18 +1,16 @@
 // @flow
 
 import omit from 'lodash/omit'
+import findKey from 'lodash/findKey'
 import {loop, Cmd} from 'redux-loop'
 import timeout from 'timeout-as-promise'
-import invariant from 'invariant'
-import type {AppAction, TimeoutId, TimeoutOnEndActionCreator} from '../type-next'
+import type {AppAction, TimeoutId, TimeoutCallId, TimeoutOnEndActionCreator} from '../type-next'
 import * as timeoutAction from '../action-next/timeout'
-
-type InitiatorAction = {}
 
 export type TimeoutState = {
   activeTimeouts: {
     [id: TimeoutId]: {
-      initiatorAction: InitiatorAction,
+      timeoutCallId: TimeoutCallId,
       onEndActionCreator: TimeoutOnEndActionCreator
     }
   }
@@ -22,22 +20,8 @@ const initialState: TimeoutState = {
   activeTimeouts: {}
 }
 
-const assertActiveTimeout = (handler, state, action) => {
-  const {timeoutId} = action.payload
-  const activeTimeout = state.activeTimeouts[timeoutId]
-
-  invariant(activeTimeout, `Error in ${handler}(): There is no active timeout with id ${timeoutId}`)
-
-  return activeTimeout
-}
-
 const start = (state, action) => {
-  const {timeoutId, delay, onEndActionCreator} = action.payload
-
-  invariant(
-    timeoutId in state.activeTimeouts === false,
-    `Error in start(): There is already an active timeout with id ${timeoutId}`
-  )
+  const {timeoutId, timeoutCallId, delay, onEndActionCreator} = action.payload
 
   return loop(
     {
@@ -45,36 +29,14 @@ const start = (state, action) => {
       activeTimeouts: {
         ...state.activeTimeouts,
         [timeoutId]: {
-          initiatorAction: action,
+          timeoutCallId,
           onEndActionCreator
         }
       }
     },
     Cmd.run(timeout, {
       args: [delay],
-      successActionCreator: () => timeoutAction.end(action)
-    })
-  )
-}
-
-const debounce = (state, action) => {
-  const {timeoutId, delay} = action.payload
-  const activeTimeout = assertActiveTimeout('debounce', state, action)
-
-  return loop(
-    {
-      ...state,
-      activeTimeouts: {
-        ...state.activeTimeouts,
-        [timeoutId]: {
-          ...activeTimeout,
-          initiatorAction: action
-        }
-      }
-    },
-    Cmd.run(timeout, {
-      args: [delay],
-      successActionCreator: () => timeoutAction.end(action)
+      successActionCreator: () => timeoutAction.handleEnd(timeoutCallId)
     })
   )
 }
@@ -82,26 +44,31 @@ const debounce = (state, action) => {
 const cancel = (state, action) => {
   const {timeoutId} = action.payload
 
-  return {
-    ...state,
-    activeTimeouts: omit(state.activeTimeouts, timeoutId)
-  }
+  return timeoutId in state.activeTimeouts
+    ? {
+        ...state,
+        activeTimeouts: omit(state.activeTimeouts, timeoutId)
+      }
+    : state
 }
 
-const end = (state, action) => {
-  const {initiatorAction} = action.payload
-  const {timeoutId} = initiatorAction.payload
+const handleEnd = (state, action) => {
+  const {timeoutCallId} = action.payload
+  const timeoutId = findKey(state.activeTimeouts, t => t.timeoutCallId === timeoutCallId)
+
+  if (typeof timeoutId !== 'string') {
+    return state
+  }
+
   const activeTimeout = state.activeTimeouts[timeoutId]
 
-  return activeTimeout && activeTimeout.initiatorAction === initiatorAction
-    ? loop(
-        {
-          ...state,
-          activeTimeouts: omit(state.activeTimeouts, timeoutId)
-        },
-        Cmd.action(activeTimeout.onEndActionCreator())
-      )
-    : state
+  return loop(
+    {
+      ...state,
+      activeTimeouts: omit(state.activeTimeouts, timeoutId)
+    },
+    Cmd.action(activeTimeout.onEndActionCreator())
+  )
 }
 
 export const reducer = (state: TimeoutState = initialState, action: AppAction): TimeoutState => {
@@ -110,10 +77,8 @@ export const reducer = (state: TimeoutState = initialState, action: AppAction): 
       return start(state, action)
     case 'TIMEOUT.CANCEL':
       return cancel(state, action)
-    case 'TIMEOUT.DEBOUNCE':
-      return debounce(state, action)
-    case 'TIMEOUT.END':
-      return end(state, action)
+    case 'TIMEOUT.HANDLE_END':
+      return handleEnd(state, action)
     default:
       return state
   }

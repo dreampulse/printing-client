@@ -1,26 +1,31 @@
 // @flow
 
 import uniqueId from 'lodash/uniqueId'
-import type {Action, TimeoutId, TimeoutOnEndActionCreator} from '../type-next'
+import type {Action, TimeoutId, TimeoutCallId, TimeoutOnEndActionCreator} from '../type-next'
 
 type StartAction = Action<
   'TIMEOUT.START',
-  {timeoutId: TimeoutId, onEndActionCreator: TimeoutOnEndActionCreator, delay: number}
+  {
+    timeoutId: TimeoutId,
+    timeoutCallId: TimeoutCallId,
+    onEndActionCreator: TimeoutOnEndActionCreator,
+    delay: number
+  }
 >
 type CancelAction = Action<'TIMEOUT.CANCEL', {timeoutId: TimeoutId}>
-type DebounceAction = Action<'TIMEOUT.DEBOUNCE', {timeoutId: TimeoutId, delay: number}>
-type InitiatorAction = StartAction | DebounceAction
-type EndAction = Action<'TIMEOUT.END', {initiatorAction: InitiatorAction}>
+type HandleEndAction = Action<'TIMEOUT.HANDLE_END', {timeoutCallId: TimeoutCallId}>
 
-export type TimeoutAction = StartAction | EndAction | DebounceAction | CancelAction
+export type TimeoutAction = StartAction | CancelAction | HandleEndAction
 
 export const start = (
   onEndActionCreator: TimeoutOnEndActionCreator,
-  delay: number
+  delay: number,
+  timeoutId: string = uniqueId('timeout-id-')
 ): StartAction => ({
   type: 'TIMEOUT.START',
   payload: {
-    timeoutId: uniqueId('timeout-id-'),
+    timeoutCallId: uniqueId('timeout-call-id-'),
+    timeoutId,
     onEndActionCreator,
     delay
   }
@@ -33,17 +38,9 @@ export const cancel = (timeoutId: TimeoutId): CancelAction => ({
   }
 })
 
-export const debounce = (timeoutId: TimeoutId, delay: number): DebounceAction => ({
-  type: 'TIMEOUT.DEBOUNCE',
+export const handleEnd = (timeoutCallId: TimeoutCallId): HandleEndAction => ({
+  type: 'TIMEOUT.HANDLE_END',
   payload: {
-    timeoutId,
-    delay
-  }
-})
-
-export const end = (initiatorAction: InitiatorAction): EndAction => ({
-  type: 'TIMEOUT.END',
-  payload: {
-    initiatorAction
+    timeoutCallId
   }
 })
