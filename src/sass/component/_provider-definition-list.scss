@@ -1,0 +1,47 @@
+.provider-definition-list {
+  display: block;
+  margin: 0 0 $space-base;
+  padding-left: scut-em($space-base);
+
+  &__value {
+    white-space: nowrap;
+  }
+
+  &__term {
+    position: relative;
+    display: inline-block;
+    font-weight: $font-weight-bold;
+    margin:  0 $space-s 0 -1 * scut-em($space-base);
+    padding-left: scut-em($space-base);
+
+    &:before {
+      position: absolute;
+      display: inline-block;
+      content: '•';
+      left: 0;
+      top: 0;
+    }
+
+    &:after {
+      display: inline;
+      content: ':';
+    }
+  }
+
+  &__definition {
+    display: inline;
+    margin: 0;
+
+    &:after {
+      display: block;
+      margin-bottom: $space-s;
+      content: '';
+    }
+
+    &:last-child {
+      &:after {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

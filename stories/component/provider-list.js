@@ -8,7 +8,8 @@ import ProviderItem from '../../src/app/component/provider-item'
 storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
   <ProviderList>
     <ProviderItem
-      provider="imaterialise"
+      providerSlug="imaterialise"
+      providerName="i.Materialise"
       process="DLS"
       price="$350.23"
       shippingPrice="$20.00"
@@ -20,7 +21,8 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       productionTime="4-6 days"
     />
     <ProviderItem
-      provider="sculpteo"
+      providerSlug="sculpteo"
+      providerName="Sculpteo"
       process="SLS"
       price="$370.58"
       shippingPrice="$10.00"
@@ -33,7 +35,8 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       productionTime="6-10 days"
     />
     <ProviderItem
-      provider="shapeways"
+      providerSlug="shapeways"
+      providerName="Shapeways"
       process="DLP"
       price="$410.11"
       shippingPrice="$15.00"
