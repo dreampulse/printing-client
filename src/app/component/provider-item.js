@@ -15,7 +15,8 @@ import checkoutIcon from '../../asset/icon/checkout.svg'
 const ProviderItem = ({
   classNames,
   modifiers,
-  provider,
+  providerSlug,
+  providerName,
   price,
   shippingPrice,
   totalPrice,
@@ -30,7 +31,7 @@ const ProviderItem = ({
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
     <td className="provider-item__provider">
       <AnnotatedTableCell annotation={providerInfo}>
-        <ProviderImage name={provider} />
+        <ProviderImage name={providerName} slug={providerSlug} />
       </AnnotatedTableCell>
     </td>
     <td className="provider-item__total-price">
@@ -38,7 +39,9 @@ const ProviderItem = ({
         {totalPrice}
       </AnnotatedTableCell>
     </td>
-    <td className="provider-item__price">{price}</td>
+    <td className="provider-item__price">
+      <AnnotatedTableCell>{price}</AnnotatedTableCell>
+    </td>
     <td className="provider-item__shipping-price">
       <AnnotatedTableCell annotation={deliveryTime}>
         {shippingPrice}
@@ -47,8 +50,12 @@ const ProviderItem = ({
         </Info>
       </AnnotatedTableCell>
     </td>
-    <td className="provider-item__production-time">{productionTime}</td>
-    <td className="provider-item__process">{process}</td>
+    <td className="provider-item__production-time">
+      <AnnotatedTableCell>{productionTime}</AnnotatedTableCell>
+    </td>
+    <td className="provider-item__process">
+      <AnnotatedTableCell>{process}</AnnotatedTableCell>
+    </td>
     <td className="provider-item__checkout">
       <Button
         icon={checkoutIcon}
@@ -62,7 +69,8 @@ const ProviderItem = ({
 
 ProviderItem.propTypes = {
   ...propTypes.component,
-  provider: PropTypes.string.isRequired,
+  providerSlug: PropTypes.string.isRequired,
+  providerName: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   totalPrice: PropTypes.string.isRequired,
   includesVat: PropTypes.bool,

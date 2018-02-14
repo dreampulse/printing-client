@@ -7,7 +7,7 @@ import buildClassName from '../lib/build-class-name'
 const AnnotatedTableCell = ({classNames, modifiers, children, annotation = ''}) => (
   <div className={buildClassName('annotated-table-cell', modifiers, classNames)}>
     <span className="annotated-table-cell__value">{children}</span>
-    {annotation && <span className="annotated-table-cell__annotation">{annotation}</span>}
+    <span className="annotated-table-cell__annotation">{annotation}</span>
   </div>
 )
 
