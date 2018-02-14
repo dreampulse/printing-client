@@ -1,6 +1,4 @@
 .nav-bar {
-  $logo-height: 40px;
-
   padding: $space-l 0;
   background: $color-invert-bg;
   color: $color-invert-text;
@@ -19,7 +17,7 @@
     margin-bottom: $space-l;
     text-align: left;
     outline: 0;
-    height: $logo-height;
+    height: $nav-bar-content-height;
 
     @include respond-to(large) {
       @include span(6);
@@ -31,7 +29,7 @@
   &__content {
     @include span(12);
     text-align: center;
-    height: $logo-height; // To keep fixed nav bar height event if content doesn't fit
+    height: $nav-bar-content-height; // To keep fixed nav bar height event if content doesn't fit
 
     @include respond-to(large) {
       @include span(6);
@@ -44,12 +42,8 @@
   }
 
   &__logo {
-    height: $logo-height;
-    margin-right: $space-l;
-
-    @include respond-to(large) {
-      margin-right: $space-xxl;
-    }
+    height: $nav-bar-content-height;
+    margin-right: $space-base;
   }
 
   &__subline {

@@ -1,23 +1,33 @@
 // @flow
 
-import omit from 'lodash/omit'
 import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
 import {uploadModel} from '../service/printing-engine'
-import type {UploadingFile, Model, BasketItem} from '../type-next'
+import type {
+  BackendModel,
+  UploadingFile,
+  BackendQuote,
+  QuoteId,
+  ModelId,
+  ConfigId,
+  FileId,
+  ModelConfig
+} from '../type-next'
 import type {AppAction} from '../action-next'
 import * as modelAction from '../action-next/model'
 
 export type ModelState = {
-  models: {[id: string]: Model},
-  uploadingFiles: {[id: string]: UploadingFile},
-  basketItems: Array<BasketItem>
+  uploadingFiles: {[id: FileId]: UploadingFile},
+  backendModels: {[id: ModelId]: BackendModel},
+  quotes: {[id: QuoteId]: BackendQuote},
+  modelConfigs: Array<ModelConfig>,
+  selectedModelConfigs: Array<ConfigId>
 }
 
 const initialState: ModelState = {
-  models: {},
   uploadingFiles: {},
-  basketItems: [],
+  backendModels: {},
+  quotes: {},
   modelConfigs: [],
   selectedModelConfigs: []
 }
@@ -39,7 +49,15 @@ const uploadFile = (state, {payload}) => {
       uploadingFiles: {
         ...state.uploadingFiles,
         [fileId]: file
-      }
+      },
+      modelConfigs: [
+        ...state.modelConfigs,
+        {
+          type: 'UPLOADING',
+          fileId,
+          id: payload.configId
+        }
+      ]
     },
     Cmd.run(uploadModel, {
       args: [
@@ -89,19 +107,23 @@ const uploadComplete = (state, {payload}) => {
 
   return {
     ...state,
-    uploadingFiles: omit(state.uploadingFiles, fileId),
-    models: {
-      ...state.models,
+    backendModels: {
+      ...state.backendModels,
       [model.modelId]: model
     },
-    basketItems: [
-      ...state.basketItems,
-      {
-        quantity: 1,
-        modelId: model.modelId,
-        material: null // No material selected
-      }
-    ]
+    modelConfigs: state.modelConfigs.map(
+      modelConfig =>
+        modelConfig.type === 'UPLOADING' && modelConfig.fileId === fileId
+          ? {
+              type: 'UPLOADED',
+              quantity: 1,
+              modelId: model.modelId,
+              id: modelConfig.id,
+              quoteId: null,
+              shippingId: null
+            }
+          : modelConfig
+    )
   }
 }
 
@@ -125,8 +147,6 @@ const uploadFail = (state, {payload}) => {
 
 const deleteModelConfigs = (state, {payload}) => ({
   ...state,
-  uploadingFiles: omit(state.uploadingFiles, payload.ids),
-  backendModels: omit(state.backendModels, payload.ids),
   modelConfigs: state.modelConfigs.filter(modelConfig => payload.ids.indexOf(modelConfig.id) === -1)
 })
 

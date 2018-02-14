@@ -3,6 +3,7 @@ import {compose} from 'recompose'
 import compact from 'lodash/compact'
 
 import {getStateName, getCountryName} from '../service/country'
+import {openIntercom} from '../service/intercom'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {selectedOfferMaterial, selectOfferItems} from '../lib/selector'
 import {formatPrice} from '../lib/formatter'
@@ -102,7 +103,7 @@ const CartPage = ({
             ) : null}
             {user.shippingAddress.firstName} {user.shippingAddress.lastName}
             <br />
-            {user.shippingAddress.street} {user.shippingAddress.houseNumber}
+            {user.shippingAddress.address}
             <br />
             {user.shippingAddress.addressLine2}
             <br />
@@ -135,8 +136,7 @@ const CartPage = ({
             {user.billingAddress.firstName || user.shippingAddress.firstName}{' '}
             {user.billingAddress.lastName || user.shippingAddress.lastName}
             <br />
-            {user.billingAddress.street || user.shippingAddress.street}{' '}
-            {user.billingAddress.houseNumber || user.shippingAddress.houseNumber}
+            {user.billingAddress.address || user.shippingAddress.address}
             <br />
             {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}
             <br />
@@ -247,6 +247,10 @@ const CartPage = ({
       shippingName={offer.shipping.name}
       vat={formatPrice(offer.vatPrice, offer.currency)}
       total={formatPrice(offer.totalPrice, offer.currency)}
+      onContactLinkClick={event => {
+        openIntercom()
+        event.preventDefault()
+      }}
     >
       {paymentButtons}
     </PaymentSection>

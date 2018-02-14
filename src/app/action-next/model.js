@@ -1,20 +1,23 @@
 // @flow
 
 import uniqueId from 'lodash/uniqueId'
-import type {Action, Model} from '../type-next'
+import type {Action, BackendModel, ConfigId, FileId} from '../type-next'
 
-type UploadFileAction = Action<'MODEL.UPLOAD_FILE', {fileId: string, file: File}>
+type UploadFileAction = Action<
+  'MODEL.UPLOAD_FILE',
+  {fileId: FileId, configId: ConfigId, file: File}
+>
 type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, progress: number}>
-type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: string, model: Model}>
+type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: string, model: BackendModel}>
 type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
-type DeleteModelConfigsAction = Action<'MODEL.DELETE_MODEL_CONFIGS', {ids: Array<ConfigIds>}>
+type DeleteModelConfigsAction = Action<'MODEL.DELETE_MODEL_CONFIGS', {ids: Array<ConfigId>}>
 type UpdateSelectedModelConfigsAction = Action<
   'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
-  {ids: Array<ConfigIds>}
+  {ids: Array<ConfigId>}
 >
 type UpdateQuantitiesAction = Action<
   'MODEL.UPDATE_QUANTITIES',
-  {ids: Array<ConfigIds>, quantity: number}
+  {ids: Array<ConfigId>, quantity: number}
 >
 
 export type ModelAction =
@@ -30,21 +33,22 @@ export const uploadFile = (file: File): UploadFileAction => ({
   type: 'MODEL.UPLOAD_FILE',
   payload: {
     file,
-    fileId: uniqueId('file-id-')
+    fileId: uniqueId('file-id-'),
+    configId: uniqueId('config-id-')
   }
 })
 
-export const uploadProgress = (fileId: string, progress: number): UploadProgressAction => ({
+export const uploadProgress = (fileId: FileId, progress: number): UploadProgressAction => ({
   type: 'MODEL.UPLOAD_PROGRESS',
   payload: {progress, fileId}
 })
 
-export const uploadComplete = (fileId: string, model: Model): UploadCompleteAction => ({
+export const uploadComplete = (fileId: FileId, model: BackendModel): UploadCompleteAction => ({
   type: 'MODEL.UPLOAD_COMPLETE',
   payload: {fileId, model}
 })
 
-export const uploadFail = (fileId: string, error: Error): UploadFailAction => ({
+export const uploadFail = (fileId: FileId, error: Error): UploadFailAction => ({
   type: 'MODEL.UPLOAD_FAIL',
   payload: {
     fileId,

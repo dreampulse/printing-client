@@ -6,7 +6,7 @@ export function getBestOfferForMaterialConfig(offers, materialConfigId) {
   return offers
     .filter(offer => offer.materialConfigId === materialConfigId)
     .reduce((bestOffer, offer) => {
-      if (!bestOffer || bestOffer.totalPrice > offer.totalPrice) {
+      if (!bestOffer || bestOffer.subTotalPrice > offer.subTotalPrice) {
         return offer
       }
       return bestOffer
@@ -24,7 +24,7 @@ export function getBestOfferForMaterial(offers, material) {
   return offers
     .filter(offer => materialConfigs[offer.materialConfigId])
     .reduce((bestOffer, offer) => {
-      if (!bestOffer || bestOffer.totalPrice > offer.totalPrice) {
+      if (!bestOffer || bestOffer.subTotalPrice > offer.subTotalPrice) {
         return offer
       }
       return bestOffer

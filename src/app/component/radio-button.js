@@ -42,7 +42,7 @@ RadioButton.propTypes = {
   ...propTypes.component,
   name: PropTypes.string,
   label: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onClick: PropTypes.func,
   checked: PropTypes.bool,
   disabled: PropTypes.bool

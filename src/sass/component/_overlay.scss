@@ -35,6 +35,12 @@
     & > .headline {
       margin-bottom: 0;
     }
+
+    & > .close-button {
+      @include scut-center-transform(y);
+      position: absolute;
+      right: 0;
+    }
   }
 
   &__header {
@@ -42,17 +48,10 @@
     border-bottom: 1px solid $color-border;
   }
 
-  &__close {
-    @include scut-center-transform(y);
-    position: absolute;
-    right: 0;
-    font-size: $close-button-size;
-    outline: 0;
-    line-height: 0;
-  }
-
   &__content {
-    padding: $space-l 0;
+    padding: 0;
+    padding-top: $space-xl;
+    padding-bottom: $space-xl - $space-base;
   }
 
   &__footer {

@@ -5,8 +5,7 @@ import type {UtmParams} from './lib/search-params'
 export type Address = {
   firstName: string,
   lastName: string,
-  street: string,
-  houseNumber: string,
+  address: string,
   addressLine2: string,
   city: string,
   zipCode: string,
@@ -246,7 +245,8 @@ export type MaterialState = {
   selectedMaterialConfig?: string,
   // This object stores the current color selection for each material card.
   // It does not reflect the final user selection.
-  selectedMaterialConfigs?: any
+  selectedMaterialConfigs?: any,
+  materialFilter?: string
 }
 
 export type State = {

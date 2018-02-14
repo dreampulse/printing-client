@@ -3,8 +3,20 @@
 import type {AppAction as _AppAction} from './action-next'
 import type {AppState as _AppState} from './reducer'
 
+export type MaterialConfigId = string
+export type FinishGroupId = string
+export type MaterialGroupId = string
+export type MaterialId = string
+export type PrintingServiceId = string
+export type QuoteId = string
+export type VendorId = string
+export type ConfigId = string
+export type ShippingId = string
+export type ModelId = string
+export type FileId = string
+
 export type MaterialConfig = {
-  id: string,
+  id: MaterialConfigId,
   name: string,
   color: string,
   colorCode: string,
@@ -12,12 +24,12 @@ export type MaterialConfig = {
 }
 
 export type FinishGroup = {
-  id: string,
+  id: FinishGroupId,
   name: string,
   description: string,
   descriptionShort: string,
-  materialGroupId: string,
-  materialId: string,
+  materialGroupId: MaterialGroupId,
+  materialId: MaterialId,
   materialName: string,
   summary: string,
   featuredImage: string,
@@ -29,7 +41,7 @@ export type FinishGroup = {
     printingMethod: string,
     printingMethodShort: string,
     printingServiceName: {
-      [string]: string
+      [PrintingServiceId]: string
     },
     strength: number
   },
@@ -37,31 +49,31 @@ export type FinishGroup = {
 }
 
 export type Material = {
-  id: string,
+  id: MaterialId,
   name: string,
   description: string,
   descriptionShort: string,
-  materialGroupId: string,
+  materialGroupId: MaterialGroupId,
   featuredImage: string,
   finishGroups: Array<FinishGroup>
 }
 
 export type MaterialGroup = {
-  id: string,
+  id: MaterialGroupId,
   name: string,
   materials: Array<{
-    id: string,
+    id: MaterialId,
     name: string,
     description: string,
     descriptionShort: string,
-    materialGroupId: string,
+    materialGroupId: MaterialGroupId,
     featuredImage: string,
     finishGroups: Array<FinishGroup>
   }>
 }
 
 export type UploadingFile = {
-  fileId: string,
+  fileId: FileId,
   fileName: string,
   fileSize: number,
   progress: number,
@@ -69,8 +81,8 @@ export type UploadingFile = {
   errorMessage?: string
 }
 
-export type Model = {
-  modelId: string,
+export type BackendModel = {
+  modelId: ModelId,
   fileName: string,
   fileUnit: 'mm' | 'cm' | 'in',
   area: ?number,
@@ -83,11 +95,33 @@ export type Model = {
   thumbnailUrl: string
 }
 
-export type BasketItem = {
+export type BackendQuote = {
+  quoteId: QuoteId,
+  vendorId: VendorId,
+  modelId: ModelId,
+  materialConfigId: MaterialConfigId,
+  price: number,
   quantity: number,
-  modelId: string,
-  material: any // @TODO: This is the configuration
+  currency: string,
+  isPrintable: boolean
 }
+
+type ModelConfigUploading = {
+  type: 'UPLOADING',
+  fileId: FileId,
+  id: ConfigId
+}
+
+type ModelConfigUploaded = {
+  type: 'UPLOADED',
+  quantity: number,
+  modelId: ModelId,
+  id: ConfigId,
+  quoteId: ?QuoteId,
+  shippingId: ?ShippingId
+}
+
+export type ModelConfig = ModelConfigUploading | ModelConfigUploaded
 
 export type Location = {
   city: string,
@@ -99,8 +133,7 @@ export type Location = {
 export type Address = Location & {
   firstName: string,
   lastName: string,
-  street: string,
-  houseNumber: string,
+  address: string,
   addressLine2: string
 }
 

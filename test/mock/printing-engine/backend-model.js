@@ -1,5 +1,5 @@
-export default () => ({
-  modelId: 'some-model-id',
+const BackendModel = ({modelId = 'some-model-id'}) => ({
+  modelId,
   fileName: 'some-filename',
   fileUnit: 'mm',
   area: 42,
@@ -11,3 +11,5 @@ export default () => ({
   },
   thumbnailUrl: 'some-thumbnail-url'
 })
+
+export default BackendModel

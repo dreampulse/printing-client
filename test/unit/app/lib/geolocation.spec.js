@@ -105,8 +105,6 @@ describe('geolocation lib', () => {
       }
 
       expect(convertPlaceToLocation(exampleResponse), 'to equal', {
-        street: 'Syrlinstraße',
-        houseNumber: '32',
         city: 'Ulm',
         zipCode: '89073',
         stateCode: 'BW',
@@ -117,11 +115,6 @@ describe('geolocation lib', () => {
     it('handels missing geo types', () => {
       const exampleResponse = {
         address_components: [
-          {
-            long_name: 'Ulm',
-            short_name: 'UL',
-            types: ['locality', 'political']
-          },
           {
             long_name: 'Tübingen',
             short_name: 'TÜ',
@@ -141,9 +134,7 @@ describe('geolocation lib', () => {
       }
 
       expect(convertPlaceToLocation(exampleResponse), 'to equal', {
-        street: '',
-        houseNumber: '',
-        city: 'Ulm',
+        city: '',
         zipCode: '',
         stateCode: 'BW',
         countryCode: 'DE'
@@ -152,8 +143,6 @@ describe('geolocation lib', () => {
 
     it('handels empty object', () => {
       expect(convertPlaceToLocation({}), 'to equal', {
-        street: '',
-        houseNumber: '',
         city: '',
         zipCode: '',
         stateCode: '',
@@ -184,8 +173,6 @@ describe('geolocation lib', () => {
       }
 
       expect(convertPlaceToLocation(exampleResponse), 'to equal', {
-        street: '',
-        houseNumber: '',
         city: '',
         zipCode: '',
         stateCode: 'BW',
