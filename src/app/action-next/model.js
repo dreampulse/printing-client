@@ -56,7 +56,7 @@ export const uploadFail = (fileId: FileId, error: Error): UploadFailAction => ({
   }
 })
 
-export const deleteModelConfigs = (ids: Array<ConfigIds>): DeleteModelConfigsAction => ({
+export const deleteModelConfigs = (ids: Array<ConfigId>): DeleteModelConfigsAction => ({
   type: 'MODEL.DELETE_MODEL_CONFIGS',
   payload: {
     ids
@@ -64,7 +64,7 @@ export const deleteModelConfigs = (ids: Array<ConfigIds>): DeleteModelConfigsAct
 })
 
 export const updateSelectedModelConfigs = (
-  ids: Array<ConfigIds>
+  ids: Array<ConfigId>
 ): UpdateSelectedModelConfigsAction => ({
   type: 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
   payload: {
@@ -73,7 +73,7 @@ export const updateSelectedModelConfigs = (
 })
 
 export const updateQuantities = (
-  ids: Array<ConfigIds>,
+  ids: Array<ConfigId>,
   quantity: number
 ): UpdateQuantitiesAction => ({
   type: 'MODEL.UPDATE_QUANTITIES',

@@ -6,9 +6,10 @@ import ModelList from '../component/model-list'
 import Button from '../component/button'
 import NumberField from '../component/number-field'
 
-import {updateSelectedModelConfigs} from '../action/model'
+import {updateSelectedModelConfigs, deleteModelConfigs, updateQuantities} from '../action/model'
 
-import {selectCommonQuantity} from '../lib/selector'
+import {getCommonQuantity} from '../lib/quantity'
+import {selectSelectedModelConfigIds, selectSelectedModelConfigs} from '../selector'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 
@@ -64,13 +65,13 @@ const ModelListPartial = ({
 
 const mapStateToProps = state => ({
   selectedModelConfigIds: selectSelectedModelConfigIds(state),
-  commonQuantity: /* TODO: selectCommonQuantity(state) */ 99
+  commonQuantity: getCommonQuantity(selectSelectedModelConfigs(state))
 })
 
 const mapDispatchToProps = {
   onChangeSelectedModelConfigs: updateSelectedModelConfigs,
-  onDeleteModelConfigs: /* TODO: deleteModelConfigs(selectedModelConfigIds) */ () => {},
-  onChangeQuantities: /* TODO: updateQuantities(selectedModelConfigIds, quantity) */ () => {},
+  onDeleteModelConfigs: deleteModelConfigs,
+  onChangeQuantities: updateQuantities,
   onChooseMaterial: /* TODO: openConfigurationModal() */ () => {}
 }
 

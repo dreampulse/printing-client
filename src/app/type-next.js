@@ -106,13 +106,13 @@ export type BackendQuote = {
   isPrintable: boolean
 }
 
-type ModelConfigUploading = {
+export type ModelConfigUploading = {
   type: 'UPLOADING',
   fileId: FileId,
   id: ConfigId
 }
 
-type ModelConfigUploaded = {
+export type ModelConfigUploaded = {
   type: 'UPLOADED',
   quantity: number,
   modelId: ModelId,

@@ -1,10 +1,15 @@
 import {Cmd} from 'redux-loop'
 import * as modelAction from '../../../../src/app/action-next/model'
-import {selectModelsOfModelConfigs, selectModelConfigs} from '../../../../src/app/selector'
+import {
+  selectModelsOfModelConfigs,
+  selectModelConfigs,
+  selectSelectedModelConfigIds,
+  selectSelectedModelConfigs
+} from '../../../../src/app/selector'
 import {uploadModel} from '../../../../src/app/service/printing-engine'
 
 import reducer from '../../../../src/app/reducer'
-import {withNUploadedModel} from '../../../scenario'
+import {withNUploadedModels} from '../../../scenario'
 import getBackendModelMock from '../../../mock/printing-engine/backend-model'
 import getFileMock from '../../../mock/file'
 
@@ -177,7 +182,7 @@ describe('model action', () => {
 
     beforeEach(() => {
       // Upload two files -> This tests the behavior if one file is already uploaded
-      state = withNUploadedModel(2)
+      state = withNUploadedModels(2)
     })
 
     describe('using selectModelConfigs() selector', () => {
@@ -263,15 +268,20 @@ describe('model action', () => {
 
   describe('deleteModelConfigs()', () => {
     let state
+    let stateBefore
 
     beforeEach(() => {
-      const action = modelAction.deleteModelConfigs(['config-id-1'])
-      state = reducer(getModel(withOneUploadedModel()), action)
+      const action = modelAction.deleteModelConfigs(['config-id-2', 'config-id-3'])
+      stateBefore = withNUploadedModels(3)
+      state = reducer(getModel(stateBefore), action)
     })
 
-    it('deletes given model config', () => {
-      const modelConfigs = selectModelConfigs(getModel(state))
-      expect(modelConfigs, 'to equal', [])
+    describe('using selectModelConfigs() selector', () => {
+      it('deletes given model config', () => {
+        const modelConfigsBefore = selectModelConfigs(getModel(stateBefore))
+        const modelConfigs = selectModelConfigs(getModel(state))
+        expect(modelConfigs, 'to equal', [modelConfigsBefore[0]])
+      })
     })
   })
 
@@ -279,13 +289,41 @@ describe('model action', () => {
     let state
 
     beforeEach(() => {
-      const action = modelAction.updateSelectedModelConfigs(['some-model-id'])
-      state = reducer(getModel(withOneUploadedModel()), action)
+      const action = modelAction.updateSelectedModelConfigs(['config-id-1'])
+      state = reducer(getModel(withNUploadedModels(1)), action)
     })
 
-    it('does not contain the model any more', () => {
-      const models = selectModels(getModel(state))
-      expect(models, 'to equal', [])
+    describe('using selectSelectedModelConfigIds() selector', () => {
+      it('selects given model config', () => {
+        const ids = selectSelectedModelConfigIds(getModel(state))
+        expect(ids, 'to equal', ['config-id-1'])
+      })
+    })
+
+    describe('using selectSelectedModelConfig() selector', () => {
+      it('selects given model config', () => {
+        const modelConfigs = selectSelectedModelConfigs(getModel(state))
+        expect(modelConfigs, 'to equal', selectSelectedModelConfigs(getModel(state)))
+      })
+    })
+  })
+
+  describe('updateQuantities()', () => {
+    let state
+
+    beforeEach(() => {
+      const action = modelAction.updateQuantities(['config-id-1'], 123)
+      state = reducer(getModel(withNUploadedModels(2)), action)
+    })
+
+    describe('using selectModelConfigs() selector', () => {
+      it('has model config with updated quantity', () => {
+        const modelConfigs = selectModelConfigs(getModel(state))
+        expect(modelConfigs, 'to have an item satisfying', {
+          id: 'config-id-1',
+          quantity: 123
+        })
+      })
     })
   })
 })

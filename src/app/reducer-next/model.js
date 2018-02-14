@@ -158,7 +158,7 @@ const updateSelectedModelConfigs = (state, {payload}) => ({
 const updateQuantities = (state, {payload}) => ({
   ...state,
   modelConfigs: state.modelConfigs.map(modelConfig => {
-    if (modelConfig.type === 'UPLOADING' || payload.ids.indexOf(modelConfig.id) !== -1) {
+    if (modelConfig.type === 'UPLOADING' || payload.ids.indexOf(modelConfig.id) === -1) {
       return modelConfig
     }
     return {
