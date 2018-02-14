@@ -326,4 +326,35 @@ describe('model action', () => {
       })
     })
   })
+
+  describe('duplicateModelConfig()', () => {
+    let action
+    let state
+
+    beforeEach(() => {
+      action = modelAction.duplicateModelConfig('config-id-1')
+      state = reducer(getModel(withNUploadedModels(2)), action)
+    })
+
+    describe('using selectModelConfigs() selector', () => {
+      it('has appends new model config after orignal model config', () => {
+        const modelConfigs = selectModelConfigs(getModel(state))
+        expect(modelConfigs[1], 'to satisfy', {
+          id: action.payload.nextId
+        })
+      })
+
+      it('has appends new model config after orignal model config', () => {
+        const modelConfigs = selectModelConfigs(getModel(state))
+        expect(modelConfigs, 'to have an item satisfying', {
+          id: action.payload.nextId,
+          type: 'UPLOADED',
+          quantity: 1,
+          modelId: 'model-id-1',
+          quoteId: null,
+          shippingId: null
+        })
+      })
+    })
+  })
 })

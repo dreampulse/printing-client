@@ -19,6 +19,10 @@ type UpdateQuantitiesAction = Action<
   'MODEL.UPDATE_QUANTITIES',
   {ids: Array<ConfigId>, quantity: number}
 >
+type DuplicateModelConfigAction = Action<
+  'MODEL.DUPLICATE_MODEL_CONFIG',
+  {id: ConfigId, nextId: ConfigId}
+>
 
 export type ModelAction =
   | UploadFileAction
@@ -28,6 +32,7 @@ export type ModelAction =
   | DeleteModelConfigsAction
   | UpdateSelectedModelConfigsAction
   | UpdateQuantitiesAction
+  | DuplicateModelConfigAction
 
 export const uploadFile = (file: File): UploadFileAction => ({
   type: 'MODEL.UPLOAD_FILE',
@@ -83,5 +88,10 @@ export const updateQuantities = (
   }
 })
 
-// TODO: add a method to remove a file when the upload failed
-// TODO: add a method to duplicate a basket item
+export const duplicateModelConfig = (id: ConfigId): DuplicateModelConfigAction => ({
+  type: 'MODEL.DUPLICATE_MODEL_CONFIG',
+  payload: {
+    id,
+    nextId: uniqueId('config-id-')
+  }
+})

@@ -168,6 +168,28 @@ const updateQuantities = (state, {payload}) => ({
   })
 })
 
+const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
+  const modelConfig = state.modelConfigs.find(item => item.id === id)
+
+  invariant(modelConfig, `Error in duplicateModelConfig(): Model Config id ${id} is unknown`)
+
+  const modelConfigIndex = state.modelConfigs.indexOf(modelConfig)
+  // Cause flow is crap!
+  const nextModelConfig: any = {
+    ...modelConfig,
+    id: nextId
+  }
+
+  return {
+    ...state,
+    modelConfigs: [
+      ...state.modelConfigs.slice(0, modelConfigIndex + 1),
+      nextModelConfig,
+      ...state.modelConfigs.slice(modelConfigIndex + 1)
+    ]
+  }
+}
+
 export const reducer = (state: ModelState = initialState, action: AppAction): ModelState => {
   switch (action.type) {
     case 'MODEL.UPLOAD_FILE':
@@ -184,6 +206,8 @@ export const reducer = (state: ModelState = initialState, action: AppAction): Mo
       return updateSelectedModelConfigs(state, action)
     case 'MODEL.UPDATE_QUANTITIES':
       return updateQuantities(state, action)
+    case 'MODEL.DUPLICATE_MODEL_CONFIG':
+      return duplicateModelConfig(state, action)
     default:
       return state
   }
