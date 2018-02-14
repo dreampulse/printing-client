@@ -14,17 +14,18 @@ const providerImages = {
   shapeways: shapewaysImage
 }
 
-const ProviderItem = ({classNames, modifiers, name}) => (
+const ProviderImage = ({classNames, modifiers, name, slug}) => (
   <img
     className={buildClassName('provider-image', modifiers, classNames)}
-    src={providerImages[name]}
-    alt={name}
+    src={providerImages[slug]}
+    alt={name || slug}
   />
 )
 
-ProviderItem.propTypes = {
+ProviderImage.propTypes = {
   ...propTypes.component,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  slug: PropTypes.string
 }
 
-export default ProviderItem
+export default ProviderImage

@@ -2,7 +2,8 @@ import {
   formatPrice,
   formatDeliveryTime,
   formatAddress,
-  formatDimensions
+  formatDimensions,
+  formatTimeRange
 } from '../../../../src/app/lib/formatter'
 
 describe('formatPrice()', () => {
@@ -11,7 +12,7 @@ describe('formatPrice()', () => {
   })
 
   it('returns formatted string with price and currency EUR', () => {
-    expect(formatPrice(19.99, 'EUR'), 'to equal', '€19.99')
+    expect(formatPrice(19.99, 'EUR'), 'to equal', '19.99€')
   })
 
   it('returns formatted string with price and currency GBP', () => {
@@ -50,6 +51,52 @@ describe('formatDeliveryTime()', () => {
 
   it('returns formatted string for other than single day delivery', () => {
     expect(formatDeliveryTime('2-5'), 'to equal', '2-5 days')
+  })
+})
+
+describe('formatTimeRange()', () => {
+  it('returns formatted string for single value', () => {
+    expect(formatTimeRange(1), 'to equal', '1 day')
+  })
+
+  it('returns formatted string for same values', () => {
+    expect(formatTimeRange(1, 1), 'to equal', '1 day')
+  })
+
+  it('returns formatted string for single value lager 1', () => {
+    expect(formatTimeRange(2), 'to equal', '2 days')
+  })
+
+  it('returns formatted string for same values lager 1', () => {
+    expect(formatTimeRange(2, 2), 'to equal', '2 days')
+  })
+
+  it('returns formatted string for different values', () => {
+    expect(formatTimeRange(1, 2), 'to equal', '1-2 days')
+  })
+
+  it('returns formatted string and orders the arguments', () => {
+    expect(formatTimeRange(2, 1), 'to equal', '1-2 days')
+  })
+
+  it('returns formatted string for string values', () => {
+    expect(formatTimeRange('1', '2'), 'to equal', '1-2 days')
+  })
+
+  it('returns `–` if there are no arguments', () => {
+    expect(formatTimeRange(), 'to equal', '–')
+  })
+
+  it('returns `–` if from is undefined', () => {
+    expect(formatTimeRange(undefined), 'to equal', '–')
+  })
+
+  it('returns `–` if from and to are undefined', () => {
+    expect(formatTimeRange(undefined, undefined), 'to equal', '–')
+  })
+
+  it('returns `–` if from is 0', () => {
+    expect(formatTimeRange(0), 'to equal', '–')
   })
 })
 
