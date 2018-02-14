@@ -3,7 +3,6 @@ import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 import {withKnobs} from '@storybook/addon-knobs/react'
 
-import AppLayoutContainer from '../../src/app/container-next/app-layout'
 import UploadPage from '../../src/app/container-next/upload-page'
 
 const models = {
