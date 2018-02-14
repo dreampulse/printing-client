@@ -14,7 +14,7 @@
     "start": "babel-node bin/app-server",
     "test": "NODE_ENV=test nyc mocha --opts test/mocha.opts ./test/unit/ ./test/integration",
     "posttest": "npm run test:lint && npm run test:flow",
-    "test:lint": "eslint src test bin stories .storybook ./*.js",
+    "test:lint": "eslint --ignore-pattern src/app/container src test bin stories .storybook ./*.js",
     "test:flow": "flow",
     "test:dev": "NODE_ENV=test mocha --opts test/mocha.opts ./test/unit/ ./test/integration",
     "test:dev:watch": "NODE_ENV=test mocha --opts test/mocha.opts ./test/unit/ ./test/integration/ --watch",

@@ -1,4 +1,4 @@
-.model-item {
+.upload-model-item {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -46,7 +46,7 @@
   }
 
   &:hover {
-    .model-item__buttons {
+    .upload-model-item__buttons {
       opacity: 1;
       pointer-events: initial;
     }
