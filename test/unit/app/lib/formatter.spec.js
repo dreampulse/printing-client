@@ -2,12 +2,8 @@ import {
   formatPrice,
   formatDeliveryTime,
   formatAddress,
-  formatDimensions,
-  formatProviderName,
-  formatFinishGroupProviderNames
+  formatDimensions
 } from '../../../../src/app/lib/formatter'
-
-import config from '../../../../config/index'
 
 describe('formatPrice()', () => {
   it('returns formatted string with price and currency USD', () => {
