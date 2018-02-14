@@ -5,6 +5,11 @@ import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
 import ImageContainer from './image-container'
+import Icon from './icon'
+import Info from './info'
+import ProviderImage from './provider-image'
+
+import ShippingIcon from '../../asset/icon/shipping.svg'
 
 const ModelItem = ({
   classNames,
@@ -19,20 +24,29 @@ const ModelItem = ({
   shippingMethod,
   materialName,
   color,
-  provider
+  providerName,
+  providerMaterialName
 }) => (
   <div className={buildClassName('model-item', modifiers, classNames)}>
+    {/* TODO: include new image preview component here */}
     <ImageContainer source={imageSource} />
-    <div className="model-item__content">
-      {Boolean(title) && <strong className="model-item__title">{title}</strong>}
+    <div className="model-item__center-content">
+      <strong className="model-item__title">{title}</strong>
       {Boolean(subline) && <div className="model-item__subline">{subline}</div>}
-      {Boolean(price) && <div className="model-item__price">{price}</div>}
-      {Boolean(quantity) && <div className="model-item__quantity">Qty: {quantity}</div>}
-      {Boolean(shippingTime) && <div className="model-item__shipping-time">{shippingTime}</div>}
-      {Boolean(color) && <div className="model-item__color">{color}</div>}
-      {Boolean(shippingMethod) && (
-        <div className="model-item__shipping-method">{shippingMethod}</div>
-      )}
+      <div className="model-item__value">{materialName}</div>
+      <div className="model-item__value">{color}</div>
+      <div className="model-item__provider">
+        <ProviderImage name={providerName} />{' '}
+        {Boolean(providerMaterialName) && <Info modifiers={['minor']}>{providerMaterialName}</Info>}
+      </div>
+    </div>
+    <div className="model-item__right-content">
+      <div className="model-item__price">{price}</div>
+      <div className="model-item__value">Qty: {quantity}</div>
+      <div className="model-item__value">
+        <Icon source={ShippingIcon} /> {shippingTime}
+      </div>
+      <div className="model-item__value">{shippingMethod}</div>
     </div>
     {buttonBar && <div className="model-item__buttons">{buttonBar}</div>}
   </div>
@@ -46,7 +60,13 @@ ModelItem.propTypes = {
   subline: PropTypes.string,
   quantity: PropTypes.number.isRequired,
   buttonBar: PropTypes.node,
-  color: PropTypes.node.isRequired
+  color: PropTypes.node.isRequired,
+  price: PropTypes.string.isRequired,
+  shippingTime: PropTypes.string.isRequired,
+  shippingMethod: PropTypes.string.isRequired,
+  materialName: PropTypes.string.isRequired,
+  providerName: PropTypes.string.isRequired,
+  providerMaterialName: PropTypes.string
 }
 
 export default ModelItem

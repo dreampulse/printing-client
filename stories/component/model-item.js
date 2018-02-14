@@ -31,18 +31,38 @@ const color = () => (
   />
 )
 
-storiesOf('Model Item', module).add('default', () => (
-  <ModelItem
-    id="some-id"
-    imageSource="http://placehold.it/180x180"
-    title="model_item_title.stl"
-    subline="42 x 42 x 42 mm"
-    quantity={1}
-    price="80.99€"
-    shippingTime="2-5 Days"
-    shippingMethod="DHL Express"
-    materialName="Metal, polished"
-    color={color()}
-    buttonBar={buttonBar()}
-  />
-))
+storiesOf('Model Item', module)
+  .add('default', () => (
+    <ModelItem
+      id="some-id"
+      imageSource="http://placehold.it/180x180"
+      title="model_item_title.stl"
+      subline="42 x 42 x 42 mm"
+      quantity={1}
+      price="80.99€"
+      shippingTime="2-5 Days"
+      shippingMethod="DHL Express"
+      providerName="shapeways"
+      materialName="Metal, polished"
+      providerMaterialName="Polyamide (SLS)"
+      color={color()}
+      buttonBar={buttonBar()}
+    />
+  ))
+  .add('read-only', () => (
+    <ModelItem
+      modifiers={['read-only']}
+      id="some-id"
+      imageSource="http://placehold.it/180x180"
+      title="model_item_title.stl"
+      subline="42 x 42 x 42 mm"
+      quantity={1}
+      price="80.99€"
+      shippingTime="2-5 Days"
+      shippingMethod="DHL Express"
+      providerName="shapeways"
+      materialName="Metal, polished"
+      providerMaterialName="Polyamide (SLS)"
+      color={color()}
+    />
+  ))

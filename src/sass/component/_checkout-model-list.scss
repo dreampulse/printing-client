@@ -1,0 +1,27 @@
+.checkout-model-list {
+  margin-bottom: $space-base;
+
+  &__head {
+    font-size: $font-size-l;
+    border-bottom: 1px solid $color-border-minor;
+    & > .headline {
+      display: inline-block;
+      margin-bottom: $space-l;
+    }
+    & > .link {
+      display: inline-block;
+      margin-left: scut-em($space-l);
+    }
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    & > li {
+      padding: $space-base 0;
+      border-bottom: 1px solid $color-border-minor;
+    }
+  }
+}
