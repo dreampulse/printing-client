@@ -13,6 +13,7 @@ describe('model action', () => {
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create()
+    sandbox.stub(printingEngine, 'uploadModel')
   })
   afterEach(() => {
     sandbox.restore()
