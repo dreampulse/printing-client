@@ -13,11 +13,11 @@ storiesOf('Progress', module)
   ))
   .add('20%', () => (
     <Container>
-      <Progress value={0.2} />
+      <Progress value={20} />
     </Container>
   ))
   .add('100%', () => (
     <Container>
-      <Progress value={1} />
+      <Progress value={100} />
     </Container>
   ))

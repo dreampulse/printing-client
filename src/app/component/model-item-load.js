@@ -21,7 +21,7 @@ const ModelItemLoad = ({classNames, modifiers, title, subline, status, onDelete 
 
   return (
     <div className={buildClassName('model-item-load', modifiers, classNames)}>
-      <Progress classNames={['model-item-load__progress']} value={status} />
+      <Progress classNames={['model-item-load__progress']} value={percentage} />
       <div className="model-item-load__description">
         {Boolean(title) && (
           <strong className="model-item-load__title">
