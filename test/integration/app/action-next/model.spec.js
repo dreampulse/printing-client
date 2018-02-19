@@ -254,10 +254,20 @@ describe('model action', () => {
     })
 
     describe('using selectModelConfigs() selector', () => {
-      it('deletes given model config', () => {
+      it('deletes given model configs', () => {
         const modelConfigsBefore = selectModelConfigs(getModel(stateBefore))
         const modelConfigs = selectModelConfigs(getModel(state))
         expect(modelConfigs, 'to equal', [modelConfigsBefore[0]])
+      })
+    })
+
+    describe('using selectSelectedModelConfigIds() selector', () => {
+      it('deletes given model configs from selected model configs', () => {
+        const selectAction = modelAction.updateSelectedModelConfigs(['config-id-1', 'config-id-2'])
+        state = reducer(getModel(state), selectAction)
+
+        const ids = selectSelectedModelConfigIds(getModel(state))
+        expect(ids, 'to equal', ['config-id-1'])
       })
     })
   })

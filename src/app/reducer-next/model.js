@@ -138,7 +138,10 @@ const uploadFail = (state, {payload}) => {
 
 const deleteModelConfigs = (state, {payload}) => ({
   ...state,
-  modelConfigs: state.modelConfigs.filter(modelConfig => payload.ids.indexOf(modelConfig.id) === -1)
+  modelConfigs: state.modelConfigs.filter(
+    modelConfig => payload.ids.indexOf(modelConfig.id) === -1
+  ),
+  selectedModelConfigs: state.selectedModelConfigs.filter(id => payload.ids.indexOf(id) === -1)
 })
 
 const updateSelectedModelConfigs = (state, {payload}) => ({
