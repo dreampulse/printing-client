@@ -245,17 +245,18 @@ describe('model action', () => {
   })
 
   describe('deleteModelConfigs()', () => {
-    let state
+    let action
     let stateBefore
 
     beforeEach(() => {
-      const action = modelAction.deleteModelConfigs(['config-id-2', 'config-id-3'])
+      action = modelAction.deleteModelConfigs(['config-id-2', 'config-id-3'])
       stateBefore = withNUploadedModels(3)
-      state = reducer(getModel(stateBefore), action)
     })
 
     describe('using selectModelConfigs() selector', () => {
       it('deletes given model configs', () => {
+        const state = reducer(getModel(stateBefore), action)
+
         const modelConfigsBefore = selectModelConfigs(getModel(stateBefore))
         const modelConfigs = selectModelConfigs(getModel(state))
         expect(modelConfigs, 'to equal', [modelConfigsBefore[0]])
@@ -265,7 +266,8 @@ describe('model action', () => {
     describe('using selectSelectedModelConfigIds() selector', () => {
       it('deletes given model configs from selected model configs', () => {
         const selectAction = modelAction.updateSelectedModelConfigs(['config-id-1', 'config-id-2'])
-        state = reducer(getModel(state), selectAction)
+        let state = reducer(getModel(stateBefore), selectAction)
+        state = reducer(getModel(state), action)
 
         const ids = selectSelectedModelConfigIds(getModel(state))
         expect(ids, 'to equal', ['config-id-1'])
