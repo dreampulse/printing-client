@@ -10,7 +10,7 @@ import feature2Image from '../../asset/image/feature2.png'
 
 import {formatDimensions} from '../lib/formatter'
 
-import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector/model'
+import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
 
 import {uploadFile, updateQuantities, deleteModelConfigs} from '../action-next/model'
 
@@ -34,7 +34,8 @@ const UploadPage = ({onUploadFile, onDeleteModelConfigs, onChangeQuantities, mod
   const numModels = modelsWithConfig.length
   const haveModels = numModels > 0
   const numModelsUploading = modelsWithConfig.reduce(
-    (sum, [model, _]) => (model.type === 'UPLOADING' ? sum + 1 : sum),
+    (sum, [modelConfig, model]) =>
+      modelConfig.type === 'UPLOADING' && !model.error ? sum + 1 : sum,
     0
   )
   const isUploadCompleted = numModelsUploading === 0

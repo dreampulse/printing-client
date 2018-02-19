@@ -25,7 +25,7 @@
   }
 
   &--right {
-    transform: translateY(-50%) translateX(-1*$tooltip-width - $arrow-width);
+    transform: translateY(-50%) translateX(-1 * $tooltip-width - $arrow-width);
     &:before {
       @include scut-triangle(right, $arrow-width 20px, $color-tooltip-bg);
       transform: rotate(360deg) translateY(-50%);

@@ -42,11 +42,9 @@ export default (history, initialState = {}) => {
     installReduxLoop()
   )
 
-  if (process.env.NODE_ENV !== 'production') {
-    /* eslint global-require: 0 */
-    /* eslint import/no-extraneous-dependencies: 0 */
+  if (global.devToolsExtension) {
     // Enable redux dev-tools
-    enhancer = compose(enhancer, global.devToolsExtension ? global.devToolsExtension() : f => f)
+    enhancer = compose(enhancer, global.devToolsExtension())
   }
 
   // This initialState is empty, because each reducer has its own initial state

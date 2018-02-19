@@ -3,7 +3,7 @@
 import type {Dispatch} from 'redux'
 import type {BackendModel, Action} from '../type-next'
 
-let uploadCounter = 0
+let uploadCounter = -1
 
 export const uploadModel = (
   file: File,
@@ -13,12 +13,12 @@ export const uploadModel = (
 ): Promise<BackendModel> => {
   uploadCounter++
 
-  if (uploadCounter === 2) {
+  if (uploadCounter % 3 === 1) {
     setTimeout(() => dispatch(onProgress(0.4)), 0)
     return new Promise(() => {}) // This promise never resolves
   }
 
-  if (uploadCounter === 3) {
+  if (uploadCounter % 3 === 2) {
     return Promise.reject(new Error('some-error-message'))
   }
 

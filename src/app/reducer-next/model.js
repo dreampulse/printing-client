@@ -32,7 +32,6 @@ const initialState: ModelState = {
   selectedModelConfigs: []
 }
 
-// @TODO: should we rename that to uploadModel?
 const uploadFile = (state, {payload}) => {
   const fileId = payload.fileId
 

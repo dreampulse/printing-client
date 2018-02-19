@@ -16,10 +16,15 @@ export default {
   ravenRelease: process.env.SENTRY_RELEASE_VERSION,
   ipApiKey: '0TrLHRAixWyJhe3',
   currencies: [
-    {value: 'USD', label: 'USD', symbol: '$'},
-    {value: 'EUR', label: 'EUR', symbol: '€'},
-    {value: 'GBP', label: 'GBP', symbol: '£'},
-    {value: 'CAD', label: 'CAD', symbol: 'CDN$'},
-    {value: 'AUD', label: 'AUD', symbol: 'AU$'}
-  ]
+    {value: 'USD', label: 'USD', symbol: '$', prefix: true},
+    {value: 'EUR', label: 'EUR', symbol: '€', prefix: false},
+    {value: 'GBP', label: 'GBP', symbol: '£', prefix: true},
+    {value: 'CAD', label: 'CAD', symbol: 'CDN$', prefix: true},
+    {value: 'AUD', label: 'AUD', symbol: 'AU$', prefix: true}
+  ],
+  providerNames: {
+    imaterialise: 'i.Materialise',
+    sculpteo: 'Sculpteo',
+    shapeways: 'Shapeways'
+  }
 }
