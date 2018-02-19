@@ -12,9 +12,10 @@ import {formatDimensions} from '../lib/formatter'
 
 import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector/model'
 
-import {uploadFile} from '../action-next/model'
+import {uploadFile, updateQuantities, deleteModelConfigs} from '../action-next/model'
 
 import AppLayout from './app-layout'
+import ModelListPartial from './model-list-partial'
 
 import ProviderTeaser from '../component/provider-teaser'
 import ProviderImage from '../component/provider-image'
@@ -25,17 +26,11 @@ import Baloon from '../component/baloon'
 import FeatureParagraph from '../component/feature-paragraph'
 import Image from '../component/image'
 import UploadArea from '../component/upload-area'
-import ModelList from '../component/model-list'
 import UploadModelItemError from '../component/upload-model-item-error'
 import UploadModelItemLoad from '../component/upload-model-item-load'
 import UploadModelItem from '../component/upload-model-item'
 
-const UploadPage = ({
-  onUploadFile,
-  onDeleteModel,
-  onChangeIndividualQuantity,
-  modelsWithConfig
-}) => {
+const UploadPage = ({onUploadFile, onDeleteModelConfigs, onChangeQuantities, modelsWithConfig}) => {
   const numModels = modelsWithConfig.length
   const haveModels = numModels > 0
   const numModelsUploading = modelsWithConfig.reduce(
@@ -106,7 +101,7 @@ const UploadPage = ({
         }
         modifiers={['xl']}
       />
-      <ModelList>
+      <ModelListPartial>
         {modelsWithConfig.map(([modelConfig, model]) => {
           if (modelConfig.type === 'UPLOADING') {
             if (model.error) {
@@ -115,7 +110,7 @@ const UploadPage = ({
                   key={modelConfig.id}
                   title="Upload failed"
                   subline={model.errorMessage}
-                  onDelete={() => onDeleteModel(modelConfig.id)}
+                  onDelete={() => onDeleteModelConfigs([modelConfig.id])}
                 />
               )
             }
@@ -125,7 +120,7 @@ const UploadPage = ({
                 status={model.progress}
                 title="Uploading"
                 subline={model.fileName}
-                onDelete={() => onDeleteModel(modelConfig.id)}
+                onDelete={() => onDeleteModelConfigs([modelConfig.id])}
               />
             )
           }
@@ -137,16 +132,14 @@ const UploadPage = ({
                 quantity={model.quantity}
                 imageSource={model.thumbnailUrl}
                 title={model.fileName}
-                onDelete={() => onDeleteModel(modelConfig.id)}
                 subline={formatDimensions(model.dimensions, model.fileUnit)}
-                onQuantityChange={value => onChangeIndividualQuantity(modelConfig.id, value)}
               />
             )
           }
 
           return null
         })}
-      </ModelList>
+      </ModelListPartial>
     </Section>
   )
 
@@ -165,8 +158,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onUploadFile: uploadFile,
-  onDeleteModel: () => {}, // TODO: add action
-  onChangeIndividualQuantity: () => {} // TODO: add action
+  onDeleteModelConfigs: deleteModelConfigs,
+  onChangeQuantities: updateQuantities
 }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(UploadPage)

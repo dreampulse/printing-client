@@ -6,7 +6,11 @@ import ModelList from '../component/model-list'
 import Button from '../component/button'
 import NumberField from '../component/number-field'
 
-import {updateSelectedModelConfigs, deleteModelConfigs, updateQuantities} from '../action/model'
+import {
+  updateSelectedModelConfigs,
+  deleteModelConfigs,
+  updateQuantities
+} from '../action-next/model'
 
 import {getCommonQuantity} from '../lib/quantity'
 import {selectSelectedModelConfigIds, selectSelectedModelConfigs} from '../selector'
@@ -15,8 +19,8 @@ import deleteIcon from '../../asset/icon/delete.svg'
 
 const ModelListPartial = ({
   children,
-  selectedModelConfigIds,
   editMode = false,
+  selectedModelConfigIds,
   commonQuantity,
   onChangeSelectedModelConfigs,
   onDeleteModelConfigs,
@@ -53,8 +57,8 @@ const ModelListPartial = ({
 
   return (
     <ModelList
-      value={selectedModelConfigIds}
-      onChange={onChangeSelectedModelConfigs}
+      checkedIds={selectedModelConfigIds}
+      onChangeCheckedIds={onChangeSelectedModelConfigs}
       primaryActions={renderPrimaryActions()}
       secondaryActions={renderSecondaryActions()}
     >
