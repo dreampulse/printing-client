@@ -148,18 +148,22 @@ const updateSelectedModelConfigs = (state, {payload}) => ({
   selectedModelConfigs: payload.ids
 })
 
-const updateQuantities = (state, {payload}) => ({
-  ...state,
-  modelConfigs: state.modelConfigs.map(modelConfig => {
-    if (modelConfig.type === 'UPLOADING' || payload.ids.indexOf(modelConfig.id) === -1) {
-      return modelConfig
-    }
-    return {
-      ...modelConfig,
-      quantity: payload.quantity
-    }
-  })
-})
+const updateQuantities = (state, {payload}) => {
+  invariant(payload.quantity > 0, `Quantity has to be bigger than zero!`)
+
+  return {
+    ...state,
+    modelConfigs: state.modelConfigs.map(modelConfig => {
+      if (modelConfig.type === 'UPLOADING' || payload.ids.indexOf(modelConfig.id) === -1) {
+        return modelConfig
+      }
+      return {
+        ...modelConfig,
+        quantity: payload.quantity
+      }
+    })
+  }
+}
 
 const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
   const modelConfig = state.modelConfigs.find(item => item.id === id)

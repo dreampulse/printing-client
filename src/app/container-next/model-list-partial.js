@@ -41,7 +41,7 @@ const ModelListPartial = ({
 
   const renderSecondaryActions = () => [
     <NumberField
-      disabled={disabled || commonQuantity === undefined}
+      disabled={disabled || commonQuantity === null}
       key="quantity"
       value={commonQuantity}
       onChange={quantity => onChangeQuantities(selectedModelConfigIds, quantity)}
