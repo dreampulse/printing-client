@@ -1,4 +1,7 @@
 import React from 'react'
+import compose from 'recompose/compose'
+import {connect} from 'react-redux'
+import unzip from 'lodash/unzip'
 
 // TODO: Use final svg images here!
 import feature1Image from '../../asset/image/feature1.png'
@@ -6,6 +9,10 @@ import feature2Image from '../../asset/image/feature2.png'
 // import feature3Image from '../../../asset/image/feature3.png'
 
 import {formatDimensions} from '../lib/formatter'
+
+import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
+
+import {uploadFile} from '../action-next/model'
 
 import AppLayout from './app-layout'
 
@@ -23,11 +30,17 @@ import UploadModelItemError from '../component/upload-model-item-error'
 import UploadModelItemLoad from '../component/upload-model-item-load'
 import UploadModelItem from '../component/upload-model-item'
 
-const UploadPage = ({onUpload, onDeleteModel, onChangeIndividualQuantity, models}) => {
-  const numModels = models.length
-  const haveModels = numModels > 1
-  const numModelsUploading = models.reduce(
-    (sum, model) => (model.type === 'UPLOADING' ? sum + 1 : sum),
+const UploadPage = ({
+  onUploadFile,
+  onDeleteModel,
+  onChangeIndividualQuantity,
+  modelsWithConfig
+}) => {
+  const numModels = modelsWithConfig.length
+  const haveModels = numModels > 0
+  const numModelsUploading = modelsWithConfig.reduce(
+    (sum, [modelConfig, model]) =>
+      modelConfig.type === 'UPLOADING' && !model.error ? sum + 1 : sum,
     0
   )
   const isUploadCompleted = numModelsUploading === 0
@@ -81,7 +94,7 @@ const UploadPage = ({onUpload, onDeleteModel, onChangeIndividualQuantity, models
         linkLabel="select files"
         description="Supported file formats: STL, OBJ, WRL, SKP, DAE, 3DS, IGS, FBX, PLY, X3D, STP, PRT, …"
         accept="*"
-        onChange={onUpload}
+        onChange={onUploadFile}
       />
     </Section>
   )
@@ -95,39 +108,39 @@ const UploadPage = ({onUpload, onDeleteModel, onChangeIndividualQuantity, models
         modifiers={['xl']}
       />
       <ModelList>
-        {models.map(model => {
-          if (model.type === 'UPLOADING') {
+        {modelsWithConfig.map(([modelConfig, model]) => {
+          if (modelConfig.type === 'UPLOADING') {
+            if (model.error) {
+              return (
+                <UploadModelItemError
+                  key={modelConfig.id}
+                  title="Upload failed"
+                  subline={model.errorMessage}
+                  onDelete={() => onDeleteModel(modelConfig.id)}
+                />
+              )
+            }
             return (
               <UploadModelItemLoad
-                key={model.id}
+                key={modelConfig.id}
                 status={model.progress}
                 title="Uploading"
                 subline={model.fileName}
-                onDelete={() => onDeleteModel(model.id)}
+                onDelete={() => onDeleteModel(modelConfig.id)}
               />
             )
           }
-          if (model.type === 'ERROR') {
-            return (
-              <UploadModelItemError
-                key={model.id}
-                title="Upload failed"
-                subline={model.errorMessage}
-                onDelete={() => onDeleteModel(model.id)}
-              />
-            )
-          }
-          if (model.type === 'MODEL') {
+          if (modelConfig.type === 'UPLOADED') {
             return (
               <UploadModelItem
-                key={model.id}
-                id={model.id}
+                key={modelConfig.id}
+                id={modelConfig.id}
                 quantity={model.quantity}
                 imageSource={model.thumbnailUrl}
                 title={model.fileName}
-                onDelete={() => onDeleteModel(model.id)}
-                subline={formatDimensions(model.dimensions, model.unit)}
-                onQuantityChange={value => onChangeIndividualQuantity(model.id, value)}
+                onDelete={() => onDeleteModel(modelConfig.id)}
+                subline={formatDimensions(model.dimensions, model.fileUnit)}
+                onQuantityChange={value => onChangeIndividualQuantity(modelConfig.id, value)}
               />
             )
           }
@@ -147,5 +160,14 @@ const UploadPage = ({onUpload, onDeleteModel, onChangeIndividualQuantity, models
   )
 }
 
-// TODO: connect container
-export default UploadPage
+const mapStateToProps = state => ({
+  modelsWithConfig: unzip([selectModelConfigs(state), selectModelsOfModelConfigs(state)])
+})
+
+const mapDispatchToProps = {
+  onUploadFile: uploadFile,
+  onDeleteModel: () => {}, // TODO: add action
+  onChangeIndividualQuantity: () => {} // TODO: add action
+}
+
+export default compose(connect(mapStateToProps, mapDispatchToProps))(UploadPage)
