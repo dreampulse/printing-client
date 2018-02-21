@@ -10,10 +10,7 @@
   }
 
   &__loading-indicator {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: $font-size-xxl;
+    @include scut-center-transform;
+    font-size: $font-size-xl;
   }
 }
