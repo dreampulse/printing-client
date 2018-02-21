@@ -148,11 +148,7 @@
     }
 
     &[disabled] {
-      cursor: not-allowed;
-      background-color: inherit;
-      color: $color-minor;
-      border-color: $color-minor;
-      box-shadow: none;
+      border-color: $color-gray-5;
     }
   }
 }

@@ -12,9 +12,15 @@ import {formatDimensions} from '../lib/formatter'
 
 import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
 
-import {uploadFile} from '../action-next/model'
+import {
+  uploadFile,
+  updateQuantities,
+  deleteModelConfigs,
+  duplicateModelConfig
+} from '../action-next/model'
 
 import AppLayout from './app-layout'
+import ModelListPartial from './model-list-partial'
 
 import ProviderTeaser from '../component/provider-teaser'
 import ProviderImage from '../component/provider-image'
@@ -25,15 +31,23 @@ import Baloon from '../component/baloon'
 import FeatureParagraph from '../component/feature-paragraph'
 import Image from '../component/image'
 import UploadArea from '../component/upload-area'
-import ModelList from '../component/model-list'
 import UploadModelItemError from '../component/upload-model-item-error'
 import UploadModelItemLoad from '../component/upload-model-item-load'
 import UploadModelItem from '../component/upload-model-item'
+import Button from '../component/button'
+import ButtonBar from '../component/button-bar'
+
+import deleteIcon from '../../asset/icon/delete.svg'
+import plusIcon from '../../asset/icon/plus.svg'
+import minusIcon from '../../asset/icon/minus.svg'
+import copyIcon from '../../asset/icon/copy.svg'
 
 const UploadPage = ({
   onUploadFile,
-  onDeleteModel,
-  onChangeIndividualQuantity,
+  onDeleteModelConfigs,
+  onChangeQuantities,
+  onChooseMaterial,
+  onDuplicateModelConfig,
   modelsWithConfig
 }) => {
   const numModels = modelsWithConfig.length
@@ -99,6 +113,37 @@ const UploadPage = ({
     </Section>
   )
 
+  const buttonBar = modelConfig => (
+    <ButtonBar>
+      <Button
+        label="Choose material …"
+        modifiers={['tiny', 'minor']}
+        onClick={() => onChooseMaterial([modelConfig.id])}
+      />
+      <Button
+        icon={minusIcon}
+        disabled={modelConfig.quantity === 1}
+        modifiers={['tiny', 'circular', 'minor']}
+        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity - 1)}
+      />
+      <Button
+        icon={plusIcon}
+        modifiers={['tiny', 'circular', 'minor']}
+        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity + 1)}
+      />
+      <Button
+        icon={copyIcon}
+        modifiers={['tiny', 'circular', 'minor']}
+        onClick={() => onDuplicateModelConfig(modelConfig.id)}
+      />
+      <Button
+        icon={deleteIcon}
+        modifiers={['tiny', 'circular', 'minor']}
+        onClick={() => onDeleteModelConfigs([modelConfig.id])}
+      />
+    </ButtonBar>
+  )
+
   const modelListSection = () => (
     <Section>
       <Headline
@@ -107,7 +152,7 @@ const UploadPage = ({
         }
         modifiers={['xl']}
       />
-      <ModelList>
+      <ModelListPartial>
         {modelsWithConfig.map(([modelConfig, model]) => {
           if (modelConfig.type === 'UPLOADING') {
             if (model.error) {
@@ -116,7 +161,7 @@ const UploadPage = ({
                   key={modelConfig.id}
                   title="Upload failed"
                   subline={model.errorMessage}
-                  onDelete={() => onDeleteModel(modelConfig.id)}
+                  onDelete={() => onDeleteModelConfigs([modelConfig.id])}
                 />
               )
             }
@@ -126,7 +171,7 @@ const UploadPage = ({
                 status={model.progress}
                 title="Uploading"
                 subline={model.fileName}
-                onDelete={() => onDeleteModel(modelConfig.id)}
+                onDelete={() => onDeleteModelConfigs([modelConfig.id])}
               />
             )
           }
@@ -135,19 +180,18 @@ const UploadPage = ({
               <UploadModelItem
                 key={modelConfig.id}
                 id={modelConfig.id}
-                quantity={model.quantity}
+                quantity={modelConfig.quantity}
                 imageSource={model.thumbnailUrl}
                 title={model.fileName}
-                onDelete={() => onDeleteModel(modelConfig.id)}
                 subline={formatDimensions(model.dimensions, model.fileUnit)}
-                onQuantityChange={value => onChangeIndividualQuantity(modelConfig.id, value)}
+                buttonBar={buttonBar(modelConfig)}
               />
             )
           }
 
           return null
         })}
-      </ModelList>
+      </ModelListPartial>
     </Section>
   )
 
@@ -166,8 +210,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onUploadFile: uploadFile,
-  onDeleteModel: () => {}, // TODO: add action
-  onChangeIndividualQuantity: () => {} // TODO: add action
+  onDeleteModelConfigs: deleteModelConfigs,
+  onChangeQuantities: updateQuantities,
+  onDuplicateModelConfig: duplicateModelConfig,
+  onChooseMaterial: /* TODO: openConfigurationModal() */ () => {}
 }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(UploadPage)

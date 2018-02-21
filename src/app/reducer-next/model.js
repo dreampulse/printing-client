@@ -135,6 +135,58 @@ const uploadFail = (state, {payload}) => {
   }
 }
 
+const deleteModelConfigs = (state, {payload}) => ({
+  ...state,
+  modelConfigs: state.modelConfigs.filter(
+    modelConfig => payload.ids.indexOf(modelConfig.id) === -1
+  ),
+  selectedModelConfigs: state.selectedModelConfigs.filter(id => payload.ids.indexOf(id) === -1)
+})
+
+const updateSelectedModelConfigs = (state, {payload}) => ({
+  ...state,
+  selectedModelConfigs: payload.ids
+})
+
+const updateQuantities = (state, {payload}) => {
+  invariant(payload.quantity > 0, `Quantity has to be bigger than zero!`)
+
+  return {
+    ...state,
+    modelConfigs: state.modelConfigs.map(modelConfig => {
+      if (modelConfig.type === 'UPLOADING' || payload.ids.indexOf(modelConfig.id) === -1) {
+        return modelConfig
+      }
+      return {
+        ...modelConfig,
+        quantity: payload.quantity
+      }
+    })
+  }
+}
+
+const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
+  const modelConfig = state.modelConfigs.find(item => item.id === id)
+
+  invariant(modelConfig, `Error in duplicateModelConfig(): Model Config id ${id} is unknown`)
+
+  const modelConfigIndex = state.modelConfigs.indexOf(modelConfig)
+  // Cause flow is crap!
+  const nextModelConfig: any = {
+    ...modelConfig,
+    id: nextId
+  }
+
+  return {
+    ...state,
+    modelConfigs: [
+      ...state.modelConfigs.slice(0, modelConfigIndex + 1),
+      nextModelConfig,
+      ...state.modelConfigs.slice(modelConfigIndex + 1)
+    ]
+  }
+}
+
 export const reducer = (state: ModelState = initialState, action: AppAction): ModelState => {
   switch (action.type) {
     case 'MODEL.UPLOAD_FILE':
@@ -145,6 +197,14 @@ export const reducer = (state: ModelState = initialState, action: AppAction): Mo
       return uploadComplete(state, action)
     case 'MODEL.UPLOAD_FAIL':
       return uploadFail(state, action)
+    case 'MODEL.DELETE_MODEL_CONFIGS':
+      return deleteModelConfigs(state, action)
+    case 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS':
+      return updateSelectedModelConfigs(state, action)
+    case 'MODEL.UPDATE_QUANTITIES':
+      return updateQuantities(state, action)
+    case 'MODEL.DUPLICATE_MODEL_CONFIG':
+      return duplicateModelConfig(state, action)
     default:
       return state
   }

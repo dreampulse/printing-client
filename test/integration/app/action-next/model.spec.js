@@ -1,10 +1,15 @@
 import {Cmd} from 'redux-loop'
 import * as modelAction from '../../../../src/app/action-next/model'
-import {selectModelsOfModelConfigs, selectModelConfigs} from '../../../../src/app/selector'
+import {
+  selectModelsOfModelConfigs,
+  selectModelConfigs,
+  selectSelectedModelConfigIds,
+  selectSelectedModelConfigs
+} from '../../../../src/app/selector'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
 import reducer from '../../../../src/app/reducer'
-import {withNUploadedModel} from '../../../scenario'
+import {withNUploadedModels} from '../../../scenario'
 import getBackendModelMock from '../../../mock/printing-engine/backend-model'
 import getFileMock from '../../../mock/file'
 
@@ -155,7 +160,7 @@ describe('model action', () => {
 
     beforeEach(() => {
       // Upload two files -> This tests the behavior if one file is already uploaded
-      state = withNUploadedModel(2)
+      state = withNUploadedModels(2)
     })
 
     describe('using selectModelConfigs() selector', () => {
@@ -234,6 +239,112 @@ describe('model action', () => {
         expect(model, 'to have an item satisfying', {
           error: true,
           errorMessage: error.message
+        })
+      })
+    })
+  })
+
+  describe('deleteModelConfigs()', () => {
+    let action
+    let stateBefore
+
+    beforeEach(() => {
+      action = modelAction.deleteModelConfigs(['config-id-2', 'config-id-3'])
+      stateBefore = withNUploadedModels(3)
+    })
+
+    describe('using selectModelConfigs() selector', () => {
+      it('deletes given model configs', () => {
+        const state = reducer(getModel(stateBefore), action)
+
+        const modelConfigsBefore = selectModelConfigs(getModel(stateBefore))
+        const modelConfigs = selectModelConfigs(getModel(state))
+        expect(modelConfigs, 'to equal', [modelConfigsBefore[0]])
+      })
+    })
+
+    describe('using selectSelectedModelConfigIds() selector', () => {
+      it('deletes given model configs from selected model configs', () => {
+        const selectAction = modelAction.updateSelectedModelConfigs(['config-id-1', 'config-id-2'])
+        let state = reducer(getModel(stateBefore), selectAction)
+        state = reducer(getModel(state), action)
+
+        const ids = selectSelectedModelConfigIds(getModel(state))
+        expect(ids, 'to equal', ['config-id-1'])
+      })
+    })
+  })
+
+  describe('updateSelectedModelConfigs()', () => {
+    let state
+
+    beforeEach(() => {
+      const action = modelAction.updateSelectedModelConfigs(['config-id-1'])
+      state = reducer(getModel(withNUploadedModels(1)), action)
+    })
+
+    describe('using selectSelectedModelConfigIds() selector', () => {
+      it('selects given model config', () => {
+        const ids = selectSelectedModelConfigIds(getModel(state))
+        expect(ids, 'to equal', ['config-id-1'])
+      })
+    })
+
+    describe('using selectSelectedModelConfig() selector', () => {
+      it('selects given model config', () => {
+        const modelConfigs = selectSelectedModelConfigs(getModel(state))
+        expect(modelConfigs, 'to have an item satisfying', {
+          id: 'config-id-1'
+        })
+      })
+    })
+  })
+
+  describe('updateQuantities()', () => {
+    let state
+
+    beforeEach(() => {
+      const action = modelAction.updateQuantities(['config-id-1'], 123)
+      state = reducer(getModel(withNUploadedModels(2)), action)
+    })
+
+    describe('using selectModelConfigs() selector', () => {
+      it('has model config with updated quantity', () => {
+        const modelConfigs = selectModelConfigs(getModel(state))
+        expect(modelConfigs, 'to have an item satisfying', {
+          id: 'config-id-1',
+          quantity: 123
+        })
+      })
+    })
+  })
+
+  describe('duplicateModelConfig()', () => {
+    let action
+    let state
+
+    beforeEach(() => {
+      action = modelAction.duplicateModelConfig('config-id-1')
+      state = reducer(getModel(withNUploadedModels(2)), action)
+    })
+
+    describe('using selectModelConfigs() selector', () => {
+      it('has appends new model config after orignal model config', () => {
+        const modelConfigs = selectModelConfigs(getModel(state))
+        expect(modelConfigs[1], 'to satisfy', {
+          id: action.payload.nextId
+        })
+      })
+
+      it('has appends new model config after orignal model config', () => {
+        const modelConfigs = selectModelConfigs(getModel(state))
+        expect(modelConfigs, 'to have an item satisfying', {
+          id: action.payload.nextId,
+          type: 'UPLOADED',
+          quantity: 1,
+          modelId: 'model-id-1',
+          quoteId: null,
+          shippingId: null
         })
       })
     })

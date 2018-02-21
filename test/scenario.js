@@ -17,7 +17,7 @@ const uploadSomeFilesActions = id => {
   return [uploadFileAction, uploadCompleteAction]
 }
 
-export const withNUploadedModel = (n = 1) => {
+export const withNUploadedModels = (n = 1) => {
   const actions = flatMap(range(n).map(i => uploadSomeFilesActions(i + 1)))
 
   const state = actions.reduce(
