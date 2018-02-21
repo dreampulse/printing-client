@@ -293,7 +293,9 @@ describe('model action', () => {
     describe('using selectSelectedModelConfig() selector', () => {
       it('selects given model config', () => {
         const modelConfigs = selectSelectedModelConfigs(getModel(state))
-        expect(modelConfigs, 'to equal', selectSelectedModelConfigs(getModel(state)))
+        expect(modelConfigs, 'to have an item satisfying', {
+          id: 'config-id-1'
+        })
       })
     })
   })
