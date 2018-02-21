@@ -73,7 +73,7 @@ export default class SelectField extends Component {
       }
     ]
 
-    const renderButton = portal => (
+    const renderButton = (portal = {}) => (
       <button
         type="button"
         key="button"
