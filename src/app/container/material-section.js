@@ -3,6 +3,7 @@ import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 import withPropsOnChange from 'recompose/withPropsOnChange'
 import flatten from 'lodash/flatten'
+import partition from 'lodash/partition'
 
 import scrollTo from '../service/scroll-to'
 import {openIntercom} from '../service/intercom'
@@ -59,6 +60,13 @@ const MaterialSection = ({
     filteredMaterials ||
     (selectedMaterialGroup && selectedMaterialGroup.materials) ||
     flatten(materialGroups.map(group => group.materials))
+
+  function sortMaterials(unsortedMaterials) {
+    const hasOffer = material => Boolean(getBestOfferForMaterial(offers, material))
+    const [materialsWithOffers, materialsWithoutOffers] = partition(unsortedMaterials, hasOffer)
+
+    return [...materialsWithOffers, ...materialsWithoutOffers]
+  }
 
   function renderMaterialCard(material) {
     const bestOffer = getBestOfferForMaterial(offers, material)
@@ -141,7 +149,7 @@ const MaterialSection = ({
       )}
       {areAllUploadsFinished &&
         materials.length > 0 && (
-          <MaterialSlider>{materials.map(renderMaterialCard)}</MaterialSlider>
+          <MaterialSlider>{sortMaterials(materials).map(renderMaterialCard)}</MaterialSlider>
         )}
       {areAllUploadsFinished &&
         materials.length === 0 && (
