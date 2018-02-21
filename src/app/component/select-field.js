@@ -57,19 +57,7 @@ export default class SelectField extends Component {
 
   getLabel = ({value, label}) => label || value
 
-  handleSelectClick = event => {
-    event.preventDefault()
-    this.setState({
-      isOpen: !this.state.isOpen,
-      menuStyle: null
-    })
-  }
-
   handleMenuClick = value => {
-    this.setState({
-      isOpen: false,
-      menuStyle: null
-    })
     this.props.onChange(value)
   }
 
