@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, {Component, cloneElement} from 'react'
 import ReactDOM from 'react-dom'
-import Portal from 'react-portal'
+import {PortalWithState} from 'react-portal'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
@@ -19,15 +19,12 @@ export default class SelectField extends Component {
       value: PropTypes.any.isRequired,
       label: PropTypes.string // When not provided value will be shown
     }),
-    isOpen: PropTypes.bool,
-    setOpen: PropTypes.func,
     onChange: PropTypes.func,
     menu: PropTypes.node, // When not provided select field will be in constant mode
     disabled: PropTypes.bool
   }
 
   state = {
-    isOpen: false,
     menuStyle: null
   }
 
@@ -52,6 +49,12 @@ export default class SelectField extends Component {
     })
   }
 
+  onMenuClose = () => {
+    this.setState({
+      menuStyle: null
+    })
+  }
+
   getLabel = ({value, label}) => label || value
 
   handleSelectClick = event => {
@@ -70,16 +73,9 @@ export default class SelectField extends Component {
     this.props.onChange(value)
   }
 
-  handlePortalClose = () => {
-    this.setState({
-      isOpen: false,
-      menuStyle: null
-    })
-  }
-
   render() {
     const {modifiers = [], classNames, value, placeholder, menu} = this.props
-    const {isOpen, menuStyle} = this.state
+    const {menuStyle} = this.state
     const finalModifiers = [
       ...modifiers,
       {
@@ -89,11 +85,12 @@ export default class SelectField extends Component {
       }
     ]
 
-    return (
+    const renderButton = portal => (
       <button
         type="button"
+        key="button"
         className={buildClassName('select-field', finalModifiers, classNames)}
-        onClick={this.handleSelectClick}
+        onClick={portal.isOpen ? portal.closePortal : portal.openPortal}
         disabled={!menu || this.props.disabled}
       >
         {Boolean(value) &&
@@ -102,30 +99,43 @@ export default class SelectField extends Component {
           )}
         <span className="select-field__value">{value ? this.getLabel(value) : placeholder}</span>
         <Icon source={arrowIcon} />
-
-        {Boolean(menu) && (
-          <Portal
-            closeOnEsc
-            closeOnOutsideClick
-            isOpened={isOpen}
-            onClose={this.handlePortalClose}
-            onOpen={this.onMenuOpen}
-          >
-            <div
-              className="select-field__menu"
-              ref={d => {
-                this.menuDOM = d
-              }}
-              style={menuStyle}
-            >
-              {cloneElement(menu, {
-                onClick: this.handleMenuClick,
-                selectedValue: value ? value.value : undefined
-              })}
-            </div>
-          </Portal>
-        )}
       </button>
     )
+
+    if (menu) {
+      return (
+        <PortalWithState
+          closeOnEsc
+          closeOnOutsideClick
+          onClose={this.onMenuClose}
+          onOpen={this.onMenuOpen}
+        >
+          {({openPortal, closePortal, isOpen, portal}) => [
+            renderButton({openPortal, closePortal, isOpen}),
+            portal(
+              <div
+                className="select-field__menu"
+                key="menu"
+                ref={d => {
+                  this.menuDOM = d
+                }}
+                style={menuStyle}
+              >
+                {cloneElement(menu, {
+                  onClick: v => {
+                    closePortal()
+                    this.handleMenuClick(v)
+                  },
+                  selectedValue: value ? value.value : undefined
+                })}
+              </div>
+            )
+          ]}
+        </PortalWithState>
+      )
+    }
+
+    // Render select field in constant mode without dropdown menu
+    return renderButton()
   }
 }
