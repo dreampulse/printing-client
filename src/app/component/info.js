@@ -31,7 +31,7 @@ export default class Info extends Component {
   onInfoLeave = closePortal => {
     this.timeout = setTimeout(() => {
       closePortal()
-    }, 1000)
+    }, 100)
   }
 
   onTooltipClose = () => {

@@ -6,7 +6,6 @@
   &__shipping-price,
   &__total-price,
   &__checkout,
-  &__production-time,
   &__process {
     padding: $space-l $space-l;
     vertical-align: middle;
@@ -14,7 +13,8 @@
     text-align: left;
   }
 
-  &__shipping-price {
+  &__shipping-price,
+  &__total-price {
     .info {
       font-size: $font-size-base;
       margin-left: $space-s;

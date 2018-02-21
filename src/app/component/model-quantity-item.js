@@ -29,7 +29,7 @@ const ModelQuantityItem = ({
 
   return (
     <div className={buildClassName('model-quantity-item', modifiers, classNames)}>
-      <ImageContainer modifiers={['model']} source={imageSource} />
+      <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
       <div className="model-quantity-item__body">
         <div className="model-quantity-item__title">{title}</div>
         {Boolean(subline) && <div className="model-quantity-item__subline">{subline}</div>}
