@@ -3,19 +3,20 @@
 
   position: relative;
   outline: 0;
+  color: $color-invert-text;
 
   &__icon {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    font-size: $font-size-xxl;
+    right: $space-s;
+    bottom: $space-s;
+    font-size: $font-size-xl;
     transform-origin: right bottom;
     transition: transform $transition-duration-fast ease-out;
   }
 
   &:hover, &:focus {
     .magnifyable-item__icon {
-      transform: scale(1.3);
+      transform: scale(1.1);
     }
   }
 }
