@@ -22,7 +22,8 @@ import {
   openPriceChangedModal,
   openPriceLocationChangedModal,
   openFetchingPriceModal,
-  openFatalErrorModal
+  openFatalErrorModal,
+  close
 } from './modal'
 import {createPriceRequest, recalculateSelectedOffer} from './price'
 
@@ -138,6 +139,7 @@ export const reviewOrder = (form: any) => async (dispatch: Dispatch<*>, getState
   } else if (hasPriceChanged) {
     dispatch(openPriceLocationChangedModal(oldShippingAddress, newShippingAddress))
   } else {
+    dispatch(close())
     dispatch(goToCart())
   }
 }
