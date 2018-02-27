@@ -1,33 +1,42 @@
 // @flow
 
-import type {Action, OpenModalConfig} from '../type-next'
+import type {Action, ModalConfigOpened, ModelId} from '../type-next'
 
-type OpenModalAction = Action<'MODAL.OPEN_MODAL', OpenModalConfig>
-type CloseModalAction = Action<'MODAL.CLOSE_MODAL', void>
+type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
+type CloseModalAction = Action<'MODAL.CLOSE', void>
 export type ModalAction = OpenModalAction | CloseModalAction
 
-export const openModal = (config: OpenModalConfig): OpenModalAction => ({
-  type: 'MODAL.OPEN_MODAL',
+const open = (config: ModalConfigOpened): OpenModalAction => ({
+  type: 'MODAL.OPEN',
   payload: config
 })
 
-export const openFatalErrorModal = (error: Error): OpenModalAction =>
-  openModal({
+export const openPickLocation = (): OpenModalAction =>
+  open({
     isCloseable: false,
-    content: 'FATAL_ERROR',
+    contentId: 'PICK_LOCATION',
+    contentProps: null
+  })
+
+export const openModelViewer = (modelId: ModelId): OpenModalAction =>
+  open({
+    isCloseable: true,
+    contentId: 'MODEL_VIEWER',
+    contentProps: {
+      modelId
+    }
+  })
+
+export const openFatalError = (error: Error): OpenModalAction =>
+  open({
+    isCloseable: false,
+    contentId: 'FATAL_ERROR',
     contentProps: {
       error
     }
   })
 
-export const openPickLocationModal = (): OpenModalAction =>
-  openModal({
-    isCloseable: false,
-    content: 'PICK_LOCATION',
-    contentProps: null
-  })
-
-export const closeModal = (): CloseModalAction => ({
-  type: 'MODAL.CLOSE_MODAL',
+export const close = (): CloseModalAction => ({
+  type: 'MODAL.CLOSE',
   payload: undefined
 })

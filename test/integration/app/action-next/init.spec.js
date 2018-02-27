@@ -36,7 +36,7 @@ describe('init action', () => {
       [selector.selectCurrency, 'USD'],
       [selector.selectLocation, null],
       [selector.isModalOpen, false],
-      [selector.selectModalConfig, {isCloseable: true, content: null, contentProps: null}]
+      [selector.selectModalConfig, null]
     ].forEach(([testSelector, expected]) => {
       it(`${testSelector.name}() returns the expected result after execution`, () => {
         expect(testSelector(getModel(state)), 'to equal', expected)
@@ -76,14 +76,14 @@ describe('init action', () => {
       expect(action, 'to equal', userAction.locationDetected(geolocationSuccessResponse))
     })
 
-    it(`triggers the modalAction.openPickLocationModal() action when getLocationByIp failed`, () => {
+    it(`triggers the modalAction.openPickLocation() action when getLocationByIp failed`, () => {
       const err = new Error('Some error')
       const cmd = findCmd(state, getLocationByIp, [])
       const action = cmd.simulate({
         success: false,
         result: err
       })
-      expect(action, 'to equal', modalAction.openPickLocationModal())
+      expect(action, 'to equal', modalAction.openPickLocation())
     })
   })
 })

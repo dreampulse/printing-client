@@ -26,7 +26,7 @@ const detectLocation = (state, _action) =>
     state,
     Cmd.run(getLocationByIp, {
       successActionCreator: userAction.locationDetected,
-      failActionCreator: modalAction.openPickLocationModal,
+      failActionCreator: modalAction.openPickLocation,
       args: []
     })
   )
