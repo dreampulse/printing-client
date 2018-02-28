@@ -15,12 +15,31 @@ export type ShippingId = string
 export type ModelId = string
 export type FileId = string
 
+// Material structure json-schema
+// https://github.com/all3dp/material-structure/blob/master/src/schema.js
+
+export type PrintingService = {
+  [PrintingServiceId]: {
+    materialId: MaterialId,
+    finishId: FinishGroupId,
+    printingMethodShort: string,
+    printingMethod: string,
+    materialName: string,
+    productionTimeFast: number,
+    productionTimeSlow: number
+  }
+}
+
 export type MaterialConfig = {
   id: MaterialConfigId,
   name: string,
   color: string,
   colorCode: string,
-  colorImage: string
+  colorImage: string,
+  printingService: PrintingService,
+  finishGroupId: FinishGroupId,
+  materialId: MaterialId,
+  materialGroupId: MaterialGroupId
 }
 
 export type FinishGroup = {
@@ -34,16 +53,25 @@ export type FinishGroup = {
   summary: string,
   featuredImage: string,
   properties: {
-    flexibility: number,
-    freedomOfDesign: number,
-    interlockingAndEnclosedParts: boolean,
-    levelOfDetail: number,
-    printingMethod: string,
-    printingMethodShort: string,
     printingServiceName: {
       [PrintingServiceId]: string
     },
-    strength: number
+    printingMethod: string,
+    printingMethodShort: string,
+    materialSpec: string,
+    strength: number,
+    flexibility: number,
+    levelOfDetail: number,
+    freedomOfDesign: number,
+    postProcessing: number,
+    fragile: boolean,
+    waterproof: boolean,
+    foodSafe: boolean,
+    dishwasherSafe: boolean,
+    paintable: boolean,
+    interlockingAndEnclosedParts: boolean,
+    uvResistant: boolean,
+    recyclable: boolean
   },
   materialConfigs: Array<MaterialConfig>
 }
@@ -61,15 +89,7 @@ export type Material = {
 export type MaterialGroup = {
   id: MaterialGroupId,
   name: string,
-  materials: Array<{
-    id: MaterialId,
-    name: string,
-    description: string,
-    descriptionShort: string,
-    materialGroupId: MaterialGroupId,
-    featuredImage: string,
-    finishGroups: Array<FinishGroup>
-  }>
+  materials: Array<Material>
 }
 
 export type UploadingFile = {
