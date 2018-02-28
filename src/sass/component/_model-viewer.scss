@@ -1,0 +1,16 @@
+.model-viewer {
+  @include scut-ratio-box(4/3);
+  position: relative;
+  background: black;
+
+  &__iframe {
+    border: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__loading-indicator {
+    @include scut-center-transform;
+    font-size: $font-size-xl;
+  }
+}

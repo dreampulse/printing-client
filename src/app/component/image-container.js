@@ -3,93 +3,75 @@ import React, {Component} from 'react'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
-import preloadImage from '../service/preload-image'
+
+import {createPollHandle} from '../service/image'
 
 import LoadingIndicator from './loading-indicator'
 
 export default class ImageContainer extends Component {
   static propTypes = {
     ...propTypes.component,
+    // Required for a11y purposes
+    alt: PropTypes.string.isRequired,
     source: PropTypes.string
   }
 
-  state = {
-    imageLoading: false,
-    imageLoaded: false
+  constructor() {
+    super()
+    this.state = {
+      imageLoaded: false
+    }
+    this.onPollSuccess = this.onPollSuccess.bind(this)
+    this.pollHandle = createPollHandle(this.onPollSuccess)
   }
 
-  componentDidMount() {
-    this.loadImage(this.props.source)
+  componentWillMount() {
+    const source = this.props.source
+
+    if (source) {
+      this.startLoading(source)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.source !== this.props.source) {
-      this.loadImage(nextProps.source)
+    const source = nextProps.source
+
+    if (source && source !== this.props.source) {
+      this.startLoading(source)
     }
   }
 
   componentWillUnmount() {
-    this.unmounted = true
+    this.pollHandle.dispose()
   }
 
-  getGradient = element => {
-    if (element) {
-      this.gradient = global.getComputedStyle(element, null).getPropertyValue('background-image')
-    }
-  }
-
-  loadImage(source) {
+  onPollSuccess() {
     this.setState({
-      imageLoading: true,
+      imageLoaded: true
+    })
+  }
+
+  startLoading(source) {
+    this.pollHandle.startPoll(source)
+    this.setState({
       imageLoaded: false
     })
-
-    if (source) {
-      preloadImage(source)
-        .then(() => {
-          if (!this.unmounted) {
-            this.setState({
-              imageLoading: false,
-              imageLoaded: true
-            })
-          }
-        })
-        .catch(() => {
-          if (!this.unmounted) {
-            this.setState({
-              imageLoading: false
-            })
-          }
-        })
-    }
   }
 
   render() {
-    const {source, modifiers = [], classNames} = this.props
-    const {imageLoading, imageLoaded} = this.state
-
-    const style = {}
-    if (this.gradient && imageLoaded) {
-      // Add gradient so that we can use css blend modes
-      style.backgroundImage = `url(${source}), ${this.gradient}`
-    }
-
-    const finalModifiers = [
-      ...modifiers,
-      {
-        loaded: imageLoaded
-      }
-    ]
+    const {source, modifiers, classNames, alt} = this.props
+    const {imageLoaded} = this.state
 
     return (
-      <div
-        className={buildClassName('image-container', finalModifiers, classNames)}
-        ref={this.getGradient}
-      >
-        <div className="image-container__content">
-          <div className="image-container__image" style={style} />
-          {imageLoading && <LoadingIndicator modifiers={['invert']} />}
-        </div>
+      <div className={buildClassName('image-container', modifiers, classNames)}>
+        {imageLoaded ? (
+          <img className="image-container__image" src={source} alt={alt} />
+        ) : (
+          <LoadingIndicator
+            classNames={['image-container__loading-indicator']}
+            modifiers={['invert']}
+          />
+        )}
       </div>
     )
   }

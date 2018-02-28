@@ -18,11 +18,13 @@ storiesOf('Select Field', module)
     </HandleValue>
   ))
   .add('opens to top', () => (
-    <HandleValue>
+    <div style={{position: 'relative', height: '100vh'}}>
       <div style={{bottom: 0, position: 'absolute', width: '100%'}}>
-        <SelectField placeholder="Placeholder" menu={menu} />
+        <HandleValue>
+          <SelectField placeholder="Placeholder" menu={menu} />
+        </HandleValue>
       </div>
-    </HandleValue>
+    </div>
   ))
   .add('selected', () => (
     <HandleValue initialValue={{value: 'item2', label: 'Select Menu Item 2'}}>

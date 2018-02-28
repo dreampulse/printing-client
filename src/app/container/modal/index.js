@@ -1,5 +1,7 @@
 import React, {createElement} from 'react'
-import Portal from 'react-portal'
+import {Portal} from 'react-portal'
+import lifecycle from 'recompose/lifecycle'
+import compose from 'recompose/compose'
 
 import {close} from '../../action/modal'
 
@@ -34,11 +36,8 @@ const getContent = (contentType, contentProps) => {
   throw new Error(`Unknown modal content type "${contentType}"`)
 }
 
-const Modal = ({isOpen, onModalClose, contentType, contentProps, isCloseable}) => (
-  <Portal closeOnEsc={isCloseable} isOpened={isOpen} onClose={onModalClose}>
-    {getContent(contentType, contentProps)}
-  </Portal>
-)
+const Modal = ({isOpen, contentType, contentProps}) =>
+  isOpen && <Portal>{getContent(contentType, contentProps)}</Portal>
 
 const mapStateToProps = state => ({
   isOpen: state.modal.isOpen,
@@ -52,4 +51,22 @@ const mapDispatchToProps = {
   onModalClose: close
 }
 
-export default connectLegacy(mapStateToProps, mapDispatchToProps)(Modal)
+const enhance = compose(
+  connectLegacy(mapStateToProps, mapDispatchToProps),
+  lifecycle({
+    componentDidMount() {
+      this.handleKeyDown = event => {
+        if (this.props.isOpen && this.props.isCloseable && event.keyCode === 27) {
+          this.props.onModalClose()
+        }
+      }
+
+      global.addEventListener('keydown', this.handleKeyDown, false)
+    },
+    componentWillUnmount() {
+      global.removeEventListener('keydown', this.handleKeyDown, false)
+    }
+  })
+)
+
+export default enhance(Modal)

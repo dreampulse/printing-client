@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, {Component} from 'react'
-import Portal from 'react-portal'
+import {PortalWithState} from 'react-portal'
 import ReactDOM from 'react-dom'
 
 import propTypes from '../lib/prop-types'
@@ -15,37 +15,27 @@ export default class Info extends Component {
   }
 
   state = {
-    tooltipOpen: false,
+    style: null,
     openRight: false
   }
 
   componentWillUnmount() {
     if (this.timeout) clearTimeout(this.timeout)
-    this.setState({
-      tooltipOpen: false
-    })
   }
 
-  onInfoEnter = () => {
+  onInfoEnter = openPortal => {
     if (this.timeout) clearTimeout(this.timeout)
-    this.setState({
-      tooltipOpen: true
-    })
+    openPortal()
   }
 
-  onInfoLeave = () => {
+  onInfoLeave = closePortal => {
     this.timeout = setTimeout(() => {
-      this.setState({
-        tooltipOpen: false
-      })
+      closePortal()
     }, 100)
   }
 
   onTooltipClose = () => {
     if (this.timeout) clearTimeout(this.timeout)
-    this.setState({
-      tooltipOpen: false
-    })
   }
 
   onTooltipOpen = () => {
@@ -73,35 +63,39 @@ export default class Info extends Component {
 
   render() {
     return (
-      <button
-        onMouseEnter={this.onInfoEnter}
-        onMouseLeave={this.onInfoLeave}
-        className={buildClassName('info', this.props.modifiers, this.props.classNames)}
+      <PortalWithState
+        closeOnEsc
+        closeOnOutsideClick
+        onOpen={this.onTooltipOpen}
+        onClose={this.onTooltipClose}
       >
-        <Portal
-          closeOnEsc
-          closeOnOutsideClick
-          isOpened={this.state.tooltipOpen}
-          onOpen={this.onTooltipOpen}
-          onClose={this.onTooltipClose}
-        >
-          <div
-            ref={d => {
-              this.tooltipDOM = d
-            }}
-            className="info__tooltip"
-            style={this.state.style}
-          >
-            <Tooltip
-              modifiers={buildClassArray({
-                right: this.state.openRight
-              })}
+        {({openPortal, closePortal, portal}) => [
+          <button
+            key="button"
+            onMouseEnter={() => this.onInfoEnter(openPortal)}
+            onMouseLeave={() => this.onInfoLeave(closePortal)}
+            className={buildClassName('info', this.props.modifiers, this.props.classNames)}
+          />,
+          portal(
+            <div
+              key="tooltip"
+              ref={d => {
+                this.tooltipDOM = d
+              }}
+              className="info__tooltip"
+              style={this.state.style}
             >
-              {this.props.children}
-            </Tooltip>
-          </div>
-        </Portal>
-      </button>
+              <Tooltip
+                modifiers={buildClassArray({
+                  right: this.state.openRight
+                })}
+              >
+                {this.props.children}
+              </Tooltip>
+            </div>
+          )
+        ]}
+      </PortalWithState>
     )
   }
 }

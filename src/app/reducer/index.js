@@ -13,6 +13,10 @@ import modal from '../reducer-next/modal'
 import type {ModalState} from '../reducer-next/modal'
 import model from '../reducer-next/model'
 import type {ModelState} from '../reducer-next/model'
+import timeout from '../reducer-next/timeout'
+import type {TimeoutState} from '../reducer-next/timeout'
+import polling from '../reducer-next/polling'
+import type {PollingState} from '../reducer-next/polling'
 import legacyUser from './user'
 import legacyModal from './modal'
 import legacyModel from './model'
@@ -26,6 +30,8 @@ export type AppState = {
   model: ModelState,
   modal: ModalState,
   user: UserState,
+  timeout: TimeoutState,
+  polling: PollingState,
   legacy: LegacyState,
   routing: any, // Managed by react-router-redux
   form: any // Managed by redux-form
@@ -36,6 +42,8 @@ const rootReducer = combineReducers({
   user,
   modal,
   model,
+  timeout,
+  polling,
   legacy: combineReducers({
     user: legacyUser,
     modal: legacyModal,

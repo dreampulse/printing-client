@@ -3,6 +3,11 @@
 import type {AppAction as _AppAction} from './action-next'
 import type {AppState as _AppState} from './reducer'
 
+export type Action<Type, Payload> = {
+  type: Type,
+  payload: Payload
+}
+
 export type MaterialConfigId = string
 export type FinishGroupId = string
 export type MaterialGroupId = string
@@ -174,14 +179,17 @@ type _ModalConfig<C> = {
 }
 
 export type ModalConfig = _ModalConfig<null | ModalContent>
-
 export type OpenModalConfig = _ModalConfig<ModalContent>
 
-export type Action<Type, Payload> = {
-  type: Type,
-  payload: Payload
-}
+export type TimeoutId = string
+export type TimeoutCallId = string
+export type TimeoutOnEndActionCreator = () => _AppAction
+
+export type PollingId = string
+export type PollingResult = any
+export type PollingFunction = () => Promise<PollingResult>
+export type PollingArgs = Array<any>
+export type PollingOnSuccessActionCreator = (result: PollingResult) => _AppAction
 
 export type AppAction = _AppAction
-
 export type AppState = _AppState

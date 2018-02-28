@@ -34,13 +34,11 @@ const ProviderItem = ({
         <ProviderImage name={providerName} slug={providerSlug} />
       </AnnotatedTableCell>
     </td>
-    <td className="provider-item__total-price">
-      <AnnotatedTableCell annotation={includesVat ? 'incl. 19% VAT' : ''}>
-        {totalPrice}
-      </AnnotatedTableCell>
+    <td className="provider-item__process">
+      <AnnotatedTableCell>{process}</AnnotatedTableCell>
     </td>
     <td className="provider-item__price">
-      <AnnotatedTableCell>{price}</AnnotatedTableCell>
+      <AnnotatedTableCell annotation={productionTime}>{price}</AnnotatedTableCell>
     </td>
     <td className="provider-item__shipping-price">
       <AnnotatedTableCell annotation={deliveryTime}>
@@ -50,11 +48,15 @@ const ProviderItem = ({
         </Info>
       </AnnotatedTableCell>
     </td>
-    <td className="provider-item__production-time">
-      <AnnotatedTableCell>{productionTime}</AnnotatedTableCell>
-    </td>
-    <td className="provider-item__process">
-      <AnnotatedTableCell>{process}</AnnotatedTableCell>
+    <td className="provider-item__total-price">
+      <AnnotatedTableCell>
+        {totalPrice}
+        {includesVat && (
+          <Info modifiers={['minor']}>
+            <Paragraph>incl. 19% VAT</Paragraph>
+          </Info>
+        )}
+      </AnnotatedTableCell>
     </td>
     <td className="provider-item__checkout">
       <Button
