@@ -33,13 +33,13 @@ function trackingReduxMiddleware() {
 
 export default (history, initialState = {}) => {
   let enhancer = compose(
+    installReduxLoop(),
     applyMiddleware(
       legacyThunk,
       routerMiddleware(history),
       trackingReduxMiddleware,
       ravenMiddleware
-    ),
-    installReduxLoop()
+    )
   )
 
   if (global.devToolsExtension) {

@@ -37,7 +37,8 @@ describe('init action', () => {
       [selector.isModalOpen, false],
       [selector.selectModalConfig, {isCloseable: true, content: null, contentProps: null}],
       [selector.selectSelectedModelConfigIds, []],
-      [selector.selectSelectedModelConfigs, []]
+      [selector.selectSelectedModelConfigs, []],
+      [selector.selectChosenMaterialConfigIds, []]
     ].forEach(([testSelector, expected]) => {
       it(`${testSelector.name}() returns the expected result after execution`, () => {
         expect(testSelector(getModel(state)), 'to equal', expected)

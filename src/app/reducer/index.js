@@ -13,19 +13,15 @@ import modal from '../reducer-next/modal'
 import type {ModalState} from '../reducer-next/modal'
 import model from '../reducer-next/model'
 import type {ModelState} from '../reducer-next/model'
-import legacyUser from './user'
-import legacyModal from './modal'
-import legacyModel from './model'
-import legacyMaterial from './material'
-import legacyPrice from './price'
-import legacyOrder from './order'
-import legacyConfiguration from './configuration'
+import material from '../reducer-next/material'
+import type {MaterialState} from '../reducer-next/material'
 
 export type AppState = {
   core: CoreState,
   model: ModelState,
   modal: ModalState,
   user: UserState,
+  material: MaterialState,
   legacy: LegacyState,
   routing: any, // Managed by react-router-redux
   form: any // Managed by redux-form
@@ -36,18 +32,7 @@ const rootReducer = combineReducers({
   user,
   modal,
   model,
-  legacy: combineReducers({
-    user: legacyUser,
-    modal: legacyModal,
-    model: legacyModel,
-    material: legacyMaterial,
-    price: legacyPrice,
-    order: legacyOrder,
-    configuration: legacyConfiguration,
-    // Some legacy containers and selectors require these third-party states
-    routing,
-    form
-  }),
+  material,
   // third-party modules expect their state to be at the top-level
   routing,
   form

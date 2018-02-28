@@ -12,6 +12,8 @@ import {
   updateQuantities
 } from '../action-next/model'
 
+import {chooseMaterial} from '../action-next/material'
+
 import {getCommonQuantity} from '../lib/quantity'
 import {selectSelectedModelConfigIds, selectSelectedModelConfigs} from '../selector'
 
@@ -36,7 +38,11 @@ const ModelListPartial = ({
     : `Choose Material ${primaryActionCounter} …`
 
   const renderPrimaryActions = () => (
-    <Button disabled={disabled} label={primaryActionLabel} onClick={onChooseMaterial} />
+    <Button
+      disabled={disabled}
+      label={primaryActionLabel}
+      onClick={() => onChooseMaterial(selectedModelConfigIds)}
+    />
   )
 
   const renderSecondaryActions = () => [
@@ -76,7 +82,7 @@ const mapDispatchToProps = {
   onChangeSelectedModelConfigs: updateSelectedModelConfigs,
   onDeleteModelConfigs: deleteModelConfigs,
   onChangeQuantities: updateQuantities,
-  onChooseMaterial: /* TODO: openConfigurationModal() */ () => {}
+  onChooseMaterial: chooseMaterial
 }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(ModelListPartial)

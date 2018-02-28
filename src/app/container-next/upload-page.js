@@ -19,6 +19,8 @@ import {
   duplicateModelConfig
 } from '../action-next/model'
 
+import {chooseMaterial} from '../action-next/material'
+
 import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
 
@@ -213,7 +215,7 @@ const mapDispatchToProps = {
   onDeleteModelConfigs: deleteModelConfigs,
   onChangeQuantities: updateQuantities,
   onDuplicateModelConfig: duplicateModelConfig,
-  onChooseMaterial: /* TODO: openConfigurationModal() */ () => {}
+  onChooseMaterial: chooseMaterial
 }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(UploadPage)
