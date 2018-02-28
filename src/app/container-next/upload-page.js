@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, {Fragment} from 'react'
 import compose from 'recompose/compose'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
