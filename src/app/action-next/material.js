@@ -1,6 +1,6 @@
 // @flow
 
-import type {Action, ConfigId, MaterialId, MaterialGroupId} from '../type-next'
+import type {Action, ConfigId} from '../type-next'
 
 type ChooseAction = Action<'MATERIAL.CHOOSE', {ids: Array<ConfigId>}>
 
@@ -11,8 +11,4 @@ export const choose = (ids: Array<ConfigId>): ChooseAction => ({
   payload: {
     ids
   }
-})
-
-export const selectMaterialGroup = (id: MaterialGroupId) => ({
-  type: 'MATERIAL.SELECT.GROUP'
 })
