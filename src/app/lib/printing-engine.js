@@ -52,8 +52,8 @@ const priceRequests = {}
 
 export const requestPrice = (
   currency: string,
-  models: [PriceRequestModel],
-  materialConfigIds: [number]
+  models: Array<PriceRequestModel>,
+  materialConfigIds: Array<number>
 ): Promise<PriceRequestResponse> => {
   const priceId = uniqueId('price-id-')
   priceRequests[priceId] = {
