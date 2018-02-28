@@ -81,6 +81,8 @@ describe('User actions', () => {
         .withArgs()
         .returns(resolveAsyncThunk('some-open-price-location-changed-modal'))
 
+      modalActions.close.withArgs().returns(resolveAsyncThunk('some-modal-close'))
+
       navigationActions.goToCart.withArgs().returns(resolveAsyncThunk('some-go-to-cart'))
 
       printingEngine.updateUser.withArgs('some-user-id', {some: 'user-data'}).resolves()
@@ -100,6 +102,9 @@ describe('User actions', () => {
         },
         {
           type: 'some-recalculate-selected-offer-action'
+        },
+        {
+          type: 'some-modal-close'
         },
         {
           type: 'some-go-to-cart'

@@ -2,8 +2,7 @@
 
 import {loop, Cmd} from 'redux-loop'
 import {listMaterials} from '../service/printing-engine'
-import type {MaterialGroup} from '../type-next'
-import type {AppAction} from '../action-next'
+import type {AppAction, MaterialGroup} from '../type-next'
 import * as coreAction from '../action-next/core'
 
 export type CoreState = {

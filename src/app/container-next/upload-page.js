@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import compose from 'recompose/compose'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
@@ -61,9 +61,8 @@ const UploadPage = ({
   )
   const isUploadCompleted = numModelsUploading === 0
 
-  // TODO: replace with fragments
   const promoSection = () => (
-    <div>
+    <Fragment>
       <Section>
         <Headline
           label="Save up to 70% on industrial 3D printing"
@@ -100,7 +99,7 @@ const UploadPage = ({
         <ProviderImage name="imaterialise" />
         <ProviderImage name="sculpteo" />
       </ProviderTeaser>
-    </div>
+    </Fragment>
   )
 
   const uploadSection = () => (

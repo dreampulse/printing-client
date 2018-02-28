@@ -1,5 +1,6 @@
 import React from 'react'
 import {compose} from 'recompose'
+import partition from 'lodash/partition'
 
 import scrollTo from '../service/scroll-to'
 import {buildClassArray} from '../lib/build-class-name'
@@ -35,6 +36,17 @@ const FinishSection = ({
     xl: true,
     disabled
   })
+
+  function sortFinishGroup(unsortedFinishGroup) {
+    const hasOffer = finishGroup =>
+      Boolean(getBestOfferForMaterialConfig(offers, selectedMaterialConfigs[finishGroup.id]))
+    const [finishGroupWithOffers, finishGroupWithoutOffers] = partition(
+      unsortedFinishGroup,
+      hasOffer
+    )
+
+    return [...finishGroupWithOffers, ...finishGroupWithoutOffers]
+  }
 
   function renderMaterialCard(finishGroup) {
     const colorValues = finishGroup.materialConfigs
@@ -127,7 +139,9 @@ const FinishSection = ({
       <Headline label="3. Finish" modifiers={headlineModifiers} />
       {!disabled &&
         selectedMaterial.finishGroups.length > 0 && (
-          <MaterialSlider>{selectedMaterial.finishGroups.map(renderMaterialCard)}</MaterialSlider>
+          <MaterialSlider>
+            {sortFinishGroup(selectedMaterial.finishGroups).map(renderMaterialCard)}
+          </MaterialSlider>
         )}
     </Section>
   )

@@ -1,0 +1,44 @@
+// No default response (text selection, visual feedback, dialogs) as far as controllable via CSS
+@mixin interface-prevent-default() {
+  // We're using vendor prefixes for non-standardized properties because autoprefixer won't prefix them
+  // Prevent tap highlight on touch
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+
+  // Prevent text-selection
+  user-select: none;
+
+  // Prevent popup on touch-hold
+  -webkit-touch-callout: none;
+  touch-callout: none;
+
+  // Do not disable the outline, because the outline is important for motion impaired users for keyboard navigation
+  //outline: none;
+}
+
+// Enables interface behavior that is suited for interface elements that should be pressed either by a cursor or by
+// touch. Disables default interface behavior that might be distracting for pressable elements (like user-select).
+@mixin interface-pressable() {
+  @include interface-prevent-default();
+  cursor: pointer;
+}
+
+// You may need to set box-sizing: border-box if you also have a padding.
+@mixin interface-touchable() {
+  @include interface-pressable();
+
+  // According to several human interface guidelines the recommended touch target size
+  // @see http://www.lukew.com/ff/entry.asp?1085
+  min-width: $interface-touchable-min-size;
+  min-height: $interface-touchable-min-size;
+}
+
+// The element does not respond to user interactions
+@mixin interface-disabled() {
+  @include interface-prevent-default();
+  pointer-events: none;
+
+  // Prevent element from being selected by tabs
+  tab-index: -1;
+  outline: none;
+}

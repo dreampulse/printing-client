@@ -7,7 +7,7 @@ import sinon from 'sinon'
 import fetch from 'isomorphic-fetch'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {findCmd, createLegacyStore} from './helper'
+import {findCmd, findAction, createLegacyStore} from './helper'
 
 // Necessary because sinon does not wrap functions that do not exist
 // redux-loop sets Cmd.dispatch only if used with a real store
@@ -27,3 +27,4 @@ global.fetch = fetch
 global.getModel = getModel
 global.getCmd = getCmd
 global.findCmd = findCmd
+global.findAction = findAction

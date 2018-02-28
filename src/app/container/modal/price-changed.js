@@ -6,15 +6,31 @@ import RichText from '../../component/rich-text'
 import Button from '../../component/button'
 
 import {goToCart} from '../../action/navigation'
+import {close} from '../../action/modal'
 
 import {connectLegacy} from '../util/connect-legacy'
 
-const PriceChangedModal = ({onClose}) => {
+const PriceChangedModal = ({onClose, onGoToCart}) => {
   const headline = <Headline label="Prices have changed" modifiers={['l', 'warning']} />
-  const buttons = [<Button label="OK" onClick={() => onClose()} />]
+  const buttons = [
+    <Button
+      label="OK"
+      onClick={() => {
+        onClose()
+        onGoToCart()
+      }}
+    />
+  ]
 
   return (
-    <Overlay headline={headline} buttons={buttons} closePortal={() => onClose()}>
+    <Overlay
+      headline={headline}
+      buttons={buttons}
+      closePortal={() => {
+        onClose()
+        onGoToCart()
+      }}
+    >
       <RichText>
         <p>
           You have selected your model based on estimated prices, we now have the final price
@@ -32,7 +48,8 @@ const PriceChangedModal = ({onClose}) => {
 const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {
-  onClose: goToCart
+  onClose: close,
+  onGoToCart: goToCart
 }
 
 export default connectLegacy(mapStateToProps, mapDispatchToProps)(PriceChangedModal)
