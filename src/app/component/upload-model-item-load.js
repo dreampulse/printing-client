@@ -9,7 +9,14 @@ import LoadingIndicator from './loading-indicator'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 
-const ModelItemLoad = ({classNames, modifiers, title, subline, status, onDelete = () => {}}) => {
+const UploadModelItemLoad = ({
+  classNames,
+  modifiers,
+  title,
+  subline,
+  status,
+  onDelete = () => {}
+}) => {
   const handleDeleteClick = event => {
     event.preventDefault()
     onDelete()
@@ -20,21 +27,21 @@ const ModelItemLoad = ({classNames, modifiers, title, subline, status, onDelete 
   const scaleX = `scaleX(${status === undefined ? 1 : status})`
 
   return (
-    <div className={buildClassName('model-item-load', modifiers, classNames)}>
-      <div className="model-item-load__description">
+    <div className={buildClassName('upload-model-item-load', modifiers, classNames)}>
+      <div className="upload-model-item-load__content">
         {Boolean(title) && (
-          <strong className="model-item-load__title">
+          <strong className="upload-model-item-load__title">
             {status === undefined && <LoadingIndicator />}
             {loadTitle}
           </strong>
         )}
-        {Boolean(subline) && <span className="model-item-load__subline">{subline}</span>}
+        {Boolean(subline) && <span className="upload-model-item-load__subline">{subline}</span>}
       </div>
-      <button type="button" className="model-item-load__delete" onClick={handleDeleteClick}>
-        <Icon source={deleteIcon} />
+      <button type="button" className="upload-model-item-load__delete" onClick={handleDeleteClick}>
+        <Icon source={deleteIcon} title="Delete" />
       </button>
       <div
-        className="model-item-load__progress"
+        className="upload-model-item-load__progress"
         style={{
           transform: scaleX,
           WebkitTransform: scaleX,
@@ -45,7 +52,7 @@ const ModelItemLoad = ({classNames, modifiers, title, subline, status, onDelete 
   )
 }
 
-ModelItemLoad.propTypes = {
+UploadModelItemLoad.propTypes = {
   ...propTypes.component,
   title: PropTypes.string,
   subline: PropTypes.string,
@@ -53,4 +60,4 @@ ModelItemLoad.propTypes = {
   status: PropTypes.number
 }
 
-export default ModelItemLoad
+export default UploadModelItemLoad

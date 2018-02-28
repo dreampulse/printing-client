@@ -1,22 +1,35 @@
 // @flow
 
-import omit from 'lodash/omit'
 import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
-import {uploadModel} from '../service/printing-engine'
-import type {AppAction, UploadingFile, FileId, Model, ModelId, BasketItem} from '../type-next'
+import {uploadModel} from '../lib/printing-engine'
+import type {
+  BackendModel,
+  UploadingFile,
+  BackendQuote,
+  QuoteId,
+  ModelId,
+  ConfigId,
+  FileId,
+  ModelConfig
+} from '../type-next'
+import type {AppAction} from '../action-next'
 import * as modelAction from '../action-next/model'
 
 export type ModelState = {
-  models: {[id: ModelId]: Model},
   uploadingFiles: {[id: FileId]: UploadingFile},
-  basketItems: Array<BasketItem>
+  backendModels: {[id: ModelId]: BackendModel},
+  quotes: {[id: QuoteId]: BackendQuote},
+  modelConfigs: Array<ModelConfig>,
+  selectedModelConfigs: Array<ConfigId>
 }
 
 const initialState: ModelState = {
-  models: {},
   uploadingFiles: {},
-  basketItems: []
+  backendModels: {},
+  quotes: {},
+  modelConfigs: [],
+  selectedModelConfigs: []
 }
 
 const uploadFile = (state, {payload}) => {
@@ -36,13 +49,22 @@ const uploadFile = (state, {payload}) => {
       uploadingFiles: {
         ...state.uploadingFiles,
         [fileId]: file
-      }
+      },
+      modelConfigs: [
+        ...state.modelConfigs,
+        {
+          type: 'UPLOADING',
+          fileId,
+          id: payload.configId
+        }
+      ]
     },
     Cmd.run(uploadModel, {
       args: [
         payload.file,
         {unit: 'mm'},
-        progress => Cmd.dispatch(modelAction.uploadProgress(fileId, progress))
+        Cmd.dispatch,
+        progress => modelAction.uploadProgress(fileId, progress)
       ],
       successActionCreator: model => modelAction.uploadComplete(fileId, model),
       failActionCreator: error => modelAction.uploadFail(fileId, error)
@@ -55,27 +77,16 @@ const uploadProgress = (state, {payload}) => {
 
   invariant(state.uploadingFiles[fileId], `Error in uploadProgress(): File ${fileId} is unknown`)
 
-  return loop(
-    {
-      ...state,
-      uploadingFiles: {
-        ...state.uploadingFiles,
-        [fileId]: {
-          ...state.uploadingFiles[fileId],
-          progress: payload.progress
-        }
+  return {
+    ...state,
+    uploadingFiles: {
+      ...state.uploadingFiles,
+      [fileId]: {
+        ...state.uploadingFiles[fileId],
+        progress: payload.progress
       }
-    },
-    Cmd.run(uploadModel, {
-      args: [
-        payload,
-        {unit: 'mm'},
-        progress => Cmd.dispatch(modelAction.uploadProgress(fileId, progress))
-      ],
-      successActionCreator: model => modelAction.uploadComplete(fileId, model),
-      failActionCreator: error => modelAction.uploadFail(fileId, error)
-    })
-  )
+    }
+  }
 }
 
 const uploadComplete = (state, {payload}) => {
@@ -86,19 +97,23 @@ const uploadComplete = (state, {payload}) => {
 
   return {
     ...state,
-    uploadingFiles: omit(state.uploadingFiles, fileId),
-    models: {
-      ...state.models,
+    backendModels: {
+      ...state.backendModels,
       [model.modelId]: model
     },
-    basketItems: [
-      ...state.basketItems,
-      {
-        quantity: 1,
-        modelId: model.modelId,
-        material: null // No material selected
-      }
-    ]
+    modelConfigs: state.modelConfigs.map(
+      modelConfig =>
+        modelConfig.type === 'UPLOADING' && modelConfig.fileId === fileId
+          ? {
+              type: 'UPLOADED',
+              quantity: 1,
+              modelId: model.modelId,
+              id: modelConfig.id,
+              quoteId: null,
+              shippingId: null
+            }
+          : modelConfig
+    )
   }
 }
 
@@ -120,24 +135,55 @@ const uploadFail = (state, {payload}) => {
   }
 }
 
-const deleteBasketItem = (state, {payload}) => {
-  invariant(
-    payload.itemId >= 0 && state.basketItems.length > payload.itemId,
-    `Invalid basket item id`
-  )
+const deleteModelConfigs = (state, {payload}) => ({
+  ...state,
+  modelConfigs: state.modelConfigs.filter(
+    modelConfig => payload.ids.indexOf(modelConfig.id) === -1
+  ),
+  selectedModelConfigs: state.selectedModelConfigs.filter(id => payload.ids.indexOf(id) === -1)
+})
 
-  const itemToDelete = state.basketItems[payload.itemId]
-  // const modelItems = state.basketItems.filter(item => item.modelId === itemToDelete.modelId)
-  const updatedItems = state.basketItems.filter((item, itemId) => itemId !== payload.itemId)
+const updateSelectedModelConfigs = (state, {payload}) => ({
+  ...state,
+  selectedModelConfigs: payload.ids
+})
 
-  // TODO: add this check when its testable
-  // const models = modelItems.length === 1 ? omit(state.models, itemToDelete.modelId) : state.models
-  const models = omit(state.models, itemToDelete.modelId)
+const updateQuantities = (state, {payload}) => {
+  invariant(payload.quantity > 0, `Quantity has to be bigger than zero!`)
 
   return {
     ...state,
-    models,
-    basketItems: updatedItems
+    modelConfigs: state.modelConfigs.map(modelConfig => {
+      if (modelConfig.type === 'UPLOADING' || payload.ids.indexOf(modelConfig.id) === -1) {
+        return modelConfig
+      }
+      return {
+        ...modelConfig,
+        quantity: payload.quantity
+      }
+    })
+  }
+}
+
+const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
+  const modelConfig = state.modelConfigs.find(item => item.id === id)
+
+  invariant(modelConfig, `Error in duplicateModelConfig(): Model Config id ${id} is unknown`)
+
+  const modelConfigIndex = state.modelConfigs.indexOf(modelConfig)
+  // Cause flow is crap!
+  const nextModelConfig: any = {
+    ...modelConfig,
+    id: nextId
+  }
+
+  return {
+    ...state,
+    modelConfigs: [
+      ...state.modelConfigs.slice(0, modelConfigIndex + 1),
+      nextModelConfig,
+      ...state.modelConfigs.slice(modelConfigIndex + 1)
+    ]
   }
 }
 
@@ -151,8 +197,14 @@ export const reducer = (state: ModelState = initialState, action: AppAction): Mo
       return uploadComplete(state, action)
     case 'MODEL.UPLOAD_FAIL':
       return uploadFail(state, action)
-    case 'MODEL.DELETE_BASKET_ITEM':
-      return deleteBasketItem(state, action)
+    case 'MODEL.DELETE_MODEL_CONFIGS':
+      return deleteModelConfigs(state, action)
+    case 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS':
+      return updateSelectedModelConfigs(state, action)
+    case 'MODEL.UPDATE_QUANTITIES':
+      return updateQuantities(state, action)
+    case 'MODEL.DUPLICATE_MODEL_CONFIG':
+      return duplicateModelConfig(state, action)
     default:
       return state
   }

@@ -1,10 +1,9 @@
 import React from 'react'
 import {storiesOf, action} from '@storybook/react'
 
-import ModelItem from '../../src/app/component/model-item'
+import UploadModelItem from '../../src/app/component/upload-model-item'
 import Button from '../../src/app/component/button'
 import ButtonBar from '../../src/app/component/button-bar'
-import SelectField from '../../src/app/component/select-field'
 
 import placeholderIcon from '../../src/asset/icon/placeholder.svg'
 
@@ -24,45 +23,21 @@ const buttonBar = () => (
   </ButtonBar>
 )
 
-const color = () => (
-  <SelectField
-    modifiers={['compact']}
-    value={{value: 'item2', colorValue: 'ff0000', label: 'Color'}}
-  />
-)
-
-storiesOf('Model Item', module)
+storiesOf('Upload Model Item', module)
   .add('default', () => (
-    <ModelItem
-      id="some-id"
+    <UploadModelItem
       imageSource="http://placehold.it/180x180"
       title="model_item_title.stl"
       subline="42 x 42 x 42 mm"
       quantity={1}
-      price="80.99€"
-      shippingTime="2-5 Days"
-      shippingMethod="DHL Express"
-      providerName="shapeways"
-      materialName="Metal, polished"
-      providerMaterialName="Polyamide (SLS)"
-      color={color()}
       buttonBar={buttonBar()}
     />
   ))
-  .add('read-only', () => (
-    <ModelItem
-      modifiers={['read-only']}
-      id="some-id"
+  .add('no subline', () => (
+    <UploadModelItem
       imageSource="http://placehold.it/180x180"
       title="model_item_title.stl"
-      subline="42 x 42 x 42 mm"
       quantity={1}
-      price="80.99€"
-      shippingTime="2-5 Days"
-      shippingMethod="DHL Express"
-      providerName="shapeways"
-      materialName="Metal, polished"
-      providerMaterialName="Polyamide (SLS)"
-      color={color()}
+      buttonBar={buttonBar()}
     />
   ))

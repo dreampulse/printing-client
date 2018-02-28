@@ -1,16 +1,23 @@
 // @flow
+import invariant from 'invariant'
+import type {AppState, ModelConfig, UploadingFile, ConfigId, BackendModel} from '../type-next'
 
-import type {AppState, Model, UploadingFile} from '../type-next'
+export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile | BackendModel> =>
+  state.model.modelConfigs.map(
+    modelConfig =>
+      modelConfig.type === 'UPLOADED'
+        ? state.model.backendModels[modelConfig.modelId]
+        : state.model.uploadingFiles[modelConfig.fileId]
+  )
 
-export const selectModels = (state: AppState): Array<Model> =>
-  Object.keys(state.model.models).map(id => state.model.models[id])
+export const selectModelConfigs = (state: AppState): Array<ModelConfig> => state.model.modelConfigs
 
-export const selectUploadingFiles = (state: AppState): Array<UploadingFile> =>
-  Object.keys(state.model.uploadingFiles).map(id => state.model.uploadingFiles[id])
+export const selectSelectedModelConfigIds = (state: AppState): Array<ConfigId> =>
+  state.model.selectedModelConfigs
 
-export const selectBasketItems = (state: AppState) =>
-  state.model.basketItems.map((item, index) => ({
-    ...item,
-    id: index, // TODO: refactor BasketItem to have explicit id
-    model: state.model.models[item.modelId]
-  }))
+export const selectSelectedModelConfigs = (state: AppState): Array<ModelConfig> =>
+  state.model.selectedModelConfigs.map(id => {
+    const item = state.model.modelConfigs.find(modelConfig => modelConfig.id === id)
+    invariant(item, `ModelConfig for selectedModelConfig ${id} not found!`)
+    return item
+  })

@@ -9,19 +9,43 @@ export type Action<Type, Payload> = {
 }
 
 export type MaterialConfigId = string
+export type FinishGroupId = string
+export type MaterialGroupId = string
+export type MaterialId = string
+export type PrintingServiceId = string
+export type QuoteId = string
+export type VendorId = string
+export type ConfigId = string
+export type ShippingId = string
+export type ModelId = string
+export type FileId = string
+
+// Material structure json-schema
+// https://github.com/all3dp/material-structure/blob/master/src/schema.js
+
+export type PrintingService = {
+  [PrintingServiceId]: {
+    materialId: MaterialId,
+    finishId: FinishGroupId,
+    printingMethodShort: string,
+    printingMethod: string,
+    materialName: string,
+    productionTimeFast: number,
+    productionTimeSlow: number
+  }
+}
 
 export type MaterialConfig = {
   id: MaterialConfigId,
   name: string,
   color: string,
   colorCode: string,
-  colorImage: string
+  colorImage: string,
+  printingService: PrintingService,
+  finishGroupId: FinishGroupId,
+  materialId: MaterialId,
+  materialGroupId: MaterialGroupId
 }
-
-export type FinishGroupId = string
-export type MaterialGroupId = string
-export type MaterialId = string
-export type PrintingServiceId = string
 
 export type FinishGroup = {
   id: FinishGroupId,
@@ -30,19 +54,29 @@ export type FinishGroup = {
   descriptionShort: string,
   materialGroupId: MaterialGroupId,
   materialId: MaterialId,
+  materialName: string,
   summary: string,
   featuredImage: string,
   properties: {
-    flexibility: number,
-    freedomOfDesign: number,
-    interlockingAndEnclosedParts: boolean,
-    levelOfDetail: number,
-    printingMethod: string,
-    printingMethodShort: string,
     printingServiceName: {
       [PrintingServiceId]: string
     },
-    strength: number
+    printingMethod: string,
+    printingMethodShort: string,
+    materialSpec: string,
+    strength: number,
+    flexibility: number,
+    levelOfDetail: number,
+    freedomOfDesign: number,
+    postProcessing: number,
+    fragile: boolean,
+    waterproof: boolean,
+    foodSafe: boolean,
+    dishwasherSafe: boolean,
+    paintable: boolean,
+    interlockingAndEnclosedParts: boolean,
+    uvResistant: boolean,
+    recyclable: boolean
   },
   materialConfigs: Array<MaterialConfig>
 }
@@ -63,8 +97,6 @@ export type MaterialGroup = {
   materials: Array<Material>
 }
 
-export type FileId = string
-
 export type UploadingFile = {
   fileId: FileId,
   fileName: string,
@@ -74,9 +106,7 @@ export type UploadingFile = {
   errorMessage?: string
 }
 
-export type ModelId = string
-
-export type Model = {
+export type BackendModel = {
   modelId: ModelId,
   fileName: string,
   fileUnit: 'mm' | 'cm' | 'in',
@@ -90,11 +120,33 @@ export type Model = {
   thumbnailUrl: string
 }
 
-export type BasketItem = {
+export type BackendQuote = {
+  quoteId: QuoteId,
+  vendorId: VendorId,
+  modelId: ModelId,
+  materialConfigId: MaterialConfigId,
+  price: number,
+  quantity: number,
+  currency: string,
+  isPrintable: boolean
+}
+
+export type ModelConfigUploading = {
+  type: 'UPLOADING',
+  fileId: FileId,
+  id: ConfigId
+}
+
+export type ModelConfigUploaded = {
+  type: 'UPLOADED',
   quantity: number,
   modelId: ModelId,
-  material: any // @TODO: This is the configuration
+  id: ConfigId,
+  quoteId: ?QuoteId,
+  shippingId: ?ShippingId
 }
+
+export type ModelConfig = ModelConfigUploading | ModelConfigUploaded
 
 export type Location = {
   city: string,
