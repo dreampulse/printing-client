@@ -31,6 +31,7 @@
     cursor: not-allowed;
     color: $color-disabled;
     filter: none;
+    pointer-events: none;
 
     .icon-link__cart-count {
       display: none;

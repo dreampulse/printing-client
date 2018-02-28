@@ -1,303 +1,156 @@
 import React from 'react'
-import {compose} from 'recompose'
-import compact from 'lodash/compact'
+import {connect} from 'react-redux'
+import unzip from 'lodash/unzip'
 
-import {getStateName, getCountryName} from '../service/country'
-import {openIntercom} from '../service/intercom'
-import getCloudinaryUrl from '../lib/cloudinary'
-import {selectedOfferMaterial, selectOfferItems} from '../lib/selector'
-import {formatPrice} from '../lib/formatter'
-import {getProviderName} from '../lib/provider-selector'
+import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
+import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 
-import PageHeader from '../component/page-header'
 import Link from '../component/link'
 import SidebarLayout from '../component/sidebar-layout'
 import Section from '../component/section'
 import Headline from '../component/headline'
 import Button from '../component/button'
-import Grid from '../component/grid'
-import Column from '../component/column'
 import Paragraph from '../component/paragraph'
-import ProviderImage from '../component/provider-image'
 import PaymentSection from '../component/payment-section'
-import ModelQuantityItem from '../component/model-quantity-item'
-import ModelQuantityItemList from '../component/model-quantity-item-list'
-import ColorSquare from '../component/color-square'
-import PaypalButton from '../component/paypal-button'
+import SelectField from '../component/select-field'
+import ModelItem from '../component/model-item'
+import ButtonBar from '../component/button-bar'
 
-import backIcon from '../../asset/icon/back.svg'
-import creditCardIcon from '../../asset/icon/credit-card.svg'
+import {goToUpload} from '../action-next/navigation'
+import {updateQuantities, deleteModelConfigs, duplicateModelConfig} from '../action-next/model'
 
-import {goToAddress, goToHome, goToSuccess} from '../action/navigation'
-import {
-  payWithStripe,
-  createOrderWithStripe,
-  payWithPaypal,
-  createOrderWithPaypal,
-  payWithInvoice,
-  createOrderWithInvoice
-} from '../action/order'
-import {openFatalErrorModal} from '../action/modal'
-
-import {guard} from './util/guard'
-import {getFeatures} from './util/feature'
 import AppLayout from './app-layout'
-import {connectLegacy} from './util/connect-legacy'
+import ModelListPartial from './model-list-partial'
+
+import deleteIcon from '../../asset/icon/delete.svg'
+import plusIcon from '../../asset/icon/plus.svg'
+import minusIcon from '../../asset/icon/minus.svg'
+import copyIcon from '../../asset/icon/copy.svg'
 
 const CartPage = ({
-  user,
-  offer,
-  offerItems,
-  selectedMaterial,
-  onGoToAddress,
-  onGoToHome,
-  onGoToSuccess,
-  order,
-  features,
-  isDirectSales,
-  onPayWithStripe,
-  onCreateOrderWithStripe,
-  onPayWithPaypal,
-  onCreateOrderWithPaypal,
-  onPayWithInvoice,
-  onCreateOrderWithInvoice
+  modelsWithConfig,
+  onEditMaterial,
+  onChangeQuantities,
+  onGoToUpload,
+  onCheckout,
+  onDuplicateModelConfig,
+  onDeleteModelConfigs
 }) => {
-  const shippingStateName = getStateName(
-    user.shippingAddress.countryCode,
-    user.shippingAddress.stateCode
-  )
-  const billingStateName =
-    getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode) ||
-    shippingStateName
+  const numModels = modelsWithConfig.length
+  const hasModels = numModels > 0
 
-  const CartQuantityList = () => {
-    const items = offerItems.map(item => (
-      <ModelQuantityItem
-        imageSource={item.thumbnailUrl}
-        key={item.modelId}
-        quantity={item.quantity}
-        title={item.fileName}
-        onQuantityChange={(!isDirectSales && (() => onGoToHome())) || undefined}
-        price={formatPrice(item.price, offer.currency)}
-      />
-    ))
-    return <ModelQuantityItemList>{items}</ModelQuantityItemList>
-  }
-
-  const AddressSection = () => (
-    <Section modifiers={['highlight']}>
-      <Grid>
-        <Column md={6}>
-          <Headline modifiers={['minor', 's']} label="Shipping Address" />
-          <Paragraph modifiers={['l']}>
-            {user.companyName ? (
-              <span>
-                {user.companyName}
-                <br />
-              </span>
-            ) : null}
-            {user.vatId ? (
-              <span>
-                {user.vatId}
-                <br />
-              </span>
-            ) : null}
-            {user.shippingAddress.firstName} {user.shippingAddress.lastName}
-            <br />
-            {user.shippingAddress.address}
-            <br />
-            {user.shippingAddress.addressLine2}
-            <br />
-            {user.shippingAddress.zipCode} {user.shippingAddress.city}
-            <br />
-            {shippingStateName && (
-              <span>
-                {shippingStateName}
-                <br />
-              </span>
-            )}
-            {getCountryName(user.shippingAddress.countryCode)}
-          </Paragraph>
-        </Column>
-        <Column md={6}>
-          <Headline modifiers={['minor', 's']} label="Billing Address" />
-          <Paragraph modifiers={['l']}>
-            {user.companyName ? (
-              <span>
-                {user.companyName}
-                <br />
-              </span>
-            ) : null}
-            {user.vatId ? (
-              <span>
-                {user.vatId}
-                <br />
-              </span>
-            ) : null}
-            {user.billingAddress.firstName || user.shippingAddress.firstName}{' '}
-            {user.billingAddress.lastName || user.shippingAddress.lastName}
-            <br />
-            {user.billingAddress.address || user.shippingAddress.address}
-            <br />
-            {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}
-            <br />
-            {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
-            {user.billingAddress.city || user.shippingAddress.city}
-            <br />
-            {billingStateName && (
-              <span>
-                {billingStateName}
-                <br />
-              </span>
-            )}
-            {user.billingAddress.countryCode
-              ? getCountryName(user.billingAddress.countryCode)
-              : getCountryName(user.shippingAddress.countryCode)}
-          </Paragraph>
-        </Column>
-      </Grid>
-    </Section>
-  )
-
-  const VendorSection = () => (
-    <Section modifiers={['highlight']}>
-      <Grid>
-        <Column md={6}>
-          <Headline modifiers={['minor', 's']} label="Provider" />
-          <ProviderImage
-            slug={offer.printingService}
-            name={getProviderName(offer.printingService)}
-          />
-        </Column>
-        <Column md={6}>
-          <Headline modifiers={['minor', 's']} label="Material" />
-          <Paragraph modifiers={['l']}>
-            {selectedMaterial.material.name},&nbsp;
-            {selectedMaterial.finishGroup.properties.printingMethod}
-            <br />
-            <ColorSquare
-              color={selectedMaterial.materialConfig.colorCode}
-              image={getCloudinaryUrl(selectedMaterial.materialConfig.colorImage, [
-                'w_40',
-                'h_40',
-                'c_fill'
-              ])}
-            />{' '}
-            {selectedMaterial.materialConfig.color}
-          </Paragraph>
-        </Column>
-      </Grid>
-    </Section>
-  )
-
-  const backLink = (
-    <Link
-      icon={backIcon}
-      onClick={event => {
-        event.preventDefault()
-        onGoToAddress()
-      }}
-      label="Back"
-    />
-  )
-
-  const paymentButtons = compact([
-    <Button
-      key="payment-button-stripe"
-      modifiers={['block']}
-      icon={creditCardIcon}
-      disabled={order.orderInProgress}
-      label="Pay with Credit Card"
-      onClick={async () => {
-        try {
-          await onPayWithStripe()
-        } catch (error) {
-          // Early return if user aborted payment
-          return
-        }
-
-        await onCreateOrderWithStripe()
-        onGoToSuccess()
-      }}
-    />,
-    <PaypalButton
-      key="payment-button-paypal"
-      onClick={() => onPayWithPaypal()}
-      onAuthorize={async data => {
-        const payment = await onCreateOrderWithPaypal(data)
-        onGoToSuccess()
-        return payment
-      }}
-    />,
-    features.invoice && (
+  const buttonBar = modelConfig => (
+    <ButtonBar>
       <Button
-        key="payment-button-invoice"
-        modifiers={['block']}
-        disabled={order.orderInProgress}
-        label="Pay with Invoice"
-        onClick={async () => {
-          await onPayWithInvoice()
-          await onCreateOrderWithInvoice()
-          onGoToSuccess()
-        }}
+        label="Edit material …"
+        modifiers={['tiny', 'minor']}
+        onClick={() => onEditMaterial([modelConfig.id])}
       />
-    )
-  ])
+      <Button
+        icon={minusIcon}
+        disabled={modelConfig.quantity === 1}
+        modifiers={['tiny', 'circular', 'minor']}
+        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity - 1)}
+      />
+      <Button
+        icon={plusIcon}
+        modifiers={['tiny', 'circular', 'minor']}
+        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity + 1)}
+      />
+      <Button
+        icon={copyIcon}
+        modifiers={['tiny', 'circular', 'minor']}
+        onClick={() => onDuplicateModelConfig(modelConfig.id)}
+      />
+      <Button
+        icon={deleteIcon}
+        modifiers={['tiny', 'circular', 'minor']}
+        onClick={() => onDeleteModelConfigs([modelConfig.id])}
+      />
+    </ButtonBar>
+  )
 
-  const paymentSection = (
+  const modelListSection = () => (
+    <Section>
+      <ModelListPartial editMode>
+        {modelsWithConfig.map(([modelConfig, model]) => (
+          <ModelItem
+            key={modelConfig.id}
+            id={modelConfig.id}
+            quantity={modelConfig.quantity}
+            imageSource={model.thumbnailUrl}
+            title={model.fileName}
+            subline={formatDimensions(model.dimensions, model.fileUnit)}
+            buttonBar={buttonBar(modelConfig)}
+            price={formatPrice(80.99, 'EUR')}
+            deliveryTime={formatDeliveryTime(7)}
+            shippingMethod="DHL Express"
+            providerName="shapeways"
+            materialName="Metal, polished"
+            providerMaterialName="Polyamide (SLS)"
+            color={
+              <SelectField
+                modifiers={['compact']}
+                value={{value: 'item2', colorValue: 'ff0000', label: 'Color'}}
+              />
+            }
+          />
+        ))}
+      </ModelListPartial>
+    </Section>
+  )
+
+  const paymentSection = () => (
+    /* TODO Payment section has to be updated to new layout */
     <PaymentSection
-      subtotal={formatPrice(offer.subTotalPrice, offer.currency)}
-      shippingPrice={formatPrice(offer.shipping.price, offer.currency)}
-      shippingName={offer.shipping.name}
-      vat={formatPrice(offer.vatPrice, offer.currency)}
-      total={formatPrice(offer.totalPrice, offer.currency)}
-      onContactLinkClick={event => {
-        openIntercom()
-        event.preventDefault()
-      }}
+      subtotal="$245.25"
+      shippingPrice="$50.00"
+      shippingName="DHL"
+      vat="$50.00"
+      total="$345.00"
+      onContactLinkClick={() => {}}
     >
-      {paymentButtons}
+      <Button modifiers={['block']} label="Checkout" onClick={onCheckout} />
     </PaymentSection>
   )
 
   return (
-    <AppLayout currentStep={2}>
-      <PageHeader label="Order Summary" backLink={backLink} />
-      <SidebarLayout sidebar={paymentSection}>
-        <AddressSection />
-        <VendorSection />
-        <CartQuantityList />
-      </SidebarLayout>
+    <AppLayout>
+      <Headline label="Your Cart" modifiers={['xl']} />
+      {hasModels && <SidebarLayout sidebar={paymentSection()}>{modelListSection()}</SidebarLayout>}
+      {!hasModels && (
+        <Paragraph modifiers={['l']}>
+          Your cart is currently empty. Start by{' '}
+          <Link
+            href="/"
+            onClick={event => {
+              event.preventDefault()
+              onGoToUpload()
+            }}
+            label="uploading your 3D model"
+          />{' '}
+          for printing.
+        </Paragraph>
+      )}
     </AppLayout>
   )
 }
 
 const mapStateToProps = state => ({
-  order: state.order,
-  offer: state.price.selectedOffer,
-  user: state.user.user,
-  offerItems: selectOfferItems(state),
-  selectedMaterial: selectedOfferMaterial(state),
-  isDirectSales: state.configuration.isDirectSales
+  /* TODO: to be able to test this page we show all models for now but have to filter them later */
+  /* modelsWithConfig: unzip([selectModelConfigs(state), selectModelsOfModelConfigs(state)]).filter(
+    ([modelConfig]) => modelConfig.quoteId !== null
+  ) */
+  modelsWithConfig: unzip([selectModelConfigs(state), selectModelsOfModelConfigs(state)])
 })
 
 const mapDispatchToProps = {
-  onGoToAddress: goToAddress,
-  onGoToHome: goToHome,
-  onGoToSuccess: goToSuccess,
-  onOpenFatalErrorModal: openFatalErrorModal,
-  onPayWithStripe: payWithStripe,
-  onCreateOrderWithStripe: createOrderWithStripe,
-  onPayWithPaypal: payWithPaypal,
-  onCreateOrderWithPaypal: createOrderWithPaypal,
-  onPayWithInvoice: payWithInvoice,
-  onCreateOrderWithInvoice: createOrderWithInvoice
+  onGoToUpload: goToUpload,
+  onDeleteModelConfigs: deleteModelConfigs,
+  onChangeQuantities: updateQuantities,
+  onDuplicateModelConfig: duplicateModelConfig,
+  onEditMaterial: /* TODO: openConfigurationModal() */ () => {},
+  onCheckout: /* TODO: goToCheckout() */ () => {}
 }
 
-const enhance = compose(
-  guard(state => state.legacy.price.selectedOffer),
-  getFeatures,
-  connectLegacy(mapStateToProps, mapDispatchToProps)
-)
-
-export default enhance(CartPage)
+export default connect(mapStateToProps, mapDispatchToProps)(CartPage)

@@ -5,7 +5,7 @@ import {track as trackMixpanel} from './service/mixpanel'
 import {track as trackGoogleAnalytics} from './service/google-analytics'
 import {ravenMiddleware} from './service/logging'
 
-import rootReducer from './reducer'
+import rootReducer from './reducer-next'
 
 function legacyThunk({dispatch, getState}) {
   const getLegacyState = () => getState().legacy
