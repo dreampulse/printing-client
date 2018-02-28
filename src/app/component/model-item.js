@@ -29,7 +29,7 @@ const ModelItem = ({
 }) => (
   <div className={buildClassName('model-item', modifiers, classNames)}>
     {/* TODO: include new image preview component here */}
-    <ImageContainer source={imageSource} alt={`Preview image of ${title}`}  />
+    <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
     <div className="model-item__center-content">
       <strong className="model-item__title">{title}</strong>
       {Boolean(subline) && <div className="model-item__subline">{subline}</div>}
