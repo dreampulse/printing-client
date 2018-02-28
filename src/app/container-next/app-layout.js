@@ -21,7 +21,7 @@ const AppLayout = ({
   onHelpClick = () => {}
 }) => (
   <App
-    header={[
+    header={
       <NavBar key="navbar" onClickIdentity={onGoToHome}>
         {showUploadButton && (
           <Button label="Upload" onClick={onUploadButtonClick} modifiers={['invert', 'compact']} />
@@ -35,7 +35,7 @@ const AppLayout = ({
         />
         <IconLink modifiers={['invert']} icon={helpIcon} onClick={onHelpClick} />
       </NavBar>
-    ]}
+    }
     footer={<FooterPartial />}
   >
     <Container>{children}</Container>
