@@ -1,18 +1,31 @@
 // @flow
 
-import type {AppAction, ConfigId} from '../type-next'
+import type {AppAction, ConfigId, FinishGroupId, MaterialId, MaterialGroupId} from '../type-next'
 
 export type MaterialState = {
-  configIds: Array<ConfigId>
+  configIds: Array<ConfigId>,
+  finishGroupId: ?FinishGroupId,
+  materialId: ?MaterialId,
+  materialGroupId: ?MaterialGroupId
 }
 
 const initialState: MaterialState = {
-  configIds: []
+  configIds: [],
+  finishGroupId: null,
+  materialId: null,
+  materialGroupId: null
 }
 
 const chooseMaterial = (state, action) => ({
-  configIds: action.payload.ids
+  configIds: action.payload.ids,
+  finishGroupId: null,
+  materialId: null,
+  materialGroupId: null
 })
+
+// TODOS:
+// - gemeinsamkeinten identifizieren
+// - actions für die verschiedenen material levels
 
 const reducer = (state: MaterialState = initialState, action: AppAction): MaterialState => {
   switch (action.type) {

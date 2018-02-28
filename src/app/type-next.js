@@ -18,13 +18,29 @@ export type FileId = string
 // Material structure json-schema
 // https://github.com/all3dp/material-structure/blob/master/src/schema.js
 
+export type PrintingServiceProperties = {
+  materialId: MaterialId,
+  finishId: FinishGroupId,
+  printingMethodShort: string,
+  printingMethod: string,
+  materialName: string,
+  productionTimeFast: number,
+  productionTimeSlow: number
+}
+
+export type PrintingService = {
+  imaterialise: PrintingServiceProperties,
+  shapeways: PrintingServiceProperties,
+  sculpteo: PrintingServiceProperties
+}
+
 export type MaterialConfig = {
   id: MaterialConfigId,
   name: string,
   color: string,
   colorCode: string,
   colorImage: string,
-  printingService: any, // TODO
+  printingService: PrintingService,
   finishGroupId: FinishGroupId,
   materialId: MaterialId,
   materialGroupId: MaterialGroupId
