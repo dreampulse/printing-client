@@ -40,7 +40,7 @@ storiesOf('Model Item', module)
       subline="42 x 42 x 42 mm"
       quantity={1}
       price="80.99€"
-      shippingTime="2-5 Days"
+      deliveryTime="2-5 Days"
       shippingMethod="DHL Express"
       providerName="shapeways"
       materialName="Metal, polished"
@@ -58,7 +58,7 @@ storiesOf('Model Item', module)
       subline="42 x 42 x 42 mm"
       quantity={1}
       price="80.99€"
-      shippingTime="2-5 Days"
+      deliveryTime="2-5 Days"
       shippingMethod="DHL Express"
       providerName="shapeways"
       materialName="Metal, polished"

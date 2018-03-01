@@ -20,7 +20,7 @@ const ModelItem = ({
   quantity,
   buttonBar,
   price,
-  shippingTime,
+  deliveryTime,
   shippingMethod,
   materialName,
   color,
@@ -36,7 +36,7 @@ const ModelItem = ({
       <div className="model-item__value">{materialName}</div>
       <div className="model-item__value">{color}</div>
       <div className="model-item__provider">
-        <ProviderImage name={providerName} />{' '}
+        <ProviderImage slug={providerName} modifiers={['s']} />{' '}
         {Boolean(providerMaterialName) && <Info modifiers={['minor']}>{providerMaterialName}</Info>}
       </div>
     </div>
@@ -44,7 +44,7 @@ const ModelItem = ({
       <div className="model-item__price">{price}</div>
       <div className="model-item__value">Qty: {quantity}</div>
       <div className="model-item__value">
-        <Icon source={ShippingIcon} /> {shippingTime}
+        <Icon source={ShippingIcon} /> {deliveryTime}
       </div>
       <div className="model-item__value">{shippingMethod}</div>
     </div>
@@ -62,7 +62,7 @@ ModelItem.propTypes = {
   buttonBar: PropTypes.node,
   color: PropTypes.node.isRequired,
   price: PropTypes.string.isRequired,
-  shippingTime: PropTypes.string.isRequired,
+  deliveryTime: PropTypes.string.isRequired,
   shippingMethod: PropTypes.string.isRequired,
   materialName: PropTypes.string.isRequired,
   providerName: PropTypes.string.isRequired,
