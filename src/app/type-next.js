@@ -119,14 +119,14 @@ export type GoogleMapsPlace = {
   }>
 }
 
-export type ModalContent = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR'
+export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR'
 export type ModalConfigClosed = null
 export type ModalConfigOpened = {
   isCloseable: boolean,
-  contentId: string,
+  contentType: ModalContentType,
   contentProps: any
 }
-export type ModalConfig = ModalConfigOpened | null
+export type ModalConfig = ModalConfigOpened | ModalConfigClosed
 
 export type TimeoutId = string
 export type TimeoutCallId = string

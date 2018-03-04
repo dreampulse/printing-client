@@ -15,6 +15,7 @@ storiesOf('Model Item', module)
       subline="42 x 42 x 42 mm"
       onQuantityChange={action('quantity change')}
       onDelete={action('discard')}
+      onMagnify={action('magnify')}
     />
   ))
   .add('no subline', () => (
@@ -24,6 +25,7 @@ storiesOf('Model Item', module)
       title="model_item_title.stl"
       onQuantityChange={action('quantity change')}
       onDelete={action('discard')}
+      onMagnify={action('magnify')}
     />
   ))
   .add('error', () => (

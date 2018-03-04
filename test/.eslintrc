@@ -9,6 +9,7 @@
     "mockStore": true,
     "getModel": true,
     "getCmd": true,
+    "Cmd": true,
     "findCmd": true,
     "findAction": true,
     "createLegacyStore": true

@@ -1,6 +1,6 @@
 
 .model-item {
-  $image-container-width: 130px;
+  $image-container-width: 180px;
 
   display: flex;
   flex-direction: row;
@@ -11,7 +11,8 @@
   border-bottom: 1px solid $color-bg;
   background: $color-bg;
 
-  & > .image-container {
+  &__preview {
+    color: $color-gray-3;
     flex-shrink: 0;
     width: $image-container-width;
     margin-right: $space-xl;
