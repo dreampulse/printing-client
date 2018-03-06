@@ -75,7 +75,7 @@ export type UploadingFile = {
 }
 
 export type ModelId = string
-
+export type ModelSceneId = string
 export type Model = {
   modelId: ModelId,
   fileName: string,
@@ -87,7 +87,8 @@ export type Model = {
     y: ?number,
     z: ?number
   },
-  thumbnailUrl: string
+  thumbnailUrl: string,
+  sceneId?: ModelSceneId
 }
 
 export type BasketItem = {
@@ -118,16 +119,14 @@ export type GoogleMapsPlace = {
   }>
 }
 
-export type ModalContent = 'PICK_LOCATION' | 'FATAL_ERROR'
-
-type _ModalConfig<C> = {
+export type ModalContent = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR'
+export type ModalConfigClosed = null
+export type ModalConfigOpened = {
   isCloseable: boolean,
-  content: C,
+  contentId: string,
   contentProps: any
 }
-
-export type ModalConfig = _ModalConfig<null | ModalContent>
-export type OpenModalConfig = _ModalConfig<ModalContent>
+export type ModalConfig = ModalConfigOpened | null
 
 export type TimeoutId = string
 export type TimeoutCallId = string
@@ -135,7 +134,7 @@ export type TimeoutOnEndActionCreator = () => _AppAction
 
 export type PollingId = string
 export type PollingResult = any
-export type PollingFunction = () => Promise<PollingResult>
+export type PollingFunction = (...args: any) => Promise<PollingResult>
 export type PollingArgs = Array<any>
 export type PollingOnSuccessActionCreator = (result: PollingResult) => _AppAction
 
