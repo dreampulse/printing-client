@@ -1,6 +1,6 @@
 import * as pollingAction from '../../../../src/app/action-next/polling'
 import * as pollingSelector from '../../../../src/app/selector/polling'
-
+import {PollingFunctionFailSignal} from '../../../../src/app/lib/error'
 import reducer from '../../../../src/app/reducer'
 
 describe('polling', () => {
@@ -138,7 +138,13 @@ describe('polling', () => {
         const someInitAction = {}
         const stateBefore = getModel(reducer(undefined, someInitAction))
         const stateAfter = getModel(
-          reducer(stateBefore, pollingAction.handleFail('does-not-exist'))
+          reducer(
+            stateBefore,
+            pollingAction.handleFail(
+              'does-not-exist',
+              new PollingFunctionFailSignal('Some fail signal')
+            )
+          )
         )
 
         expect(stateBefore, 'to be', stateAfter)
@@ -154,7 +160,7 @@ describe('polling', () => {
         const pollingFunction = () => {}
         const pollingArgs = [42]
         const remainingRetries = 1
-        const error = new Error('Some error')
+        const error = new PollingFunctionFailSignal('Some fail signal')
 
         startAction = pollingAction.start(
           pollingFunction,
@@ -201,6 +207,18 @@ describe('polling', () => {
       })
     })
 
+    describe('when the error is not a PollingFunctionFailSignal', () => {
+      it('throws the error', () => {
+        const error = new Error('Some error')
+
+        expect(
+          () => reducer({}, pollingAction.handleFail('some-polling-id', error)),
+          'to throw',
+          error
+        )
+      })
+    })
+
     describe('when there is an active polling with the given pollingId in POLLING state and no remaining retries', () => {
       let startAction
       let state
@@ -209,7 +227,7 @@ describe('polling', () => {
         const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
         const pollingFunction = () => {}
         const pollingArgs = [42]
-        const error = new Error('Some error')
+        const error = new PollingFunctionFailSignal('Some fail signal')
         const remainingRetries = 0
 
         startAction = pollingAction.start(
@@ -253,7 +271,10 @@ describe('polling', () => {
       const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
 
       startAction = pollingAction.start(pollingFunction, pollingArgs, onSuccessActionCreator, 42, 1)
-      const handleFailAction = pollingAction.handleFail(startAction.payload.pollingId)
+      const handleFailAction = pollingAction.handleFail(
+        startAction.payload.pollingId,
+        new PollingFunctionFailSignal('Some fail signal')
+      )
       const handleRetryAction = pollingAction.handleRetry(startAction.payload.pollingId)
 
       state = [startAction, handleFailAction, handleRetryAction].reduce(
@@ -346,7 +367,7 @@ describe('polling', () => {
         const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
         const pollingFunction = () => {}
         const pollingArgs = [42]
-        const error = new Error('Some error')
+        const error = new PollingFunctionFailSignal('Some fail signal')
 
         startAction = pollingAction.start(pollingFunction, pollingArgs, onSuccessActionCreator, 42)
         const handleFailAction = pollingAction.handleFail(startAction.payload.pollingId, error)

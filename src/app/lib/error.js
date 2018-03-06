@@ -16,11 +16,12 @@ export class AppError extends Error {
 }
 
 export class HttpResponseUnexpectedStatusError extends AppError {
+  static type: string = 'HTTP_RESPONSE_UNEXPECTED_STATUS_ERROR'
   response: Response
   bodyText: string | null
   constructor(expectedStatus: string, response: Response, bodyText: string | null = null) {
     super(
-      'HTTP_RESPONSE_UNEXPECTED_STATUS_ERROR',
+      HttpResponseUnexpectedStatusError.type,
       `${response.url} returned with unexpected status ${response.status} ${response.statusText}. Expected status to be ${expectedStatus}.`
     )
     this.response = response
@@ -29,22 +30,33 @@ export class HttpResponseUnexpectedStatusError extends AppError {
 }
 
 export class HttpResponseBodyParseError extends AppError {
+  static type: string = 'HTTP_RESPONSE_BODY_PARSE_ERROR'
   response: Response
   bodyText: string | null
   constructor(cause: string, response: Response, bodyText: string | null = null) {
-    super('HTTP_RESPONSE_BODY_PARSE_ERROR', `Cannot parse response from ${response.url}: ${cause}`)
+    super(HttpResponseBodyParseError.type, `Cannot parse response from ${response.url}: ${cause}`)
     this.response = response
     this.bodyText = bodyText
   }
 }
 
 export class FileUploadError extends AppError {
+  static type: string = 'LEGACY.FILE_UPLOAD_FAILED'
   fileId: string
   constructor(fileId: string) {
     super(
-      'LEGACY.FILE_UPLOAD_FAILED',
+      FileUploadError.type,
       'File upload failed. Maybe the file is corrupted or not in a format compatible for 3D printing.'
     )
     this.fileId = fileId
+  }
+}
+
+// Can be used to signal the polling reducer that the poll was unsuccessful
+export class PollingFunctionFailSignal extends AppError {
+  static type: string = 'POLLING_FUNCTION_FAIL_SIGNAL'
+  fileId: string
+  constructor(pollingName: string) {
+    super(PollingFunctionFailSignal.type, `${pollingName} polling unsuccessful`)
   }
 }

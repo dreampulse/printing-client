@@ -1,10 +1,16 @@
 // @flow
 
-import type {Action, ModalConfigOpened, ModelId} from '../type-next'
+import type {Action, ModalContentType, ModalConfigOpened, ModelId} from '../type-next'
 
 type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
 type CloseModalAction = Action<'MODAL.CLOSE', void>
 export type ModalAction = OpenModalAction | CloseModalAction
+
+export const CONTENT_TYPE: {[ModalContentType]: ModalContentType} = {
+  PICK_LOCATION: 'PICK_LOCATION',
+  MODEL_VIEWER: 'MODEL_VIEWER',
+  FATAL_ERROR: 'FATAL_ERROR'
+}
 
 const open = (config: ModalConfigOpened): OpenModalAction => ({
   type: 'MODAL.OPEN',
@@ -14,14 +20,14 @@ const open = (config: ModalConfigOpened): OpenModalAction => ({
 export const openPickLocation = (): OpenModalAction =>
   open({
     isCloseable: false,
-    contentId: 'PICK_LOCATION',
+    contentType: CONTENT_TYPE.PICK_LOCATION,
     contentProps: null
   })
 
 export const openModelViewer = (modelId: ModelId): OpenModalAction =>
   open({
     isCloseable: true,
-    contentId: 'MODEL_VIEWER',
+    contentType: CONTENT_TYPE.MODEL_VIEWER,
     contentProps: {
       modelId
     }
@@ -30,7 +36,7 @@ export const openModelViewer = (modelId: ModelId): OpenModalAction =>
 export const openFatalError = (error: Error): OpenModalAction =>
   open({
     isCloseable: false,
-    contentId: 'FATAL_ERROR',
+    contentType: CONTENT_TYPE.FATAL_ERROR,
     contentProps: {
       error
     }

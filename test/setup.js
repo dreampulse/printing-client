@@ -26,5 +26,6 @@ global.sinon = sinon
 global.fetch = fetch
 global.getModel = getModel
 global.getCmd = getCmd
+global.Cmd = Cmd
 global.findCmd = findCmd
 global.findAction = findAction

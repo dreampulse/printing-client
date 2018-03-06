@@ -13,6 +13,7 @@ import type {
 } from '../type-next'
 import * as pollingAction from '../action-next/polling'
 import * as timeoutAction from '../action-next/timeout'
+import {PollingFunctionFailSignal} from '../lib/error'
 
 export type PollingState = {
   activePollings: {
@@ -142,8 +143,11 @@ const handleFailWithRemainingRetries = (state, action) => {
 }
 
 const handleFail = (state, action) => {
-  const {pollingId} = action.payload
+  const {pollingId, error} = action.payload
 
+  if (error.type !== PollingFunctionFailSignal.type) {
+    throw error
+  }
   if (pollingId in state.activePollings === false) {
     return state
   }

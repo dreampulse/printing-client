@@ -7,6 +7,7 @@ import buildClassName from '../lib/build-class-name'
 import ImageContainer from './image-container'
 import NumberField from './number-field'
 import Icon from './icon'
+import MagnifyableItem from './magnifyable-item'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 
@@ -17,8 +18,9 @@ const ModelItem = ({
   quantity,
   title,
   subline,
-  onQuantityChange = () => {},
-  onDelete = () => {}
+  onQuantityChange = Function.prototype,
+  onDelete = Function.prototype,
+  onMagnify = Function.prototype
 }) => {
   const handleDeleteClick = event => {
     event.preventDefault()
@@ -27,7 +29,13 @@ const ModelItem = ({
 
   return (
     <div className={buildClassName('model-item', modifiers, classNames)}>
-      <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
+      <MagnifyableItem
+        classNames={['model-item__preview']}
+        ariaLabel={`Load ${title} in interactive model viewer`}
+        onClick={onMagnify}
+      >
+        <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
+      </MagnifyableItem>
       <NumberField modifiers={['compact']} value={quantity} onChange={onQuantityChange} />
       <div className="model-item__description">
         {Boolean(title) && <strong className="model-item__title">{title}</strong>}
@@ -47,7 +55,8 @@ ModelItem.propTypes = {
   title: PropTypes.string,
   subline: PropTypes.string,
   onQuantityChange: PropTypes.func,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  onMagnify: PropTypes.func
 }
 
 export default ModelItem

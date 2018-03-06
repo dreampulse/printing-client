@@ -8,14 +8,14 @@ describe('modal', () => {
     {
       description: 'action.openPickLocation()',
       action: modalAction.openPickLocation(),
-      expectedModalConfig: {isCloseable: false, contentId: 'PICK_LOCATION', contentProps: null}
+      expectedModalConfig: {isCloseable: false, contentType: 'PICK_LOCATION', contentProps: null}
     },
     {
       description: 'action.openModelViewer()',
       action: modalAction.openModelViewer('some-model-id'),
       expectedModalConfig: {
         isCloseable: true,
-        contentId: 'MODEL_VIEWER',
+        contentType: 'MODEL_VIEWER',
         contentProps: {modelId: 'some-model-id'}
       }
     },
@@ -24,7 +24,7 @@ describe('modal', () => {
       action: modalAction.openFatalError(someError),
       expectedModalConfig: {
         isCloseable: false,
-        contentId: 'FATAL_ERROR',
+        contentType: 'FATAL_ERROR',
         contentProps: {error: someError}
       }
     }
