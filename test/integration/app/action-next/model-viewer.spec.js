@@ -78,6 +78,7 @@ describe('model-viewer', () => {
         expect(stateBefore, 'to be', stateAfter)
       })
     })
+
     describe('when the model viewer was open', () => {
       let closeAction
       let state
