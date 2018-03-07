@@ -1,7 +1,7 @@
 .model-viewer {
   @include scut-ratio-box(4/3);
   position: relative;
-  background: black;
+  background: $color-gray-3;
 
   &__iframe {
     position: absolute;
@@ -14,5 +14,6 @@
   &__loading-indicator {
     @include scut-center-transform;
     font-size: $font-size-xl;
+    color: $color-gray-0;
   }
 }
