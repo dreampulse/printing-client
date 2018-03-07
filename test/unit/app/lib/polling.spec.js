@@ -1,4 +1,4 @@
-import * as modelLib from '../../../../src/app/lib/model'
+import * as printingEngine from '../../../../src/app/lib/printing-engine'
 import {pollingFunction, POLLING_FAILED} from '../../../../src/app/lib/polling'
 
 describe('polling lib', () => {
@@ -11,7 +11,7 @@ describe('polling lib', () => {
       model: {}
     }
     sandbox = sinon.sandbox.create()
-    sandbox.stub(modelLib, 'getModelWithStatus').resolves(modelWithStatusMock)
+    sandbox.stub(printingEngine, 'getModelWithStatus').resolves(modelWithStatusMock)
   })
 
   afterEach(() => {
@@ -21,7 +21,7 @@ describe('polling lib', () => {
   describe('pollingFunction.modelSceneId()', () => {
     it('calls modelLib.getModelWithStatus() with the given model id', () => {
       pollingFunction.modelSceneId('some-model-id')
-      expect(modelLib.getModelWithStatus, 'to have a call satisfying', ['some-model-id'])
+      expect(printingEngine.getModelWithStatus, 'to have a call satisfying', ['some-model-id'])
     })
 
     describe('when the returned model has a sceneId that is a string', () => {

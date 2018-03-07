@@ -1,10 +1,10 @@
 import config from '../../../../config'
 import * as http from '../../../../src/app/lib/http'
-import {getModelWithStatus} from '../../../../src/app/lib/model'
+import {getModelWithStatus} from '../../../../src/app/lib/printing-engine'
 
 const baseUrl = config.printingEngineBaseUrl
 
-describe('model lib', () => {
+describe('printing-engine lib', () => {
   let responseMock
   let modelMock
   let sandbox
