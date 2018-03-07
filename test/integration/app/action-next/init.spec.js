@@ -15,6 +15,7 @@ describe('init action', () => {
     let state
 
     before(() => {
+      // We're removing the selectors to test for each test so that we can detect if there is a test missing
       selectorsToTest = Object.values(selector)
     })
 
@@ -26,22 +27,6 @@ describe('init action', () => {
       if (selectorsToTest.length > 0) {
         throw new Error(`Missing init test for selector ${selectorsToTest[0].name}()`)
       }
-    })
-    ;[
-      [selector.selectModels, []],
-      [selector.selectUploadingFiles, []],
-      [selector.selectMaterialGroups, []],
-      [selector.selectBasketItems, []],
-      [selector.selectUserId, null],
-      [selector.selectCurrency, 'USD'],
-      [selector.selectLocation, null],
-      [selector.isModalOpen, false],
-      [selector.selectModalConfig, null]
-    ].forEach(([testSelector, expected]) => {
-      it(`${testSelector.name}() returns the expected result after execution`, () => {
-        expect(testSelector(getModel(state)), 'to equal', expected)
-        selectorsToTest = selectorsToTest.filter(s => s !== testSelector)
-      })
     })
 
     it(`triggers the coreAction.updateMaterialGroups() action with the result from listMaterials`, () => {
@@ -84,6 +69,96 @@ describe('init action', () => {
         result: err
       })
       expect(action, 'to equal', modalAction.openPickLocation())
+    })
+
+    describe('selector.selectModels()', () => {
+      after(() => {
+        selectorsToTest = selectorsToTest.filter(s => s !== selector.selectModels)
+      })
+
+      it('returns an empty array', () => {
+        expect(selector.selectModels(getModel(state)), 'to equal', [])
+      })
+    })
+
+    describe('selector.selectUploadingFiles()', () => {
+      after(() => {
+        selectorsToTest = selectorsToTest.filter(s => s !== selector.selectUploadingFiles)
+      })
+
+      it('returns an empty array', () => {
+        expect(selector.selectUploadingFiles(getModel(state)), 'to equal', [])
+      })
+    })
+
+    describe('selector.selectMaterialGroups()', () => {
+      after(() => {
+        selectorsToTest = selectorsToTest.filter(s => s !== selector.selectMaterialGroups)
+      })
+
+      it('returns an empty array', () => {
+        expect(selector.selectMaterialGroups(getModel(state)), 'to equal', [])
+      })
+    })
+
+    describe('selector.selectBasketItems()', () => {
+      after(() => {
+        selectorsToTest = selectorsToTest.filter(s => s !== selector.selectBasketItems)
+      })
+
+      it('returns an empty array', () => {
+        expect(selector.selectBasketItems(getModel(state)), 'to equal', [])
+      })
+    })
+
+    describe('selector.selectUserId()', () => {
+      after(() => {
+        selectorsToTest = selectorsToTest.filter(s => s !== selector.selectUserId)
+      })
+
+      it('returns null', () => {
+        expect(selector.selectUserId(getModel(state)), 'to equal', null)
+      })
+    })
+
+    describe('selector.selectCurrency()', () => {
+      after(() => {
+        selectorsToTest = selectorsToTest.filter(s => s !== selector.selectCurrency)
+      })
+
+      it('returns "USD"', () => {
+        expect(selector.selectCurrency(getModel(state)), 'to equal', 'USD')
+      })
+    })
+
+    describe('selector.selectLocation()', () => {
+      after(() => {
+        selectorsToTest = selectorsToTest.filter(s => s !== selector.selectLocation)
+      })
+
+      it('returns null', () => {
+        expect(selector.selectLocation(getModel(state)), 'to equal', null)
+      })
+    })
+
+    describe('selector.isModalOpen()', () => {
+      after(() => {
+        selectorsToTest = selectorsToTest.filter(s => s !== selector.isModalOpen)
+      })
+
+      it('returns false', () => {
+        expect(selector.isModalOpen(getModel(state)), 'to equal', false)
+      })
+    })
+
+    describe('selector.selectMaterialGroups()', () => {
+      after(() => {
+        selectorsToTest = selectorsToTest.filter(s => s !== selector.selectModalConfig)
+      })
+
+      it('returns null', () => {
+        expect(selector.selectModalConfig(getModel(state)), 'to equal', null)
+      })
     })
   })
 })
