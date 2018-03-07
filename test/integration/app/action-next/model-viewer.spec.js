@@ -3,9 +3,9 @@ import * as modelViewerAction from '../../../../src/app/action-next/model-viewer
 import * as modalAction from '../../../../src/app/action-next/modal'
 import * as pollingAction from '../../../../src/app/action-next/polling'
 import {isModelViewerOpen, selectSceneId} from '../../../../src/app/selector/model-viewer'
+import {pollingFunction} from '../../../../src/app/lib/polling'
 
 import reducer from '../../../../src/app/reducer'
-import {pollModelForSceneId} from '../../../../src/app/lib/model'
 
 describe('model-viewer', () => {
   describe('action.open()', () => {
@@ -19,9 +19,7 @@ describe('model-viewer', () => {
 
     it('triggers modalAction.openModelViewer() with the given model id and pollingAction.start()', () => {
       const pollingStartAction = pollingAction.start(
-        expect.it(fn => {
-          expect(fn, 'to equal', pollModelForSceneId)
-        }),
+        expect.it('to equal', pollingFunction.modelSceneId),
         ['some-model-id'],
         modelViewerAction.handleSceneId,
         config.pollingInterval

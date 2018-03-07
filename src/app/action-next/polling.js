@@ -21,20 +21,14 @@ type StartAction = Action<
     maxRetries: number
   }
 >
-type HandleSuccessAction = Action<
-  'POLLING.HANDLE_SUCCESS',
+type HandleResult = Action<
+  'POLLING.HANDLE_RESULT',
   {pollingId: PollingId, pollingResult: PollingResult}
 >
-type HandleFailAction = Action<'POLLING.HANDLE_FAIL', {pollingId: PollingId, error: Error}>
 type HandleRetryAction = Action<'POLLING.HANDLE_RETRY', {pollingId: PollingId}>
 type CancelAction = Action<'POLLING.CANCEL', {pollingId: PollingId}>
 
-export type PollingAction =
-  | StartAction
-  | HandleSuccessAction
-  | HandleFailAction
-  | HandleRetryAction
-  | CancelAction
+export type PollingAction = StartAction | HandleResult | HandleRetryAction | CancelAction
 
 export const start = (
   pollingFunction: PollingFunction,
@@ -54,22 +48,11 @@ export const start = (
   }
 })
 
-export const handleSuccess = (
-  pollingId: PollingId,
-  pollingResult: PollingResult
-): HandleSuccessAction => ({
-  type: 'POLLING.HANDLE_SUCCESS',
+export const handleResult = (pollingId: PollingId, pollingResult: PollingResult): HandleResult => ({
+  type: 'POLLING.HANDLE_RESULT',
   payload: {
     pollingId,
     pollingResult
-  }
-})
-
-export const handleFail = (pollingId: PollingId, error: Error): HandleFailAction => ({
-  type: 'POLLING.HANDLE_FAIL',
-  payload: {
-    pollingId,
-    error
   }
 })
 

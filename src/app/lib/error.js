@@ -51,12 +51,3 @@ export class FileUploadError extends AppError {
     this.fileId = fileId
   }
 }
-
-// Can be used to signal the polling reducer that the poll was unsuccessful
-export class PollingFunctionFailSignal extends AppError {
-  static type: string = 'POLLING_FUNCTION_FAIL_SIGNAL'
-  fileId: string
-  constructor(pollingName: string) {
-    super(PollingFunctionFailSignal.type, `${pollingName} polling unsuccessful`)
-  }
-}

@@ -1,7 +1,6 @@
 import config from '../../../../config'
 import * as http from '../../../../src/app/lib/http'
-import {getModelWithStatus, pollModelForSceneId} from '../../../../src/app/lib/model'
-import {PollingFunctionFailSignal} from '../../../../src/app/lib/error'
+import {getModelWithStatus} from '../../../../src/app/lib/model'
 
 const baseUrl = config.printingEngineBaseUrl
 
@@ -19,9 +18,11 @@ describe('model lib', () => {
       response: responseMock
     })
   })
+
   afterEach(() => {
     sandbox.restore()
   })
+
   describe('getModelWithStatus()', () => {
     it('calls http.fetchJson() with the correct URL', async () => {
       await getModelWithStatus('some-model-id')
@@ -41,6 +42,7 @@ describe('model lib', () => {
       beforeEach(() => {
         responseMock.status = 200
       })
+
       it('returns isComplete true', async () => {
         const result = await getModelWithStatus('some-model-id')
 
@@ -54,33 +56,13 @@ describe('model lib', () => {
       beforeEach(() => {
         responseMock.status = 206
       })
+
       it('returns isComplete false', async () => {
         const result = await getModelWithStatus('some-model-id')
 
         expect(result, 'to satisfy', {
           isComplete: false
         })
-      })
-    })
-  })
-  describe('pollModelForSceneId()', () => {
-    describe('when the model has no sceneId', () => {
-      it('throws the PollingFunctionFailSignal', async () => {
-        let error
-        try {
-          await pollModelForSceneId('some-model-id')
-        } catch (err) {
-          error = err
-        }
-        expect(error, 'to equal', new PollingFunctionFailSignal('Model scene id'))
-      })
-    })
-    describe('when the model has a sceneId', () => {
-      beforeEach(() => {
-        modelMock.sceneId = 'some-scene-id'
-      })
-      it('returns the sceneId', async () => {
-        expect(await pollModelForSceneId('some-model-id'), 'to be', 'some-scene-id')
       })
     })
   })

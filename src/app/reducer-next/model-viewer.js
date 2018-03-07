@@ -6,7 +6,7 @@ import type {AppAction, ModelId, PollingId, ModelSceneId} from '../type-next'
 import * as modelViewerAction from '../action-next/model-viewer'
 import * as pollingAction from '../action-next/polling'
 import * as modalAction from '../action-next/modal'
-import {pollModelForSceneId} from '../lib/model'
+import {pollingFunction} from '../lib/polling'
 
 export type ModelViewerState = null | {
   modelId: ModelId,
@@ -19,7 +19,7 @@ const initialState: ModelViewerState = null
 const open = (state, action) => {
   const {modelId} = action.payload
   const startPollingAction = pollingAction.start(
-    pollModelForSceneId,
+    pollingFunction.modelSceneId,
     [modelId],
     modelViewerAction.handleSceneId,
     config.pollingInterval
