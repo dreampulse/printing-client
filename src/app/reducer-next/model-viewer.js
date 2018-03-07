@@ -17,21 +17,24 @@ export type ModelViewerState = null | {
 const initialState: ModelViewerState = null
 
 const open = (state, action) => {
-  const {modelId} = action.payload
+  const {model} = action.payload
   const startPollingAction = pollingAction.start(
     pollingFunction.modelSceneId,
-    [modelId],
+    [model.modelId],
     modelViewerAction.handleSceneId,
     config.pollingInterval
   )
 
   return loop(
     {
-      modelId,
+      modelId: model.modelId,
       pollingId: startPollingAction.payload.pollingId,
       sceneId: null
     },
-    Cmd.list([Cmd.action(modalAction.openModelViewer(modelId)), Cmd.action(startPollingAction)])
+    Cmd.list([
+      Cmd.action(modalAction.openModelViewer(model.fileName)),
+      Cmd.action(startPollingAction)
+    ])
   )
 }
 

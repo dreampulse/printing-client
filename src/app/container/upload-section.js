@@ -118,7 +118,7 @@ const UploadSection = ({
                     quantity: value,
                     modelId: model.modelId
                   })}
-                onMagnify={() => onMagnifyModel(model.modelId)}
+                onMagnify={() => onMagnifyModel(model)}
               />
             )
           })}

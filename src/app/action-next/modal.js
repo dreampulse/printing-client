@@ -1,6 +1,6 @@
 // @flow
 
-import type {Action, ModalContentType, ModalConfigOpened, ModelId} from '../type-next'
+import type {Action, ModalContentType, ModalConfigOpened} from '../type-next'
 
 type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
 type CloseModalAction = Action<'MODAL.CLOSE', void>
@@ -24,12 +24,12 @@ export const openPickLocation = (): OpenModalAction =>
     contentProps: null
   })
 
-export const openModelViewer = (modelId: ModelId): OpenModalAction =>
+export const openModelViewer = (modelName: string): OpenModalAction =>
   open({
     isCloseable: true,
     contentType: CONTENT_TYPE.MODEL_VIEWER,
     contentProps: {
-      modelId
+      modelName
     }
   })
 

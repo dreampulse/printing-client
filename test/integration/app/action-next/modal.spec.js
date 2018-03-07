@@ -28,7 +28,7 @@ describe('modal', () => {
     let state
 
     beforeEach(() => {
-      state = reducer(undefined, modalAction.openModelViewer('some-model-id'))
+      state = reducer(undefined, modalAction.openModelViewer('Some model name'))
     })
 
     describe('selector.isModalOpen()', () => {
@@ -40,7 +40,7 @@ describe('modal', () => {
         expect(selectModalConfig(getModel(state)), 'to satisfy', {
           isCloseable: true,
           contentType: 'MODEL_VIEWER',
-          contentProps: {modelId: 'some-model-id'}
+          contentProps: {modelName: 'Some model name'}
         }))
     })
   })

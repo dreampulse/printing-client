@@ -13,11 +13,11 @@ describe('model-viewer', () => {
     let state
 
     beforeEach(() => {
-      openAction = modelViewerAction.open('some-model-id')
+      openAction = modelViewerAction.open({modelId: 'some-model-id', fileName: 'some-file-name'})
       state = reducer(undefined, openAction)
     })
 
-    it('triggers modalAction.openModelViewer() with the given model id and pollingAction.start()', () => {
+    it('triggers modalAction.openModelViewer() with the given fileName and pollingAction.start() with the given modelId', () => {
       const pollingStartAction = pollingAction.start(
         expect.it('to equal', pollingFunction.modelSceneId),
         ['some-model-id'],
@@ -31,7 +31,7 @@ describe('model-viewer', () => {
         findCmd(
           state,
           Cmd.list([
-            Cmd.action(modalAction.openModelViewer('some-model-id')),
+            Cmd.action(modalAction.openModelViewer('some-file-name')),
             Cmd.action(pollingStartAction)
           ])
         ),
