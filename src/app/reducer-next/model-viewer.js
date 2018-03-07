@@ -19,7 +19,7 @@ const initialState: ModelViewerState = null
 const open = (state, action) => {
   const {model} = action.payload
   const startPollingAction = pollingAction.start(
-    pollingFunction.modelSceneId,
+    pollingFunction.getModelSceneId,
     [model.modelId],
     modelViewerAction.handleSceneId,
     config.pollingInterval

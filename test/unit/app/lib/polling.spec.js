@@ -18,9 +18,9 @@ describe('polling lib', () => {
     sandbox.restore()
   })
 
-  describe('pollingFunction.modelSceneId()', () => {
+  describe('pollingFunction.getModelSceneId()', () => {
     it('calls modelLib.getModelWithStatus() with the given model id', () => {
-      pollingFunction.modelSceneId('some-model-id')
+      pollingFunction.getModelSceneId('some-model-id')
       expect(printingEngine.getModelWithStatus, 'to have a call satisfying', ['some-model-id'])
     })
 
@@ -30,7 +30,7 @@ describe('polling lib', () => {
       })
 
       it('resolves with the sceneId', async () => {
-        expect(await pollingFunction.modelSceneId('some-model-id'), 'to equal', 'some-scene-id')
+        expect(await pollingFunction.getModelSceneId('some-model-id'), 'to equal', 'some-scene-id')
       })
     })
 
@@ -41,13 +41,13 @@ describe('polling lib', () => {
       })
 
       it('resolves with the POLLING_FAILED symbol', async () => {
-        expect(await pollingFunction.modelSceneId('some-model-id'), 'to equal', POLLING_FAILED)
+        expect(await pollingFunction.getModelSceneId('some-model-id'), 'to equal', POLLING_FAILED)
       })
     })
 
     describe('when the returned model has no sceneId at all', () => {
       it('resolves with the POLLING_FAILED symbol', async () => {
-        expect(await pollingFunction.modelSceneId('some-model-id'), 'to equal', POLLING_FAILED)
+        expect(await pollingFunction.getModelSceneId('some-model-id'), 'to equal', POLLING_FAILED)
       })
     })
   })

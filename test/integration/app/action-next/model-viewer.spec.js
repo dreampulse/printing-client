@@ -19,7 +19,7 @@ describe('model-viewer', () => {
 
     it('triggers modalAction.openModelViewer() with the given fileName and pollingAction.start() with the given modelId', () => {
       const pollingStartAction = pollingAction.start(
-        expect.it('to equal', pollingFunction.modelSceneId),
+        expect.it('to equal', pollingFunction.getModelSceneId),
         ['some-model-id'],
         modelViewerAction.handleSceneId,
         config.pollingInterval
