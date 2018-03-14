@@ -3,9 +3,9 @@ import * as modelViewerAction from '../../../../src/app/action-next/model-viewer
 import * as modalAction from '../../../../src/app/action-next/modal'
 import * as pollingAction from '../../../../src/app/action-next/polling'
 import {isModelViewerOpen, selectSceneId} from '../../../../src/app/selector/model-viewer'
+import {pollingFunction} from '../../../../src/app/lib/polling'
 
 import reducer from '../../../../src/app/reducer'
-import {pollModelForSceneId} from '../../../../src/app/lib/model'
 
 describe('model-viewer', () => {
   describe('action.open()', () => {
@@ -13,15 +13,13 @@ describe('model-viewer', () => {
     let state
 
     beforeEach(() => {
-      openAction = modelViewerAction.open('some-model-id')
+      openAction = modelViewerAction.open({modelId: 'some-model-id', fileName: 'some-file-name'})
       state = reducer(undefined, openAction)
     })
 
-    it('triggers modalAction.openModelViewer() with the given model id and pollingAction.start()', () => {
+    it('triggers modalAction.openModelViewer() with the given fileName and pollingAction.start() with the given modelId', () => {
       const pollingStartAction = pollingAction.start(
-        expect.it(fn => {
-          expect(fn, 'to equal', pollModelForSceneId)
-        }),
+        expect.it('to equal', pollingFunction.getModelSceneId),
         ['some-model-id'],
         modelViewerAction.handleSceneId,
         config.pollingInterval
@@ -33,7 +31,7 @@ describe('model-viewer', () => {
         findCmd(
           state,
           Cmd.list([
-            Cmd.action(modalAction.openModelViewer('some-model-id')),
+            Cmd.action(modalAction.openModelViewer('some-file-name')),
             Cmd.action(pollingStartAction)
           ])
         ),
@@ -80,6 +78,7 @@ describe('model-viewer', () => {
         expect(stateBefore, 'to be', stateAfter)
       })
     })
+
     describe('when the model viewer was open', () => {
       let closeAction
       let state

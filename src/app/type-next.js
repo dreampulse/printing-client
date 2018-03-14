@@ -133,9 +133,9 @@ export type TimeoutCallId = string
 export type TimeoutOnEndActionCreator = () => _AppAction
 
 export type PollingId = string
-export type PollingResult = any
-export type PollingFunction = (...args: any) => Promise<PollingResult>
 export type PollingArgs = Array<any>
+export type PollingResult = any
+export type PollingFunction = (...args: PollingArgs) => PollingResult | Promise<PollingResult>
 export type PollingOnSuccessActionCreator = (result: PollingResult) => _AppAction
 
 export type AppAction = _AppAction

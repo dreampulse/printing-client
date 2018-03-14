@@ -10,9 +10,8 @@ import Overlay from '../../component/overlay'
 import Headline from '../../component/headline'
 import ModelViewer from '../../component/model-viewer'
 
-const ModelViewerModal = ({onClose, sceneId}) => {
-  // TODO: Show actual model name instead of generic label "Preview"
-  const headline = <Headline label="Preview" modifiers={['l']} />
+const ModelViewerModal = ({onClose, sceneId, modelName}) => {
+  const headline = <Headline label={`Preview ${modelName}`} modifiers={['l']} />
   const buttons = [<Button label="Close" onClick={onClose} />]
 
   return (

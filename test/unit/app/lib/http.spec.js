@@ -25,9 +25,11 @@ describe('http lib', () => {
     sandbox.stub(http, 'fetch').resolves(responseMock)
     sandbox.stub(http, 'Headers').returns(headersMock)
   })
+
   afterEach(() => {
     sandbox.restore()
   })
+
   describe('fetchJson()', () => {
     it('calls http.fetch() with the given url', async () => {
       await fetchJson('http://example.com')

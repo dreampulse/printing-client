@@ -1,16 +1,16 @@
 // @flow
 
-import type {Action, ModelId, ModelSceneId} from '../type-next'
+import type {Action, Model, ModelSceneId} from '../type-next'
 
-type OpenAction = Action<'MODEL_VIEWER.OPEN', {modelId: ModelId}>
+type OpenAction = Action<'MODEL_VIEWER.OPEN', {model: Model}>
 type HandleSceneIdAction = Action<'MODEL_VIEWER.HANDLE_SCENE_ID', {sceneId: ModelSceneId}>
 type CloseAction = Action<'MODEL_VIEWER.CLOSE', void>
 export type ModelViewerAction = OpenAction | HandleSceneIdAction | CloseAction
 
-export const open = (modelId: ModelId): OpenAction => ({
+export const open = (model: Model): OpenAction => ({
   type: 'MODEL_VIEWER.OPEN',
   payload: {
-    modelId
+    model
   }
 })
 

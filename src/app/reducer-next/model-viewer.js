@@ -6,7 +6,7 @@ import type {AppAction, ModelId, PollingId, ModelSceneId} from '../type-next'
 import * as modelViewerAction from '../action-next/model-viewer'
 import * as pollingAction from '../action-next/polling'
 import * as modalAction from '../action-next/modal'
-import {pollModelForSceneId} from '../lib/model'
+import {pollingFunction} from '../lib/polling'
 
 export type ModelViewerState = null | {
   modelId: ModelId,
@@ -17,21 +17,24 @@ export type ModelViewerState = null | {
 const initialState: ModelViewerState = null
 
 const open = (state, action) => {
-  const {modelId} = action.payload
+  const {model} = action.payload
   const startPollingAction = pollingAction.start(
-    pollModelForSceneId,
-    [modelId],
+    pollingFunction.getModelSceneId,
+    [model.modelId],
     modelViewerAction.handleSceneId,
     config.pollingInterval
   )
 
   return loop(
     {
-      modelId,
+      modelId: model.modelId,
       pollingId: startPollingAction.payload.pollingId,
       sceneId: null
     },
-    Cmd.list([Cmd.action(modalAction.openModelViewer(modelId)), Cmd.action(startPollingAction)])
+    Cmd.list([
+      Cmd.action(modalAction.openModelViewer(model.fileName)),
+      Cmd.action(startPollingAction)
+    ])
   )
 }
 

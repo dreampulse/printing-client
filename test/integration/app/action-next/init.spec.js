@@ -11,37 +11,10 @@ import geolocationSuccessResponse from '../../../../test-data/mock/geolocation-s
 
 describe('init action', () => {
   describe('init()', () => {
-    let selectorsToTest
     let state
-
-    before(() => {
-      selectorsToTest = Object.values(selector)
-    })
 
     beforeEach(() => {
       state = reducer(undefined, initAction.init())
-    })
-
-    after(() => {
-      if (selectorsToTest.length > 0) {
-        throw new Error(`Missing init test for selector ${selectorsToTest[0].name}()`)
-      }
-    })
-    ;[
-      [selector.selectModels, []],
-      [selector.selectUploadingFiles, []],
-      [selector.selectMaterialGroups, []],
-      [selector.selectBasketItems, []],
-      [selector.selectUserId, null],
-      [selector.selectCurrency, 'USD'],
-      [selector.selectLocation, null],
-      [selector.isModalOpen, false],
-      [selector.selectModalConfig, null]
-    ].forEach(([testSelector, expected]) => {
-      it(`${testSelector.name}() returns the expected result after execution`, () => {
-        expect(testSelector(getModel(state)), 'to equal', expected)
-        selectorsToTest = selectorsToTest.filter(s => s !== testSelector)
-      })
     })
 
     it(`triggers the coreAction.updateMaterialGroups() action with the result from listMaterials`, () => {
@@ -84,6 +57,60 @@ describe('init action', () => {
         result: err
       })
       expect(action, 'to equal', modalAction.openPickLocation())
+    })
+
+    describe('selector.selectModels()', () => {
+      it('returns an empty array', () => {
+        expect(selector.selectModels(getModel(state)), 'to equal', [])
+      })
+    })
+
+    describe('selector.selectUploadingFiles()', () => {
+      it('returns an empty array', () => {
+        expect(selector.selectUploadingFiles(getModel(state)), 'to equal', [])
+      })
+    })
+
+    describe('selector.selectMaterialGroups()', () => {
+      it('returns an empty array', () => {
+        expect(selector.selectMaterialGroups(getModel(state)), 'to equal', [])
+      })
+    })
+
+    describe('selector.selectBasketItems()', () => {
+      it('returns an empty array', () => {
+        expect(selector.selectBasketItems(getModel(state)), 'to equal', [])
+      })
+    })
+
+    describe('selector.selectUserId()', () => {
+      it('returns null', () => {
+        expect(selector.selectUserId(getModel(state)), 'to equal', null)
+      })
+    })
+
+    describe('selector.selectCurrency()', () => {
+      it('returns "USD"', () => {
+        expect(selector.selectCurrency(getModel(state)), 'to equal', 'USD')
+      })
+    })
+
+    describe('selector.selectLocation()', () => {
+      it('returns null', () => {
+        expect(selector.selectLocation(getModel(state)), 'to equal', null)
+      })
+    })
+
+    describe('selector.isModalOpen()', () => {
+      it('returns false', () => {
+        expect(selector.isModalOpen(getModel(state)), 'to equal', false)
+      })
+    })
+
+    describe('selector.selectMaterialGroups()', () => {
+      it('returns null', () => {
+        expect(selector.selectModalConfig(getModel(state)), 'to equal', null)
+      })
     })
   })
 })
