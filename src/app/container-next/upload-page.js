@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react'
-import compose from 'recompose/compose'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 
@@ -9,7 +8,6 @@ import feature2Image from '../../asset/image/feature2.png'
 // import feature3Image from '../../../asset/image/feature3.png'
 
 import {formatDimensions} from '../lib/formatter'
-
 import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
 
 import {
@@ -53,7 +51,7 @@ const UploadPage = ({
   modelsWithConfig
 }) => {
   const numModels = modelsWithConfig.length
-  const haveModels = numModels > 0
+  const hasModels = numModels > 0
   const numModelsUploading = modelsWithConfig.reduce(
     (sum, [modelConfig, model]) =>
       modelConfig.type === 'UPLOADING' && !model.error ? sum + 1 : sum,
@@ -95,9 +93,9 @@ const UploadPage = ({
         />
       </Section>
       <ProviderTeaser>
-        <ProviderImage name="shapeways" />
-        <ProviderImage name="imaterialise" />
-        <ProviderImage name="sculpteo" />
+        <ProviderImage slug="shapeways" />
+        <ProviderImage slug="imaterialise" />
+        <ProviderImage slug="sculpteo" />
       </ProviderTeaser>
     </Fragment>
   )
@@ -199,14 +197,16 @@ const UploadPage = ({
   return (
     <AppLayout>
       {uploadSection()}
-      {haveModels && modelListSection()}
-      {!haveModels && promoSection()}
+      {hasModels && modelListSection()}
+      {!hasModels && promoSection()}
     </AppLayout>
   )
 }
 
 const mapStateToProps = state => ({
-  modelsWithConfig: unzip([selectModelConfigs(state), selectModelsOfModelConfigs(state)])
+  modelsWithConfig: unzip([selectModelConfigs(state), selectModelsOfModelConfigs(state)]).filter(
+    ([modelConfig]) => modelConfig.quoteId === null
+  )
 })
 
 const mapDispatchToProps = {
@@ -217,4 +217,4 @@ const mapDispatchToProps = {
   onChooseMaterial: chooseMaterial
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(UploadPage)
+export default connect(mapStateToProps, mapDispatchToProps)(UploadPage)

@@ -17,7 +17,7 @@ const UploadModelItem = ({
 }) => (
   <div className={buildClassName('upload-model-item', modifiers, classNames)}>
     {/* TODO: include new image preview component here */}
-    <ImageContainer source={imageSource} />
+    <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
     <div className="upload-model-item__content">
       {Boolean(title) && <strong className="upload-model-item__title">{title}</strong>}
       {Boolean(subline) && <div className="upload-model-item__subline">{subline}</div>}

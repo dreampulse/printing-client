@@ -30,6 +30,7 @@
     @include span(12);
     text-align: center;
     height: $nav-bar-content-height; // To keep fixed nav bar height event if content doesn't fit
+    line-height: $nav-bar-content-height;
 
     @include respond-to(large) {
       @include span(6);
