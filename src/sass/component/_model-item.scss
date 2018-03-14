@@ -9,7 +9,8 @@
   border-bottom: 1px solid $color-bg;
   background: $color-bg;
 
-  & > .image-container {
+  &__preview {
+    color: $color-gray-3;
     flex-shrink: 0;
     width: $upload-model-item-image-width;
     margin-right: $space-l;

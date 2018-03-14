@@ -18,6 +18,7 @@ export type VendorId = string
 export type ConfigId = string
 export type ShippingId = string
 export type ModelId = string
+export type ModelSceneId = string
 export type FileId = string
 
 // Material structure json-schema
@@ -117,7 +118,8 @@ export type BackendModel = {
     y: ?number,
     z: ?number
   },
-  thumbnailUrl: string
+  thumbnailUrl: string,
+  sceneId?: ModelSceneId
 }
 
 export type BackendQuote = {
@@ -170,25 +172,23 @@ export type GoogleMapsPlace = {
   }>
 }
 
-export type ModalContent = 'PICK_LOCATION' | 'FATAL_ERROR'
-
-type _ModalConfig<C> = {
+export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR'
+export type ModalConfigClosed = null
+export type ModalConfigOpened = {
   isCloseable: boolean,
-  content: C,
+  contentType: ModalContentType,
   contentProps: any
 }
-
-export type ModalConfig = _ModalConfig<null | ModalContent>
-export type OpenModalConfig = _ModalConfig<ModalContent>
+export type ModalConfig = ModalConfigOpened | ModalConfigClosed
 
 export type TimeoutId = string
 export type TimeoutCallId = string
 export type TimeoutOnEndActionCreator = () => _AppAction
 
 export type PollingId = string
-export type PollingResult = any
-export type PollingFunction = () => Promise<PollingResult>
 export type PollingArgs = Array<any>
+export type PollingResult = any
+export type PollingFunction = (...args: PollingArgs) => PollingResult | Promise<PollingResult>
 export type PollingOnSuccessActionCreator = (result: PollingResult) => _AppAction
 
 export type AppAction = _AppAction

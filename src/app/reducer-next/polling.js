@@ -13,6 +13,7 @@ import type {
 } from '../type-next'
 import * as pollingAction from '../action-next/polling'
 import * as timeoutAction from '../action-next/timeout'
+import {POLLING_FAILED} from '../lib/polling'
 
 export type PollingState = {
   activePollings: {
@@ -49,8 +50,7 @@ const startTry = (state, pollingId, activePolling) => {
     },
     Cmd.run(pollingFunction, {
       args: pollingArgs,
-      successActionCreator: pollingResult => pollingAction.handleSuccess(pollingId, pollingResult),
-      failActionCreator: error => pollingAction.handleFail(pollingId, error)
+      successActionCreator: pollingResult => pollingAction.handleResult(pollingId, pollingResult)
     })
   )
 }
@@ -92,12 +92,6 @@ const start = (state, action) => {
 
 const handleSuccess = (state, action) => {
   const {pollingId, pollingResult} = action.payload
-
-  if (pollingId in state.activePollings === false) {
-    return state
-  }
-  assertActivePollingInState('handleSuccess', state, action, 'POLLING')
-
   const activePolling = state.activePollings[pollingId]
 
   return loop(
@@ -141,19 +135,23 @@ const handleFailWithRemainingRetries = (state, action) => {
   )
 }
 
-const handleFail = (state, action) => {
-  const {pollingId} = action.payload
+const handleResult = (state, action) => {
+  const {pollingId, pollingResult} = action.payload
 
   if (pollingId in state.activePollings === false) {
     return state
   }
-  assertActivePollingInState('handleFail', state, action, 'POLLING')
+  assertActivePollingInState('handleResult', state, action, 'POLLING')
 
   const activePolling = state.activePollings[pollingId]
 
-  return activePolling.remainingRetries === 0
-    ? handleFailNoRemainingRetries(state, action)
-    : handleFailWithRemainingRetries(state, action)
+  if (pollingResult === POLLING_FAILED) {
+    return activePolling.remainingRetries === 0
+      ? handleFailNoRemainingRetries(state, action)
+      : handleFailWithRemainingRetries(state, action)
+  }
+
+  return handleSuccess(state, action)
 }
 
 const handleRetry = (state, action) => {
@@ -193,10 +191,8 @@ export const reducer = (state: PollingState = initialState, action: AppAction): 
   switch (action.type) {
     case 'POLLING.START':
       return start(state, action)
-    case 'POLLING.HANDLE_SUCCESS':
-      return handleSuccess(state, action)
-    case 'POLLING.HANDLE_FAIL':
-      return handleFail(state, action)
+    case 'POLLING.HANDLE_RESULT':
+      return handleResult(state, action)
     case 'POLLING.HANDLE_RETRY':
       return handleRetry(state, action)
     case 'POLLING.CANCEL':
