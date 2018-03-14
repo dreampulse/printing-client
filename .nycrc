@@ -16,7 +16,8 @@
     "src/app/service/*.js",
     "src/app/action/*.js",
     "src/app/reducer/*.js",
-    "src/app/lib/printing-engine.js"
+    "src/app/lib/printing-engine.js",
+    "src/app/action-next/navigation.js"
   ],
   "reporter": [
     "text",
