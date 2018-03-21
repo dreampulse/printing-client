@@ -1,7 +1,7 @@
 // @flow
 
 import type {AppAction as _AppAction} from './action-next'
-import type {AppState as _AppState} from './reducer'
+import type {AppState as _AppState} from './reducer-next'
 
 export type Action<Type, Payload> = {
   type: Type,

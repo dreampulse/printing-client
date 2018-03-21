@@ -33,13 +33,13 @@ function trackingReduxMiddleware() {
 
 export default (history, initialState = {}) => {
   let enhancer = compose(
+    installReduxLoop(),
     applyMiddleware(
       legacyThunk,
       routerMiddleware(history),
       trackingReduxMiddleware,
       ravenMiddleware
-    ),
-    installReduxLoop()
+    )
   )
 
   if (global.devToolsExtension) {
@@ -52,10 +52,10 @@ export default (history, initialState = {}) => {
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./reducer', () => {
+    module.hot.accept('./reducer-next', () => {
       /* eslint global-require: 0 */
       /* eslint import/newline-after-import: 0 */
-      const nextReducer = require('./reducer').default
+      const nextReducer = require('./reducer-next').default
       store.replaceReducer(nextReducer)
     })
   }

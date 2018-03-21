@@ -2,7 +2,7 @@ import timeout from 'timeout-as-promise'
 import * as timeoutAction from '../../../../src/app/action-next/timeout'
 import {isTimeoutActive} from '../../../../src/app/selector/timeout'
 
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 
 describe('timeout', () => {
   describe('action.start()', () => {

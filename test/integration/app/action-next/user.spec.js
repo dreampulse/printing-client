@@ -3,7 +3,7 @@ import * as userAction from '../../../../src/app/action-next/user'
 import * as printingEngine from '../../../../src/app/service/printing-engine'
 import {selectLocation, selectUserId} from '../../../../src/app/selector'
 import * as userLib from '../../../../src/app/lib/user'
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 
 import createUserMock from '../../../mock/printing-engine/create-user'
 import getLocationByIpMock from '../../../mock/printing-engine/get-location-by-ip'

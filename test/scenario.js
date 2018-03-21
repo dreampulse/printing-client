@@ -1,7 +1,7 @@
 import range from 'lodash/range'
 import flatMap from 'lodash/flatMap'
 import * as modelAction from '../src/app/action-next/model'
-import reducer from '../src/app/reducer'
+import reducer from '../src/app/reducer-next'
 import getUploadModelMock from './mock/printing-engine/backend-model'
 import getFileMock from './mock/file'
 
