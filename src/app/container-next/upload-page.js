@@ -10,14 +10,8 @@ import feature2Image from '../../asset/image/feature2.png'
 import {formatDimensions} from '../lib/formatter'
 import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
 
-import {
-  uploadFile,
-  updateQuantities,
-  deleteModelConfigs,
-  duplicateModelConfig
-} from '../action-next/model'
-
-import {chooseMaterial} from '../action-next/material'
+import * as modelAction from '../action-next/model'
+import * as materialAction from '../action-next/material'
 
 import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
@@ -210,11 +204,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onUploadFile: uploadFile,
-  onDeleteModelConfigs: deleteModelConfigs,
-  onChangeQuantities: updateQuantities,
-  onDuplicateModelConfig: duplicateModelConfig,
-  onChooseMaterial: chooseMaterial
+  onUploadFile: modelAction.uploadFile,
+  onDeleteModelConfigs: modelAction.deleteModelConfigs,
+  onChangeQuantities: modelAction.updateQuantities,
+  onDuplicateModelConfig: modelAction.duplicateModelConfig,
+  onChooseMaterial: materialAction.choose
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadPage)

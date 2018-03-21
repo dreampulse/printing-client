@@ -6,13 +6,8 @@ import ModelList from '../component/model-list'
 import Button from '../component/button'
 import NumberField from '../component/number-field'
 
-import {
-  updateSelectedModelConfigs,
-  deleteModelConfigs,
-  updateQuantities
-} from '../action-next/model'
-
-import {chooseMaterial} from '../action-next/material'
+import * as modelAction from '../action-next/model'
+import * as materialAction from '../action-next/material'
 
 import {getCommonQuantity} from '../lib/quantity'
 import {selectSelectedModelConfigIds, selectSelectedModelConfigs} from '../selector'
@@ -79,10 +74,10 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onChangeSelectedModelConfigs: updateSelectedModelConfigs,
-  onDeleteModelConfigs: deleteModelConfigs,
-  onChangeQuantities: updateQuantities,
-  onChooseMaterial: chooseMaterial
+  onChangeSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
+  onDeleteModelConfigs: modelAction.deleteModelConfigs,
+  onChangeQuantities: modelAction.updateQuantities,
+  onChooseMaterial: materialAction.choose
 }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(ModelListPartial)
