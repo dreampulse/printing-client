@@ -1,3 +1,5 @@
+// @flow
+
 import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
@@ -9,6 +11,7 @@ import feature2Image from '../../asset/image/feature2.png'
 
 import {formatDimensions} from '../lib/formatter'
 import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
+import type {AppState} from '../reducer-next'
 
 import * as modelAction from '../action-next/model'
 import * as materialAction from '../action-next/material'
@@ -197,7 +200,7 @@ const UploadPage = ({
   )
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
   modelsWithConfig: unzip([selectModelConfigs(state), selectModelsOfModelConfigs(state)])
 })
 

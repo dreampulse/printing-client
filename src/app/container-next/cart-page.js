@@ -1,7 +1,10 @@
+// @flow
+
 import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 
+import type {AppState} from '../reducer-next'
 import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 
@@ -136,7 +139,7 @@ const CartPage = ({
   )
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
   /* TODO: to be able to test this page we show all models for now but have to filter them later */
   /* modelsWithConfig: unzip([selectModelConfigs(state), selectModelsOfModelConfigs(state)]).filter(
     ([modelConfig]) => modelConfig.quoteId !== null
