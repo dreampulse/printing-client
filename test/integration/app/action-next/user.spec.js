@@ -1,6 +1,6 @@
-import * as coreAction from '../../../../src/app/action-next/core'
+// import * as coreAction from '../../../../src/app/action-next/core'
 import * as userAction from '../../../../src/app/action-next/user'
-import * as printingEngine from '../../../../src/app/service/printing-engine'
+// import * as printingEngine from '../../../../src/app/service/printing-engine'
 import {selectLocation, selectUserId} from '../../../../src/app/selector'
 import * as userLib from '../../../../src/app/lib/user'
 import reducer from '../../../../src/app/reducer-next'
@@ -23,34 +23,36 @@ describe('user action', () => {
         expect(selectLocation(getModel(state)), 'to equal', location))
     })
 
-    it('triggers the userAction.userCreated() action with the result from createUser', () => {
-      const cmd = findCmd(state, printingEngine.createUser, [
-        {
-          currency: getModel(state).user.currency,
-          location
-        }
-      ])
-      const action = cmd.simulate({
-        success: true,
-        result: createUserMock()
-      })
-      expect(action, 'to equal', userAction.userCreated(createUserMock().userId))
-    })
+    // We need to implement a create user action in the future. This tests can be reused:
 
-    it('triggers the coreAction.fatalError() action when createUser failed', () => {
-      const err = new Error('some-error')
-      const cmd = findCmd(state, printingEngine.createUser, [
-        {
-          currency: getModel(state).user.currency,
-          location
-        }
-      ])
-      const action = cmd.simulate({
-        success: false,
-        result: err
-      })
-      expect(action, 'to equal', coreAction.fatalError(err))
-    })
+    // it('triggers the userAction.userCreated() action with the result from createUser', () => {
+    //   const cmd = findCmd(state, printingEngine.createUser, [
+    //     {
+    //       currency: getModel(state).user.currency,
+    //       location
+    //     }
+    //   ])
+    //   const action = cmd.simulate({
+    //     success: true,
+    //     result: createUserMock()
+    //   })
+    //   expect(action, 'to equal', userAction.userCreated(createUserMock().userId))
+    // })
+
+    // it('triggers the coreAction.fatalError() action when createUser failed', () => {
+    //   const err = new Error('some-error')
+    //   const cmd = findCmd(state, printingEngine.createUser, [
+    //     {
+    //       currency: getModel(state).user.currency,
+    //       location
+    //     }
+    //   ])
+    //   const action = cmd.simulate({
+    //     success: false,
+    //     result: err
+    //   })
+    //   expect(action, 'to equal', coreAction.fatalError(err))
+    // })
   })
 
   describe('userCreated()', () => {
