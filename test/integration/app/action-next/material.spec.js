@@ -4,14 +4,11 @@ import {goToMaterial} from '../../../../src/app/action-next/navigation'
 import reducer from '../../../../src/app/reducer-next'
 
 describe('material action', () => {
-  describe('chooseMaterial()', () => {
+  describe('choose()', () => {
     let state
 
     beforeEach(() => {
-      state = reducer(
-        undefined,
-        materialAction.chooseMaterial(['some-config-id-1', 'some-config-id-2'])
-      )
+      state = reducer(undefined, materialAction.choose(['some-config-id-1', 'some-config-id-2']))
     })
 
     it('dispatches gotToMaterial() action', () => {
