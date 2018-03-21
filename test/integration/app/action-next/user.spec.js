@@ -1,7 +1,7 @@
 // import * as coreAction from '../../../../src/app/action-next/core'
 import * as userAction from '../../../../src/app/action-next/user'
 // import * as printingEngine from '../../../../src/app/service/printing-engine'
-import {selectLocation, selectUserId} from '../../../../src/app/selector'
+import {selectLocation, selectCurrency, selectUserId} from '../../../../src/app/selector'
 import * as userLib from '../../../../src/app/lib/user'
 import reducer from '../../../../src/app/reducer-next'
 
@@ -9,13 +9,13 @@ import createUserMock from '../../../mock/printing-engine/create-user'
 import getLocationByIpMock from '../../../mock/printing-engine/get-location-by-ip'
 
 describe('user action', () => {
-  describe('locationDetected()', () => {
+  describe('locationUpdated()', () => {
     let location
     let state
 
     beforeEach(() => {
       location = getLocationByIpMock()
-      state = reducer(undefined, userAction.locationDetected(location))
+      state = reducer(undefined, userAction.locationUpdated(location))
     })
 
     describe('using selectLocation() selector', () => {
@@ -53,6 +53,13 @@ describe('user action', () => {
     //   })
     //   expect(action, 'to equal', coreAction.fatalError(err))
     // })
+  })
+
+  describe('currencyUpdated()', () => {
+    it('returns the updated currency', () => {
+      const state = reducer(undefined, userAction.currencyUpdated('some-currency'))
+      expect(selectCurrency(getModel(state)), 'to equal', 'some-currency')
+    })
   })
 
   describe('userCreated()', () => {
