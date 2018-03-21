@@ -198,9 +198,7 @@ const UploadPage = ({
 }
 
 const mapStateToProps = state => ({
-  modelsWithConfig: unzip([selectModelConfigs(state), selectModelsOfModelConfigs(state)]).filter(
-    ([modelConfig]) => modelConfig.quoteId === null
-  )
+  modelsWithConfig: unzip([selectModelConfigs(state), selectModelsOfModelConfigs(state)])
 })
 
 const mapDispatchToProps = {
