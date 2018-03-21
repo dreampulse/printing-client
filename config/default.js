@@ -24,6 +24,7 @@ export default {
   providerNames: {
     imaterialise: 'i.Materialise',
     sculpteo: 'Sculpteo',
-    shapeways: 'Shapeways'
+    shapeways: 'Shapeways',
+    trinckle: 'Trinckle'
   }
 }

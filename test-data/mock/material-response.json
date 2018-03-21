@@ -6,7 +6,8 @@
       "materials": [
         {
           "name": "Brass",
-          "description": "Good for jewelry and jewelry prototypes. When polished, brass is smooth and shiny. When unpolished, it is matte, rough and looks antique. Objects will tarnish over time and may need to be polished. It is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded. Brass consists of 15% zinc, 5% tin, and 80% copper. A good rule of thumb is to scale your model up by 1% to allow a natural shrinkage, which occurs during the production process. ",
+          "description":
+            "Good for jewelry and jewelry prototypes. When polished, brass is smooth and shiny. When unpolished, it is matte, rough and looks antique. Objects will tarnish over time and may need to be polished. It is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded. Brass consists of 15% zinc, 5% tin, and 80% copper. A good rule of thumb is to scale your model up by 1% to allow a natural shrinkage, which occurs during the production process. ",
           "id": "3be80a54-3680-558d-a57a-d8445e8ccca5",
           "featuredImage": "gallery/brass-ora-pendant-20130925.jpg",
           "descriptionShort": "Solid, natural brass.",
@@ -19,7 +20,8 @@
                 "printingServiceName": {
                   "shapeways": "Brass",
                   "imaterialise": "Brass",
-                  "sculpteo": "Brass"
+                  "sculpteo": "Brass",
+                  "trinckle": "Brass"
                 },
                 "strength": 4,
                 "flexibility": 1,
@@ -64,7 +66,8 @@
                 "printingServiceName": {
                   "shapeways": "Brass",
                   "imaterialise": "Brass",
-                  "sculpteo": "Brass"
+                  "sculpteo": "Brass",
+                  "trinckle": "Brass"
                 },
                 "strength": 4,
                 "flexibility": 1,
@@ -169,7 +172,8 @@
                 "printingServiceName": {
                   "shapeways": "Brass",
                   "imaterialise": "Brass",
-                  "sculpteo": "Brass"
+                  "sculpteo": "Brass",
+                  "trinckle": "Brass"
                 },
                 "strength": 4,
                 "flexibility": 1,
@@ -214,7 +218,8 @@
                 "printingServiceName": {
                   "shapeways": "Brass",
                   "imaterialise": "Brass",
-                  "sculpteo": "Brass"
+                  "sculpteo": "Brass",
+                  "trinckle": "Brass"
                 },
                 "strength": 4,
                 "flexibility": 1,
@@ -257,7 +262,8 @@
         },
         {
           "name": "Bronze",
-          "description": "Raw bronze is great for antique-looking objects, vintage jewelry and functional parts. It has a rustic matte look. The color is similar to rose gold, but whith a marbling effect. When polished it is smooth and shiny, and good for miniatures and jewelry but less detailed. Bronze is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded.",
+          "description":
+            "Raw bronze is great for antique-looking objects, vintage jewelry and functional parts. It has a rustic matte look. The color is similar to rose gold, but whith a marbling effect. When polished it is smooth and shiny, and good for miniatures and jewelry but less detailed. Bronze is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded.",
           "id": "44669157-a0bd-5134-9041-13b36be329d7",
           "featuredImage": "gallery/solid_raw_bronze.jpg",
           "descriptionShort": "Natural beautiful bronze.",
@@ -270,7 +276,8 @@
                 "printingServiceName": {
                   "shapeways": "Bronze",
                   "imaterialise": "Bronze",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 1,
@@ -315,7 +322,8 @@
                 "printingServiceName": {
                   "shapeways": "Bronze",
                   "imaterialise": "Bronze",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 1,
@@ -367,7 +375,8 @@
                 "printingServiceName": {
                   "shapeways": "Bronze",
                   "imaterialise": "Bronze",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 1,
@@ -410,7 +419,8 @@
         },
         {
           "name": "Copper",
-          "description": "Good for robust and decorative models like coins, medals, keys, connectors, statues. Copper corrodes with a greenish hue if the part is not varnished or coated. The varnish or coating will slow down the oxidation but won’t prevent it in the long term. It is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded.",
+          "description":
+            "Good for robust and decorative models like coins, medals, keys, connectors, statues. Copper corrodes with a greenish hue if the part is not varnished or coated. The varnish or coating will slow down the oxidation but won’t prevent it in the long term. It is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded.",
           "id": "970f79ab-c4f2-5292-81c8-34900608ab8c",
           "featuredImage": "gallery/copper_raw.jpg",
           "descriptionShort": "Natural, raw copper.",
@@ -423,7 +433,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "Copper",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -469,7 +480,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "Copper",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -512,7 +524,8 @@
         },
         {
           "name": "Gold",
-          "description": "The perfect material for precious jewelry like ear rings, pendants & bracelets. It is hand polished. Gold is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded",
+          "description":
+            "The perfect material for precious jewelry like ear rings, pendants & bracelets. It is hand polished. Gold is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded",
           "id": "1b713989-d768-5c2e-9e2e-1f7b5a50fd6f",
           "featuredImage": "gallery/top-14k-gold.jpg",
           "descriptionShort": "Solid Gold with various karat.",
@@ -525,7 +538,8 @@
                 "printingServiceName": {
                   "shapeways": "Gold",
                   "imaterialise": "Gold",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -577,7 +591,8 @@
                 "printingServiceName": {
                   "shapeways": "Gold",
                   "imaterialise": "Gold",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -629,7 +644,8 @@
                 "printingServiceName": {
                   "shapeways": "Gold",
                   "imaterialise": "Gold",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -681,7 +697,8 @@
                 "printingServiceName": {
                   "shapeways": "Gold",
                   "imaterialise": "Gold",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -733,7 +750,8 @@
                 "printingServiceName": {
                   "shapeways": "Gold",
                   "imaterialise": "Gold",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -779,7 +797,8 @@
                 "printingServiceName": {
                   "shapeways": "Gold",
                   "imaterialise": "Gold",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -822,7 +841,8 @@
         },
         {
           "name": "High Detail Stainless Steel",
-          "description": "High detail stainless steel is perfect for small and very detailed objects like board game miniatures and jewelry. 3D printed in multiple steps: First, steel powder is inkjet printed using liquid binder, afterwards sintered. Only suitible for small objects. Bounding Box: 4 x 4 x 4cm",
+          "description":
+            "High detail stainless steel is perfect for small and very detailed objects like board game miniatures and jewelry. 3D printed in multiple steps: First, steel powder is inkjet printed using liquid binder, afterwards sintered. Only suitible for small objects. Bounding Box: 4 x 4 x 4cm",
           "id": "e7142b47-21f9-50c3-a4a8-0e446003ffa5",
           "featuredImage": "gallery/high_detailed_stainless_steel_raw1.jpg",
           "descriptionShort": "For small, detailed objects.",
@@ -835,7 +855,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "High-Detail Stainless Steel",
-                  "sculpteo": "Stainless Steel 316L"
+                  "sculpteo": "Stainless Steel 316L",
+                  "trinckle": "Stainless Steel 316L"
                 },
                 "materialSpec": "316L",
                 "strength": 5,
@@ -850,7 +871,8 @@
               "materialName": "High Detail Stainless Steel",
               "name": "Polished, High Detail",
               "featuredImage": "gallery/high_detail_stainless_steel_polished.jpg",
-              "description": "Solid high detail stainless steel, polished shiny surface, less details due to polishing",
+              "description":
+                "Solid high detail stainless steel, polished shiny surface, less details due to polishing",
               "id": "2794fbc2-4240-5dc3-a843-ae4471fa40b6",
               "descriptionShort": "Polished shiny surface.",
               "materialId": "e7142b47-21f9-50c3-a4a8-0e446003ffa5",
@@ -905,7 +927,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "High-Detail Stainless Steel",
-                  "sculpteo": "Stainless Steel 316L"
+                  "sculpteo": "Stainless Steel 316L",
+                  "trinckle": "Stainless Steel 316L"
                 },
                 "materialSpec": "316L",
                 "strength": 5,
@@ -958,7 +981,8 @@
         },
         {
           "name": "Platinum",
-          "description": "Platinum is the most valuable 3D printable material overall. It is produced in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded",
+          "description":
+            "Platinum is the most valuable 3D printable material overall. It is produced in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded",
           "id": "c924b653-40dc-5c28-98d8-8940cbfbac51",
           "featuredImage": "gallery/platinum-top-arrow-ring.jpg",
           "descriptionShort": "Most valuable 3D printing material.",
@@ -971,7 +995,8 @@
                 "printingServiceName": {
                   "shapeways": "Platinum",
                   "imaterialise": "",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -1013,7 +1038,8 @@
         },
         {
           "name": "Precious Plated Metals",
-          "description": "Precious Plated Metals are made from solid casted brass and treated with an underplating of rin-rhodium alloy, before being plated with your desired plating. The Precious Plated Metals have a beautiful finish and due to the tin-rhodium plating, great durability.",
+          "description":
+            "Precious Plated Metals are made from solid casted brass and treated with an underplating of rin-rhodium alloy, before being plated with your desired plating. The Precious Plated Metals have a beautiful finish and due to the tin-rhodium plating, great durability.",
           "id": "c0c4d8c6-c110-5c4b-b35c-82f5b8d2c0ba",
           "featuredImage": "gallery/precious_plated_metals.jpg",
           "descriptionShort": "Plated brass with a beautiful finish.",
@@ -1026,7 +1052,8 @@
                 "printingServiceName": {
                   "shapeways": "Precious Plated Metals",
                   "imaterialise": "",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -1125,7 +1152,8 @@
         },
         {
           "name": "Stainless Steel",
-          "description": "Stainless steel is the best all-round metal for the best value price. It is very robust. It can be used for a wide range of applications including functional parts, jewelry and sculptures. It is 3D printed in multiple steps: first, steel powder is inkjet printed using liquid binder, than infused with bronze, afterwards sintered.",
+          "description":
+            "Stainless steel is the best all-round metal for the best value price. It is very robust. It can be used for a wide range of applications including functional parts, jewelry and sculptures. It is 3D printed in multiple steps: first, steel powder is inkjet printed using liquid binder, than infused with bronze, afterwards sintered.",
           "id": "f5907711-155a-534a-9940-dda1165cda16",
           "featuredImage": "gallery/easy_corn.jpg",
           "descriptionShort": "Stainless steel with various finishes.",
@@ -1138,7 +1166,8 @@
                 "printingServiceName": {
                   "shapeways": "Steel",
                   "imaterialise": "Steel",
-                  "sculpteo": "Steel / Bronze 420SS/BR or Stainless Steel 316"
+                  "sculpteo": "Steel / Bronze 420SS/BR or Stainless Steel 316",
+                  "trinckle": "Steel / Bronze 420SS/BR or Stainless Steel 316"
                 },
                 "strength": 5,
                 "flexibility": 1,
@@ -1241,7 +1270,8 @@
                 "printingServiceName": {
                   "shapeways": "Steel",
                   "imaterialise": "Steel",
-                  "sculpteo": "Steel / Bronze 420SS/BR or Stainless Steel 316"
+                  "sculpteo": "Steel / Bronze 420SS/BR or Stainless Steel 316",
+                  "trinckle": "Steel / Bronze 420SS/BR or Stainless Steel 316"
                 },
                 "strength": 5,
                 "flexibility": 1,
@@ -1348,7 +1378,8 @@
                 "printingServiceName": {
                   "shapeways": "Steel",
                   "imaterialise": "Steel",
-                  "sculpteo": "Steel / Bronze 420SS/BR or Stainless Steel 316"
+                  "sculpteo": "Steel / Bronze 420SS/BR or Stainless Steel 316",
+                  "trinckle": "Steel / Bronze 420SS/BR or Stainless Steel 316"
                 },
                 "strength": 5,
                 "flexibility": 1,
@@ -1443,7 +1474,8 @@
                 "printingServiceName": {
                   "shapeways": "Steel",
                   "imaterialise": "Steel",
-                  "sculpteo": "Steel / Bronze 420SS/BR or Stainless Steel 316"
+                  "sculpteo": "Steel / Bronze 420SS/BR or Stainless Steel 316",
+                  "trinckle": "Steel / Bronze 420SS/BR or Stainless Steel 316"
                 },
                 "strength": 5,
                 "flexibility": 1,
@@ -1541,7 +1573,8 @@
         },
         {
           "name": "Sterling Silver",
-          "description": "The perfect material for jewelry. It can be polished for more shine, but with fewer details. Malleable if thin. Thicken fragile areas to avoid distortions. It is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded",
+          "description":
+            "The perfect material for jewelry. It can be polished for more shine, but with fewer details. Malleable if thin. Thicken fragile areas to avoid distortions. It is 3D printed in multiple steps. First, 3D printed in high resolution wax. A mold of liquid plaster is made using the wax model, afterwards injection molded",
           "id": "e3dbdf80-7db3-5d15-841f-536e377ae228",
           "featuredImage": "gallery/silver-img1_b.jpg",
           "descriptionShort": "Beautiful sterling silver.",
@@ -1554,7 +1587,8 @@
                 "printingServiceName": {
                   "shapeways": "Silver",
                   "imaterialise": "Silver",
-                  "sculpteo": "Sterling Silver"
+                  "sculpteo": "Sterling Silver",
+                  "trinckle": "Sterling Silver"
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -1638,7 +1672,8 @@
                 "printingServiceName": {
                   "shapeways": "Silver",
                   "imaterialise": "Silver",
-                  "sculpteo": "Sterling Silver"
+                  "sculpteo": "Sterling Silver",
+                  "trinckle": "Sterling Silver"
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -1690,7 +1725,8 @@
                 "printingServiceName": {
                   "shapeways": "Silver",
                   "imaterialise": "Silver",
-                  "sculpteo": "Sterling Silver"
+                  "sculpteo": "Sterling Silver",
+                  "trinckle": "Sterling Silver"
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -1736,7 +1772,8 @@
                 "printingServiceName": {
                   "shapeways": "Silver",
                   "imaterialise": "Silver",
-                  "sculpteo": "Sterling Silver"
+                  "sculpteo": "Sterling Silver",
+                  "trinckle": "Sterling Silver"
                 },
                 "strength": 4,
                 "flexibility": 2,
@@ -1747,7 +1784,8 @@
               "materialName": "Sterling Silver",
               "name": "Solid, antique",
               "featuredImage": "gallery/antique_silver.jpg",
-              "description": "Solid sterling silver, polished shiny smooth outer surface, recessed areas dark and rough",
+              "description":
+                "Solid sterling silver, polished shiny smooth outer surface, recessed areas dark and rough",
               "id": "8428469f-73b9-5608-9a98-7caaf581f75a",
               "descriptionShort": "Solid silver with an antique finish.",
               "materialId": "e3dbdf80-7db3-5d15-841f-536e377ae228",
@@ -1779,7 +1817,8 @@
         },
         {
           "name": "Titanium",
-          "description": "This is strongest 3D printable material. Titanium is good for full functional parts as well as jewelry. It is very precise. Titanium is 3D printed using Direct Metal Laser Sintering (DMLS)",
+          "description":
+            "This is strongest 3D printable material. Titanium is good for full functional parts as well as jewelry. It is very precise. Titanium is 3D printed using Direct Metal Laser Sintering (DMLS)",
           "id": "f7ffd4a9-a694-580a-b1e8-984b65d2e3c6",
           "featuredImage": "gallery/titanium_raw.jpg",
           "descriptionShort": "The strongest material offered.",
@@ -1792,7 +1831,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "Titanium",
-                  "sculpteo": "Titanium 6AI-4V"
+                  "sculpteo": "Titanium 6AI-4V",
+                  "trinckle": "Titanium 6AI-4V"
                 },
                 "strength": 5,
                 "flexibility": 1,
@@ -1838,7 +1878,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "Titanium",
-                  "sculpteo": "Titanium 6AI-4V"
+                  "sculpteo": "Titanium 6AI-4V",
+                  "trinckle": "Titanium 6AI-4V"
                 },
                 "strength": 5,
                 "flexibility": 1,
@@ -1887,7 +1928,8 @@
       "materials": [
         {
           "name": "Castable Wax",
-          "description": "Castable Wax has a rich blue color, and a weight and surface feel similar to traditional candle wax. Wax products sometimes have white patches caused by slight remnants of the support material, but these should not affect the wax' castability or the final cast product. This material is 3D printed using the Multijet Modeling (MJM) process. Molten wax is deposited onto an aluminum build platform in layers using several nozzles that sweep across the build area. As the heated material jets onto the build plate, it solidifies. A different type of wax with a lower melting temperature is deposited below overhangs in your product, acting as a support material. When printing is finished, we remove the models from the tray and put them into a heated bath that melts away the support material. Finally, we inspect the models and allow them to dry.",
+          "description":
+            "Castable Wax has a rich blue color, and a weight and surface feel similar to traditional candle wax. Wax products sometimes have white patches caused by slight remnants of the support material, but these should not affect the wax' castability or the final cast product. This material is 3D printed using the Multijet Modeling (MJM) process. Molten wax is deposited onto an aluminum build platform in layers using several nozzles that sweep across the build area. As the heated material jets onto the build plate, it solidifies. A different type of wax with a lower melting temperature is deposited below overhangs in your product, acting as a support material. When printing is finished, we remove the models from the tray and put them into a heated bath that melts away the support material. Finally, we inspect the models and allow them to dry.",
           "id": "ed876929-102d-5633-bb85-35c25aae7d29",
           "featuredImage": "gallery/castable_wax_2.jpg",
           "descriptionShort": "Castable wax used for casting metals.",
@@ -1900,7 +1942,8 @@
                 "printingServiceName": {
                   "shapeways": "Castable Wax",
                   "imaterialise": "",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 1,
                 "flexibility": 1,
@@ -1942,7 +1985,8 @@
         },
         {
           "name": "Ceramics",
-          "description": "This material is great for tableware. The level of detail is low due to glazing. The big advantage is that it is foodsafe. Ceramics are 3D printed using a multistep process.",
+          "description":
+            "This material is great for tableware. The level of detail is low due to glazing. The big advantage is that it is foodsafe. Ceramics are 3D printed using a multistep process.",
           "id": "906bec4b-7d53-5eb1-994b-59b308485115",
           "featuredImage": "gallery/ceramic_raw.jpg",
           "descriptionShort": "Great for tableware & other ceramic items",
@@ -1955,7 +1999,8 @@
                 "printingServiceName": {
                   "shapeways": "Ceramic",
                   "imaterialise": "Ceramics",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 3,
                 "flexibility": 1,
@@ -2164,7 +2209,8 @@
                 "printingServiceName": {
                   "shapeways": "Ceramic",
                   "imaterialise": "Ceramics",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 3,
                 "flexibility": 1,
@@ -2212,7 +2258,8 @@
       "materials": [
         {
           "name": "ABS",
-          "description": "Great for full functional parts. Rigid but not flexible. A lot of freedom of design. Intermediate level of details. Difficult to post-process. 3D printed using Fused Deposition Modeling (FDM). Matches approximately 80% of the properties of the injection molded products. The surface of the model is a little bit rough.",
+          "description":
+            "Great for full functional parts. Rigid but not flexible. A lot of freedom of design. Intermediate level of details. Difficult to post-process. 3D printed using Fused Deposition Modeling (FDM). Matches approximately 80% of the properties of the injection molded products. The surface of the model is a little bit rough.",
           "id": "6457e340-ae89-5850-b0cb-3d424d8a5267",
           "featuredImage": "gallery/abs-img1_b.jpg",
           "descriptionShort": "For functional, low detailed parts.",
@@ -2225,7 +2272,8 @@
                 "printingServiceName": {
                   "shapeways": "ABS",
                   "imaterialise": "",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 4,
                 "flexibility": 1,
@@ -2329,7 +2377,8 @@
         },
         {
           "name": "Flexible Plastic",
-          "description": "Flexible Plastiic material is constructed from an off-white or black, granular powder. It is a strong and highly flexible material, great for functional rubber parts. The level of detail is not very high and the surface is sandy and rough.",
+          "description":
+            "Flexible Plastiic material is constructed from an off-white or black, granular powder. It is a strong and highly flexible material, great for functional rubber parts. The level of detail is not very high and the surface is sandy and rough.",
           "id": "1cabe849-91ec-5827-8a3f-86034778e146",
           "featuredImage": "gallery/rubber-like.jpg",
           "descriptionShort": "Flexible, rubber-like plastics.",
@@ -2342,7 +2391,8 @@
                 "printingServiceName": {
                   "shapeways": "Elasto Plastic",
                   "imaterialise": "Rubber-like",
-                  "sculpteo": "Flexible Plastic"
+                  "sculpteo": "Flexible Plastic",
+                  "trinckle": "Flexible Plastic"
                 },
                 "materialSpec": "",
                 "strength": 4,
@@ -2423,7 +2473,8 @@
         },
         {
           "name": "High Detail Resins",
-          "description": "High Detail Resin is great for presentation models, prototypes and miniatures. This material allows very fine details. It's slightly fragile when thin. It is easily paintable. It is a liquid polymer 3D printed via Stereolithography (SLA).",
+          "description":
+            "High Detail Resin is great for presentation models, prototypes and miniatures. This material allows very fine details. It's slightly fragile when thin. It is easily paintable. It is a liquid polymer 3D printed via Stereolithography (SLA).",
           "id": "8f845798-1965-50e7-9079-4a84f45a3e6f",
           "featuredImage": "gallery/highdetailresin-img2_b.jpg",
           "descriptionShort": "Great for models with high level of detail",
@@ -2431,12 +2482,14 @@
           "finishGroups": [
             {
               "properties": {
-                "printingMethod": "Digital Light Projection (DLP), Stereolithography (SLA) and Direct Laser Sintering (DLS)",
+                "printingMethod":
+                  "Digital Light Projection (DLP), Stereolithography (SLA) and Direct Laser Sintering (DLS)",
                 "printingMethodShort": "DLP, SLA & DLS",
                 "printingServiceName": {
                   "shapeways": "Frosted Detail Plastic, High Definition Acrylate",
                   "imaterialise": "High Detail Resin, Gray Resin (Prime Gray)",
-                  "sculpteo": "Prototyping Acrylate CLIP (DLS) Resin"
+                  "sculpteo": "Prototyping Acrylate CLIP (DLS) Resin",
+                  "trinckle": "Prototyping Acrylate CLIP (DLS) Resin"
                 },
                 "strength": 2,
                 "flexibility": 2,
@@ -2731,7 +2784,8 @@
                 "printingServiceName": {
                   "shapeways": "Frosted Extreme Detail Plastic",
                   "imaterialise": "",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 2,
                 "flexibility": 2,
@@ -2778,7 +2832,8 @@
         },
         {
           "name": "Nylon",
-          "description": "Nylon (Polyamide), is a great all-round material with great money value. It is extremely versatile, strong and slightly flexible. It can be used for a wide range of applications. Suitable for full functional parts as well as jewelry and many more applications. The surface can be polished and dyed. It's available in many colors. Professionally 3D printed using laser sintering (SLS). When thin, it's flexible enough for springs, but when thick, it's strong enough for full functional parts.",
+          "description":
+            "Nylon (Polyamide), is a great all-round material with great money value. It is extremely versatile, strong and slightly flexible. It can be used for a wide range of applications. Suitable for full functional parts as well as jewelry and many more applications. The surface can be polished and dyed. It's available in many colors. Professionally 3D printed using laser sintering (SLS). When thin, it's flexible enough for springs, but when thick, it's strong enough for full functional parts.",
           "id": "788b00fd-c9b2-556a-bac4-35deec3c17fd",
           "featuredImage": "gallery/material-sf.jpg",
           "descriptionShort": "Best, cheap all-round material available.",
@@ -2791,7 +2846,8 @@
                 "printingServiceName": {
                   "shapeways": "Strong Flexible Plastic",
                   "imaterialise": "Polyamide (SLS)",
-                  "sculpteo": "Nylon PA12"
+                  "sculpteo": "Nylon PA12",
+                  "trinckle": "Nylon PA12"
                 },
                 "materialSpec": "EOS PA 2200 (PA 12)",
                 "flexibility": 4,
@@ -2807,7 +2863,8 @@
               "materialName": "Nylon",
               "name": "Dyed Velvet",
               "featuredImage": "gallery/dyed_velvet_polyamide.jpg",
-              "description": "Professionally 3D printed, dyed with a velvety soft surface. Velvet fur is fairly resistant to friction.",
+              "description":
+                "Professionally 3D printed, dyed with a velvety soft surface. Velvet fur is fairly resistant to friction.",
               "id": "372e7d4f-e38f-5b7d-b9d5-9e62a442eaa2",
               "descriptionShort": "Velvety soft with a furry finish.",
               "materialId": "788b00fd-c9b2-556a-bac4-35deec3c17fd",
@@ -2962,7 +3019,8 @@
                 "printingServiceName": {
                   "shapeways": "HP Nylon Plastic",
                   "imaterialise": "Polyamide (MJF)",
-                  "sculpteo": "Multi Jet Fusion"
+                  "sculpteo": "Multi Jet Fusion",
+                  "trinckle": "Multi Jet Fusion"
                 },
                 "materialSpec": "Multijet Fusion PA12",
                 "flexibility": 4,
@@ -3012,7 +3070,8 @@
                 "printingServiceName": {
                   "shapeways": "Strong Flexible Plastic",
                   "imaterialise": "Polyamide (SLS)",
-                  "sculpteo": "Nylon PA12"
+                  "sculpteo": "Nylon PA12",
+                  "trinckle": "Nylon PA12"
                 },
                 "materialSpec": "EOS PA 2200 (PA 12)",
                 "flexibility": 4,
@@ -3028,7 +3087,8 @@
               "materialName": "Nylon",
               "name": "Polished & Dyed",
               "featuredImage": "gallery/9894992365_975edd8b1a_o.jpg",
-              "description": "Professionally 3D printed, polished smooth nylon (polyamide). Natural and dyed options available.",
+              "description":
+                "Professionally 3D printed, polished smooth nylon (polyamide). Natural and dyed options available.",
               "id": "71cbc9e2-8eb1-5b84-83fb-576015030916",
               "descriptionShort": "Polished and dyed with a smooth surface.",
               "materialId": "788b00fd-c9b2-556a-bac4-35deec3c17fd",
@@ -3369,7 +3429,8 @@
                 "printingServiceName": {
                   "shapeways": "Strong Flexible Plastic",
                   "imaterialise": "Polyamide (SLS)",
-                  "sculpteo": "Nylon PA12"
+                  "sculpteo": "Nylon PA12",
+                  "trinckle": "Nylon PA12"
                 },
                 "materialSpec": "EOS PA 2200 (PA 12)",
                 "flexibility": 4,
@@ -3385,7 +3446,8 @@
               "materialName": "Nylon Priority",
               "name": "Polished & Dyed Priority",
               "featuredImage": "gallery/9894992365_975edd8b1a_o.jpg",
-              "description": "Express production, professionally 3D printed polished & dyed polyamide",
+              "description":
+                "Express production, professionally 3D printed polished & dyed polyamide",
               "id": "aef74e69-b9b3-5290-bdd5-59f31f3ba211",
               "descriptionShort": "Express production with a polished surface.",
               "materialId": "788b00fd-c9b2-556a-bac4-35deec3c17fd",
@@ -3560,7 +3622,8 @@
                 "printingServiceName": {
                   "shapeways": "Strong Flexible Plastic",
                   "imaterialise": "Polyamide (SLS)",
-                  "sculpteo": "Nylon PA12"
+                  "sculpteo": "Nylon PA12",
+                  "trinckle": "Nylon PA12"
                 },
                 "materialSpec": "EOS PA 2200 (PA 12)",
                 "flexibility": 4,
@@ -3576,7 +3639,8 @@
               "materialName": "Nylon",
               "name": "Raw & Dyed",
               "featuredImage": "gallery/material-sf.jpg",
-              "description": "professionally 3D printed raw nylon (polyamide). Natural and dyed options available.",
+              "description":
+                "professionally 3D printed raw nylon (polyamide). Natural and dyed options available.",
               "id": "d149e976-a115-5d8a-8a0b-d56942ac4d3d",
               "descriptionShort": "Raw or dyed nylon with a natural surface.",
               "materialId": "788b00fd-c9b2-556a-bac4-35deec3c17fd",
@@ -3881,7 +3945,8 @@
                 "printingServiceName": {
                   "shapeways": "Strong Flexible Plastic",
                   "imaterialise": "Polyamide (SLS)",
-                  "sculpteo": "Nylon PA12"
+                  "sculpteo": "Nylon PA12",
+                  "trinckle": "Nylon PA12"
                 },
                 "materialSpec": "EOS PA 2200 (PA 12)",
                 "flexibility": 4,
@@ -4069,7 +4134,8 @@
         },
         {
           "name": "PLA",
-          "description": "PLA is the typical desktop printer material, printed using Fused Deposition Modeling (FDM) technology. An extruder deposits molten plastic onto a build platform, layer by layer, until the model has been created. The printing process creates visible stepping between layers. Support structures are generated to scaffold overhangs, which are manualay removed after printing. The stepping and support structures create a coarse and sometimes rough surface. This is a great material to use for prototyping and perfecting your final design. The printing process uses a 0.4 mm diameter nozzle, 1.75 mm diameter filament, 0.2 mm layer height and 10% infill.",
+          "description":
+            "PLA is the typical desktop printer material, printed using Fused Deposition Modeling (FDM) technology. An extruder deposits molten plastic onto a build platform, layer by layer, until the model has been created. The printing process creates visible stepping between layers. Support structures are generated to scaffold overhangs, which are manualay removed after printing. The stepping and support structures create a coarse and sometimes rough surface. This is a great material to use for prototyping and perfecting your final design. The printing process uses a 0.4 mm diameter nozzle, 1.75 mm diameter filament, 0.2 mm layer height and 10% infill.",
           "id": "a224e4b2-92d2-5cc5-9d47-2d3a1a25f573",
           "featuredImage": "gallery/PLA_orange.jpg",
           "descriptionShort": "Standard FDM printed PLA.",
@@ -4082,7 +4148,8 @@
                 "printingServiceName": {
                   "shapeways": "PLA",
                   "imaterialise": "",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 2,
                 "flexibility": 3,
@@ -4187,7 +4254,8 @@
         },
         {
           "name": "Polyamide Mix Materials",
-          "description": "Solid Nylon, reinforced with a mix of materials to create greater strenght-weight ratio. 3D printed using SLS technology. Alumide: Alumide is filled with aluminum particles. It is as strong and almost as flexible as standard. It has a nice sparkling effect. Carbonmide: Solid Nylon, reinforced with carbon fibers to create greater strenght-weight ratio. Carbonmide has the same mechanical properties as regular Nylon, but is much more lightweight. Glass-filled Nylon: Glass-filled Nylon is made from a mix of polyamide powder and glass beads. The surface of the material is white and slightly porous.The material is great for technical parts that need resistance and loads.",
+          "description":
+            "Solid Nylon, reinforced with a mix of materials to create greater strenght-weight ratio. 3D printed using SLS technology. Alumide: Alumide is filled with aluminum particles. It is as strong and almost as flexible as standard. It has a nice sparkling effect. Carbonmide: Solid Nylon, reinforced with carbon fibers to create greater strenght-weight ratio. Carbonmide has the same mechanical properties as regular Nylon, but is much more lightweight. Glass-filled Nylon: Glass-filled Nylon is made from a mix of polyamide powder and glass beads. The surface of the material is white and slightly porous.The material is great for technical parts that need resistance and loads.",
           "id": "d81b2229-43e2-584d-886e-43ac37a57501",
           "featuredImage": "gallery/alu-movable.jpg",
           "descriptionShort": "Nylon mix materials with added properties.",
@@ -4200,7 +4268,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "",
-                  "sculpteo": "Carbonmide"
+                  "sculpteo": "Carbonmide",
+                  "trinckle": "Carbonmide"
                 },
                 "materialSpec": "",
                 "strength": 5,
@@ -4217,7 +4286,8 @@
               "materialName": "Carbonmide Polished",
               "name": "Polished Black",
               "featuredImage": "gallery/Carbonmide_polished.jpg",
-              "description": "Solid Nylon, reinforced with carbon fibers to create greater strenght-weight ratio. Carbonmide has the same mechanical properties as regular Nylon, but is much more lightweight. Due to the orientation of the fiber reinforcement, the material is not as strong along the Z-axis, compared to the X -and Y-axis.",
+              "description":
+                "Solid Nylon, reinforced with carbon fibers to create greater strenght-weight ratio. Carbonmide has the same mechanical properties as regular Nylon, but is much more lightweight. Due to the orientation of the fiber reinforcement, the material is not as strong along the Z-axis, compared to the X -and Y-axis.",
               "id": "6ff581c3-90df-538c-9fad-4391985ce3c4",
               "descriptionShort": "Polished carbon fiber reinforced nylon.",
               "materialId": "d81b2229-43e2-584d-886e-43ac37a57501",
@@ -4251,7 +4321,8 @@
                 "printingServiceName": {
                   "shapeways": "Alumide: Metallic Plastic",
                   "imaterialise": "Alumide: Alumide",
-                  "sculpteo": "Alumide: Alumide"
+                  "sculpteo": "Alumide: Alumide",
+                  "trinckle": "Alumide: Alumide"
                 },
                 "materialSpec": "",
                 "strength": 5,
@@ -4268,7 +4339,8 @@
               "materialName": "Alumide",
               "name": "Polished & Dyed",
               "featuredImage": "gallery/alu-polished-2.jpg",
-              "description": "Alumide is Nylon filled with aluminum particles. It is as strong and almost as flexible as standard.",
+              "description":
+                "Alumide is Nylon filled with aluminum particles. It is as strong and almost as flexible as standard.",
               "id": "71cbc9e2-8eb1-5b84-83fb-576015030916",
               "descriptionShort": "Natural or dyed, polished Alumide.",
               "materialId": "d81b2229-43e2-584d-886e-43ac37a57501",
@@ -4384,7 +4456,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "",
-                  "sculpteo": "Glassfilled Nylon"
+                  "sculpteo": "Glassfilled Nylon",
+                  "trinckle": "Glassfilled Nylon"
                 },
                 "materialSpec": "",
                 "strength": 5,
@@ -4401,7 +4474,8 @@
               "materialName": "Glass-filled Nylon, Polished",
               "name": "Polished White",
               "featuredImage": "gallery/glass_filled_nylon_polished.jpg",
-              "description": "Solid Nylon, made from a mix of polyamide powder and glass beads. The material is great for complex and/or inclosed models, and is more durable and resistant than normal Nylon. Glass-filled Nylon is perfect for technical and functional parts. Not as nice surface finish as regular Nylon. 3D printed using SLS technology, with a polished surface.",
+              "description":
+                "Solid Nylon, made from a mix of polyamide powder and glass beads. The material is great for complex and/or inclosed models, and is more durable and resistant than normal Nylon. Glass-filled Nylon is perfect for technical and functional parts. Not as nice surface finish as regular Nylon. 3D printed using SLS technology, with a polished surface.",
               "id": "31d0708a-934f-5b23-8160-5a0cba04a246",
               "descriptionShort": "Polished nylon and glass bead mix.",
               "materialId": "d81b2229-43e2-584d-886e-43ac37a57501",
@@ -4435,7 +4509,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "",
-                  "sculpteo": "Carbonmide"
+                  "sculpteo": "Carbonmide",
+                  "trinckle": "Carbonmide"
                 },
                 "materialSpec": "",
                 "strength": 5,
@@ -4452,7 +4527,8 @@
               "materialName": "Carbonmide",
               "name": "Raw Black",
               "featuredImage": "gallery/Carbonmide_raw.jpg",
-              "description": "Solid Nylon, reinforced with carbon fibers to create greater strenght-weight ratio. Carbonmide has the same mechanical properties as regular Nylon, but is much more lightweight.",
+              "description":
+                "Solid Nylon, reinforced with carbon fibers to create greater strenght-weight ratio. Carbonmide has the same mechanical properties as regular Nylon, but is much more lightweight.",
               "id": "8c9bf9f2-52df-552b-9d07-e686b2eaf85a",
               "descriptionShort": "Raw nylon reinforced with carbon fibers.",
               "materialId": "d81b2229-43e2-584d-886e-43ac37a57501",
@@ -4486,7 +4562,8 @@
                 "printingServiceName": {
                   "shapeways": "Alumide: Metallic Plastic",
                   "imaterialise": "Alumide: Alumide",
-                  "sculpteo": "Alumide: Alumide"
+                  "sculpteo": "Alumide: Alumide",
+                  "trinckle": "Alumide: Alumide"
                 },
                 "materialSpec": "",
                 "strength": 5,
@@ -4503,7 +4580,8 @@
               "materialName": "Alumide",
               "name": "Raw & Dyed",
               "featuredImage": "gallery/alu-movable.jpg",
-              "description": "Alumide is Nylon filled with aluminum particles. It is as strong and almost as flexible as standard.",
+              "description":
+                "Alumide is Nylon filled with aluminum particles. It is as strong and almost as flexible as standard.",
               "id": "d149e976-a115-5d8a-8a0b-d56942ac4d3d",
               "descriptionShort": "Natural or dyed, raw aluminum filled nylon.",
               "materialId": "d81b2229-43e2-584d-886e-43ac37a57501",
@@ -4674,7 +4752,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "",
-                  "sculpteo": "Glassfilled nylon"
+                  "sculpteo": "Glassfilled nylon",
+                  "trinckle": "Glassfilled nylon"
                 },
                 "materialSpec": "",
                 "strength": 5,
@@ -4691,7 +4770,8 @@
               "materialName": "Glass-filled Nylon",
               "name": "Raw White",
               "featuredImage": "gallery/glass_filled_nylon_raw.jpg",
-              "description": "Solid Nylon, made from a mix of polyamide powder and glass beads. The material is great for complex and/or inclosed models, and is more durable and resistant than normal Nylon. Glass-filled Nylon is perfect for technical and functional parts. Not as nice surface finish as regular Nylon. 3D printed using SLS technology.",
+              "description":
+                "Solid Nylon, made from a mix of polyamide powder and glass beads. The material is great for complex and/or inclosed models, and is more durable and resistant than normal Nylon. Glass-filled Nylon is perfect for technical and functional parts. Not as nice surface finish as regular Nylon. 3D printed using SLS technology.",
               "id": "d9e865f4-d061-5234-9848-bc024513241d",
               "descriptionShort": "Nylon & glass bead mix with a raw surface.",
               "materialId": "d81b2229-43e2-584d-886e-43ac37a57501",
@@ -4722,7 +4802,8 @@
         },
         {
           "name": "Standard Resins",
-          "description": "This material is good for presentation prototypes and figurines. Resin allows fine details and has a smooth surface. It's slightly fragile when thin. It is easily paintable. Resin is a liquid polymer 3D printed using Stereolithography (SLA).",
+          "description":
+            "This material is good for presentation prototypes and figurines. Resin allows fine details and has a smooth surface. It's slightly fragile when thin. It is easily paintable. Resin is a liquid polymer 3D printed using Stereolithography (SLA).",
           "id": "7e1dbb4d-1bdd-5007-baff-48444a5c856d",
           "featuredImage": "gallery/white_resin.jpg",
           "descriptionShort": "Great for presentation models & figurines.",
@@ -4735,7 +4816,8 @@
                 "printingServiceName": {
                   "shapeways": "Acrylic Plastic",
                   "imaterialise": "Standard Resin, Transparent Resin",
-                  "sculpteo": "VeroWhite Resin, VeroClear Resin"
+                  "sculpteo": "VeroWhite Resin, VeroClear Resin",
+                  "trinckle": "VeroWhite Resin, VeroClear Resin"
                 },
                 "strength": 2,
                 "flexibility": 2,
@@ -5005,7 +5087,8 @@
                 "printingServiceName": {
                   "shapeways": "",
                   "imaterialise": "Mammoth Resin",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 2,
                 "flexibility": 2,
@@ -5236,7 +5319,8 @@
                 "printingServiceName": {
                   "shapeways": null,
                   "imaterialise": "Transparent Resin",
-                  "sculpteo": ""
+                  "sculpteo": "",
+                  "trinckle": ""
                 },
                 "strength": 2,
                 "flexibility": 2,

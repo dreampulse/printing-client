@@ -7,11 +7,13 @@ import buildClassName from '../lib/build-class-name'
 import imaterialiseImage from '../../asset/image/printing-service/imaterialise.png'
 import sculpteoImage from '../../asset/image/printing-service/sculpteo.png'
 import shapewaysImage from '../../asset/image/printing-service/shapeways.png'
+import trinckleImage from '../../asset/image/printing-service/trinckle.svg'
 
 const providerImages = {
   imaterialise: imaterialiseImage,
   sculpteo: sculpteoImage,
-  shapeways: shapewaysImage
+  shapeways: shapewaysImage,
+  trinckle: trinckleImage
 }
 
 const ProviderImage = ({classNames, modifiers, name, slug}) => (
