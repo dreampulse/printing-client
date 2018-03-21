@@ -1,6 +1,6 @@
 import * as modalAction from '../../../../src/app/action-next/modal'
 import {isModalOpen, selectModalConfig} from '../../../../src/app/selector'
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 
 describe('modal action', () => {
   describe('openModal()', () => {

@@ -16,6 +16,8 @@ import timeout from './timeout'
 import type {TimeoutState} from './timeout'
 import polling from './polling'
 import type {PollingState} from './polling'
+import material from './material'
+import type {MaterialState} from './material'
 
 export type AppState = {
   core: CoreState,
@@ -24,6 +26,7 @@ export type AppState = {
   user: UserState,
   timeout: TimeoutState,
   polling: PollingState,
+  material: MaterialState,
   routing: any, // Managed by react-router-redux
   form: any // Managed by redux-form
 }
@@ -35,6 +38,7 @@ const rootReducer = combineReducers({
   model,
   timeout,
   polling,
+  material,
   // third-party modules expect their state to be at the top-level
   routing,
   form

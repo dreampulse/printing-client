@@ -5,7 +5,7 @@ import * as userAction from '../../../../src/app/action-next/user'
 import {listMaterials} from '../../../../src/app/service/printing-engine'
 import {getLocationByIp} from '../../../../src/app/lib/geolocation'
 import * as selector from '../../../../src/app/selector'
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 import materialResponse from '../../../../test-data/mock/material-response.json'
 import geolocationSuccessResponse from '../../../../test-data/mock/geolocation-success-response.json'
 

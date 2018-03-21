@@ -1,7 +1,7 @@
 import * as coreAction from '../../../../src/app/action-next/core'
 import {selectMaterialGroups} from '../../../../src/app/selector'
 
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 import materialResponse from '../../../../test-data/mock/material-response.json'
 
 describe('core action', () => {

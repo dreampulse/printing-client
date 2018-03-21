@@ -2,6 +2,7 @@ import React from 'react'
 import compose from 'recompose/compose'
 import {connect} from 'react-redux'
 
+import {goToUpload} from '../action-next/navigation'
 import FooterPartial from './footer-partial'
 
 import App from '../component/app'
@@ -32,7 +33,7 @@ const MaterialPage = ({onClosePage}) => {
 const mapStateToProps = _state => ({})
 
 const mapDispatchToProps = {
-  onClosePage: () => {} // TODO
+  onClosePage: goToUpload
 }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(MaterialPage)

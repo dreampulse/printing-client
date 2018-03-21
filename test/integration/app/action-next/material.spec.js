@@ -1,7 +1,7 @@
 import * as materialAction from '../../../../src/app/action-next/material'
 import {selectChosenMaterialConfigIds} from '../../../../src/app/selector'
 import {goToMaterial} from '../../../../src/app/action-next/navigation'
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 
 describe('material action', () => {
   describe('chooseMaterial()', () => {

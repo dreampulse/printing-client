@@ -8,7 +8,7 @@ import {
 } from '../../../../src/app/selector'
 import * as printingEngine from '../../../../src/app/lib/printing-engine'
 
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 import {withNUploadedModels} from '../../../scenario'
 import getBackendModelMock from '../../../mock/printing-engine/backend-model'
 import getFileMock from '../../../mock/file'

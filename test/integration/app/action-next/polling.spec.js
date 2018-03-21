@@ -1,7 +1,7 @@
 import * as pollingAction from '../../../../src/app/action-next/polling'
 import * as pollingSelector from '../../../../src/app/selector/polling'
 
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 
 describe('polling', () => {
   describe('action.start()', () => {
