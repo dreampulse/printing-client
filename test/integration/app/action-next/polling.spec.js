@@ -1,17 +1,20 @@
 import * as pollingAction from '../../../../src/app/action-next/polling'
 import * as pollingSelector from '../../../../src/app/selector/polling'
-
 import reducer from '../../../../src/app/reducer-next'
+import {POLLING_FAILED} from '../../../../src/app/lib/polling'
 
 describe('polling', () => {
   describe('action.start()', () => {
-    const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
-    const pollingFunction = () => {}
-    const pollingArgs = [42]
+    let onSuccessActionCreator
+    let pollingFunction
+    let pollingArgs
     let state
     let startAction
 
     beforeEach(() => {
+      onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
+      pollingFunction = () => {}
+      pollingArgs = [42]
       startAction = pollingAction.start(pollingFunction, pollingArgs, onSuccessActionCreator, 42, 1)
       state = reducer(undefined, startAction)
     })
@@ -36,7 +39,7 @@ describe('polling', () => {
       )
     })
 
-    it('triggers action.handleSuccess() when the pollingFunction resolves', () => {
+    it('triggers action.handleResult() when the pollingFunction resolves', () => {
       const pollingFunctionResult = {}
       const cmd = findCmd(state, pollingFunction, pollingArgs)
       const action = cmd.simulate({
@@ -47,19 +50,8 @@ describe('polling', () => {
       expect(
         action,
         'to equal',
-        pollingAction.handleSuccess(startAction.payload.pollingId, pollingFunctionResult)
+        pollingAction.handleResult(startAction.payload.pollingId, pollingFunctionResult)
       )
-    })
-
-    it('triggers action.handleFail() when the pollingFunction rejects', () => {
-      const error = new Error('Some error')
-      const cmd = findCmd(state, pollingFunction, pollingArgs)
-      const action = cmd.simulate({
-        success: false,
-        result: error
-      })
-
-      expect(action, 'to equal', pollingAction.handleFail(startAction.payload.pollingId, error))
     })
 
     describe('selector.isPollingActive()', () => {
@@ -72,7 +64,7 @@ describe('polling', () => {
     })
   })
 
-  describe('action.handleSuccess()', () => {
+  describe('action.handleResult()', () => {
     // Happens when the polling has been cancelled while we were waiting for the pollingFunction to resolve
     describe('when there is no active polling with the given pollingId', () => {
       it('does not change the state', () => {
@@ -80,7 +72,7 @@ describe('polling', () => {
         const someInitAction = {}
         const stateBefore = getModel(reducer(undefined, someInitAction))
         const stateAfter = getModel(
-          reducer(stateBefore, pollingAction.handleSuccess('does-not-exist'))
+          reducer(stateBefore, pollingAction.handleResult('does-not-exist'))
         )
 
         expect(stateBefore, 'to be', stateAfter)
@@ -88,181 +80,181 @@ describe('polling', () => {
     })
 
     describe('when there is an active polling with the given pollingId in POLLING state', () => {
-      let startAction
-      let state
+      describe('when the polling succeeds', () => {
+        let startAction
+        let state
 
-      beforeEach(() => {
-        const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
-        const pollingFunction = () => {}
-        const pollingArgs = [42]
-        const pollingResult = {}
+        beforeEach(() => {
+          const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
+          const pollingFunction = () => {}
+          const pollingArgs = [42]
+          const pollingResult = {}
 
-        startAction = pollingAction.start(
-          pollingFunction,
-          pollingArgs,
-          onSuccessActionCreator,
-          42,
-          1
-        )
-        const handleSuccessAction = pollingAction.handleSuccess(
-          startAction.payload.pollingId,
-          pollingResult
-        )
+          startAction = pollingAction.start(
+            pollingFunction,
+            pollingArgs,
+            onSuccessActionCreator,
+            42,
+            1
+          )
 
-        state = [startAction, handleSuccessAction].reduce(
-          (currentState, action) => reducer(getModel(currentState), action),
-          undefined
-        )
-      })
+          const handleResultAction = pollingAction.handleResult(
+            startAction.payload.pollingId,
+            pollingResult
+          )
 
-      it('triggers the action as returned by the onSuccessActionCreator', () => {
-        expect(findAction(state, action => action.type === 'SOME.ACTION'), 'to be truthy')
-      })
-
-      describe('selector.isPollingActive()', () => {
-        it('returns false for the given pollingId', () => {
-          expect(
-            pollingSelector.isPollingActive(getModel(state), startAction.payload.pollingId),
-            'to be false'
+          state = [startAction, handleResultAction].reduce(
+            (currentState, action) => reducer(getModel(currentState), action),
+            undefined
           )
         })
-      })
-    })
-  })
 
-  describe('action.handleFail()', () => {
-    // Happens when the polling has been cancelled while we were waiting for the pollingFunction to resolve
-    describe('when there is no active polling with the given pollingId', () => {
-      it('does not change the state', () => {
-        // We need to initialize the state with an init action in order to get an initialized state
-        const someInitAction = {}
-        const stateBefore = getModel(reducer(undefined, someInitAction))
-        const stateAfter = getModel(
-          reducer(stateBefore, pollingAction.handleFail('does-not-exist'))
-        )
+        it('triggers the action as returned by the onSuccessActionCreator', () => {
+          expect(findAction(state, action => action.type === 'SOME.ACTION'), 'to be truthy')
+        })
 
-        expect(stateBefore, 'to be', stateAfter)
-      })
-    })
-
-    describe('when there is an active polling with the given pollingId in POLLING state and remaining retries', () => {
-      let startAction
-      let state
-
-      beforeEach(() => {
-        const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
-        const pollingFunction = () => {}
-        const pollingArgs = [42]
-        const remainingRetries = 1
-        const error = new Error('Some error')
-
-        startAction = pollingAction.start(
-          pollingFunction,
-          pollingArgs,
-          onSuccessActionCreator,
-          42,
-          remainingRetries
-        )
-        const handleFailAction = pollingAction.handleFail(startAction.payload.pollingId, error)
-
-        state = [startAction, handleFailAction].reduce(
-          (currentState, action) => reducer(getModel(currentState), action),
-          undefined
-        )
+        describe('selector.isPollingActive()', () => {
+          it('returns false for the given pollingId', () => {
+            expect(
+              pollingSelector.isPollingActive(getModel(state), startAction.payload.pollingId),
+              'to be false'
+            )
+          })
+        })
       })
 
-      it('triggers a TIMEOUT.START action with the correct retry delay', () => {
-        expect(
-          findAction(
+      describe('when the polling fails and there are remaining retries', () => {
+        let startAction
+        let state
+
+        beforeEach(() => {
+          const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
+          const pollingFunction = () => {}
+          const pollingArgs = [42]
+
+          startAction = pollingAction.start(
+            pollingFunction,
+            pollingArgs,
+            onSuccessActionCreator,
+            42,
+            1
+          )
+
+          const handleResultAction = pollingAction.handleResult(
+            startAction.payload.pollingId,
+            POLLING_FAILED
+          )
+
+          state = [startAction, handleResultAction].reduce(
+            (currentState, action) => reducer(getModel(currentState), action),
+            undefined
+          )
+        })
+
+        it('triggers a TIMEOUT.START action with the correct retry delay', () => {
+          expect(
+            findAction(
+              state,
+              action => action.type === 'TIMEOUT.START' && action.payload.delay === 42
+            ),
+            'to be truthy'
+          )
+        })
+
+        it('triggers action.handleRetry() after the timeout exceeded', () => {
+          const timeoutStartAction = findAction(
             state,
             action => action.type === 'TIMEOUT.START' && action.payload.delay === 42
-          ),
-          'to be truthy'
-        )
-      })
+          )
+          const retryAction = timeoutStartAction.payload.onEndActionCreator()
 
-      it('triggers action.handleRetry() after the timeout exceeded', () => {
-        const timeoutStartAction = findAction(
-          state,
-          action => action.type === 'TIMEOUT.START' && action.payload.delay === 42
-        )
-        const retryAction = timeoutStartAction.payload.onEndActionCreator()
-
-        expect(retryAction, 'to satisfy', pollingAction.handleRetry(startAction.payload.pollingId))
-      })
-
-      describe('selector.isPollingActive()', () => {
-        it('returns true for the given pollingId', () => {
           expect(
-            pollingSelector.isPollingActive(getModel(state), startAction.payload.pollingId),
-            'to be true'
+            retryAction,
+            'to satisfy',
+            pollingAction.handleRetry(startAction.payload.pollingId)
           )
         })
-      })
-    })
 
-    describe('when there is an active polling with the given pollingId in POLLING state and no remaining retries', () => {
-      let startAction
-      let state
-
-      beforeEach(() => {
-        const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
-        const pollingFunction = () => {}
-        const pollingArgs = [42]
-        const error = new Error('Some error')
-        const remainingRetries = 0
-
-        startAction = pollingAction.start(
-          pollingFunction,
-          pollingArgs,
-          onSuccessActionCreator,
-          42,
-          remainingRetries
-        )
-
-        const handleFailAction = pollingAction.handleFail(startAction.payload.pollingId, error)
-
-        state = [startAction, handleFailAction].reduce(
-          (currentState, action) => reducer(getModel(currentState), action),
-          undefined
-        )
+        describe('selector.isPollingActive()', () => {
+          it('returns true for the given pollingId', () => {
+            expect(
+              pollingSelector.isPollingActive(getModel(state), startAction.payload.pollingId),
+              'to be true'
+            )
+          })
+        })
       })
 
-      it('does not trigger TIMEOUT.START', () => {
-        expect(findAction(state, action => action.type === 'TIMEOUT.START'), 'to be falsy')
-      })
+      describe('when the polling failed and there are no remaining retries', () => {
+        let startAction
+        let state
 
-      describe('selector.isPollingActive()', () => {
-        it('returns false for the given pollingId', () => {
-          expect(
-            pollingSelector.isPollingActive(getModel(state), startAction.payload.pollingId),
-            'to be false'
+        beforeEach(() => {
+          const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
+          const pollingFunction = () => {}
+          const pollingArgs = [42]
+
+          startAction = pollingAction.start(
+            pollingFunction,
+            pollingArgs,
+            onSuccessActionCreator,
+            42,
+            0
           )
+
+          const handleResultAction = pollingAction.handleResult(
+            startAction.payload.pollingId,
+            POLLING_FAILED
+          )
+
+          state = [startAction, handleResultAction].reduce(
+            (currentState, action) => reducer(getModel(currentState), action),
+            undefined
+          )
+        })
+
+        it('does not trigger an action', () => {
+          expect(findAction(state, _ => true), 'to be falsy')
+        })
+
+        describe('selector.isPollingActive()', () => {
+          it('returns false for the given pollingId', () => {
+            expect(
+              pollingSelector.isPollingActive(getModel(state), startAction.payload.pollingId),
+              'to be false'
+            )
+          })
         })
       })
     })
   })
 
   describe('action.handleRetry()', () => {
-    const pollingFunction = () => {}
-    const pollingArgs = [42]
+    let pollingFunction
+    let pollingArgs
     let startAction
     let state
 
     beforeEach(() => {
       const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
 
+      pollingFunction = () => {}
+      pollingArgs = [42]
       startAction = pollingAction.start(pollingFunction, pollingArgs, onSuccessActionCreator, 42, 1)
-      const handleFailAction = pollingAction.handleFail(startAction.payload.pollingId)
+
+      const handleResultAction = pollingAction.handleResult(
+        startAction.payload.pollingId,
+        POLLING_FAILED
+      )
       const handleRetryAction = pollingAction.handleRetry(startAction.payload.pollingId)
 
-      state = [startAction, handleFailAction, handleRetryAction].reduce(
+      state = [startAction, handleResultAction, handleRetryAction].reduce(
         (currentState, action) => reducer(getModel(currentState), action),
         undefined
       )
     })
 
-    it('triggers action.handleSuccess() when the pollingFunction resolves', () => {
+    it('triggers action.handleResult() when the pollingFunction resolves', () => {
       const pollingFunctionResult = {}
       const cmd = findCmd(state, pollingFunction, pollingArgs)
       const action = cmd.simulate({
@@ -273,19 +265,8 @@ describe('polling', () => {
       expect(
         action,
         'to equal',
-        pollingAction.handleSuccess(startAction.payload.pollingId, pollingFunctionResult)
+        pollingAction.handleResult(startAction.payload.pollingId, pollingFunctionResult)
       )
-    })
-
-    it('triggers action.handleFail() when the pollingFunction rejects', () => {
-      const error = new Error('Some error')
-      const cmd = findCmd(state, pollingFunction, pollingArgs)
-      const action = cmd.simulate({
-        success: false,
-        result: error
-      })
-
-      expect(action, 'to equal', pollingAction.handleFail(startAction.payload.pollingId, error))
     })
 
     describe('selector.isPollingActive()', () => {
@@ -346,13 +327,15 @@ describe('polling', () => {
         const onSuccessActionCreator = () => ({type: 'SOME.ACTION'})
         const pollingFunction = () => {}
         const pollingArgs = [42]
-        const error = new Error('Some error')
 
         startAction = pollingAction.start(pollingFunction, pollingArgs, onSuccessActionCreator, 42)
-        const handleFailAction = pollingAction.handleFail(startAction.payload.pollingId, error)
+        const handleResultAction = pollingAction.handleResult(
+          startAction.payload.pollingId,
+          POLLING_FAILED
+        )
         const cancelAction = pollingAction.cancel(startAction.payload.pollingId)
 
-        state = [startAction, handleFailAction, cancelAction].reduce(
+        state = [startAction, handleResultAction, cancelAction].reduce(
           (currentState, action) => reducer(getModel(currentState), action),
           undefined
         )

@@ -22,7 +22,7 @@ import {selectMaterialConfig, selectMaterialConfigForFinishGroup} from '../actio
 import {connectLegacy} from './util/connect-legacy'
 
 const FinishSection = ({
-  offers,
+  offers = [],
   selectedMaterial,
   printingServiceRequests,
   selectedMaterialConfigs,
@@ -31,17 +31,19 @@ const FinishSection = ({
   onSelectMaterialConfigForFinishGroup,
   onOpenFinishGroupModal
 }) => {
-  const disabled = !selectedMaterial || !offers
+  const disabled = !selectedMaterial
   const headlineModifiers = buildClassArray({
     xl: true,
     disabled
   })
 
-  function sortFinishGroup(unsortedFinishGroup) {
+  function sortFinishGroup(unsortedFinishGroups) {
     const hasOffer = finishGroup =>
-      Boolean(getBestOfferForMaterialConfig(offers, selectedMaterialConfigs[finishGroup.id]))
+      finishGroup.materialConfigs.some(materialConfig =>
+        offers.some(offer => offer.materialConfigId === materialConfig.id)
+      )
     const [finishGroupWithOffers, finishGroupWithoutOffers] = partition(
-      unsortedFinishGroup,
+      unsortedFinishGroups,
       hasOffer
     )
 
@@ -148,7 +150,7 @@ const FinishSection = ({
 }
 
 const mapStateToProps = state => ({
-  offers: state.price.offers || [],
+  offers: state.price.offers,
   materials: state.material.materials,
   selectedMaterial: selectCurrentMaterial(state),
   selectedMaterialConfigs: state.material.selectedMaterialConfigs,

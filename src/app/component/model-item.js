@@ -8,6 +8,7 @@ import ImageContainer from './image-container'
 import Icon from './icon'
 import Info from './info'
 import ProviderImage from './provider-image'
+import MagnifyableItem from './magnifyable-item'
 
 import ShippingIcon from '../../asset/icon/shipping.svg'
 
@@ -25,11 +26,17 @@ const ModelItem = ({
   materialName,
   color,
   providerName,
-  providerMaterialName
+  providerMaterialName,
+  onMagnify = Function.prototype
 }) => (
   <div className={buildClassName('model-item', modifiers, classNames)}>
-    {/* TODO: include new image preview component here */}
-    <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
+    <MagnifyableItem
+      classNames={['model-item__preview']}
+      ariaLabel={`Load ${title} in interactive model viewer`}
+      onClick={onMagnify}
+    >
+      <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
+    </MagnifyableItem>
     <div className="model-item__center-content">
       <strong className="model-item__title">{title}</strong>
       {Boolean(subline) && <div className="model-item__subline">{subline}</div>}
@@ -66,7 +73,8 @@ ModelItem.propTypes = {
   shippingMethod: PropTypes.string.isRequired,
   materialName: PropTypes.string.isRequired,
   providerName: PropTypes.string.isRequired,
-  providerMaterialName: PropTypes.string
+  providerMaterialName: PropTypes.string,
+  onMagnify: PropTypes.func
 }
 
 export default ModelItem

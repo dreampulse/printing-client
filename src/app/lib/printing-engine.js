@@ -1,9 +1,13 @@
 // @flow
+
 import uniqueId from 'lodash/uniqueId'
 import flattenDeep from 'lodash/flattenDeep'
-
 import type {Dispatch} from 'redux'
-import type {BackendModel, Action, BackendQuote} from '../type-next'
+import config from '../../../config'
+import type {ModelId, BackendModel, Action, BackendQuote} from '../type-next'
+import * as http from './http'
+
+const baseUrl = config.printingEngineBaseUrl
 
 let uploadCounter = -1
 
@@ -105,4 +109,18 @@ export const requestPriceId = (priceId: string): Promise<RequestPriceIdResponse>
     printingServiceComplete,
     quotes
   })
+}
+
+export const getModelWithStatus = async (
+  modelId: ModelId
+): Promise<{
+  model: BackendModel,
+  isComplete: boolean
+}> => {
+  const {json, response} = await http.fetchJson(`${baseUrl}/model/${modelId}`)
+
+  return {
+    model: json,
+    isComplete: response.status === 200
+  }
 }

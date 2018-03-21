@@ -2,31 +2,28 @@
 
 import type {AppAction, ModalConfig} from '../type-next'
 
-export type ModalState = ModalConfig & {
-  isOpen: boolean
+export type ModalState = {
+  isOpen: boolean,
+  modalConfig: ModalConfig
 }
 
 const initialState: ModalState = {
   isOpen: false,
-  isCloseable: true,
-  content: null,
-  contentProps: null
+  modalConfig: null
 }
 
 const openModal = (state, action) => ({
   isOpen: true,
-  isCloseable: action.payload.isCloseable,
-  content: action.payload.content,
-  contentProps: action.payload.contentProps
+  modalConfig: action.payload
 })
 
 const closeModal = (_state, _action) => initialState
 
 const reducer = (state: ModalState = initialState, action: AppAction): ModalState => {
   switch (action.type) {
-    case 'MODAL.OPEN_MODAL':
+    case 'MODAL.OPEN':
       return openModal(state, action)
-    case 'MODAL.CLOSE_MODAL':
+    case 'MODAL.CLOSE':
       return closeModal(state, action)
     default:
       return state
