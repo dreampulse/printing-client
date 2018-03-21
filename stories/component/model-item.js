@@ -47,6 +47,7 @@ storiesOf('Model Item', module)
       providerMaterialName="Polyamide (SLS)"
       color={color()}
       buttonBar={buttonBar()}
+      onMagnify={action('magnify')}
     />
   ))
   .add('read-only', () => (
@@ -64,5 +65,6 @@ storiesOf('Model Item', module)
       materialName="Metal, polished"
       providerMaterialName="Polyamide (SLS)"
       color={color()}
+      onMagnify={action('magnify')}
     />
   ))

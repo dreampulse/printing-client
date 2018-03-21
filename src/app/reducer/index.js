@@ -12,6 +12,8 @@ import type {UserState} from '../reducer-next/user'
 import modal from '../reducer-next/modal'
 import type {ModalState} from '../reducer-next/modal'
 import model from '../reducer-next/model'
+import type {ModelViewerState} from '../reducer-next/model-viewer'
+import modelViewer from '../reducer-next/model-viewer'
 import type {ModelState} from '../reducer-next/model'
 import timeout from '../reducer-next/timeout'
 import type {TimeoutState} from '../reducer-next/timeout'
@@ -28,6 +30,7 @@ import legacyConfiguration from './configuration'
 export type AppState = {
   core: CoreState,
   model: ModelState,
+  modelViewer: ModelViewerState,
   modal: ModalState,
   user: UserState,
   timeout: TimeoutState,
@@ -42,6 +45,7 @@ const rootReducer = combineReducers({
   user,
   modal,
   model,
+  modelViewer,
   timeout,
   polling,
   legacy: combineReducers({
