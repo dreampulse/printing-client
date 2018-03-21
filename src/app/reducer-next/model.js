@@ -62,6 +62,8 @@ const uploadFile = (state, {payload}) => {
     Cmd.run(uploadModel, {
       args: [
         payload.file,
+        // TODO: Should be configurable via the interface
+        // @see https://github.com/all3dp/printing-engine-client/issues/622
         {unit: 'mm'},
         Cmd.dispatch,
         progress => modelAction.uploadProgress(fileId, progress)
