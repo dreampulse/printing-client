@@ -22,7 +22,7 @@ import {selectMaterialConfig, selectMaterialConfigForFinishGroup} from '../actio
 import {connectLegacy} from './util/connect-legacy'
 
 const FinishSection = ({
-  offers = [],
+  offers,
   selectedMaterial,
   printingServiceRequests,
   selectedMaterialConfigs,
@@ -150,7 +150,7 @@ const FinishSection = ({
 }
 
 const mapStateToProps = state => ({
-  offers: state.price.offers,
+  offers: state.price.offers || [],
   materials: state.material.materials,
   selectedMaterial: selectCurrentMaterial(state),
   selectedMaterialConfigs: state.material.selectedMaterialConfigs,
