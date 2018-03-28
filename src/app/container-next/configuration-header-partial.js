@@ -36,7 +36,7 @@ const ConfigurationHeaderPartial = ({currency, location, onUpdateLocation, onUpd
         <SelectField
           menu={currencyMenu}
           value={selectedCurrencyValue}
-          disabled={!location.countryCode}
+          disabled={location && !location.countryCode}
           onChange={({value}) => onUpdateCurrency(value)}
         />
       }

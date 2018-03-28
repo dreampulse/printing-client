@@ -57,7 +57,9 @@ const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick
 )
 
 const mapStateToProps = (state: AppState) => ({
-  cartCount: selectModelConfigs(state).filter(modelConfig => modelConfig.type === 'UPLOADED').length
+  cartCount: selectModelConfigs(state).filter(
+    modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
+  ).length
 })
 
 const mapDispatchToProps = {
