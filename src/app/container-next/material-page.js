@@ -1,9 +1,12 @@
+// @flow
+
 import React from 'react'
-import compose from 'recompose/compose'
 import {connect} from 'react-redux'
 
 import * as navigationAction from '../action-next/navigation'
 import FooterPartial from './footer-partial'
+import ConfigurationHeaderPartial from './configuration-header-partial'
+import type {AppState} from '../reducer-next'
 
 import App from '../component/app'
 import Container from '../component/container'
@@ -21,7 +24,8 @@ const MaterialPage = ({onClosePage}) => {
       header={[
         <OverlayHeaderBar key="header-bar" onClickClose={onClosePage} title={title}>
           <ProviderProgressBar currentStep={numCheckedProviders} totalSteps={numTotalProviders} />
-        </OverlayHeaderBar>
+        </OverlayHeaderBar>,
+        <ConfigurationHeaderPartial key="configuration-header" />
       ]}
       footer={<FooterPartial />}
     >
@@ -30,10 +34,10 @@ const MaterialPage = ({onClosePage}) => {
   )
 }
 
-const mapStateToProps = _state => ({})
+const mapStateToProps = (_state: AppState) => ({})
 
 const mapDispatchToProps = {
   onClosePage: navigationAction.goToUpload
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(MaterialPage)
+export default connect(mapStateToProps, mapDispatchToProps)(MaterialPage)

@@ -1,7 +1,10 @@
+// @flow
+
 import React from 'react'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
 
+import type {AppState} from '../reducer-next'
 import FooterPartial from './footer-partial'
 
 import helpIcon from '../../asset/icon/help.svg'
@@ -53,8 +56,10 @@ const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick
   </App>
 )
 
-const mapStateToProps = state => ({
-  cartCount: selectModelConfigs(state).filter(modelConfig => modelConfig.quoteId !== null).length
+const mapStateToProps = (state: AppState) => ({
+  cartCount: selectModelConfigs(state).filter(
+    modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
+  ).length
 })
 
 const mapDispatchToProps = {

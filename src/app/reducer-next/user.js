@@ -23,15 +23,20 @@ const detectLocation = (state, _action) =>
   loop(
     state,
     Cmd.run(getLocationByIp, {
-      successActionCreator: userAction.locationDetected,
+      successActionCreator: userAction.locationUpdated,
       failActionCreator: modalAction.openPickLocation,
       args: []
     })
   )
 
-const locationDetected = (state, {payload}) => ({
+const locationUpdated = (state, {payload}) => ({
   ...state,
   location: payload.location
+})
+
+const currencyUpdated = (state, {payload}) => ({
+  ...state,
+  currency: payload.currency
 })
 
 const created = (state, {payload}) =>
@@ -50,8 +55,10 @@ export const reducer = (state: UserState = initialState, action: AppAction): Use
     case 'INIT.INIT':
       // case 'USER.DETECT_LOCATION':  <- not needed right now
       return detectLocation(state, action)
-    case 'USER.LOCATION_DETECTED':
-      return locationDetected(state, action)
+    case 'USER.LOCATION_UPDATED':
+      return locationUpdated(state, action)
+    case 'USER.CURRENCY_UPDATED':
+      return currencyUpdated(state, action)
     case 'USER.CREATED':
       return created(state, action)
     default:

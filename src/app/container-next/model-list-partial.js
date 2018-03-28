@@ -1,10 +1,12 @@
+// @flow
+
 import React from 'react'
 import {connect} from 'react-redux'
-import {compose} from 'recompose'
 
 import ModelList from '../component/model-list'
 import Button from '../component/button'
 import NumberField from '../component/number-field'
+import type {AppState} from '../reducer-next'
 
 import * as modelAction from '../action-next/model'
 import * as materialAction from '../action-next/material'
@@ -68,7 +70,7 @@ const ModelListPartial = ({
   )
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
   selectedModelConfigIds: selectSelectedModelConfigIds(state),
   commonQuantity: getCommonQuantity(selectSelectedModelConfigs(state))
 })
@@ -80,4 +82,4 @@ const mapDispatchToProps = {
   onChooseMaterial: materialAction.choose
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(ModelListPartial)
+export default connect(mapStateToProps, mapDispatchToProps)(ModelListPartial)

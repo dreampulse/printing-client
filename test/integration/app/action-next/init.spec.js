@@ -40,13 +40,13 @@ describe('init action', () => {
       expect(action, 'to equal', coreAction.fatalError(err))
     })
 
-    it(`triggers the userAction.locationDetected() action with the result from getLocationByIp`, () => {
+    it(`triggers the userAction.locationUpdated() action with the result from getLocationByIp`, () => {
       const cmd = findCmd(state, getLocationByIp, [])
       const action = cmd.simulate({
         success: true,
         result: geolocationSuccessResponse
       })
-      expect(action, 'to equal', userAction.locationDetected(geolocationSuccessResponse))
+      expect(action, 'to equal', userAction.locationUpdated(geolocationSuccessResponse))
     })
 
     it(`triggers the modalAction.openPickLocation() action when getLocationByIp failed`, () => {
