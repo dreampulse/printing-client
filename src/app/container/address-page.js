@@ -122,7 +122,7 @@ const AddressPage = ({
           component={renderField(InputField)}
           label="Address"
           name="billingAddress.address"
-          maxLength="30"
+          maxLength="35"
         />
       </FormRow>
 
@@ -244,7 +244,7 @@ const AddressPage = ({
               component={renderField(InputField)}
               label="Address"
               name="shippingAddress.address"
-              maxLength="30"
+              maxLength="35"
             />
           </FormRow>
 
