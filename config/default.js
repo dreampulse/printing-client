@@ -25,6 +25,7 @@ export default {
     imaterialise: 'i.Materialise',
     sculpteo: 'Sculpteo',
     shapeways: 'Shapeways',
-    trinckle: 'Trinckle'
+    trinckle: 'Trinckle',
+    treatstock: 'Treatstock'
   }
 }
