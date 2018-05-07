@@ -57,7 +57,8 @@ export type Price = {
     shapeways: boolean,
     imaterialse: boolean,
     sculpteo: boolean,
-    trinckle: boolean
+    trinckle: boolean,
+    treatstock: boolean
   }
 }
 
@@ -210,7 +211,8 @@ export type PriceState = {
     shapeways: boolean,
     imaterialse: boolean,
     sculpteo: boolean,
-    trinckle: boolean
+    trinckle: boolean,
+    treatstock: boolean
   },
   selectedOffer: ?Offer
 }

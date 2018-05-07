@@ -8,12 +8,14 @@ import imaterialiseImage from '../../asset/image/printing-service/imaterialise.p
 import sculpteoImage from '../../asset/image/printing-service/sculpteo.png'
 import shapewaysImage from '../../asset/image/printing-service/shapeways.png'
 import trinckleImage from '../../asset/image/printing-service/trinckle.svg'
+import treatstockImage from '../../asset/image/printing-service/treatstock.png'
 
 const providerImages = {
   imaterialise: imaterialiseImage,
   sculpteo: sculpteoImage,
   shapeways: shapewaysImage,
-  trinckle: trinckleImage
+  trinckle: trinckleImage,
+  treatstock: treatstockImage
 }
 
 const ProviderImage = ({classNames, modifiers, name, slug}) => (

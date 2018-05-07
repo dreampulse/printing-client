@@ -113,6 +113,7 @@ const ModelPage = ({
       <ProviderImage slug="imaterialise" name={getProviderName('imaterialise')} />
       <ProviderImage slug="sculpteo" name={getProviderName('sculpteo')} />
       <ProviderImage slug="trinckle" name={getProviderName('trinckle')} />
+      <ProviderImage slug="treatstock" name={getProviderName('treatstock')} />
     </ProviderTeaser>
   ]
 
