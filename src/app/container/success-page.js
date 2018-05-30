@@ -33,7 +33,7 @@ const CartPage = ({offer, order}) => {
       <Paragraph modifiers={['l']}>
         <ProviderImage slug={offer.printingService} name={getProviderName(offer.printingService)} />
       </Paragraph>
-      <Headline label="We have extended our special offer: Refer us and earn 20% commission" />
+      <Headline label="We have extended our special offer: Refer us now and earn 20% commission" />
       <Paragraph modifiers={['l']}>
         If you enjoyed using our service, you can refer us by sharing the link below and earn some
         money for yourself.
