@@ -73,5 +73,18 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       onCheckoutClick={action('click')}
       productionTime="4-6 days"
     />
+    <ProviderItem
+      providerSlug="ff3dm"
+      providerName="FF3DM"
+      process="DLP"
+      price="$410.11"
+      shippingPrice="$15.00"
+      deliveryTime="1-2 Days"
+      totalPrice="$40.00"
+      deliveryProvider="UPS"
+      providerInfo="Provider Material Name"
+      onCheckoutClick={action('click')}
+      productionTime="4-6 days"
+    />
   </ProviderList>
 ))

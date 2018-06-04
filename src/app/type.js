@@ -58,7 +58,8 @@ export type Price = {
     imaterialse: boolean,
     sculpteo: boolean,
     trinckle: boolean,
-    treatstock: boolean
+    treatstock: boolean,
+    ff3dm: boolean
   }
 }
 
@@ -212,7 +213,8 @@ export type PriceState = {
     imaterialse: boolean,
     sculpteo: boolean,
     trinckle: boolean,
-    treatstock: boolean
+    treatstock: boolean,
+    ff3dm: boolean
   },
   selectedOffer: ?Offer
 }
