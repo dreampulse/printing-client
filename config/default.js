@@ -22,6 +22,7 @@ export default {
     {value: 'AUD', label: 'AUD', symbol: 'AU$', prefix: true}
   ],
   providerNames: {
+    ff3dm: 'FF3DM',
     imaterialise: 'i.Materialise',
     sculpteo: 'Sculpteo',
     shapeways: 'Shapeways',
