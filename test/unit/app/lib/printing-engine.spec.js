@@ -62,19 +62,24 @@ describe('printing-engine lib', () => {
     })
 
     it('calls httpJson.upload() with the correct upload options', async () => {
-      await uploadModel(fileMock, 'mm', dispatchMock, onProgressActionCreatorMock)
+      await uploadModel(fileMock, {unit: 'mm'}, dispatchMock, onProgressActionCreatorMock)
       expect(httpJson.upload, 'to have a call satisfying', [
         {method: 'POST', url: `${baseUrl}/v2/model`, body: {file: fileMock, unit: 'mm'}}
       ])
     })
 
     it('returns the backend model which is the json property from httpJson.upload()', async () => {
-      const model = await uploadModel(fileMock, 'mm', dispatchMock, onProgressActionCreatorMock)
+      const model = await uploadModel(
+        fileMock,
+        {unit: 'mm'},
+        dispatchMock,
+        onProgressActionCreatorMock
+      )
       expect(model, 'to be', modelMock)
     })
 
     it('dispatches an action using the onProgressActionCreator each time the onProgress handler is called', async () => {
-      await uploadModel(fileMock, 'mm', dispatchMock, onProgressActionCreatorMock)
+      await uploadModel(fileMock, {unit: 'mm'}, dispatchMock, onProgressActionCreatorMock)
 
       const onProgressHandler = httpJson.upload.firstCall.args[0].onProgress
 

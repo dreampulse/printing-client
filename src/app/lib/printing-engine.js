@@ -15,7 +15,9 @@ export const fetchMaterialGroups = async () => {
 
 export const uploadModel = async (
   file: File,
-  unit: string,
+  meta: {
+    unit: string
+  },
   dispatch: Dispatch<AppAction>,
   onProgressActionCreator: ModelOnProgressActionCreator
 ): Promise<BackendModel> => {
@@ -24,7 +26,7 @@ export const uploadModel = async (
     url: `${baseUrl}/v2/model`,
     body: {
       file,
-      unit
+      unit: meta.unit
     },
     onProgress: progress => {
       dispatch(onProgressActionCreator(progress))
