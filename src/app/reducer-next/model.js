@@ -74,6 +74,9 @@ const uploadFile = (state, {payload}) => {
   )
 }
 
+const uploadFiles = (state, {payload: files}) =>
+  loop(state, Cmd.list(files.map(file => Cmd.action(modelAction.uploadFile(file)))))
+
 const uploadProgress = (state, {payload}) => {
   const fileId = payload.fileId
 
@@ -193,6 +196,8 @@ export const reducer = (state: ModelState = initialState, action: AppAction): Mo
   switch (action.type) {
     case 'MODEL.UPLOAD_FILE':
       return uploadFile(state, action)
+    case 'MODEL.UPLOAD_FILES':
+      return uploadFiles(state, action)
     case 'MODEL.UPLOAD_PROGRESS':
       return uploadProgress(state, action)
     case 'MODEL.UPLOAD_COMPLETE':

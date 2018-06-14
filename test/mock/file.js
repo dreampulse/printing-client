@@ -1,5 +1,5 @@
-// Has the shape of the browsers native file object
-// See: https://github.com/facebook/flow/blob/v0.59.0/lib/dom.js#L44
+// Provides a subset of the browsers native File object
+// See: https://developer.mozilla.org/en-US/docs/Web/API/File
 export default () => ({
   name: 'some-file-name',
   size: 42

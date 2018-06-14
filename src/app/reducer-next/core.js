@@ -1,7 +1,7 @@
 // @flow
 
 import {loop, Cmd} from 'redux-loop'
-import {listMaterials} from '../service/printing-engine'
+import {fetchMaterialGroups} from '../lib/printing-engine'
 import type {AppAction, MaterialGroup} from '../type-next'
 import * as coreAction from '../action-next/core'
 
@@ -13,10 +13,10 @@ const initialState: CoreState = {
   materialGroups: []
 }
 
-const loadMaterialGroups = (state, _action) =>
+const initMaterialGroups = (state, _action) =>
   loop(
     state,
-    Cmd.run(listMaterials, {
+    Cmd.run(fetchMaterialGroups, {
       args: [],
       successActionCreator: response => coreAction.updateMaterialGroups(response.materialStructure),
       failActionCreator: coreAction.fatalError
@@ -31,7 +31,7 @@ const updateMaterialGroups = (state, action) => ({
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
     case 'INIT.INIT':
-      return loadMaterialGroups(state, action)
+      return initMaterialGroups(state, action)
     case 'CORE.UPDATE_MATERIAL_GROUPS':
       return updateMaterialGroups(state, action)
     default:

@@ -12,19 +12,10 @@ import reducer from '../../../../src/app/reducer-next'
 import {withNUploadedModels} from '../../../scenario'
 import getBackendModelMock from '../../../mock/printing-engine/backend-model'
 import getFileMock from '../../../mock/file'
+import getFileListMock from '../../../mock/file-list'
 
-describe('model action', () => {
-  let sandbox
-
-  beforeEach(() => {
-    sandbox = sinon.sandbox.create()
-    sandbox.stub(printingEngine, 'uploadModel')
-  })
-  afterEach(() => {
-    sandbox.restore()
-  })
-
-  describe('uploadFile()', () => {
+describe('model', () => {
+  describe('action.uploadFile()', () => {
     let fileId
     let configId
     let uploadFileAction
@@ -44,7 +35,7 @@ describe('model action', () => {
       expect(uploadFileAction1.payload.fileId, 'not to equal', uploadFileAction2.payload.fileId)
     })
 
-    it('uses the correct upload progress action creator (the 4th parameter)', () => {
+    it('calls printingEngine.uploadModel() with the correct arguments', () => {
       const cmd = findCmd(state, printingEngine.uploadModel, [
         getFileMock,
         {unit: 'mm'},
@@ -60,7 +51,7 @@ describe('model action', () => {
       })
     })
 
-    describe('using selectModelsOfModelConfigs() selector', () => {
+    describe('selector.selectModelsOfModelConfigs()', () => {
       it('contains the uploaded file', () => {
         expect(selectModelsOfModelConfigs(getModel(state)), 'to have an item satisfying', {
           fileId,
@@ -72,7 +63,7 @@ describe('model action', () => {
       })
     })
 
-    describe('using selectModelConfigs() selector', () => {
+    describe('selector.selectModelConfigs()', () => {
       it('contains a model uploading config', () => {
         expect(selectModelConfigs(getModel(state)), 'to have an item satisfying', {
           id: configId,
@@ -109,7 +100,65 @@ describe('model action', () => {
     })
   })
 
-  describe('uploadProgress()', () => {
+  describe('action.uploadFiles()', () => {
+    let file1
+    let file2
+    let uploadFilesAction
+
+    beforeEach(() => {
+      file1 = getFileMock()
+    })
+
+    describe('when passed in an array with just one file', () => {
+      beforeEach(() => {
+        uploadFilesAction = modelAction.uploadFiles(getFileListMock([file1]))
+      })
+
+      it('should return the same as modelAction.uploadFile()', () => {
+        const uploadFileAction = modelAction.uploadFile(file1)
+
+        uploadFileAction.payload.fileId = expect.it('to be a string')
+        uploadFileAction.payload.configId = expect.it('to be a string')
+
+        expect(uploadFilesAction, 'to satisfy', uploadFileAction)
+      })
+    })
+
+    describe('when passed in an array with multiple files', () => {
+      let state
+
+      beforeEach(() => {
+        file2 = getFileMock()
+        uploadFilesAction = modelAction.uploadFiles(getFileListMock([file1, file2]))
+        state = reducer(undefined, uploadFilesAction)
+      })
+
+      it('does not change the state', () => {
+        const someInitAction = {}
+        const stateBefore = getModel(reducer(undefined, someInitAction))
+        const stateAfter = getModel(reducer(stateBefore, uploadFilesAction))
+
+        expect(stateBefore, 'to be', stateAfter)
+      })
+
+      it('triggers modelAction.uploadFile() for each file', () => {
+        const uploadFileAction1 = modelAction.uploadFile(file1)
+        const uploadFileAction2 = modelAction.uploadFile(file2)
+
+        uploadFileAction1.payload.fileId = expect.it('to be a string')
+        uploadFileAction1.payload.configId = expect.it('to be a string')
+        uploadFileAction2.payload.fileId = expect.it('to be a string')
+        uploadFileAction2.payload.configId = expect.it('to be a string')
+
+        expect(
+          findCmd(state, Cmd.list([Cmd.action(uploadFileAction1), Cmd.action(uploadFileAction2)])),
+          'to be truthy'
+        )
+      })
+    })
+  })
+
+  describe('action.uploadProgress()', () => {
     let fileId
     let state
 
@@ -122,14 +171,14 @@ describe('model action', () => {
       state = reducer(getModel(stateBeforeUploadProgress), uploadProgressAction)
     })
 
-    describe('using selectModelsOfModelConfigs() selector', () => {
+    describe('selector.selectModelsOfModelConfigs()', () => {
       it('updates the model with the given fileId', () => {
         const models = selectModelsOfModelConfigs(getModel(state))
         expect(models, 'to have an item satisfying', {progress: 42})
       })
     })
 
-    describe('using selectModelConfigs() selector', () => {
+    describe('selector.selectModelConfigs()', () => {
       it('does not change the order (or manipulate the array unexpectedly)', () => {
         const uploadFileAction1 = modelAction.uploadFile(getFileMock())
         const uploadFileAction2 = modelAction.uploadFile(getFileMock())
@@ -155,7 +204,7 @@ describe('model action', () => {
     })
   })
 
-  describe('uploadComplete()', () => {
+  describe('action.uploadComplete()', () => {
     let state
 
     beforeEach(() => {
@@ -163,7 +212,7 @@ describe('model action', () => {
       state = withNUploadedModels(2)
     })
 
-    describe('using selectModelConfigs() selector', () => {
+    describe('selector.selectModelConfigs()', () => {
       it('does not change the order (or manipulate the array unexpectedly)', () => {
         const uploadFileAction1 = modelAction.uploadFile(getFileMock())
         const uploadFileAction2 = modelAction.uploadFile(getFileMock())
@@ -190,7 +239,7 @@ describe('model action', () => {
       })
     })
 
-    describe('using selectModelsOfModelConfigs() selector', () => {
+    describe('selector.selectModelsOfModelConfigs()', () => {
       it('returns the given backend model with a quantity property', () => {
         const model = selectModelsOfModelConfigs(getModel(state)).find(
           m => m.modelId === 'model-id-1'
@@ -200,7 +249,7 @@ describe('model action', () => {
       })
     })
 
-    describe('using selectModelConfigs() selector', () => {
+    describe('selector.selectModelConfigs()', () => {
       it('returns the model config item containing the model', () => {
         const modelConfigs = selectModelConfigs(getModel(state))
         expect(modelConfigs, 'to have an item satisfying', {
@@ -215,7 +264,7 @@ describe('model action', () => {
     })
   })
 
-  describe('uploadFail()', () => {
+  describe('action.uploadFail()', () => {
     let fileId
     let error
     let state
@@ -232,7 +281,7 @@ describe('model action', () => {
       )
     })
 
-    describe('using selectModelsOfModelConfigs() selector', () => {
+    describe('selector.selectModelsOfModelConfigs()', () => {
       it('contains the uploading model with an error flag and errorMessage', () => {
         const model = selectModelsOfModelConfigs(getModel(state))
 
@@ -244,7 +293,7 @@ describe('model action', () => {
     })
   })
 
-  describe('deleteModelConfigs()', () => {
+  describe('action.deleteModelConfigs()', () => {
     let action
     let stateBefore
 
@@ -253,7 +302,7 @@ describe('model action', () => {
       stateBefore = withNUploadedModels(3)
     })
 
-    describe('using selectModelConfigs() selector', () => {
+    describe('selector.selectModelConfigs()', () => {
       it('deletes given model configs', () => {
         const state = reducer(getModel(stateBefore), action)
 
@@ -263,7 +312,7 @@ describe('model action', () => {
       })
     })
 
-    describe('using selectSelectedModelConfigIds() selector', () => {
+    describe('selector.selectSelectedModelConfigIds()', () => {
       it('deletes given model configs from selected model configs', () => {
         const selectAction = modelAction.updateSelectedModelConfigs(['config-id-1', 'config-id-2'])
         let state = reducer(getModel(stateBefore), selectAction)
@@ -275,7 +324,7 @@ describe('model action', () => {
     })
   })
 
-  describe('updateSelectedModelConfigs()', () => {
+  describe('action.updateSelectedModelConfigs()', () => {
     let state
 
     beforeEach(() => {
@@ -283,14 +332,14 @@ describe('model action', () => {
       state = reducer(getModel(withNUploadedModels(1)), action)
     })
 
-    describe('using selectSelectedModelConfigIds() selector', () => {
+    describe('selector.selectSelectedModelConfigIds()', () => {
       it('selects given model config', () => {
         const ids = selectSelectedModelConfigIds(getModel(state))
         expect(ids, 'to equal', ['config-id-1'])
       })
     })
 
-    describe('using selectSelectedModelConfig() selector', () => {
+    describe('selector.selectSelectedModelConfig()', () => {
       it('selects given model config', () => {
         const modelConfigs = selectSelectedModelConfigs(getModel(state))
         expect(modelConfigs, 'to have an item satisfying', {
@@ -300,7 +349,7 @@ describe('model action', () => {
     })
   })
 
-  describe('updateQuantities()', () => {
+  describe('action.updateQuantities()', () => {
     let state
 
     beforeEach(() => {
@@ -308,7 +357,7 @@ describe('model action', () => {
       state = reducer(getModel(withNUploadedModels(2)), action)
     })
 
-    describe('using selectModelConfigs() selector', () => {
+    describe('selector.selectModelConfigs()', () => {
       it('has model config with updated quantity', () => {
         const modelConfigs = selectModelConfigs(getModel(state))
         expect(modelConfigs, 'to have an item satisfying', {
@@ -319,7 +368,7 @@ describe('model action', () => {
     })
   })
 
-  describe('duplicateModelConfig()', () => {
+  describe('action.duplicateModelConfig()', () => {
     let action
     let state
 
@@ -328,15 +377,15 @@ describe('model action', () => {
       state = reducer(getModel(withNUploadedModels(2)), action)
     })
 
-    describe('using selectModelConfigs() selector', () => {
-      it('has appends new model config after orignal model config', () => {
+    describe('selector.selectModelConfigs()', () => {
+      it('contains the duplicated model config just before the original model config', () => {
         const modelConfigs = selectModelConfigs(getModel(state))
         expect(modelConfigs[1], 'to satisfy', {
           id: action.payload.nextId
         })
       })
 
-      it('has appends new model config after orignal model config', () => {
+      it('contains the duplicated model config', () => {
         const modelConfigs = selectModelConfigs(getModel(state))
         expect(modelConfigs, 'to have an item satisfying', {
           id: action.payload.nextId,

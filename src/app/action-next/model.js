@@ -7,6 +7,7 @@ type UploadFileAction = Action<
   'MODEL.UPLOAD_FILE',
   {fileId: FileId, configId: ConfigId, file: File}
 >
+type UploadFilesAction = Action<'MODEL.UPLOAD_FILES', Array<File>>
 type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, progress: number}>
 type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: string, model: BackendModel}>
 type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
@@ -26,6 +27,7 @@ type DuplicateModelConfigAction = Action<
 
 export type ModelAction =
   | UploadFileAction
+  | UploadFilesAction
   | UploadProgressAction
   | UploadCompleteAction
   | UploadFailAction
@@ -42,6 +44,17 @@ export const uploadFile = (file: File): UploadFileAction => ({
     configId: uniqueId('config-id-')
   }
 })
+
+export const uploadFiles = (files: FileList): UploadFileAction | UploadFilesAction => {
+  const filesAsArray = Array.from(files)
+
+  return filesAsArray.length === 1
+    ? uploadFile(filesAsArray[0])
+    : {
+        type: 'MODEL.UPLOAD_FILES',
+        payload: filesAsArray
+      }
+}
 
 export const uploadProgress = (fileId: FileId, progress: number): UploadProgressAction => ({
   type: 'MODEL.UPLOAD_PROGRESS',
