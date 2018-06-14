@@ -40,7 +40,7 @@ import minusIcon from '../../asset/icon/minus.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 
 const UploadPage = ({
-  onUploadFile,
+  onUploadFiles,
   onDeleteModelConfigs,
   onChangeQuantities,
   onChooseMaterial,
@@ -104,7 +104,7 @@ const UploadPage = ({
         linkLabel="select files"
         description="Supported file formats: STL, OBJ, WRL, SKP, DAE, 3DS, IGS, FBX, PLY, X3D, STP, PRT, …"
         accept="*"
-        onChange={onUploadFile}
+        onChange={onUploadFiles}
       />
     </Section>
   )
@@ -205,7 +205,7 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = {
-  onUploadFile: modelAction.uploadFile,
+  onUploadFiles: modelAction.uploadFiles,
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onChangeQuantities: modelAction.updateQuantities,
   onDuplicateModelConfig: modelAction.duplicateModelConfig,
