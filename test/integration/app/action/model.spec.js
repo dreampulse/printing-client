@@ -6,6 +6,7 @@ import {
   changeIndividualQuantity,
   changeUnit
 } from '../../../../src/app/action/model'
+import * as intercom from '../../../../src/app/service/intercom'
 import * as printingEngine from '../../../../src/app/service/printing-engine'
 import {resetPollState} from '../../../../src/app/lib/poll'
 import {ERROR_TYPE} from '../../../../src/app/action-type'
@@ -25,6 +26,7 @@ describe('Model Integration Test', () => {
     sandbox.stub(config, 'pollingInterval').value(0)
     sandbox.stub(config, 'pollingDebouncedWait').value(0)
 
+    sandbox.stub(intercom)
     sandbox.stub(printingEngine)
   })
 
