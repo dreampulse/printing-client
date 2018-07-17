@@ -3,6 +3,7 @@
 import omit from 'lodash/omit'
 import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
+import {openIntercom} from '../service/intercom'
 import {uploadModel} from '../service/printing-engine'
 import type {AppAction, UploadingFile, FileId, Model, ModelId, BasketItem} from '../type-next'
 import * as modelAction from '../action-next/model'
@@ -84,22 +85,25 @@ const uploadComplete = (state, {payload}) => {
 
   invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
 
-  return {
-    ...state,
-    uploadingFiles: omit(state.uploadingFiles, fileId),
-    models: {
-      ...state.models,
-      [model.modelId]: model
+  return loop(
+    {
+      ...state,
+      uploadingFiles: omit(state.uploadingFiles, fileId),
+      models: {
+        ...state.models,
+        [model.modelId]: model
+      },
+      basketItems: [
+        ...state.basketItems,
+        {
+          quantity: 1,
+          modelId: model.modelId,
+          material: null // No material selected
+        }
+      ]
     },
-    basketItems: [
-      ...state.basketItems,
-      {
-        quantity: 1,
-        modelId: model.modelId,
-        material: null // No material selected
-      }
-    ]
-  }
+    Cmd.run(openIntercom)
+  )
 }
 
 const uploadFail = (state, {payload}) => {

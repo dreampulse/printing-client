@@ -5,6 +5,7 @@ import {
   deleteFile
 } from '../../../../src/app/action/model'
 import * as priceActions from '../../../../src/app/action/price'
+import * as intercom from '../../../../src/app/service/intercom'
 import * as printingEngine from '../../../../src/app/service/printing-engine'
 import TYPE, {ERROR_TYPE} from '../../../../src/app/action-type'
 import {resolveAsyncThunk} from '../../../helper'
@@ -24,6 +25,7 @@ describe('Model actions', () => {
     }
     store = mockStore(initialStoreData)
 
+    sandbox.stub(intercom)
     sandbox.stub(priceActions)
     sandbox.stub(printingEngine)
   })
@@ -105,6 +107,12 @@ describe('Model actions', () => {
       ])
     })
 
+    it('opens intercom', async () => {
+      await store.dispatch(uploadFiles([file], features))
+
+      expect(intercom.openIntercom, 'was called once')
+    })
+
     it('dispatches expected actions', async () => {
       await store.dispatch(uploadFiles([file], features))
 
@@ -154,7 +162,7 @@ describe('Model actions', () => {
       ])
     })
 
-    describe('when upload failes:', () => {
+    describe('when upload fails:', () => {
       beforeEach(() => {
         printingEngine.uploadModel.rejects(new Error('some-error'))
       })
