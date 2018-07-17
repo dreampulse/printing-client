@@ -5,7 +5,6 @@ import {createAction} from 'redux-actions'
 import uniqueId from 'lodash/uniqueId'
 
 import {uploadModel} from '../service/printing-engine'
-import {openIntercom} from '../service/intercom'
 import {FileUploadError} from '../lib/error'
 import {createPriceRequest, createDebouncedPriceRequest} from './price'
 
@@ -93,7 +92,6 @@ const uploadFile = (file: File) => async (dispatch: Dispatch<*>, getState: () =>
 
   try {
     const modelData = await uploadModel(file, {unit}, onUploadProgressed)
-    openIntercom()
     dispatch(fileUploaded(fileId, modelData))
   } catch (error) {
     const uploadError = new FileUploadError(fileId)
