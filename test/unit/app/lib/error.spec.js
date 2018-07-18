@@ -2,7 +2,7 @@ import {
   AppError,
   HttpResponseUnexpectedStatusError,
   HttpResponseBodyParseError,
-  FileUploadError
+  HttpUploadError
 } from '../../../../src/app/lib/error'
 
 describe('Error lib', () => {
@@ -70,16 +70,38 @@ describe('Error lib', () => {
     })
   })
 
-  describe('FileUploadError', () => {
-    it('sets type, message and fileId', () => {
-      const error = new FileUploadError('some-file-id')
-      expect(error, 'to satisfy', {
-        type: 'LEGACY.FILE_UPLOAD_FAILED',
-        message: expect.it(
-          'to contain',
-          'File upload failed. Maybe the file is corrupted or not in a format compatible for 3D printing.'
-        ),
-        fileId: 'some-file-id'
+  describe('HttpUploadError', () => {
+    describe('in uploading phase', () => {
+      it('sets method, url and phase', () => {
+        const error = new HttpUploadError(
+          'POST',
+          'http://example.com',
+          HttpUploadError.PHASE_UPLOADING
+        )
+        expect(error, 'to satisfy', {
+          type: 'HTTP_UPLOAD_ERROR',
+          message: expect.it('to contain', 'POST http://example.com failed during upload'),
+          url: 'http://example.com',
+          phase: 'UPLOADING'
+        })
+      })
+    })
+    describe('in downloading phase', () => {
+      it('sets method, url and phase', () => {
+        const error = new HttpUploadError(
+          'POST',
+          'http://example.com',
+          HttpUploadError.PHASE_DOWNLOADING
+        )
+        expect(error, 'to satisfy', {
+          type: 'HTTP_UPLOAD_ERROR',
+          message: expect.it(
+            'to contain',
+            'POST http://example.com failed after upload while downloading the response'
+          ),
+          url: 'http://example.com',
+          phase: 'DOWNLOADING'
+        })
       })
     })
   })

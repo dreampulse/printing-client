@@ -2,7 +2,7 @@ import * as initAction from '../../../../src/app/action-next/init'
 import * as coreAction from '../../../../src/app/action-next/core'
 import * as modalAction from '../../../../src/app/action-next/modal'
 import * as userAction from '../../../../src/app/action-next/user'
-import {listMaterials} from '../../../../src/app/service/printing-engine'
+import {fetchMaterialGroups} from '../../../../src/app/lib/printing-engine'
 import {getLocationByIp} from '../../../../src/app/lib/geolocation'
 import * as selector from '../../../../src/app/selector'
 import reducer from '../../../../src/app/reducer-next'
@@ -17,8 +17,8 @@ describe('init action', () => {
       state = reducer(undefined, initAction.init())
     })
 
-    it(`triggers the coreAction.updateMaterialGroups() action with the result from listMaterials`, () => {
-      const cmd = findCmd(state, listMaterials, [])
+    it(`triggers the coreAction.updateMaterialGroups() action with the result from fetchMaterialGroups`, () => {
+      const cmd = findCmd(state, fetchMaterialGroups, [])
       const action = cmd.simulate({
         success: true,
         result: materialResponse
@@ -30,9 +30,9 @@ describe('init action', () => {
       )
     })
 
-    it(`triggers the coreAction.fatalError() action with the given error when listMaterials failed`, () => {
+    it(`triggers the coreAction.fatalError() action with the given error when fetchMaterialGroups failed`, () => {
       const err = new Error('Some error')
-      const cmd = findCmd(state, listMaterials, [])
+      const cmd = findCmd(state, fetchMaterialGroups, [])
       const action = cmd.simulate({
         success: false,
         result: err

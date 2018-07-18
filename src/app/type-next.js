@@ -191,5 +191,19 @@ export type PollingResult = any
 export type PollingFunction = (...args: PollingArgs) => PollingResult | Promise<PollingResult>
 export type PollingOnSuccessActionCreator = (result: PollingResult) => _AppAction
 
+export type ModelOnProgressActionCreator = (progress: number) => _AppAction
+
+export type HttpUploadOptions = {
+  url: string,
+  body: {[string]: string | Blob},
+  headers?: Headers,
+  method?: string,
+  onProgress?: (progress: number) => void
+}
+export type HttpJsonResponse = {
+  json: any,
+  http: Response
+}
+
 export type AppAction = _AppAction
 export type AppState = _AppState
