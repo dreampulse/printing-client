@@ -28,7 +28,7 @@ const UploadModelItemLoad = ({
 
   return (
     <div className={buildClassName('upload-model-item-load', modifiers, classNames)}>
-      <Progress value={percentage} />
+      {status !== undefined && <Progress value={percentage} />}
       <div className="upload-model-item-load__content">
         {Boolean(title) && (
           <strong className="upload-model-item-load__title">

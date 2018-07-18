@@ -50,7 +50,7 @@
     color: $color-link;
   }
 
-  &__progress {
+  & > .progress {
     position: absolute;
     z-index: z($stacking, progress);
     top: 0;
