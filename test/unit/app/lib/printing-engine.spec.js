@@ -1,10 +1,6 @@
 import config from '../../../../config'
 import * as httpJson from '../../../../src/app/lib/http-json'
-import {
-  fetchMaterialGroups,
-  uploadModel,
-  getModelWithStatus
-} from '../../../../src/app/lib/printing-engine'
+import {fetchMaterialGroups, uploadModel, getModel} from '../../../../src/app/lib/printing-engine'
 import getFileMock from '../../../mock/file'
 
 const baseUrl = config.printingEngineBaseUrl
@@ -93,7 +89,7 @@ describe('printing-engine lib', () => {
     })
   })
 
-  describe('getModelWithStatus()', () => {
+  describe('getModel()', () => {
     let responseMock
     let modelMock
 
@@ -107,45 +103,13 @@ describe('printing-engine lib', () => {
     })
 
     it('calls httpJson.fetch() with the correct URL', async () => {
-      await getModelWithStatus('some-model-id')
-      expect(httpJson.fetch, 'to have a call satisfying', [`${baseUrl}/v2/model/some-model-id`])
+      await getModel('some-model-id')
+      expect(httpJson.fetch, 'to have a call satisfying', [`${baseUrl}/v3/model/some-model-id`])
     })
 
     it('returns an object that provides a model property and an isComplete property', async () => {
-      const result = await getModelWithStatus('some-model-id')
-
-      expect(result, 'to satisfy', {
-        model: expect.it('to equal', modelMock),
-        isComplete: expect.it('to be a boolean')
-      })
-    })
-
-    describe('when the response.status was 200', () => {
-      beforeEach(() => {
-        responseMock.status = 200
-      })
-
-      it('returns isComplete true', async () => {
-        const result = await getModelWithStatus('some-model-id')
-
-        expect(result, 'to satisfy', {
-          isComplete: true
-        })
-      })
-    })
-
-    describe('when the response.status was 206', () => {
-      beforeEach(() => {
-        responseMock.status = 206
-      })
-
-      it('returns isComplete false', async () => {
-        const result = await getModelWithStatus('some-model-id')
-
-        expect(result, 'to satisfy', {
-          isComplete: false
-        })
-      })
+      const result = await getModel('some-model-id')
+      expect(result, 'to equal', modelMock)
     })
   })
 })

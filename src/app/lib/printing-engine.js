@@ -36,16 +36,7 @@ export const uploadModel = async (
   return response.json
 }
 
-export const getModelWithStatus = async (
-  modelId: ModelId
-): Promise<{
-  model: BackendModel,
-  isComplete: boolean
-}> => {
-  const response = await httpJson.fetch(`${baseUrl}/v2/model/${modelId}`)
-
-  return {
-    model: response.json,
-    isComplete: response.http.status === 200
-  }
+export const getModel = async (modelId: ModelId): Promise<BackendModel> => {
+  const response = await httpJson.fetch(`${baseUrl}/v3/model/${modelId}`)
+  return response.json
 }
