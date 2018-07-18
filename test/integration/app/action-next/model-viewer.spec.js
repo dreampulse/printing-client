@@ -5,7 +5,7 @@ import * as pollingAction from '../../../../src/app/action-next/polling'
 import {isModelViewerOpen, selectSceneId} from '../../../../src/app/selector/model-viewer'
 import {pollingFunction} from '../../../../src/app/lib/polling'
 
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 
 describe('model-viewer', () => {
   describe('action.open()', () => {

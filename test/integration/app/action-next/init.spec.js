@@ -5,7 +5,7 @@ import * as userAction from '../../../../src/app/action-next/user'
 import {listMaterials} from '../../../../src/app/service/printing-engine'
 import {getLocationByIp} from '../../../../src/app/lib/geolocation'
 import * as selector from '../../../../src/app/selector'
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 import materialResponse from '../../../../test-data/mock/material-response.json'
 import geolocationSuccessResponse from '../../../../test-data/mock/geolocation-success-response.json'
 
@@ -40,13 +40,13 @@ describe('init action', () => {
       expect(action, 'to equal', coreAction.fatalError(err))
     })
 
-    it(`triggers the userAction.locationDetected() action with the result from getLocationByIp`, () => {
+    it(`triggers the userAction.locationUpdated() action with the result from getLocationByIp`, () => {
       const cmd = findCmd(state, getLocationByIp, [])
       const action = cmd.simulate({
         success: true,
         result: geolocationSuccessResponse
       })
-      expect(action, 'to equal', userAction.locationDetected(geolocationSuccessResponse))
+      expect(action, 'to equal', userAction.locationUpdated(geolocationSuccessResponse))
     })
 
     it(`triggers the modalAction.openPickLocation() action when getLocationByIp failed`, () => {
@@ -59,27 +59,21 @@ describe('init action', () => {
       expect(action, 'to equal', modalAction.openPickLocation())
     })
 
-    describe('selector.selectModels()', () => {
+    describe('selector.selectModelsOfModelConfigs()', () => {
       it('returns an empty array', () => {
-        expect(selector.selectModels(getModel(state)), 'to equal', [])
+        expect(selector.selectModelsOfModelConfigs(getModel(state)), 'to equal', [])
       })
     })
 
-    describe('selector.selectUploadingFiles()', () => {
+    describe('selector.selectModelConfigs()', () => {
       it('returns an empty array', () => {
-        expect(selector.selectUploadingFiles(getModel(state)), 'to equal', [])
+        expect(selector.selectModelConfigs(getModel(state)), 'to equal', [])
       })
     })
 
     describe('selector.selectMaterialGroups()', () => {
       it('returns an empty array', () => {
         expect(selector.selectMaterialGroups(getModel(state)), 'to equal', [])
-      })
-    })
-
-    describe('selector.selectBasketItems()', () => {
-      it('returns an empty array', () => {
-        expect(selector.selectBasketItems(getModel(state)), 'to equal', [])
       })
     })
 
@@ -103,13 +97,37 @@ describe('init action', () => {
 
     describe('selector.isModalOpen()', () => {
       it('returns false', () => {
-        expect(selector.isModalOpen(getModel(state)), 'to equal', false)
+        expect(selector.selectUserId(getModel(state)), 'to equal', null)
       })
     })
 
-    describe('selector.selectMaterialGroups()', () => {
-      it('returns null', () => {
+    describe('selector.selectModalConfig()', () => {
+      it('returns the configuration for a closed modal', () => {
         expect(selector.selectModalConfig(getModel(state)), 'to equal', null)
+      })
+    })
+
+    describe('selector.selectSelectedModelConfigIds()', () => {
+      it('returns an empty array', () => {
+        expect(selector.selectSelectedModelConfigIds(getModel(state)), 'to equal', [])
+      })
+    })
+
+    describe('selector.selectSelectedModelConfigs()', () => {
+      it('returns an empty array', () => {
+        expect(selector.selectSelectedModelConfigs(getModel(state)), 'to equal', [])
+      })
+    })
+
+    describe('selector.isModelViewerOpen()', () => {
+      it('returns false', () => {
+        expect(selector.isModelViewerOpen(getModel(state)), 'to equal', false)
+      })
+    })
+
+    describe('selector.selectSceneId()', () => {
+      it('returns null', () => {
+        expect(selector.selectSceneId(getModel(state)), 'to equal', null)
       })
     })
   })

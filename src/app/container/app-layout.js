@@ -13,7 +13,6 @@ import Link from '../component/link'
 import {goToHome, goToAddress} from '../action/navigation'
 
 import {connectLegacy} from './util/connect-legacy'
-import LegacyModal from './modal'
 import Modal from './modal-next'
 
 const AppLayout = ({
@@ -71,7 +70,6 @@ const AppLayout = ({
       ]}
       footer={footer}
     >
-      <LegacyModal />
       <Modal />
       <Container>{children}</Container>
     </App>

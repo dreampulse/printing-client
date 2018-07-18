@@ -3,21 +3,21 @@ import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
 import LabeledCheckbox from '../../src/app/component/labeled-checkbox'
-import HandleChecked from '../util/handle-checked'
+import HandleValue from '../util/handle-value'
 
 storiesOf('Labeled Checkbox', module)
   .add('default', () => (
-    <HandleChecked>
+    <HandleValue>
       <LabeledCheckbox label="Label" onChange={action('onChange')} />
-    </HandleChecked>
+    </HandleValue>
   ))
   .add('checked', () => (
-    <HandleChecked checked>
+    <HandleValue initialValue valueName="checked">
       <LabeledCheckbox label="Label" />
-    </HandleChecked>
+    </HandleValue>
   ))
   .add('error', () => (
-    <HandleChecked checked>
+    <HandleValue valueName="checked">
       <LabeledCheckbox modifiers={['error']} label="Label" />
-    </HandleChecked>
+    </HandleValue>
   ))

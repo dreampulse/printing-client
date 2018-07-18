@@ -31,7 +31,7 @@ export function formatTimeRange(from, to) {
 }
 
 export function formatAddress(address) {
-  if (address.city && address.countryCode) {
+  if (address && address.city && address.countryCode) {
     return `${address.city}, ${getCountryName(address.countryCode)}`
   }
 
