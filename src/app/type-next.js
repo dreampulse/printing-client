@@ -12,7 +12,6 @@ export type MaterialConfigId = string
 export type FinishGroupId = string
 export type MaterialGroupId = string
 export type MaterialId = string
-export type PrintingServiceId = string
 export type QuoteId = string
 export type VendorId = string
 export type ConfigId = string
@@ -25,7 +24,7 @@ export type FileId = string
 // https://github.com/all3dp/material-structure/blob/master/src/schema.js
 
 export type PrintingService = {
-  [PrintingServiceId]: {
+  [VendorId]: {
     materialId: MaterialId,
     finishId: FinishGroupId,
     printingMethodShort: string,
@@ -60,7 +59,7 @@ export type FinishGroup = {
   featuredImage: string,
   properties: {
     printingServiceName: {
-      [PrintingServiceId]: string
+      [VendorId]: string
     },
     printingMethod: string,
     printingMethodShort: string,
