@@ -30,11 +30,7 @@ const ModelItem = ({
   onMagnify = Function.prototype
 }) => (
   <div className={buildClassName('model-item', modifiers, classNames)}>
-    <MagnifyableItem
-      classNames={['model-item__preview']}
-      ariaLabel={`Load ${title} in interactive model viewer`}
-      onClick={onMagnify}
-    >
+    <MagnifyableItem ariaLabel={`Load ${title} in interactive model viewer`} onClick={onMagnify}>
       <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
     </MagnifyableItem>
     <div className="model-item__center-content">

@@ -4,6 +4,7 @@ import React from 'react'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
+import MagnifyableItem from './magnifyable-item'
 import ImageContainer from './image-container'
 
 const UploadModelItem = ({
@@ -13,11 +14,13 @@ const UploadModelItem = ({
   title,
   subline,
   quantity,
-  buttonBar
+  buttonBar,
+  onMagnify = Function.prototype
 }) => (
   <div className={buildClassName('upload-model-item', modifiers, classNames)}>
-    {/* TODO: include new image preview component here */}
-    <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
+    <MagnifyableItem ariaLabel={`Load ${title} in interactive model viewer`} onClick={onMagnify}>
+      <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
+    </MagnifyableItem>
     <div className="upload-model-item__content">
       {Boolean(title) && <strong className="upload-model-item__title">{title}</strong>}
       {Boolean(subline) && <div className="upload-model-item__subline">{subline}</div>}
@@ -34,7 +37,8 @@ UploadModelItem.propTypes = {
   title: PropTypes.string,
   subline: PropTypes.string,
   quantity: PropTypes.number,
-  buttonBar: PropTypes.node
+  buttonBar: PropTypes.node,
+  onMagnify: PropTypes.func
 }
 
 export default UploadModelItem
