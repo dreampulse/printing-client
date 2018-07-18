@@ -26,6 +26,7 @@ const buttonBar = () => (
 storiesOf('Upload Model Item', module)
   .add('default', () => (
     <UploadModelItem
+      id="some-id"
       imageSource="http://placehold.it/180x180"
       title="model_item_title.stl"
       subline="42 x 42 x 42 mm"
@@ -35,6 +36,7 @@ storiesOf('Upload Model Item', module)
   ))
   .add('no subline', () => (
     <UploadModelItem
+      id="some-id"
       imageSource="http://placehold.it/180x180"
       title="model_item_title.stl"
       quantity={1}
