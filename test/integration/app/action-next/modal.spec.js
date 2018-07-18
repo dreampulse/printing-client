@@ -1,86 +1,86 @@
 import * as modalAction from '../../../../src/app/action-next/modal'
 import {isModalOpen, selectModalConfig} from '../../../../src/app/selector'
-import reducer from '../../../../src/app/reducer'
+import reducer from '../../../../src/app/reducer-next'
 
-describe('modal action', () => {
-  describe('openModal()', () => {
-    let modalConfiguration
+describe('modal', () => {
+  describe('action.openPickLocation()', () => {
     let state
 
     beforeEach(() => {
-      modalConfiguration = {
-        isCloseable: false,
-        content: 'CONTENT_TYPE',
-        contentProps: {}
-      }
-      state = reducer(undefined, modalAction.openModal(modalConfiguration))
+      state = reducer(undefined, modalAction.openPickLocation())
     })
 
-    describe('using isModalOpen() selector', () => {
+    describe('selector.isModalOpen()', () => {
       it('returns true', () => expect(isModalOpen(getModel(state)), 'to be', true))
     })
 
-    describe('using selectModalConfig() selector', () => {
-      it('returns the specified modal configuration', () =>
-        expect(selectModalConfig(getModel(state)), 'to satisfy', modalConfiguration))
-    })
-  })
-
-  describe('openFatalErrorModal()', () => {
-    let error
-    let state
-
-    beforeEach(() => {
-      error = new Error('Fatal error')
-      state = reducer(undefined, modalAction.openFatalErrorModal(error))
-    })
-
-    describe('using isModalOpen() selector', () => {
-      it('returns true', () => expect(isModalOpen(getModel(state)), 'to be', true))
-    })
-
-    describe('using selectModalConfig() selector', () => {
-      it('returns the expected modal configuration', () =>
+    describe('selector.selectModalConfig()', () => {
+      it('returns the expected modal config', () =>
         expect(selectModalConfig(getModel(state)), 'to satisfy', {
           isCloseable: false,
-          content: 'FATAL_ERROR',
-          contentProps: {
-            error
-          }
-        }))
-    })
-  })
-
-  describe('openPickLocationModal()', () => {
-    let state
-
-    beforeEach(() => {
-      state = reducer(undefined, modalAction.openPickLocationModal())
-    })
-
-    describe('using isModalOpen() selector', () => {
-      it('returns true', () => expect(isModalOpen(getModel(state)), 'to be', true))
-    })
-
-    describe('using selectModalConfig() selector', () => {
-      it('returns the expected modal configuration', () =>
-        expect(selectModalConfig(getModel(state)), 'to satisfy', {
-          isCloseable: false,
-          content: 'PICK_LOCATION',
+          contentType: 'PICK_LOCATION',
           contentProps: null
         }))
     })
   })
 
-  describe('closeModal()', () => {
+  describe('action.openModelViewer()', () => {
     let state
 
     beforeEach(() => {
-      state = reducer(undefined, modalAction.closeModal())
+      state = reducer(undefined, modalAction.openModelViewer('Some model name'))
     })
 
-    describe('using isModalOpen() selector', () => {
+    describe('selector.isModalOpen()', () => {
+      it('returns true', () => expect(isModalOpen(getModel(state)), 'to be', true))
+    })
+
+    describe('selector.selectModalConfig()', () => {
+      it('returns the expected modal config', () =>
+        expect(selectModalConfig(getModel(state)), 'to satisfy', {
+          isCloseable: true,
+          contentType: 'MODEL_VIEWER',
+          contentProps: {modelName: 'Some model name'}
+        }))
+    })
+  })
+
+  describe('action.openFatalError()', () => {
+    let someError
+    let state
+
+    beforeEach(() => {
+      someError = modalAction.openFatalError(someError)
+      state = reducer(undefined, modalAction.openFatalError(someError))
+    })
+
+    describe('selector.isModalOpen()', () => {
+      it('returns true', () => expect(isModalOpen(getModel(state)), 'to be', true))
+    })
+
+    describe('selector.selectModalConfig()', () => {
+      it('returns the expected modal config', () =>
+        expect(selectModalConfig(getModel(state)), 'to satisfy', {
+          isCloseable: false,
+          contentType: 'FATAL_ERROR',
+          contentProps: {error: someError}
+        }))
+    })
+  })
+
+  describe('action.closeModal()', () => {
+    let state
+
+    beforeEach(() => {
+      state = reducer(undefined, modalAction.close())
+    })
+
+    describe('selector.isModalOpen()', () => {
       it('returns false', () => expect(isModalOpen(getModel(state)), 'to be', false))
+    })
+
+    describe('selector.selectModalConfig()', () => {
+      it('equals null', () => expect(selectModalConfig(getModel(state)), 'to be', null))
     })
   })
 })

@@ -1,22 +1,52 @@
 // @flow
 
 import type {AppAction as _AppAction} from './action-next'
-import type {AppState as _AppState} from './reducer'
+import type {AppState as _AppState} from './reducer-next'
+
+export type Action<Type, Payload> = {
+  type: Type,
+  payload: Payload
+}
 
 export type MaterialConfigId = string
+export type FinishGroupId = string
+export type MaterialGroupId = string
+export type MaterialId = string
+export type PrintingServiceId = string
+export type QuoteId = string
+export type VendorId = string
+export type ConfigId = string
+export type ShippingId = string
+export type ModelId = string
+export type ModelSceneId = string
+export type FileId = string
+
+// Material structure json-schema
+// https://github.com/all3dp/material-structure/blob/master/src/schema.js
+
+export type PrintingService = {
+  [PrintingServiceId]: {
+    materialId: MaterialId,
+    finishId: FinishGroupId,
+    printingMethodShort: string,
+    printingMethod: string,
+    materialName: string,
+    productionTimeFast: number,
+    productionTimeSlow: number
+  }
+}
 
 export type MaterialConfig = {
   id: MaterialConfigId,
   name: string,
   color: string,
   colorCode: string,
-  colorImage: string
+  colorImage: string,
+  printingService: PrintingService,
+  finishGroupId: FinishGroupId,
+  materialId: MaterialId,
+  materialGroupId: MaterialGroupId
 }
-
-export type FinishGroupId = string
-export type MaterialGroupId = string
-export type MaterialId = string
-export type PrintingServiceId = string
 
 export type FinishGroup = {
   id: FinishGroupId,
@@ -25,19 +55,29 @@ export type FinishGroup = {
   descriptionShort: string,
   materialGroupId: MaterialGroupId,
   materialId: MaterialId,
+  materialName: string,
   summary: string,
   featuredImage: string,
   properties: {
-    flexibility: number,
-    freedomOfDesign: number,
-    interlockingAndEnclosedParts: boolean,
-    levelOfDetail: number,
-    printingMethod: string,
-    printingMethodShort: string,
     printingServiceName: {
       [PrintingServiceId]: string
     },
-    strength: number
+    printingMethod: string,
+    printingMethodShort: string,
+    materialSpec: string,
+    strength: number,
+    flexibility: number,
+    levelOfDetail: number,
+    freedomOfDesign: number,
+    postProcessing: number,
+    fragile: boolean,
+    waterproof: boolean,
+    foodSafe: boolean,
+    dishwasherSafe: boolean,
+    paintable: boolean,
+    interlockingAndEnclosedParts: boolean,
+    uvResistant: boolean,
+    recyclable: boolean
   },
   materialConfigs: Array<MaterialConfig>
 }
@@ -58,8 +98,6 @@ export type MaterialGroup = {
   materials: Array<Material>
 }
 
-export type FileId = string
-
 export type UploadingFile = {
   fileId: FileId,
   fileName: string,
@@ -69,9 +107,7 @@ export type UploadingFile = {
   errorMessage?: string
 }
 
-export type ModelId = string
-
-export type Model = {
+export type BackendModel = {
   modelId: ModelId,
   fileName: string,
   fileUnit: 'mm' | 'cm' | 'in',
@@ -82,14 +118,37 @@ export type Model = {
     y: ?number,
     z: ?number
   },
-  thumbnailUrl: string
+  thumbnailUrl: string,
+  sceneId?: ModelSceneId
 }
 
-export type BasketItem = {
+export type BackendQuote = {
+  quoteId: QuoteId,
+  vendorId: VendorId,
+  modelId: ModelId,
+  materialConfigId: MaterialConfigId,
+  price: number,
+  quantity: number,
+  currency: string,
+  isPrintable: boolean
+}
+
+export type ModelConfigUploading = {
+  type: 'UPLOADING',
+  fileId: FileId,
+  id: ConfigId
+}
+
+export type ModelConfigUploaded = {
+  type: 'UPLOADED',
   quantity: number,
   modelId: ModelId,
-  material: any // @TODO: This is the configuration
+  id: ConfigId,
+  quoteId: ?QuoteId,
+  shippingId: ?ShippingId
 }
+
+export type ModelConfig = ModelConfigUploading | ModelConfigUploaded
 
 export type Location = {
   city: string,
@@ -113,25 +172,24 @@ export type GoogleMapsPlace = {
   }>
 }
 
-export type ModalContent = 'PICK_LOCATION' | 'FATAL_ERROR'
-
-type _ModalConfig<C> = {
+export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR'
+export type ModalConfigClosed = null
+export type ModalConfigOpened = {
   isCloseable: boolean,
-  content: C,
+  contentType: ModalContentType,
   contentProps: any
 }
-
-export type ModalConfig = _ModalConfig<null | ModalContent>
-export type OpenModalConfig = _ModalConfig<ModalContent>
-
-export type Action<Type, Payload> = {
-  type: Type,
-  payload: Payload
-}
+export type ModalConfig = ModalConfigOpened | ModalConfigClosed
 
 export type TimeoutId = string
 export type TimeoutCallId = string
 export type TimeoutOnEndActionCreator = () => _AppAction
+
+export type PollingId = string
+export type PollingArgs = Array<any>
+export type PollingResult = any
+export type PollingFunction = (...args: PollingArgs) => PollingResult | Promise<PollingResult>
+export type PollingOnSuccessActionCreator = (result: PollingResult) => _AppAction
 
 export type AppAction = _AppAction
 export type AppState = _AppState

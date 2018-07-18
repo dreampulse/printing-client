@@ -1,48 +1,97 @@
-
 .model-item {
-  $image-container-width: 130px;
-
+  width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  padding: $space-base $space-xl;
-  height: $model-item-height;
+  align-items: flex-start;
+  padding: $space-base $space-xl $space-base $model-item-space-left;
+  height: $upload-model-item-image-width + 2 * $space-base;
   border-top: 1px solid $color-bg;
   border-bottom: 1px solid $color-bg;
   background: $color-bg;
 
-  & > .image-container {
+  &__preview {
+    color: $color-gray-3;
     flex-shrink: 0;
-    width: $image-container-width;
-    margin-right: $space-xl;
+    width: $upload-model-item-image-width;
+    margin-right: $space-l;
   }
 
-  & > .number-field {
-    flex-shrink: 0;
-  }
-
-  &__description {
+  &__center-content {
+    flex-shrink: 1;
     flex-grow: 1;
-    margin-left: $space-xl;
+    min-width: 0;
     font-size: $font-size-l;
+    margin-right: $space-l;
+  }
+
+  &__right-content {
+    flex-shrink: 0;
+    font-size: $font-size-l;
+    text-align: right;
   }
 
   &__title {
     @include scut-truncate;
-
     display: block;
     color: $color-text;
-    font-weight: $font-weight-regular;
+    font-weight: $font-weight-bold;
   }
 
   &__subline {
     @include scut-truncate;
-
-    display: block;
+    margin-bottom: $font-size-l * $line-height-base;
     color: $color-minor;
   }
 
-  &__delete {
-    outline: 0;
+  &__value {
+    @include scut-truncate;
+  }
+
+  &__price {
+    @include scut-truncate;
+    color: $color-text;
+    font-weight: $font-weight-bold;
+  }
+
+  &__provider {
+    display: flex;
+    align-items: center;
+    & > .provider-image,
+    & > .info {
+      display: inline-block;
+      font-size: $font-size-base;
+      flex-shrink: 0;
+    }
+    & > .info {
+      margin-left: $space-base;
+    }
+  }
+
+  &__buttons {
+    position: absolute;
+    right: $space-xl;
+    bottom: $space-base;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity $transition-duration ease;
+
+    & > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &:hover {
+    .model-item__buttons {
+      opacity: 1;
+      pointer-events: initial;
+    }
+  }
+
+  &--read-only {
+    padding-left: $space-xl;
+
+    .model-item__buttons {
+      display: none;
+    }
   }
 }

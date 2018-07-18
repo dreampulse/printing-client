@@ -11,14 +11,15 @@ import Headline from '../component/headline'
 import RadioButtonGroup from '../component/radio-button-group'
 import RadioButton from '../component/radio-button'
 import UploadArea from '../component/upload-area'
-import ModelItem from '../component/model-item'
-import ModelItemLoad from '../component/model-item-load'
-import ModelItemError from '../component/model-item-error'
-import ModelItemList from '../component/model-item-list'
+// import ModelItem from '../component/model-item'
+// import ModelItemLoad from '../component/model-item-load'
+// import ModelItemError from '../component/model-item-error'
+// import ModelItemList from '../component/model-item-list'
 import LabeledField from '../component/labeled-field'
 import Button from '../component/button'
 
 import {uploadFiles, deleteFile, changeIndividualQuantity, changeUnit} from '../action/model'
+import * as modelViewerAction from '../action-next/model-viewer'
 import {createConfiguration} from '../action/configuration'
 
 import {connectLegacy} from './util/connect-legacy'
@@ -33,7 +34,8 @@ const UploadSection = ({
   features,
   onChangeIndividualQuantity,
   onChangeUnit,
-  onCreateConfiguration
+  onCreateConfiguration,
+  onMagnifyModel
 }) => {
   const onUpload = files => {
     onUploadFiles(toArray(files), features)
@@ -66,6 +68,7 @@ const UploadSection = ({
         accept="*"
         onChange={onUpload}
       />
+      {/*
       {models.length > 0 && (
         <ModelItemList>
           {models.map(model => {
@@ -109,18 +112,20 @@ const UploadSection = ({
                 imageSource={model.thumbnailUrl}
                 quantity={model.quantity}
                 title={model.fileName}
-                onDelete={() => onDeleteFile(model.fileId)}
                 subline={formatDimensions(model.dimensions, model.fileUnit)}
+                onDelete={() => onDeleteFile(model.fileId)}
                 onQuantityChange={value =>
                   onChangeIndividualQuantity({
                     quantity: value,
                     modelId: model.modelId
                   })}
+                onMagnify={() => onMagnifyModel(model)}
               />
             )
           })}
         </ModelItemList>
       )}
+      */}
       {features.share &&
         models.length > 0 &&
         !configurationId && (
@@ -146,7 +151,8 @@ const mapDispatchToProps = {
   onDeleteFile: deleteFile,
   onChangeIndividualQuantity: changeIndividualQuantity,
   onChangeUnit: changeUnit,
-  onCreateConfiguration: createConfiguration
+  onCreateConfiguration: createConfiguration,
+  onMagnifyModel: modelViewerAction.open
 }
 
 export default compose(getFeatures, connectLegacy(mapStateToProps, mapDispatchToProps))(

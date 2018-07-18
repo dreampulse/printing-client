@@ -1,45 +1,37 @@
+@keyframes image-container-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .image-container {
   @include scut-ratio-box(4/3);
 
-  width: 100%;
   background: $color-gray-3;
-
-  &__content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    font-size: $font-size-xl;
-  }
 
   &__image {
     position: absolute;
     top: 0;
     left: 0;
-    bottom: 0;
-    right: 0;
-    background-size: cover;
-    background-position: center center;
-    opacity: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    animation-name: image-container-fade-in;
+    animation-duration: $transition-duration;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
   }
 
-  &--loaded {
-    .image-container__image {
-      transition: opacity $transition-duration-fast ease-out;
-      opacity: 1;
-    }
-  }
-
-  &--model {
-    .image-container__image {
-      // Model images come with a black background.
-      // We want to mix that with the background gradient.
-      // REMOVED FOR NOW BECAUSE THE THUMBNAIL IS LOOKING GRAYISH
-      //background-blend-mode: lighten;
-    }
+  &__loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    // Increases loading indicator size
+    font-size: $font-size-xl;
   }
 }

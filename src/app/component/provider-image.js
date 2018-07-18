@@ -24,8 +24,8 @@ const ProviderImage = ({classNames, modifiers, name, slug}) => (
 
 ProviderImage.propTypes = {
   ...propTypes.component,
-  name: PropTypes.string.isRequired,
-  slug: PropTypes.string
+  name: PropTypes.string,
+  slug: PropTypes.string.isRequired
 }
 
 export default ProviderImage

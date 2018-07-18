@@ -46,6 +46,16 @@ export const createLegacyStore = (history, initialLegacyState) => {
 
 export const findCmd = (state, func, args) => {
   const cmd = getCmd(state).cmds.find(c => {
+    // TODO: findCmd should just accept a cmd instance instead of a func and an args
+    if (typeof func !== 'function') {
+      try {
+        expect(c, 'to satisfy', func)
+
+        return true
+      } catch (err) {
+        return false
+      }
+    }
     if (c.func !== func) return false
     if (!args) return true
 
@@ -63,7 +73,7 @@ export const findCmd = (state, func, args) => {
       output
         .error('No command found matching')
         .sp()
-        .jsFunctionName(func.name)
+        .jsFunctionName(func.name || JSON.stringify(func, undefined, '  '))
       if (args) {
         output
           .sp()

@@ -1,5 +1,6 @@
 import React from 'react'
 import {compose} from 'recompose'
+import partition from 'lodash/partition'
 
 import scrollTo from '../service/scroll-to'
 import {buildClassArray} from '../lib/build-class-name'
@@ -21,7 +22,7 @@ import {selectMaterialConfig, selectMaterialConfigForFinishGroup} from '../actio
 import {connectLegacy} from './util/connect-legacy'
 
 const FinishSection = ({
-  offers,
+  offers = [],
   selectedMaterial,
   printingServiceRequests,
   selectedMaterialConfigs,
@@ -30,11 +31,24 @@ const FinishSection = ({
   onSelectMaterialConfigForFinishGroup,
   onOpenFinishGroupModal
 }) => {
-  const disabled = !selectedMaterial || !offers
+  const disabled = !selectedMaterial
   const headlineModifiers = buildClassArray({
     xl: true,
     disabled
   })
+
+  function sortFinishGroup(unsortedFinishGroups) {
+    const hasOffer = finishGroup =>
+      finishGroup.materialConfigs.some(materialConfig =>
+        offers.some(offer => offer.materialConfigId === materialConfig.id)
+      )
+    const [finishGroupWithOffers, finishGroupWithoutOffers] = partition(
+      unsortedFinishGroups,
+      hasOffer
+    )
+
+    return [...finishGroupWithOffers, ...finishGroupWithoutOffers]
+  }
 
   function renderMaterialCard(finishGroup) {
     const colorValues = finishGroup.materialConfigs
@@ -127,14 +141,16 @@ const FinishSection = ({
       <Headline label="3. Finish" modifiers={headlineModifiers} />
       {!disabled &&
         selectedMaterial.finishGroups.length > 0 && (
-          <MaterialSlider>{selectedMaterial.finishGroups.map(renderMaterialCard)}</MaterialSlider>
+          <MaterialSlider>
+            {sortFinishGroup(selectedMaterial.finishGroups).map(renderMaterialCard)}
+          </MaterialSlider>
         )}
     </Section>
   )
 }
 
 const mapStateToProps = state => ({
-  offers: state.price.offers || [],
+  offers: state.price.offers,
   materials: state.material.materials,
   selectedMaterial: selectCurrentMaterial(state),
   selectedMaterialConfigs: state.material.selectedMaterialConfigs,

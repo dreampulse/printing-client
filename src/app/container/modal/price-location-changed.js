@@ -8,15 +8,36 @@ import Button from '../../component/button'
 import {getCountryName} from '../../service/country'
 
 import {goToCart} from '../../action/navigation'
+import {close} from '../../action/modal'
 
 import {connectLegacy} from '../util/connect-legacy'
 
-const PriceLocationChangedModal = ({oldShippingAddress, newShippingAddress, onClose}) => {
+const PriceLocationChangedModal = ({
+  oldShippingAddress,
+  newShippingAddress,
+  onClose,
+  onGoToChart
+}) => {
   const headline = <Headline label="Prices have changed" modifiers={['l', 'warning']} />
-  const buttons = [<Button label="OK" onClick={() => onClose()} />]
+  const buttons = [
+    <Button
+      label="OK"
+      onClick={() => {
+        onClose()
+        onGoToChart()
+      }}
+    />
+  ]
 
   return (
-    <Overlay headline={headline} buttons={buttons} closePortal={() => onClose()}>
+    <Overlay
+      headline={headline}
+      buttons={buttons}
+      closePortal={() => {
+        onClose()
+        onGoToChart()
+      }}
+    >
       <RichText>
         <p>
           We used the location
@@ -45,7 +66,8 @@ const PriceLocationChangedModal = ({oldShippingAddress, newShippingAddress, onCl
 const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {
-  onClose: goToCart
+  onGoToChart: goToCart,
+  onClose: close
 }
 
 export default connectLegacy(mapStateToProps, mapDispatchToProps)(PriceLocationChangedModal)
