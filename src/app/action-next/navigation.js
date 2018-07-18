@@ -5,6 +5,8 @@
 
 import {push} from 'react-router-redux'
 
+import type {ConfigId} from '../type-next'
+
 export const goToUpload = () => push('/')
-export const goToMaterial = () => push('/material')
+export const goToMaterial = (configIds: Array<ConfigId>) => push('/material', {configIds})
 export const goToCart = () => push('/cart')

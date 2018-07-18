@@ -15,7 +15,7 @@ import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
 import type {AppState} from '../reducer-next'
 
 import * as modelAction from '../action-next/model'
-import * as materialAction from '../action-next/material'
+import * as navigationAction from '../action-next/navigation'
 import * as modelViewerAction from '../action-next/model-viewer'
 
 import AppLayout from './app-layout'
@@ -216,7 +216,7 @@ const mapDispatchToProps = {
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onChangeQuantities: modelAction.updateQuantities,
   onDuplicateModelConfig: modelAction.duplicateModelConfig,
-  onChooseMaterial: materialAction.choose,
+  onChooseMaterial: navigationAction.goToMaterial,
   onMagnifyModel: modelViewerAction.open
 }
 

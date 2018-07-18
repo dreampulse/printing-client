@@ -1,6 +1,7 @@
 // @flow
 
 import {loop, Cmd} from 'redux-loop'
+
 import config from '../../../config'
 import type {AppAction, ModelId, PollingId, ModelSceneId} from '../type-next'
 import * as modelViewerAction from '../action-next/model-viewer'

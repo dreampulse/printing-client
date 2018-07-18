@@ -1,8 +1,10 @@
 import {
   hasMaterialMultipleConfigs,
-  getBestOfferForMaterialConfig,
-  getBestOfferForMaterial,
+  // getBestOfferForMaterialConfig,
+  // getBestOfferForMaterial,
   getMaterialByName,
+  getMaterialById,
+  getMaterialGroupById,
   getMaterialConfigIdsOfMaterialGroup,
   getMaterialFinishGroupProviderNames
 } from '../../../../src/app/lib/material'
@@ -37,6 +39,7 @@ describe('hasMaterialMultipleConfigs()', () => {
   })
 })
 
+/*
 describe('getBestOfferForMaterialConfig()', () => {
   let offers
 
@@ -129,6 +132,7 @@ describe('getBestOfferForMaterial()', () => {
     })
   })
 })
+*/
 
 describe('getMaterialByName()', () => {
   let materialGroups
@@ -168,6 +172,94 @@ describe('getMaterialByName()', () => {
     expect(getMaterialByName(materialGroups, 'Material 3'), 'to equal', {
       id: 'material-3',
       name: 'Material 3'
+    })
+  })
+})
+
+describe('getMaterialById()', () => {
+  let materialGroups
+
+  beforeEach(() => {
+    materialGroups = [
+      {
+        name: 'Group 1',
+        materials: [
+          {
+            id: 'material-1',
+            name: 'Material 1'
+          }
+        ]
+      },
+      {
+        name: 'Group 2',
+        materials: [
+          {
+            id: 'material-2',
+            name: 'Material 2'
+          },
+          {
+            id: 'material-3',
+            name: 'Material 3'
+          }
+        ]
+      }
+    ]
+  })
+
+  it('returns null if material cannot be found', () => {
+    expect(getMaterialById(materialGroups, 'some-other-material'), 'to be', null)
+  })
+
+  it('returns expected material', () => {
+    expect(getMaterialById(materialGroups, 'material-3'), 'to equal', {
+      id: 'material-3',
+      name: 'Material 3'
+    })
+  })
+})
+
+describe('getMaterialGroupById()', () => {
+  let materialGroups
+
+  beforeEach(() => {
+    materialGroups = [
+      {
+        id: 'group-1',
+        name: 'Group 1',
+        materials: [
+          {
+            id: 'material-1',
+            name: 'Material 1'
+          }
+        ]
+      },
+      {
+        id: 'group-2',
+        name: 'Group 2',
+        materials: [
+          {
+            id: 'material-2',
+            name: 'Material 2'
+          }
+        ]
+      }
+    ]
+  })
+
+  it('returns null if material cannot be found', () => {
+    expect(getMaterialGroupById(materialGroups, 'some-other-group'), 'to be', null)
+  })
+
+  it('returns expected material', () => {
+    expect(getMaterialGroupById(materialGroups, 'group-2'), 'to equal', {
+      id: 'group-2',
+      name: 'Group 2',
+      materials: [
+        {
+          id: 'material-2',
+          name: 'Material 2'
+        }
+      ]
     })
   })
 })
