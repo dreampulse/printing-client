@@ -50,15 +50,13 @@
     color: $color-link;
   }
 
-  &__progress {
+  & > .progress {
     position: absolute;
     z-index: z($stacking, progress);
     top: 0;
     bottom: 0;
     left: 0;
-    background-color: $color-blue-very-light;
-    transform-origin: 0 0;
-    transition: opacity $transition-duration-fast linear, transform $transition-duration-fast ease-in-out;
-    width: 100%;
+    right: 0;
+    color: $color-blue-very-light;
   }
 }
