@@ -12,7 +12,6 @@ import {getLocationByIp, isAddressValid} from '../lib/geolocation'
 import * as searchParams from '../lib/search-params'
 
 import type {Address, User, State} from '../type'
-import type {Location} from '../type-next'
 import TYPE, {ERROR_TYPE} from '../action-type'
 
 import {goToCart} from './navigation'
@@ -26,6 +25,8 @@ import {
   close
 } from './modal'
 import {createPriceRequest, recalculateSelectedOffer} from './price'
+
+type Location = any
 
 const shippingAddressChanged = createAction(
   TYPE.USER.SHIPPING_ADDRESS_CHANGED,
@@ -60,7 +61,7 @@ export const updateUser = (user: User) => async (dispatch: Dispatch<*>, getState
   return dispatch(userUpdated(user))
 }
 
-export const updateLocation = (address: Address) => async (
+export const updateLocation = (address: any) => async (
   dispatch: Dispatch<*>,
   getState: () => State
 ) => {

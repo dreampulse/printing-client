@@ -1,6 +1,6 @@
 import config from '../../../../config'
 import * as httpJson from '../../../../src/app/lib/http-json'
-import {fetchMaterialGroups, uploadModel, getModel} from '../../../../src/app/lib/printing-engine'
+import {getMaterialGroups, uploadModel, getModel} from '../../../../src/app/lib/printing-engine'
 import getFileMock from '../../../mock/file'
 
 const baseUrl = config.printingEngineBaseUrl
@@ -16,7 +16,7 @@ describe('printing-engine lib', () => {
     sandbox.restore()
   })
 
-  describe('fetchMaterialGroups()', () => {
+  describe('getMaterialGroups()', () => {
     let materialGroupsMock
 
     beforeEach(() => {
@@ -27,12 +27,12 @@ describe('printing-engine lib', () => {
     })
 
     it('calls httpJson.fetch() with the correct URL', async () => {
-      await fetchMaterialGroups()
-      expect(httpJson.fetch, 'to have a call satisfying', [`${baseUrl}/v2/material`])
+      await getMaterialGroups()
+      expect(httpJson.fetch, 'to have a call satisfying', [`${baseUrl}/v3/material`])
     })
 
     it('returns the material groups which is the json property from httpJson.fetch()', async () => {
-      const result = await fetchMaterialGroups('some-model-id')
+      const result = await getMaterialGroups('some-model-id')
 
       expect(result, 'to be', materialGroupsMock)
     })
@@ -60,7 +60,7 @@ describe('printing-engine lib', () => {
     it('calls httpJson.upload() with the correct upload options', async () => {
       await uploadModel(fileMock, {unit: 'mm'}, dispatchMock, onProgressActionCreatorMock)
       expect(httpJson.upload, 'to have a call satisfying', [
-        {method: 'POST', url: `${baseUrl}/v2/model`, body: {file: fileMock, unit: 'mm'}}
+        {method: 'POST', url: `${baseUrl}/v3/model`, body: {file: fileMock, unit: 'mm'}}
       ])
     })
 
