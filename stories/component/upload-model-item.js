@@ -1,5 +1,6 @@
 import React from 'react'
-import {storiesOf, action} from '@storybook/react'
+import {storiesOf} from '@storybook/react'
+import {action} from '@storybook/addon-actions'
 
 import UploadModelItem from '../../src/app/component/upload-model-item'
 import Button from '../../src/app/component/button'
@@ -26,6 +27,7 @@ const buttonBar = () => (
 storiesOf('Upload Model Item', module)
   .add('default', () => (
     <UploadModelItem
+      id="some-id"
       imageSource="http://placehold.it/180x180"
       title="model_item_title.stl"
       subline="42 x 42 x 42 mm"
@@ -35,6 +37,7 @@ storiesOf('Upload Model Item', module)
   ))
   .add('no subline', () => (
     <UploadModelItem
+      id="some-id"
       imageSource="http://placehold.it/180x180"
       title="model_item_title.stl"
       quantity={1}
