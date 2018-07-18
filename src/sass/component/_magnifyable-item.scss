@@ -14,7 +14,7 @@
     transition: transform $transition-duration-fast ease-out;
   }
 
-  &:hover, &:focus {
+  &:hover {
     .magnifyable-item__icon {
       transform: scale(1.1);
     }

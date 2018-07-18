@@ -33,6 +33,7 @@ storiesOf('Upload Model Item', module)
       subline="42 x 42 x 42 mm"
       quantity={1}
       buttonBar={buttonBar()}
+      onMagnify={action('magnify')}
     />
   ))
   .add('no subline', () => (
@@ -42,5 +43,6 @@ storiesOf('Upload Model Item', module)
       title="model_item_title.stl"
       quantity={1}
       buttonBar={buttonBar()}
+      onMagnify={action('magnify')}
     />
   ))

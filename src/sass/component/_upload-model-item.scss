@@ -8,7 +8,7 @@
   border-bottom: 1px solid $color-bg;
   background: $color-bg;
 
-  & > .image-container {
+  & > .magnifyable-item {
     flex-shrink: 0;
     width: $upload-model-item-image-width;
     margin-right: $space-l;
