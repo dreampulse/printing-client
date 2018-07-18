@@ -112,7 +112,7 @@ describe('geolocation lib', () => {
       })
     })
 
-    it('handels missing geo types', () => {
+    it('handles missing geo types', () => {
       const exampleResponse = {
         address_components: [
           {
@@ -141,7 +141,7 @@ describe('geolocation lib', () => {
       })
     })
 
-    it('handels empty object', () => {
+    it('handles empty object', () => {
       expect(convertPlaceToLocation({}), 'to equal', {
         city: '',
         zipCode: '',
@@ -150,7 +150,7 @@ describe('geolocation lib', () => {
       })
     })
 
-    it('handels missing property', () => {
+    it('handles missing property', () => {
       const exampleResponse = {
         address_components: [
           {
@@ -177,6 +177,45 @@ describe('geolocation lib', () => {
         zipCode: '',
         stateCode: 'BW',
         countryCode: 'DE'
+      })
+    })
+
+    it('handles GB addresses differently', () => {
+      const exampleResponse = {
+        address_components: [
+          {
+            long_name: 'Dundee',
+            short_name: 'Dundee',
+            types: ['locality', 'political']
+          },
+          {
+            long_name: 'Dundee City',
+            short_name: 'Dundee City',
+            types: ['administrative_area_level_2', 'political']
+          },
+          {
+            long_name: 'Scotland',
+            short_name: 'Scotland',
+            types: ['administrative_area_level_1', 'political']
+          },
+          {
+            long_name: 'United Kingdom',
+            short_name: 'GB',
+            types: ['country', 'political']
+          },
+          {
+            long_name: 'DD3 7HZ',
+            short_name: 'DD3 7HZ',
+            types: ['postal_code']
+          }
+        ]
+      }
+
+      expect(convertPlaceToLocation(exampleResponse), 'to equal', {
+        city: 'Dundee',
+        zipCode: 'DD3 7HZ',
+        stateCode: 'Dundee City',
+        countryCode: 'GB'
       })
     })
   })
