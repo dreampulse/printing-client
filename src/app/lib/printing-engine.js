@@ -1,6 +1,7 @@
 // @flow
 
 import type {Dispatch} from 'redux'
+
 import config from '../../../config'
 import type {ModelId, BackendModel, ModelOnProgressActionCreator, AppAction} from '../type-next'
 import * as httpJson from './http-json'

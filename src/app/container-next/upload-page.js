@@ -10,6 +10,7 @@ import feature2Image from '../../asset/image/feature2.png'
 // import feature3Image from '../../../asset/image/feature3.png'
 
 import {formatDimensions} from '../lib/formatter'
+import {getProviderName} from '../lib/provider-selector'
 import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
 import type {AppState} from '../reducer-next'
 
@@ -90,9 +91,12 @@ const UploadPage = ({
         />
       </Section>
       <ProviderTeaser>
-        <ProviderImage slug="shapeways" />
-        <ProviderImage slug="imaterialise" />
-        <ProviderImage slug="sculpteo" />
+        <ProviderImage slug="shapeways" name={getProviderName('shapeways')} />
+        <ProviderImage slug="imaterialise" name={getProviderName('imaterialise')} />
+        <ProviderImage slug="sculpteo" name={getProviderName('sculpteo')} />
+        <ProviderImage slug="trinckle" name={getProviderName('trinckle')} />
+        <ProviderImage slug="treatstock" name={getProviderName('treatstock')} />
+        <ProviderImage slug="ff3dm" name={getProviderName('ff3dm')} />
       </ProviderTeaser>
     </Fragment>
   )
