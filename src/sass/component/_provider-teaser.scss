@@ -1,26 +1,17 @@
 .provider-teaser {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   border-top: 1px solid $color-border-minor;
   padding-top: $space-xl;
   margin-bottom: $space-xxl;
   text-align: center;
 
-  @include respond-to(medium) {
-    flex-direction: row;
-  }
-
   & > * {
-    margin-bottom: $space-l;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
+    display: block;
+    margin: 0 auto $space-l;
 
     @include respond-to(medium) {
-      margin: 0 $space-xl;
+      display: inline-block;
+      margin-left: $space-xl;
+      margin-right: $space-xl;
     }
   }
 }
