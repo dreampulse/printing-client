@@ -24,8 +24,6 @@ import type {
 } from '../type-next'
 import * as httpJson from './http-json'
 
-const baseUrl = config.printingEngineBaseUrl
-
 // printing-engine types
 
 type ModelResponse = BackendModel
@@ -160,7 +158,7 @@ export type MaterialGroupsResponse = {
 // Implementations
 
 export const getMaterialGroups = async (): Promise<MaterialGroupsResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/material`)
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/material`)
   return response.json
 }
 
@@ -174,7 +172,7 @@ export const uploadModel = async (
 ): Promise<ModelResponse> => {
   const response = await httpJson.upload({
     method: 'POST',
-    url: `${baseUrl}/v3/model`,
+    url: `${config.printingEngineBaseUrl}/v3/model`,
     body: {
       file,
       unit: meta.unit
@@ -188,27 +186,27 @@ export const uploadModel = async (
 }
 
 export const getModel = async (modelId: ModelId): Promise<ModelResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/model/${modelId}`)
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/model/${modelId}`)
   return response.json
 }
 
 export const createPriceRequest = async (priceRequest: PriceRequest): Promise<PriceResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/price`, {method: 'POST', body: priceRequest})
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/price`, {method: 'POST', body: priceRequest})
   return response.json
 }
 
 export const getQuotes = async (priceId: PriceId): Promise<QuotesResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/price/${priceId}`)
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/price/${priceId}`)
   return response.json
 }
 
 export const createUser = async (user: User): Promise<UserResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/user`, {method: 'POST', body: user})
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/user`, {method: 'POST', body: user})
   return response.json
 }
 
 export const updateUser = async (userId: UserId, user: User): Promise<void> => {
-  await httpJson.fetch(`${baseUrl}/v3/user/${userId}`, {method: 'PUT', body: user})
+  await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/user/${userId}`, {method: 'PUT', body: user})
 }
 
 export const getShippings = async (
@@ -216,20 +214,20 @@ export const getShippings = async (
   currency: string
 ): Promise<ShippingsResponse> => {
   const response = await httpJson.fetch(
-    `${baseUrl}/v3/shipping/${countryCode}?currency=${currency}`
+    `${config.printingEngineBaseUrl}/v3/shipping/${countryCode}?currency=${currency}`
   )
   return response.json
 }
 
 export const createCart = async (cart: CartRequest): Promise<CartResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/cart`, {method: 'POST', body: cart})
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/cart`, {method: 'POST', body: cart})
   return response.json
 }
 
 export const createConfiguration = async (
   configuration: ConfigurationRequest
 ): Promise<ConfigurationResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/configuration`, {
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/configuration`, {
     method: 'POST',
     body: configuration
   })
@@ -239,12 +237,12 @@ export const createConfiguration = async (
 export const getConfiguration = async (
   configurationId: ConfigurationId
 ): Promise<BackendConfiguration> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/configuration/${configurationId}`)
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/configuration/${configurationId}`)
   return response.json
 }
 
 export const createOrder = async (order: OrderRequest): Promise<OrderResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/order`, {
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/order`, {
     method: 'POST',
     body: order
   })
@@ -254,7 +252,7 @@ export const createOrder = async (order: OrderRequest): Promise<OrderResponse> =
 export const createStripePayment = async (
   payment: StripePaymentRequest
 ): Promise<StripePaymentResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/payment/stripe`, {
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/payment/stripe`, {
     method: 'POST',
     body: payment
   })
@@ -264,7 +262,7 @@ export const createStripePayment = async (
 export const createInvoicePayment = async (
   payment: InvoicePaymentRequest
 ): Promise<InvoicePaymentResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/payment/invoice`, {
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/payment/invoice`, {
     method: 'POST',
     body: payment
   })
@@ -274,7 +272,7 @@ export const createInvoicePayment = async (
 export const createPaypalPayment = async (
   payment: PaypalPaymentRequest
 ): Promise<PaypalPaymentResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/payment/paypal`, {
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/payment/paypal`, {
     method: 'POST',
     body: payment
   })
@@ -285,7 +283,7 @@ export const executePaypalPayment = async (
   paymentId: PaymentId,
   executePayment: PaypalExecutePaymentRequest
 ): Promise<PaypalExecutePaymentResponse> => {
-  const response = await httpJson.fetch(`${baseUrl}/v3/payment/paypal/${paymentId}`, {
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/payment/paypal/${paymentId}`, {
     method: 'PUT',
     body: executePayment
   })

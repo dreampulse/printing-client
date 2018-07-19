@@ -61,7 +61,7 @@ export const updateUser = (user: User) => async (dispatch: Dispatch<*>, getState
   return dispatch(userUpdated(user))
 }
 
-export const updateLocation = (address: any) => async (
+export const updateLocation = (address: Address) => async (
   dispatch: Dispatch<*>,
   getState: () => State
 ) => {

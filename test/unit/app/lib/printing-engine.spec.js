@@ -20,13 +20,12 @@ import {
 } from '../../../../src/app/lib/printing-engine'
 import getFileMock from '../../../mock/file'
 
-const baseUrl = config.printingEngineBaseUrl
-
 describe('printing-engine lib', () => {
   let sandbox
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create()
+    sandbox.stub(config, 'printingEngineBaseUrl').value('SOME-BASE-URL')
   })
 
   afterEach(() => {
@@ -45,7 +44,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', async () => {
       await getMaterialGroups()
-      expect(httpJson.fetch, 'to have a call satisfying', [`${baseUrl}/v3/material`])
+      expect(httpJson.fetch, 'to have a call satisfying', [`SOME-BASE-URL/v3/material`])
     })
 
     it('returns the material groups which is the json property from httpJson.fetch()', async () => {
@@ -77,7 +76,7 @@ describe('printing-engine lib', () => {
     it('calls httpJson.upload() with the correct upload options', async () => {
       await uploadModel(fileMock, {unit: 'mm'}, dispatchMock, onProgressActionCreatorMock)
       expect(httpJson.upload, 'to have a call satisfying', [
-        {method: 'POST', url: `${baseUrl}/v3/model`, body: {file: fileMock, unit: 'mm'}}
+        {method: 'POST', url: `SOME-BASE-URL/v3/model`, body: {file: fileMock, unit: 'mm'}}
       ])
     })
 
@@ -121,7 +120,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', async () => {
       await getModel('some-model-id')
-      expect(httpJson.fetch, 'to have a call satisfying', [`${baseUrl}/v3/model/some-model-id`])
+      expect(httpJson.fetch, 'to have a call satisfying', [`SOME-BASE-URL/v3/model/some-model-id`])
     })
 
     it('returns an object that provides a model property and an isComplete property', async () => {
@@ -143,7 +142,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/price`,
+        `SOME-BASE-URL/v3/price`,
         {method: 'POST', body: 'some-price-request'}
       ]))
 
@@ -162,7 +161,7 @@ describe('printing-engine lib', () => {
     })
 
     it('calls httpJson.fetch() with the correct URL', () =>
-      expect(httpJson.fetch, 'to have a call satisfying', [`${baseUrl}/v3/price/some-price-id`]))
+      expect(httpJson.fetch, 'to have a call satisfying', [`SOME-BASE-URL/v3/price/some-price-id`]))
 
     it('returns the json result', () => expect(result, 'to equal', 'some-quotes-result'))
   })
@@ -180,7 +179,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/user`,
+        `SOME-BASE-URL/v3/user`,
         {method: 'POST', body: 'some-user-request'}
       ]))
 
@@ -200,7 +199,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/user/some-user-id`,
+        `SOME-BASE-URL/v3/user/some-user-id`,
         {method: 'PUT', body: 'some-user-request'}
       ]))
 
@@ -220,7 +219,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/shipping/some-country-code?currency=some-currency`
+        `SOME-BASE-URL/v3/shipping/some-country-code?currency=some-currency`
       ]))
 
     it('returns the json result', () => expect(result, 'to equal', 'some-shippings-result'))
@@ -239,7 +238,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/cart`,
+        `SOME-BASE-URL/v3/cart`,
         {method: 'POST', body: 'some-cart-request'}
       ]))
 
@@ -259,7 +258,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/configuration`,
+        `SOME-BASE-URL/v3/configuration`,
         {method: 'POST', body: 'some-configuration-request'}
       ]))
 
@@ -279,7 +278,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/configuration/some-configuration-id`
+        `SOME-BASE-URL/v3/configuration/some-configuration-id`
       ]))
 
     it('returns the json result', () => expect(result, 'to equal', 'some-configuration-result'))
@@ -298,7 +297,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/order`,
+        `SOME-BASE-URL/v3/order`,
         {method: 'POST', body: 'some-order-request'}
       ]))
 
@@ -318,7 +317,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/payment/stripe`,
+        `SOME-BASE-URL/v3/payment/stripe`,
         {method: 'POST', body: 'some-stripe-payment-request'}
       ]))
 
@@ -338,7 +337,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/payment/invoice`,
+        `SOME-BASE-URL/v3/payment/invoice`,
         {method: 'POST', body: 'some-invoice-payment-request'}
       ]))
 
@@ -358,7 +357,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/payment/paypal`,
+        `SOME-BASE-URL/v3/payment/paypal`,
         {method: 'POST', body: 'some-paypal-payment-request'}
       ]))
 
@@ -378,7 +377,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `${baseUrl}/v3/payment/paypal/some-payment-id`,
+        `SOME-BASE-URL/v3/payment/paypal/some-payment-id`,
         {method: 'PUT', body: 'some-execute-paypal-payment-request'}
       ]))
 
