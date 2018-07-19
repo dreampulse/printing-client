@@ -1,5 +1,4 @@
-// TODO refactor into a easily testable lib with API v3
-// DEPRECATED!
+// TODO remove this file when multi-material-upload is completed!
 
 import config from '../../../config'
 import {upload, requestJson, requestWithResponse, fetch} from '../service/http'

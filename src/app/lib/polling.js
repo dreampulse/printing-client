@@ -7,7 +7,7 @@ export const POLLING_FAILED = Symbol('POLLING_FAILED')
 
 export const pollingFunction = {
   getModelSceneId: async (modelId: ModelId) => {
-    const {model} = await printingEngine.getModelWithStatus(modelId)
+    const model = await printingEngine.getModel(modelId)
 
     return typeof model.sceneId === 'string' ? model.sceneId : POLLING_FAILED
   }

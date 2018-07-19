@@ -19,6 +19,12 @@ export type ShippingId = string
 export type ModelId = string
 export type ModelSceneId = string
 export type FileId = string
+export type PriceId = string
+export type CartId = string
+export type ConfigurationId = string
+export type OrderId = string
+export type PaymentId = string
+export type UserId = string
 
 // Material structure json-schema
 // https://github.com/all3dp/material-structure/blob/master/src/schema.js
@@ -132,6 +138,15 @@ export type BackendQuote = {
   isPrintable: boolean
 }
 
+export type Shipping = {
+  shippingId: ShippingId,
+  vendorId: VendorId,
+  name: string,
+  deliveryTime: string,
+  price: number,
+  currency: string
+}
+
 export type ModelConfigUploading = {
   type: 'UPLOADING',
   fileId: FileId,
@@ -160,7 +175,7 @@ export type Address = Location & {
   firstName: string,
   lastName: string,
   address: string,
-  addressLine2: string
+  addressLine2: ?string
 }
 
 export type GoogleMapsPlace = {
@@ -169,6 +184,17 @@ export type GoogleMapsPlace = {
     short_name: string,
     long_name: string
   }>
+}
+
+export type User = {
+  emailAddress: string,
+  isCompany: string,
+  companyName: ?string,
+  vatId: ?string,
+  phoneNumber: string,
+  useDifferentBillingAddress: boolean,
+  shippingAddress: Address,
+  billingAddress: Address
 }
 
 export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR' | 'MATERIAL'

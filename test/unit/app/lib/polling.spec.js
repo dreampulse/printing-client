@@ -2,16 +2,13 @@ import * as printingEngine from '../../../../src/app/lib/printing-engine'
 import {pollingFunction, POLLING_FAILED} from '../../../../src/app/lib/polling'
 
 describe('polling lib', () => {
-  let modelWithStatusMock
+  let modelMock
   let sandbox
 
   beforeEach(() => {
-    modelWithStatusMock = {
-      isComplete: true,
-      model: {}
-    }
+    modelMock = {}
     sandbox = sinon.sandbox.create()
-    sandbox.stub(printingEngine, 'getModelWithStatus').resolves(modelWithStatusMock)
+    sandbox.stub(printingEngine, 'getModel').resolves(modelMock)
   })
 
   afterEach(() => {
@@ -19,14 +16,14 @@ describe('polling lib', () => {
   })
 
   describe('pollingFunction.getModelSceneId()', () => {
-    it('calls modelLib.getModelWithStatus() with the given model id', () => {
+    it('calls modelLib.getModel() with the given model id', () => {
       pollingFunction.getModelSceneId('some-model-id')
-      expect(printingEngine.getModelWithStatus, 'to have a call satisfying', ['some-model-id'])
+      expect(printingEngine.getModel, 'to have a call satisfying', ['some-model-id'])
     })
 
     describe('when the returned model has a sceneId that is a string', () => {
       beforeEach(() => {
-        modelWithStatusMock.model.sceneId = 'some-scene-id'
+        modelMock.sceneId = 'some-scene-id'
       })
 
       it('resolves with the sceneId', async () => {
@@ -37,7 +34,7 @@ describe('polling lib', () => {
     // As returned by the backend
     describe('when the returned model has a sceneId that is a null', () => {
       beforeEach(() => {
-        modelWithStatusMock.model.sceneId = null
+        modelMock.sceneId = null
       })
 
       it('resolves with the POLLING_FAILED symbol', async () => {
