@@ -10,7 +10,6 @@ import Link from '../../src/app/component/link'
 import ConfigurationHeader from '../../src/app/component/configuration-header'
 import LabeledField from '../../src/app/component/labeled-field'
 import LocationField from '../../src/app/component/location-field'
-import NumberField from '../../src/app/component/number-field'
 import Button from '../../src/app/component/button'
 import IconLink from '../../src/app/component/icon-link'
 import SelectField from '../../src/app/component/select-field'
@@ -30,25 +29,25 @@ const navBar = () => (
   </NavBar>
 )
 
-const configurationHeader = (
-  <ConfigurationHeader>
-    <LabeledField label="Shipping:" modifiers={['block']}>
-      <HandleValue>
-        <LocationField googleMapsApiKey={googleMapsApiKey} />
+const configurationHeader = () => (
+  <ConfigurationHeader
+    location={
+      <LabeledField label="Shipping:" modifiers={['block']}>
+        <HandleValue>
+          <LocationField googleMapsApiKey={googleMapsApiKey} />
+        </HandleValue>
+      </LabeledField>
+    }
+    currency={
+      <HandleValue initialValue={{value: 'USD', label: 'USD'}}>
+        <SelectField menu={<SelectMenu values={currencies} />} />
       </HandleValue>
-    </LabeledField>
-    <HandleValue initialValue={{value: 'USD', label: 'USD'}}>
-      <SelectField menu={<SelectMenu values={currencies} />} />
-    </HandleValue>
-    <LabeledField label="Quantity:">
-      <HandleValue initialValue={1}>
-        <NumberField />
-      </HandleValue>
-    </LabeledField>
-  </ConfigurationHeader>
+    }
+    text="Some text"
+  />
 )
 
-const footer = (
+const footer = () => (
   <Footer copyline="© 2018 All3DP">
     <Link label="Terms and conditions" href="#" />
     <Link label="Imprint" href="#" />
@@ -57,8 +56,11 @@ const footer = (
 
 storiesOf('App', module).add('default', () => (
   <App
-    header={[navBar(), <StickyContainer key="configHeader">{configurationHeader}</StickyContainer>]}
-    footer={footer}
+    header={[
+      navBar(),
+      <StickyContainer key="configHeader">{configurationHeader()}</StickyContainer>
+    ]}
+    footer={footer()}
   >
     <Container>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
