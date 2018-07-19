@@ -1,6 +1,23 @@
 import config from '../../../../config'
 import * as httpJson from '../../../../src/app/lib/http-json'
-import {getMaterialGroups, uploadModel, getModel} from '../../../../src/app/lib/printing-engine'
+import {
+  getMaterialGroups,
+  uploadModel,
+  getModel,
+  createPriceRequest,
+  getQuotes,
+  createUser,
+  updateUser,
+  getShippings,
+  createCart,
+  createConfiguration,
+  getConfiguration,
+  createOrder,
+  createStripePayment,
+  createInvoicePayment,
+  createPaypalPayment,
+  executePaypalPayment
+} from '../../../../src/app/lib/printing-engine'
 import getFileMock from '../../../mock/file'
 
 const baseUrl = config.printingEngineBaseUrl
@@ -111,5 +128,261 @@ describe('printing-engine lib', () => {
       const result = await getModel('some-model-id')
       expect(result, 'to equal', modelMock)
     })
+  })
+
+  describe('createPriceRequest()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-price-result'
+      })
+
+      result = await createPriceRequest('some-price-request')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/price`,
+        {method: 'POST', body: 'some-price-request'}
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-price-result'))
+  })
+
+  describe('getQuotes()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-quotes-result'
+      })
+
+      result = await getQuotes('some-price-id')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [`${baseUrl}/v3/price/some-price-id`]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-quotes-result'))
+  })
+
+  describe('createUser()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-user-result'
+      })
+
+      result = await createUser('some-user-request')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/user`,
+        {method: 'POST', body: 'some-user-request'}
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-user-result'))
+  })
+
+  describe('updateUser()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: null
+      })
+
+      result = await updateUser('some-user-id', 'some-user-request')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/user/some-user-id`,
+        {method: 'PUT', body: 'some-user-request'}
+      ]))
+
+    it('returns the json result', () => expect(result, 'to be undefined'))
+  })
+
+  describe('getShippings()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-shippings-result'
+      })
+
+      result = await getShippings('some-country-code', 'some-currency')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/shipping/some-country-code?currency=some-currency`
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-shippings-result'))
+  })
+
+  describe('createCart()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-cart-result'
+      })
+
+      result = await createCart('some-cart-request')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/cart`,
+        {method: 'POST', body: 'some-cart-request'}
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-cart-result'))
+  })
+
+  describe('createConfiguration()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-configuration-result'
+      })
+
+      result = await createConfiguration('some-configuration-request')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/configuration`,
+        {method: 'POST', body: 'some-configuration-request'}
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-configuration-result'))
+  })
+
+  describe('getConfiguration()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-configuration-result'
+      })
+
+      result = await getConfiguration('some-configuration-id')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/configuration/some-configuration-id`
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-configuration-result'))
+  })
+
+  describe('createOrder()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-order-result'
+      })
+
+      result = await createOrder('some-order-request')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/order`,
+        {method: 'POST', body: 'some-order-request'}
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-order-result'))
+  })
+
+  describe('createStripePayment()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-stripe-payment-result'
+      })
+
+      result = await createStripePayment('some-stripe-payment-request')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/payment/stripe`,
+        {method: 'POST', body: 'some-stripe-payment-request'}
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-stripe-payment-result'))
+  })
+
+  describe('createInvoicePayment()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-invoice-payment-result'
+      })
+
+      result = await createInvoicePayment('some-invoice-payment-request')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/payment/invoice`,
+        {method: 'POST', body: 'some-invoice-payment-request'}
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-invoice-payment-result'))
+  })
+
+  describe('createPaypalPayment()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-paypal-payment-result'
+      })
+
+      result = await createPaypalPayment('some-paypal-payment-request')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/payment/paypal`,
+        {method: 'POST', body: 'some-paypal-payment-request'}
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-paypal-payment-result'))
+  })
+
+  describe('executePaypalPayment()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-execute-paypal-payment-result'
+      })
+
+      result = await executePaypalPayment('some-payment-id', 'some-execute-paypal-payment-request')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `${baseUrl}/v3/payment/paypal/some-payment-id`,
+        {method: 'PUT', body: 'some-execute-paypal-payment-request'}
+      ]))
+
+    it('returns the json result', () =>
+      expect(result, 'to equal', 'some-execute-paypal-payment-result'))
   })
 })

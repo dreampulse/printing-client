@@ -53,6 +53,10 @@ export type QuotesResponse = {
   }
 }
 
+export type UserResponse = {
+  userId: UserId
+}
+
 export type CartRequest = {
   userId: UserId,
   quoteIds: Array<QuoteId>,
@@ -197,8 +201,9 @@ export const getQuotes = async (priceId: PriceId): Promise<QuotesResponse> => {
   return response.json
 }
 
-export const createUser = async (user: User): Promise<void> => {
-  await httpJson.fetch(`${baseUrl}/v3/user`, {method: 'POST', body: user})
+export const createUser = async (user: User): Promise<UserResponse> => {
+  const response = await httpJson.fetch(`${baseUrl}/v3/user`, {method: 'POST', body: user})
+  return response.json
 }
 
 export const updateUser = async (userId: UserId, user: User): Promise<void> => {
