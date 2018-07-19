@@ -12,11 +12,16 @@ import partition from 'lodash/partition'
 
 import * as navigationAction from '../action-next/navigation'
 import * as modalAction from '../action-next/modal'
+import * as quoteAction from '../action-next/quote'
 import type {AppState} from '../reducer-next'
 import {getMaterialById, getMaterialGroupById} from '../lib/material'
 import {formatPrice} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
-import {selectMaterialGroups} from '../selector'
+import {
+  selectMaterialGroups,
+  selectAllMaterialConfigIds,
+  selectFilteredModelConfigs
+} from '../selector'
 import {createMaterialSearch} from '../service/search'
 import scrollTo from '../service/scroll-to'
 import {openIntercom} from '../service/intercom'
@@ -52,8 +57,12 @@ const MaterialPage = ({
   selectMaterialGroup,
   selectMaterial,
   setMaterialFilter,
-  onOpenMaterialModal
+  onOpenMaterialModal,
+  quotes
 }) => {
+  // TODO: integrate quote into page
+  console.log('-- got quotes', quotes)
+
   // TODO:
   const title = 'Choose material (TODO)'
   const numCheckedProviders = 1
@@ -168,17 +177,20 @@ const MaterialPage = ({
   )
 }
 
-const mapStateToProps = (state: AppState) => ({
-  // TODO
-  quotes: [],
-  materialGroups: selectMaterialGroups(state)
+const mapStateToProps = (state: AppState, ownProps) => ({
+  quotes: state.quote.quotes,
+  materialGroups: selectMaterialGroups(state),
+  allMaterialConfigIds: selectAllMaterialConfigIds(state),
+  selectedModelConfigs: selectFilteredModelConfigs(state, ownProps.configIds)
 })
 
 const mapDispatchToProps = {
   // TODO: goto upload or cart page depending whether the given models already are in the cart or not
   onClosePage: navigationAction.goToUpload,
   onAbort: navigationAction.goToUpload,
-  onOpenMaterialModal: modalAction.openMaterial
+  onOpenMaterialModal: modalAction.openMaterial,
+  onReceiveQuotes: quoteAction.receiveQuotes,
+  onStopReceivingQuotes: quoteAction.stopReceivingQuotes
 }
 
 export default compose(
@@ -206,9 +218,11 @@ export default compose(
       setMaterialFilter: () => materialFilter => ({materialFilter})
     }
   ),
+  withProps(({location}) => ({
+    configIds: (location.state && location.state.configIds) || []
+  })),
   connect(mapStateToProps, mapDispatchToProps),
-  withProps(({location, materialGroups, selectedMaterialGroupId, selectedMaterialId}) => ({
-    configIds: (location.state && location.state.configIds) || [],
+  withProps(({materialGroups, selectedMaterialGroupId, selectedMaterialId}) => ({
     selectedMaterialGroup: getMaterialGroupById(materialGroups, selectedMaterialGroupId),
     selectedMaterial: getMaterialById(materialGroups, selectedMaterialId)
   })),
@@ -220,9 +234,23 @@ export default compose(
   })),
   lifecycle({
     componentWillMount() {
+      // TODO: This does not work for page refreshes
       if (this.props.configIds.length === 0) {
         this.props.onAbort()
       }
+
+      const modelConfigs = this.props.selectedModelConfigs
+      const materialConfigIds = this.props.allMaterialConfigIds
+      this.props.onReceiveQuotes({
+        modelConfigs,
+        materialConfigIds,
+        // TODO: connect to the store
+        countryCode: 'DE',
+        currency: 'EUR'
+      })
+    },
+    componentWillUnmount() {
+      this.props.onStopReceivingQuotes()
     }
   })
 )(MaterialPage)

@@ -8,6 +8,7 @@ import type {ModelAction} from './model'
 import type {ModelViewerAction} from './model-viewer'
 import type {TimeoutAction} from './timeout'
 import type {PollingAction} from './polling'
+import type {QuoteAction} from './quote'
 
 export type AppAction =
   | InitAction
@@ -18,3 +19,4 @@ export type AppAction =
   | ModelViewerAction
   | TimeoutAction
   | PollingAction
+  | QuoteAction

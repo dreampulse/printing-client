@@ -21,3 +21,6 @@ export const selectSelectedModelConfigs = (state: AppState): Array<ModelConfig> 
     invariant(item, `ModelConfig for selectedModelConfig ${id} not found!`)
     return item
   })
+
+export const selectFilteredModelConfigs = (state: AppState, configIds: Array<ConfigId>) =>
+  state.model.modelConfigs.filter(modelConfig => configIds.includes(modelConfig.id))

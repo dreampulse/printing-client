@@ -1,7 +1,7 @@
 // @flow
 
 import uniqueId from 'lodash/uniqueId'
-import type {Action, BackendModel, ConfigId, FileId} from '../type-next'
+import type {Action, BackendModel, ConfigId, FileId, ModelConfig} from '../type-next'
 
 type UploadFileAction = Action<
   'MODEL.UPLOAD_FILE',

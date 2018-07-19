@@ -6,8 +6,6 @@ import {uploadModel} from '../lib/printing-engine'
 import type {
   BackendModel,
   UploadingFile,
-  BackendQuote,
-  QuoteId,
   ModelId,
   ConfigId,
   FileId,
@@ -19,7 +17,6 @@ import * as modelAction from '../action-next/model'
 export type ModelState = {
   uploadingFiles: {[id: FileId]: UploadingFile},
   backendModels: {[id: ModelId]: BackendModel},
-  quotes: {[id: QuoteId]: BackendQuote},
   modelConfigs: Array<ModelConfig>,
   selectedModelConfigs: Array<ConfigId>
 }

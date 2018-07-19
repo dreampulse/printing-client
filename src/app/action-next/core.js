@@ -14,7 +14,12 @@ export const updateMaterialGroups = (
   payload: materialGroups
 })
 
-export const fatalError = (error: Error): FatalErrorAction => ({
-  type: 'CORE.FATAL_ERROR',
-  payload: error
-})
+export const fatalError = (error: Error): FatalErrorAction => {
+  // Log fatal errors to the console
+  console.error('Fatal Error', error) // eslint-disable-line
+
+  return {
+    type: 'CORE.FATAL_ERROR',
+    payload: error
+  }
+}
