@@ -53,8 +53,8 @@ const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick
     }
     footer={<FooterPartial />}
   >
-    <Modal />
     <Container>{children}</Container>
+    <Modal />
   </App>
 )
 

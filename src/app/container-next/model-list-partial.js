@@ -9,7 +9,7 @@ import NumberField from '../component/number-field'
 import type {AppState} from '../reducer-next'
 
 import * as modelAction from '../action-next/model'
-import * as materialAction from '../action-next/material'
+import * as navigationAction from '../action-next/navigation'
 
 import {getCommonQuantity} from '../lib/quantity'
 import {selectSelectedModelConfigIds, selectSelectedModelConfigs} from '../selector'
@@ -79,7 +79,7 @@ const mapDispatchToProps = {
   onChangeSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onChangeQuantities: modelAction.updateQuantities,
-  onChooseMaterial: materialAction.choose
+  onChooseMaterial: navigationAction.goToMaterial
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModelListPartial)

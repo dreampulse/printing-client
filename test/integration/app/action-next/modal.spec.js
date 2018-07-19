@@ -3,7 +3,7 @@ import {isModalOpen, selectModalConfig} from '../../../../src/app/selector'
 import reducer from '../../../../src/app/reducer-next'
 
 describe('modal', () => {
-  describe('action.openPickLocation()', () => {
+  describe('openPickLocation()', () => {
     let state
 
     beforeEach(() => {
@@ -24,7 +24,7 @@ describe('modal', () => {
     })
   })
 
-  describe('action.openModelViewer()', () => {
+  describe('openModelViewer()', () => {
     let state
 
     beforeEach(() => {
@@ -45,12 +45,33 @@ describe('modal', () => {
     })
   })
 
-  describe('action.openFatalError()', () => {
+  describe('openMaterial()', () => {
+    let state
+
+    beforeEach(() => {
+      state = reducer(undefined, modalAction.openMaterial('some-material-id'))
+    })
+
+    describe('selector.isModalOpen()', () => {
+      it('returns true', () => expect(isModalOpen(getModel(state)), 'to be', true))
+    })
+
+    describe('selector.selectModalConfig()', () => {
+      it('returns the expected modal config', () =>
+        expect(selectModalConfig(getModel(state)), 'to satisfy', {
+          isCloseable: true,
+          contentType: 'MATERIAL',
+          contentProps: {materialId: 'some-material-id'}
+        }))
+    })
+  })
+
+  describe('openFatalError()', () => {
     let someError
     let state
 
     beforeEach(() => {
-      someError = modalAction.openFatalError(someError)
+      someError = new Error('some-error')
       state = reducer(undefined, modalAction.openFatalError(someError))
     })
 
@@ -68,7 +89,7 @@ describe('modal', () => {
     })
   })
 
-  describe('action.closeModal()', () => {
+  describe('closeModal()', () => {
     let state
 
     beforeEach(() => {

@@ -1,9 +1,12 @@
+// @flow
+
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {selectSceneId} from '../../selector/model-viewer'
+import {selectSceneId} from '../../selector'
 
 import {close} from '../../action-next/modal'
+import type {AppState} from '../../reducer-next'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -21,7 +24,7 @@ const ModelViewerModal = ({onClose, sceneId, modelName}) => {
   )
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
   sceneId: selectSceneId(state)
 })
 

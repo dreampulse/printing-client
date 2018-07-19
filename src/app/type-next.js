@@ -171,7 +171,7 @@ export type GoogleMapsPlace = {
   }>
 }
 
-export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR'
+export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR' | 'MATERIAL'
 export type ModalConfigClosed = null
 export type ModalConfigOpened = {
   isCloseable: boolean,

@@ -1,9 +1,14 @@
+// @flow
+
 import uniq from 'lodash/uniq'
 
-export function hasMaterialMultipleConfigs(material) {
+import type {MaterialGroup, MaterialGroupId, MaterialId, Material} from '../type-next'
+
+export function hasMaterialMultipleConfigs(material: Material) {
   return !material.finishGroups.every(finishGroup => finishGroup.materialConfigs.length <= 1)
 }
 
+/*
 export function getBestOfferForMaterialConfig(offers, materialConfigId) {
   return offers
     .filter(offer => offer.materialConfigId === materialConfigId)
@@ -32,22 +37,9 @@ export function getBestOfferForMaterial(offers, material) {
       return bestOffer
     }, null)
 }
+*/
 
-export function getMaterialByName(materialGroups, name) {
-  let foundMaterial = null
-
-  materialGroups.forEach(materialGroup => {
-    materialGroup.materials.forEach(material => {
-      if (material.name === name) {
-        foundMaterial = material
-      }
-    })
-  })
-
-  return foundMaterial
-}
-
-export function getMaterialConfigIdsOfMaterialGroup(materialGroup) {
+export function getMaterialConfigIdsOfMaterialGroup(materialGroup: MaterialGroup) {
   const materialConfigIds = []
   materialGroup.materials.forEach(material => {
     material.finishGroups.forEach(finishGroup => {
@@ -60,7 +52,7 @@ export function getMaterialConfigIdsOfMaterialGroup(materialGroup) {
   return materialConfigIds
 }
 
-export function getMaterialFinishGroupProviderNames(material) {
+export function getMaterialFinishGroupProviderNames(material: Material) {
   return material.finishGroups.reduce((acc, finishGroup) => {
     Object.keys(finishGroup.properties.printingServiceName).forEach(printingService => {
       if (!acc[printingService]) acc[printingService] = []
@@ -69,4 +61,49 @@ export function getMaterialFinishGroupProviderNames(material) {
     })
     return acc
   }, {})
+}
+
+export const getMaterialGroupById = (
+  materialGroups: Array<MaterialGroup>,
+  groupId: MaterialGroupId
+) => {
+  // Search for group by id
+  let materialGroup = null
+
+  materialGroups.forEach(item => {
+    if (item.id === groupId) {
+      materialGroup = item
+    }
+  })
+
+  return materialGroup
+}
+
+export function getMaterialByName(materialGroups: Array<MaterialGroup>, name: string) {
+  let material = null
+
+  materialGroups.forEach(materialGroup => {
+    materialGroup.materials.forEach(item => {
+      if (item.name === name) {
+        material = item
+      }
+    })
+  })
+
+  return material
+}
+
+export const getMaterialById = (materialGroups: Array<MaterialGroup>, materialId: MaterialId) => {
+  // Search for material by id
+  let material = null
+
+  materialGroups.forEach(materialGroup => {
+    materialGroup.materials.forEach(item => {
+      if (item.id === materialId) {
+        material = item
+      }
+    })
+  })
+
+  return material
 }
