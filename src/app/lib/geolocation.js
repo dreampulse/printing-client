@@ -38,10 +38,18 @@ export const getLocationByIp = async (): Promise<Location> => {
   }
 }
 
+const getStateCodeShortNameFrom = (place: GoogleMapsPlace): string =>
+  shortNameFrom(
+    place,
+    shortNameFrom(place, 'country') === 'GB'
+      ? 'administrative_area_level_2'
+      : 'administrative_area_level_1'
+  )
+
 export const convertPlaceToLocation = (place: GoogleMapsPlace): Location => ({
   city: longNameFrom(place, 'locality'),
   zipCode: shortNameFrom(place, 'postal_code'),
-  stateCode: shortNameFrom(place, 'administrative_area_level_1'),
+  stateCode: getStateCodeShortNameFrom(place),
   countryCode: shortNameFrom(place, 'country')
 })
 

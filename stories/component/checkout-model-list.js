@@ -25,6 +25,7 @@ storiesOf('Checkout Model List', module).add('default', () => (
         subline="42 x 42 x 42 mm"
         quantity={1}
         price="80.99€"
+        deliveryTime="2-5 Days"
         shippingTime="2-5 Days"
         shippingMethod="DHL Express"
         providerName="shapeways"

@@ -112,6 +112,9 @@ const ModelPage = ({
       <ProviderImage slug="shapeways" name={getProviderName('shapeways')} />
       <ProviderImage slug="imaterialise" name={getProviderName('imaterialise')} />
       <ProviderImage slug="sculpteo" name={getProviderName('sculpteo')} />
+      <ProviderImage slug="trinckle" name={getProviderName('trinckle')} />
+      <ProviderImage slug="treatstock" name={getProviderName('treatstock')} />
+      <ProviderImage slug="ff3dm" name={getProviderName('ff3dm')} />
     </ProviderTeaser>
   ]
 

@@ -56,7 +56,10 @@ export type Price = {
   printingServiceComplete: {
     shapeways: boolean,
     imaterialse: boolean,
-    sculpteo: boolean
+    sculpteo: boolean,
+    trinckle: boolean,
+    treatstock: boolean,
+    ff3dm: boolean
   }
 }
 
@@ -208,7 +211,10 @@ export type PriceState = {
   printingServiceComplete: ?{
     shapeways: boolean,
     imaterialse: boolean,
-    sculpteo: boolean
+    sculpteo: boolean,
+    trinckle: boolean,
+    treatstock: boolean,
+    ff3dm: boolean
   },
   selectedOffer: ?Offer
 }

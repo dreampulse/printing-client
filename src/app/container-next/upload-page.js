@@ -10,11 +10,13 @@ import feature2Image from '../../asset/image/feature2.png'
 // import feature3Image from '../../../asset/image/feature3.png'
 
 import {formatDimensions} from '../lib/formatter'
+import {getProviderName} from '../lib/provider-selector'
 import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
 import type {AppState} from '../reducer-next'
 
 import * as modelAction from '../action-next/model'
-import * as materialAction from '../action-next/material'
+import * as navigationAction from '../action-next/navigation'
+import * as modelViewerAction from '../action-next/model-viewer'
 
 import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
@@ -45,7 +47,8 @@ const UploadPage = ({
   onChangeQuantities,
   onChooseMaterial,
   onDuplicateModelConfig,
-  modelsWithConfig
+  modelsWithConfig,
+  onMagnifyModel
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -90,9 +93,12 @@ const UploadPage = ({
         />
       </Section>
       <ProviderTeaser>
-        <ProviderImage slug="shapeways" />
-        <ProviderImage slug="imaterialise" />
-        <ProviderImage slug="sculpteo" />
+        <ProviderImage slug="shapeways" name={getProviderName('shapeways')} />
+        <ProviderImage slug="imaterialise" name={getProviderName('imaterialise')} />
+        <ProviderImage slug="sculpteo" name={getProviderName('sculpteo')} />
+        <ProviderImage slug="trinckle" name={getProviderName('trinckle')} />
+        <ProviderImage slug="treatstock" name={getProviderName('treatstock')} />
+        <ProviderImage slug="ff3dm" name={getProviderName('ff3dm')} />
       </ProviderTeaser>
     </Fragment>
   )
@@ -181,6 +187,7 @@ const UploadPage = ({
                 title={model.fileName}
                 subline={formatDimensions(model.dimensions, model.fileUnit)}
                 buttonBar={buttonBar(modelConfig)}
+                onMagnify={() => onMagnifyModel(model)}
               />
             )
           }
@@ -209,7 +216,8 @@ const mapDispatchToProps = {
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onChangeQuantities: modelAction.updateQuantities,
   onDuplicateModelConfig: modelAction.duplicateModelConfig,
-  onChooseMaterial: materialAction.choose
+  onChooseMaterial: navigationAction.goToMaterial,
+  onMagnifyModel: modelViewerAction.open
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadPage)

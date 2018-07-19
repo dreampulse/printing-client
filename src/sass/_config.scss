@@ -121,6 +121,7 @@ $border-radius: 5px;
 $model-item-height: 161px;
 $model-item-space-left: $space-xxxl;
 $upload-model-item-image-width: 180px;
+$upload-model-item-height: $upload-model-item-image-width / 4 * 3 + 2 * $space-base + 2px;
 $color-square-size: 20px;
 
 $box-shadow-base: 1px 1px 2px 1px rgba(0, 0, 0, 0.15);

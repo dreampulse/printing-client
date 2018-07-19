@@ -140,6 +140,161 @@ const caStates = {
   YT: 'Yukon'
 }
 
+const englishStates = {
+  Bedfordshire: 'Bedfordshire',
+  Berkshire: 'Berkshire',
+  Buckinghamshire: 'Buckinghamshire',
+  Cambridgeshire: 'Cambridgeshire',
+  Cheshire: 'Cheshire',
+  'City of Bristol': 'City of Bristol',
+  'City of London': 'City of London',
+  Cornwall: 'Cornwall',
+  'County Durham': 'County Durham',
+  Cumberland: 'Cumberland',
+  Cumbria: 'Cumbria',
+  Derbyshire: 'Derbyshire',
+  Devon: 'Devon',
+  Dorset: 'Dorset',
+  'East Sussex': 'East Sussex',
+  Essex: 'Essex',
+  Gloucestershire: 'Gloucestershire',
+  'Greater London': 'Greater London',
+  'Greater Manchester': 'Greater Manchester',
+  Hampshire: 'Hampshire',
+  Herefordshire: 'Herefordshire',
+  Hertfordshire: 'Hertfordshire',
+  Huntingdonshire: 'Huntingdonshire',
+  'Isle of Wight': 'Isle of Wight',
+  Kent: 'Kent',
+  Lancashire: 'Lancashire',
+  Leicestershire: 'Leicestershire',
+  Lincolnshire: 'Lincolnshire',
+  Merseyside: 'Merseyside',
+  Middlesex: 'Middlesex',
+  Norfolk: 'Norfolk',
+  Northamptonshire: 'Northamptonshire',
+  Northumberland: 'Northumberland',
+  'North Yorkshire': 'North Yorkshire',
+  Nottinghamshire: 'Nottinghamshire',
+  Oxfordshire: 'Oxfordshire',
+  Rutland: 'Rutland',
+  Shropshire: 'Shropshire',
+  Somerset: 'Somerset',
+  'South Yorkshire': 'South Yorkshire',
+  Staffordshire: 'Staffordshire',
+  Suffolk: 'Suffolk',
+  Surrey: 'Surrey',
+  Sussex: 'Sussex',
+  'Tyne and Wear': 'Tyne and Wear',
+  Warwickshire: 'Warwickshire',
+  'West Midlands': 'West Midlands',
+  Westmorland: 'Westmorland',
+  'West Sussex': 'West Sussex',
+  'West Yorkshire': 'West Yorkshire',
+  Wiltshire: 'Wiltshire',
+  Worcestershire: 'Worcestershire',
+  Yorkshire: 'Yorkshire'
+}
+
+const northIrelandStates = {
+  Antrim: 'Antrim',
+  Ards: 'Ards',
+  Armagh: 'Armagh',
+  Ballymena: 'Ballymena',
+  Ballymoney: 'Ballymoney',
+  Banbridge: 'Banbridge',
+  Belfast: 'Belfast',
+  Carrickfergus: 'Carrickfergus',
+  Castlereagh: 'Castlereagh',
+  Coleraine: 'Coleraine',
+  Cookstown: 'Cookstown',
+  Craigavon: 'Craigavon',
+  Derry: 'Derry',
+  Down: 'Down',
+  'Dungannon and South Tyrone': 'Dungannon and South Tyrone',
+  Fermanagh: 'Fermanagh',
+  Larne: 'Larne',
+  Limavady: 'Limavady',
+  Lisburn: 'Lisburn',
+  Londonderry: 'Londonderry',
+  Magherafelt: 'Magherafelt',
+  Moyle: 'Moyle',
+  'Newry and Mourne': 'Newry and Mourne',
+  Newtownabbey: 'Newtownabbey',
+  'North Down': 'North Down',
+  Omagh: 'Omagh',
+  Strabane: 'Strabane'
+}
+
+const scottishStates = {
+  'Aberdeen City': 'Aberdeen City',
+  Aberdeenshire: 'Aberdeenshire',
+  Angus: 'Angus',
+  'Argyll and Bute': 'Argyll and Bute',
+  Ayrshire: 'Ayrshire',
+  Clackmannanshire: 'Clackmannanshire',
+  'Dumfries and Galloway': 'Dumfries and Galloway',
+  Dunbartonshire: 'Dunbartonshire',
+  'Dundee City': 'Dundee City',
+  'East Lothian': 'East Lothian',
+  'Edinburgh City': 'Edingburgh City',
+  Falkirk: 'Falkirk',
+  Fife: 'Fife',
+  'Glasgow City': 'Glasgow City',
+  Highland: 'Highland',
+  Inverclyde: 'Inverclyde',
+  Lanarkshire: 'Lanarkshire',
+  Midlothian: 'Midlothian',
+  Moray: 'Moray',
+  Orkney: 'Orkney',
+  'Perth and Kinross': 'Perth and Kinross',
+  Renfrewshire: 'Renfrewshire',
+  'Scottish Borders': 'Scottish Borders',
+  'Shetland Isles': 'Shetland Isles',
+  Stirlingshire: 'Stirlingshire',
+  'West Lothian': 'West Lothian',
+  'Western Isles': 'Western Isles'
+}
+
+const welshStates = {
+  Anglesey: 'Anglesey',
+  'Blaenau Gwent': 'Blaenau Gwent',
+  Bridgend: 'Bridgend',
+  Caerphilly: 'Caerphilly',
+  Cardiff: 'Cardiff',
+  Carmarthenshire: 'Carmarthenshire',
+  Ceredigion: 'Ceredigion',
+  Conwy: 'Conwy',
+  Denbighshire: 'Denbighshire',
+  Flintshire: 'Flintshire',
+  Glamorgan: 'Glamorgan',
+  Gwynedd: 'Gwynedd',
+  'Merthyr Tydfil': 'Merthyr Tydfil',
+  Monmouthshire: 'Monmouthshire',
+  'Neath Port Talbot': 'Neath Port Talbot',
+  Newport: 'Newport',
+  Pembrokeshire: 'Pembrokeshire',
+  Powys: 'Powys',
+  'Rhondda Cynon Taff': 'Rhondda Cynon Taff',
+  Swansea: 'Swansea',
+  Torfaen: 'Torfaen',
+  Wrexham: 'Wrexham'
+}
+
+const unorderedUkStates = {
+  ...englishStates,
+  ...northIrelandStates,
+  ...scottishStates,
+  ...welshStates
+}
+
+const ukStates = Object.keys(unorderedUkStates)
+  .sort()
+  .reduce((allKeys, key) => {
+    allKeys[key] = unorderedUkStates[key]
+    return allKeys
+  }, {})
+
 const countryList = createCountryList()
 
 export function getCountriesMenu() {
@@ -170,6 +325,8 @@ export function getStateName(countryCode, stateCode) {
       return jpStates[stateCode]
     case 'CA':
       return caStates[stateCode]
+    case 'GB':
+      return ukStates[stateCode]
     default:
       return null
   }
@@ -185,6 +342,8 @@ export function getStates(countryCode) {
       return getStateList(jpStates)
     case 'CA':
       return getStateList(caStates)
+    case 'GB':
+      return getStateList(ukStates)
     default:
       return null
   }

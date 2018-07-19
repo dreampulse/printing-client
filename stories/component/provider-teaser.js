@@ -9,5 +9,8 @@ storiesOf('Provider Teaser', module).add('default', () => (
     <ProviderImage slug="shapeways" />
     <ProviderImage slug="imaterialise" />
     <ProviderImage slug="sculpteo" />
+    <ProviderImage slug="trinckle" />
+    <ProviderImage slug="treatstock" />
+    <ProviderImage slug="ff3dm" />
   </ProviderTeaser>
 ))

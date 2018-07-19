@@ -13,6 +13,7 @@ import cartIcon from '../../asset/icon/cart.svg'
 import {selectModelConfigs} from '../selector'
 
 import {goToUpload, goToCart} from '../action-next/navigation'
+import Modal from './modal'
 
 import App from '../component/app'
 import Container from '../component/container'
@@ -53,6 +54,7 @@ const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick
     footer={<FooterPartial />}
   >
     <Container>{children}</Container>
+    <Modal />
   </App>
 )
 

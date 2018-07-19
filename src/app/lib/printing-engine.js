@@ -1,6 +1,7 @@
 // @flow
 
 import type {Dispatch} from 'redux'
+
 import config from '../../../config'
 import type {
   ModelId,

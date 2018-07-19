@@ -12,7 +12,6 @@ export type MaterialConfigId = string
 export type FinishGroupId = string
 export type MaterialGroupId = string
 export type MaterialId = string
-export type PrintingServiceId = string
 export type QuoteId = string
 export type VendorId = string
 export type ConfigId = string
@@ -31,7 +30,7 @@ export type UserId = string
 // https://github.com/all3dp/material-structure/blob/master/src/schema.js
 
 export type PrintingService = {
-  [PrintingServiceId]: {
+  [VendorId]: {
     materialId: MaterialId,
     finishId: FinishGroupId,
     printingMethodShort: string,
@@ -66,7 +65,7 @@ export type FinishGroup = {
   featuredImage: string,
   properties: {
     printingServiceName: {
-      [PrintingServiceId]: string
+      [VendorId]: string
     },
     printingMethod: string,
     printingMethodShort: string,
@@ -198,7 +197,7 @@ export type User = {
   billingAddress: Address
 }
 
-export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR'
+export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR' | 'MATERIAL'
 export type ModalConfigClosed = null
 export type ModalConfigOpened = {
   isCloseable: boolean,
