@@ -24,6 +24,7 @@ import {openIntercom} from '../service/intercom'
 import FooterPartial from './footer-partial'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import MaterialFilterPartial from './material-filter-partial'
+import Modal from './modal'
 
 import App from '../component/app'
 import Container from '../component/container'
@@ -162,6 +163,7 @@ const MaterialPage = ({
       footer={<FooterPartial />}
     >
       <Container>{renderMaterialSection()}</Container>
+      <Modal />
     </App>
   )
 }

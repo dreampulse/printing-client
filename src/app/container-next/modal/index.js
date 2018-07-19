@@ -7,9 +7,11 @@ import compose from 'recompose/compose'
 import {CONTENT_TYPE, close} from '../../action-next/modal'
 import {selectModalConfig, isModalOpen} from '../../selector'
 import ModelViewerModal from './model-viewer'
+import MaterialModal from './material'
 
 const modals = {
-  [CONTENT_TYPE.MODEL_VIEWER]: ModelViewerModal
+  [CONTENT_TYPE.MODEL_VIEWER]: ModelViewerModal,
+  [CONTENT_TYPE.MATERIAL]: MaterialModal
 }
 
 const getContent = (contentType, contentProps) => {

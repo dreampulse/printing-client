@@ -1,12 +1,17 @@
+// @flow
+
 import React from 'react'
 import {connect} from 'react-redux'
+import compose from 'recompose/compose'
+import withProps from 'recompose/withProps'
 
-import {selectMaterial} from '../../lib/selector'
 import getCloudinaryUrl from '../../lib/cloudinary'
-import {getMaterialFinishGroupProviderNames} from '../../lib/material'
+import {getMaterialFinishGroupProviderNames, getMaterialById} from '../../lib/material'
 import {getFinishGroupProviderNames} from '../../lib/provider-selector'
 
+import type {AppState} from '../../reducer-next'
 import * as modalActions from '../../action-next/modal'
+import {selectMaterialGroups} from '../../selector'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -46,12 +51,17 @@ const MaterialModal = ({material, onClose}) => {
   )
 }
 
-const mapStateToProps = (state, props) => ({
-  material: selectMaterial(state, props.materialId)
+const mapStateToProps = (state: AppState) => ({
+  materialGroups: selectMaterialGroups(state)
 })
 
 const mapDispatchToProps = {
   onClose: modalActions.close
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MaterialModal)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withProps(({materialGroups, materialId}) => ({
+    material: getMaterialById(materialGroups, materialId)
+  }))
+)(MaterialModal)
