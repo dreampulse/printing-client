@@ -186,6 +186,12 @@ export type GoogleMapsPlace = {
   }>
 }
 
+export type Features = {
+  share?: true,
+  refresh?: true,
+  invoice?: true
+}
+
 export type User = {
   emailAddress: string,
   isCompany: string,

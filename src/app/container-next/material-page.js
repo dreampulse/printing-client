@@ -22,7 +22,8 @@ import {
   selectAllMaterialConfigIds,
   selectFilteredModelConfigs,
   selectPollingProgress,
-  selectIsPollingDone
+  selectIsPollingDone,
+  selectFeatureFlags
 } from '../selector'
 import {createMaterialSearch} from '../service/search'
 import scrollTo from '../service/scroll-to'
@@ -183,10 +184,12 @@ const MaterialPage = ({
 const mapStateToProps = (state: AppState, ownProps) => ({
   quotes: state.quote.quotes,
   materialGroups: selectMaterialGroups(state),
+  pollingProgress: selectPollingProgress(state),
+  isPollingDone: selectIsPollingDone(state),
+  // The next three props are required for the ReceiveQuotes-action
   allMaterialConfigIds: selectAllMaterialConfigIds(state),
   selectedModelConfigs: selectFilteredModelConfigs(state, ownProps.configIds),
-  pollingProgress: selectPollingProgress(state),
-  isPollingDone: selectIsPollingDone(state)
+  featureFlags: selectFeatureFlags(state)
 })
 
 const mapDispatchToProps = {
@@ -246,12 +249,14 @@ export default compose(
 
       const modelConfigs = this.props.selectedModelConfigs
       const materialConfigIds = this.props.allMaterialConfigIds
+      const {refresh} = this.props.featureFlags
       this.props.onReceiveQuotes({
         modelConfigs,
         materialConfigIds,
         // TODO: connect to the store
         countryCode: 'DE',
-        currency: 'EUR'
+        currency: 'EUR',
+        refresh
       })
     },
     componentWillUnmount() {

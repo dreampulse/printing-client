@@ -7,6 +7,6 @@ import type {AppState} from '../type-next'
 export const selectIsPollingDone = (state: AppState) => !state.quote.pollingId
 
 export const selectPollingProgress = (state: AppState) => ({
-  done: Object.keys(state.quote.printingServiceComplete).length,
-  total: sum(filter(state.quote.printingServiceComplete))
+  done: sum(filter(state.quote.printingServiceComplete)),
+  total: Object.keys(state.quote.printingServiceComplete).length
 })

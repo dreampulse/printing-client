@@ -12,7 +12,8 @@ type ReceiveQuotesPayload = {
   modelConfigs: Array<ModelConfigUploaded>,
   countryCode: string,
   currency: string,
-  materialConfigIds: Array<MaterialConfigId>
+  materialConfigIds: Array<MaterialConfigId>,
+  refresh: boolean
 }
 
 type QuotesResponsePayload = {

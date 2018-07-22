@@ -27,10 +27,10 @@ const initialState: QuoteState = {
 
 const receiveQuotes = (
   state,
-  {payload: {countryCode, currency, modelConfigs, materialConfigIds}}
+  {payload: {countryCode, currency, modelConfigs, materialConfigIds, refresh}}
 ) => {
   const priceRequest: PriceRequest = {
-    refresh: false, // TODO get this from the router
+    refresh,
     countryCode,
     currency,
     models: modelConfigs.map(modelConfig => ({

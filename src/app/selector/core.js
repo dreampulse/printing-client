@@ -14,3 +14,5 @@ export const selectAllMaterialConfigIds: (state: AppState) => Array<MaterialConf
   flatMap(materialGroup => materialGroup.materials),
   state => state.core.materialGroups
 )
+
+export const selectFeatureFlags = (state: AppState) => state.core.featureFlags
