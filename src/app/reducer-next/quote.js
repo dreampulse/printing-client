@@ -13,12 +13,16 @@ import config from '../../../config'
 
 export type QuoteState = {
   quotes: {[id: QuoteId]: BackendQuote},
-  pollingId: ?PollingId
+  pollingId: ?PollingId,
+  printingServiceComplete: {
+    [printingServiceName: string]: boolean
+  }
 }
 
 const initialState: QuoteState = {
   pollingId: null,
-  quotes: {}
+  quotes: {},
+  printingServiceComplete: {}
 }
 
 const receiveQuotes = (
@@ -54,21 +58,21 @@ const receiveQuotes = (
 }
 
 const startPollingQuotes = (state, {payload: {priceId}}) => {
-  // TODO: Error-Handing - improve polling api
   const startPollingAction = pollingAction.start(
     async dispatch => {
       const quotesResponse = await printingEngine.getQuotes(priceId)
       if (quotesResponse.allComplete) {
-        return quotesResponse.quotes
+        return quotesResponse
       }
 
       // Dispatch partial result
       // TODO: This should be supported by the polling api
-      dispatch(quoteAction.receiveQuotesResponse(quotesResponse.quotes))
+      dispatch(quoteAction.quotesResponse(quotesResponse))
       return POLLING_FAILED // continue polling to get more results
     },
     [Cmd.dispatch],
-    quoteAction.receiveQuotesComplete,
+    quoteAction.quotesComplete,
+    coreAction.fatalError,
     config.pollingInterval
   )
 
@@ -81,16 +85,17 @@ const startPollingQuotes = (state, {payload: {priceId}}) => {
   )
 }
 
-const receiveQuotesResponse = (state, {payload}) => ({
+const quotesResponse = (state, {payload: {quotes, printingServiceComplete}}) => ({
   ...state,
   quotes: {
     ...state.quotes,
-    ...keyBy(payload, 'quoteId')
-  }
+    ...keyBy(quotes, 'quoteId')
+  },
+  printingServiceComplete
 })
 
-const receiveQuotesComplete = (state, {payload}) =>
-  loop({...state, pollingId: null}, Cmd.action(quoteAction.receiveQuotesResponse(payload)))
+const quotesComplete = (state, {payload}) =>
+  loop({...state, pollingId: null}, Cmd.action(quoteAction.quotesResponse(payload)))
 
 const stopReceivingQuotes = state => {
   if (state.pollingId) {
@@ -106,10 +111,10 @@ export const reducer = (state: QuoteState = initialState, action: AppAction): Qu
       return receiveQuotes(state, action)
     case 'QUOTE.START_POLLING_QUOTES':
       return startPollingQuotes(state, action)
-    case 'QUOTE.RECEIVE_QUOTES_RESPONSE':
-      return receiveQuotesResponse(state, action)
-    case 'QUOTE.RECEIVE_QUOTES_COMPLETE':
-      return receiveQuotesComplete(state, action)
+    case 'QUOTE.QUOTES_RESPONSE':
+      return quotesResponse(state, action)
+    case 'QUOTE.QUOTES_COMPLETE':
+      return quotesComplete(state, action)
     case 'QUOTE.STOP_RECEIVING_QUOTES':
       return stopReceivingQuotes(state)
     default:

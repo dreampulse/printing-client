@@ -20,7 +20,9 @@ import getCloudinaryUrl from '../lib/cloudinary'
 import {
   selectMaterialGroups,
   selectAllMaterialConfigIds,
-  selectFilteredModelConfigs
+  selectFilteredModelConfigs,
+  selectPollingProgress,
+  selectIsPollingDone
 } from '../selector'
 import {createMaterialSearch} from '../service/search'
 import scrollTo from '../service/scroll-to'
@@ -58,15 +60,16 @@ const MaterialPage = ({
   selectMaterial,
   setMaterialFilter,
   onOpenMaterialModal,
-  quotes
+  quotes,
+  pollingProgress
+  // isPollingDone
 }) => {
   // TODO: integrate quote into page
   console.log('-- got quotes', quotes)
 
-  // TODO:
   const title = 'Choose material (TODO)'
-  const numCheckedProviders = 1
-  const numTotalProviders = 3
+  const numCheckedProviders = pollingProgress.done
+  const numTotalProviders = pollingProgress.total
 
   const renderMaterialCard = material => {
     const bestOffer = null // getBestOfferForMaterial(offers, material)
@@ -181,7 +184,9 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   quotes: state.quote.quotes,
   materialGroups: selectMaterialGroups(state),
   allMaterialConfigIds: selectAllMaterialConfigIds(state),
-  selectedModelConfigs: selectFilteredModelConfigs(state, ownProps.configIds)
+  selectedModelConfigs: selectFilteredModelConfigs(state, ownProps.configIds),
+  pollingProgress: selectPollingProgress(state),
+  isPollingDone: selectIsPollingDone(state)
 })
 
 const mapDispatchToProps = {

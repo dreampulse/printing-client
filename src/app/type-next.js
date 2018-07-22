@@ -215,6 +215,7 @@ export type PollingArgs = Array<any>
 export type PollingResult = any
 export type PollingFunction = (...args: PollingArgs) => PollingResult | Promise<PollingResult>
 export type PollingOnSuccessActionCreator = (result: PollingResult) => _AppAction
+export type PollingOnFailActionCreator = (error: Error) => _AppAction
 
 export type ModelOnProgressActionCreator = (progress: number) => _AppAction
 

@@ -9,7 +9,8 @@ import type {
   PollingId,
   PollingFunction,
   PollingArgs,
-  PollingOnSuccessActionCreator
+  PollingOnSuccessActionCreator,
+  PollingOnFailActionCreator
 } from '../type-next'
 import * as pollingAction from '../action-next/polling'
 import * as timeoutAction from '../action-next/timeout'
@@ -21,6 +22,7 @@ export type PollingState = {
       pollingFunction: PollingFunction,
       pollingArgs: PollingArgs,
       onSuccessActionCreator: PollingOnSuccessActionCreator,
+      onFailActionCreator: PollingOnFailActionCreator,
       retryInterval: number,
       remainingRetries: number,
       timeoutId: TimeoutId | null,
@@ -34,7 +36,7 @@ const initialState: PollingState = {
 }
 
 const startTry = (state, pollingId, activePolling) => {
-  const {pollingFunction, pollingArgs} = activePolling
+  const {pollingFunction, pollingArgs, onFailActionCreator} = activePolling
 
   return loop(
     {
@@ -50,7 +52,8 @@ const startTry = (state, pollingId, activePolling) => {
     },
     Cmd.run(pollingFunction, {
       args: pollingArgs,
-      successActionCreator: pollingResult => pollingAction.handleResult(pollingId, pollingResult)
+      successActionCreator: pollingResult => pollingAction.handleResult(pollingId, pollingResult),
+      failActionCreator: onFailActionCreator
     })
   )
 }
@@ -72,6 +75,7 @@ const start = (state, action) => {
     pollingFunction,
     pollingArgs,
     onSuccessActionCreator,
+    onFailActionCreator,
     retryInterval,
     maxRetries
   } = action.payload
@@ -85,6 +89,7 @@ const start = (state, action) => {
     pollingFunction,
     pollingArgs,
     onSuccessActionCreator,
+    onFailActionCreator,
     retryInterval,
     remainingRetries: maxRetries
   })

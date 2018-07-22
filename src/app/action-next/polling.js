@@ -7,7 +7,8 @@ import type {
   PollingFunction,
   PollingArgs,
   PollingResult,
-  PollingOnSuccessActionCreator
+  PollingOnSuccessActionCreator,
+  PollingOnFailActionCreator
 } from '../type-next'
 
 type StartAction = Action<
@@ -17,6 +18,7 @@ type StartAction = Action<
     pollingFunction: PollingFunction,
     pollingArgs: PollingArgs,
     onSuccessActionCreator: PollingOnSuccessActionCreator,
+    onFailActionCreator: PollingOnFailActionCreator,
     retryInterval: number,
     maxRetries: number
   }
@@ -34,6 +36,7 @@ export const start = (
   pollingFunction: PollingFunction,
   pollingArgs: PollingArgs,
   onSuccessActionCreator: PollingOnSuccessActionCreator,
+  onFailActionCreator: PollingOnSuccessActionCreator,
   retryInterval: number,
   maxRetries: number = Infinity
 ): StartAction => ({
@@ -43,6 +46,7 @@ export const start = (
     pollingFunction,
     pollingArgs,
     onSuccessActionCreator,
+    onFailActionCreator,
     retryInterval,
     maxRetries
   }

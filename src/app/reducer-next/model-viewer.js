@@ -7,6 +7,7 @@ import type {AppAction, ModelId, PollingId, ModelSceneId} from '../type-next'
 import * as modelViewerAction from '../action-next/model-viewer'
 import * as pollingAction from '../action-next/polling'
 import * as modalAction from '../action-next/modal'
+import * as coreAction from '../action-next/core'
 import {pollingFunction} from '../lib/polling'
 
 export type ModelViewerState = null | {
@@ -23,6 +24,7 @@ const open = (state, action) => {
     pollingFunction.getModelSceneId,
     [model.modelId],
     modelViewerAction.handleSceneId,
+    coreAction.fatalError,
     config.pollingInterval
   )
 
