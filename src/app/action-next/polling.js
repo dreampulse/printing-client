@@ -8,21 +8,28 @@ import type {
   PollingArgs,
   PollingResult,
   PollingOnSuccessActionCreator,
-  PollingOnFailActionCreator
+  PollingOnFailActionCreator,
+  PollingOnPartialResultActionCreator
 } from '../type-next'
 
-type StartAction = Action<
-  'POLLING.START',
-  {
-    pollingId: PollingId,
-    pollingFunction: PollingFunction,
-    pollingArgs: PollingArgs,
-    onSuccessActionCreator: PollingOnSuccessActionCreator,
-    onFailActionCreator: PollingOnFailActionCreator,
-    retryInterval: number,
-    maxRetries: number
-  }
->
+import config from '../../../config'
+
+type StartActionParams = {
+  pollingFunction: PollingFunction,
+  pollingArgs?: PollingArgs,
+  onSuccessActionCreator: PollingOnSuccessActionCreator,
+  onFailActionCreator: PollingOnFailActionCreator,
+  onPartialResultActionCreator?: PollingOnPartialResultActionCreator,
+  retryInterval?: number,
+  maxRetries?: number
+}
+type StartActionPayload = {
+  pollingId: PollingId,
+  retryInterval: number,
+  maxRetries: number
+} & StartActionParams
+
+type StartAction = Action<'POLLING.START', StartActionPayload>
 type HandleResult = Action<
   'POLLING.HANDLE_RESULT',
   {pollingId: PollingId, pollingResult: PollingResult}
@@ -32,25 +39,22 @@ type CancelAction = Action<'POLLING.CANCEL', {pollingId: PollingId}>
 
 export type PollingAction = StartAction | HandleResult | HandleRetryAction | CancelAction
 
-export const start = (
-  pollingFunction: PollingFunction,
-  pollingArgs: PollingArgs,
-  onSuccessActionCreator: PollingOnSuccessActionCreator,
-  onFailActionCreator: PollingOnSuccessActionCreator,
-  retryInterval: number,
-  maxRetries: number = Infinity
-): StartAction => ({
-  type: 'POLLING.START',
-  payload: {
+export const start = (params: StartActionParams): StartAction => {
+  const payload: StartActionPayload = {
     pollingId: uniqueId('polling-id-'),
-    pollingFunction,
-    pollingArgs,
-    onSuccessActionCreator,
-    onFailActionCreator,
-    retryInterval,
-    maxRetries
+    pollingFunction: params.pollingFunction,
+    pollingArgs: params.pollingArgs || [],
+    onSuccessActionCreator: params.onSuccessActionCreator,
+    onFailActionCreator: params.onFailActionCreator,
+    onPartialResultActionCreator: params.onPartialResultActionCreator,
+    retryInterval: params.retryInterval || config.pollingInterval,
+    maxRetries: params.maxRetries || config.pollingRetries
   }
-})
+  return {
+    type: 'POLLING.START',
+    payload
+  }
+}
 
 export const handleResult = (pollingId: PollingId, pollingResult: PollingResult): HandleResult => ({
   type: 'POLLING.HANDLE_RESULT',

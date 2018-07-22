@@ -2,13 +2,12 @@
 
 import {loop, Cmd} from 'redux-loop'
 
-import config from '../../../config'
 import type {AppAction, ModelId, PollingId, ModelSceneId} from '../type-next'
 import * as modelViewerAction from '../action-next/model-viewer'
 import * as pollingAction from '../action-next/polling'
 import * as modalAction from '../action-next/modal'
 import * as coreAction from '../action-next/core'
-import {pollingFunction} from '../lib/polling'
+import * as printingEngine from '../lib/printing-engine'
 
 export type ModelViewerState = null | {
   modelId: ModelId,
@@ -20,13 +19,18 @@ const initialState: ModelViewerState = null
 
 const open = (state, action) => {
   const {model} = action.payload
-  const startPollingAction = pollingAction.start(
-    pollingFunction.getModelSceneId,
-    [model.modelId],
-    modelViewerAction.handleSceneId,
-    coreAction.fatalError,
-    config.pollingInterval
-  )
+  const startPollingAction = pollingAction.start({
+    pollingFunction: async (modelId: ModelId) => {
+      const model = await printingEngine.getModel(modelId)
+
+      return typeof model.sceneId === 'string'
+        ? {status: 'POLLING_DONE', result: model.sceneId}
+        : {status: 'POLLING_CONTINUE', result: null}
+    },
+    pollingArgs: [model.modelId],
+    onSuccessActionCreator: modelViewerAction.handleSceneId,
+    onFailActionCreator: coreAction.fatalError
+  })
 
   return loop(
     {

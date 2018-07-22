@@ -10,11 +10,11 @@ import type {
   PollingFunction,
   PollingArgs,
   PollingOnSuccessActionCreator,
-  PollingOnFailActionCreator
+  PollingOnFailActionCreator,
+  PollingOnPartialResultActionCreator
 } from '../type-next'
 import * as pollingAction from '../action-next/polling'
 import * as timeoutAction from '../action-next/timeout'
-import {POLLING_FAILED} from '../lib/polling'
 
 export type PollingState = {
   activePollings: {
@@ -23,6 +23,7 @@ export type PollingState = {
       pollingArgs: PollingArgs,
       onSuccessActionCreator: PollingOnSuccessActionCreator,
       onFailActionCreator: PollingOnFailActionCreator,
+      onPartialResultActionCreator: PollingOnPartialResultActionCreator,
       retryInterval: number,
       remainingRetries: number,
       timeoutId: TimeoutId | null,
@@ -76,6 +77,7 @@ const start = (state, action) => {
     pollingArgs,
     onSuccessActionCreator,
     onFailActionCreator,
+    onPartialResultActionCreator,
     retryInterval,
     maxRetries
   } = action.payload
@@ -90,13 +92,14 @@ const start = (state, action) => {
     pollingArgs,
     onSuccessActionCreator,
     onFailActionCreator,
+    onPartialResultActionCreator,
     retryInterval,
     remainingRetries: maxRetries
   })
 }
 
 const handleSuccess = (state, action) => {
-  const {pollingId, pollingResult} = action.payload
+  const {pollingId, pollingResult: {result}} = action.payload
   const activePolling = state.activePollings[pollingId]
 
   return loop(
@@ -104,7 +107,7 @@ const handleSuccess = (state, action) => {
       ...state,
       activePollings: omit(state.activePollings, pollingId)
     },
-    Cmd.action(activePolling.onSuccessActionCreator(pollingResult))
+    Cmd.action(activePolling.onSuccessActionCreator(result))
   )
 }
 
@@ -118,11 +121,17 @@ const handleFailNoRemainingRetries = (state, action) => {
 }
 
 const handleFailWithRemainingRetries = (state, action) => {
-  const {pollingId} = action.payload
+  const {pollingId, pollingResult: {result}} = action.payload
   const activePolling = state.activePollings[pollingId]
   const {retryInterval} = activePolling
   const onTimeoutEndActionCreator = () => pollingAction.handleRetry(pollingId)
   const timeoutStartAction = timeoutAction.start(onTimeoutEndActionCreator, retryInterval)
+
+  const cmds = [Cmd.action(timeoutStartAction)]
+
+  if (activePolling.onPartialResultActionCreator) {
+    cmds.push(Cmd.action(activePolling.onPartialResultActionCreator(result)))
+  }
 
   return loop(
     {
@@ -136,12 +145,12 @@ const handleFailWithRemainingRetries = (state, action) => {
         }
       }
     },
-    Cmd.action(timeoutStartAction)
+    Cmd.list(cmds)
   )
 }
 
 const handleResult = (state, action) => {
-  const {pollingId, pollingResult} = action.payload
+  const {pollingId, pollingResult: {status}} = action.payload
 
   if (pollingId in state.activePollings === false) {
     return state
@@ -150,7 +159,7 @@ const handleResult = (state, action) => {
 
   const activePolling = state.activePollings[pollingId]
 
-  if (pollingResult === POLLING_FAILED) {
+  if (status === 'POLLING_CONTINUE') {
     return activePolling.remainingRetries === 0
       ? handleFailNoRemainingRetries(state, action)
       : handleFailWithRemainingRetries(state, action)

@@ -8,8 +8,6 @@ import type {AppAction, QuoteId, BackendQuote, PollingId} from '../type-next'
 import * as coreAction from '../action-next/core'
 import * as pollingAction from '../action-next/polling'
 import * as quoteAction from '../action-next/quote'
-import {POLLING_FAILED} from '../lib/polling'
-import config from '../../../config'
 
 export type QuoteState = {
   quotes: {[id: QuoteId]: BackendQuote},
@@ -58,23 +56,26 @@ const receiveQuotes = (
 }
 
 const startPollingQuotes = (state, {payload: {priceId}}) => {
-  const startPollingAction = pollingAction.start(
-    async dispatch => {
+  const startPollingAction = pollingAction.start({
+    pollingFunction: async () => {
       const quotesResponse = await printingEngine.getQuotes(priceId)
       if (quotesResponse.allComplete) {
-        return quotesResponse
+        return {
+          status: 'POLLING_DONE',
+          result: quotesResponse
+        }
       }
 
-      // Dispatch partial result
-      // TODO: This should be supported by the polling api
-      dispatch(quoteAction.quotesResponse(quotesResponse))
-      return POLLING_FAILED // continue polling to get more results
+      // continue polling to get more results
+      return {
+        status: 'POLLING_CONTINUE',
+        result: quotesResponse
+      }
     },
-    [Cmd.dispatch],
-    quoteAction.quotesComplete,
-    coreAction.fatalError,
-    config.pollingInterval
-  )
+    onSuccessActionCreator: quoteAction.quotesComplete,
+    onPartialResultActionCreator: quoteAction.quotesResponse,
+    onFailActionCreator: coreAction.fatalError
+  })
 
   return loop(
     {
