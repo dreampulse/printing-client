@@ -114,13 +114,16 @@ const updateLocation = (state, action) => {
     return loop(state, Cmd.action(modalAction.openConfirmLocationChange(action.payload.location)))
   }
 
-  return {
-    ...state,
-    location: action.payload.location,
-    quotes: {},
-    modelConfigs: resetModelConfigs(state.modelConfigs)
-    // TODO: clear cart
-  }
+  return loop(
+    {
+      ...state,
+      location: action.payload.location,
+      quotes: {},
+      modelConfigs: resetModelConfigs(state.modelConfigs)
+      // TODO: clear cart
+    },
+    Cmd.action(quoteAction.stopReceivingQuotes())
+  )
 }
 
 const updateCurrency = (state, action) => {
@@ -133,13 +136,16 @@ const updateCurrency = (state, action) => {
     return loop(state, Cmd.action(modalAction.openConfirmCurrencyChange(action.payload.currency)))
   }
 
-  return {
-    ...state,
-    currency: action.payload.currency,
-    quotes: {},
-    modelConfigs: resetModelConfigs(state.modelConfigs)
-    // TODO: clear cart
-  }
+  return loop(
+    {
+      ...state,
+      currency: action.payload.currency,
+      quotes: {},
+      modelConfigs: resetModelConfigs(state.modelConfigs)
+      // TODO: clear cart
+    },
+    Cmd.action(quoteAction.stopReceivingQuotes())
+  )
 }
 
 const uploadFile = (state, {payload}) => {

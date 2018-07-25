@@ -208,7 +208,7 @@ const UploadPage = ({
 }
 
 const mapStateToProps = (state: AppState) => ({
-  modelsWithConfig: unzip([state.model.modelConfigs, selectModelsOfModelConfigs(state)])
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)])
 })
 
 const mapDispatchToProps = {

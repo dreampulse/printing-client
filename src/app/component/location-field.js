@@ -46,6 +46,10 @@ export default class LocationField extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.googleMaps = undefined
+  }
+
   onLocationClick = event => {
     event.preventDefault()
 
@@ -97,8 +101,12 @@ export default class LocationField extends Component {
     return value
   }
 
-  initAutocomplete = googleMaps => {
-    this.autocomplete = new googleMaps.places.Autocomplete(this.inputDom, {
+  initAutocomplete = () => {
+    if (!this.googleMaps || !this.inputDom) {
+      return
+    }
+
+    this.autocomplete = new this.googleMaps.places.Autocomplete(this.inputDom, {
       types: ['geocode'] // https://developers.google.com/places/web-service/autocomplete?#place_types
     })
     this.autocomplete.addListener('place_changed', () => {

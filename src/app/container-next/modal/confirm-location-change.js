@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import * as modalActions from '../../action-next/modal'
 import * as coreActions from '../../action-next/core'
 
-import { formatLocation } from '../../lib/formatter';
+import {formatLocation} from '../../lib/formatter'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -16,7 +16,7 @@ import Paragraph from '../../component/paragraph'
 const ConfirmLocationChangeModal = ({location, onUpdateLocation, onClose}) => {
   const headline = <Headline label="Confirmation necessary" modifiers={['l']} />
   const buttons = [
-    <Button label="Abort" onClick={() => onClose()} />,
+    <Button label="Abort" modifiers={['minor']} onClick={() => onClose()} />,
     <Button
       label="Confirm"
       onClick={() => {
@@ -38,9 +38,7 @@ const ConfirmLocationChangeModal = ({location, onUpdateLocation, onClose}) => {
   )
 }
 
-const mapStateToProps = state => ({
-  location: state.modal.modalConfig.location
-})
+const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {
   onUpdateLocation: coreActions.updateLocation,

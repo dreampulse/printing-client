@@ -58,12 +58,11 @@ const MaterialPage = ({
   selectMaterial,
   setMaterialFilter,
   onOpenMaterialModal,
-  quotes,
+  // quotes,
   pollingProgress
   // isPollingDone
 }) => {
   // TODO: integrate quote into page
-  console.log('-- got quotes', quotes)
 
   const title = 'Choose material (TODO)'
   const numCheckedProviders = pollingProgress.done
@@ -179,7 +178,7 @@ const MaterialPage = ({
 }
 
 const mapStateToProps = (state: AppState, ownProps) => ({
-  quotes: state.quote.quotes,
+  quotes: state.core.quotes,
   materialGroups: state.core.materialGroups,
   pollingProgress: selectQuotePollingProgress(state),
   isPollingDone: isQuotePollingDone(state),
@@ -240,6 +239,7 @@ export default compose(
     componentWillMount() {
       if (this.props.selectedModelConfigs.length === 0) {
         this.props.onAbort()
+        return
       }
 
       const modelConfigs = this.props.selectedModelConfigs

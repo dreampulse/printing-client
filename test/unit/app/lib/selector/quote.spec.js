@@ -4,21 +4,31 @@ import {
 } from '../../../../../src/app/lib/selector/quote'
 
 describe('isQuotePollingDone()', () => {
-  it('returns whether quotes polling is done', () => {
+  it('returns false when quote polling is not done', () => {
     const state = {
-      quote: {
-        pollingId: 'some-polling-id'
+      core: {
+        quotePollingId: 'some-polling-id'
       }
     }
 
     expect(isQuotePollingDone(state), 'to equal', false)
+  })
+
+  it('returns true when quote polling is done', () => {
+    const state = {
+      core: {
+        quotePollingId: null
+      }
+    }
+
+    expect(isQuotePollingDone(state), 'to equal', true)
   })
 })
 
 describe('selectQuotePollingProgress()', () => {
   it('returns the current progress of the polling of the quotes', () => {
     const state = {
-      quote: {
+      core: {
         printingServiceComplete: {
           'service-1': true,
           'service-2': false,

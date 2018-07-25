@@ -14,7 +14,7 @@ import * as coreActions from '../../action-next/core'
 const ConfirmCurrencyChangeModal = ({currency, onUpdateCurrency, onClose}) => {
   const headline = <Headline label="Confirmation necessary" modifiers={['l']} />
   const buttons = [
-    <Button label="Abort" onClick={() => onClose()} />,
+    <Button label="Abort" modifiers={['minor']} onClick={() => onClose()} />,
     <Button
       label="Confirm"
       onClick={() => {
@@ -36,9 +36,7 @@ const ConfirmCurrencyChangeModal = ({currency, onUpdateCurrency, onClose}) => {
   )
 }
 
-const mapStateToProps = state => ({
-  currency: state.modal.modalConfig.currency
-})
+const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {
   onUpdateCurrency: coreActions.updateCurrency,
