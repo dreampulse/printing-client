@@ -52,7 +52,7 @@ const created = (state, {payload}) =>
 
 export const reducer = (state: UserState = initialState, action: AppAction): UserState => {
   switch (action.type) {
-    case 'INIT.INIT':
+    case 'CORE.INIT':
       // case 'USER.DETECT_LOCATION':  <- not needed right now
       return detectLocation(state, action)
     case 'USER.LOCATION_UPDATED':

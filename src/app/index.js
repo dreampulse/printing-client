@@ -14,7 +14,7 @@ import Router from './router'
 
 import '../sass/main.scss'
 
-import {init, initFeatureFlags} from './action-next/init'
+import {init} from './action-next/core'
 import {getFeatureFlags} from './lib/feature-flags'
 
 // Warn if the browser is one version behind
@@ -34,10 +34,7 @@ function renderApp(CurrentRouter) {
   )
 }
 
-async function initApp() {
-  await store.dispatch(init())
-  await store.dispatch(initFeatureFlags(getFeatureFlags(global.location)))
-
+store.dispatch(init({featureFlags: getFeatureFlags(global.location)})).then(() => {
   renderApp(Router)
 
   const bootsplash = global.document.getElementById('bootsplash')
@@ -46,7 +43,7 @@ async function initApp() {
     // Otherwise hot reloading breaks
     bootsplash.remove()
   }
-}
+})
 
 // Webpack (uglify) will remove this code in the production build
 if (process.env.NODE_ENV !== 'production') {
@@ -62,5 +59,3 @@ if (process.env.NODE_ENV !== 'production') {
     })
   }
 }
-
-initApp()

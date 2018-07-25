@@ -15,9 +15,12 @@ const initialState: CoreState = {
   featureFlags: {}
 }
 
-const initMaterialGroups = (state, _action) =>
+const init = (state, {payload: {featureFlags}}) =>
   loop(
-    state,
+    {
+      ...state,
+      featureFlags
+    },
     Cmd.run(getMaterialGroups, {
       args: [],
       successActionCreator: response => coreAction.updateMaterialGroups(response.materialStructure),
@@ -30,17 +33,10 @@ const updateMaterialGroups = (state, action) => ({
   materialGroups: action.payload
 })
 
-const initFeatureFlags = (state, {payload}) => ({
-  ...state,
-  featureFlags: payload
-})
-
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
-    case 'INIT.INIT':
-      return initMaterialGroups(state, action)
-    case 'INIT.FEATURE_FLAGS':
-      return initFeatureFlags(state, action)
+    case 'CORE.INIT':
+      return init(state, action)
     case 'CORE.UPDATE_MATERIAL_GROUPS':
       return updateMaterialGroups(state, action)
     default:
