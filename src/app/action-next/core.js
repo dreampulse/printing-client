@@ -1,8 +1,12 @@
 // @flow
 
-import type {Action, MaterialGroup, Location} from '../type-next'
+import type {Action, MaterialGroup, Location, Features} from '../type-next'
 
-type InitAction = Action<'CORE.INIT', void>
+type InitPayload = {
+  featureFlags: Features
+}
+
+type InitAction = Action<'CORE.INIT', InitPayload>
 type UpdateMaterialGroupsAction = Action<
   'CORE.UPDATE_MATERIAL_GROUPS',
   {materialGroups: Array<MaterialGroup>}
@@ -18,9 +22,11 @@ export type CoreAction =
   | UpdateCurrencyAction
   | FatalErrorAction
 
-export const init = (): InitAction => ({
+export const init = ({featureFlags}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
-  payload: undefined
+  payload: {
+    featureFlags
+  }
 })
 
 export const updateMaterialGroups = (

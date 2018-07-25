@@ -4,25 +4,30 @@ import {loop, Cmd} from 'redux-loop'
 
 import {getLocationByIp, isLocationValid} from '../lib/geolocation'
 import {getMaterialGroups} from '../lib/printing-engine'
-import type {AppAction, MaterialGroup, Location} from '../type-next'
+import type {AppAction, MaterialGroup, Location, Features} from '../type-next'
 import * as coreAction from '../action-next/core'
 import * as modalAction from '../action-next/modal'
 
 export type CoreState = {
   materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
   currency: string,
-  location: ?Location
+  location: ?Location,
+  featureFlags: Features
 }
 
 const initialState: CoreState = {
   materialGroups: [],
   currency: 'USD',
-  location: null
+  location: null,
+  featureFlags: {}
 }
 
-const init = (state, _action) =>
+const init = (state, {payload: {featureFlags}}) =>
   loop(
-    state,
+    {
+      ...state,
+      featureFlags
+    },
     Cmd.list([
       Cmd.run(getMaterialGroups, {
         successActionCreator: response =>

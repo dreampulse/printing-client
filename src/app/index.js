@@ -8,6 +8,7 @@ import browserUpdate from 'browser-update'
 import 'babel-polyfill'
 
 import './service/logging'
+import {getFeatureFlags} from './lib/feature-flags'
 
 import Store from './store'
 import Router from './router'
@@ -33,7 +34,7 @@ function renderApp(CurrentRouter) {
   )
 }
 
-store.dispatch(init()).then(() => {
+store.dispatch(init({featureFlags: getFeatureFlags(global.location)})).then(() => {
   renderApp(Router)
 
   const bootsplash = global.document.getElementById('bootsplash')
