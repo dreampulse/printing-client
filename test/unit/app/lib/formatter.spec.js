@@ -113,13 +113,15 @@ describe('formatLocation', () => {
     )
   })
 
-  it('returns an empty string if some key is missing', () => {
+  it('returns string without city when city is empty', () => {
     expect(
       formatLocation({
-        countryCode: 'DE'
+        city: '',
+        countryCode: 'DE',
+        something: 'else'
       }),
       'to equal',
-      ''
+      'Germany'
     )
   })
 })

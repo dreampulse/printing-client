@@ -2,7 +2,7 @@
 
 import {loop, Cmd} from 'redux-loop'
 
-import {getLocationByIp} from '../lib/geolocation'
+import {getLocationByIp, isLocationValid} from '../lib/geolocation'
 import {getMaterialGroups} from '../lib/printing-engine'
 import type {AppAction, MaterialGroup, Location} from '../type-next'
 import * as coreAction from '../action-next/core'
@@ -43,10 +43,18 @@ const updateMaterialGroups = (state, action) => ({
   materialGroups: action.payload.materialGroups
 })
 
-const updateLocation = (state, action) => ({
-  ...state,
-  location: action.payload.location
-})
+const updateLocation = (state, action) => {
+  const nextState = {
+    ...state,
+    location: action.payload.location
+  }
+
+  if (!isLocationValid(nextState.location)) {
+    return loop(nextState, Cmd.action(modalAction.openPickLocation()))
+  }
+
+  return nextState
+}
 
 const updateCurrency = (state, action) => ({
   ...state,

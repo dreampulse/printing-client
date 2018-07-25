@@ -25,7 +25,7 @@ const longNameFrom = findInGoogleMapsPlace('long_name')
 export const getLocationByIp = async (): Promise<Location> => {
   const {city, zip, region, countryCode} = await timeout(request(URL), config.fetchTimout)
 
-  if (true || !countryCode) {
+  if (!countryCode) {
     throw new Error('Location detection failed')
   }
 
@@ -53,4 +53,4 @@ export const convertPlaceToLocation = (place: GoogleMapsPlace): Location => ({
   countryCode: shortNameFrom(place, 'country')
 })
 
-export const isLocationValid = (location: Location) => location && location.countryCode
+export const isLocationValid = (location: ?Location) => location && location.countryCode

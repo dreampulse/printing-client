@@ -1,3 +1,5 @@
+import compact from 'lodash/compact'
+
 import {getCountryName} from '../service/country'
 import config from '../../../config'
 
@@ -30,14 +32,8 @@ export function formatTimeRange(from, to) {
   return '–'
 }
 
-export function formatLocation(location) {
-  if (location && location.city && location.countryCode) {
-    return `${location.city}, ${getCountryName(location.countryCode)}`
-  }
-
-  // TODO: it should be checked beforehand whether the location is valid or not
-  return ''
-}
+export const formatLocation = location =>
+  compact([location.city, location.countryCode && getCountryName(location.countryCode)]).join(',')
 
 export function formatDimensions({x, y, z}, unit) {
   if (!x && !y && !z) return null
