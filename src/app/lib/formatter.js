@@ -30,11 +30,12 @@ export function formatTimeRange(from, to) {
   return '–'
 }
 
-export function formatAddress(address) {
-  if (address && address.city && address.countryCode) {
-    return `${address.city}, ${getCountryName(address.countryCode)}`
+export function formatLocation(location) {
+  if (location && location.city && location.countryCode) {
+    return `${location.city}, ${getCountryName(location.countryCode)}`
   }
 
+  // TODO: it should be checked beforehand whether the location is valid or not
   return ''
 }
 

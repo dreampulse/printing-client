@@ -14,7 +14,7 @@ import Router from './router'
 
 import '../sass/main.scss'
 
-import {init} from './action-next/init'
+import {init} from './action-next/core'
 
 // Warn if the browser is one version behind
 browserUpdate({notify: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers

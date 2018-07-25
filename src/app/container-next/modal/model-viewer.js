@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 
 import {selectSceneId} from '../../selector'
 
-import {close} from '../../action-next/modal'
+import * as modalActions from '../../action-next/modal'
 import type {AppState} from '../../reducer-next'
 
 import Button from '../../component/button'
@@ -29,7 +29,7 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = {
-  onClose: close
+  onClose: modalActions.close
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModelViewerModal)
