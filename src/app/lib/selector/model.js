@@ -1,6 +1,6 @@
 // @flow
 import invariant from 'invariant'
-import type {AppState, ModelConfig, UploadingFile, ConfigId, BackendModel} from '../type-next'
+import type {AppState, ModelConfig, UploadingFile, ConfigId, BackendModel} from '../../type-next'
 
 export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile | BackendModel> =>
   state.model.modelConfigs.map(
@@ -10,10 +10,10 @@ export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile
         : state.model.uploadingFiles[modelConfig.fileId]
   )
 
-export const selectModelConfigs = (state: AppState): Array<ModelConfig> => state.model.modelConfigs
-
-export const selectSelectedModelConfigIds = (state: AppState): Array<ConfigId> =>
-  state.model.selectedModelConfigs
+export const selectCartCount = (state: AppState) =>
+  state.model.modelConfigs.filter(
+    modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
+  ).length
 
 export const selectSelectedModelConfigs = (state: AppState): Array<ModelConfig> =>
   state.model.selectedModelConfigs.map(id => {

@@ -12,7 +12,7 @@ import * as modelAction from '../action-next/model'
 import * as navigationAction from '../action-next/navigation'
 
 import {getCommonQuantity} from '../lib/quantity'
-import {selectSelectedModelConfigIds, selectSelectedModelConfigs} from '../selector'
+import {selectSelectedModelConfigs} from '../lib/selector'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 
@@ -71,7 +71,7 @@ const ModelListPartial = ({
 }
 
 const mapStateToProps = (state: AppState) => ({
-  selectedModelConfigIds: selectSelectedModelConfigIds(state),
+  selectedModelConfigIds: state.model.selectedModelConfigs,
   commonQuantity: getCommonQuantity(selectSelectedModelConfigs(state))
 })
 

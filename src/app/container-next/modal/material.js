@@ -11,7 +11,6 @@ import {getFinishGroupProviderNames} from '../../lib/provider-selector'
 
 import type {AppState} from '../../reducer-next'
 import * as modalActions from '../../action-next/modal'
-import {selectMaterialGroups} from '../../selector'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -52,7 +51,7 @@ const MaterialModal = ({material, onClose}) => {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  materialGroups: selectMaterialGroups(state)
+  materialGroups: state.core.materialGroups
 })
 
 const mapDispatchToProps = {

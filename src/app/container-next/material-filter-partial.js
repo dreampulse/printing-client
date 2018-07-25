@@ -6,8 +6,6 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import debounce from 'lodash/debounce'
 
-import {selectMaterialGroups} from '../selector'
-
 import SearchField from '../component/search-field'
 
 const MaterialFilterPartial = ({
@@ -33,7 +31,7 @@ const MaterialFilterPartial = ({
 )
 
 const mapStateToProps = state => ({
-  materialGroups: selectMaterialGroups(state)
+  materialGroups: state.core.materialGroups
 })
 
 const mapDispatchToProps = {}

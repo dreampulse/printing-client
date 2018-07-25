@@ -2,7 +2,7 @@
 
 import filter from 'lodash/filter'
 import sum from 'lodash/sum'
-import type {AppState} from '../type-next'
+import type {AppState} from '../../type-next'
 
 export const isQuotePollingDone = (state: AppState) => !state.quote.pollingId
 
