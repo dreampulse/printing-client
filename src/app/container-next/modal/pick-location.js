@@ -54,7 +54,7 @@ const PickLocationModal = ({
       <Grid>
         <Column sm={9}>
           <LocationField
-            value={formatLocation(location)}
+            value={location ? formatLocation(location) : ''}
             googleMapsApiKey={config.googleMapsApiKey}
             onChange={place => {
               setLocation(convertPlaceToLocation(place))
