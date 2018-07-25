@@ -4,9 +4,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import config from '../../../config'
-import {formatAddress} from '../lib/formatter'
+import {formatLocation} from '../lib/formatter'
 import {convertPlaceToLocation} from '../lib/geolocation'
-import * as userAction from '../action-next/user'
+import * as coreAction from '../action-next/core'
 import type {AppState} from '../reducer-next'
 
 import ConfigurationHeader from '../component/configuration-header'
@@ -25,7 +25,7 @@ const ConfigurationHeaderPartial = ({currency, location, onUpdateLocation, onUpd
       location={
         <LabeledField label="Shipping:" modifiers={['block']}>
           <LocationField
-            value={formatAddress(location)}
+            value={location ? formatLocation(location) : ''}
             googleMapsApiKey={config.googleMapsApiKey}
             onChange={place => onUpdateLocation(convertPlaceToLocation(place))}
           />
@@ -44,13 +44,13 @@ const ConfigurationHeaderPartial = ({currency, location, onUpdateLocation, onUpd
   )
 }
 const mapStateToProps = (state: AppState) => ({
-  currency: state.user.currency,
-  location: state.user.location
+  currency: state.core.currency,
+  location: state.core.location
 })
 
 const mapDispatchToProps = {
-  onUpdateLocation: userAction.locationUpdated,
-  onUpdateCurrency: userAction.currencyUpdated
+  onUpdateLocation: coreAction.updateLocation,
+  onUpdateCurrency: coreAction.updateCurrency
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfigurationHeaderPartial)
