@@ -35,7 +35,22 @@
     @include respond-to(medium) {
       margin-left: $space-l;
       margin-top: 0;
-      width: 300px; // Design decision
+      width: 550px; // Design decision
+
+      & > .ProviderProgressBar {
+        width: 300px; // Design decision
+      }
     }
+  }
+
+  &__actions {
+    margin-left: $space-l;
+    & > * + * {
+      margin-left: $space-l;
+    }
+  }
+
+  &--progress {
+
   }
 }
