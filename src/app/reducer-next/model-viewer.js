@@ -21,10 +21,10 @@ const open = (state, action) => {
   const {model} = action.payload
   const startPollingAction = pollingAction.start({
     pollingFunction: async (modelId: ModelId) => {
-      const model = await printingEngine.getModel(modelId)
+      const modelNext = await printingEngine.getModel(modelId)
 
-      return typeof model.sceneId === 'string'
-        ? {status: 'POLLING_DONE', result: model.sceneId}
+      return typeof modelNext.sceneId === 'string'
+        ? {status: 'POLLING_DONE', result: modelNext.sceneId}
         : {status: 'POLLING_CONTINUE', result: null}
     },
     pollingArgs: [model.modelId],
