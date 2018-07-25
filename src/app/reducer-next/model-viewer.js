@@ -9,13 +9,17 @@ import * as modalAction from '../action-next/modal'
 import * as coreAction from '../action-next/core'
 import * as printingEngine from '../lib/printing-engine'
 
-export type ModelViewerState = null | {
-  modelId: ModelId,
-  pollingId: PollingId,
-  sceneId: null | ModelSceneId
+export type ModelViewerState = {
+  modelId: ?ModelId,
+  pollingId: ?PollingId,
+  sceneId: ?ModelSceneId
 }
 
-const initialState: ModelViewerState = null
+const initialState: ModelViewerState = {
+  modelId: null,
+  pollingId: null,
+  sceneId: null
+}
 
 const open = (state, action) => {
   const {model} = action.payload
@@ -51,13 +55,17 @@ const handleSceneId = (state, action) => ({
 })
 
 const close = (state, _action) => {
-  if (state === null) {
-    return state
-  }
-  const closeModalAction = modalAction.close()
-  const cancelPollingAction = pollingAction.cancel(state.pollingId)
+  const pollingId = state.pollingId
+  if (pollingId) {
+    const closeModalAction = modalAction.close()
+    const cancelPollingAction = pollingAction.cancel(pollingId)
 
-  return loop(null, Cmd.list([Cmd.action(closeModalAction), Cmd.action(cancelPollingAction)]))
+    return loop(
+      initialState,
+      Cmd.list([Cmd.action(closeModalAction), Cmd.action(cancelPollingAction)])
+    )
+  }
+  return state
 }
 
 export const reducer = (

@@ -8,7 +8,6 @@ import {formatAddress} from '../lib/formatter'
 import {convertPlaceToLocation} from '../lib/geolocation'
 import * as userAction from '../action-next/user'
 import type {AppState} from '../reducer-next'
-import {selectLocation, selectCurrency} from '../selector/user'
 
 import ConfigurationHeader from '../component/configuration-header'
 import LabeledField from '../component/labeled-field'
@@ -45,8 +44,8 @@ const ConfigurationHeaderPartial = ({currency, location, onUpdateLocation, onUpd
   )
 }
 const mapStateToProps = (state: AppState) => ({
-  currency: selectCurrency(state),
-  location: selectLocation(state)
+  currency: state.user.currency,
+  location: state.user.location
 })
 
 const mapDispatchToProps = {
