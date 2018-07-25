@@ -171,7 +171,8 @@ const MaterialPage = ({
 const mapStateToProps = (state: AppState) => ({
   // TODO
   quotes: [],
-  materialGroups: selectMaterialGroups(state)
+  modelConfigs: state.model.modelConfigs,
+  materialGroups: state.core.materialGroups
 })
 
 const mapDispatchToProps = {
@@ -220,7 +221,7 @@ export default compose(
   })),
   lifecycle({
     componentWillMount() {
-      if (this.props.configIds.length === 0) {
+      if (this.props.modelConfigs.length === 0 || this.props.configIds.length === 0) {
         this.props.onAbort()
       }
     }
