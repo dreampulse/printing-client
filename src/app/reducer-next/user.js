@@ -1,14 +1,16 @@
 // @flow
 
 import {loop, Cmd} from 'redux-loop'
-import type {AppAction, Location} from '../type-next'
+
+import type {AppAction, Location, UserId} from '../type-next'
 import {getLocationByIp} from '../lib/geolocation'
+import * as printingEngine from '../lib/printing-engine'
 import * as userAction from '../action-next/user'
 import * as modalAction from '../action-next/modal'
 import * as userLib from '../lib/user'
 
 export type UserState = {
-  userId: ?string,
+  userId: ?UserId,
   location: ?Location,
   currency: string
 }
@@ -18,6 +20,23 @@ const initialState: UserState = {
   location: null,
   currency: 'USD'
 }
+
+const init = (state, _action) =>
+  loop(
+    state,
+    Cmd.list([
+      Cmd.run(getLocationByIp, {
+        successActionCreator: userAction.locationUpdated,
+        failActionCreator: modalAction.openPickLocation,
+        args: []
+      }),
+      Cmd.run(printingEngine.createUser(), {
+        successActionCreator: userAction.locationUpdated,
+        failActionCreator: modalAction.openPickLocation,
+        args: []
+      }),
+    ])
+  )
 
 const detectLocation = (state, _action) =>
   loop(
@@ -53,7 +72,8 @@ const created = (state, {payload}) =>
 export const reducer = (state: UserState = initialState, action: AppAction): UserState => {
   switch (action.type) {
     case 'INIT.INIT':
-      // case 'USER.DETECT_LOCATION':  <- not needed right now
+      return init(state, action)
+    case 'USER.DETECT_LOCATION':
       return detectLocation(state, action)
     case 'USER.LOCATION_UPDATED':
       return locationUpdated(state, action)
