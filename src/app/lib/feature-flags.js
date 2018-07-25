@@ -6,7 +6,7 @@ import type {Features} from '../type-next'
 
 // TODO: copy tests from old selector lib
 export const getFeatureFlags = (location: Location) => {
-  const searchParams = new URLSearchParams(location.search || '')
+  const searchParams = new URLSearchParams(location.search)
 
   const features: Features = {}
 
