@@ -8,7 +8,14 @@ import Container from './container'
 import CloseButton from './close-button'
 import Headline from './headline'
 
-const OverlayHeaderBar = ({classNames, modifiers, title, children, onClickClose = () => {}}) => (
+const OverlayHeaderBar = ({
+  classNames,
+  modifiers,
+  title,
+  children,
+  actions,
+  onClickClose = () => {}
+}) => (
   <header className={buildClassName('overlay-header-bar', modifiers, classNames)}>
     <Container>
       <div className="overlay-header-bar__main">
@@ -17,6 +24,7 @@ const OverlayHeaderBar = ({classNames, modifiers, title, children, onClickClose 
           <Headline modifiers={['l', 'invert']} label={title} />
         </div>
         <div className="overlay-header-bar__content">{children}</div>
+        {actions && <div className="overlay-header-bar__actions">{actions}</div>}
       </div>
     </Container>
   </header>
@@ -26,7 +34,8 @@ OverlayHeaderBar.propTypes = {
   ...propTypes.component,
   title: PropTypes.string,
   children: PropTypes.node,
-  onClickClose: PropTypes.func.isRequired
+  onClickClose: PropTypes.func.isRequired,
+  actions: PropTypes.arrayOf(PropTypes.node)
 }
 
 export default OverlayHeaderBar
