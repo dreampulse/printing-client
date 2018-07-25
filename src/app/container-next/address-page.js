@@ -379,7 +379,9 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  // TODO: guard(state => state.legacy.price.selectedOffer),
+  // TODO: enable the guard again so thet the page can be
+  // as soon as there is a cart
+  // guard(state => state.cart...),
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({form: FORM_NAME})
 )
