@@ -4,7 +4,6 @@ import URLSearchParams from 'url-search-params'
 
 import type {Features} from '../type-next'
 
-// TODO: copy tests from old selector lib
 export const getFeatureFlags = (location: Location) => {
   const searchParams = new URLSearchParams(location.search)
 

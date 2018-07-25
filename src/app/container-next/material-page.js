@@ -20,8 +20,8 @@ import getCloudinaryUrl from '../lib/cloudinary'
 import {
   selectMaterialGroups,
   selectModelConfigsByIds,
-  selectPollingProgress,
-  selectIsPollingDone,
+  selectQuotePollingProgress,
+  isQuotePollingDone,
   selectFeatureFlags
 } from '../selector'
 import {createMaterialSearch} from '../service/search'
@@ -183,8 +183,8 @@ const MaterialPage = ({
 const mapStateToProps = (state: AppState, ownProps) => ({
   quotes: state.quote.quotes,
   materialGroups: selectMaterialGroups(state),
-  pollingProgress: selectPollingProgress(state),
-  isPollingDone: selectIsPollingDone(state),
+  pollingProgress: selectQuotePollingProgress(state),
+  isPollingDone: isQuotePollingDone(state),
   // The next two props are required for the ReceiveQuotes-action
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
   featureFlags: selectFeatureFlags(state)
