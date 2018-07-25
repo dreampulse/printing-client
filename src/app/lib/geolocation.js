@@ -4,7 +4,7 @@ import {request} from '../service/http'
 import timeout from './timeout'
 import config from '../../../config'
 
-import type {Location, Address, GoogleMapsPlace} from '../type-next'
+import type {Location, GoogleMapsPlace} from '../type-next'
 
 const URL = `https://pro.ip-api.com/json/?key=${config.ipApiKey}`
 
@@ -53,4 +53,4 @@ export const convertPlaceToLocation = (place: GoogleMapsPlace): Location => ({
   countryCode: shortNameFrom(place, 'country')
 })
 
-export const isAddressValid = (address: Address) => address.countryCode
+export const isLocationValid = (location: ?Location) => Boolean(location && location.countryCode)

@@ -8,10 +8,12 @@ import {CONTENT_TYPE, close} from '../../action-next/modal'
 import {selectModalConfig, isModalOpen} from '../../selector'
 import ModelViewerModal from './model-viewer'
 import MaterialModal from './material'
+import PickLocationModal from './pick-location'
 
 const modals = {
   [CONTENT_TYPE.MODEL_VIEWER]: ModelViewerModal,
-  [CONTENT_TYPE.MATERIAL]: MaterialModal
+  [CONTENT_TYPE.MATERIAL]: MaterialModal,
+  [CONTENT_TYPE.PICK_LOCATION]: PickLocationModal
 }
 
 const getContent = (contentType, contentProps) => {

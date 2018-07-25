@@ -18,7 +18,6 @@ import {getMaterialById, getMaterialGroupById} from '../lib/material'
 import {formatPrice} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {
-  selectMaterialGroups,
   selectModelConfigsByIds,
   selectQuotePollingProgress,
   isQuotePollingDone,
@@ -182,7 +181,7 @@ const MaterialPage = ({
 
 const mapStateToProps = (state: AppState, ownProps) => ({
   quotes: state.quote.quotes,
-  materialGroups: selectMaterialGroups(state),
+  materialGroups: state.core.materialGroups,
   pollingProgress: selectQuotePollingProgress(state),
   isPollingDone: isQuotePollingDone(state),
   // The next two props are required for the ReceiveQuotes-action
@@ -240,8 +239,7 @@ export default compose(
   })),
   lifecycle({
     componentWillMount() {
-      // TODO: This does not work for page refreshes
-      if (this.props.configIds.length === 0) {
+      if (this.props.selectedModelConfigs.length === 0) {
         this.props.onAbort()
       }
 

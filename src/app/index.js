@@ -8,6 +8,7 @@ import browserUpdate from 'browser-update'
 import 'babel-polyfill'
 
 import './service/logging'
+import {getFeatureFlags} from './lib/feature-flags'
 
 import Store from './store'
 import Router from './router'
@@ -15,7 +16,6 @@ import Router from './router'
 import '../sass/main.scss'
 
 import {init} from './action-next/core'
-import {getFeatureFlags} from './lib/feature-flags'
 
 // Warn if the browser is one version behind
 browserUpdate({notify: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers

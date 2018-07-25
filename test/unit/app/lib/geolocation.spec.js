@@ -1,7 +1,7 @@
 import {
   getLocationByIp,
   convertPlaceToLocation,
-  isAddressValid
+  isLocationValid
 } from '../../../../src/app/lib/geolocation'
 import * as http from '../../../../src/app/service/http'
 import config from '../../../../config'
@@ -220,25 +220,25 @@ describe('geolocation lib', () => {
     })
   })
 
-  describe('isAddressValid()', () => {
+  describe('isLocationValid()', () => {
     it('checks that all necessary keys exists', () => {
-      const address = {
+      const location = {
         city: 'some-city',
         zipCode: 'some-zip-code'
         // countryCode is missing
       }
 
-      expect(isAddressValid(address), 'to be falsy')
+      expect(isLocationValid(location), 'to be', false)
     })
 
     it('returns true if all necessary keys are there', () => {
-      const address = {
+      const location = {
         city: 'some-city',
         zipCode: 'some-zip-code',
         countryCode: 'DE'
       }
 
-      expect(isAddressValid(address), 'to be truthy')
+      expect(isLocationValid(location), 'to be', true)
     })
   })
 })
