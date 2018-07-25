@@ -16,7 +16,7 @@ import {
   selectAreAllUploadsFinished,
   selectFeatures,
   selectSearchParams
-} from '../../../../src/app/lib/selector'
+} from '../../../../src/app/lib/selector-deprecated'
 
 describe('Selector lib', () => {
   describe('selectCommonQuantity', () => {

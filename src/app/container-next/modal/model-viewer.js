@@ -3,8 +3,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {selectSceneId} from '../../selector'
-
 import * as modalActions from '../../action-next/modal'
 import type {AppState} from '../../reducer-next'
 
@@ -25,7 +23,7 @@ const ModelViewerModal = ({onClose, sceneId, modelName}) => {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  sceneId: selectSceneId(state)
+  sceneId: state.modelViewer.sceneId
 })
 
 const mapDispatchToProps = {

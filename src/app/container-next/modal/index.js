@@ -5,7 +5,6 @@ import lifecycle from 'recompose/lifecycle'
 import compose from 'recompose/compose'
 
 import {CONTENT_TYPE, close} from '../../action-next/modal'
-import {selectModalConfig, isModalOpen} from '../../selector'
 import ModelViewerModal from './model-viewer'
 import MaterialModal from './material'
 import PickLocationModal from './pick-location'
@@ -34,8 +33,8 @@ const Modal = ({isOpen, contentType, contentProps}) =>
   isOpen && <Portal>{getContent(contentType, contentProps)}</Portal>
 
 const mapStateToProps = state => ({
-  ...selectModalConfig(state),
-  isOpen: isModalOpen(state)
+  ...state.modal.modalConfig,
+  isOpen: state.modal.isOpen
 })
 
 const mapDispatchToProps = {

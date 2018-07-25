@@ -20,9 +20,8 @@ import getCloudinaryUrl from '../lib/cloudinary'
 import {
   selectModelConfigsByIds,
   selectQuotePollingProgress,
-  isQuotePollingDone,
-  selectFeatureFlags
-} from '../selector'
+  isQuotePollingDone
+} from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
 import scrollTo from '../service/scroll-to'
 import {openIntercom} from '../service/intercom'
@@ -186,7 +185,7 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   isPollingDone: isQuotePollingDone(state),
   // The next two props are required for the ReceiveQuotes-action
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
-  featureFlags: selectFeatureFlags(state)
+  featureFlags: state.core.featureFlags
 })
 
 const mapDispatchToProps = {
