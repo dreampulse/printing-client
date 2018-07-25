@@ -25,7 +25,7 @@ const ConfigurationHeaderPartial = ({currency, location, onUpdateLocation, onUpd
       location={
         <LabeledField label="Shipping:" modifiers={['block']}>
           <LocationField
-            value={formatLocation(location)}
+            value={location ? formatLocation(location) : ''}
             googleMapsApiKey={config.googleMapsApiKey}
             onChange={place => onUpdateLocation(convertPlaceToLocation(place))}
           />
