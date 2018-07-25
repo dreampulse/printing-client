@@ -41,13 +41,6 @@ export const openMaterial = (materialId: MaterialId) =>
     contentProps: {materialId}
   })
 
-export const openShippingAddress = () =>
-  open({
-    isCloseable: false,
-    contentType: CONTENT_TYPE.SHIPPING_ADDRESS,
-    contentProps: null
-  })
-
 export const openFatalError = (error: Error): OpenModalAction =>
   open({
     isCloseable: false,

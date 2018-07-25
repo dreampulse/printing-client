@@ -33,7 +33,7 @@ export function formatTimeRange(from, to) {
 }
 
 export const formatLocation = location =>
-  compact([location.city, location.countryCode && getCountryName(location.countryCode)]).join(',')
+  compact([location.city, location.countryCode && getCountryName(location.countryCode)]).join(', ')
 
 export function formatDimensions({x, y, z}, unit) {
   if (!x && !y && !z) return null

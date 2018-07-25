@@ -53,4 +53,4 @@ export const convertPlaceToLocation = (place: GoogleMapsPlace): Location => ({
   countryCode: shortNameFrom(place, 'country')
 })
 
-export const isLocationValid = (location: ?Location) => location && location.countryCode
+export const isLocationValid = (location: ?Location) => Boolean(location && location.countryCode)

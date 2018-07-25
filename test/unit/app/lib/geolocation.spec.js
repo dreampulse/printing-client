@@ -228,7 +228,7 @@ describe('geolocation lib', () => {
         // countryCode is missing
       }
 
-      expect(isLocationValid(location), 'to be', true)
+      expect(isLocationValid(location), 'to be', false)
     })
 
     it('returns true if all necessary keys are there', () => {
@@ -238,7 +238,7 @@ describe('geolocation lib', () => {
         countryCode: 'DE'
       }
 
-      expect(isLocationValid(location), 'to be', false)
+      expect(isLocationValid(location), 'to be', true)
     })
   })
 })
