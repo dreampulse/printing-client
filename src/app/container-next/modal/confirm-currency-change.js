@@ -18,7 +18,7 @@ const ConfirmCurrencyChangeModal = ({currency, onUpdateCurrency, onClose}) => {
     <Button
       label="Confirm"
       onClick={() => {
-        onUpdateCurrency(currency)
+        onUpdateCurrency(currency, true)
         onClose()
       }}
     />
