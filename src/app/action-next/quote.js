@@ -1,18 +1,11 @@
 // @flow
 
-import type {
-  Action,
-  ModelConfigUploaded,
-  MaterialConfigId,
-  PriceId,
-  BackendQuote
-} from '../type-next'
+import type {Action, ModelConfigUploaded, PriceId, BackendQuote} from '../type-next'
 
 type ReceiveQuotesPayload = {
   modelConfigs: Array<ModelConfigUploaded>,
   countryCode: string,
   currency: string,
-  materialConfigIds: Array<MaterialConfigId>,
   refresh: boolean
 }
 
@@ -56,8 +49,7 @@ export const quotesComplete = (payload: QuotesReceivedPayload): QuotesComplete =
 // Public actions
 
 // Notes:
-// Use selectFilteredModelConfigs() to determine modelConfigs param
-// Use selectAllMaterialConfigIds() to determine materialConfigIds
+// Use selectModelConfigsByIds() to determine modelConfigs param
 // This is implemented as a singleton, you can not start multiple price requests in parallel
 export const receiveQuotes = (payload: ReceiveQuotesPayload): ReceiveQuotesAction => ({
   type: 'QUOTE.RECEIVE_QUOTES',

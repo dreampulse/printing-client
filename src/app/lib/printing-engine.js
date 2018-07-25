@@ -37,7 +37,7 @@ export type PriceRequest = {
     modelId: ModelId,
     quantity: number
   }>,
-  materialConfigIds: Array<MaterialConfigId>
+  materialConfigIds?: Array<MaterialConfigId>
 }
 
 export type PriceResponse = {

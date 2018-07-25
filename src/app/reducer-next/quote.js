@@ -23,10 +23,7 @@ const initialState: QuoteState = {
   printingServiceComplete: {}
 }
 
-const receiveQuotes = (
-  state,
-  {payload: {countryCode, currency, modelConfigs, materialConfigIds, refresh}}
-) => {
+const receiveQuotes = (state, {payload: {countryCode, currency, modelConfigs, refresh}}) => {
   const priceRequest: PriceRequest = {
     refresh,
     countryCode,
@@ -34,8 +31,7 @@ const receiveQuotes = (
     models: modelConfigs.map(modelConfig => ({
       modelId: modelConfig.modelId,
       quantity: modelConfig.quantity
-    })),
-    materialConfigIds
+    }))
   }
 
   const createPriceRequestCmd = Cmd.run(printingEngine.createPriceRequest, {

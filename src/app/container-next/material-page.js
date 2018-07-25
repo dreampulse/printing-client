@@ -19,7 +19,6 @@ import {formatPrice} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {
   selectMaterialGroups,
-  selectAllMaterialConfigIds,
   selectModelConfigsByIds,
   selectPollingProgress,
   selectIsPollingDone,
@@ -186,8 +185,7 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   materialGroups: selectMaterialGroups(state),
   pollingProgress: selectPollingProgress(state),
   isPollingDone: selectIsPollingDone(state),
-  // The next three props are required for the ReceiveQuotes-action
-  allMaterialConfigIds: selectAllMaterialConfigIds(state),
+  // The next two props are required for the ReceiveQuotes-action
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
   featureFlags: selectFeatureFlags(state)
 })
@@ -248,11 +246,9 @@ export default compose(
       }
 
       const modelConfigs = this.props.selectedModelConfigs
-      const materialConfigIds = this.props.allMaterialConfigIds
       const {refresh} = this.props.featureFlags
       this.props.onReceiveQuotes({
         modelConfigs,
-        materialConfigIds,
         // TODO: connect to the store
         countryCode: 'DE',
         currency: 'EUR',
