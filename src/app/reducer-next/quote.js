@@ -46,13 +46,13 @@ const receiveQuotes = (
 
   // Is polling still in progress
   if (state.pollingId) {
-    // Cancel old polling, start a new one and remove existing quotes
+    // Cancel old polling, start a new one
     const cancelPollingCmd = Cmd.action(pollingAction.cancel(state.pollingId))
-    return loop(initialState, Cmd.list([cancelPollingCmd, createPriceRequestCmd], {sequence: true}))
+    return loop(state, Cmd.list([cancelPollingCmd, createPriceRequestCmd], {sequence: true}))
   }
 
-  // Start a new price request and reset existing quotes
-  return loop(initialState, createPriceRequestCmd)
+  // Start a new price request
+  return loop(state, createPriceRequestCmd)
 }
 
 const startPollingQuotes = (state, {payload: {priceId}}) => {
@@ -66,14 +66,14 @@ const startPollingQuotes = (state, {payload: {priceId}}) => {
         }
       }
 
-      // continue polling to get more results
+      // Continue polling to get more results
       return {
         status: 'POLLING_CONTINUE',
         result: quotesResponse
       }
     },
     onSuccessActionCreator: quoteAction.quotesComplete,
-    onPartialResultActionCreator: quoteAction.quotesResponse,
+    onPartialResultActionCreator: quoteAction.quotesReceived,
     onFailActionCreator: coreAction.fatalError
   })
 
@@ -86,7 +86,7 @@ const startPollingQuotes = (state, {payload: {priceId}}) => {
   )
 }
 
-const quotesResponse = (state, {payload: {quotes, printingServiceComplete}}) => ({
+const quotesReceived = (state, {payload: {quotes, printingServiceComplete}}) => ({
   ...state,
   quotes: {
     ...state.quotes,
@@ -96,7 +96,7 @@ const quotesResponse = (state, {payload: {quotes, printingServiceComplete}}) => 
 })
 
 const quotesComplete = (state, {payload}) =>
-  loop({...state, pollingId: null}, Cmd.action(quoteAction.quotesResponse(payload)))
+  loop({...state, pollingId: null}, Cmd.action(quoteAction.quotesReceived(payload)))
 
 const stopReceivingQuotes = state => {
   if (state.pollingId) {
@@ -112,8 +112,8 @@ export const reducer = (state: QuoteState = initialState, action: AppAction): Qu
       return receiveQuotes(state, action)
     case 'QUOTE.START_POLLING_QUOTES':
       return startPollingQuotes(state, action)
-    case 'QUOTE.QUOTES_RESPONSE':
-      return quotesResponse(state, action)
+    case 'QUOTE.QUOTES_RECEIVED':
+      return quotesReceived(state, action)
     case 'QUOTE.QUOTES_COMPLETE':
       return quotesComplete(state, action)
     case 'QUOTE.STOP_RECEIVING_QUOTES':

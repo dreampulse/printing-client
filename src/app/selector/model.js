@@ -22,5 +22,5 @@ export const selectSelectedModelConfigs = (state: AppState): Array<ModelConfig> 
     return item
   })
 
-export const selectFilteredModelConfigs = (state: AppState, configIds: Array<ConfigId>) =>
+export const selectModelConfigsByIds = (state: AppState, configIds: Array<ConfigId>) =>
   state.model.modelConfigs.filter(modelConfig => configIds.includes(modelConfig.id))

@@ -16,7 +16,7 @@ type ReceiveQuotesPayload = {
   refresh: boolean
 }
 
-type QuotesResponsePayload = {
+type QuotesReceivedPayload = {
   quotes: Array<BackendQuote>,
   printingServiceComplete: {
     [printingServiceName: string]: boolean
@@ -25,14 +25,14 @@ type QuotesResponsePayload = {
 
 type ReceiveQuotesAction = Action<'QUOTE.RECEIVE_QUOTES', ReceiveQuotesPayload>
 type StartPollingQuotesAction = Action<'QUOTE.START_POLLING_QUOTES', {priceId: PriceId}>
-type QuotesResponse = Action<'QUOTE.QUOTES_RESPONSE', QuotesResponsePayload>
-type QuotesComplete = Action<'QUOTE.QUOTES_COMPLETE', QuotesResponsePayload>
+type QuotesReceived = Action<'QUOTE.QUOTES_RECEIVED', QuotesReceivedPayload>
+type QuotesComplete = Action<'QUOTE.QUOTES_COMPLETE', QuotesReceivedPayload>
 type StopReceivingQuotes = Action<'QUOTE.STOP_RECEIVING_QUOTES', void>
 
 export type QuoteAction =
   | ReceiveQuotesAction
   | StartPollingQuotesAction
-  | QuotesResponse
+  | QuotesReceived
   | QuotesComplete
   | StopReceivingQuotes
 
@@ -43,12 +43,12 @@ export const startPollingQuotes = (payload: {priceId: PriceId}): StartPollingQuo
   payload
 })
 
-export const quotesResponse = (payload: QuotesResponsePayload): QuotesResponse => ({
-  type: 'QUOTE.QUOTES_RESPONSE',
+export const quotesReceived = (payload: QuotesReceivedPayload): QuotesReceived => ({
+  type: 'QUOTE.QUOTES_RECEIVED',
   payload
 })
 
-export const quotesComplete = (payload: QuotesResponsePayload): QuotesComplete => ({
+export const quotesComplete = (payload: QuotesReceivedPayload): QuotesComplete => ({
   type: 'QUOTE.QUOTES_COMPLETE',
   payload
 })
