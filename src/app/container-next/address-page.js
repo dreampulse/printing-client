@@ -248,6 +248,7 @@ const AddressPage = ({
               countryCode={shippingAddress.countryCode}
             />
             <StaticField
+              // TODO: remove default
               value={getCountryName(shippingAddress.countryCode || 'de')}
               changeLinkLabel="Change…"
               onChangeLinkClick={onShippingCountryChange}
