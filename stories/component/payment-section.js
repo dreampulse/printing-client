@@ -11,8 +11,10 @@ import paypalIcon from '../../src/asset/icon/paypal.svg'
 storiesOf('Payment Section', module).add('default', () => (
   <PaymentSection
     subtotal="$245.25"
-    shippingPrice="$50.00"
-    shippingName="DHL"
+    shippings={[
+      {label: 'shipping provider', price: '$5.00'},
+      {label: 'shipping provider', price: '$5.30'}
+    ]}
     vat="$50.00"
     total="$345.00"
     onContactLinkClick={action('click')}

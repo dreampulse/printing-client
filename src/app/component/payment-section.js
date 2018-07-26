@@ -12,40 +12,49 @@ const PaymentSection = ({
   modifiers,
   children,
   subtotal,
-  shippingPrice,
-  shippingName,
+  shippings,
   vat,
   total,
   onContactLinkClick
 }) => (
   <section className={buildClassName('payment-section', modifiers, classNames)}>
-    <ul className="payment-section__price-components">
-      <li className="payment-section__price-component">
-        <span className="payment-section__price-label">Subtotal:</span>
-        <span className="payment-section__price-value">{subtotal}</span>
-      </li>
-      <li className="payment-section__price-component">
-        <span className="payment-section__price-label">Shipping:</span>
-        <span className="payment-section__price-value">{shippingPrice}</span>
-        <br />
-        <span className="payment-section__price-label-smallprint">{shippingName}</span>
-      </li>
-      <li className="payment-section__price-component">
-        <span className="payment-section__price-label">VAT:</span>
-        <span className="payment-section__price-value">{vat}</span>
-      </li>
-      <li className="payment-section__total-price">
-        <span className="payment-section__price-label">Total:</span>
-        <span className="payment-section__price-value">{total}</span>
-      </li>
-    </ul>
-    <ul className="payment-section__buttons">
-      {React.Children.map(children, child => (
-        <li key={child.key} className="payment-section__button">
-          {child}
+    <div className="payment-section__box">
+      <ul className="payment-section__price-components">
+        <li className="payment-section__price-component">
+          <span className="payment-section__price-label">Subtotal:</span>
+          <span className="payment-section__price-value">{subtotal}</span>
         </li>
-      ))}
-    </ul>
+        {shippings.length > 0 && (
+          <li className="payment-section__price-component">
+            <span className="payment-section__price-label">Shipping:</span>
+            <ul className="payment-section__price-detail">
+              {shippings.map(shipping => (
+                <li key={shipping.label} className="payment-section__price-detail-item">
+                  <span className="payment-section__price-detail-label">{shipping.label}</span>
+                  <span className="payment-section__price-detail-value">{shipping.price}</span>
+                </li>
+              ))}
+            </ul>
+          </li>
+        )}
+        <li className="payment-section__price-component">
+          <span className="payment-section__price-label">VAT:</span>
+          <span className="payment-section__price-value">{vat}</span>
+        </li>
+        <li className="payment-section__total-price">
+          <span className="payment-section__price-label">Total:</span>
+          <span className="payment-section__price-value">{total}</span>
+        </li>
+      </ul>
+      {children && <div className="payment-section__section-label">Pay with</div>}
+      <ul className="payment-section__buttons">
+        {React.Children.map(children, child => (
+          <li key={child.key} className="payment-section__button">
+            {child}
+          </li>
+        ))}
+      </ul>
+    </div>
     <ul className="payment-section__links">
       <li className="payment-section__link">
         <Headline modifiers={['xs']} label="Need different payment option?" />
@@ -72,8 +81,12 @@ PaymentSection.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
   subtotal: PropTypes.string.isRequired,
-  shippingPrice: PropTypes.string.isRequired,
-  shippingName: PropTypes.string.isRequired,
+  shippings: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      price: PropTypes.string.isRequired
+    })
+  ),
   vat: PropTypes.string.isRequired,
   total: PropTypes.string.isRequired,
   onContactLinkClick: PropTypes.func.isRequired
