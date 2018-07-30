@@ -14,7 +14,6 @@ import AppLayout from './app-layout'
 import {getProviderName} from '../lib/provider-selector'
 
 const CartPage = ({offer, order}) => {
-  const referralUrl = `https://3d-printing-price.all3dp.com/?utm_source=all3dp&utm_campaign=referral&utm_content=${order.orderNumber}`
   const SuccessSection = () => (
     <Section modifiers={['highlight']}>
       <Headline
@@ -33,21 +32,6 @@ const CartPage = ({offer, order}) => {
       <Paragraph modifiers={['l']}>
         <ProviderImage slug={offer.printingService} name={getProviderName(offer.printingService)} />
       </Paragraph>
-      <Headline label="We have extended our special offer: Refer us now and earn 20% commission" />
-      <Paragraph modifiers={['l']}>
-        If you enjoyed using our service, you can refer us by sharing the link below and earn some
-        money for yourself.
-      </Paragraph>
-      <Paragraph modifiers={['l']}>
-        <Link href={referralUrl} label={referralUrl} />
-      </Paragraph>
-      <Paragraph modifiers={['l']}>
-        By placing an order through the link above, you will receive 20% commission on the total
-        amount of the referred customer&apos;s first order. You can earn even more money if you
-        refer our service to additional friends and colleagues. The money will be credited to the
-        account that you used to place this order.
-      </Paragraph>
-      <Paragraph modifiers={['l']}>This offer is valid until July 31st 2018.</Paragraph>
       <Headline label="Any questions?" />
       <Paragraph modifiers={['l']}>
         Email us on <Link href="mailto:support@all3dp.com" label="support@all3dp.com" />
