@@ -203,7 +203,13 @@ export type User = {
   billingAddress: Address
 }
 
-export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR' | 'MATERIAL'
+export type ModalContentType =
+  | 'PICK_LOCATION'
+  | 'MODEL_VIEWER'
+  | 'FATAL_ERROR'
+  | 'MATERIAL'
+  | 'CONFIRM_LOCATION_CHANGE'
+  | 'CONFIRM_CURRENCY_CHANGE'
 export type ModalConfigClosed = null
 export type ModalConfigOpened = {
   isCloseable: boolean,

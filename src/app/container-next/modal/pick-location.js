@@ -41,8 +41,8 @@ const PickLocationModal = ({
       label="OK"
       disabled={!isLocationValid(location) || !currency}
       onClick={() => {
-        onUpdateLocation(location)
-        onUpdateCurrency(currency)
+        onUpdateLocation(location, true)
+        onUpdateCurrency(currency, true)
         onClose()
       }}
     />

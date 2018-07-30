@@ -51,7 +51,7 @@ storiesOf('Overlay', module)
       <div>Overlay content</div>
     </Overlay>
   ))
-  .add('Prices changed', () => {
+  .add('prices changed', () => {
     const pricesChangedHeadline = (
       <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
     )
@@ -68,7 +68,7 @@ storiesOf('Overlay', module)
       </Overlay>
     )
   })
-  .add('Fetching new prices', () => {
+  .add('fetching new prices', () => {
     const fetchingNewPricesHeadline = (
       <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
     )
@@ -89,7 +89,7 @@ storiesOf('Overlay', module)
       </Overlay>
     )
   })
-  .add('System error', () => {
+  .add('system error', () => {
     const systemErrorHeadline = <Headline label="System Error" modifiers={['l']} />
     const systemErrorButtons = [<Button label="OK" />]
     return (
@@ -113,7 +113,7 @@ storiesOf('Overlay', module)
       </Overlay>
     )
   })
-  .add('Shipping address', () => {
+  .add('shipping address', () => {
     const pricesChangedHeadline = <Headline label="Shipping address" modifiers={['l']} />
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
@@ -138,7 +138,7 @@ storiesOf('Overlay', module)
       </Overlay>
     )
   })
-  .add('Material detail', () => {
+  .add('material detail', () => {
     const materialDetailHeadline = <Headline label="Polyamide" modifiers={['l']} />
     const materialDetailButtons = [<Button label="Close" />]
     const rating = <StarRating stars={3} />
@@ -196,7 +196,7 @@ storiesOf('Overlay', module)
       </Overlay>
     )
   })
-  .add('Change country', () => {
+  .add('change country', () => {
     const pricesChangedHeadline = <Headline label="Change country" modifiers={['l']} />
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
@@ -228,7 +228,7 @@ storiesOf('Overlay', module)
       </Overlay>
     )
   })
-  .add('Confirm location', () => {
+  .add('confirm location', () => {
     const pricesChangedHeadline = <Headline label="Confirm your location" modifiers={['l']} />
     return (
       <Overlay headline={pricesChangedHeadline}>
@@ -251,7 +251,7 @@ storiesOf('Overlay', module)
       </Overlay>
     )
   })
-  .add('Thank you', () => {
+  .add('thank you', () => {
     const pricesChangedHeadline = <Headline label="Thank you for using All3DP" modifiers={['l']} />
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
