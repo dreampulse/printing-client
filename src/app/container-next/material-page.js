@@ -4,6 +4,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withStateHandlers from 'recompose/withStateHandlers'
+import withHandlers from 'recompose/withHandlers'
 import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 import withPropsOnChange from 'recompose/withPropsOnChange'
@@ -371,7 +372,9 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   isPollingDone: isQuotePollingDone(state),
   // The next two props are required for the ReceiveQuotes-action
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
-  featureFlags: state.core.featureFlags
+  featureFlags: state.core.featureFlags,
+  currency: state.core.currency,
+  location: state.core.location
 })
 
 const mapDispatchToProps = {
@@ -435,6 +438,20 @@ export default compose(
   withPropsOnChange(['materialFilter', 'materialSearch'], ({materialFilter, materialSearch}) => ({
     filteredMaterials: materialFilter.length > 0 ? materialSearch.search(materialFilter) : undefined
   })),
+  withHandlers({
+    receiveQuotes: props => () => {
+      const modelConfigs = props.selectedModelConfigs
+      const {refresh} = props.featureFlags
+      const currency = props.currency
+      const {countryCode} = props.location
+      props.onReceiveQuotes({
+        modelConfigs,
+        countryCode,
+        currency,
+        refresh
+      })
+    }
+  }),
   lifecycle({
     componentWillMount() {
       if (this.props.selectedModelConfigs.length === 0) {
@@ -442,18 +459,16 @@ export default compose(
         return
       }
 
-      const modelConfigs = this.props.selectedModelConfigs
-      const {refresh} = this.props.featureFlags
-      this.props.onReceiveQuotes({
-        modelConfigs,
-        // TODO: connect to the store
-        countryCode: 'DE',
-        currency: 'EUR',
-        refresh
-      })
+      this.props.receiveQuotes()
     },
-    componentDidUpdate(/* prevProps */) {
-      // TODO: Check if countryCode or currency changed -> refresh quoted
+    componentDidUpdate(prevProps) {
+      // Refresh quotes if countryCode or currency changed
+      if (
+        this.props.currency !== prevProps.currency ||
+        this.props.location.countryCode !== prevProps.location.countryCode
+      ) {
+        this.props.receiveQuotes()
+      }
     },
     componentWillUnmount() {
       this.props.onStopReceivingQuotes()
