@@ -8,7 +8,7 @@ import {
 describe('selectModelsOfModelConfigs()', () => {
   it('returns selected models of model configs', () => {
     const state = {
-      model: {
+      core: {
         uploadingFiles: {
           'some-file-id': {
             fileId: 'some-file-id',
@@ -73,7 +73,7 @@ describe('selectModelsOfModelConfigs()', () => {
 describe('selectCartCount()', () => {
   it('returns how many model are in the cart', () => {
     const state = {
-      model: {
+      core: {
         modelConfigs: [
           {
             type: 'UPLOADED',
@@ -107,7 +107,7 @@ describe('selectCartCount()', () => {
 describe('selectSelectedModelConfigs()', () => {
   it('returns selected model configs', () => {
     const state = {
-      model: {
+      core: {
         modelConfigs: [
           {
             type: 'UPLOADED',
@@ -153,7 +153,7 @@ describe('selectSelectedModelConfigs()', () => {
 describe('selectModelConfigsByIds()', () => {
   it('return selected model configs by id', () => {
     const state = {
-      model: {
+      core: {
         modelConfigs: [
           {
             type: 'UPLOADED',

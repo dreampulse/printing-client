@@ -11,8 +11,8 @@ type UpdateMaterialGroupsAction = Action<
   'CORE.UPDATE_MATERIAL_GROUPS',
   {materialGroups: Array<MaterialGroup>}
 >
-type UpdateLocationAction = Action<'CORE.UPDATE_LOCATION', {location: Location}>
-type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string}>
+type UpdateLocationAction = Action<'CORE.UPDATE_LOCATION', {location: Location, force: boolean}>
+type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string, force: boolean}>
 type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 
 export type CoreAction =
@@ -36,14 +36,17 @@ export const updateMaterialGroups = (
   payload: {materialGroups}
 })
 
-export const updateLocation = (location: Location): UpdateLocationAction => ({
+export const updateLocation = (
+  location: Location,
+  force: boolean = false
+): UpdateLocationAction => ({
   type: 'CORE.UPDATE_LOCATION',
-  payload: {location}
+  payload: {location, force}
 })
 
-export const updateCurrency = (currency: string): UpdateCurrencyAction => ({
+export const updateCurrency = (currency: string, force: boolean = false): UpdateCurrencyAction => ({
   type: 'CORE.UPDATE_CURRENCY',
-  payload: {currency}
+  payload: {currency, force}
 })
 
 export const fatalError = (error: Error): FatalErrorAction => ({

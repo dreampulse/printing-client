@@ -209,6 +209,8 @@ export type ModalContentType =
   | 'FATAL_ERROR'
   | 'MATERIAL'
   | 'FINISH_GROUP'
+  | 'CONFIRM_LOCATION_CHANGE'
+  | 'CONFIRM_CURRENCY_CHANGE'
 export type ModalConfigClosed = null
 export type ModalConfigOpened = {
   isCloseable: boolean,

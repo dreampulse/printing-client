@@ -9,12 +9,16 @@ import ModelViewerModal from './model-viewer'
 import MaterialModal from './material'
 import FinishGroupModal from './finish-group'
 import PickLocationModal from './pick-location'
+import ConfirmLocationChangeModal from './confirm-location-change'
+import ConfirmCurrencyChangeModal from './confirm-currency-change'
 
 const modals = {
   [CONTENT_TYPE.MODEL_VIEWER]: ModelViewerModal,
   [CONTENT_TYPE.MATERIAL]: MaterialModal,
   [CONTENT_TYPE.FINISH_GROUP]: FinishGroupModal,
-  [CONTENT_TYPE.PICK_LOCATION]: PickLocationModal
+  [CONTENT_TYPE.PICK_LOCATION]: PickLocationModal,
+  [CONTENT_TYPE.CONFIRM_LOCATION_CHANGE]: ConfirmLocationChangeModal,
+  [CONTENT_TYPE.CONFIRM_CURRENCY_CHANGE]: ConfirmCurrencyChangeModal
 }
 
 const getContent = (contentType, contentProps) => {

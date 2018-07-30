@@ -439,6 +439,7 @@ export default compose(
     componentWillMount() {
       if (this.props.selectedModelConfigs.length === 0) {
         this.props.onAbort()
+        return
       }
 
       const modelConfigs = this.props.selectedModelConfigs

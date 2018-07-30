@@ -141,10 +141,10 @@ const CartPage = ({
 
 const mapStateToProps = (state: AppState) => ({
   /* TODO: to be able to test this page we show all models for now but have to filter them later */
-  /* modelsWithConfig: unzip([state.model.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
+  /* modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
     ([modelConfig]) => modelConfig.quoteId !== null
   ) */
-  modelsWithConfig: unzip([state.model.modelConfigs, selectModelsOfModelConfigs(state)])
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)])
 })
 
 const mapDispatchToProps = {

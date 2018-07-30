@@ -5,7 +5,8 @@ import type {
   ModalContentType,
   ModalConfigOpened,
   MaterialId,
-  FinishGroupId
+  FinishGroupId,
+  Location
 } from '../type-next'
 
 type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
@@ -17,6 +18,8 @@ export const CONTENT_TYPE: {[ModalContentType]: ModalContentType} = {
   MODEL_VIEWER: 'MODEL_VIEWER',
   MATERIAL: 'MATERIAL',
   FINISH_GROUP: 'FINISH_GROUP',
+  CONFIRM_LOCATION_CHANGE: 'CONFIRM_LOCATION_CHANGE',
+  CONFIRM_CURRENCY_CHANGE: 'CONFIRM_CURRENCY_CHANGE',
   FATAL_ERROR: 'FATAL_ERROR'
 }
 
@@ -53,6 +56,20 @@ export const openFinishGroupModal = (finishGroupId: FinishGroupId) =>
     isCloseable: true,
     contentType: CONTENT_TYPE.FINISH_GROUP,
     contentProps: {finishGroupId}
+  })
+
+export const openConfirmLocationChange = (location: Location) =>
+  open({
+    isCloseable: true,
+    contentType: CONTENT_TYPE.CONFIRM_LOCATION_CHANGE,
+    contentProps: {location}
+  })
+
+export const openConfirmCurrencyChange = (currency: string) =>
+  open({
+    isCloseable: true,
+    contentType: CONTENT_TYPE.CONFIRM_CURRENCY_CHANGE,
+    contentProps: {currency}
   })
 
 export const openFatalError = (error: Error): OpenModalAction =>

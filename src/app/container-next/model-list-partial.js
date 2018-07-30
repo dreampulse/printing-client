@@ -71,7 +71,7 @@ const ModelListPartial = ({
 }
 
 const mapStateToProps = (state: AppState) => ({
-  selectedModelConfigIds: state.model.selectedModelConfigs,
+  selectedModelConfigIds: state.core.selectedModelConfigs,
   commonQuantity: getCommonQuantity(selectSelectedModelConfigs(state))
 })
 
