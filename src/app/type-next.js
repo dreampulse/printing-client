@@ -127,7 +127,7 @@ export type BackendModel = {
   sceneId?: ModelSceneId
 }
 
-export type BackendQuote = {
+export type Quote = {
   quoteId: QuoteId,
   vendorId: VendorId,
   modelId: ModelId,
@@ -203,7 +203,12 @@ export type User = {
   billingAddress: Address
 }
 
-export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR' | 'MATERIAL'
+export type ModalContentType =
+  | 'PICK_LOCATION'
+  | 'MODEL_VIEWER'
+  | 'FATAL_ERROR'
+  | 'MATERIAL'
+  | 'FINISH_GROUP'
 export type ModalConfigClosed = null
 export type ModalConfigOpened = {
   isCloseable: boolean,

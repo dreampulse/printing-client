@@ -2,25 +2,42 @@
 
 import uniq from 'lodash/uniq'
 
-import type {MaterialGroup, MaterialGroupId, MaterialId, Material} from '../type-next'
+import config from '../../../config'
+
+import type {
+  MaterialGroup,
+  MaterialGroupId,
+  MaterialId,
+  Material,
+  Quote,
+  MaterialConfigId,
+  VendorId,
+  FinishGroupId,
+  FinishGroup
+} from '../type-next'
 
 export function hasMaterialMultipleConfigs(material: Material) {
   return !material.finishGroups.every(finishGroup => finishGroup.materialConfigs.length <= 1)
 }
 
-/*
-export function getBestOfferForMaterialConfig(offers, materialConfigId) {
-  return offers
-    .filter(offer => offer.materialConfigId === materialConfigId)
-    .reduce((bestOffer, offer) => {
-      if (!bestOffer || bestOffer.subTotalPrice > offer.subTotalPrice) {
-        return offer
-      }
-      return bestOffer
-    }, null)
+function getBestQuote(quotes: Array<Quote>): ?Quote {
+  return quotes.reduce((bestQuote, quote) => {
+    const bestPrice = (bestQuote && bestQuote.price) || Number.MAX_SAFE_INTEGER
+    if (quote.isPrintable && bestPrice > quote.price) {
+      return quote
+    }
+    return bestQuote
+  }, null)
 }
 
-export function getBestOfferForMaterial(offers, material) {
+export function getBestQuoteForMaterialConfig(
+  quotes: Array<Quote>,
+  materialConfigId: MaterialConfigId
+): ?Quote {
+  return getBestQuote(quotes.filter(quote => quote.materialConfigId === materialConfigId))
+}
+
+export function getBestQuoteForMaterial(quotes: Array<Quote>, material: Material): ?Quote {
   const materialConfigs = {}
   material.finishGroups.forEach(finishGroup => {
     finishGroup.materialConfigs.forEach(materialConfig => {
@@ -28,16 +45,8 @@ export function getBestOfferForMaterial(offers, material) {
     })
   })
 
-  return offers
-    .filter(offer => materialConfigs[offer.materialConfigId])
-    .reduce((bestOffer, offer) => {
-      if (!bestOffer || bestOffer.subTotalPrice > offer.subTotalPrice) {
-        return offer
-      }
-      return bestOffer
-    }, null)
+  return getBestQuote(quotes.filter(quote => materialConfigs[quote.materialConfigId]))
 }
-*/
 
 export function getMaterialConfigIdsOfMaterialGroup(materialGroup: MaterialGroup) {
   const materialConfigIds = []
@@ -79,6 +88,25 @@ export const getMaterialGroupById = (
   return materialGroup
 }
 
+export const getFinishGroupById = (
+  materialGroups: Array<MaterialGroup>,
+  finishGroupId: FinishGroupId
+) => {
+  let foundFinishGroup = null
+
+  materialGroups.forEach((materialGroup: MaterialGroup) => {
+    materialGroup.materials.forEach((material: Material) => {
+      material.finishGroups.forEach((finishGroup: FinishGroup) => {
+        if (finishGroup.id === finishGroupId) {
+          foundFinishGroup = finishGroup
+        }
+      })
+    })
+  })
+
+  return foundFinishGroup
+}
+
 export function getMaterialByName(materialGroups: Array<MaterialGroup>, name: string) {
   let material = null
 
@@ -106,4 +134,42 @@ export const getMaterialById = (materialGroups: Array<MaterialGroup>, materialId
   })
 
   return material
+}
+
+// TODO: refactor
+export const getMaterialTreeByMaterialConfigId = (
+  materialGroups: Array<MaterialGroup>,
+  materialConfigId: MaterialConfigId
+): any => {
+  let selectedMaterial
+  let selectedFinishGroup
+  let selectedMaterialConfig
+
+  materialGroups.every(materialGroup => {
+    materialGroup.materials.every(material => {
+      material.finishGroups.every(finishGroup => {
+        finishGroup.materialConfigs.every(materialConfig => {
+          if (materialConfig.id === materialConfigId) {
+            selectedMaterial = material
+            selectedFinishGroup = finishGroup
+            selectedMaterialConfig = materialConfig
+          }
+          return !selectedMaterial
+        })
+        return !selectedMaterial
+      })
+      return !selectedMaterial
+    })
+    return !selectedMaterial
+  })
+
+  return {
+    material: selectedMaterial,
+    finishGroup: selectedFinishGroup,
+    materialConfig: selectedMaterialConfig
+  }
+}
+
+export function getProviderName(vendorId: VendorId) {
+  return config.providerNames[vendorId] || vendorId
 }

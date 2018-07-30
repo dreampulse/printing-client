@@ -28,7 +28,7 @@ describe('selectQuotePollingProgress()', () => {
     }
 
     expect(selectQuotePollingProgress(state), 'to equal', {
-      done: 2,
+      complete: 2,
       total: 3
     })
   })

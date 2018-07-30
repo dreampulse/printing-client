@@ -7,11 +7,13 @@ import compose from 'recompose/compose'
 import {CONTENT_TYPE, close} from '../../action-next/modal'
 import ModelViewerModal from './model-viewer'
 import MaterialModal from './material'
+import FinishGroupModal from './finish-group'
 import PickLocationModal from './pick-location'
 
 const modals = {
   [CONTENT_TYPE.MODEL_VIEWER]: ModelViewerModal,
   [CONTENT_TYPE.MATERIAL]: MaterialModal,
+  [CONTENT_TYPE.FINISH_GROUP]: FinishGroupModal,
   [CONTENT_TYPE.PICK_LOCATION]: PickLocationModal
 }
 

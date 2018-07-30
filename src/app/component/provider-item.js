@@ -62,7 +62,7 @@ const ProviderItem = ({
       <Button
         icon={checkoutIcon}
         modifiers={['block']}
-        label="Checkout"
+        label="Add to Basked"
         onClick={onCheckoutClick}
       />
     </td>

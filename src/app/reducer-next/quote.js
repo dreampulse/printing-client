@@ -4,13 +4,13 @@ import {loop, Cmd} from 'redux-loop'
 import keyBy from 'lodash/keyBy'
 import * as printingEngine from '../lib/printing-engine'
 import type {PriceRequest} from '../lib/printing-engine'
-import type {AppAction, QuoteId, BackendQuote, PollingId} from '../type-next'
+import type {AppAction, QuoteId, Quote, PollingId} from '../type-next'
 import * as coreAction from '../action-next/core'
 import * as pollingAction from '../action-next/polling'
 import * as quoteAction from '../action-next/quote'
 
 export type QuoteState = {
-  quotes: {[id: QuoteId]: BackendQuote},
+  quotes: {[id: QuoteId]: Quote},
   pollingId: ?PollingId,
   printingServiceComplete: {
     [printingServiceName: string]: boolean

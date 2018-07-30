@@ -1,6 +1,16 @@
 // @flow
 import invariant from 'invariant'
-import type {AppState, ModelConfig, UploadingFile, ConfigId, BackendModel} from '../../type-next'
+import type {
+  AppState,
+  ModelConfig,
+  UploadingFile,
+  ConfigId,
+  BackendModel,
+  MaterialId,
+  FinishGroupId,
+  Material,
+  FinishGroup
+} from '../../type-next'
 
 export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile | BackendModel> =>
   state.model.modelConfigs.map(
