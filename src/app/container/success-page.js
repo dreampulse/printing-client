@@ -32,7 +32,15 @@ const CartPage = ({offer, order}) => {
       <Paragraph modifiers={['l']}>
         <ProviderImage slug={offer.printingService} name={getProviderName(offer.printingService)} />
       </Paragraph>
-      <Headline label="Any questions?" />
+      <Headline label="What happens now?" />
+      <Paragraph modifiers={['l']}>
+        Your order is going through manual checks for printability at the manufacturer. At this
+        first step they make sure that small details and necessary parts are printable. Thereafter
+        the order is pushed to production, finishing and finally to quality control before being
+        shipped out. We will send you an update on your order when we have received the tracking
+        number from the manufacturer.
+      </Paragraph>
+      <Headline label="Should you have any questions regarding your order" />
       <Paragraph modifiers={['l']}>
         Email us on <Link href="mailto:support@all3dp.com" label="support@all3dp.com" />
       </Paragraph>
