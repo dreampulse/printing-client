@@ -20,7 +20,7 @@ export function hasMaterialMultipleConfigs(material: Material) {
   return !material.finishGroups.every(finishGroup => finishGroup.materialConfigs.length <= 1)
 }
 
-function getBestQuote(quotes: Array<Quote>): ?Quote {
+export function getBestQuote(quotes: Array<Quote>): ?Quote {
   return quotes.reduce((bestQuote, quote) => {
     const bestPrice = (bestQuote && bestQuote.price) || Number.MAX_SAFE_INTEGER
     if (quote.isPrintable && bestPrice > quote.price) {
@@ -136,7 +136,6 @@ export const getMaterialById = (materialGroups: Array<MaterialGroup>, materialId
   return material
 }
 
-// TODO: refactor
 export const getMaterialTreeByMaterialConfigId = (
   materialGroups: Array<MaterialGroup>,
   materialConfigId: MaterialConfigId
