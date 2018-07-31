@@ -147,8 +147,6 @@ const updateCurrency = (state, action) => {
     return loop(state, Cmd.action(modalAction.openConfirmCurrencyChange(action.payload.currency)))
   }
 
-  const countryCode = state.location ? state.location.countryCode : config.defaultCurrency
-
   return loop(
     {
       ...state,
@@ -160,7 +158,7 @@ const updateCurrency = (state, action) => {
     Cmd.list([
       Cmd.action(quoteAction.stopReceivingQuotes()),
       Cmd.run(printingEngine.getShippings, {
-        args: [countryCode, action.payload.currency],
+        args: [state.location && state.location.countryCode, action.payload.currency],
         successActionCreator: coreAction.updateShippings,
         failActionCreator: coreAction.fatalError
       })
