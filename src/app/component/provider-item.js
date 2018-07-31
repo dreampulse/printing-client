@@ -26,7 +26,7 @@ const ProviderItem = ({
   deliveryProvider,
   providerInfo,
   productionTime,
-  onCheckoutClick = () => {}
+  onAddToCartClick = () => {}
 }) => (
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
     <td className="provider-item__provider">
@@ -62,8 +62,8 @@ const ProviderItem = ({
       <Button
         icon={checkoutIcon}
         modifiers={['block']}
-        label="Add to Basked"
-        onClick={onCheckoutClick}
+        label="Add to Cart"
+        onClick={onAddToCartClick}
       />
     </td>
   </tr>
@@ -77,7 +77,7 @@ ProviderItem.propTypes = {
   totalPrice: PropTypes.string.isRequired,
   includesVat: PropTypes.bool,
   shippingPrice: PropTypes.string.isRequired,
-  onCheckoutClick: PropTypes.func.isRequired,
+  onAddToCartClick: PropTypes.func.isRequired,
   process: PropTypes.string.isRequired,
   deliveryTime: PropTypes.string.isRequired,
   providerInfo: PropTypes.string.isRequired,

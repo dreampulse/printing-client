@@ -9,7 +9,6 @@ import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 import withPropsOnChange from 'recompose/withPropsOnChange'
 import flatMap from 'lodash/flatMap'
-import partition from 'lodash/partition'
 
 import * as navigationAction from '../action-next/navigation'
 import * as modalAction from '../action-next/modal'
@@ -25,13 +24,13 @@ import {
 } from '../lib/material'
 import {formatPrice, formatTimeRange} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
+import {partitionBy} from '../lib/util'
 import {
   selectModelConfigsByIds,
   selectQuotePollingProgress,
   isQuotePollingDone,
   selectQuotes
 } from '../lib/selector'
-import {buildClassArray} from '../lib/build-class-name'
 import {createMaterialSearch} from '../service/search'
 import scrollTo from '../service/scroll-to'
 import {openIntercom} from '../service/intercom'
@@ -81,9 +80,13 @@ const MaterialPage = ({
   pollingProgress,
   isPollingDone
 }) => {
-  const title = 'Choose material (TODO)'
-  const numCheckedProviders = pollingProgress.complete
-  const numTotalProviders = pollingProgress.total
+  const title = 'Choose material'
+  const numCheckedProviders = pollingProgress.complete || 0
+  const numTotalProviders = pollingProgress.total || 0
+
+  const quotesForSelectedMaterialConfig = quotes.filter(
+    quote => quote.isPrintable && quote.materialConfigId === selectedMaterialConfigId
+  )
 
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
@@ -121,12 +124,8 @@ const MaterialPage = ({
       (selectedMaterialGroup && selectedMaterialGroup.materials) ||
       flatMap(materialGroups, group => group.materials)
 
-    function sortMaterials(unsortedMaterials) {
-      const hasQuote = material => Boolean(getBestQuoteForMaterial(quotes, material))
-      const [materialsWithQuotes, materialsWithoutQuotes] = partition(unsortedMaterials, hasQuote)
-
-      return [...materialsWithQuotes, ...materialsWithoutQuotes]
-    }
+    const sortMaterials = unsortedMaterials =>
+      partitionBy(unsortedMaterials, material => Boolean(getBestQuoteForMaterial(quotes, material)))
 
     return (
       <Section id="section-material">
@@ -175,12 +174,6 @@ const MaterialPage = ({
   }
 
   const renderFinishSection = () => {
-    const disabled = !selectedMaterial
-    const headlineModifiers = buildClassArray({
-      xl: true,
-      disabled
-    })
-
     const renderFinishCard = finishGroup => {
       const colors = finishGroup.materialConfigs
         // Filter out material configs which do not have an offer
@@ -249,103 +242,77 @@ const MaterialPage = ({
       )
     }
 
-    const sortFinishGroup = unsortedFinishGroups => {
-      const hasQuote = finishGroup =>
+    const sortFinishGroup = unsortedFinishGroups =>
+      partitionBy(unsortedFinishGroups, finishGroup =>
         finishGroup.materialConfigs.some(materialConfig =>
           quotes.some(quote => quote.materialConfigId === materialConfig.id)
         )
-      const [finishGroupWithOffers, finishGroupWithoutOffers] = partition(
-        unsortedFinishGroups,
-        hasQuote
       )
 
-      return [...finishGroupWithOffers, ...finishGroupWithoutOffers]
-    }
-
     return (
-      <Section id="section-finish">
-        <Headline label="2. Finish" modifiers={headlineModifiers} />
-        {!disabled &&
-          selectedMaterial.finishGroups.length > 0 && (
-            <MaterialSlider>
-              {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
-            </MaterialSlider>
-          )}
-      </Section>
+      <div>
+        <Headline label="2. Finish" modifiers={['xl']} />
+        {selectedMaterial.finishGroups.length > 0 && (
+          <MaterialSlider>
+            {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
+          </MaterialSlider>
+        )}
+      </div>
     )
   }
 
   const renderProviderSection = () => {
-    const quotesForSelectedMaterialConfig = quotes.filter(
-      quote => quote.isPrintable && quote.materialConfigId === selectedMaterialConfigId
-    )
-
-    const disabled = !selectedMaterialConfigId || !quotesForSelectedMaterialConfig
-    const headlineModifiers = buildClassArray({
-      xl: true,
-      disabled
-    })
-
-    const getQuoteProcess = quote => {
-      const {finishGroup} = getMaterialTreeByMaterialConfigId(
-        materialGroups,
-        quote.materialConfigId
-      )
-      return finishGroup.properties.printingMethodShort
-    }
-
-    const getProviderInfo = quote => {
-      const {finishGroup} = getMaterialTreeByMaterialConfigId(
-        materialGroups,
-        quote.materialConfigId
-      )
-      return finishGroup.properties.printingServiceName[quote.vendorId]
-    }
-
-    const getProductionTime = quote => {
-      const {materialConfig} = getMaterialTreeByMaterialConfigId(
-        materialGroups,
-        quote.materialConfigId
-      )
-      const {productionTimeFast, productionTimeSlow} = materialConfig.printingService[
-        quote.vendorId
-      ]
-      return [productionTimeFast, productionTimeSlow]
-    }
-
     // TODO: add shipping-prices
-    // TODO: how to deal with vat? The price object is without vat and amount
+    // TODO: how to deal with vat? The current prices are without vat
     const renderProviderList = () => (
       <ProviderList>
-        {quotesForSelectedMaterialConfig.sort((a, b) => a.price > b.price).map(quote => (
-          <ProviderItem
-            key={quote.quoteId}
-            process={getQuoteProcess(quote)}
-            providerSlug={quote.vendorId}
-            providerName={getProviderName(quote.vendorId)}
-            providerInfo={getProviderInfo(quote)}
-            price={formatPrice(quote.price, quote.currency)}
-            deliveryTime={null /* formatDeliveryTime(offer.shipping.deliveryTime) */}
-            deliveryProvider={null /* offer.shipping.name */}
-            shippingPrice={null /* formatPrice(offer.shipping.price, offer.currency) */}
-            totalPrice={null /* formatPrice(offer.totalPrice, offer.currency) */}
-            includesVat={false}
-            productionTime={formatTimeRange(...getProductionTime(quote))}
-            onCheckoutClick={() => {
-              console.log('-- TODO Add to cart', quote)
-            }}
-          />
-        ))}
+        {quotesForSelectedMaterialConfig.sort((a, b) => a.price > b.price).map(quote => {
+          const materialTree = getMaterialTreeByMaterialConfigId(
+            materialGroups,
+            quote.materialConfigId
+          )
+
+          const process = materialTree.finishGroup.properties.printingMethodShort
+          const providerInfo =
+            materialTree.finishGroup.properties.printingServiceName[quote.vendorId]
+          const {
+            productionTimeFast,
+            productionTimeSlow
+          } = materialTree.materialConfig.printingService[quote.vendorId]
+
+          return (
+            <ProviderItem
+              key={quote.quoteId}
+              process={process}
+              providerSlug={quote.vendorId}
+              providerName={getProviderName(quote.vendorId)}
+              providerInfo={providerInfo}
+              price={formatPrice(quote.price, quote.currency)}
+              deliveryTime={null /* formatDeliveryTime(offer.shipping.deliveryTime) */}
+              deliveryProvider={null /* offer.shipping.name */}
+              shippingPrice={null /* formatPrice(offer.shipping.price, offer.currency) */}
+              totalPrice={null /* formatPrice(offer.totalPrice, offer.currency) */}
+              includesVat={false}
+              productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
+              onCheckoutClick={() => {
+                console.log('-- TODO Add to cart', quote)
+              }}
+            />
+          )
+        })}
       </ProviderList>
     )
 
     return (
-      <Section id="section-provider">
-        <Headline label="3. Choose a provider and shipping option" modifiers={headlineModifiers} />
-        {!disabled && renderProviderList()}
-      </Section>
+      <div>
+        <Headline label="3. Choose a provider and shipping option" modifiers={['xl']} />
+        {renderProviderList()}
+      </div>
     )
   }
+
+  const finishSectionEnabled = Boolean(selectedMaterial)
+  const providerSectionEnabled = selectedMaterialConfigId && quotesForSelectedMaterialConfig
 
   return (
     <App
@@ -358,8 +325,12 @@ const MaterialPage = ({
       footer={<FooterPartial />}
     >
       <Container>{renderMaterialSection()}</Container>
-      <Container>{renderFinishSection()}</Container>
-      <Container>{renderProviderSection()}</Container>
+      <Container>
+        <Section id="section-finish">{finishSectionEnabled && renderFinishSection()}</Section>
+      </Container>
+      <Container>
+        <Section id="section-provider">{providerSectionEnabled && renderProviderSection()}</Section>
+      </Container>
       <Modal />
     </App>
   )
@@ -393,7 +364,7 @@ export default compose(
       selectedMaterialGroupId: undefined,
       selectedMaterialId: undefined,
       selectedMaterialConfigId: undefined,
-      selectedMaterialConfigs: {}, // This are the selected "colors"
+      selectedMaterialConfigs: {}, // This is the selected color
       materialFilter: ''
     },
     {
