@@ -129,7 +129,7 @@ const MaterialPage = ({
       partitionBy(unsortedMaterials, material => Boolean(getBestQuoteForMaterial(quotes, material)))
 
     return (
-      <Section id="section-material">
+      <Section>
         <Headline label="1. Material" modifiers={['xl']} />
         <Grid>
           <Column lg={8} classNames={['u-margin-bottom']}>
@@ -252,14 +252,14 @@ const MaterialPage = ({
       )
 
     return (
-      <div>
+      <Section>
         <Headline label="2. Finish" modifiers={['xl']} />
         {selectedMaterial.finishGroups.length > 0 && (
           <MaterialSlider>
             {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
           </MaterialSlider>
         )}
-      </div>
+      </Section>
     )
   }
 
@@ -315,10 +315,10 @@ const MaterialPage = ({
     )
 
     return (
-      <div>
+      <Section>
         <Headline label="3. Choose a provider and shipping option" modifiers={['xl']} />
         {renderProviderList()}
-      </div>
+      </Section>
     )
   }
 
@@ -335,12 +335,10 @@ const MaterialPage = ({
       ]}
       footer={<FooterPartial />}
     >
-      <Container>{renderMaterialSection()}</Container>
       <Container>
-        <Section id="section-finish">{finishSectionEnabled && renderFinishSection()}</Section>
-      </Container>
-      <Container>
-        <Section id="section-provider">{providerSectionEnabled && renderProviderSection()}</Section>
+        <div id="section-material">{renderMaterialSection()}</div>
+        <div id="section-finish">{finishSectionEnabled && renderFinishSection()}</div>
+        <div id="section-provider">{providerSectionEnabled && renderProviderSection()}</div>
       </Container>
       <Modal />
     </App>

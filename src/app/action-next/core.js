@@ -14,7 +14,7 @@ type UpdateMaterialGroupsAction = Action<
 type UpdateLocationAction = Action<'CORE.UPDATE_LOCATION', {location: Location, force: boolean}>
 type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string, force: boolean}>
 type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
-type UpdateShippingAction = Action<'CORE.UPDATE_SHIPPING', Array<Shipping>>
+type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Array<Shipping>>
 
 export type CoreAction =
   | InitAction
@@ -22,7 +22,7 @@ export type CoreAction =
   | UpdateLocationAction
   | UpdateCurrencyAction
   | FatalErrorAction
-  | UpdateShippingAction
+  | UpdateShippingsAction
 
 export const init = ({featureFlags}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
@@ -56,7 +56,7 @@ export const fatalError = (error: Error): FatalErrorAction => ({
   payload: error
 })
 
-export const updateShipping = (payload: Array<Shipping>) => ({
-  type: 'CORE.UPDATE_SHIPPING',
+export const updateShippings = (payload: Array<Shipping>): UpdateShippingsAction => ({
+  type: 'CORE.UPDATE_SHIPPINGS',
   payload
 })

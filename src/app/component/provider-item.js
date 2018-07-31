@@ -62,7 +62,7 @@ const ProviderItem = ({
       <Button
         icon={checkoutIcon}
         modifiers={['block']}
-        label="Add to Cart"
+        label="Add to cart"
         onClick={onAddToCartClick}
       />
     </td>

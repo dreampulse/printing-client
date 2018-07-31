@@ -130,7 +130,7 @@ const updateLocation = (state, action) => {
       Cmd.action(quoteAction.stopReceivingQuotes()),
       Cmd.run(printingEngine.getShippings, {
         args: [action.payload.location.countryCode, state.currency],
-        successActionCreator: coreAction.updateShipping,
+        successActionCreator: coreAction.updateShippings,
         failActionCreator: coreAction.fatalError
       })
     ])
@@ -161,14 +161,14 @@ const updateCurrency = (state, action) => {
       Cmd.action(quoteAction.stopReceivingQuotes()),
       Cmd.run(printingEngine.getShippings, {
         args: [countryCode, action.payload.currency],
-        successActionCreator: coreAction.updateShipping,
+        successActionCreator: coreAction.updateShippings,
         failActionCreator: coreAction.fatalError
       })
     ])
   )
 }
 
-const updateShipping = (state, action) => ({
+const updateShippings = (state, action) => ({
   ...state,
   shippings: action.payload
 })
@@ -425,8 +425,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return updateLocation(state, action)
     case 'CORE.UPDATE_CURRENCY':
       return updateCurrency(state, action)
-    case 'CORE.UPDATE_SHIPPING':
-      return updateShipping(state, action)
+    case 'CORE.UPDATE_SHIPPINGS':
+      return updateShippings(state, action)
     case 'MODEL.UPLOAD_FILE':
       return uploadFile(state, action)
     case 'MODEL.UPLOAD_FILES':
