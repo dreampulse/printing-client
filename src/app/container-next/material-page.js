@@ -22,7 +22,7 @@ import {
   getMaterialTreeByMaterialConfigId,
   getProviderName
 } from '../lib/material'
-import {formatPrice, formatTimeRange} from '../lib/formatter'
+import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {partitionBy} from '../lib/util'
 import {
@@ -77,6 +77,7 @@ const MaterialPage = ({
   onOpenMaterialModal,
   onOpenFinishGroupModal,
   quotes,
+  shippings,
   pollingProgress,
   isPollingDone
 }) => {
@@ -211,7 +212,7 @@ const MaterialPage = ({
         <SelectField
           modifiers={['compact']}
           menu={colorMenu}
-          value={selectedColor}
+          value={selectedColor || null}
           onChange={({value}) => selectMaterialConfigForFinishGroup(value, finishGroup.id)}
         />
       )
@@ -229,11 +230,12 @@ const MaterialPage = ({
           loading={!bestQuote}
           unavailable={!bestQuote && isPollingDone}
           onSelectClick={
-            selectedColor &&
-            (() => {
-              selectMaterialConfig(selectedColor && selectedColor.value)
-              scrollTo('#section-provider')
-            })
+            (selectedColor &&
+              (() => {
+                selectMaterialConfig(selectedColor && selectedColor.value)
+                scrollTo('#section-provider')
+              })) ||
+            null
           }
           onMoreClick={() => {
             onOpenFinishGroupModal(finishGroup.id)
@@ -262,11 +264,17 @@ const MaterialPage = ({
   }
 
   const renderProviderSection = () => {
-    // TODO: add shipping-prices
-    // TODO: how to deal with vat? The current prices are without vat
+    const providerList = flatMap(
+      quotesForSelectedMaterialConfig.sort((a, b) => a.price > b.price),
+      quote =>
+        shippings
+          .filter(shipping => shipping.vendorId === quote.vendorId)
+          .map(shipping => [quote, shipping])
+    )
+
     const renderProviderList = () => (
       <ProviderList>
-        {quotesForSelectedMaterialConfig.sort((a, b) => a.price > b.price).map(quote => {
+        {providerList.map(([quote, shipping]) => {
           const materialTree = getMaterialTreeByMaterialConfigId(
             materialGroups,
             quote.materialConfigId
@@ -280,22 +288,25 @@ const MaterialPage = ({
             productionTimeSlow
           } = materialTree.materialConfig.printingService[quote.vendorId]
 
+          // TODO: how to deal with vat? The current prices are without vat
+          const totalPrice = quote.price + shipping.price
+
           return (
             <ProviderItem
-              key={quote.quoteId}
+              key={quote.quoteId + shipping.shippingId}
               process={process}
               providerSlug={quote.vendorId}
               providerName={getProviderName(quote.vendorId)}
               providerInfo={providerInfo}
               price={formatPrice(quote.price, quote.currency)}
-              deliveryTime={null /* formatDeliveryTime(offer.shipping.deliveryTime) */}
-              deliveryProvider={null /* offer.shipping.name */}
-              shippingPrice={null /* formatPrice(offer.shipping.price, offer.currency) */}
-              totalPrice={null /* formatPrice(offer.totalPrice, offer.currency) */}
+              deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
+              deliveryProvider={shipping.name}
+              shippingPrice={formatPrice(shipping.price, shipping.currency)}
+              totalPrice={formatPrice(totalPrice, quote.currency)}
               includesVat={false}
               productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
-              onCheckoutClick={() => {
-                console.log('-- TODO Add to cart', quote)
+              onAddToCartClick={() => {
+                console.log('-- TODO Add to cart', quote, shipping)
               }}
             />
           )
@@ -345,7 +356,8 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
   featureFlags: state.core.featureFlags,
   currency: state.core.currency,
-  location: state.core.location
+  location: state.core.location,
+  shippings: state.core.shippings
 })
 
 const mapDispatchToProps = {
