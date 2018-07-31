@@ -5,6 +5,7 @@ import invariant from 'invariant'
 import isEqual from 'lodash/isEqual'
 import keyBy from 'lodash/keyBy'
 
+import config from '../../../config'
 import {getLocationByIp, isLocationValid} from '../lib/geolocation'
 import {resetModelConfigs, hasModelConfigWithQuote} from '../lib/model'
 import * as printingEngine from '../lib/printing-engine'
@@ -16,13 +17,14 @@ import type {
   Features,
   UploadingFile,
   BackendModel,
-  BackendQuote,
+  Quote,
   ModelConfig,
   ConfigId,
   FileId,
   ModelId,
   QuoteId,
-  PollingId
+  PollingId,
+  Shipping
 } from '../type-next'
 
 import * as coreAction from '../action-next/core'
@@ -35,12 +37,13 @@ export type CoreState = {
   materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
   currency: string,
   location: ?Location,
+  shippings: Array<Shipping>,
   featureFlags: Features,
   uploadingFiles: {[id: FileId]: UploadingFile},
   backendModels: {[id: ModelId]: BackendModel},
   modelConfigs: Array<ModelConfig>,
   selectedModelConfigs: Array<ConfigId>,
-  quotes: {[id: QuoteId]: BackendQuote},
+  quotes: {[id: QuoteId]: Quote},
   quotePollingId: ?PollingId,
   printingServiceComplete: {
     [printingServiceName: string]: boolean
@@ -49,8 +52,9 @@ export type CoreState = {
 
 const initialState: CoreState = {
   materialGroups: [],
-  currency: 'USD',
+  currency: config.defaultCurrency,
   location: null,
+  shippings: [],
   featureFlags: {},
   uploadingFiles: {},
   backendModels: {},
@@ -122,7 +126,14 @@ const updateLocation = (state, action) => {
       modelConfigs: resetModelConfigs(state.modelConfigs)
       // TODO: clear cart
     },
-    Cmd.action(quoteAction.stopReceivingQuotes())
+    Cmd.list([
+      Cmd.action(quoteAction.stopReceivingQuotes()),
+      Cmd.run(printingEngine.getShippings, {
+        args: [action.payload.location.countryCode, state.currency],
+        successActionCreator: coreAction.updateShippings,
+        failActionCreator: coreAction.fatalError
+      })
+    ])
   )
 }
 
@@ -144,9 +155,21 @@ const updateCurrency = (state, action) => {
       modelConfigs: resetModelConfigs(state.modelConfigs)
       // TODO: clear cart
     },
-    Cmd.action(quoteAction.stopReceivingQuotes())
+    Cmd.list([
+      Cmd.action(quoteAction.stopReceivingQuotes()),
+      Cmd.run(printingEngine.getShippings, {
+        args: [state.location && state.location.countryCode, action.payload.currency],
+        successActionCreator: coreAction.updateShippings,
+        failActionCreator: coreAction.fatalError
+      })
+    ])
   )
 }
+
+const updateShippings = (state, action) => ({
+  ...state,
+  shippings: action.payload
+})
 
 const uploadFile = (state, {payload}) => {
   const fileId = payload.fileId
@@ -400,6 +423,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return updateLocation(state, action)
     case 'CORE.UPDATE_CURRENCY':
       return updateCurrency(state, action)
+    case 'CORE.UPDATE_SHIPPINGS':
+      return updateShippings(state, action)
     case 'MODEL.UPLOAD_FILE':
       return uploadFile(state, action)
     case 'MODEL.UPLOAD_FILES':

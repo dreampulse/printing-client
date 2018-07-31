@@ -17,7 +17,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       totalPrice="$40.00"
       deliveryProvider="DHL Express"
       providerInfo="Provider Material Name"
-      onCheckoutClick={action('click')}
+      onAddToCartClick={action('click')}
       productionTime="4-6 days"
     />
     <ProviderItem
@@ -31,7 +31,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       totalPrice="$40.00"
       deliveryProvider="DHL"
       providerInfo="Provider Material Name"
-      onCheckoutClick={action('click')}
+      onAddToCartClick={action('click')}
       productionTime="6-10 days"
     />
     <ProviderItem
@@ -44,7 +44,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       totalPrice="$40.00"
       deliveryProvider="UPS"
       providerInfo="Provider Material Name"
-      onCheckoutClick={action('click')}
+      onAddToCartClick={action('click')}
       productionTime="4-6 days"
     />
     <ProviderItem
@@ -57,7 +57,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       totalPrice="$40.00"
       deliveryProvider="UPS"
       providerInfo="Provider Material Name"
-      onCheckoutClick={action('click')}
+      onAddToCartClick={action('click')}
       productionTime="4-6 days"
     />
     <ProviderItem
@@ -70,7 +70,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       totalPrice="$40.00"
       deliveryProvider="UPS"
       providerInfo="Provider Material Name"
-      onCheckoutClick={action('click')}
+      onAddToCartClick={action('click')}
       productionTime="4-6 days"
     />
     <ProviderItem
@@ -83,7 +83,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       totalPrice="$40.00"
       deliveryProvider="UPS"
       providerInfo="Provider Material Name"
-      onCheckoutClick={action('click')}
+      onAddToCartClick={action('click')}
       productionTime="4-6 days"
     />
   </ProviderList>

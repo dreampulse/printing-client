@@ -1,6 +1,13 @@
 // @flow
 
-import type {Action, ModalContentType, ModalConfigOpened, MaterialId, Location} from '../type-next'
+import type {
+  Action,
+  ModalContentType,
+  ModalConfigOpened,
+  MaterialId,
+  FinishGroupId,
+  Location
+} from '../type-next'
 
 type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
 type CloseModalAction = Action<'MODAL.CLOSE', void>
@@ -10,6 +17,7 @@ export const CONTENT_TYPE: {[ModalContentType]: ModalContentType} = {
   PICK_LOCATION: 'PICK_LOCATION',
   MODEL_VIEWER: 'MODEL_VIEWER',
   MATERIAL: 'MATERIAL',
+  FINISH_GROUP: 'FINISH_GROUP',
   CONFIRM_LOCATION_CHANGE: 'CONFIRM_LOCATION_CHANGE',
   CONFIRM_CURRENCY_CHANGE: 'CONFIRM_CURRENCY_CHANGE',
   FATAL_ERROR: 'FATAL_ERROR'
@@ -41,6 +49,13 @@ export const openMaterial = (materialId: MaterialId) =>
     isCloseable: true,
     contentType: CONTENT_TYPE.MATERIAL,
     contentProps: {materialId}
+  })
+
+export const openFinishGroupModal = (finishGroupId: FinishGroupId) =>
+  open({
+    isCloseable: true,
+    contentType: CONTENT_TYPE.FINISH_GROUP,
+    contentProps: {finishGroupId}
   })
 
 export const openConfirmLocationChange = (location: Location) =>

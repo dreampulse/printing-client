@@ -1,6 +1,6 @@
 // @flow
 
-import type {Action, ModelConfigUploaded, PriceId, BackendQuote} from '../type-next'
+import type {Action, ModelConfigUploaded, PriceId, Quote} from '../type-next'
 
 type ReceiveQuotesPayload = {
   modelConfigs: Array<ModelConfigUploaded>,
@@ -10,7 +10,7 @@ type ReceiveQuotesPayload = {
 }
 
 type QuotesReceivedPayload = {
-  quotes: Array<BackendQuote>,
+  quotes: Array<Quote>,
   printingServiceComplete: {
     [printingServiceName: string]: boolean
   }

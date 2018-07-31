@@ -127,7 +127,7 @@ export type BackendModel = {
   sceneId?: ModelSceneId
 }
 
-export type BackendQuote = {
+export type Quote = {
   quoteId: QuoteId,
   vendorId: VendorId,
   modelId: ModelId,
@@ -208,6 +208,7 @@ export type ModalContentType =
   | 'MODEL_VIEWER'
   | 'FATAL_ERROR'
   | 'MATERIAL'
+  | 'FINISH_GROUP'
   | 'CONFIRM_LOCATION_CHANGE'
   | 'CONFIRM_CURRENCY_CHANGE'
 export type ModalConfigClosed = null
