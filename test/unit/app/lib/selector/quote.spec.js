@@ -43,6 +43,23 @@ describe('selectQuotePollingProgress()', () => {
       total: 3
     })
   })
+
+  it('returns complete 1 if only one service is completed', () => {
+    const state = {
+      core: {
+        printingServiceComplete: {
+          'service-1': true,
+          'service-2': false,
+          'service-3': false
+        }
+      }
+    }
+
+    expect(selectQuotePollingProgress(state), 'to equal', {
+      complete: 1,
+      total: 3
+    })
+  })
 })
 
 describe('selectQuotes()', () => {

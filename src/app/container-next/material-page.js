@@ -17,11 +17,14 @@ import type {AppState} from '../reducer-next'
 import {
   getMaterialById,
   getMaterialGroupById,
-  getBestQuoteForMaterial,
-  getBestQuoteForMaterialConfig,
   getMaterialTreeByMaterialConfigId,
   getProviderName
 } from '../lib/material'
+import {
+  getBestMultiModelQuoteForMaterial,
+  getBestMultiModelQuoteForMaterialConfig,
+  getMultiModelQuotes
+} from '../lib/quote'
 import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {partitionBy} from '../lib/util'
@@ -77,21 +80,19 @@ const MaterialPage = ({
   onOpenMaterialModal,
   onOpenFinishGroupModal,
   quotes,
+  selectedModelConfigs,
   shippings,
   pollingProgress,
   isPollingDone
 }) => {
-  const title = 'Choose material'
+  const title = 'Choose material (TODO)'
   const numCheckedProviders = pollingProgress.complete || 0
   const numTotalProviders = pollingProgress.total || 0
-
-  const quotesForSelectedMaterialConfig = quotes.filter(
-    quote => quote.isPrintable && quote.materialConfigId === selectedMaterialConfigId
-  )
+  const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, quotes)
 
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
-      const bestQuote = getBestQuoteForMaterial(quotes, material)
+      const bestQuote = getBestMultiModelQuoteForMaterial(multiModelQuotes, material)
       const price = (
         <Price
           value={bestQuote ? formatPrice(bestQuote.price, bestQuote.currency) : undefined}
@@ -126,7 +127,9 @@ const MaterialPage = ({
       flatMap(materialGroups, group => group.materials)
 
     const sortMaterials = unsortedMaterials =>
-      partitionBy(unsortedMaterials, material => Boolean(getBestQuoteForMaterial(quotes, material)))
+      partitionBy(unsortedMaterials, material =>
+        Boolean(getBestMultiModelQuoteForMaterial(multiModelQuotes, material))
+      )
 
     return (
       <Section>
@@ -178,7 +181,9 @@ const MaterialPage = ({
     const renderFinishCard = finishGroup => {
       const colors = finishGroup.materialConfigs
         // Filter out material configs which do not have an offer
-        .filter(materialConfig => Boolean(getBestQuoteForMaterialConfig(quotes, materialConfig.id)))
+        .filter(materialConfig =>
+          Boolean(getBestMultiModelQuoteForMaterialConfig(multiModelQuotes, materialConfig.id))
+        )
         .map(({id, color, colorCode, colorImage}) => ({
           value: id,
           colorValue: colorCode,
@@ -186,7 +191,10 @@ const MaterialPage = ({
           colorImage: colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
         }))
 
-      let bestQuote = getBestQuoteForMaterialConfig(quotes, selectedMaterialConfigs[finishGroup.id])
+      let bestQuote = getBestMultiModelQuoteForMaterialConfig(
+        multiModelQuotes,
+        selectedMaterialConfigs[finishGroup.id]
+      )
       let selectedColor = colors.find(
         ({value}) =>
           selectedMaterialConfigs[finishGroup.id] !== undefined &&
@@ -197,7 +205,7 @@ const MaterialPage = ({
       if (!selectedColor) {
         selectedColor = colors.length > 0 && colors[0]
         if (selectedColor) {
-          bestQuote = getBestQuoteForMaterialConfig(quotes, selectedColor.value)
+          bestQuote = getBestMultiModelQuoteForMaterialConfig(multiModelQuotes, selectedColor.value)
         }
       }
 
@@ -247,7 +255,7 @@ const MaterialPage = ({
     const sortFinishGroup = unsortedFinishGroups =>
       partitionBy(unsortedFinishGroups, finishGroup =>
         finishGroup.materialConfigs.some(materialConfig =>
-          quotes.some(quote => quote.materialConfigId === materialConfig.id)
+          multiModelQuotes.some(quote => quote.materialConfigId === materialConfig.id)
         )
       )
 
@@ -264,66 +272,71 @@ const MaterialPage = ({
   }
 
   const renderProviderSection = () => {
+    const multiModelQuotesForSelectedMaterialConfig = multiModelQuotes
+      .filter(
+        multiModelQuote =>
+          multiModelQuote.isPrintable &&
+          multiModelQuote.materialConfigId === selectedMaterialConfigId
+      )
+      .sort((a, b) => b.price - a.price)
+
     const providerList = flatMap(
-      quotesForSelectedMaterialConfig.sort((a, b) => a.price > b.price),
-      quote =>
+      (multiModelQuotesForSelectedMaterialConfig: any), // Because flatMap is broken in flow
+      multiModelQuote =>
         shippings
-          .filter(shipping => shipping.vendorId === quote.vendorId)
-          .map(shipping => [quote, shipping])
-    )
-
-    const renderProviderList = () => (
-      <ProviderList>
-        {providerList.map(([quote, shipping]) => {
-          const materialTree = getMaterialTreeByMaterialConfigId(
-            materialGroups,
-            quote.materialConfigId
-          )
-
-          const process = materialTree.finishGroup.properties.printingMethodShort
-          const providerInfo =
-            materialTree.finishGroup.properties.printingServiceName[quote.vendorId]
-          const {
-            productionTimeFast,
-            productionTimeSlow
-          } = materialTree.materialConfig.printingService[quote.vendorId]
-
-          // TODO: how to deal with vat? The current prices are without vat
-          const totalPrice = quote.price + shipping.price
-
-          return (
-            <ProviderItem
-              key={quote.quoteId + shipping.shippingId}
-              process={process}
-              providerSlug={quote.vendorId}
-              providerName={getProviderName(quote.vendorId)}
-              providerInfo={providerInfo}
-              price={formatPrice(quote.price, quote.currency)}
-              deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
-              deliveryProvider={shipping.name}
-              shippingPrice={formatPrice(shipping.price, shipping.currency)}
-              totalPrice={formatPrice(totalPrice, quote.currency)}
-              includesVat={false}
-              productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
-              onAddToCartClick={() => {
-                console.log('-- TODO Add to cart', quote, shipping)
-              }}
-            />
-          )
-        })}
-      </ProviderList>
+          .filter(shipping => shipping.vendorId === multiModelQuote.vendorId)
+          .map(shipping => [multiModelQuote, shipping])
     )
 
     return (
       <Section>
-        <Headline label="3. Choose a provider and shipping option" modifiers={['xl']} />
-        {renderProviderList()}
+        <Headline label="3. Provider and shipping" modifiers={['xl']} />
+        <ProviderList>
+          {providerList.map(([multiModelQuote, shipping]) => {
+            const materialTree = getMaterialTreeByMaterialConfigId(
+              materialGroups,
+              multiModelQuote.materialConfigId
+            )
+
+            const process = materialTree.finishGroup.properties.printingMethodShort
+            const providerInfo =
+              materialTree.finishGroup.properties.printingServiceName[multiModelQuote.vendorId]
+            const {
+              productionTimeFast,
+              productionTimeSlow
+            } = materialTree.materialConfig.printingService[multiModelQuote.vendorId]
+
+            // TODO: how to deal with vat? The current prices are without vat
+            // TODO: how to deal with shipping if another model with same shipping method has already been added to cart
+            const totalPrice = multiModelQuote.price + shipping.price
+
+            return (
+              <ProviderItem
+                key={multiModelQuote.quoteId + shipping.shippingId}
+                process={process}
+                providerSlug={multiModelQuote.vendorId}
+                providerName={getProviderName(multiModelQuote.vendorId)}
+                providerInfo={providerInfo}
+                price={formatPrice(multiModelQuote.price, multiModelQuote.currency)}
+                deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
+                deliveryProvider={shipping.name}
+                shippingPrice={formatPrice(shipping.price, shipping.currency)}
+                totalPrice={formatPrice(totalPrice, multiModelQuote.currency)}
+                includesVat={false}
+                productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
+                onAddToCartClick={() => {
+                  console.log('-- TODO Add to cart', multiModelQuote, shipping)
+                }}
+              />
+            )
+          })}
+        </ProviderList>
       </Section>
     )
   }
 
   const finishSectionEnabled = Boolean(selectedMaterial)
-  const providerSectionEnabled = selectedMaterialConfigId && quotesForSelectedMaterialConfig
+  const providerSectionEnabled = selectedMaterialConfigId
 
   return (
     <App
@@ -350,7 +363,6 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   materialGroups: state.core.materialGroups,
   pollingProgress: selectQuotePollingProgress(state),
   isPollingDone: isQuotePollingDone(state),
-  // The next two props are required for the ReceiveQuotes-action
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
   featureFlags: state.core.featureFlags,
   currency: state.core.currency,
