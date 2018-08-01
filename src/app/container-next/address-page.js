@@ -3,6 +3,8 @@ import {compose} from 'recompose'
 import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
 
+import {openPickLocation} from '../action-next/modal';
+
 import FormLayout from '../component/form-layout'
 import FormRow from '../component/form-row'
 import InputField from '../component/input-field'
@@ -36,7 +38,7 @@ const AddressPage = ({
   handleBillingChange,
   billingAddress,
   shippingAddress,
-  onShippingCountryChange
+  onOpenPickLocation
 }) => {
   const CountrySelect = ({onChange, value, ...props}) => {
     const changeCountry = val => onChange(val.value)
@@ -251,7 +253,7 @@ const AddressPage = ({
               // TODO: remove default
               value={getCountryName(shippingAddress.countryCode || 'de')}
               changeLinkLabel="Change…"
-              onChangeLinkClick={onShippingCountryChange}
+              onChangeLinkClick={() => onOpenPickLocation(true)}
             />
           </FormRow>
 
@@ -299,7 +301,7 @@ const FORM_NAME = 'address'
 
 const selector = formValueSelector(FORM_NAME)
 const mapStateToProps = state => ({
-  initialValues: state.user.user,
+  initialValues: state.core.user,
   isCompany: selector(state, 'isCompany'),
   useDifferentBillingAddress: selector(state, 'useDifferentBillingAddress'),
   valid: isValid(FORM_NAME)(state),
@@ -321,7 +323,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onShippingCountryChange: () => {},
+  onOpenPickLocation: openPickLocation,
   onSubmit: () => {}, // TODO
   clearBillingAddress: () => {},
   handleIsCompanyChange: () => (dispatch, getState) => {

@@ -3,6 +3,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {compose, withState} from 'recompose'
+import compact from 'lodash/compact'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -21,6 +22,8 @@ import * as modalActions from '../../action-next/modal'
 import * as coreActions from '../../action-next/core'
 
 import config from '../../../../config'
+import {ENGINE_METHOD_ALL} from 'constants';
+import material from './material';
 
 const PickLocationModal = ({
   location,
@@ -29,7 +32,8 @@ const PickLocationModal = ({
   setCurrency,
   onUpdateLocation,
   onUpdateCurrency,
-  onClose
+  onClose,
+  meta
 }) => {
   const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
@@ -37,8 +41,12 @@ const PickLocationModal = ({
 
   const headline = <Headline label="Shipping address required" modifiers={['l']} />
   const buttons = [
+    meta.isCloseable && (
+      <Button key="close" label="Cancel" modifiers={['text']} onClick={() => onClose()} />
+    ),
     <Button
       label="OK"
+      key="ok"
       disabled={!isLocationValid(location) || !currency}
       onClick={() => {
         onUpdateLocation(location, true)
@@ -49,7 +57,12 @@ const PickLocationModal = ({
   ]
 
   return (
-    <Overlay headline={headline} buttons={buttons} closeable={false}>
+    <Overlay headline={headline} buttons={compact(buttons)} closeable={false}>
+      {
+        material.showWarning
+          ? <Paragraph>If you change yur country or currency</Paragraph>
+          : <Paragraph>We need your address and currency to calculate the shipping prices</Paragraph>
+      }
       <Paragraph>We need your address and currency to calculate the shipping prices</Paragraph>
       <Grid>
         <Column sm={9}>

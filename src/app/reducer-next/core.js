@@ -24,7 +24,8 @@ import type {
   ModelId,
   QuoteId,
   PollingId,
-  Shipping
+  Shipping,
+  User
 } from '../type-next'
 
 import * as coreAction from '../action-next/core'
@@ -47,7 +48,8 @@ export type CoreState = {
   quotePollingId: ?PollingId,
   printingServiceComplete: {
     [printingServiceName: string]: boolean
-  }
+  },
+  user: User
 }
 
 const initialState: CoreState = {
@@ -62,7 +64,8 @@ const initialState: CoreState = {
   selectedModelConfigs: [],
   quotePollingId: null,
   quotes: {},
-  printingServiceComplete: {}
+  printingServiceComplete: {},
+  user: {}
 }
 
 const init = (state, {payload: {featureFlags}}) =>
