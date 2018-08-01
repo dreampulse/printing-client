@@ -4,19 +4,33 @@ import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withStateHandlers from 'recompose/withStateHandlers'
+import withHandlers from 'recompose/withHandlers'
 import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 import withPropsOnChange from 'recompose/withPropsOnChange'
-import flatten from 'lodash/flatten'
-import partition from 'lodash/partition'
+import flatMap from 'lodash/flatMap'
 
 import * as navigationAction from '../action-next/navigation'
 import * as modalAction from '../action-next/modal'
+import * as quoteAction from '../action-next/quote'
 import type {AppState} from '../reducer-next'
-import {getMaterialById, getMaterialGroupById} from '../lib/material'
-import {formatPrice} from '../lib/formatter'
+import {
+  getMaterialById,
+  getMaterialGroupById,
+  getBestQuoteForMaterial,
+  getBestQuoteForMaterialConfig,
+  getMaterialTreeByMaterialConfigId,
+  getProviderName
+} from '../lib/material'
+import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
-import {selectMaterialGroups} from '../selector'
+import {partitionBy} from '../lib/util'
+import {
+  selectModelConfigsByIds,
+  selectQuotePollingProgress,
+  isQuotePollingDone,
+  selectQuotes
+} from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
 import scrollTo from '../service/scroll-to'
 import {openIntercom} from '../service/intercom'
@@ -41,9 +55,15 @@ import RadioButtonGroup from '../component/radio-button-group'
 import MaterialSlider from '../component/material-slider'
 import Paragraph from '../component/paragraph'
 import Link from '../component/link'
+import SelectField from '../component/select-field'
+import SelectMenu from '../component/select-menu'
+import ProviderItem from '../component/provider-item'
+import ProviderList from '../component/provider-list'
 
 const MaterialPage = ({
   onClosePage,
+  selectMaterialConfigForFinishGroup,
+  selectedMaterialConfigs,
   materialGroups,
   filteredMaterials,
   selectedMaterialGroup,
@@ -51,63 +71,65 @@ const MaterialPage = ({
   materialFilter,
   selectMaterialGroup,
   selectMaterial,
+  selectedMaterialConfigId,
+  selectMaterialConfig,
   setMaterialFilter,
-  onOpenMaterialModal
+  onOpenMaterialModal,
+  onOpenFinishGroupModal,
+  quotes,
+  shippings,
+  pollingProgress,
+  isPollingDone
 }) => {
-  // TODO:
-  const title = 'Choose material (TODO)'
-  const numCheckedProviders = 1
-  const numTotalProviders = 3
+  const title = 'Choose material'
+  const numCheckedProviders = pollingProgress.complete || 0
+  const numTotalProviders = pollingProgress.total || 0
 
-  const renderMaterialCard = material => {
-    const bestOffer = null // getBestOfferForMaterial(offers, material)
-    const price = (
-      <Price
-        value={bestOffer ? formatPrice(bestOffer.subTotalPrice, bestOffer.currency) : undefined}
-        prefix="From"
-      />
-    )
-
-    return (
-      <MaterialCard
-        key={material.id}
-        title={material.name}
-        description={material.descriptionShort}
-        price={price}
-        image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
-        loading={!bestOffer}
-        selected={selectedMaterial && selectedMaterial.id === material.id}
-        unavailable={
-          !bestOffer // &&
-          // printingServiceRequests &&
-          // printingServiceRequests.complete === printingServiceRequests.total
-        }
-        onSelectClick={() => {
-          selectMaterial(material.id)
-          scrollTo('#section-finish')
-        }}
-        onMoreClick={() => {
-          onOpenMaterialModal(material.id)
-        }}
-      />
-    )
-  }
+  const quotesForSelectedMaterialConfig = quotes.filter(
+    quote => quote.isPrintable && quote.materialConfigId === selectedMaterialConfigId
+  )
 
   const renderMaterialSection = () => {
+    const renderMaterialCard = material => {
+      const bestQuote = getBestQuoteForMaterial(quotes, material)
+      const price = (
+        <Price
+          value={bestQuote ? formatPrice(bestQuote.price, bestQuote.currency) : undefined}
+          prefix="From"
+        />
+      )
+
+      return (
+        <MaterialCard
+          key={material.id}
+          title={material.name}
+          description={material.descriptionShort}
+          price={price}
+          image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
+          loading={!bestQuote}
+          selected={selectedMaterial && selectedMaterial.id === material.id}
+          unavailable={!bestQuote && isPollingDone}
+          onSelectClick={() => {
+            selectMaterial(material.id)
+            scrollTo('#section-finish')
+          }}
+          onMoreClick={() => {
+            onOpenMaterialModal(material.id)
+          }}
+        />
+      )
+    }
+
     const materials =
       filteredMaterials ||
       (selectedMaterialGroup && selectedMaterialGroup.materials) ||
-      flatten(materialGroups.map(group => group.materials))
+      flatMap(materialGroups, group => group.materials)
 
-    function sortMaterials(unsortedMaterials) {
-      const hasOffer = _material => false // Boolean(getBestOfferForMaterial(offers, material))
-      const [materialsWithOffers, materialsWithoutOffers] = partition(unsortedMaterials, hasOffer)
-
-      return [...materialsWithOffers, ...materialsWithoutOffers]
-    }
+    const sortMaterials = unsortedMaterials =>
+      partitionBy(unsortedMaterials, material => Boolean(getBestQuoteForMaterial(quotes, material)))
 
     return (
-      <Section id="section-material">
+      <Section>
         <Headline label="1. Material" modifiers={['xl']} />
         <Grid>
           <Column lg={8} classNames={['u-margin-bottom']}>
@@ -152,6 +174,157 @@ const MaterialPage = ({
     )
   }
 
+  const renderFinishSection = () => {
+    const renderFinishCard = finishGroup => {
+      const colors = finishGroup.materialConfigs
+        // Filter out material configs which do not have an offer
+        .filter(materialConfig => Boolean(getBestQuoteForMaterialConfig(quotes, materialConfig.id)))
+        .map(({id, color, colorCode, colorImage}) => ({
+          value: id,
+          colorValue: colorCode,
+          label: color,
+          colorImage: colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
+        }))
+
+      let bestQuote = getBestQuoteForMaterialConfig(quotes, selectedMaterialConfigs[finishGroup.id])
+      let selectedColor = colors.find(
+        ({value}) =>
+          selectedMaterialConfigs[finishGroup.id] !== undefined &&
+          value === selectedMaterialConfigs[finishGroup.id]
+      )
+
+      // If there is no previous selected config use the first color
+      if (!selectedColor) {
+        selectedColor = colors.length > 0 && colors[0]
+        if (selectedColor) {
+          bestQuote = getBestQuoteForMaterialConfig(quotes, selectedColor.value)
+        }
+      }
+
+      const colorMenu = colors.length > 1 && <SelectMenu values={colors} />
+      const materialPrice = (
+        <Price
+          value={bestQuote && formatPrice(bestQuote.price, bestQuote.currency)}
+          prefix="From"
+        />
+      )
+      const colorSelect = (
+        <SelectField
+          modifiers={['compact']}
+          menu={colorMenu}
+          value={selectedColor || null}
+          onChange={({value}) => selectMaterialConfigForFinishGroup(value, finishGroup.id)}
+        />
+      )
+
+      return (
+        <MaterialCard
+          modifiers={['tall']}
+          key={finishGroup.id}
+          title={finishGroup.name}
+          description={finishGroup.descriptionShort}
+          price={materialPrice}
+          image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
+          colorSelect={colorSelect}
+          selected={selectedColor && selectedColor.value === selectedMaterialConfigId}
+          loading={!bestQuote}
+          unavailable={!bestQuote && isPollingDone}
+          onSelectClick={
+            (selectedColor &&
+              (() => {
+                selectMaterialConfig(selectedColor && selectedColor.value)
+                scrollTo('#section-provider')
+              })) ||
+            null
+          }
+          onMoreClick={() => {
+            onOpenFinishGroupModal(finishGroup.id)
+          }}
+        />
+      )
+    }
+
+    const sortFinishGroup = unsortedFinishGroups =>
+      partitionBy(unsortedFinishGroups, finishGroup =>
+        finishGroup.materialConfigs.some(materialConfig =>
+          quotes.some(quote => quote.materialConfigId === materialConfig.id)
+        )
+      )
+
+    return (
+      <Section>
+        <Headline label="2. Finish" modifiers={['xl']} />
+        {selectedMaterial.finishGroups.length > 0 && (
+          <MaterialSlider>
+            {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
+          </MaterialSlider>
+        )}
+      </Section>
+    )
+  }
+
+  const renderProviderSection = () => {
+    const providerList = flatMap(
+      quotesForSelectedMaterialConfig.sort((a, b) => a.price > b.price),
+      quote =>
+        shippings
+          .filter(shipping => shipping.vendorId === quote.vendorId)
+          .map(shipping => [quote, shipping])
+    )
+
+    const renderProviderList = () => (
+      <ProviderList>
+        {providerList.map(([quote, shipping]) => {
+          const materialTree = getMaterialTreeByMaterialConfigId(
+            materialGroups,
+            quote.materialConfigId
+          )
+
+          const process = materialTree.finishGroup.properties.printingMethodShort
+          const providerInfo =
+            materialTree.finishGroup.properties.printingServiceName[quote.vendorId]
+          const {
+            productionTimeFast,
+            productionTimeSlow
+          } = materialTree.materialConfig.printingService[quote.vendorId]
+
+          // TODO: how to deal with vat? The current prices are without vat
+          const totalPrice = quote.price + shipping.price
+
+          return (
+            <ProviderItem
+              key={quote.quoteId + shipping.shippingId}
+              process={process}
+              providerSlug={quote.vendorId}
+              providerName={getProviderName(quote.vendorId)}
+              providerInfo={providerInfo}
+              price={formatPrice(quote.price, quote.currency)}
+              deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
+              deliveryProvider={shipping.name}
+              shippingPrice={formatPrice(shipping.price, shipping.currency)}
+              totalPrice={formatPrice(totalPrice, quote.currency)}
+              includesVat={false}
+              productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
+              onAddToCartClick={() => {
+                console.log('-- TODO Add to cart', quote, shipping)
+              }}
+            />
+          )
+        })}
+      </ProviderList>
+    )
+
+    return (
+      <Section>
+        <Headline label="3. Choose a provider and shipping option" modifiers={['xl']} />
+        {renderProviderList()}
+      </Section>
+    )
+  }
+
+  const finishSectionEnabled = Boolean(selectedMaterial)
+  const providerSectionEnabled = selectedMaterialConfigId && quotesForSelectedMaterialConfig
+
   return (
     <App
       header={[
@@ -162,23 +335,37 @@ const MaterialPage = ({
       ]}
       footer={<FooterPartial />}
     >
-      <Container>{renderMaterialSection()}</Container>
+      <Container>
+        <div id="section-material">{renderMaterialSection()}</div>
+        <div id="section-finish">{finishSectionEnabled && renderFinishSection()}</div>
+        <div id="section-provider">{providerSectionEnabled && renderProviderSection()}</div>
+      </Container>
       <Modal />
     </App>
   )
 }
 
-const mapStateToProps = (state: AppState) => ({
-  // TODO
-  quotes: [],
-  materialGroups: selectMaterialGroups(state)
+const mapStateToProps = (state: AppState, ownProps) => ({
+  quotes: selectQuotes(state),
+  materialGroups: state.core.materialGroups,
+  pollingProgress: selectQuotePollingProgress(state),
+  isPollingDone: isQuotePollingDone(state),
+  // The next two props are required for the ReceiveQuotes-action
+  selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
+  featureFlags: state.core.featureFlags,
+  currency: state.core.currency,
+  location: state.core.location,
+  shippings: state.core.shippings
 })
 
 const mapDispatchToProps = {
   // TODO: goto upload or cart page depending whether the given models already are in the cart or not
   onClosePage: navigationAction.goToUpload,
   onAbort: navigationAction.goToUpload,
-  onOpenMaterialModal: modalAction.openMaterial
+  onOpenMaterialModal: modalAction.openMaterial,
+  onOpenFinishGroupModal: modalAction.openFinishGroupModal,
+  onReceiveQuotes: quoteAction.receiveQuotes,
+  onStopReceivingQuotes: quoteAction.stopReceivingQuotes
 }
 
 export default compose(
@@ -187,6 +374,7 @@ export default compose(
       selectedMaterialGroupId: undefined,
       selectedMaterialId: undefined,
       selectedMaterialConfigId: undefined,
+      selectedMaterialConfigs: {}, // This is the selected color
       materialFilter: ''
     },
     {
@@ -194,35 +382,77 @@ export default compose(
         selectedMaterialGroupId: id,
         selectedMaterialId: undefined,
         selectedMaterialConfigId: undefined,
+        selectedMaterialConfigs: {},
         materialFilter: ''
       }),
       selectMaterial: () => id => ({
         selectedMaterialId: id,
-        selectedMaterialConfigId: undefined
+        selectedMaterialConfigId: undefined,
+        selectedMaterialConfigs: {}
       }),
       selectMaterialConfig: () => id => ({
         selectedMaterialConfigId: id
       }),
+      selectMaterialConfigForFinishGroup: ({selectedMaterialConfigs}) => (
+        materialConfigId,
+        finishGroupId
+      ) => ({
+        selectedMaterialConfigs: {
+          ...selectedMaterialConfigs,
+          [finishGroupId]: materialConfigId
+        }
+      }),
       setMaterialFilter: () => materialFilter => ({materialFilter})
     }
   ),
+  withProps(({location}) => ({
+    configIds: (location.state && location.state.configIds) || []
+  })),
   connect(mapStateToProps, mapDispatchToProps),
-  withProps(({location, materialGroups, selectedMaterialGroupId, selectedMaterialId}) => ({
-    configIds: (location.state && location.state.configIds) || [],
+  withProps(({materialGroups, selectedMaterialGroupId, selectedMaterialId}) => ({
     selectedMaterialGroup: getMaterialGroupById(materialGroups, selectedMaterialGroupId),
     selectedMaterial: getMaterialById(materialGroups, selectedMaterialId)
   })),
   withPropsOnChange(['materialGroups'], ({materialGroups}) => ({
-    materialSearch: createMaterialSearch(flatten(materialGroups.map(group => group.materials)))
+    materialSearch: createMaterialSearch(flatMap(materialGroups, group => group.materials))
   })),
   withPropsOnChange(['materialFilter', 'materialSearch'], ({materialFilter, materialSearch}) => ({
     filteredMaterials: materialFilter.length > 0 ? materialSearch.search(materialFilter) : undefined
   })),
+  withHandlers({
+    receiveQuotes: props => () => {
+      const modelConfigs = props.selectedModelConfigs
+      const {refresh} = props.featureFlags
+      const currency = props.currency
+      const {countryCode} = props.location
+      props.onReceiveQuotes({
+        modelConfigs,
+        countryCode,
+        currency,
+        refresh
+      })
+    }
+  }),
   lifecycle({
     componentWillMount() {
-      if (this.props.configIds.length === 0) {
+      if (this.props.selectedModelConfigs.length === 0) {
         this.props.onAbort()
+        return
       }
+
+      this.props.receiveQuotes()
+    },
+    componentDidUpdate(prevProps) {
+      // Refresh quotes if countryCode or currency changed
+      if (
+        this.props.currency !== prevProps.currency ||
+        this.props.location.countryCode !== prevProps.location.countryCode
+      ) {
+        this.props.receiveQuotes()
+      }
+    },
+    componentWillUnmount() {
+      this.props.onStopReceivingQuotes()
     }
   })
 )(MaterialPage)

@@ -21,6 +21,7 @@ export default {
     {value: 'CAD', label: 'CAD', symbol: 'CDN$', prefix: true},
     {value: 'AUD', label: 'AUD', symbol: 'AU$', prefix: true}
   ],
+  defaultCurrency: 'USD',
   providerNames: {
     ff3dm: 'FF3DM',
     imaterialise: 'i.Materialise',

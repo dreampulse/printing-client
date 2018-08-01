@@ -2,29 +2,39 @@
 
 import {loop, Cmd} from 'redux-loop'
 
-import config from '../../../config'
 import type {AppAction, ModelId, PollingId, ModelSceneId} from '../type-next'
 import * as modelViewerAction from '../action-next/model-viewer'
 import * as pollingAction from '../action-next/polling'
 import * as modalAction from '../action-next/modal'
-import {pollingFunction} from '../lib/polling'
+import * as coreAction from '../action-next/core'
+import * as printingEngine from '../lib/printing-engine'
 
-export type ModelViewerState = null | {
-  modelId: ModelId,
-  pollingId: PollingId,
-  sceneId: null | ModelSceneId
+export type ModelViewerState = {
+  modelId: ?ModelId,
+  pollingId: ?PollingId,
+  sceneId: ?ModelSceneId
 }
 
-const initialState: ModelViewerState = null
+const initialState: ModelViewerState = {
+  modelId: null,
+  pollingId: null,
+  sceneId: null
+}
 
 const open = (state, action) => {
   const {model} = action.payload
-  const startPollingAction = pollingAction.start(
-    pollingFunction.getModelSceneId,
-    [model.modelId],
-    modelViewerAction.handleSceneId,
-    config.pollingInterval
-  )
+  const startPollingAction = pollingAction.start({
+    pollingFunction: async (modelId: ModelId) => {
+      const modelNext = await printingEngine.getModel(modelId)
+
+      return typeof modelNext.sceneId === 'string'
+        ? {status: 'POLLING_DONE', result: modelNext.sceneId}
+        : {status: 'POLLING_CONTINUE', result: null}
+    },
+    pollingArgs: [model.modelId],
+    onSuccessActionCreator: modelViewerAction.handleSceneId,
+    onFailActionCreator: coreAction.fatalError
+  })
 
   return loop(
     {
@@ -45,13 +55,17 @@ const handleSceneId = (state, action) => ({
 })
 
 const close = (state, _action) => {
-  if (state === null) {
-    return state
-  }
-  const closeModalAction = modalAction.close()
-  const cancelPollingAction = pollingAction.cancel(state.pollingId)
+  const pollingId = state.pollingId
+  if (pollingId) {
+    const closeModalAction = modalAction.close()
+    const cancelPollingAction = pollingAction.cancel(pollingId)
 
-  return loop(null, Cmd.list([Cmd.action(closeModalAction), Cmd.action(cancelPollingAction)]))
+    return loop(
+      initialState,
+      Cmd.list([Cmd.action(closeModalAction), Cmd.action(cancelPollingAction)])
+    )
+  }
+  return state
 }
 
 export const reducer = (

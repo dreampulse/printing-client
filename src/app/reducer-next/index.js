@@ -6,12 +6,8 @@ import {reducer as form} from 'redux-form'
 
 import core from './core'
 import type {CoreState} from './core'
-import user from './user'
-import type {UserState} from './user'
 import modal from './modal'
 import type {ModalState} from './modal'
-import model from './model'
-import type {ModelState} from './model'
 import timeout from './timeout'
 import type {TimeoutState} from './timeout'
 import polling from './polling'
@@ -21,9 +17,7 @@ import type {ModelViewerState} from './model-viewer'
 
 export type AppState = {
   core: CoreState,
-  model: ModelState,
   modal: ModalState,
-  user: UserState,
   timeout: TimeoutState,
   polling: PollingState,
   modelViewer: ModelViewerState,
@@ -33,9 +27,7 @@ export type AppState = {
 
 const rootReducer = combineReducers({
   core,
-  user,
   modal,
-  model,
   timeout,
   polling,
   modelViewer,

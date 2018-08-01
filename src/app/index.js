@@ -8,13 +8,14 @@ import browserUpdate from 'browser-update'
 import 'babel-polyfill'
 
 import './service/logging'
+import {getFeatureFlags} from './lib/feature-flags'
 
 import Store from './store'
 import Router from './router'
 
 import '../sass/main.scss'
 
-import {init} from './action-next/init'
+import {init} from './action-next/core'
 
 // Warn if the browser is one version behind
 browserUpdate({notify: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
@@ -33,7 +34,7 @@ function renderApp(CurrentRouter) {
   )
 }
 
-store.dispatch(init()).then(() => {
+store.dispatch(init({featureFlags: getFeatureFlags(global.location)})).then(() => {
   renderApp(Router)
 
   const bootsplash = global.document.getElementById('bootsplash')

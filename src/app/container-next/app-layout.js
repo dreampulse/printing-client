@@ -10,7 +10,7 @@ import FooterPartial from './footer-partial'
 import helpIcon from '../../asset/icon/help.svg'
 import cartIcon from '../../asset/icon/cart.svg'
 
-import {selectModelConfigs} from '../selector'
+import {selectCartCount} from '../lib/selector'
 
 import {goToUpload, goToCart} from '../action-next/navigation'
 import Modal from './modal'
@@ -59,9 +59,7 @@ const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick
 )
 
 const mapStateToProps = (state: AppState) => ({
-  cartCount: selectModelConfigs(state).filter(
-    modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
-  ).length
+  cartCount: selectCartCount(state)
 })
 
 const mapDispatchToProps = {

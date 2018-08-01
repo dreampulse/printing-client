@@ -18,7 +18,7 @@ import type {
   ConfigurationId,
   OrderId,
   PaymentId,
-  BackendQuote,
+  Quote,
   BackendModel,
   MaterialGroup
 } from '../type-next'
@@ -37,7 +37,7 @@ export type PriceRequest = {
     modelId: ModelId,
     quantity: number
   }>,
-  materialConfigId: Array<MaterialConfigId>
+  materialConfigIds?: Array<MaterialConfigId>
 }
 
 export type PriceResponse = {
@@ -45,7 +45,7 @@ export type PriceResponse = {
 }
 
 export type QuotesResponse = {
-  quotes: BackendQuote,
+  quotes: Array<Quote>,
   allComplete: boolean,
   printingServiceComplete: {
     [printingServiceName: string]: boolean

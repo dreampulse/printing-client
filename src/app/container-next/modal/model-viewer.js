@@ -3,9 +3,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {selectSceneId} from '../../selector'
-
-import {close} from '../../action-next/modal'
+import * as modalActions from '../../action-next/modal'
 import type {AppState} from '../../reducer-next'
 
 import Button from '../../component/button'
@@ -25,11 +23,11 @@ const ModelViewerModal = ({onClose, sceneId, modelName}) => {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  sceneId: selectSceneId(state)
+  sceneId: state.modelViewer.sceneId
 })
 
 const mapDispatchToProps = {
-  onClose: close
+  onClose: modalActions.close
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModelViewerModal)

@@ -3,7 +3,7 @@
 import type {ModelState, ModelCompleted} from '../type'
 import TYPE, {type Action} from '../action-type'
 
-import {updateArrayItems} from '../lib/util'
+import {updateArrayItems} from '../lib/util-deprecated'
 
 const initialState = {
   numberOfUploads: 0,

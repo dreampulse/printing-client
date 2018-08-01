@@ -1,7 +1,7 @@
 import {
   formatPrice,
   formatDeliveryTime,
-  formatAddress,
+  formatLocation,
   formatDimensions,
   formatTimeRange
 } from '../../../../src/app/lib/formatter'
@@ -100,10 +100,10 @@ describe('formatTimeRange()', () => {
   })
 })
 
-describe('formatAddress', () => {
+describe('formatLocation', () => {
   it('returns formatted string', () => {
     expect(
-      formatAddress({
+      formatLocation({
         city: 'Ulm',
         countryCode: 'DE',
         something: 'else'
@@ -113,13 +113,15 @@ describe('formatAddress', () => {
     )
   })
 
-  it('returns an empty string if some key is missing', () => {
+  it('returns string without city when city is empty', () => {
     expect(
-      formatAddress({
-        countryCode: 'DE'
+      formatLocation({
+        city: '',
+        countryCode: 'DE',
+        something: 'else'
       }),
       'to equal',
-      ''
+      'Germany'
     )
   })
 })

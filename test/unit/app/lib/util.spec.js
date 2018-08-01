@@ -1,16 +1,10 @@
-import {updateArrayItems} from '../../../../src/app/lib/util'
+import {partitionBy} from '../../../../src/app/lib/util'
 
-describe('Util lib', () => {
-  describe('updateArrayItems()', () => {
-    it('updates the item in the array which matches', async () => {
-      const array = [{id: 1}, {id: 2}, {id: 3}]
+describe('partitionBy()', () => {
+  it('partitions elements by the predicate', () => {
+    const array = ['LEFT', 'RIGHT', 'LEFT', 'RIGHT']
+    const predicate = element => element === 'LEFT'
 
-      // Call individually to test currying
-      const updatedArray = updateArrayItems(array)(item => item.id === 2)({
-        updated: true
-      })
-
-      expect(updatedArray, 'to equal', [{id: 1}, {id: 2, updated: true}, {id: 3}])
-    })
+    expect(partitionBy(array, predicate), 'to equal', ['LEFT', 'LEFT', 'RIGHT', 'RIGHT'])
   })
 })

@@ -1,12 +1,18 @@
+import config from '../../../../config'
+
 import {
   hasMaterialMultipleConfigs,
-  // getBestOfferForMaterialConfig,
-  // getBestOfferForMaterial,
+  getBestQuote,
+  getBestQuoteForMaterialConfig,
+  getBestQuoteForMaterial,
   getMaterialByName,
   getMaterialById,
   getMaterialGroupById,
+  getFinishGroupById,
   getMaterialConfigIdsOfMaterialGroup,
-  getMaterialFinishGroupProviderNames
+  getMaterialFinishGroupProviderNames,
+  getMaterialTreeByMaterialConfigId,
+  getProviderName
 } from '../../../../src/app/lib/material'
 
 describe('hasMaterialMultipleConfigs()', () => {
@@ -341,5 +347,217 @@ describe('getMaterialFinishGroupProviderNames()', () => {
       printingServiceSlug2: ['name2'],
       printingServiceSlug3: ['name5']
     })
+  })
+})
+
+describe('getBestQuote()', () => {
+  it('returns the best quote', () => {
+    const quotes = [
+      {
+        price: 42,
+        isPrintable: true
+      },
+      {
+        price: 23,
+        isPrintable: true
+      },
+      {
+        price: 1,
+        isPrintable: false
+      }
+    ]
+
+    expect(getBestQuote(quotes), 'to equal', quotes[1])
+  })
+
+  it('returns null for empty quotes', () => {
+    const quotes = []
+
+    expect(getBestQuote(quotes), 'to equal', null)
+  })
+})
+
+describe('getBestQuoteForMaterialConfig()', () => {
+  it('returns the best quote for the material config only', () => {
+    const quotes = [
+      {
+        price: 42,
+        isPrintable: true,
+        materialConfigId: 'material-config-1'
+      },
+      {
+        price: 23,
+        isPrintable: true,
+        materialConfigId: 'material-config-1'
+      },
+      {
+        price: 10,
+        isPrintable: false,
+        materialConfigId: 'material-config-1'
+      },
+      {
+        price: 2,
+        isPrintable: true,
+        materialConfigId: 'material-config-2'
+      }
+    ]
+
+    expect(getBestQuoteForMaterialConfig(quotes, 'material-config-1'), 'to equal', quotes[1])
+  })
+})
+
+describe('getBestQuoteForMaterial()', () => {
+  it('returns the best quote for the materials', () => {
+    const quotes = [
+      {
+        price: 42,
+        isPrintable: true,
+        materialConfigId: 'material-config-1'
+      },
+      {
+        price: 23,
+        isPrintable: true,
+        materialConfigId: 'material-config-1'
+      },
+      {
+        price: 10,
+        isPrintable: false,
+        materialConfigId: 'material-config-1'
+      },
+      {
+        price: 2,
+        isPrintable: true,
+        materialConfigId: 'material-config-2'
+      }
+    ]
+
+    const material = {
+      finishGroups: [
+        {
+          materialConfigs: [
+            {
+              id: 'material-config-1'
+            }
+          ]
+        },
+        {
+          materialConfigs: [
+            {
+              id: 'material-config-2'
+            },
+            {
+              id: 'material-config-3'
+            }
+          ]
+        }
+      ]
+    }
+
+    expect(getBestQuoteForMaterial(quotes, material), 'to equal', quotes[3])
+  })
+})
+
+describe('getFinishGroupById()', () => {
+  it('returns all matching finish groups', () => {
+    const materialGroups = [
+      {
+        materials: [
+          {
+            finishGroups: [
+              {
+                id: 'some-finish-group-id-1'
+              },
+              {
+                id: 'some-finish-group-id-2'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    expect(getFinishGroupById(materialGroups, 'some-finish-group-id-1'), 'to equal', {
+      id: 'some-finish-group-id-1'
+    })
+  })
+
+  it('returns null for no match', () => {
+    const materialGroups = [
+      {
+        materials: [
+          {
+            finishGroups: [
+              {
+                id: 'some-finish-group-id-1'
+              },
+              {
+                id: 'some-finish-group-id-2'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    expect(getFinishGroupById(materialGroups, 'some-finish-group-id-3'), 'to equal', null)
+  })
+})
+
+describe('getMaterialTreeByMaterialConfigId()', () => {
+  it('returns the matching material tree', () => {
+    const materialGroups = [
+      {
+        materials: [
+          {
+            finishGroups: [
+              {
+                materialConfigs: [
+                  {
+                    id: 'some-material-config-id-1'
+                  },
+                  {
+                    id: 'some-material-config-id-2'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    expect(
+      getMaterialTreeByMaterialConfigId(materialGroups, 'some-material-config-id-2'),
+      'to satisfy',
+      {
+        material: expect.it('to be', materialGroups[0].materials[0]),
+        finishGroup: expect.it('to be', materialGroups[0].materials[0].finishGroups[0]),
+        materialConfig: expect.it(
+          'to be',
+          materialGroups[0].materials[0].finishGroups[0].materialConfigs[1]
+        )
+      }
+    )
+  })
+})
+
+describe('getProviderName()', () => {
+  let sandbox
+
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(config, 'providerNames').value({'some-vendor-id': 'some-vendor-name'})
+  })
+
+  afterEach(() => {
+    sandbox.restore()
+  })
+
+  it('returns the provider name from the config', () => {
+    expect(getProviderName('some-vendor-id'), 'to equal', 'some-vendor-name')
+  })
+
+  it('returns the vendor id if not found in the config', () => {
+    expect(getProviderName('some-unknown-vendor-id'), 'to equal', 'some-unknown-vendor-id')
   })
 })

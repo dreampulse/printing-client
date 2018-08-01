@@ -127,7 +127,7 @@ export type BackendModel = {
   sceneId?: ModelSceneId
 }
 
-export type BackendQuote = {
+export type Quote = {
   quoteId: QuoteId,
   vendorId: VendorId,
   modelId: ModelId,
@@ -186,6 +186,12 @@ export type GoogleMapsPlace = {
   }>
 }
 
+export type Features = {
+  share?: true,
+  refresh?: true,
+  invoice?: true
+}
+
 export type User = {
   emailAddress: string,
   isCompany: string,
@@ -197,7 +203,14 @@ export type User = {
   billingAddress: Address
 }
 
-export type ModalContentType = 'PICK_LOCATION' | 'MODEL_VIEWER' | 'FATAL_ERROR' | 'MATERIAL'
+export type ModalContentType =
+  | 'PICK_LOCATION'
+  | 'MODEL_VIEWER'
+  | 'FATAL_ERROR'
+  | 'MATERIAL'
+  | 'FINISH_GROUP'
+  | 'CONFIRM_LOCATION_CHANGE'
+  | 'CONFIRM_CURRENCY_CHANGE'
 export type ModalConfigClosed = null
 export type ModalConfigOpened = {
   isCloseable: boolean,
@@ -210,11 +223,18 @@ export type TimeoutId = string
 export type TimeoutCallId = string
 export type TimeoutOnEndActionCreator = () => _AppAction
 
+export type POLLING_STATUS = 'POLLING_CONTINUE' | 'POLLING_DONE'
+
 export type PollingId = string
 export type PollingArgs = Array<any>
-export type PollingResult = any
+export type PollingResult = {
+  status: POLLING_STATUS,
+  result: any
+}
 export type PollingFunction = (...args: PollingArgs) => PollingResult | Promise<PollingResult>
-export type PollingOnSuccessActionCreator = (result: PollingResult) => _AppAction
+export type PollingOnSuccessActionCreator = (result: any) => _AppAction
+export type PollingOnPartialResultActionCreator = (result: any) => _AppAction
+export type PollingOnFailActionCreator = (error: Error) => _AppAction
 
 export type ModelOnProgressActionCreator = (progress: number) => _AppAction
 

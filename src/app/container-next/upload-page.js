@@ -11,7 +11,7 @@ import feature2Image from '../../asset/image/feature2.png'
 
 import {formatDimensions} from '../lib/formatter'
 import {getProviderName} from '../lib/provider-selector'
-import {selectModelsOfModelConfigs, selectModelConfigs} from '../selector'
+import {selectModelsOfModelConfigs} from '../lib/selector'
 import type {AppState} from '../reducer-next'
 
 import * as modelAction from '../action-next/model'
@@ -208,7 +208,7 @@ const UploadPage = ({
 }
 
 const mapStateToProps = (state: AppState) => ({
-  modelsWithConfig: unzip([selectModelConfigs(state), selectModelsOfModelConfigs(state)])
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)])
 })
 
 const mapDispatchToProps = {
