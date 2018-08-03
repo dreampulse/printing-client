@@ -58,7 +58,7 @@ const ProviderItem = ({
         )}
       </AnnotatedTableCell>
     </td>
-    <td className="provider-item__checkout">
+    <td className="provider-item__action">
       <Button
         icon={checkoutIcon}
         modifiers={['block']}
@@ -80,7 +80,7 @@ ProviderItem.propTypes = {
   onAddToCartClick: PropTypes.func.isRequired,
   process: PropTypes.string.isRequired,
   deliveryTime: PropTypes.string.isRequired,
-  providerInfo: PropTypes.string.isRequired,
+  providerInfo: PropTypes.string,
   deliveryProvider: PropTypes.string.isRequired,
   productionTime: PropTypes.string.isRequired
 }

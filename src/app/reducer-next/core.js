@@ -384,7 +384,8 @@ const startPollingQuotes = (state, {payload: {priceId}}) => {
   return loop(
     {
       ...state,
-      quotePollingId: startPollingAction.payload.pollingId
+      quotePollingId: startPollingAction.payload.pollingId,
+      printingServiceComplete: {}
     },
     Cmd.action(startPollingAction)
   )
@@ -400,17 +401,27 @@ const quotesReceived = (state, {payload: {quotes, printingServiceComplete}}) => 
 })
 
 const quotesComplete = (state, {payload}) =>
-  loop({...state, quotePollingId: null}, Cmd.action(quoteAction.quotesReceived(payload)))
+  loop(
+    {
+      ...state,
+      quotePollingId: null
+    },
+    Cmd.action(quoteAction.quotesReceived(payload))
+  )
 
 const stopReceivingQuotes = state => {
-  if (state.quotePollingId) {
-    return loop(
-      {...state, quotePollingId: null},
-      Cmd.action(pollingAction.cancel(state.quotePollingId))
-    )
+  const nextState = {
+    ...state,
+    quotePollingId: null,
+    printingServiceComplete: {}
   }
-  // Ignore if no polling is active
-  return state
+
+  // Check if we have to quit some active polling
+  if (state.quotePollingId) {
+    return loop(nextState, Cmd.action(pollingAction.cancel(state.quotePollingId)))
+  }
+
+  return nextState
 }
 
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
