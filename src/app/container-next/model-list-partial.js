@@ -2,6 +2,8 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
+import compose from 'recompose/compose'
+import lifecycle from 'recompose/lifecycle'
 
 import ModelList from '../component/model-list'
 import Button from '../component/button'
@@ -29,10 +31,11 @@ const ModelListPartial = ({
   const disabled = selectedModelConfigIds.length === 0
   const numberOfItems = React.Children.count(children)
   const numberOfSelectedItems = selectedModelConfigIds.length
-  const primaryActionCounter = `(${numberOfSelectedItems}/${numberOfItems})`
+  const primaryActionCounter =
+    numberOfSelectedItems > 0 ? ` (${numberOfSelectedItems}/${numberOfItems})` : ''
   const primaryActionLabel = editMode
-    ? `Edit Material ${primaryActionCounter} …`
-    : `Choose Material ${primaryActionCounter} …`
+    ? `Edit Material${primaryActionCounter} …`
+    : `Choose Material${primaryActionCounter} …`
 
   const renderPrimaryActions = () => (
     <Button
@@ -77,9 +80,17 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = {
   onChangeSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
+  onClearSelectedModelConfigs: modelAction.clearSelectedModelConfigs,
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onChangeQuantities: modelAction.updateQuantities,
   onChooseMaterial: navigationAction.goToMaterial
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModelListPartial)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  lifecycle({
+    componentWillUnmount() {
+      this.props.onClearSelectedModelConfigs()
+    }
+  })
+)(ModelListPartial)

@@ -7,7 +7,11 @@ import keyBy from 'lodash/keyBy'
 
 import config from '../../../config'
 import {getLocationByIp, isLocationValid} from '../lib/geolocation'
-import {resetModelConfigs, hasModelConfigWithQuote} from '../lib/model'
+import {
+  resetModelConfigs,
+  hasModelConfigWithQuote,
+  setQuotesAndShippingInModelConfigs
+} from '../lib/model'
 import * as printingEngine from '../lib/printing-engine'
 import type {PriceRequest} from '../lib/printing-engine'
 import type {
@@ -409,7 +413,7 @@ const quotesComplete = (state, {payload}) =>
     Cmd.action(quoteAction.quotesReceived(payload))
   )
 
-const stopReceivingQuotes = state => {
+const stopReceivingQuotes = (state, _action) => {
   const nextState = {
     ...state,
     quotePollingId: null,
@@ -423,6 +427,11 @@ const stopReceivingQuotes = state => {
 
   return nextState
 }
+
+const addToCart = (state, {payload: {configIds, quotes, shipping}}) => ({
+  ...state,
+  modelConfigs: setQuotesAndShippingInModelConfigs(state.modelConfigs, configIds, quotes, shipping)
+})
 
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
@@ -463,7 +472,9 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
     case 'QUOTE.QUOTES_COMPLETE':
       return quotesComplete(state, action)
     case 'QUOTE.STOP_RECEIVING_QUOTES':
-      return stopReceivingQuotes(state)
+      return stopReceivingQuotes(state, action)
+    case 'CART.ADD_TO_CART':
+      return addToCart(state, action)
     default:
       return state
   }

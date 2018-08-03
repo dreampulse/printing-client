@@ -140,11 +140,13 @@ const CartPage = ({
 }
 
 const mapStateToProps = (state: AppState) => ({
-  /* TODO: to be able to test this page we show all models for now but have to filter them later */
-  /* modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
-    ([modelConfig]) => modelConfig.quoteId !== null
-  ) */
-  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)])
+  modelsWithConfig: unzip([
+    state.core.modelConfigs,
+    selectModelsOfModelConfigs(state)
+  ]).filter(([modelConfig]) => {
+    const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
+    return mc.type === 'UPLOADED' && mc.quoteId !== null
+  })
 })
 
 const mapDispatchToProps = {

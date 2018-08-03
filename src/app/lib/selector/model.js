@@ -15,6 +15,9 @@ export const selectCartCount = (state: AppState) =>
     modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
   ).length
 
+export const selectUploadedModelConfigs = (state: AppState) =>
+  state.core.modelConfigs.filter(modelConfig => modelConfig.type === 'UPLOADED')
+
 export const selectSelectedModelConfigs = (state: AppState): Array<ModelConfig> =>
   state.core.selectedModelConfigs.map(id => {
     const item = state.core.modelConfigs.find(modelConfig => modelConfig.id === id)

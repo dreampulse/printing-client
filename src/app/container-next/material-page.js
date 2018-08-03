@@ -13,6 +13,7 @@ import flatMap from 'lodash/flatMap'
 import * as navigationAction from '../action-next/navigation'
 import * as modalAction from '../action-next/modal'
 import * as quoteAction from '../action-next/quote'
+import * as cartAction from '../action-next/cart'
 import type {AppState} from '../reducer-next'
 import {
   getMaterialById,
@@ -32,7 +33,8 @@ import {
   selectModelConfigsByIds,
   selectQuotePollingProgress,
   isQuotePollingDone,
-  selectQuotes
+  selectQuotes,
+  selectUploadedModelConfigs
 } from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
 import scrollTo from '../service/scroll-to'
@@ -79,13 +81,17 @@ const MaterialPage = ({
   setMaterialFilter,
   onOpenMaterialModal,
   onOpenFinishGroupModal,
+  onAddToCart,
+  onGotoCart,
   quotes,
   selectedModelConfigs,
   shippings,
   pollingProgress,
-  isPollingDone
+  isPollingDone,
+  configIds,
+  uploadedModelConfigs
 }) => {
-  const title = 'Choose material (TODO)'
+  const title = `Choose material (${configIds.length}/${uploadedModelConfigs.length} Items)`
   const numCheckedProviders = pollingProgress.complete || 0
   const numTotalProviders = pollingProgress.total || 0
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, quotes)
@@ -278,7 +284,7 @@ const MaterialPage = ({
           multiModelQuote.isPrintable &&
           multiModelQuote.materialConfigId === selectedMaterialConfigId
       )
-      .sort((a, b) => b.price - a.price)
+      .sort((a, b) => a.price - b.price)
 
     const providerList = flatMap(
       (multiModelQuotesForSelectedMaterialConfig: any), // Because flatMap is broken in flow
@@ -308,6 +314,7 @@ const MaterialPage = ({
 
             // TODO: how to deal with vat? The current prices are without vat
             // TODO: how to deal with shipping if another model with same shipping method has already been added to cart
+            // TODO: compute total prices before and sort this list by total price
             const totalPrice = multiModelQuote.price + shipping.price
 
             return (
@@ -325,7 +332,8 @@ const MaterialPage = ({
                 includesVat={false}
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
                 onAddToCartClick={() => {
-                  console.log('-- TODO Add to cart', multiModelQuote, shipping)
+                  onAddToCart(configIds, multiModelQuote.quotes, shipping)
+                  onGotoCart()
                 }}
               />
             )
@@ -367,7 +375,8 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   featureFlags: state.core.featureFlags,
   currency: state.core.currency,
   location: state.core.location,
-  shippings: state.core.shippings
+  shippings: state.core.shippings,
+  uploadedModelConfigs: selectUploadedModelConfigs(state)
 })
 
 const mapDispatchToProps = {
@@ -377,7 +386,9 @@ const mapDispatchToProps = {
   onOpenMaterialModal: modalAction.openMaterial,
   onOpenFinishGroupModal: modalAction.openFinishGroupModal,
   onReceiveQuotes: quoteAction.receiveQuotes,
-  onStopReceivingQuotes: quoteAction.stopReceivingQuotes
+  onStopReceivingQuotes: quoteAction.stopReceivingQuotes,
+  onAddToCart: cartAction.addToCart,
+  onGotoCart: navigationAction.goToCart
 }
 
 export default compose(
@@ -386,7 +397,7 @@ export default compose(
       selectedMaterialGroupId: undefined,
       selectedMaterialId: undefined,
       selectedMaterialConfigId: undefined,
-      selectedMaterialConfigs: {}, // This is the selected color
+      selectedMaterialConfigs: {}, // These are the selected colors in the drop down fields
       materialFilter: ''
     },
     {

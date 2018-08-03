@@ -7,6 +7,7 @@ import type {ModelViewerAction} from './model-viewer'
 import type {TimeoutAction} from './timeout'
 import type {PollingAction} from './polling'
 import type {QuoteAction} from './quote'
+import type {CartAction} from './cart'
 
 export type AppAction =
   | CoreAction
@@ -16,3 +17,4 @@ export type AppAction =
   | TimeoutAction
   | PollingAction
   | QuoteAction
+  | CartAction

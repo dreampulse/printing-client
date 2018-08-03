@@ -2,7 +2,8 @@ import {
   selectModelsOfModelConfigs,
   selectCartCount,
   selectSelectedModelConfigs,
-  selectModelConfigsByIds
+  selectModelConfigsByIds,
+  selectUploadedModelConfigs
 } from '../../../../../src/app/lib/selector/model'
 
 describe('selectModelsOfModelConfigs()', () => {
@@ -101,6 +102,49 @@ describe('selectCartCount()', () => {
     }
 
     expect(selectCartCount(state), 'to equal', 1)
+  })
+})
+
+describe('selectUploadedModelConfigs()', () => {
+  it('returns all modelConfigs with type UPLOADED', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'model-id-1',
+            id: 'id-1'
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'model-id-2',
+            id: 'id-2'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'file-id3',
+            id: 'id-3'
+          }
+        ]
+      }
+    }
+
+    expect(selectUploadedModelConfigs(state), 'to equal', [
+      {
+        type: 'UPLOADED',
+        quantity: 1,
+        modelId: 'model-id-1',
+        id: 'id-1'
+      },
+      {
+        type: 'UPLOADED',
+        quantity: 1,
+        modelId: 'model-id-2',
+        id: 'id-2'
+      }
+    ])
   })
 })
 

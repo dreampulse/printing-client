@@ -177,7 +177,7 @@ const UploadPage = ({
               />
             )
           }
-          if (modelConfig.type === 'UPLOADED') {
+          if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
             return (
               <UploadModelItem
                 key={modelConfig.id}
@@ -208,7 +208,13 @@ const UploadPage = ({
 }
 
 const mapStateToProps = (state: AppState) => ({
-  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)])
+  modelsWithConfig: unzip([
+    state.core.modelConfigs,
+    selectModelsOfModelConfigs(state)
+  ]).filter(([modelConfig]) => {
+    const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
+    return mc.type !== 'UPLOADED' || mc.quoteId === null
+  })
 })
 
 const mapDispatchToProps = {
