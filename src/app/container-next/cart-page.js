@@ -3,6 +3,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
+import compose from 'recompose/compose'
+import lifecycle from 'recompose/lifecycle'
 
 import type {AppState} from '../reducer-next'
 import {selectModelsOfModelConfigs} from '../lib/selector'
@@ -19,8 +21,9 @@ import SelectField from '../component/select-field'
 import ModelItem from '../component/model-item'
 import ButtonBar from '../component/button-bar'
 
-import {goToUpload} from '../action-next/navigation'
-import {updateQuantities, deleteModelConfigs, duplicateModelConfig} from '../action-next/model'
+import * as navigationAction from '../action-next/navigation'
+import * as modelAction from '../action-next/model'
+import * as cartAction from '../action-next/cart'
 
 import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
@@ -146,16 +149,31 @@ const mapStateToProps = (state: AppState) => ({
   ]).filter(([modelConfig]) => {
     const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
     return mc.type === 'UPLOADED' && mc.quoteId !== null
-  })
+  }),
+  currency: state.core.currency,
+  cart: state.core.cart
 })
 
 const mapDispatchToProps = {
-  onGoToUpload: goToUpload,
-  onDeleteModelConfigs: deleteModelConfigs,
-  onChangeQuantities: updateQuantities,
-  onDuplicateModelConfig: duplicateModelConfig,
+  onGoToUpload: navigationAction.goToUpload,
+  onDeleteModelConfigs: modelAction.deleteModelConfigs,
+  onChangeQuantities: modelAction.updateQuantities,
+  onDuplicateModelConfig: modelAction.duplicateModelConfig,
+  onCreateCart: cartAction.createCart,
   onEditMaterial: /* TODO: openConfigurationModal() */ () => {},
   onCheckout: /* TODO: goToCheckout() */ () => {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartPage)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  lifecycle({
+    componentWillMount() {
+      if (this.props.modelsWithConfig.length > 0) {
+        this.props.onCreateCart(
+          this.props.modelsWithConfig.map(([modelConfig]) => modelConfig),
+          this.props.currency
+        )
+      }
+    }
+  })
+)(CartPage)

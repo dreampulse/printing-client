@@ -4,6 +4,8 @@ import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
 import isEqual from 'lodash/isEqual'
 import keyBy from 'lodash/keyBy'
+import uniq from 'lodash/uniq'
+import compact from 'lodash/compact'
 
 import config from '../../../config'
 import {getLocationByIp, isLocationValid} from '../lib/geolocation'
@@ -28,7 +30,8 @@ import type {
   ModelId,
   QuoteId,
   PollingId,
-  Shipping
+  Shipping,
+  Cart
 } from '../type-next'
 
 import * as coreAction from '../action-next/core'
@@ -36,6 +39,7 @@ import * as modalAction from '../action-next/modal'
 import * as modelAction from '../action-next/model'
 import * as pollingAction from '../action-next/polling'
 import * as quoteAction from '../action-next/quote'
+import * as cartAction from '../action-next/cart'
 
 export type CoreState = {
   materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
@@ -51,7 +55,8 @@ export type CoreState = {
   quotePollingId: ?PollingId,
   printingServiceComplete: {
     [printingServiceName: string]: boolean
-  }
+  },
+  cart: ?Cart
 }
 
 const initialState: CoreState = {
@@ -66,7 +71,8 @@ const initialState: CoreState = {
   selectedModelConfigs: [],
   quotePollingId: null,
   quotes: {},
-  printingServiceComplete: {}
+  printingServiceComplete: {},
+  cart: null
 }
 
 const init = (state, {payload: {featureFlags}}) =>
@@ -89,6 +95,9 @@ const init = (state, {payload: {featureFlags}}) =>
       })
     ])
   )
+
+const fatalError = (state, {payload: error}) =>
+  loop(state, Cmd.action(modalAction.openFatalError(error)))
 
 const updateMaterialGroups = (state, action) => ({
   ...state,
@@ -127,8 +136,8 @@ const updateLocation = (state, action) => {
       ...state,
       location: action.payload.location,
       quotes: {},
-      modelConfigs: resetModelConfigs(state.modelConfigs)
-      // TODO: clear cart
+      modelConfigs: resetModelConfigs(state.modelConfigs),
+      cart: null
     },
     Cmd.list([
       Cmd.action(quoteAction.stopReceivingQuotes()),
@@ -156,8 +165,8 @@ const updateCurrency = (state, action) => {
       ...state,
       currency: action.payload.currency,
       quotes: {},
-      modelConfigs: resetModelConfigs(state.modelConfigs)
-      // TODO: clear cart
+      modelConfigs: resetModelConfigs(state.modelConfigs),
+      cart: null
     },
     Cmd.list([
       Cmd.action(quoteAction.stopReceivingQuotes()),
@@ -433,10 +442,35 @@ const addToCart = (state, {payload: {quotes, shipping}}) => ({
   modelConfigs: setQuotesAndShippingInModelConfigs(state.modelConfigs, quotes, shipping)
 })
 
+const createCart = (state, {payload: {modelConfigs, currency}}) => {
+  const shippingIds = compact(uniq(modelConfigs.map(modelConfig => modelConfig.shippingId)))
+  const quoteIds = compact(modelConfigs.map(modelConfig => modelConfig.quoteId))
+
+  return loop(
+    {
+      ...state,
+      cart: null // Clear old cart
+    },
+    Cmd.run(printingEngine.createCart, {
+      args: [
+        {
+          shippingIds,
+          quoteIds,
+          currency
+        }
+      ],
+      successActionCreator: cartAction.cartReceived,
+      failActionCreator: coreAction.fatalError
+    })
+  )
+}
+
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
     case 'CORE.INIT':
       return init(state, action)
+    case 'CORE.FATAL_ERROR':
+      return fatalError(state, action)
     case 'CORE.UPDATE_MATERIAL_GROUPS':
       return updateMaterialGroups(state, action)
     case 'CORE.UPDATE_LOCATION':
@@ -475,6 +509,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return stopReceivingQuotes(state, action)
     case 'CART.ADD_TO_CART':
       return addToCart(state, action)
+    case 'CART.CREATE_CART':
+      return createCart(state, action)
     default:
       return state
   }
