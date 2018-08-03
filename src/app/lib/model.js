@@ -1,6 +1,7 @@
 // @flow
+import keyBy from 'lodash/keyBy'
 
-import type {ModelConfig, Quote, Shipping} from '../type-next'
+import type {ModelConfig, Quote, Shipping, ConfigId} from '../type-next'
 
 export const resetModelConfigs = (modelConfigs: Array<ModelConfig>) =>
   modelConfigs.map(modelConfig => {
@@ -19,11 +20,14 @@ export const hasModelConfigWithQuote = (modelConfigs: Array<ModelConfig>) =>
 
 export const setQuotesAndShippingInModelConfigs = (
   modelConfigs: Array<ModelConfig>,
+  configIds: Array<ConfigId>,
   quotes: Array<Quote>,
   shipping: Shipping
-) =>
-  modelConfigs.map(modelConfig => {
-    if (modelConfig.type === 'UPLOADED') {
+) => {
+  const configIdMap = keyBy(configIds, id => id)
+
+  return modelConfigs.map(modelConfig => {
+    if (modelConfig.type === 'UPLOADED' && configIdMap[modelConfig.id]) {
       // Only the pair of modelId and quantity makes a match distinctive
       const {modelId, quantity} = modelConfig
       const quote = quotes.find(q => q.modelId === modelId && q.quantity === quantity)
@@ -41,3 +45,4 @@ export const setQuotesAndShippingInModelConfigs = (
     // Nothing todo in this case
     return modelConfig
   })
+}

@@ -33,7 +33,8 @@ import {
   selectModelConfigsByIds,
   selectQuotePollingProgress,
   isQuotePollingDone,
-  selectQuotes
+  selectQuotes,
+  selectUploadedModelConfigs
 } from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
 import scrollTo from '../service/scroll-to'
@@ -86,9 +87,11 @@ const MaterialPage = ({
   selectedModelConfigs,
   shippings,
   pollingProgress,
-  isPollingDone
+  isPollingDone,
+  configIds,
+  uploadedModelConfigs
 }) => {
-  const title = 'Choose material (TODO)'
+  const title = `Choose material (${configIds.length}/${uploadedModelConfigs.length} Items)`
   const numCheckedProviders = pollingProgress.complete || 0
   const numTotalProviders = pollingProgress.total || 0
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, quotes)
@@ -329,7 +332,7 @@ const MaterialPage = ({
                 includesVat={false}
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
                 onAddToCartClick={() => {
-                  onAddToCart(multiModelQuote.quotes, shipping)
+                  onAddToCart(configIds, multiModelQuote.quotes, shipping)
                   onGotoCart()
                 }}
               />
@@ -372,7 +375,8 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   featureFlags: state.core.featureFlags,
   currency: state.core.currency,
   location: state.core.location,
-  shippings: state.core.shippings
+  shippings: state.core.shippings,
+  uploadedModelConfigs: selectUploadedModelConfigs(state)
 })
 
 const mapDispatchToProps = {
