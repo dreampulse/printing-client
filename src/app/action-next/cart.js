@@ -2,7 +2,7 @@
 
 import type {Action, Quote, Shipping} from '../type-next'
 
-type AddToCartAction = Action<'CART.ADD_TO_CART', {quotes: Array<Quote>}>
+type AddToCartAction = Action<'CART.ADD_TO_CART', {quotes: Array<Quote>, shipping: Shipping}>
 
 export type CartAction = AddToCartAction
 
