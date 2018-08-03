@@ -4,7 +4,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 
-import type {ModelConfig} from '../type-next'
 import type {AppState} from '../reducer-next'
 import {selectModelsOfModelConfigs} from '../lib/selector'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
