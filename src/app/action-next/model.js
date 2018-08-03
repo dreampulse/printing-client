@@ -90,6 +90,13 @@ export const updateSelectedModelConfigs = (
   }
 })
 
+export const clearSelectedModelConfigs = (): UpdateSelectedModelConfigsAction => ({
+  type: 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
+  payload: {
+    ids: []
+  }
+})
+
 export const updateQuantities = (
   ids: Array<ConfigId>,
   quantity: number

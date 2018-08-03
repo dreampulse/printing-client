@@ -13,6 +13,7 @@ import flatMap from 'lodash/flatMap'
 import * as navigationAction from '../action-next/navigation'
 import * as modalAction from '../action-next/modal'
 import * as quoteAction from '../action-next/quote'
+import * as cartAction from '../action-next/cart'
 import type {AppState} from '../reducer-next'
 import {
   getMaterialById,
@@ -79,6 +80,8 @@ const MaterialPage = ({
   setMaterialFilter,
   onOpenMaterialModal,
   onOpenFinishGroupModal,
+  onAddToCart,
+  onGotoCart,
   quotes,
   selectedModelConfigs,
   shippings,
@@ -278,7 +281,7 @@ const MaterialPage = ({
           multiModelQuote.isPrintable &&
           multiModelQuote.materialConfigId === selectedMaterialConfigId
       )
-      .sort((a, b) => b.price - a.price)
+      .sort((a, b) => a.price - b.price)
 
     const providerList = flatMap(
       (multiModelQuotesForSelectedMaterialConfig: any), // Because flatMap is broken in flow
@@ -308,6 +311,7 @@ const MaterialPage = ({
 
             // TODO: how to deal with vat? The current prices are without vat
             // TODO: how to deal with shipping if another model with same shipping method has already been added to cart
+            // TODO: compute total prices before and sort this list by total price
             const totalPrice = multiModelQuote.price + shipping.price
 
             return (
@@ -325,7 +329,8 @@ const MaterialPage = ({
                 includesVat={false}
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
                 onAddToCartClick={() => {
-                  console.log('-- TODO Add to cart', multiModelQuote, shipping)
+                  onAddToCart(multiModelQuote.quotes, shipping)
+                  onGotoCart()
                 }}
               />
             )
@@ -377,7 +382,9 @@ const mapDispatchToProps = {
   onOpenMaterialModal: modalAction.openMaterial,
   onOpenFinishGroupModal: modalAction.openFinishGroupModal,
   onReceiveQuotes: quoteAction.receiveQuotes,
-  onStopReceivingQuotes: quoteAction.stopReceivingQuotes
+  onStopReceivingQuotes: quoteAction.stopReceivingQuotes,
+  onAddToCart: cartAction.addToCart,
+  onGotoCart: navigationAction.goToCart
 }
 
 export default compose(
@@ -386,7 +393,7 @@ export default compose(
       selectedMaterialGroupId: undefined,
       selectedMaterialId: undefined,
       selectedMaterialConfigId: undefined,
-      selectedMaterialConfigs: {}, // This is the selected color
+      selectedMaterialConfigs: {}, // These are the selected colors in the drop down fields
       materialFilter: ''
     },
     {

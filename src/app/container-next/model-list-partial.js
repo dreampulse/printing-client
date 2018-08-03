@@ -2,6 +2,8 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
+import compose from 'recompose/compose'
+import lifecycle from 'recompose/lifecycle'
 
 import ModelList from '../component/model-list'
 import Button from '../component/button'
@@ -77,9 +79,17 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = {
   onChangeSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
+  onClearSelectedModelConfigs: modelAction.clearSelectedModelConfigs,
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onChangeQuantities: modelAction.updateQuantities,
   onChooseMaterial: navigationAction.goToMaterial
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModelListPartial)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  lifecycle({
+    componentWillUnmount() {
+      this.props.onClearSelectedModelConfigs()
+    }
+  })
+)(ModelListPartial)

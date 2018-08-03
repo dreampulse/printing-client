@@ -4,6 +4,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 
+import type {ModelConfig} from '../type-next'
 import type {AppState} from '../reducer-next'
 import {selectModelsOfModelConfigs} from '../lib/selector'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
@@ -140,11 +141,13 @@ const CartPage = ({
 }
 
 const mapStateToProps = (state: AppState) => ({
-  /* TODO: to be able to test this page we show all models for now but have to filter them later */
-  /* modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
-    ([modelConfig]) => modelConfig.quoteId !== null
-  ) */
-  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)])
+  modelsWithConfig: unzip([
+    state.core.modelConfigs,
+    selectModelsOfModelConfigs(state)
+  ]).filter(([modelConfig]) => {
+    const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
+    return mc.type === 'UPLOADED' && mc.quoteId !== null
+  })
 })
 
 const mapDispatchToProps = {
