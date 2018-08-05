@@ -4,19 +4,7 @@ import React from 'react'
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
-import Link from './link'
-import Headline from './headline'
-
-const PaymentSection = ({
-  classNames,
-  modifiers,
-  children,
-  subtotal,
-  shippings,
-  vat,
-  total,
-  onContactLinkClick
-}) => (
+const PaymentSection = ({classNames, modifiers, children, subtotal, shippings, vat, total}) => (
   <section className={buildClassName('payment-section', modifiers, classNames)}>
     <div className="payment-section__box">
       <ul className="payment-section__price-components">
@@ -55,25 +43,6 @@ const PaymentSection = ({
         ))}
       </ul>
     </div>
-    <ul className="payment-section__links">
-      <li className="payment-section__link">
-        <Headline modifiers={['xs']} label="Need different payment option?" />
-        <Link label="Contact us." href="mailto:contact@all3dp.com" onClick={onContactLinkClick} />
-      </li>
-      <li className="payment-section__link">
-        <Headline modifiers={['xs']} label="Any questions?" />
-        <Link label="Get in touch" href="mailto:contact@all3dp.com" onClick={onContactLinkClick} />
-        {' or '}
-        <Link label="search our knowledge base." href="https://help.all3dp.com" target="_blank" />
-      </li>
-      <li className="payment-section__link">
-        <Link
-          target="_blank"
-          label="Terms of service"
-          href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
-        />
-      </li>
-    </ul>
   </section>
 )
 
@@ -88,8 +57,7 @@ PaymentSection.propTypes = {
     })
   ),
   vat: PropTypes.string.isRequired,
-  total: PropTypes.string.isRequired,
-  onContactLinkClick: PropTypes.func.isRequired
+  total: PropTypes.string.isRequired
 }
 
 export default PaymentSection

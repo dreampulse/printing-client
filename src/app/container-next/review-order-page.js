@@ -14,6 +14,7 @@ import Section from '../component/section'
 import Headline from '../component/headline'
 import Button from '../component/button'
 import EditLink from '../component/edit-link'
+import Link from '../component/link'
 import Grid from '../component/grid'
 import Column from '../component/column'
 import Paragraph from '../component/paragraph'
@@ -26,7 +27,6 @@ import creditCardIcon from '../../asset/icon/credit-card.svg'
 import paypalIcon from '../../../src/asset/icon/paypal.svg'
 
 // TODO: import {guard} from './util/guard'
-import {getFeatures} from './util/feature'
 import CheckoutLayout from './checkout-layout'
 
 const ReviewOrderPage = ({address, onPush}) => {
@@ -38,7 +38,7 @@ const ReviewOrderPage = ({address, onPush}) => {
     getStateName(address.shippingAddress.countryCode, address.billingAddress.stateCode) ||
     shippingStateName
 
-  const AddressSection = () => (
+  const renderAddressSection = () => (
     <Section>
       <Grid>
         <Column md={6}>
@@ -122,33 +122,76 @@ const ReviewOrderPage = ({address, onPush}) => {
     <Button key="payment2" modifiers={['block']} icon={paypalIcon} label="Paypal" />
   ])
 
-  const paymentSection = (
-    <PaymentSection
-      subtotal={formatPrice(5400, 'EUR')}
-      shippings={[{label: 'i.materialize', price: '$5.00€'}, {label: 'shapeways', price: '$5.30€'}]}
-      shippingPrice={formatPrice(4900, 'EUR')}
-      shippingName="fast shipping"
-      vat={formatPrice(500, 'EUR')}
-      total={formatPrice(4599, 'EUR')}
-      onContactLinkClick={event => {
-        openIntercom()
-        event.preventDefault()
-      }}
-    >
-      {paymentButtons}
-    </PaymentSection>
+  const renderPaymentSection = () => (
+    <React.Fragment>
+      <PaymentSection
+        classNames={['u-margin-bottom']}
+        subtotal={formatPrice(5400, 'EUR')}
+        shippings={[
+          {label: 'i.materialize', price: '$5.00€'},
+          {label: 'shapeways', price: '$5.30€'}
+        ]}
+        shippingPrice={formatPrice(4900, 'EUR')}
+        shippingName="fast shipping"
+        vat={formatPrice(500, 'EUR')}
+        total={formatPrice(4599, 'EUR')}
+      >
+        {paymentButtons}
+      </PaymentSection>
+      <Paragraph>
+        <Headline
+          tag="strong"
+          modifiers={['xs']}
+          label="Need different payment option?"
+          classNames={['u-no-margin-bottom']}
+        />
+        <Link
+          label="Contact us."
+          href="mailto:contact@all3dp.com"
+          onClick={event => {
+            openIntercom()
+            event.preventDefault()
+          }}
+        />
+      </Paragraph>
+      <Paragraph>
+        <Headline
+          tag="strong"
+          modifiers={['xs']}
+          label="Any questions?"
+          classNames={['u-no-margin-bottom']}
+        />
+        <Link
+          label="Get in touch"
+          href="mailto:contact@all3dp.com"
+          onClick={event => {
+            openIntercom()
+            event.preventDefault()
+          }}
+        />
+        {' or '}
+        <Link label="search our knowledge base." href="https://help.all3dp.com" target="_blank" />
+      </Paragraph>
+      <Paragraph>
+        <Link
+          target="_blank"
+          label="Terms of service"
+          href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
+        />
+      </Paragraph>
+    </React.Fragment>
   )
 
   return (
     <CheckoutLayout title="Checkout" currentStep={2}>
       <PageHeader label="Review Order" />
-      <SidebarLayout sidebar={paymentSection}>
-        <AddressSection />
+      <SidebarLayout sidebar={renderPaymentSection()}>
+        {renderAddressSection()}
         <Headline
           tag="strong"
           modifiers={['minor', 'l', 'inline']}
           label={
-            <React.Fragment>
+            <React.Fragment key="label">
               Your Order <EditLink label="edit" onClick={() => onPush('/cart')} />
             </React.Fragment>
           }
@@ -279,7 +322,6 @@ const mapDispatchToProps = {
 
 const enhance = compose(
   // TODO: guard(state => state.cart.cart),
-  getFeatures,
   connect(mapStateToProps, mapDispatchToProps)
 )
 

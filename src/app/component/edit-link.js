@@ -7,7 +7,7 @@ import buildClassName from '../lib/build-class-name'
 import Icon from './icon'
 import editIcon from '../../../src/asset/icon/edit.svg'
 
-const Link = ({classNames, modifiers, label, href = '#', onClick = () => {}, ...rest}) => (
+const EditLink = ({classNames, modifiers, label, href = '#', onClick = () => {}, ...rest}) => (
   <a
     className={buildClassName('edit-link', modifiers, classNames)}
     href={href}
@@ -19,7 +19,7 @@ const Link = ({classNames, modifiers, label, href = '#', onClick = () => {}, ...
   </a>
 )
 
-Link.propTypes = {
+EditLink.propTypes = {
   ...propTypes.component,
   label: PropTypes.string.isRequired,
   href: PropTypes.string,
@@ -27,4 +27,4 @@ Link.propTypes = {
   onClick: PropTypes.func
 }
 
-export default Link
+export default EditLink
