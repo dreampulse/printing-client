@@ -292,13 +292,34 @@ const uploadFail = (state, {payload}) => {
   }
 }
 
-const deleteModelConfigs = (state, {payload}) => ({
-  ...state,
-  modelConfigs: state.modelConfigs.filter(
-    modelConfig => payload.ids.indexOf(modelConfig.id) === -1
-  ),
-  selectedModelConfigs: state.selectedModelConfigs.filter(id => payload.ids.indexOf(id) === -1)
-})
+const deleteModelConfigs = (state, {payload}) => {
+  const modelConfigsToDelete = state.modelConfigs.filter(
+    modelConfig => payload.ids.indexOf(modelConfig.id) > -1
+  )
+  const isModelConfigInCart = modelConfigsToDelete.some(
+    modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId
+  )
+
+  invariant(
+    modelConfigsToDelete.length === payload.ids.length,
+    'Unknown model config ids provided.'
+  )
+
+  const nextState = {
+    ...state,
+    modelConfigs: state.modelConfigs.filter(
+      modelConfig => payload.ids.indexOf(modelConfig.id) === -1
+    ),
+    selectedModelConfigs: state.selectedModelConfigs.filter(id => payload.ids.indexOf(id) === -1)
+  }
+
+  // Create new cart if a least one model config was deleted from cart
+  if (isModelConfigInCart) {
+    return loop(nextState, Cmd.action(cartAction.createCart()))
+  }
+
+  return nextState
+}
 
 const updateSelectedModelConfigs = (state, {payload}) => ({
   ...state,
@@ -334,7 +355,7 @@ const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
     id: nextId
   }
 
-  return {
+  const nextState = {
     ...state,
     modelConfigs: [
       ...state.modelConfigs.slice(0, modelConfigIndex + 1),
@@ -342,6 +363,13 @@ const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
       ...state.modelConfigs.slice(modelConfigIndex + 1)
     ]
   }
+
+  // Create new cart if modelConfig is already in cart
+  if (modelConfig.quoteId) {
+    return loop(nextState, Cmd.action(cartAction.createCart()))
+  }
+
+  return nextState
 }
 
 const receiveQuotes = (state, {payload: {countryCode, currency, modelConfigs, refresh}}) => {
@@ -437,20 +465,45 @@ const stopReceivingQuotes = (state, _action) => {
   return nextState
 }
 
-const addToCart = (state, {payload: {configIds, quotes, shipping}}) => ({
-  ...state,
-  modelConfigs: setQuotesAndShippingInModelConfigs(state.modelConfigs, configIds, quotes, shipping)
-})
-
-const createCart = (state, {payload: {modelConfigs, currency}}) => {
-  const shippingIds = compact(uniq(modelConfigs.map(modelConfig => modelConfig.shippingId)))
-  const quoteIds = compact(modelConfigs.map(modelConfig => modelConfig.quoteId))
-
-  return loop(
+const addToCart = (state, {payload: {configIds, quotes, shipping}}) =>
+  loop(
     {
       ...state,
-      cart: null // Clear old cart
+      modelConfigs: setQuotesAndShippingInModelConfigs(
+        state.modelConfigs,
+        configIds,
+        quotes,
+        shipping
+      )
     },
+    Cmd.action(cartAction.createCart())
+  )
+
+const createCart = (state, _action) => {
+  const modelConfigs = state.modelConfigs.filter(
+    modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
+  )
+  const currency = state.currency
+  const shippingIds = compact(
+    uniq(modelConfigs.map(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.shippingId))
+  )
+  const quoteIds = compact(
+    modelConfigs.map(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId)
+  )
+  const nextState = {
+    ...state,
+    cart: null // Clear old cart
+  }
+
+  if (modelConfigs.length === 0) {
+    return nextState
+  }
+
+  invariant(shippingIds.length > 0, 'Shippings for cart creation missing.')
+  invariant(quoteIds.length > 0, 'Quotes for cart creation missing.')
+
+  return loop(
+    nextState,
     Cmd.run(printingEngine.createCart, {
       args: [
         {
@@ -464,6 +517,11 @@ const createCart = (state, {payload: {modelConfigs, currency}}) => {
     })
   )
 }
+
+const cartReceived = (state, {payload: {cart}}) => ({
+  ...state,
+  cart
+})
 
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
@@ -511,6 +569,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return addToCart(state, action)
     case 'CART.CREATE_CART':
       return createCart(state, action)
+    case 'CART.CART_RECEIVED':
+      return cartReceived(state, action)
     default:
       return state
   }

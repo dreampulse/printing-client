@@ -14,9 +14,8 @@ export default ({history}) => (
     <Switch>
       <Route component={UploadPage} path="/" exact />
       <Route component={MaterialPage} path="/material" exact />
-      <Route component={AddressPage} path="/address" />
-      {/* For now you can access the cart page directly via URL and click the link to the upload page, upload a model and press the browser back button to get a filled cart page. */}
       <Route component={CartPage} path="/cart" exact />
+      <Route component={AddressPage} path="/address" exact />
       <Route component={ReviewOrderPage} path="/review-order" exact />
     </Switch>
   </ConnectedRouter>

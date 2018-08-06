@@ -178,8 +178,8 @@ export type Cart = {
   shippingIds: Array<ShippingId>,
   subTotalPrice: number,
   shippingTotal: number,
-  vatPercentage: number,
-  vatPrice: number,
+  // vatPercentage: number,
+  // vatPrice: number,
   totalPrice: number,
   currency: string
 }
