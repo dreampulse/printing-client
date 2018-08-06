@@ -133,6 +133,7 @@ export type Quote = {
   modelId: ModelId,
   materialConfigId: MaterialConfigId,
   price: number,
+  grossPrice: number,
   quantity: number,
   currency: string,
   isPrintable: boolean
@@ -142,6 +143,7 @@ export type MultiModelQuote = {
   vendorId: VendorId,
   materialConfigId: MaterialConfigId,
   price: number,
+  grossPrice: number,
   currency: string,
   isPrintable: boolean,
   quotes: Array<Quote>
@@ -153,6 +155,7 @@ export type Shipping = {
   name: string,
   deliveryTime: string,
   price: number,
+  grossPrice: number,
   currency: string
 }
 
