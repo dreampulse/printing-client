@@ -1,6 +1,8 @@
 .payment-section {
-  padding: $space-l;
-  border: 1px solid $color-border-minor;
+  &__box {
+    padding: $space-l;
+    border: 1px solid $color-border-minor;
+  }
 
   &__price-components {
     list-style: none;
@@ -36,8 +38,36 @@
     float: right;
   }
 
+  &__price-detail {
+    display: block;
+    clear: both;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__price-detail-item {
+    @include scut-clearfix;
+    display: block;
+  }
+
+  &__price-detail-label {
+    float: left;
+    color: $color-minor;
+
+    &:before {
+      content: '-';
+      padding-right: $space-s;
+    }
+  }
+  &__price-detail-value {
+    float: right;
+  }
+
   &__total-price {
     margin: $space-l 0 0;
+    line-height: $font-size-xxl;
+
     .payment-section__price-value {
       font-size: $font-size-xxl;
       font-weight: $font-weight-bold;
@@ -48,28 +78,15 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid $color-border-minor;
-  }
 
-  &__button {
-    margin-bottom: $space-l;
-  }
-
-  &__links {
-    list-style: none;
-    margin: 0;
-    padding: $space-l 0 0;
-  }
-
-  &__link {
-    margin-bottom: $space-l;
-
-    & > .headline {
-      margin-bottom: 0;
+    & > * + * {
+      margin-top: $space-l;
     }
+  }
 
-    &:last-child {
-      margin-bottom: 0;
-    }
+  &__section-label {
+    font-size: $font-size-l;
+    color: $color-minor;
+    margin-bottom: $space-base;
   }
 }

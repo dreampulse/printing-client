@@ -437,9 +437,9 @@ const stopReceivingQuotes = (state, _action) => {
   return nextState
 }
 
-const addToCart = (state, {payload: {quotes, shipping}}) => ({
+const addToCart = (state, {payload: {configIds, quotes, shipping}}) => ({
   ...state,
-  modelConfigs: setQuotesAndShippingInModelConfigs(state.modelConfigs, quotes, shipping)
+  modelConfigs: setQuotesAndShippingInModelConfigs(state.modelConfigs, configIds, quotes, shipping)
 })
 
 const createCart = (state, {payload: {modelConfigs, currency}}) => {
