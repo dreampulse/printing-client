@@ -3,6 +3,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
+import compose from 'recompose/compose'
+import withProps from 'recompose/withProps'
 
 import type {AppState} from '../reducer-next'
 import {
@@ -26,6 +28,7 @@ import SelectField from '../component/select-field'
 import ModelItem from '../component/model-item'
 import ButtonBar from '../component/button-bar'
 import LoadingIndicator from '../component/loading-indicator'
+import Notification from '../component/notification'
 
 import * as navigationAction from '../action-next/navigation'
 import * as modelAction from '../action-next/model'
@@ -42,6 +45,7 @@ import copyIcon from '../../asset/icon/copy.svg'
 
 const CartPage = ({
   modelsWithConfig,
+  modelConfigs,
   onEditMaterial,
   onGoToUpload,
   onCheckout,
@@ -50,7 +54,9 @@ const CartPage = ({
   cart,
   chosenShippings,
   materialGroups,
-  onMagnifyModel
+  onMagnifyModel,
+  onChooseMaterial,
+  numAddedItems
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -162,8 +168,47 @@ const CartPage = ({
     )
   }
 
+  const warningNotificationSection = () => (
+    <Notification
+      classNames={['u-margin-bottom']}
+      warning
+      message={`For ${modelConfigs.length -
+        modelsWithConfig.length} of ${modelConfigs.length} uploaded items you have not chosen a material. They have not been added to your cart.`}
+      button={
+        <Button
+          label="Choose material …"
+          onClick={() =>
+            onChooseMaterial(
+              modelConfigs
+                .filter(
+                  modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null
+                )
+                .map(modelConfig => modelConfig.id)
+            )}
+          modifiers={['compact', 'minor']}
+        />
+      }
+    />
+  )
+
+  const addedNotificationSection = () => (
+    <Notification
+      classNames={['u-margin-bottom']}
+      message={`${numAddedItems} item${numAddedItems > 1 ? 's' : ''} added to your cart`}
+    />
+  )
+
+  const hasAddedItems = numAddedItems > 0
+  const hasItemsOnUploadPage = modelConfigs.length > modelsWithConfig.length
+
   return (
     <AppLayout>
+      {(hasAddedItems || hasItemsOnUploadPage) && (
+        <Section>
+          {hasAddedItems && addedNotificationSection()}
+          {hasItemsOnUploadPage && warningNotificationSection()}
+        </Section>
+      )}
       <Headline label="Your Cart" modifiers={['xl']} />
       {hasModels && <SidebarLayout sidebar={paymentSection()}>{modelListSection()}</SidebarLayout>}
       {!hasModels && (
@@ -194,6 +239,7 @@ const mapStateToProps = (state: AppState) => ({
     const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
     return mc.type === 'UPLOADED' && mc.quoteId !== null
   }),
+  modelConfigs: state.core.modelConfigs,
   chosenShippings: selectUniqueChosenShippings(state),
   currency: state.core.currency,
   cart: state.core.cart,
@@ -207,7 +253,13 @@ const mapDispatchToProps = {
   onCreateCart: cartAction.createCart,
   onEditMaterial: /* TODO: openConfigurationModal() */ () => {},
   onCheckout: navigationAction.goToAddress,
+  onChooseMaterial: navigationAction.goToMaterial,
   onMagnifyModel: modelViewerAction.open
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartPage)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withProps(({location}) => ({
+    numAddedItems: (location.state || {}).numAddedItems || 0
+  }))
+)(CartPage)
