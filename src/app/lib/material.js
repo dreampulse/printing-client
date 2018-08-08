@@ -1,5 +1,4 @@
 // @flow
-
 import uniq from 'lodash/uniq'
 
 import config from '../../../config'
@@ -9,7 +8,6 @@ import type {
   MaterialGroupId,
   MaterialId,
   Material,
-  Quote,
   MaterialConfigId,
   VendorId,
   FinishGroupId,
@@ -18,34 +16,6 @@ import type {
 
 export function hasMaterialMultipleConfigs(material: Material) {
   return !material.finishGroups.every(finishGroup => finishGroup.materialConfigs.length <= 1)
-}
-
-export function getBestQuote(quotes: Array<Quote>): ?Quote {
-  return quotes.reduce((bestQuote, quote) => {
-    const bestPrice = (bestQuote && bestQuote.price) || Number.MAX_SAFE_INTEGER
-    if (quote.isPrintable && bestPrice > quote.price) {
-      return quote
-    }
-    return bestQuote
-  }, null)
-}
-
-export function getBestQuoteForMaterialConfig(
-  quotes: Array<Quote>,
-  materialConfigId: MaterialConfigId
-): ?Quote {
-  return getBestQuote(quotes.filter(quote => quote.materialConfigId === materialConfigId))
-}
-
-export function getBestQuoteForMaterial(quotes: Array<Quote>, material: Material): ?Quote {
-  const materialConfigs = {}
-  material.finishGroups.forEach(finishGroup => {
-    finishGroup.materialConfigs.forEach(materialConfig => {
-      materialConfigs[materialConfig.id] = true
-    })
-  })
-
-  return getBestQuote(quotes.filter(quote => materialConfigs[quote.materialConfigId]))
 }
 
 export function getMaterialConfigIdsOfMaterialGroup(materialGroup: MaterialGroup) {

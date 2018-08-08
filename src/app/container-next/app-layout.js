@@ -4,16 +4,17 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
 
-import type {AppState} from '../reducer-next'
-import FooterPartial from './footer-partial'
-
 import helpIcon from '../../asset/icon/help.svg'
 import cartIcon from '../../asset/icon/cart.svg'
 
 import {selectCartCount} from '../lib/selector'
 
+import type {AppState} from '../reducer-next'
 import {goToUpload, goToCart} from '../action-next/navigation'
 import Modal from './modal'
+import {openIntercom} from '../service/intercom'
+
+import FooterPartial from './footer-partial'
 
 import App from '../component/app'
 import Container from '../component/container'
@@ -21,7 +22,7 @@ import NavBar from '../component/nav-bar'
 import IconLink from '../component/icon-link'
 import Button from '../component/button'
 
-const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick, onHelpClick}) => (
+const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick}) => (
   <App
     header={
       <NavBar key="navbar" onClickIdentity={onHomeClick}>
@@ -46,7 +47,7 @@ const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick
           icon={helpIcon}
           onClick={event => {
             event.preventDefault()
-            onHelpClick()
+            openIntercom()
           }}
         />
       </NavBar>
@@ -65,8 +66,7 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = {
   onHomeClick: goToUpload,
   onUploadClick: goToUpload,
-  onCartClick: goToCart,
-  onHelpClick: () => {} /* TODO */
+  onCartClick: goToCart
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppLayout)

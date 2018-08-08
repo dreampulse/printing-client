@@ -133,9 +133,20 @@ export type Quote = {
   modelId: ModelId,
   materialConfigId: MaterialConfigId,
   price: number,
+  grossPrice: number,
   quantity: number,
   currency: string,
   isPrintable: boolean
+}
+
+export type MultiModelQuote = {
+  vendorId: VendorId,
+  materialConfigId: MaterialConfigId,
+  price: number,
+  grossPrice: number,
+  currency: string,
+  isPrintable: boolean,
+  quotes: Array<Quote>
 }
 
 export type Shipping = {
@@ -144,6 +155,7 @@ export type Shipping = {
   name: string,
   deliveryTime: string,
   price: number,
+  grossPrice: number,
   currency: string
 }
 
@@ -163,6 +175,17 @@ export type ModelConfigUploaded = {
 }
 
 export type ModelConfig = ModelConfigUploading | ModelConfigUploaded
+
+export type Cart = {
+  cartId: CartId,
+  shippingIds: Array<ShippingId>,
+  subTotalPrice: number,
+  shippingTotal: number,
+  // vatPercentage: number,
+  // vatPrice: number,
+  totalPrice: number,
+  currency: string
+}
 
 export type Location = {
   city: string,

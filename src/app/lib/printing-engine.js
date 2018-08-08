@@ -20,7 +20,8 @@ import type {
   PaymentId,
   Quote,
   BackendModel,
-  MaterialGroup
+  MaterialGroup,
+  Cart
 } from '../type-next'
 import * as httpJson from './http-json'
 
@@ -57,22 +58,12 @@ export type UserResponse = {
 }
 
 export type CartRequest = {
-  userId: UserId,
   quoteIds: Array<QuoteId>,
   shippingIds: Array<ShippingId>,
   currency: string
 }
 
-export type CartResponse = {
-  cartId: CartId,
-  shippingIds: Array<ShippingId>,
-  subTotalPrice: number,
-  shippingTotal: number,
-  vatPercentage: number,
-  vatPrice: number,
-  totalPrice: number,
-  currency: string
-}
+export type CartResponse = Cart
 
 export type ConfigurationRequest = {
   items: Array<{

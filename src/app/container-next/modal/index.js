@@ -5,6 +5,7 @@ import lifecycle from 'recompose/lifecycle'
 import compose from 'recompose/compose'
 
 import {CONTENT_TYPE, close} from '../../action-next/modal'
+import FatalErrorModal from './fatal-error'
 import ModelViewerModal from './model-viewer'
 import MaterialModal from './material'
 import FinishGroupModal from './finish-group'
@@ -13,6 +14,7 @@ import ConfirmLocationChangeModal from './confirm-location-change'
 import ConfirmCurrencyChangeModal from './confirm-currency-change'
 
 const modals = {
+  [CONTENT_TYPE.FATAL_ERROR]: FatalErrorModal,
   [CONTENT_TYPE.MODEL_VIEWER]: ModelViewerModal,
   [CONTENT_TYPE.MATERIAL]: MaterialModal,
   [CONTENT_TYPE.FINISH_GROUP]: FinishGroupModal,

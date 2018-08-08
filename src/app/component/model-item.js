@@ -31,7 +31,11 @@ const ModelItem = ({
 }) => (
   <div className={buildClassName('model-item', modifiers, classNames)}>
     <MagnifyableItem ariaLabel={`Load ${title} in interactive model viewer`} onClick={onMagnify}>
-      <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
+      <ImageContainer
+        modifiers={['ratio-1-1']}
+        source={imageSource}
+        alt={`Preview image of ${title}`}
+      />
     </MagnifyableItem>
     <div className="model-item__center-content">
       <strong className="model-item__title">{title}</strong>

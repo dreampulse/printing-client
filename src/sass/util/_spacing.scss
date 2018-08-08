@@ -2,6 +2,10 @@
   margin: 0;
 }
 
+.u-no-margin-bottom {
+  margin-bottom: 0;
+}
+
 .u-margin-bottom-s {
   margin-bottom: $space-s;
 }
@@ -16,4 +20,20 @@
 }
 .u-margin-bottom-xxl {
   margin-bottom: $space-xxl;
+}
+
+.u-margin-top-s {
+  margin-top: $space-s;
+}
+.u-margin-top {
+  margin-top: $space-base;
+}
+.u-margin-top-l {
+  margin-top: $space-l;
+}
+.u-margin-top-xl {
+  margin-top: $space-xl;
+}
+.u-margin-top-xxl {
+  margin-top: $space-xxl;
 }
