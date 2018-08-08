@@ -4,7 +4,6 @@ import {Provider} from 'react-redux'
 import createHistory from 'history/createBrowserHistory'
 import {AppContainer} from 'react-hot-loader'
 import browserUpdate from 'browser-update'
-import {push} from 'react-router-redux'
 
 import 'babel-polyfill'
 
