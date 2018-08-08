@@ -1,7 +1,8 @@
 import {
   isQuotePollingDone,
   selectQuotePollingProgress,
-  selectQuotes
+  selectQuotes,
+  selectUsedShippingIdsAndFilter
 } from '../../../../../src/app/lib/selector/quote'
 
 describe('isQuotePollingDone()', () => {
@@ -74,5 +75,96 @@ describe('selectQuotes()', () => {
     }
 
     expect(selectQuotes(state), 'to equal', ['some-quote-1', 'some-quote-2'])
+  })
+})
+
+describe('selectUsedShippingIdsAndFilter()', () => {
+  it('returns all shipping ids', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            id: 'config-1',
+            type: 'UPLOADED',
+            shippingId: 'shipping-1'
+          },
+          {
+            id: 'config-2',
+            type: 'UPLOADED',
+            shippingId: 'shipping-2'
+          }
+        ]
+      }
+    }
+
+    expect(selectUsedShippingIdsAndFilter(state), 'to equal', ['shipping-1', 'shipping-2'])
+  })
+
+  it('removes empty values from return list', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            id: 'config-1',
+            type: 'UPLOADED',
+            shippingId: 'shipping-1'
+          },
+          {
+            id: 'config-2',
+            type: 'UPLOADED',
+            shippingId: null
+          },
+          {
+            id: 'config-3',
+            type: 'UPLOADING',
+            shippingId: null
+          }
+        ]
+      }
+    }
+
+    expect(selectUsedShippingIdsAndFilter(state), 'to equal', ['shipping-1'])
+  })
+
+  it('removes duplicates from return list', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            id: 'config-1',
+            type: 'UPLOADED',
+            shippingId: 'shipping-1'
+          },
+          {
+            id: 'config-2',
+            type: 'UPLOADED',
+            shippingId: 'shipping-1'
+          }
+        ]
+      }
+    }
+
+    expect(selectUsedShippingIdsAndFilter(state), 'to equal', ['shipping-1'])
+  })
+
+  it('excludes given model config ids', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            id: 'config-1',
+            type: 'UPLOADED',
+            shippingId: 'shipping-1'
+          },
+          {
+            id: 'config-2',
+            type: 'UPLOADED',
+            shippingId: 'shipping-2'
+          }
+        ]
+      }
+    }
+
+    expect(selectUsedShippingIdsAndFilter(state, ['config-2']), 'to equal', ['shipping-1'])
   })
 })

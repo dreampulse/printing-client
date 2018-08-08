@@ -1,7 +1,10 @@
 // @flow
 
 import sum from 'lodash/sum'
-import type {AppState} from '../../type-next'
+import uniq from 'lodash/uniq'
+import compact from 'lodash/compact'
+
+import type {AppState, ConfigId} from '../../type-next'
 
 export const isQuotePollingDone = (state: AppState) => !state.core.quotePollingId
 
@@ -11,3 +14,19 @@ export const selectQuotePollingProgress = (state: AppState) => ({
 })
 
 export const selectQuotes = (state: AppState) => Object.values(state.core.quotes)
+
+export const selectUsedShippingIdsAndFilter = (
+  state: AppState,
+  excludeConfigIds: Array<ConfigId> = []
+) =>
+  uniq(
+    compact(
+      state.core.modelConfigs.map(
+        modelConfig =>
+          modelConfig.type === 'UPLOADED' &&
+          !excludeConfigIds.find(id => modelConfig.type === 'UPLOADED' && id === modelConfig.id)
+            ? modelConfig.shippingId
+            : null
+      )
+    )
+  )

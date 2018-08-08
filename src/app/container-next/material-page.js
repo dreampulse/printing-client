@@ -9,6 +9,7 @@ import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 import withPropsOnChange from 'recompose/withPropsOnChange'
 import flatMap from 'lodash/flatMap'
+import keyBy from 'lodash/keyBy'
 
 import * as navigationAction from '../action-next/navigation'
 import * as modalAction from '../action-next/modal'
@@ -34,7 +35,8 @@ import {
   selectQuotePollingProgress,
   isQuotePollingDone,
   selectQuotes,
-  selectUploadedModelConfigs
+  selectUploadedModelConfigs,
+  selectUsedShippingIdsAndFilter
 } from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
 import scrollTo from '../service/scroll-to'
@@ -89,7 +91,8 @@ const MaterialPage = ({
   pollingProgress,
   isPollingDone,
   configIds,
-  uploadedModelConfigs
+  uploadedModelConfigs,
+  usedShippingIds
 }) => {
   const title = `Choose material (${configIds.length}/${uploadedModelConfigs.length} Items)`
   const numCheckedProviders = pollingProgress.complete || 0
@@ -282,6 +285,7 @@ const MaterialPage = ({
       multiModelQuote =>
         multiModelQuote.isPrintable && multiModelQuote.materialConfigId === selectedMaterialConfigId
     )
+    const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
     const providerList = flatMap(
       (multiModelQuotesForSelectedMaterialConfig: any), // Because flatMap is broken in flow
@@ -291,7 +295,10 @@ const MaterialPage = ({
           .map(shipping => [
             multiModelQuote,
             shipping,
-            multiModelQuote.grossPrice + shipping.grossPrice
+            multiModelQuote.grossPrice +
+              (usedShippingIdsById[shipping.shippingId]
+                ? 0 // No additional costs if shipping method is already in cart
+                : shipping.grossPrice)
           ])
     ).sort(([, , priceA], [, , priceB]) => priceA - priceB)
 
@@ -323,7 +330,11 @@ const MaterialPage = ({
                 price={formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
                 deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
                 deliveryProvider={shipping.name}
-                shippingPrice={formatPrice(shipping.grossPrice, shipping.currency)}
+                shippingPrice={
+                  usedShippingIdsById[shipping.shippingId]
+                    ? '-'
+                    : formatPrice(shipping.grossPrice, shipping.currency)
+                }
                 totalPrice={formatPrice(grossPrice, multiModelQuote.currency)}
                 includesVat={false}
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
@@ -372,7 +383,8 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   currency: state.core.currency,
   location: state.core.location,
   shippings: state.core.shippings,
-  uploadedModelConfigs: selectUploadedModelConfigs(state)
+  uploadedModelConfigs: selectUploadedModelConfigs(state),
+  usedShippingIds: selectUsedShippingIdsAndFilter(state, ownProps.configIds)
 })
 
 const mapDispatchToProps = {
