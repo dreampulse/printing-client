@@ -138,6 +138,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 1,
+        grossPrice: 1,
         currency: 'USD',
         isPrintable: true,
         quantity: 1
@@ -148,6 +149,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-2',
         vendorId: 'vendor-1',
         price: 10,
+        grossPrice: 10,
         currency: 'USD',
         isPrintable: true,
         quantity: 1
@@ -158,6 +160,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 100,
+        grossPrice: 100,
         currency: 'USD',
         isPrintable: true,
         quantity: 1
@@ -168,6 +171,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-2',
         vendorId: 'vendor-1',
         price: 1000,
+        grossPrice: 1000,
         currency: 'USD',
         isPrintable: true,
         quantity: 1
@@ -179,6 +183,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 101,
+        grossPrice: 101,
         currency: 'USD',
         isPrintable: true,
         quotes: [quotes[0], quotes[2]]
@@ -187,6 +192,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-2',
         vendorId: 'vendor-1',
         price: 1010,
+        grossPrice: 1010,
         currency: 'USD',
         isPrintable: true,
         quotes: [quotes[1], quotes[3]]
@@ -215,6 +221,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 1,
+        grossPrice: 1,
         currency: 'USD',
         isPrintable: true,
         quantity: 1
@@ -225,6 +232,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 10,
+        grossPrice: 10,
         currency: 'USD',
         isPrintable: false,
         quantity: 1
@@ -236,6 +244,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 11,
+        grossPrice: 11,
         currency: 'USD',
         isPrintable: false,
         quotes
@@ -264,6 +273,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 1,
+        grossPrice: 1,
         currency: 'USD',
         isPrintable: true,
         quantity: 1
@@ -275,6 +285,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 2,
+        grossPrice: 2,
         currency: 'USD',
         isPrintable: true,
         quotes
@@ -303,6 +314,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 1,
+        grossPrice: 1,
         currency: 'USD',
         isPrintable: true,
         quantity: 1
@@ -313,6 +325,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 2,
+        grossPrice: 2,
         currency: 'USD',
         isPrintable: true,
         quantity: 2
@@ -324,6 +337,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 3,
+        grossPrice: 3,
         currency: 'USD',
         isPrintable: true,
         quotes
@@ -347,6 +361,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 1,
+        grossPrice: 1,
         currency: 'USD',
         isPrintable: true,
         quantity: 1
@@ -357,6 +372,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 10,
+        grossPrice: 10,
         currency: 'USD',
         isPrintable: true,
         quantity: 1
@@ -368,6 +384,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 1,
+        grossPrice: 1,
         currency: 'USD',
         isPrintable: true,
         quotes: [quotes[0]]
@@ -403,6 +420,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 1,
+        grossPrice: 1,
         currency: 'USD',
         isPrintable: true,
         quantity: 1
@@ -413,6 +431,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 2,
+        grossPrice: 2,
         currency: 'USD',
         isPrintable: true,
         quantity: 2
@@ -424,6 +443,7 @@ describe('getMultiModelQuotes()', () => {
         materialConfigId: 'material-config-1',
         vendorId: 'vendor-1',
         price: 2,
+        grossPrice: 2,
         currency: 'USD',
         isPrintable: true,
         quotes: [quotes[1]]

@@ -101,7 +101,7 @@ const MaterialPage = ({
       const bestQuote = getBestMultiModelQuoteForMaterial(multiModelQuotes, material)
       const price = (
         <Price
-          value={bestQuote ? formatPrice(bestQuote.price, bestQuote.currency) : undefined}
+          value={bestQuote ? formatPrice(bestQuote.grossPrice, bestQuote.currency) : undefined}
           prefix="From"
         />
       )
@@ -218,7 +218,7 @@ const MaterialPage = ({
       const colorMenu = colors.length > 1 && <SelectMenu values={colors} />
       const materialPrice = (
         <Price
-          value={bestQuote && formatPrice(bestQuote.price, bestQuote.currency)}
+          value={bestQuote && formatPrice(bestQuote.grossPrice, bestQuote.currency)}
           prefix="From"
         />
       )
@@ -278,27 +278,28 @@ const MaterialPage = ({
   }
 
   const renderProviderSection = () => {
-    const multiModelQuotesForSelectedMaterialConfig = multiModelQuotes
-      .filter(
-        multiModelQuote =>
-          multiModelQuote.isPrintable &&
-          multiModelQuote.materialConfigId === selectedMaterialConfigId
-      )
-      .sort((a, b) => a.price - b.price)
+    const multiModelQuotesForSelectedMaterialConfig = multiModelQuotes.filter(
+      multiModelQuote =>
+        multiModelQuote.isPrintable && multiModelQuote.materialConfigId === selectedMaterialConfigId
+    )
 
     const providerList = flatMap(
       (multiModelQuotesForSelectedMaterialConfig: any), // Because flatMap is broken in flow
       multiModelQuote =>
         shippings
           .filter(shipping => shipping.vendorId === multiModelQuote.vendorId)
-          .map(shipping => [multiModelQuote, shipping])
-    )
+          .map(shipping => [
+            multiModelQuote,
+            shipping,
+            multiModelQuote.grossPrice + shipping.grossPrice
+          ])
+    ).sort(([, , priceA], [, , priceB]) => priceA - priceB)
 
     return (
       <Section>
         <Headline label="3. Provider and shipping" modifiers={['xl']} />
         <ProviderList>
-          {providerList.map(([multiModelQuote, shipping]) => {
+          {providerList.map(([multiModelQuote, shipping, grossPrice]) => {
             const materialTree = getMaterialTreeByMaterialConfigId(
               materialGroups,
               multiModelQuote.materialConfigId
@@ -312,11 +313,6 @@ const MaterialPage = ({
               productionTimeSlow
             } = materialTree.materialConfig.printingService[multiModelQuote.vendorId]
 
-            // TODO: how to deal with vat? The current prices are without vat
-            // TODO: how to deal with shipping if another model with same shipping method has already been added to cart
-            // TODO: compute total prices before and sort this list by total price
-            const totalPrice = multiModelQuote.price + shipping.price
-
             return (
               <ProviderItem
                 key={multiModelQuote.quoteId + shipping.shippingId}
@@ -324,11 +320,11 @@ const MaterialPage = ({
                 providerSlug={multiModelQuote.vendorId}
                 providerName={getProviderName(multiModelQuote.vendorId)}
                 providerInfo={providerInfo}
-                price={formatPrice(multiModelQuote.price, multiModelQuote.currency)}
+                price={formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
                 deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
                 deliveryProvider={shipping.name}
-                shippingPrice={formatPrice(shipping.price, shipping.currency)}
-                totalPrice={formatPrice(totalPrice, multiModelQuote.currency)}
+                shippingPrice={formatPrice(shipping.grossPrice, shipping.currency)}
+                totalPrice={formatPrice(grossPrice, multiModelQuote.currency)}
                 includesVat={false}
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
                 onAddToCartClick={() => {

@@ -74,7 +74,8 @@ export function getMultiModelQuotes(
         (result, quote) => result && !!quote && quote.isPrintable,
         true
       ),
-      price: compact(quotesPerModelConfig).reduce((sum, quote) => sum + quote.price, 0)
+      price: compact(quotesPerModelConfig).reduce((sum, quote) => sum + quote.price, 0),
+      grossPrice: compact(quotesPerModelConfig).reduce((sum, quote) => sum + quote.grossPrice, 0)
     }
   })
 }
