@@ -216,8 +216,9 @@ export type Features = {
 }
 
 export type User = {
+  userId: ?UserId,
   emailAddress: string,
-  isCompany: string,
+  isCompany: boolean,
   companyName: ?string,
   vatId: ?string,
   phoneNumber: string,
