@@ -2,11 +2,12 @@ import React from 'react'
 import {compose} from 'recompose'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
-import {push} from 'react-router-redux'
 
 import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
 import {formatPrice} from '../lib/formatter'
+
+import * as navigationActions from '../action-next/navigation'
 
 import PageHeader from '../component/page-header'
 import SidebarLayout from '../component/sidebar-layout'
@@ -26,10 +27,10 @@ import SelectField from '../component/select-field'
 import creditCardIcon from '../../asset/icon/credit-card.svg'
 import paypalIcon from '../../../src/asset/icon/paypal.svg'
 
-// TODO: import {guard} from './util/guard'
+import {guard} from './util/guard'
 import CheckoutLayout from './checkout-layout'
 
-const ReviewOrderPage = ({address, onPush}) => {
+const ReviewOrderPage = ({address, onGoToAddress, onGoToCart}) => {
   const shippingStateName = getStateName(
     address.shippingAddress.countryCode,
     address.shippingAddress.stateCode
@@ -72,7 +73,7 @@ const ReviewOrderPage = ({address, onPush}) => {
             )}
             {getCountryName(address.shippingAddress.countryCode)}
             <br />
-            <EditLink label="edit" onClick={() => onPush('/address')} />
+            <EditLink label="edit" onClick={onGoToAddress} />
           </Paragraph>
         </Column>
         <Column md={6}>
@@ -110,7 +111,7 @@ const ReviewOrderPage = ({address, onPush}) => {
               ? getCountryName(address.billingAddress.countryCode)
               : getCountryName(address.shippingAddress.countryCode)}
             <br />
-            <EditLink label="edit" onClick={() => onPush('/address')} />
+            <EditLink label="edit" onClick={onGoToAddress} />
           </Paragraph>
         </Column>
       </Grid>
@@ -190,7 +191,7 @@ const ReviewOrderPage = ({address, onPush}) => {
           modifiers={['minor', 'l', 'inline']}
           label={
             <React.Fragment key="label">
-              Your Order <EditLink label="edit" onClick={() => onPush('/cart')} />
+              Your Order <EditLink label="edit" onClick={onGoToCart} />
             </React.Fragment>
           }
         />
@@ -285,41 +286,17 @@ const ReviewOrderPage = ({address, onPush}) => {
   )
 }
 
-const mapStateToProps = () => ({
-  address: {
-    shippingAddress: {
-      firstName: 'First Name',
-      lastName: 'Last Name',
-      address: 'Address line one',
-      addressLine2: 'Address line two',
-      zipCode: 'ZIP 1111',
-      city: 'City',
-      countryCode: 'DE',
-      companyName: 'Company Name',
-      vatId: 'DEVAT_ID',
-      stateCode: ''
-    },
-    billingAddress: {
-      firstName: '',
-      lastName: '',
-      address: '',
-      addressLine2: '',
-      zipCode: '',
-      city: '',
-      countryCode: '',
-      companyName: '',
-      vatId: '',
-      stateCode: ''
-    }
-  }
+const mapStateToProps = state => ({
+  address: state.core.user
 })
 
 const mapDispatchToProps = {
-  onPush: push
+  onGoToAddress: navigationActions.goToAddress,
+  onGoToCart: navigationActions.goToCart
 }
 
 const enhance = compose(
-  // TODO: guard(state => state.cart.cart),
+  guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps)
 )
 
