@@ -46,7 +46,6 @@ import copyIcon from '../../asset/icon/copy.svg'
 const CartPage = ({
   modelsWithConfig,
   modelConfigs,
-  onEditMaterial,
   onGoToUpload,
   onCheckout,
   onDuplicateModelConfig,
@@ -66,7 +65,7 @@ const CartPage = ({
       <Button
         label="Edit material …"
         modifiers={['tiny', 'minor']}
-        onClick={() => onEditMaterial([modelConfig.id])}
+        onClick={() => onChooseMaterial([modelConfig.id])}
       />
       {/*
       TODO: Quantity change in card is hard to solve because we have to do another price request and match old to new quotes afterwards, which makes all of this async
@@ -251,7 +250,6 @@ const mapDispatchToProps = {
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onDuplicateModelConfig: modelAction.duplicateModelConfig,
   onCreateCart: cartAction.createCart,
-  onEditMaterial: /* TODO: openConfigurationModal() */ () => {},
   onCheckout: navigationAction.goToAddress,
   onChooseMaterial: navigationAction.goToMaterial,
   onMagnifyModel: modelViewerAction.open

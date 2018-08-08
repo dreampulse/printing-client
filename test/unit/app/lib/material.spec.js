@@ -6,6 +6,7 @@ import {
   getMaterialById,
   getMaterialGroupById,
   getFinishGroupById,
+  getMaterialConfigById,
   getMaterialConfigIdsOfMaterialGroup,
   getMaterialFinishGroupProviderNames,
   getMaterialTreeByMaterialConfigId,
@@ -253,7 +254,7 @@ describe('getMaterialFinishGroupProviderNames()', () => {
 })
 
 describe('getFinishGroupById()', () => {
-  it('returns all matching finish groups', () => {
+  it('returns matching finish groups', () => {
     const materialGroups = [
       {
         materials: [
@@ -295,6 +296,60 @@ describe('getFinishGroupById()', () => {
     ]
 
     expect(getFinishGroupById(materialGroups, 'some-finish-group-id-3'), 'to equal', null)
+  })
+})
+
+describe('getMaterialConfigById()', () => {
+  it('returns matching material config', () => {
+    const materialGroups = [
+      {
+        materials: [
+          {
+            finishGroups: [
+              {
+                materialConfigs: [
+                  {
+                    id: 'material-config-1'
+                  },
+                  {
+                    id: 'material-config-2'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    expect(getMaterialConfigById(materialGroups, 'material-config-1'), 'to equal', {
+      id: 'material-config-1'
+    })
+  })
+
+  it('returns null for no match', () => {
+    const materialGroups = [
+      {
+        materials: [
+          {
+            finishGroups: [
+              {
+                materialConfigs: [
+                  {
+                    id: 'material-config-1'
+                  },
+                  {
+                    id: 'material-config-2'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    expect(getMaterialConfigById(materialGroups, 'material-config-3'), 'to equal', null)
   })
 })
 

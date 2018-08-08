@@ -3,7 +3,18 @@ import invariant from 'invariant'
 import compact from 'lodash/compact'
 import uniq from 'lodash/uniq'
 
-import type {AppState, ModelConfig, UploadingFile, ConfigId, BackendModel} from '../../type-next'
+import type {
+  AppState,
+  ModelConfig,
+  UploadingFile,
+  ConfigId,
+  BackendModel,
+  MaterialConfigId,
+  FinishGroupId,
+  MaterialId,
+  MaterialGroupId
+} from '../../type-next'
+import {getMaterialConfigById} from '../material'
 
 export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile | BackendModel> =>
   state.core.modelConfigs.map(
@@ -60,4 +71,47 @@ export const selectUniqueChosenShippings = (state: AppState) => {
   )
 
   return shippingIds.map(id => state.core.shippings.find(shipping => shipping.shippingId === id))
+}
+
+export const selectCommonMaterialPathOfModelConfigs = (
+  state: AppState,
+  configIds: Array<ConfigId>
+): {
+  materialConfigId: ?MaterialConfigId,
+  finishGroupId: ?FinishGroupId,
+  materialId: ?MaterialId,
+  materialGroupId: ?MaterialGroupId
+} => {
+  const modelConfigs = selectModelConfigsByIds(state, configIds)
+  const materialConfigs = compact(
+    modelConfigs.map(modelConfig => {
+      if (modelConfig.type === 'UPLOADED' && modelConfig.quoteId) {
+        return getMaterialConfigById(
+          state.core.materialGroups,
+          state.core.quotes[modelConfig.quoteId].materialConfigId
+        )
+      }
+
+      return null
+    })
+  )
+
+  const findCommonProperty = (arr, getProperty) =>
+    arr.reduce(
+      (aggr, value) => (aggr === getProperty(value) ? aggr : null),
+      arr.length > 0 ? getProperty(arr[0]) : null
+    )
+
+  return {
+    materialConfigId: findCommonProperty(materialConfigs, materialConfig => materialConfig.id),
+    finishGroupId: findCommonProperty(
+      materialConfigs,
+      materialConfig => materialConfig.finishGroupId
+    ),
+    materialId: findCommonProperty(materialConfigs, materialConfig => materialConfig.materialId),
+    materialGroupId: findCommonProperty(
+      materialConfigs,
+      materialConfig => materialConfig.materialGroupId
+    )
+  }
 }

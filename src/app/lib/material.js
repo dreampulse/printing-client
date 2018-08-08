@@ -8,6 +8,7 @@ import type {
   MaterialGroupId,
   MaterialId,
   Material,
+  MaterialConfig,
   MaterialConfigId,
   VendorId,
   FinishGroupId,
@@ -75,6 +76,27 @@ export const getFinishGroupById = (
   })
 
   return foundFinishGroup
+}
+
+export const getMaterialConfigById = (
+  materialGroups: Array<MaterialGroup>,
+  materialConfigId: MaterialConfigId
+) => {
+  let foundMaterialConfig = null
+
+  materialGroups.forEach((materialGroup: MaterialGroup) => {
+    materialGroup.materials.forEach((material: Material) => {
+      material.finishGroups.forEach((finishGroup: FinishGroup) => {
+        finishGroup.materialConfigs.forEach((materialConfig: MaterialConfig) => {
+          if (materialConfig.id === materialConfigId) {
+            foundMaterialConfig = materialConfig
+          }
+        })
+      })
+    })
+  })
+
+  return foundMaterialConfig
 }
 
 export function getMaterialByName(materialGroups: Array<MaterialGroup>, name: string) {
