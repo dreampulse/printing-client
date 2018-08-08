@@ -313,6 +313,7 @@ const FORM_NAME = 'address'
 const selector = formValueSelector(FORM_NAME)
 
 const mapStateToProps = state => ({
+  cart: state.core.cart,
   location: state.core.location,
   initialValues:
     (state.core.user && omit(state.core.user, 'userId')) ||
@@ -341,7 +342,8 @@ const mapDispatchToProps = {
   onChangeFormValue: change,
   onSaveUser: saveUser,
   onOpenPickLocation: openPickLocation,
-  onGoToReviewOrder: navigationAction.goToReviewOrder
+  onGoToReviewOrder: navigationAction.goToReviewOrder,
+  onGoToUpload: navigationAction.goToUpload
 }
 
 const enhance = compose(
@@ -393,6 +395,10 @@ const enhance = compose(
 
       if (this.props.useDifferentBillingAddress !== prevProps.useDifferentBillingAddress) {
         this.props.handleBillingChange(this.props.useDifferentBillingAddress)
+      }
+
+      if (this.props.cart !== prevProps.cart) {
+        this.onGoToUpload()
       }
     }
   })
