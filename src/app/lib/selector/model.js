@@ -96,11 +96,10 @@ export const selectCommonMaterialPathOfModelConfigs = (
     })
   )
 
-  const findCommonProperty = (arr, getProperty) =>
-    arr.reduce(
-      (aggr, value) => (aggr === getProperty(value) ? aggr : null),
-      arr.length > 0 ? getProperty(arr[0]) : null
-    )
+  const findCommonProperty = (arr, getProperty) => {
+    const commonProperty = arr.length > 0 ? getProperty(arr[0]) : null
+    return arr.every(item => getProperty(item) === commonProperty) ? commonProperty : null
+  }
 
   return {
     materialConfigId: findCommonProperty(materialConfigs, materialConfig => materialConfig.id),
