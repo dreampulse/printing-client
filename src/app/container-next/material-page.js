@@ -439,6 +439,7 @@ export default compose(
         materialConfigId,
         finishGroupId
       ) => ({
+        selectedMaterialConfigId: null,
         selectedMaterialConfigs: {
           ...selectedMaterialConfigs,
           [finishGroupId]: materialConfigId
