@@ -228,6 +228,7 @@ export type User = {
 
 export type ModalContentType =
   | 'PICK_LOCATION'
+  | 'PICK_UNIT'
   | 'MODEL_VIEWER'
   | 'FATAL_ERROR'
   | 'MATERIAL'
