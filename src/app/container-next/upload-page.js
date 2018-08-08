@@ -3,6 +3,8 @@
 import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
+import {withRouter} from 'react-router'
+import {compose} from 'recompose'
 
 // TODO: Use final svg images here!
 import feature1Image from '../../asset/image/feature1.png'
@@ -53,7 +55,8 @@ const UploadPage = ({
   onGoToCart,
   onMagnifyModel,
   cart,
-  cartCount
+  cartCount,
+  location
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -106,25 +109,6 @@ const UploadPage = ({
         <ProviderImage slug="ff3dm" name={getProviderName('ff3dm')} />
       </ProviderTeaser>
     </Fragment>
-  )
-
-  const notificationSection = () => (
-    <Section>
-      <Notification
-        message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
-        button={
-          <Button
-            label="Cart"
-            icon={cartIcon}
-            onClick={() => onGoToCart()}
-            modifiers={['compact', 'minor']}
-          />
-        }
-      >
-        Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
-        <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>
-      </Notification>
-    </Section>
   )
 
   const uploadSection = () => (
@@ -222,9 +206,39 @@ const UploadPage = ({
     </Section>
   )
 
+  const cartNotification = () => (
+    <Notification
+      message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
+      button={
+        <Button
+          label="Cart"
+          icon={cartIcon}
+          onClick={() => onGoToCart()}
+          modifiers={['compact', 'minor']}
+        />
+      }
+    >
+      Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
+      <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>
+    </Notification>
+  )
+
+  const locationNotification = ({message, warning}) => (
+    <Notification message={message} warning={warning} />
+  )
+
+  const notificationSection = () => (
+    <Section>
+      {cart && cartNotification()}
+      {location.state &&
+        location.state.notification &&
+        locationNotification(location.state.notification)}
+    </Section>
+  )
+
   return (
     <AppLayout>
-      {cart && notificationSection()}
+      {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
       {!hasModels && promoSection()}
@@ -254,4 +268,6 @@ const mapDispatchToProps = {
   onMagnifyModel: modelViewerAction.open
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UploadPage)
+const enhance = compose(withRouter, connect(mapStateToProps, mapDispatchToProps))
+
+export default enhance(UploadPage)

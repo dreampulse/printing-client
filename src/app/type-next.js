@@ -29,6 +29,11 @@ export type UserId = string
 // Material structure json-schema
 // https://github.com/all3dp/material-structure/blob/master/src/schema.js
 
+export type Notification = {
+  message: string,
+  warning: ?boolean
+}
+
 export type PrintingService = {
   [VendorId]: {
     materialId: MaterialId,

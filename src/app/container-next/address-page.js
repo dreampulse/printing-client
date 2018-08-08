@@ -398,7 +398,11 @@ const enhance = compose(
       }
 
       if (this.props.cart !== prevProps.cart) {
-        this.onGoToUpload()
+        this.props.onGoToUpload({
+          warning: true,
+          message:
+            'We had to remove all model configurations due to an address or currency change. Please reconfigure all uploaded models.'
+        })
       }
     }
   })
