@@ -7,6 +7,7 @@ import MaterialPage from './container-next/material-page'
 import CartPage from './container-next/cart-page'
 import AddressPage from './container-next/address-page'
 import ReviewOrderPage from './container-next/review-order-page'
+import SuccessPage from './container-next/success-page'
 
 /* eslint-disable react/prop-types */
 export default ({history}) => (
@@ -17,6 +18,7 @@ export default ({history}) => (
       <Route component={CartPage} path="/cart" exact />
       <Route component={AddressPage} path="/address" exact />
       <Route component={ReviewOrderPage} path="/review-order" exact />
+      <Route component={SuccessPage} path="/success" exact />
     </Switch>
   </ConnectedRouter>
 )
