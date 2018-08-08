@@ -3,6 +3,7 @@ import {compose, lifecycle} from 'recompose'
 import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
 import {push} from 'react-router-redux'
+import omit from 'lodash/omit'
 
 import {openPickLocation} from '../action-next/modal'
 import {saveUser} from '../action-next/core'
@@ -309,11 +310,13 @@ const transformLocationToInitialUser = location => ({
 })
 
 const FORM_NAME = 'address'
-
 const selector = formValueSelector(FORM_NAME)
+
 const mapStateToProps = state => ({
   location: state.core.location,
-  initialValues: state.core.user || transformLocationToInitialUser(state.core.location),
+  initialValues:
+    (state.core.user && omit(state.core.user, 'userId')) ||
+    transformLocationToInitialUser(state.core.location),
   isCompany: selector(state, 'isCompany'),
   useDifferentBillingAddress: selector(state, 'useDifferentBillingAddress'),
   valid: isValid(FORM_NAME)(state),
@@ -335,80 +338,93 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onSubmit: values => dispatch => {
-    // TODO: this does not return a promise
-    const d = dispatch(saveUser(values))
-    d.then(() => {
-      dispatch(push('/review-order'))
+  onChangeFormValue: change,
+  onSaveUser: saveUser,
+  onPush: push,
+  onOpenPickLocation: openPickLocation
+}
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...stateProps,
+  ...dispatchProps,
+  ...ownProps,
+  onSubmit: values => {
+    dispatchProps.onSaveUser(values).then(() => {
+      dispatchProps.onPush('/review-order')
     })
   },
-  onOpenPickLocation: openPickLocation,
-  handleIsCompanyChange: () => (dispatch, getState) => {
-    const state = getState()
-    const isComany = selector(state, 'isCompany')
-    if (isComany === false) {
-      dispatch(change(FORM_NAME, 'companyName', ''))
-      dispatch(change(FORM_NAME, 'vatId', ''))
+  handleIsCompanyChange: () => {
+    if (stateProps.isComany === false) {
+      dispatchProps.onChangeFormValue(FORM_NAME, 'companyName', '')
+      dispatchProps.onChangeFormValue(FORM_NAME, 'vatId', '')
     }
   },
-  handleLocationChange: location => dispatch => {
-    dispatch(change(FORM_NAME, 'shippingAddress.city', location.city))
-    dispatch(change(FORM_NAME, 'shippingAddress.zipCode', location.zipCode))
-    dispatch(change(FORM_NAME, 'shippingAddress.stateCode', location.stateCode))
-    dispatch(change(FORM_NAME, 'shippingAddress.countryCode', location.countryCode))
+  handleLocationChange: location => {
+    dispatchProps.onChangeFormValue(FORM_NAME, 'shippingAddress.city', location.city)
+    dispatchProps.onChangeFormValue(FORM_NAME, 'shippingAddress.zipCode', location.zipCode)
+    dispatchProps.onChangeFormValue(FORM_NAME, 'shippingAddress.stateCode', location.stateCode)
+    dispatchProps.onChangeFormValue(FORM_NAME, 'shippingAddress.countryCode', location.countryCode)
   },
-  handleBillingChange: () => (dispatch, getState) => {
-    const state = getState()
-    const useDifferentBillingAddress = selector(state, 'useDifferentBillingAddress')
-    if (useDifferentBillingAddress === false) {
-      dispatch(change(FORM_NAME, 'billingAddress.firstName', ''))
-      dispatch(change(FORM_NAME, 'billingAddress.lastName', ''))
-      dispatch(change(FORM_NAME, 'billingAddress.address', ''))
-      dispatch(change(FORM_NAME, 'billingAddress.addressLine2', ''))
-      dispatch(change(FORM_NAME, 'billingAddress.city', ''))
-      dispatch(change(FORM_NAME, 'billingAddress.zipCode', ''))
-      dispatch(change(FORM_NAME, 'billingAddress.stateCode', ''))
-      dispatch(change(FORM_NAME, 'billingAddress.countryCode', ''))
+  handleBillingChange: () => {
+    if (stateProps.useDifferentBillingAddress === false) {
+      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.firstName', '')
+      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.lastName', '')
+      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.address', '')
+      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.addressLine2', '')
+      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.city', '')
+      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.zipCode', '')
+      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.stateCode', '')
+      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.countryCode', '')
     } else {
-      dispatch(
-        change(FORM_NAME, 'billingAddress.firstName', selector(state, 'shippingAddress.firstName'))
+      dispatchProps.onChangeFormValue(
+        FORM_NAME,
+        'billingAddress.firstName',
+        stateProps.shippingAddress.firstName
       )
-      dispatch(
-        change(FORM_NAME, 'billingAddress.lastName', selector(state, 'shippingAddress.lastName'))
+      dispatchProps.onChangeFormValue(
+        FORM_NAME,
+        'billingAddress.lastName',
+        stateProps.shippingAddress.lastName
       )
-      dispatch(
-        change(FORM_NAME, 'billingAddress.address', selector(state, 'shippingAddress.address'))
+      dispatchProps.onChangeFormValue(
+        FORM_NAME,
+        'billingAddress.address',
+        stateProps.shippingAddress.address
       )
-      dispatch(
-        change(
-          FORM_NAME,
-          'billingAddress.addressLine2',
-          selector(state, 'shippingAddress.addressLine2')
-        )
+      dispatchProps.onChangeFormValue(
+        FORM_NAME,
+        'billingAddress.addressLine2',
+        stateProps.shippingAddress.addressLine2
       )
-      dispatch(change(FORM_NAME, 'billingAddress.city', selector(state, 'shippingAddress.city')))
-      dispatch(
-        change(FORM_NAME, 'billingAddress.zipCode', selector(state, 'shippingAddress.zipCode'))
+      dispatchProps.onChangeFormValue(
+        FORM_NAME,
+        'billingAddress.city',
+        stateProps.shippingAddress.city
       )
-      dispatch(
-        change(FORM_NAME, 'billingAddress.stateCode', selector(state, 'shippingAddress.stateCode'))
+      dispatchProps.onChangeFormValue(
+        FORM_NAME,
+        'billingAddress.zipCode',
+        stateProps.shippingAddress.zipCode
       )
-      dispatch(
-        change(
-          FORM_NAME,
-          'billingAddress.countryCode',
-          selector(state, 'shippingAddress.countryCode')
-        )
+      dispatchProps.onChangeFormValue(
+        FORM_NAME,
+        'billingAddress.stateCode',
+        stateProps.shippingAddress.stateCode
+      )
+      dispatchProps.onChangeFormValue(
+        FORM_NAME,
+        'billingAddress.countryCode',
+        stateProps.shippingAddress.countryCode
       )
     }
   }
-}
+})
 
 const enhance = compose(
   // TODO: enable the guard again so thet the page can be
   // as soon as there is a cart
   // guard(state => state.cart...),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps, mergeProps),
   reduxForm({form: FORM_NAME}),
   lifecycle({
     componentDidUpdate(prevProps) {
