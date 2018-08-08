@@ -198,7 +198,9 @@ const CartPage = ({
     />
   )
 
-  const hasAddedItems = numAddedItems > 0
+  // If you reload the page within the cart it is possible that the cart is empty but numAddedItems is still set
+  // therefore also check if the page has models at all.
+  const hasAddedItems = hasModels && numAddedItems > 0
   const hasItemsOnUploadPage = modelConfigs.length > modelsWithConfig.length
 
   return (
