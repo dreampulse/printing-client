@@ -17,13 +17,12 @@
 
   &--left {
     text-align: left;
+    margin: 0;
+    padding: 0;
+    border-top: 0;
 
     & > * {
       margin: 0 $space-xl $space-xl 0;
     }
-
-    margin: 0;
-    padding: 0;
-    border-top: 0;
   }
 }
