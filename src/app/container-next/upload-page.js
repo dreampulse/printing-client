@@ -3,6 +3,8 @@
 import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
+import {withRouter} from 'react-router'
+import {compose} from 'recompose'
 
 // TODO: Use final svg images here!
 import feature1Image from '../../asset/image/feature1.png'
@@ -53,7 +55,8 @@ const UploadPage = ({
   onGoToCart,
   onMagnifyModel,
   cart,
-  cartCount
+  cartCount,
+  location
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -124,6 +127,12 @@ const UploadPage = ({
         Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
         <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>
       </Notification>
+    </Section>
+  )
+
+  const locationNotificationSection = ({message, warning}) => (
+    <Section>
+      <Notification message={message} warning={warning} />
     </Section>
   )
 
@@ -225,6 +234,9 @@ const UploadPage = ({
   return (
     <AppLayout>
       {cart && notificationSection()}
+      {location.state &&
+        location.state.notification &&
+        locationNotificationSection(location.state.notification)}
       {uploadSection()}
       {hasModels && modelListSection()}
       {!hasModels && promoSection()}
@@ -254,4 +266,6 @@ const mapDispatchToProps = {
   onMagnifyModel: modelViewerAction.open
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UploadPage)
+const enhance = compose(withRouter, connect(mapStateToProps, mapDispatchToProps))
+
+export default enhance(UploadPage)
