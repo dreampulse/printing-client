@@ -36,7 +36,7 @@ import {
   isQuotePollingDone,
   selectQuotes,
   selectUploadedModelConfigs,
-  selectUsedShippingIds
+  selectUsedShippingIdsAndFilter
 } from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
 import scrollTo from '../service/scroll-to'
@@ -384,7 +384,7 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   location: state.core.location,
   shippings: state.core.shippings,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
-  usedShippingIds: selectUsedShippingIds(state, ownProps.configIds)
+  usedShippingIds: selectUsedShippingIdsAndFilter(state, ownProps.configIds)
 })
 
 const mapDispatchToProps = {

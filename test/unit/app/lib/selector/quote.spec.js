@@ -2,7 +2,7 @@ import {
   isQuotePollingDone,
   selectQuotePollingProgress,
   selectQuotes,
-  selectUsedShippingIds
+  selectUsedShippingIdsAndFilter
 } from '../../../../../src/app/lib/selector/quote'
 
 describe('isQuotePollingDone()', () => {
@@ -78,7 +78,7 @@ describe('selectQuotes()', () => {
   })
 })
 
-describe('selectUsedShippingIds()', () => {
+describe('selectUsedShippingIdsAndFilter()', () => {
   it('returns all shipping ids', () => {
     const state = {
       core: {
@@ -97,7 +97,7 @@ describe('selectUsedShippingIds()', () => {
       }
     }
 
-    expect(selectUsedShippingIds(state), 'to equal', ['shipping-1', 'shipping-2'])
+    expect(selectUsedShippingIdsAndFilter(state), 'to equal', ['shipping-1', 'shipping-2'])
   })
 
   it('removes empty values from return list', () => {
@@ -123,7 +123,7 @@ describe('selectUsedShippingIds()', () => {
       }
     }
 
-    expect(selectUsedShippingIds(state), 'to equal', ['shipping-1'])
+    expect(selectUsedShippingIdsAndFilter(state), 'to equal', ['shipping-1'])
   })
 
   it('removes duplicates from return list', () => {
@@ -144,7 +144,7 @@ describe('selectUsedShippingIds()', () => {
       }
     }
 
-    expect(selectUsedShippingIds(state), 'to equal', ['shipping-1'])
+    expect(selectUsedShippingIdsAndFilter(state), 'to equal', ['shipping-1'])
   })
 
   it('excludes given model config ids', () => {
@@ -165,6 +165,6 @@ describe('selectUsedShippingIds()', () => {
       }
     }
 
-    expect(selectUsedShippingIds(state, ['config-2']), 'to equal', ['shipping-1'])
+    expect(selectUsedShippingIdsAndFilter(state, ['config-2']), 'to equal', ['shipping-1'])
   })
 })
