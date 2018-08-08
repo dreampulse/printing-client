@@ -9,9 +9,9 @@ import feature1Image from '../../asset/image/feature1.png'
 import feature2Image from '../../asset/image/feature2.png'
 // import feature3Image from '../../../asset/image/feature3.png'
 
-import {formatDimensions} from '../lib/formatter'
+import {formatDimensions, formatPrice} from '../lib/formatter'
 import {getProviderName} from '../lib/provider-selector'
-import {selectModelsOfModelConfigs} from '../lib/selector'
+import {selectModelsOfModelConfigs, selectCartCount} from '../lib/selector'
 import type {AppState} from '../reducer-next'
 
 import * as modelAction from '../action-next/model'
@@ -35,11 +35,13 @@ import UploadModelItemLoad from '../component/upload-model-item-load'
 import UploadModelItem from '../component/upload-model-item'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
+import Notification from '../component/notification'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 import plusIcon from '../../asset/icon/plus.svg'
 import minusIcon from '../../asset/icon/minus.svg'
 import copyIcon from '../../asset/icon/copy.svg'
+import cartIcon from '../../asset/icon/cart.svg'
 
 const UploadPage = ({
   onUploadFiles,
@@ -48,7 +50,10 @@ const UploadPage = ({
   onChooseMaterial,
   onDuplicateModelConfig,
   modelsWithConfig,
-  onMagnifyModel
+  onGoToCart,
+  onMagnifyModel,
+  cart,
+  cartCount
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -101,6 +106,25 @@ const UploadPage = ({
         <ProviderImage slug="ff3dm" name={getProviderName('ff3dm')} />
       </ProviderTeaser>
     </Fragment>
+  )
+
+  const notificationSection = () => (
+    <Section>
+      <Notification
+        message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
+        button={
+          <Button
+            label="Cart"
+            icon={cartIcon}
+            onClick={() => onGoToCart()}
+            modifiers={['compact', 'minor']}
+          />
+        }
+      >
+        Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
+        <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>
+      </Notification>
+    </Section>
   )
 
   const uploadSection = () => (
@@ -200,6 +224,7 @@ const UploadPage = ({
 
   return (
     <AppLayout>
+      {cart && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
       {!hasModels && promoSection()}
@@ -214,7 +239,9 @@ const mapStateToProps = (state: AppState) => ({
   ]).filter(([modelConfig]) => {
     const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
     return mc.type !== 'UPLOADED' || mc.quoteId === null
-  })
+  }),
+  cart: state.core.cart,
+  cartCount: selectCartCount(state)
 })
 
 const mapDispatchToProps = {
@@ -223,6 +250,7 @@ const mapDispatchToProps = {
   onChangeQuantities: modelAction.updateQuantities,
   onDuplicateModelConfig: modelAction.duplicateModelConfig,
   onChooseMaterial: navigationAction.goToMaterial,
+  onGoToCart: navigationAction.goToCart,
   onMagnifyModel: modelViewerAction.open
 }
 
