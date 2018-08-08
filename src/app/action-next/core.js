@@ -26,7 +26,7 @@ export type CoreAction =
   | FatalErrorAction
   | UpdateShippingsAction
   | SaveUserAction
-  | UserUpdatedAction
+  | UserReceivedAction
 
 export const init = ({featureFlags}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
