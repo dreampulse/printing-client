@@ -111,31 +111,6 @@ const UploadPage = ({
     </Fragment>
   )
 
-  const notificationSection = () => (
-    <Section>
-      <Notification
-        message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
-        button={
-          <Button
-            label="Cart"
-            icon={cartIcon}
-            onClick={() => onGoToCart()}
-            modifiers={['compact', 'minor']}
-          />
-        }
-      >
-        Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
-        <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>
-      </Notification>
-    </Section>
-  )
-
-  const locationNotificationSection = ({message, warning}) => (
-    <Section>
-      <Notification message={message} warning={warning} />
-    </Section>
-  )
-
   const uploadSection = () => (
     <Section>
       <UploadArea
@@ -231,12 +206,39 @@ const UploadPage = ({
     </Section>
   )
 
-  return (
-    <AppLayout>
-      {cart && notificationSection()}
+  const cartNotification = () => (
+    <Notification
+      message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
+      button={
+        <Button
+          label="Cart"
+          icon={cartIcon}
+          onClick={() => onGoToCart()}
+          modifiers={['compact', 'minor']}
+        />
+      }
+    >
+      Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
+      <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>
+    </Notification>
+  )
+
+  const locationNotification = ({message, warning}) => (
+    <Notification message={message} warning={warning} />
+  )
+
+  const notificationSection = () => (
+    <Section>
+      {cart && cartNotification()}
       {location.state &&
         location.state.notification &&
-        locationNotificationSection(location.state.notification)}
+        locationNotification(location.state.notification)}
+    </Section>
+  )
+
+  return (
+    <AppLayout>
+      {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
       {!hasModels && promoSection()}

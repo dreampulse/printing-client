@@ -25,11 +25,11 @@ import Button from '../component/button'
 const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick}) => (
   <App
     header={
-      <NavBar key="navbar" onClickIdentity={onHomeClick}>
+      <NavBar key="navbar" onClickIdentity={() => onHomeClick()}>
         <Route path="/" exact>
           {({match}) =>
             !match ? (
-              <Button label="Upload" onClick={onUploadClick} modifiers={['invert', 'compact']} />
+              <Button label="Upload" onClick={() => onUploadClick()} modifiers={['invert', 'compact']} />
             ) : null}
         </Route>
         <IconLink

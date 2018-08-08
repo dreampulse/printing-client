@@ -345,7 +345,7 @@ const MaterialPage = ({
   return (
     <App
       header={[
-        <OverlayHeaderBar key="header-bar" onClickClose={onClosePage} title={title}>
+        <OverlayHeaderBar key="header-bar" onClickClose={() => onClosePage()} title={title}>
           <ProviderProgressBar currentStep={numCheckedProviders} totalSteps={numTotalProviders} />
         </OverlayHeaderBar>,
         <ConfigurationHeaderPartial key="configuration-header" />
