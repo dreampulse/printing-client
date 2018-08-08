@@ -3,7 +3,10 @@ import {
   selectCartCount,
   selectSelectedModelConfigs,
   selectModelConfigsByIds,
-  selectUploadedModelConfigs
+  selectUploadedModelConfigs,
+  selectShippingsOfModelConfigs,
+  selectQuotesOfModelConfigs,
+  selectUniqueChosenShippings
 } from '../../../../../src/app/lib/selector/model'
 
 describe('selectModelsOfModelConfigs()', () => {
@@ -68,6 +71,100 @@ describe('selectModelsOfModelConfigs()', () => {
     ]
 
     expect(selectModelsOfModelConfigs(state), 'to equal', selected)
+  })
+})
+
+describe('selectQuotesOfModelConfigs()', () => {
+  it('returns selected quotes of model configs', () => {
+    const state = {
+      core: {
+        quotes: {
+          'quote-1': {
+            quoteId: 'quote-1'
+          }
+        },
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'some-config-id'
+          }
+        ]
+      }
+    }
+
+    const selected = [
+      null,
+      {
+        quoteId: 'quote-1'
+      },
+      null
+    ]
+
+    expect(selectQuotesOfModelConfigs(state), 'to equal', selected)
+  })
+})
+
+describe('selectShippingsOfModelConfigs()', () => {
+  it('returns selected shippings of model configs', () => {
+    const state = {
+      core: {
+        shippings: [
+          {
+            shippingId: 'shipping-1'
+          }
+        ],
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'some-config-id'
+          }
+        ]
+      }
+    }
+
+    const selected = [
+      null,
+      {
+        shippingId: 'shipping-1'
+      },
+      null
+    ]
+
+    expect(selectShippingsOfModelConfigs(state), 'to equal', selected)
   })
 })
 
@@ -237,5 +334,94 @@ describe('selectModelConfigsByIds()', () => {
     ]
 
     expect(selectModelConfigsByIds(state, ['config-id-1']), 'to equal', selected)
+  })
+})
+
+describe('selectUniqueChosenShippings()', () => {
+  it('returns all shippings from model configs in cart', () => {
+    const state = {
+      core: {
+        shippings: [
+          {
+            shippingId: 'shipping-1'
+          },
+          {
+            shippingId: 'shipping-2'
+          }
+        ],
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'config-id-0',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'config-id-2',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'config-id-3'
+          }
+        ]
+      }
+    }
+
+    const selected = [
+      {
+        shippingId: 'shipping-1'
+      }
+    ]
+
+    expect(selectUniqueChosenShippings(state), 'to equal', selected)
+  })
+
+  it('returns every shipping just once', () => {
+    const state = {
+      core: {
+        shippings: [
+          {
+            shippingId: 'shipping-1'
+          },
+          {
+            shippingId: 'shipping-2'
+          }
+        ],
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'config-id-0',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'config-id-2',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          }
+        ]
+      }
+    }
+
+    const selected = [
+      {
+        shippingId: 'shipping-1'
+      }
+    ]
+
+    expect(selectUniqueChosenShippings(state), 'to equal', selected)
   })
 })

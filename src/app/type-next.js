@@ -173,6 +173,17 @@ export type ModelConfigUploaded = {
 
 export type ModelConfig = ModelConfigUploading | ModelConfigUploaded
 
+export type Cart = {
+  cartId: CartId,
+  shippingIds: Array<ShippingId>,
+  subTotalPrice: number,
+  shippingTotal: number,
+  // vatPercentage: number,
+  // vatPrice: number,
+  totalPrice: number,
+  currency: string
+}
+
 export type Location = {
   city: string,
   zipCode: string,

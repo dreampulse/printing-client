@@ -4,6 +4,8 @@ import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
 import isEqual from 'lodash/isEqual'
 import keyBy from 'lodash/keyBy'
+import uniq from 'lodash/uniq'
+import compact from 'lodash/compact'
 
 import config from '../../../config'
 import {getLocationByIp, isLocationValid} from '../lib/geolocation'
@@ -28,7 +30,8 @@ import type {
   ModelId,
   QuoteId,
   PollingId,
-  Shipping
+  Shipping,
+  Cart
 } from '../type-next'
 
 import * as coreAction from '../action-next/core'
@@ -36,6 +39,7 @@ import * as modalAction from '../action-next/modal'
 import * as modelAction from '../action-next/model'
 import * as pollingAction from '../action-next/polling'
 import * as quoteAction from '../action-next/quote'
+import * as cartAction from '../action-next/cart'
 
 export type CoreState = {
   materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
@@ -51,7 +55,8 @@ export type CoreState = {
   quotePollingId: ?PollingId,
   printingServiceComplete: {
     [printingServiceName: string]: boolean
-  }
+  },
+  cart: ?Cart
 }
 
 const initialState: CoreState = {
@@ -66,7 +71,8 @@ const initialState: CoreState = {
   selectedModelConfigs: [],
   quotePollingId: null,
   quotes: {},
-  printingServiceComplete: {}
+  printingServiceComplete: {},
+  cart: null
 }
 
 const init = (state, {payload: {featureFlags}}) =>
@@ -89,6 +95,9 @@ const init = (state, {payload: {featureFlags}}) =>
       })
     ])
   )
+
+const fatalError = (state, {payload: error}) =>
+  loop(state, Cmd.action(modalAction.openFatalError(error)))
 
 const updateMaterialGroups = (state, action) => ({
   ...state,
@@ -127,8 +136,8 @@ const updateLocation = (state, action) => {
       ...state,
       location: action.payload.location,
       quotes: {},
-      modelConfigs: resetModelConfigs(state.modelConfigs)
-      // TODO: clear cart
+      modelConfigs: resetModelConfigs(state.modelConfigs),
+      cart: null
     },
     Cmd.list([
       Cmd.action(quoteAction.stopReceivingQuotes()),
@@ -156,8 +165,8 @@ const updateCurrency = (state, action) => {
       ...state,
       currency: action.payload.currency,
       quotes: {},
-      modelConfigs: resetModelConfigs(state.modelConfigs)
-      // TODO: clear cart
+      modelConfigs: resetModelConfigs(state.modelConfigs),
+      cart: null
     },
     Cmd.list([
       Cmd.action(quoteAction.stopReceivingQuotes()),
@@ -283,13 +292,34 @@ const uploadFail = (state, {payload}) => {
   }
 }
 
-const deleteModelConfigs = (state, {payload}) => ({
-  ...state,
-  modelConfigs: state.modelConfigs.filter(
-    modelConfig => payload.ids.indexOf(modelConfig.id) === -1
-  ),
-  selectedModelConfigs: state.selectedModelConfigs.filter(id => payload.ids.indexOf(id) === -1)
-})
+const deleteModelConfigs = (state, {payload}) => {
+  const modelConfigsToDelete = state.modelConfigs.filter(
+    modelConfig => payload.ids.indexOf(modelConfig.id) > -1
+  )
+  const isModelConfigInCart = modelConfigsToDelete.some(
+    modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId
+  )
+
+  invariant(
+    modelConfigsToDelete.length === payload.ids.length,
+    'Unknown model config ids provided.'
+  )
+
+  const nextState = {
+    ...state,
+    modelConfigs: state.modelConfigs.filter(
+      modelConfig => payload.ids.indexOf(modelConfig.id) === -1
+    ),
+    selectedModelConfigs: state.selectedModelConfigs.filter(id => payload.ids.indexOf(id) === -1)
+  }
+
+  // Create new cart if a least one model config was deleted from cart
+  if (isModelConfigInCart) {
+    return loop(nextState, Cmd.action(cartAction.createCart()))
+  }
+
+  return nextState
+}
 
 const updateSelectedModelConfigs = (state, {payload}) => ({
   ...state,
@@ -325,7 +355,7 @@ const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
     id: nextId
   }
 
-  return {
+  const nextState = {
     ...state,
     modelConfigs: [
       ...state.modelConfigs.slice(0, modelConfigIndex + 1),
@@ -333,6 +363,13 @@ const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
       ...state.modelConfigs.slice(modelConfigIndex + 1)
     ]
   }
+
+  // Create new cart if modelConfig is already in cart
+  if (modelConfig.quoteId) {
+    return loop(nextState, Cmd.action(cartAction.createCart()))
+  }
+
+  return nextState
 }
 
 const receiveQuotes = (state, {payload: {countryCode, currency, modelConfigs, refresh}}) => {
@@ -428,15 +465,70 @@ const stopReceivingQuotes = (state, _action) => {
   return nextState
 }
 
-const addToCart = (state, {payload: {configIds, quotes, shipping}}) => ({
+const addToCart = (state, {payload: {configIds, quotes, shipping}}) =>
+  loop(
+    {
+      ...state,
+      modelConfigs: setQuotesAndShippingInModelConfigs(
+        state.modelConfigs,
+        configIds,
+        quotes,
+        shipping
+      )
+    },
+    Cmd.action(cartAction.createCart())
+  )
+
+const createCart = (state, _action) => {
+  const modelConfigs = state.modelConfigs.filter(
+    modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
+  )
+  const currency = state.currency
+  const shippingIds = compact(
+    uniq(modelConfigs.map(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.shippingId))
+  )
+  const quoteIds = compact(
+    modelConfigs.map(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId)
+  )
+  const nextState = {
+    ...state,
+    cart: null // Clear old cart
+  }
+
+  if (modelConfigs.length === 0) {
+    return nextState
+  }
+
+  invariant(shippingIds.length > 0, 'Shippings for cart creation missing.')
+  invariant(quoteIds.length > 0, 'Quotes for cart creation missing.')
+
+  return loop(
+    nextState,
+    Cmd.run(printingEngine.createCart, {
+      args: [
+        {
+          shippingIds,
+          quoteIds,
+          currency
+        }
+      ],
+      successActionCreator: cartAction.cartReceived,
+      failActionCreator: coreAction.fatalError
+    })
+  )
+}
+
+const cartReceived = (state, {payload: {cart}}) => ({
   ...state,
-  modelConfigs: setQuotesAndShippingInModelConfigs(state.modelConfigs, configIds, quotes, shipping)
+  cart
 })
 
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
     case 'CORE.INIT':
       return init(state, action)
+    case 'CORE.FATAL_ERROR':
+      return fatalError(state, action)
     case 'CORE.UPDATE_MATERIAL_GROUPS':
       return updateMaterialGroups(state, action)
     case 'CORE.UPDATE_LOCATION':
@@ -475,6 +567,10 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return stopReceivingQuotes(state, action)
     case 'CART.ADD_TO_CART':
       return addToCart(state, action)
+    case 'CART.CREATE_CART':
+      return createCart(state, action)
+    case 'CART.CART_RECEIVED':
+      return cartReceived(state, action)
     default:
       return state
   }

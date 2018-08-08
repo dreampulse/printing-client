@@ -131,8 +131,6 @@ const ReviewOrderPage = ({address, onPush}) => {
           {label: 'i.materialize', price: '$5.00€'},
           {label: 'shapeways', price: '$5.30€'}
         ]}
-        shippingPrice={formatPrice(4900, 'EUR')}
-        shippingName="fast shipping"
         vat={formatPrice(500, 'EUR')}
         total={formatPrice(4599, 'EUR')}
       >
