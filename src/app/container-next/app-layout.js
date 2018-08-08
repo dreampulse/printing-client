@@ -29,7 +29,11 @@ const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick
         <Route path="/" exact>
           {({match}) =>
             !match ? (
-              <Button label="Upload" onClick={() => onUploadClick()} modifiers={['invert', 'compact']} />
+              <Button
+                label="Upload"
+                onClick={() => onUploadClick()}
+                modifiers={['invert', 'compact']}
+              />
             ) : null}
         </Route>
         <IconLink
