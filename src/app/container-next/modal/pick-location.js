@@ -22,8 +22,6 @@ import * as modalActions from '../../action-next/modal'
 import * as coreActions from '../../action-next/core'
 
 import config from '../../../../config'
-import {ENGINE_METHOD_ALL} from 'constants';
-import material from './material';
 
 const PickLocationModal = ({
   location,
@@ -40,6 +38,8 @@ const PickLocationModal = ({
   const currencyMenu = <SelectMenu values={currencies} />
 
   const headline = <Headline label="Shipping address required" modifiers={['l']} />
+  const headlineWarning = <Headline label="Change shipping address" modifiers={['l', 'warning']} />
+
   const buttons = [
     meta.isCloseable && (
       <Button key="close" label="Cancel" modifiers={['text']} onClick={() => onClose()} />
@@ -57,13 +57,18 @@ const PickLocationModal = ({
   ]
 
   return (
-    <Overlay headline={headline} buttons={compact(buttons)} closeable={false}>
-      {
-        material.showWarning
-          ? <Paragraph>If you change yur country or currency</Paragraph>
-          : <Paragraph>We need your address and currency to calculate the shipping prices</Paragraph>
-      }
-      <Paragraph>We need your address and currency to calculate the shipping prices</Paragraph>
+    <Overlay
+      headline={meta.showWarning ? headlineWarning : headline}
+      buttons={compact(buttons)}
+      closeable={false}
+    >
+      {meta.showWarning ? (
+        <Paragraph>
+          If you change your country or currency you have to reconfigure all models.
+        </Paragraph>
+      ) : (
+        <Paragraph>We need your address and currency to calculate the shipping prices</Paragraph>
+      )}
       <Grid>
         <Column sm={9}>
           <LocationField

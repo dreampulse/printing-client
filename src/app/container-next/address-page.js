@@ -1,9 +1,11 @@
 import React from 'react'
-import {compose} from 'recompose'
+import {compose, lifecycle} from 'recompose'
 import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
+import {push} from 'react-router-redux'
 
-import {openPickLocation} from '../action-next/modal';
+import {openPickLocation} from '../action-next/modal'
+import {saveUser} from '../action-next/core'
 
 import FormLayout from '../component/form-layout'
 import FormRow from '../component/form-row'
@@ -253,7 +255,7 @@ const AddressPage = ({
               // TODO: remove default
               value={getCountryName(shippingAddress.countryCode || 'de')}
               changeLinkLabel="Change…"
-              onChangeLinkClick={() => onOpenPickLocation(true)}
+              onChangeLinkClick={() => onOpenPickLocation(true, true)}
             />
           </FormRow>
 
@@ -297,11 +299,20 @@ const AddressPage = ({
   )
 }
 
+const transformLocationToInitialUser = location => ({
+  isCompany: false,
+  useDifferentBillingAddress: false,
+  shippingAddress: {
+    ...location
+  }
+})
+
 const FORM_NAME = 'address'
 
 const selector = formValueSelector(FORM_NAME)
 const mapStateToProps = state => ({
-  initialValues: state.core.user,
+  location: state.core.location,
+  initialValues: state.core.user || transformLocationToInitialUser(state.core.location),
   isCompany: selector(state, 'isCompany'),
   useDifferentBillingAddress: selector(state, 'useDifferentBillingAddress'),
   valid: isValid(FORM_NAME)(state),
@@ -323,9 +334,14 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
+  onSubmit: values => dispatch => {
+    // TODO: this does not return a promise
+    const d = dispatch(saveUser(values))
+    d.then(() => {
+      dispatch(push('/review-order'))
+    })
+  },
   onOpenPickLocation: openPickLocation,
-  onSubmit: () => {}, // TODO
-  clearBillingAddress: () => {},
   handleIsCompanyChange: () => (dispatch, getState) => {
     const state = getState()
     const isComany = selector(state, 'isCompany')
@@ -333,6 +349,12 @@ const mapDispatchToProps = {
       dispatch(change(FORM_NAME, 'companyName', ''))
       dispatch(change(FORM_NAME, 'vatId', ''))
     }
+  },
+  handleLocationChange: location => dispatch => {
+    dispatch(change(FORM_NAME, 'shippingAddress.city', location.city))
+    dispatch(change(FORM_NAME, 'shippingAddress.zipCode', location.zipCode))
+    dispatch(change(FORM_NAME, 'shippingAddress.stateCode', location.stateCode))
+    dispatch(change(FORM_NAME, 'shippingAddress.countryCode', location.countryCode))
   },
   handleBillingChange: () => (dispatch, getState) => {
     const state = getState()
@@ -386,7 +408,14 @@ const enhance = compose(
   // as soon as there is a cart
   // guard(state => state.cart...),
   connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({form: FORM_NAME})
+  reduxForm({form: FORM_NAME}),
+  lifecycle({
+    componentDidUpdate(prevProps) {
+      if (this.props.location !== prevProps.location) {
+        this.props.handleLocationChange(this.props.location)
+      }
+    }
+  })
 )
 
 export default enhance(AddressPage)

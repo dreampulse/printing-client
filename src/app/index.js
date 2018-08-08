@@ -4,6 +4,7 @@ import {Provider} from 'react-redux'
 import createHistory from 'history/createBrowserHistory'
 import {AppContainer} from 'react-hot-loader'
 import browserUpdate from 'browser-update'
+import {push} from 'react-router-redux'
 
 import 'babel-polyfill'
 
@@ -58,4 +59,8 @@ if (process.env.NODE_ENV !== 'production') {
       renderApp(require('./router').default)
     })
   }
+}
+
+global.dev = {
+  push: path => store.dispatch(push(path))
 }

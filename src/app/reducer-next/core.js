@@ -49,7 +49,7 @@ export type CoreState = {
   printingServiceComplete: {
     [printingServiceName: string]: boolean
   },
-  user: User
+  user: ?User
 }
 
 const initialState: CoreState = {
@@ -65,7 +65,7 @@ const initialState: CoreState = {
   quotePollingId: null,
   quotes: {},
   printingServiceComplete: {},
-  user: {}
+  user: null
 }
 
 const init = (state, {payload: {featureFlags}}) =>
@@ -172,6 +172,37 @@ const updateCurrency = (state, action) => {
 const updateShippings = (state, action) => ({
   ...state,
   shippings: action.payload
+})
+
+const saveUser = (state, action) =>
+  loop(
+    {
+      ...state,
+      user: {
+        ...state.user,
+        ...action.payload
+      }
+    },
+    Cmd.run(
+      (user, userId) =>
+        userId ? printingEngine.updateUser(userId, user) : printingEngine.createUser(user),
+      {
+        args: [action.payload, state.user && state.user.userId],
+        successActionCreator: coreAction.updateUser,
+        failActionCreator: coreAction.fatalError
+      }
+    )
+  )
+
+const updateUser = (state, action) => ({
+  ...state,
+  user: {
+    ...state.user,
+    userId:
+      action.payload && action.payload.userId
+        ? action.payload.userId
+        : state.user && state.user.userId
+  }
 })
 
 const uploadFile = (state, {payload}) => {
@@ -428,6 +459,10 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return updateCurrency(state, action)
     case 'CORE.UPDATE_SHIPPINGS':
       return updateShippings(state, action)
+    case 'CORE.SAVE_USER':
+      return saveUser(state, action)
+    case 'CORE.UPDATE_USER':
+      return updateUser(state, action)
     case 'MODEL.UPLOAD_FILE':
       return uploadFile(state, action)
     case 'MODEL.UPLOAD_FILES':
