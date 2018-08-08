@@ -67,7 +67,7 @@ const PickLocationModal = ({
           If you change your country or currency you have to reconfigure all models.
         </Paragraph>
       ) : (
-        <Paragraph>We need your address and currency to calculate the shipping prices</Paragraph>
+        <Paragraph>We need your address and currency to calculate the shipping prices.</Paragraph>
       )}
       <Grid>
         <Column sm={9}>

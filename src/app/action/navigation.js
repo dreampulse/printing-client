@@ -10,6 +10,7 @@ const pushPath = pathname => (dispatch, getState) => {
 }
 
 export const goToAddress = () => pushPath('/address')
+export const goToReviewOrder = () => pushPath('/review-order')
 export const goToCart = () => pushPath('/cart')
 export const goToHome = () => (dispatch, getState) => {
   const configurationId = getState().configuration.configurationId

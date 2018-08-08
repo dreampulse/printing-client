@@ -2,11 +2,11 @@ import React from 'react'
 import {compose, lifecycle, withHandlers} from 'recompose'
 import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
-import {push} from 'react-router-redux'
 import omit from 'lodash/omit'
 
 import {openPickLocation} from '../action-next/modal'
 import {saveUser} from '../action-next/core'
+import * as navigationAction from '../action-next/navigation'
 
 import FormLayout from '../component/form-layout'
 import FormRow from '../component/form-row'
@@ -21,7 +21,7 @@ import StaticField from '../component/static-field'
 
 import {getCountriesMenu, getStateName, getStates, getCountryName} from '../service/country'
 import {renderField} from './util/form'
-// TODO: import {guard} from './util/guard'
+import {guard} from './util/guard'
 import CheckoutLayout from './checkout-layout'
 
 // TODO: this should go into a lib and should be tested
@@ -340,35 +340,13 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onChangeFormValue: change,
   onSaveUser: saveUser,
-  onPush: push,
-  onOpenPickLocation: openPickLocation
+  onOpenPickLocation: openPickLocation,
+  onGoToReviewOrder: navigationAction.goToReviewOrder
 }
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...stateProps,
-  ...dispatchProps,
-  ...ownProps,
-  handleBillingChange: () => {
-    if (stateProps.useDifferentBillingAddress === false) {
-      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.firstName', '')
-      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.lastName', '')
-      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.address', '')
-      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.addressLine2', '')
-      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.city', '')
-      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.zipCode', '')
-      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.stateCode', '')
-      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.countryCode', '')
-    } else {
-      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress', stateProps.shippingAddress)
-    }
-  }
-})
-
 const enhance = compose(
-  // TODO: enable the guard again so thet the page can be
-  // as soon as there is a cart
-  // guard(state => state.cart...),
-  connect(mapStateToProps, mapDispatchToProps, mergeProps),
+  guard(state => state.core.cart),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     handleIsCompanyChange: props => isCompany => {
       if (isCompany === false) {
@@ -378,7 +356,7 @@ const enhance = compose(
     },
     onSubmit: props => values => {
       props.onSaveUser(values).then(() => {
-        props.onPush('/review-order')
+        props.onGoToReviewOrder()
       })
     },
     handleLocationChange: props => location => {

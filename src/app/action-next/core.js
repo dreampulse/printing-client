@@ -16,7 +16,7 @@ type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string, fo
 type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Array<Shipping>>
 type SaveUserAction = Action<'CORE.SAVE_USER', User>
-type UserUpdatedAction = Action<'CORE.USER_UPDATED', {userId: UserId}>
+type UserReceivedAction = Action<'CORE.USER_RECEIVED', {userId: UserId}>
 
 export type CoreAction =
   | InitAction
@@ -70,7 +70,7 @@ export const saveUser = (user: User): SaveUserAction => ({
   payload: user
 })
 
-export const userUpdated = (payload: {userId: UserId}): UserUpdatedAction => ({
-  type: 'CORE.USER_UPDATED',
+export const userReceived = (payload: {userId: UserId}): UserReceivedAction => ({
+  type: 'CORE.USER_RECEIVED',
   payload
 })
