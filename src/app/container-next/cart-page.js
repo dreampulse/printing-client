@@ -159,7 +159,7 @@ const CartPage = ({
           label: getProviderName(shipping.vendorId),
           price: formatPrice(shipping.price, shipping.currency)
         }))}
-        vat={formatPrice(999, cart.currency)} // TODO: cart.vatPrice is missing
+        vat={formatPrice(cart.vatPrice, cart.currency)}
         total={formatPrice(cart.totalPrice, cart.currency)}
       >
         <Button modifiers={['block']} label="Checkout" onClick={onCheckout} />

@@ -15,7 +15,10 @@ export const selectQuotePollingProgress = (state: AppState) => ({
 
 export const selectQuotes = (state: AppState) => Object.values(state.core.quotes)
 
-export const selectUsedShippingIds = (state: AppState, excludeConfigIds: Array<ConfigId> = []) =>
+export const selectUsedShippingIdsAndFilter = (
+  state: AppState,
+  excludeConfigIds: Array<ConfigId> = []
+) =>
   uniq(
     compact(
       state.core.modelConfigs.map(
