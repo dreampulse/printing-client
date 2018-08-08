@@ -36,6 +36,7 @@ import {
   isQuotePollingDone,
   selectQuotes,
   selectUploadedModelConfigs,
+  selectCommonMaterialPathOfModelConfigs,
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
@@ -384,13 +385,13 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   location: state.core.location,
   shippings: state.core.shippings,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
+  commonMaterialPath: selectCommonMaterialPathOfModelConfigs(state, ownProps.configIds),
   usedShippingIds: selectUsedShippingIdsAndFilter(state, ownProps.configIds)
 })
 
 const mapDispatchToProps = {
-  // TODO: goto upload or cart page depending whether the given models already are in the cart or not
-  onClosePage: navigationAction.goToUpload,
-  onAbort: navigationAction.goToUpload,
+  onGoToUpload: navigationAction.goToUpload,
+  onGoToCart: navigationAction.goToCart,
   onOpenMaterialModal: modalAction.openMaterial,
   onOpenFinishGroupModal: modalAction.openFinishGroupModal,
   onReceiveQuotes: quoteAction.receiveQuotes,
@@ -400,25 +401,35 @@ const mapDispatchToProps = {
 }
 
 export default compose(
+  withProps(({location}) => ({
+    configIds: (location.state && location.state.configIds) || []
+  })),
+  connect(mapStateToProps, mapDispatchToProps),
   withStateHandlers(
-    {
-      selectedMaterialGroupId: undefined,
-      selectedMaterialId: undefined,
-      selectedMaterialConfigId: undefined,
-      selectedMaterialConfigs: {}, // These are the selected colors in the drop down fields
+    ({commonMaterialPath}) => ({
+      selectedMaterialGroupId: commonMaterialPath.materialGroupId,
+      selectedMaterialId: commonMaterialPath.materialId,
+      selectedMaterialConfigId: commonMaterialPath.materialConfigId,
+      // These are the selected colors in the drop down fields
+      selectedMaterialConfigs:
+        commonMaterialPath.finishGroupId && commonMaterialPath.materialConfigId
+          ? {
+              [commonMaterialPath.finishGroupId]: commonMaterialPath.materialConfigId
+            }
+          : {},
       materialFilter: ''
-    },
+    }),
     {
       selectMaterialGroup: () => id => ({
         selectedMaterialGroupId: id,
-        selectedMaterialId: undefined,
-        selectedMaterialConfigId: undefined,
+        selectedMaterialId: null,
+        selectedMaterialConfigId: null,
         selectedMaterialConfigs: {},
         materialFilter: ''
       }),
       selectMaterial: () => id => ({
         selectedMaterialId: id,
-        selectedMaterialConfigId: undefined,
+        selectedMaterialConfigId: null,
         selectedMaterialConfigs: {}
       }),
       selectMaterialConfig: () => id => ({
@@ -436,10 +447,6 @@ export default compose(
       setMaterialFilter: () => materialFilter => ({materialFilter})
     }
   ),
-  withProps(({location}) => ({
-    configIds: (location.state && location.state.configIds) || []
-  })),
-  connect(mapStateToProps, mapDispatchToProps),
   withProps(({materialGroups, selectedMaterialGroupId, selectedMaterialId}) => ({
     selectedMaterialGroup: getMaterialGroupById(materialGroups, selectedMaterialGroupId),
     selectedMaterial: getMaterialById(materialGroups, selectedMaterialId)
@@ -462,12 +469,20 @@ export default compose(
         currency,
         refresh
       })
+    },
+    onClosePage: props => () => {
+      // Go to cart page if selected model config has already a quote
+      if (props.selectedModelConfigs.length > 0 && props.selectedModelConfigs[0].quoteId) {
+        props.onGoToCart()
+      } else {
+        props.onGoToUpload()
+      }
     }
   }),
   lifecycle({
     componentWillMount() {
       if (this.props.selectedModelConfigs.length === 0) {
-        this.props.onAbort()
+        this.props.onGoToUpload()
         return
       }
 

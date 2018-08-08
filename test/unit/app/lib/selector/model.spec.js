@@ -6,7 +6,8 @@ import {
   selectUploadedModelConfigs,
   selectShippingsOfModelConfigs,
   selectQuotesOfModelConfigs,
-  selectUniqueChosenShippings
+  selectUniqueChosenShippings,
+  selectCommonMaterialPathOfModelConfigs
 } from '../../../../../src/app/lib/selector/model'
 
 describe('selectModelsOfModelConfigs()', () => {
@@ -423,5 +424,207 @@ describe('selectUniqueChosenShippings()', () => {
     ]
 
     expect(selectUniqueChosenShippings(state), 'to equal', selected)
+  })
+})
+
+describe('selectCommonMaterialPathOfModelConfigs()', () => {
+  let state
+
+  beforeEach(() => {
+    state = {
+      core: {
+        materialGroups: [
+          {
+            id: 'material-group-1',
+            materials: [
+              {
+                id: 'material-1',
+                finishGroups: [
+                  {
+                    id: 'finish-group-1',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-1',
+                        finishGroupId: 'finish-group-1',
+                        materialId: 'material-1',
+                        materialGroupId: 'material-group-1'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                id: 'material-2',
+                finishGroups: [
+                  {
+                    id: 'finish-group-2',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-2',
+                        finishGroupId: 'finish-group-2',
+                        materialId: 'material-2',
+                        materialGroupId: 'material-group-1'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            id: 'material-group-3',
+            materials: [
+              {
+                id: 'material-3',
+                finishGroups: [
+                  {
+                    id: 'finish-group-3',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-3',
+                        finishGroupId: 'finish-group-3',
+                        materialId: 'material-3',
+                        materialGroupId: 'material-group-3'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        quotes: {
+          'quote-1': {
+            materialConfigId: 'material-config-1'
+          },
+          'quote-2': {
+            materialConfigId: 'material-config-1'
+          },
+          'quote-3': {
+            materialConfigId: 'material-config-2'
+          },
+          'quote-4': {
+            materialConfigId: 'material-config-3'
+          }
+        },
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            id: 'model-config-1',
+            quoteId: 'quote-1'
+          },
+          {
+            type: 'UPLOADED',
+            id: 'model-config-2',
+            quoteId: 'quote-2'
+          },
+          {
+            type: 'UPLOADED',
+            id: 'model-config-3',
+            quoteId: 'quote-3'
+          },
+          {
+            type: 'UPLOADED',
+            id: 'model-config-4',
+            quoteId: 'quote-4'
+          },
+          {
+            type: 'UPLOADING',
+            id: 'model-config-5'
+          },
+          {
+            type: 'UPLOADED',
+            id: 'model-config-6',
+            quoteId: null
+          }
+        ]
+      }
+    }
+  })
+
+  it('returns common material path when all material config ids are the same', () => {
+    const selected = {
+      materialConfigId: 'material-config-1',
+      finishGroupId: 'finish-group-1',
+      materialId: 'material-1',
+      materialGroupId: 'material-group-1'
+    }
+
+    expect(
+      selectCommonMaterialPathOfModelConfigs(state, ['model-config-1', 'model-config-2']),
+      'to equal',
+      selected
+    )
+  })
+
+  it('returns null for all values if there is no common path', () => {
+    const selected = {
+      materialConfigId: null,
+      finishGroupId: null,
+      materialId: null,
+      materialGroupId: null
+    }
+
+    expect(
+      selectCommonMaterialPathOfModelConfigs(state, ['model-config-1', 'model-config-4']),
+      'to equal',
+      selected
+    )
+  })
+
+  it('returns common path as far as possible', () => {
+    const selected = {
+      materialConfigId: null,
+      finishGroupId: null,
+      materialId: null,
+      materialGroupId: 'material-group-1'
+    }
+
+    expect(
+      selectCommonMaterialPathOfModelConfigs(state, ['model-config-1', 'model-config-3']),
+      'to equal',
+      selected
+    )
+  })
+
+  it('ignores modelConfig of type UPLOADING', () => {
+    const selected = {
+      materialConfigId: 'material-config-1',
+      finishGroupId: 'finish-group-1',
+      materialId: 'material-1',
+      materialGroupId: 'material-group-1'
+    }
+
+    expect(
+      selectCommonMaterialPathOfModelConfigs(state, ['model-config-1', 'model-config-5']),
+      'to equal',
+      selected
+    )
+  })
+
+  it('ignores modelConfig without quote', () => {
+    const selected = {
+      materialConfigId: 'material-config-1',
+      finishGroupId: 'finish-group-1',
+      materialId: 'material-1',
+      materialGroupId: 'material-group-1'
+    }
+
+    expect(
+      selectCommonMaterialPathOfModelConfigs(state, ['model-config-1', 'model-config-6']),
+      'to equal',
+      selected
+    )
+  })
+
+  it('handles empty array', () => {
+    const selected = {
+      materialConfigId: null,
+      finishGroupId: null,
+      materialId: null,
+      materialGroupId: null
+    }
+
+    expect(selectCommonMaterialPathOfModelConfigs(state, []), 'to equal', selected)
   })
 })
