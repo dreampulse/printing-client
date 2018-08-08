@@ -201,13 +201,13 @@ const saveUser = (state, action) =>
         userId ? printingEngine.updateUser(userId, user) : printingEngine.createUser(user),
       {
         args: [action.payload, state.user && state.user.userId],
-        successActionCreator: coreAction.updateUser,
+        successActionCreator: coreAction.userUpdated,
         failActionCreator: coreAction.fatalError
       }
     )
   )
 
-const updateUser = (state, action) => ({
+const userUpdated = (state, action) => ({
   ...state,
   user: {
     ...state.user,
@@ -573,8 +573,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return updateShippings(state, action)
     case 'CORE.SAVE_USER':
       return saveUser(state, action)
-    case 'CORE.UPDATE_USER':
-      return updateUser(state, action)
+    case 'CORE.USER_UPDATED':
+      return userUpdated(state, action)
     case 'MODEL.UPLOAD_FILE':
       return uploadFile(state, action)
     case 'MODEL.UPLOAD_FILES':

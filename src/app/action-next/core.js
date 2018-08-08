@@ -16,7 +16,7 @@ type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string, fo
 type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Array<Shipping>>
 type SaveUserAction = Action<'CORE.SAVE_USER', User>
-type UpdateUserAction = Action<'CORE.UPDATE_USER', {userId: UserId}>
+type UserUpdatedAction = Action<'CORE.USER_UPDATED', {userId: UserId}>
 
 export type CoreAction =
   | InitAction
@@ -26,7 +26,7 @@ export type CoreAction =
   | FatalErrorAction
   | UpdateShippingsAction
   | SaveUserAction
-  | UpdateUserAction
+  | UserUpdatedAction
 
 export const init = ({featureFlags}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
@@ -70,7 +70,7 @@ export const saveUser = (user: User): SaveUserAction => ({
   payload: user
 })
 
-export const updateUser = (payload: {userId: UserId}): UpdateUserAction => ({
-  type: 'CORE.UPDATE_USER',
+export const userUpdated = (payload: {userId: UserId}): UserUpdatedAction => ({
+  type: 'CORE.USER_UPDATED',
   payload
 })

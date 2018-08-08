@@ -1,5 +1,5 @@
 import React from 'react'
-import {compose, lifecycle} from 'recompose'
+import {compose, lifecycle, withHandlers} from 'recompose'
 import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
 import {push} from 'react-router-redux'
@@ -348,23 +348,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...stateProps,
   ...dispatchProps,
   ...ownProps,
-  onSubmit: values => {
-    dispatchProps.onSaveUser(values).then(() => {
-      dispatchProps.onPush('/review-order')
-    })
-  },
-  handleIsCompanyChange: () => {
-    if (stateProps.isComany === false) {
-      dispatchProps.onChangeFormValue(FORM_NAME, 'companyName', '')
-      dispatchProps.onChangeFormValue(FORM_NAME, 'vatId', '')
-    }
-  },
-  handleLocationChange: location => {
-    dispatchProps.onChangeFormValue(FORM_NAME, 'shippingAddress.city', location.city)
-    dispatchProps.onChangeFormValue(FORM_NAME, 'shippingAddress.zipCode', location.zipCode)
-    dispatchProps.onChangeFormValue(FORM_NAME, 'shippingAddress.stateCode', location.stateCode)
-    dispatchProps.onChangeFormValue(FORM_NAME, 'shippingAddress.countryCode', location.countryCode)
-  },
   handleBillingChange: () => {
     if (stateProps.useDifferentBillingAddress === false) {
       dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.firstName', '')
@@ -376,46 +359,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
       dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.stateCode', '')
       dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress.countryCode', '')
     } else {
-      dispatchProps.onChangeFormValue(
-        FORM_NAME,
-        'billingAddress.firstName',
-        stateProps.shippingAddress.firstName
-      )
-      dispatchProps.onChangeFormValue(
-        FORM_NAME,
-        'billingAddress.lastName',
-        stateProps.shippingAddress.lastName
-      )
-      dispatchProps.onChangeFormValue(
-        FORM_NAME,
-        'billingAddress.address',
-        stateProps.shippingAddress.address
-      )
-      dispatchProps.onChangeFormValue(
-        FORM_NAME,
-        'billingAddress.addressLine2',
-        stateProps.shippingAddress.addressLine2
-      )
-      dispatchProps.onChangeFormValue(
-        FORM_NAME,
-        'billingAddress.city',
-        stateProps.shippingAddress.city
-      )
-      dispatchProps.onChangeFormValue(
-        FORM_NAME,
-        'billingAddress.zipCode',
-        stateProps.shippingAddress.zipCode
-      )
-      dispatchProps.onChangeFormValue(
-        FORM_NAME,
-        'billingAddress.stateCode',
-        stateProps.shippingAddress.stateCode
-      )
-      dispatchProps.onChangeFormValue(
-        FORM_NAME,
-        'billingAddress.countryCode',
-        stateProps.shippingAddress.countryCode
-      )
+      dispatchProps.onChangeFormValue(FORM_NAME, 'billingAddress', stateProps.shippingAddress)
     }
   }
 })
@@ -425,11 +369,52 @@ const enhance = compose(
   // as soon as there is a cart
   // guard(state => state.cart...),
   connect(mapStateToProps, mapDispatchToProps, mergeProps),
+  withHandlers({
+    handleIsCompanyChange: props => isCompany => {
+      if (isCompany === false) {
+        props.onChangeFormValue(FORM_NAME, 'companyName', '')
+        props.onChangeFormValue(FORM_NAME, 'vatId', '')
+      }
+    },
+    onSubmit: props => values => {
+      props.onSaveUser(values).then(() => {
+        props.onPush('/review-order')
+      })
+    },
+    handleLocationChange: props => location => {
+      props.onChangeFormValue(FORM_NAME, 'shippingAddress.city', location.city)
+      props.onChangeFormValue(FORM_NAME, 'shippingAddress.zipCode', location.zipCode)
+      props.onChangeFormValue(FORM_NAME, 'shippingAddress.stateCode', location.stateCode)
+      props.onChangeFormValue(FORM_NAME, 'shippingAddress.countryCode', location.countryCode)
+    },
+    handleBillingChange: props => useDifferentBillingAddress => {
+      if (useDifferentBillingAddress === false) {
+        props.onChangeFormValue(FORM_NAME, 'billingAddress.firstName', '')
+        props.onChangeFormValue(FORM_NAME, 'billingAddress.lastName', '')
+        props.onChangeFormValue(FORM_NAME, 'billingAddress.address', '')
+        props.onChangeFormValue(FORM_NAME, 'billingAddress.addressLine2', '')
+        props.onChangeFormValue(FORM_NAME, 'billingAddress.city', '')
+        props.onChangeFormValue(FORM_NAME, 'billingAddress.zipCode', '')
+        props.onChangeFormValue(FORM_NAME, 'billingAddress.stateCode', '')
+        props.onChangeFormValue(FORM_NAME, 'billingAddress.countryCode', '')
+      } else {
+        props.onChangeFormValue(FORM_NAME, 'billingAddress', props.shippingAddress)
+      }
+    }
+  }),
   reduxForm({form: FORM_NAME}),
   lifecycle({
     componentDidUpdate(prevProps) {
       if (this.props.location !== prevProps.location) {
         this.props.handleLocationChange(this.props.location)
+      }
+
+      if (this.props.isCompany !== prevProps.isCompany) {
+        this.props.handleIsCompanyChange(this.props.isCompany)
+      }
+
+      if (this.props.useDifferentBillingAddress !== prevProps.useDifferentBillingAddress) {
+        this.props.handleBillingChange(this.props.useDifferentBillingAddress)
       }
     }
   })
