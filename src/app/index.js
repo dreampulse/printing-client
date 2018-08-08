@@ -60,7 +60,3 @@ if (process.env.NODE_ENV !== 'production') {
     })
   }
 }
-
-global.dev = {
-  push: path => store.dispatch(push(path))
-}
