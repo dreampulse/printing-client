@@ -2,6 +2,7 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
+import compact from 'lodash/compact'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 
@@ -45,21 +46,24 @@ const ModelListPartial = ({
     />
   )
 
-  const renderSecondaryActions = () => [
-    <NumberField
-      disabled={disabled || commonQuantity === null}
-      key="quantity"
-      value={commonQuantity}
-      onChange={quantity => onChangeQuantities(selectedModelConfigIds, quantity)}
-    />,
-    <Button
-      disabled={disabled}
-      modifiers={['minor']}
-      icon={deleteIcon}
-      key="delete"
-      onClick={() => onDeleteModelConfigs(selectedModelConfigIds)}
-    />
-  ]
+  const renderSecondaryActions = () =>
+    compact([
+      !editMode && (
+        <NumberField
+          disabled={disabled || commonQuantity === null}
+          key="quantity"
+          value={commonQuantity}
+          onChange={quantity => onChangeQuantities(selectedModelConfigIds, quantity)}
+        />
+      ),
+      <Button
+        disabled={disabled}
+        modifiers={['minor']}
+        icon={deleteIcon}
+        key="delete"
+        onClick={() => onDeleteModelConfigs(selectedModelConfigIds)}
+      />
+    ])
 
   return (
     <ModelList
