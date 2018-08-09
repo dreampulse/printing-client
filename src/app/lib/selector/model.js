@@ -2,6 +2,7 @@
 import invariant from 'invariant'
 import compact from 'lodash/compact'
 import uniq from 'lodash/uniq'
+import unzip from 'lodash/unzip'
 
 import type {
   AppState,
@@ -12,9 +13,10 @@ import type {
   MaterialConfigId,
   FinishGroupId,
   MaterialId,
-  MaterialGroupId
+  MaterialGroupId,
+  Quote
 } from '../../type-next'
-import {getMaterialConfigById} from '../material'
+import {getMaterialConfigById, getMaterialTreeByMaterialConfigId} from '../material'
 
 export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile | BackendModel> =>
   state.core.modelConfigs.map(
@@ -114,3 +116,37 @@ export const selectCommonMaterialPathOfModelConfigs = (
     )
   }
 }
+
+export const selectConfiguredModelInformation = (state: AppState) =>
+  unzip([
+    state.core.modelConfigs,
+    selectModelsOfModelConfigs(state),
+    selectShippingsOfModelConfigs(state),
+    selectQuotesOfModelConfigs(state)
+  ])
+    .filter(([modelConfig]) => {
+      const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
+      return mc.type === 'UPLOADED' && mc.quoteId !== null
+    })
+    .map(([modelConfig, model, shipping, quote]: any) => {
+      const materialTree = getMaterialTreeByMaterialConfigId(
+        state.core.materialGroups,
+        quote.materialConfigId
+      )
+      const process = materialTree.finishGroup.properties.printingMethodShort
+      const providerInfo = materialTree.finishGroup.properties.printingServiceName[quote.vendorId]
+      const {id: materialConfigId, colorCode, color, colorImage} = materialTree.materialConfig
+
+      return {
+        modelConfig,
+        model,
+        shipping,
+        quote,
+        process,
+        providerInfo,
+        materialConfigId,
+        colorCode,
+        color,
+        colorImage
+      }
+    })

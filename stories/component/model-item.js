@@ -43,7 +43,7 @@ storiesOf('Model Item', module)
       price="80.99€"
       deliveryTime="2-5 Days"
       shippingMethod="DHL Express"
-      providerName="shapeways"
+      providerId="shapeways"
       materialName="Metal, polished"
       providerMaterialName="Polyamide (SLS)"
       color={color()}
@@ -62,7 +62,7 @@ storiesOf('Model Item', module)
       price="80.99€"
       deliveryTime="2-5 Days"
       shippingMethod="DHL Express"
-      providerName="shapeways"
+      providerId="shapeways"
       materialName="Metal, polished"
       providerMaterialName="Polyamide (SLS)"
       color={color()}

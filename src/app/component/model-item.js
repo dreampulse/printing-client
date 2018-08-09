@@ -25,7 +25,7 @@ const ModelItem = ({
   shippingMethod,
   materialName,
   color,
-  providerName,
+  providerId,
   providerMaterialName,
   onMagnify = Function.prototype
 }) => (
@@ -43,7 +43,7 @@ const ModelItem = ({
       <div className="model-item__value">{materialName}</div>
       <div className="model-item__value">{color}</div>
       <div className="model-item__provider">
-        <ProviderImage slug={providerName} modifiers={['s']} />{' '}
+        <ProviderImage slug={providerId} modifiers={['s']} />{' '}
         {Boolean(providerMaterialName) && <Info modifiers={['minor']}>{providerMaterialName}</Info>}
       </div>
     </div>
@@ -72,7 +72,7 @@ ModelItem.propTypes = {
   deliveryTime: PropTypes.string.isRequired,
   shippingMethod: PropTypes.string.isRequired,
   materialName: PropTypes.string.isRequired,
-  providerName: PropTypes.string.isRequired,
+  providerId: PropTypes.string.isRequired,
   providerMaterialName: PropTypes.string,
   onMagnify: PropTypes.func
 }

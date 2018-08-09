@@ -193,7 +193,10 @@ const saveUser = (state, action) =>
       ...state,
       user: {
         ...state.user,
-        ...action.payload
+        ...action.payload,
+        billingAddress: action.payload.billingAddress
+          ? action.payload.billingAddress
+          : action.payload.shippingAddress
       }
     },
     Cmd.run(
