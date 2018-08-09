@@ -1,18 +1,23 @@
 // @flow
 
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 import {withRouter} from 'react-router'
 import {compose} from 'recompose'
 
 // TODO: Use final svg images here!
-import feature1Image from '../../asset/image/feature1.png'
-import feature2Image from '../../asset/image/feature2.png'
+// import feature1Image from '../../asset/image/feature1.png'
+// import feature2Image from '../../asset/image/feature2.png'
 // import feature3Image from '../../../asset/image/feature3.png'
 
+import deleteIcon from '../../asset/icon/delete.svg'
+import plusIcon from '../../asset/icon/plus.svg'
+import minusIcon from '../../asset/icon/minus.svg'
+import copyIcon from '../../asset/icon/copy.svg'
+import cartIcon from '../../asset/icon/cart.svg'
+
 import {formatDimensions, formatPrice} from '../lib/formatter'
-import {getProviderName} from '../lib/provider-selector'
 import {selectModelsOfModelConfigs, selectCartCount} from '../lib/selector'
 import type {AppState} from '../reducer-next'
 
@@ -23,14 +28,8 @@ import * as modelViewerAction from '../action-next/model-viewer'
 import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
 
-import ProviderTeaser from '../component/provider-teaser'
-import ProviderImage from '../component/provider-image'
 import Section from '../component/section'
-import SplitLayout from '../component/split-layout'
 import Headline from '../component/headline'
-import Baloon from '../component/baloon'
-import FeatureParagraph from '../component/feature-paragraph'
-import Image from '../component/image'
 import UploadArea from '../component/upload-area'
 import UploadModelItemError from '../component/upload-model-item-error'
 import UploadModelItemLoad from '../component/upload-model-item-load'
@@ -38,12 +37,6 @@ import UploadModelItem from '../component/upload-model-item'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import Notification from '../component/notification'
-
-import deleteIcon from '../../asset/icon/delete.svg'
-import plusIcon from '../../asset/icon/plus.svg'
-import minusIcon from '../../asset/icon/minus.svg'
-import copyIcon from '../../asset/icon/copy.svg'
-import cartIcon from '../../asset/icon/cart.svg'
 
 const UploadPage = ({
   onUploadFiles,
@@ -67,6 +60,7 @@ const UploadPage = ({
   )
   const isUploadCompleted = numModelsUploading === 0
 
+  /*
   const promoSection = () => (
     <Fragment>
       <Section>
@@ -83,11 +77,9 @@ const UploadPage = ({
             <FeatureParagraph key="feature2" image={<Image src={feature2Image} />}>
               The widest material choice and the fastest delivery
             </FeatureParagraph>
-            /*
             <FeatureParagraph key="feature3" image={feature3Image}>
               Split your order accross multiple providers, effortlessly
             </FeatureParagraph>
-            */
           ]}
           rightContent={[
             <Baloon key="baloon1">
@@ -110,6 +102,7 @@ const UploadPage = ({
       </ProviderTeaser>
     </Fragment>
   )
+  */
 
   const uploadSection = () => (
     <Section>
@@ -241,7 +234,7 @@ const UploadPage = ({
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
-      {!hasModels && promoSection()}
+      {/* !hasModels && promoSection() */}
     </AppLayout>
   )
 }
