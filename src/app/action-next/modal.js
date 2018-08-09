@@ -29,9 +29,13 @@ const open = (config: ModalConfigOpened): OpenModalAction => ({
   payload: config
 })
 
-export const openPickLocation = (): OpenModalAction =>
+export const openPickLocation = (
+  isCloseable: boolean = false,
+  showWarning: boolean = false
+): OpenModalAction =>
   open({
-    isCloseable: false,
+    isCloseable,
+    showWarning,
     contentType: CONTENT_TYPE.PICK_LOCATION,
     contentProps: null
   })

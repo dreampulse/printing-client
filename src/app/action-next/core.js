@@ -1,6 +1,6 @@
 // @flow
 
-import type {Action, MaterialGroup, Location, Features, Shipping} from '../type-next'
+import type {Action, MaterialGroup, Location, Features, Shipping, User, UserId} from '../type-next'
 
 type InitPayload = {
   featureFlags: Features
@@ -16,6 +16,8 @@ type UpdateUnitAction = Action<'CORE.UPDATE_UNIT', {unit: string}>
 type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string, force: boolean}>
 type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Array<Shipping>>
+type SaveUserAction = Action<'CORE.SAVE_USER', User>
+type UserReceivedAction = Action<'CORE.USER_RECEIVED', {userId: UserId}>
 
 export type CoreAction =
   | InitAction
@@ -25,6 +27,8 @@ export type CoreAction =
   | UpdateCurrencyAction
   | FatalErrorAction
   | UpdateShippingsAction
+  | SaveUserAction
+  | UserReceivedAction
 
 export const init = ({featureFlags}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
@@ -65,5 +69,15 @@ export const fatalError = (error: Error): FatalErrorAction => ({
 
 export const updateShippings = (payload: Array<Shipping>): UpdateShippingsAction => ({
   type: 'CORE.UPDATE_SHIPPINGS',
+  payload
+})
+
+export const saveUser = (user: User): SaveUserAction => ({
+  type: 'CORE.SAVE_USER',
+  payload: user
+})
+
+export const userReceived = (payload: {userId: UserId}): UserReceivedAction => ({
+  type: 'CORE.USER_RECEIVED',
   payload
 })

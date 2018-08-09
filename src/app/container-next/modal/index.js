@@ -25,18 +25,25 @@ const modals = {
   [CONTENT_TYPE.CONFIRM_CURRENCY_CHANGE]: ConfirmCurrencyChangeModal
 }
 
-const getContent = (contentType, contentProps) => {
+const getContent = (contentType, contentProps, meta) => {
   if (contentType === null) {
     return <div />
   }
   if (contentType in modals) {
-    return createElement(modals[contentType], contentProps)
+    return createElement(modals[contentType], {...contentProps, meta})
   }
   throw new Error(`Unknown modal contentType "${contentType}"`)
 }
 
-const Modal = ({isOpen, contentType, contentProps}) =>
-  isOpen && <Portal>{getContent(contentType, contentProps)}</Portal>
+const Modal = ({isOpen, contentType, contentProps, isCloseable, showWarning}) =>
+  isOpen && (
+    <Portal>
+      {getContent(contentType, contentProps, {
+        isCloseable,
+        showWarning
+      })}
+    </Portal>
+  )
 
 const mapStateToProps = state => ({
   ...state.modal.modalConfig,
