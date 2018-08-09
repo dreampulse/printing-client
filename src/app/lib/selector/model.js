@@ -13,8 +13,7 @@ import type {
   MaterialConfigId,
   FinishGroupId,
   MaterialId,
-  MaterialGroupId,
-  Quote
+  MaterialGroupId
 } from '../../type-next'
 import {getMaterialConfigById, getMaterialTreeByMaterialConfigId} from '../material'
 

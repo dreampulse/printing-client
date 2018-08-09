@@ -46,7 +46,6 @@ const CartPage = ({
   onDeleteModelConfigs,
   cart,
   chosenShippings,
-  materialGroups,
   onMagnifyModel,
   onChooseMaterial,
   numAddedItems
@@ -231,8 +230,7 @@ const mapStateToProps = (state: AppState) => ({
   modelConfigs: state.core.modelConfigs,
   chosenShippings: selectUniqueChosenShippings(state),
   currency: state.core.currency,
-  cart: state.core.cart,
-  materialGroups: state.core.materialGroups
+  cart: state.core.cart
 })
 
 const mapDispatchToProps = {

@@ -2,9 +2,7 @@ import React from 'react'
 import {compose} from 'recompose'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
-import unzip from 'lodash/unzip'
 
-import type {AppState} from '../reducer-next'
 import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
@@ -43,7 +41,6 @@ const ReviewOrderPage = ({
   cart,
   modelsWithConfig,
   chosenShippings,
-  materialGroups,
   onMagnifyModel
 }) => {
   const shippingStateName = getStateName(
@@ -268,8 +265,7 @@ const mapStateToProps = state => ({
   shippings: state.core.shippings,
   modelConfigs: state.core.modelConfigs,
   modelsWithConfig: selectConfiguredModelInformation(state),
-  chosenShippings: selectUniqueChosenShippings(state),
-  materialGroups: state.core.materialGroups
+  chosenShippings: selectUniqueChosenShippings(state)
 })
 
 const mapDispatchToProps = {
