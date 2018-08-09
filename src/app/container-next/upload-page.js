@@ -24,6 +24,7 @@ import type {AppState} from '../reducer-next'
 import * as modelAction from '../action-next/model'
 import * as navigationAction from '../action-next/navigation'
 import * as modelViewerAction from '../action-next/model-viewer'
+import * as modalAction from '../action-next/modal'
 
 import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
@@ -252,7 +253,7 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = {
-  onUploadFiles: modelAction.uploadFiles,
+  onUploadFiles: modalAction.openPickUnit,
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onChangeQuantities: modelAction.updateQuantities,
   onDuplicateModelConfig: modelAction.duplicateModelConfig,

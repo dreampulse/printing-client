@@ -15,6 +15,7 @@ export type ModalAction = OpenModalAction | CloseModalAction
 
 export const CONTENT_TYPE: {[ModalContentType]: ModalContentType} = {
   PICK_LOCATION: 'PICK_LOCATION',
+  PICK_UNIT: 'PICK_UNIT',
   MODEL_VIEWER: 'MODEL_VIEWER',
   MATERIAL: 'MATERIAL',
   FINISH_GROUP: 'FINISH_GROUP',
@@ -37,6 +38,15 @@ export const openPickLocation = (
     showWarning,
     contentType: CONTENT_TYPE.PICK_LOCATION,
     contentProps: null
+  })
+
+export const openPickUnit = (files: FileList): OpenModalAction =>
+  open({
+    isCloseable: false,
+    contentType: CONTENT_TYPE.PICK_UNIT,
+    contentProps: {
+      files
+    }
   })
 
 export const openModelViewer = (modelName: string): OpenModalAction =>

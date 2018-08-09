@@ -5,9 +5,9 @@ import type {Action, BackendModel, ConfigId, FileId} from '../type-next'
 
 type UploadFileAction = Action<
   'MODEL.UPLOAD_FILE',
-  {fileId: FileId, configId: ConfigId, file: File}
+  {fileId: FileId, configId: ConfigId, file: File, unit: string}
 >
-type UploadFilesAction = Action<'MODEL.UPLOAD_FILES', Array<File>>
+type UploadFilesAction = Action<'MODEL.UPLOAD_FILES', {files: Array<File>, unit: string}>
 type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, progress: number}>
 type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: string, model: BackendModel}>
 type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
@@ -36,25 +36,23 @@ export type ModelAction =
   | UpdateQuantitiesAction
   | DuplicateModelConfigAction
 
-export const uploadFile = (file: File): UploadFileAction => ({
+export const uploadFile = (file: File, unit: string): UploadFileAction => ({
   type: 'MODEL.UPLOAD_FILE',
   payload: {
     file,
     fileId: uniqueId('file-id-'),
-    configId: uniqueId('config-id-')
+    configId: uniqueId('config-id-'),
+    unit
   }
 })
 
-export const uploadFiles = (files: FileList): UploadFileAction | UploadFilesAction => {
-  const filesAsArray = Array.from(files)
-
-  return filesAsArray.length === 1
-    ? uploadFile(filesAsArray[0])
-    : {
-        type: 'MODEL.UPLOAD_FILES',
-        payload: filesAsArray
-      }
-}
+export const uploadFiles = (files: FileList, unit: string): UploadFilesAction => ({
+  type: 'MODEL.UPLOAD_FILES',
+  payload: {
+    files: Array.from(files),
+    unit
+  }
+})
 
 export const uploadProgress = (fileId: FileId, progress: number): UploadProgressAction => ({
   type: 'MODEL.UPLOAD_PROGRESS',

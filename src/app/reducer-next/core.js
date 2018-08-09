@@ -45,6 +45,7 @@ import * as cartAction from '../action-next/cart'
 export type CoreState = {
   materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
   currency: string,
+  unit: string,
   location: ?Location,
   shippings: Array<Shipping>,
   featureFlags: Features,
@@ -64,6 +65,7 @@ export type CoreState = {
 const initialState: CoreState = {
   materialGroups: [],
   currency: config.defaultCurrency,
+  unit: 'mm',
   location: null,
   shippings: [],
   featureFlags: {},
@@ -152,6 +154,11 @@ const updateLocation = (state, action) => {
     ])
   )
 }
+
+const updateUnit = (state, action) => ({
+  ...state,
+  unit: action.payload.unit
+})
 
 const updateCurrency = (state, action) => {
   // Do nothing if currency did not change
@@ -248,9 +255,7 @@ const uploadFile = (state, {payload}) => {
     Cmd.run(printingEngine.uploadModel, {
       args: [
         payload.file,
-        // TODO: Should be configurable via the interface
-        // @see https://github.com/all3dp/printing-engine-client/issues/622
-        {unit: 'mm'},
+        {unit: payload.unit},
         Cmd.dispatch,
         progress => modelAction.uploadProgress(fileId, progress)
       ],
@@ -260,8 +265,8 @@ const uploadFile = (state, {payload}) => {
   )
 }
 
-const uploadFiles = (state, {payload: files}) =>
-  loop(state, Cmd.list(files.map(file => Cmd.action(modelAction.uploadFile(file)))))
+const uploadFiles = (state, {payload: {files, unit}}) =>
+  loop(state, Cmd.list(files.map(file => Cmd.action(modelAction.uploadFile(file, unit)))))
 
 const uploadProgress = (state, {payload}) => {
   const fileId = payload.fileId
@@ -567,6 +572,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return updateMaterialGroups(state, action)
     case 'CORE.UPDATE_LOCATION':
       return updateLocation(state, action)
+    case 'CORE.UPDATE_UNIT':
+      return updateUnit(state, action)
     case 'CORE.UPDATE_CURRENCY':
       return updateCurrency(state, action)
     case 'CORE.UPDATE_SHIPPINGS':
