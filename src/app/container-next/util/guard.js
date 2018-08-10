@@ -1,6 +1,6 @@
 import {compose, lifecycle} from 'recompose'
 import {connect} from 'react-redux'
-import {replace} from 'react-router-redux'
+import {push} from 'react-router-redux'
 
 // Higher order component that enshures that a parameter exists
 // It redirects otherwise (by default to `/`)
@@ -11,14 +11,14 @@ export const guard = (predicate, redirectRoute = '/') =>
         guardPassed: predicate(state)
       }),
       {
-        replaceRoute: replace
+        pushRoute: push
       }
     ),
     lifecycle({
       componentWillMount() {
-        const {guardPassed, replaceRoute} = this.props
+        const {guardPassed, pushRoute} = this.props
         if (!guardPassed) {
-          replaceRoute(redirectRoute)
+          pushRoute(redirectRoute)
         }
       }
     })
