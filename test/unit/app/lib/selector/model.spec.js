@@ -632,7 +632,7 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
   })
 })
 
-describe('', () => {
+describe('selectCommonMaterialPathOfModelConfigs()', () => {
   let state
   let sandbox
 
@@ -774,7 +774,7 @@ describe('', () => {
       },
       finishGroup: {
         properties: {
-          printingMethodShort: 'printiong-method',
+          printingMethodShort: 'printing-method',
           printingServiceName: {
             'vendor-id-1': 'provider-info',
             'vendor-id-2': 'provider-info-2'
@@ -813,7 +813,7 @@ describe('', () => {
           materialConfigId: 'material-config-1',
           vendorId: 'vendor-id-1'
         },
-        process: 'printiong-method',
+        process: 'printing-method',
         providerInfo: 'provider-info',
         materialConfigId: 'material-config-id',
         colorCode: 'color-code',
@@ -843,7 +843,7 @@ describe('', () => {
           materialConfigId: 'material-config-1',
           vendorId: 'vendor-id-2'
         },
-        process: 'printiong-method',
+        process: 'printing-method',
         providerInfo: 'provider-info-2',
         materialConfigId: 'material-config-id',
         colorCode: 'color-code',
