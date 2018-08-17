@@ -12,6 +12,7 @@ import {getFeatureFlags} from './lib/feature-flags'
 
 import Store from './store'
 import Router from './router'
+import * as selectors from './lib/selector'
 
 import '../sass/main.scss'
 
@@ -50,6 +51,7 @@ if (process.env.NODE_ENV !== 'production') {
   console.info('NODE_ENV', process.env.NODE_ENV) // eslint-disable-line no-console
 
   global.store = store
+  global.selectors = selectors
 
   if (module.hot) {
     // Enable Webpack hot module replacement

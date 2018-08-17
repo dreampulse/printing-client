@@ -12,3 +12,4 @@ export const goToMaterial = (configIds: Array<ConfigId>) => push('/material', {c
 export const goToCart = (numAddedItems: ?number) => push('/cart', {numAddedItems})
 export const goToAddress = () => push('/address')
 export const goToReviewOrder = () => push('/review-order')
+export const goToSuccess = () => push('/success')

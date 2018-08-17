@@ -1,6 +1,6 @@
 import config from '../../../config'
 
-export function checkout({amount, currency, email}) {
+export function checkout({price, currency, email}) {
   return new Promise((resolve, reject) => {
     const checkoutHandler = global.StripeCheckout.configure({
       key: config.stripePublicKey,
@@ -14,7 +14,7 @@ export function checkout({amount, currency, email}) {
     checkoutHandler.open({
       name: config.stripeName,
       description: config.stripeDescription,
-      amount: amount * 100,
+      amount: price * 100,
       currency,
       email
     })

@@ -8,6 +8,7 @@ import type {TimeoutAction} from './timeout'
 import type {PollingAction} from './polling'
 import type {QuoteAction} from './quote'
 import type {CartAction} from './cart'
+import type {OrderAction} from './order'
 
 export type AppAction =
   | CoreAction
@@ -18,3 +19,4 @@ export type AppAction =
   | PollingAction
   | QuoteAction
   | CartAction
+  | OrderAction
