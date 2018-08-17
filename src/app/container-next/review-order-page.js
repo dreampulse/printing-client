@@ -196,7 +196,7 @@ const ReviewOrderPage = ({
   )
 
   return (
-    <CheckoutLayout title="Checkout" currentStep={2}>
+    <CheckoutLayout title="Checkout" currentStep={1}>
       <PageHeader label="Review Order" />
       <SidebarLayout sidebar={renderPaymentSection()}>
         {renderAddressSection()}
