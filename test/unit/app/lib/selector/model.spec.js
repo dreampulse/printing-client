@@ -7,8 +7,11 @@ import {
   selectShippingsOfModelConfigs,
   selectQuotesOfModelConfigs,
   selectUniqueChosenShippings,
-  selectCommonMaterialPathOfModelConfigs
+  selectCommonMaterialPathOfModelConfigs,
+  selectConfiguredModelInformation
 } from '../../../../../src/app/lib/selector/model'
+
+import * as materialLib from '../../../../../src/app/lib/material'
 
 describe('selectModelsOfModelConfigs()', () => {
   it('returns selected models of model configs', () => {
@@ -626,5 +629,227 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
     }
 
     expect(selectCommonMaterialPathOfModelConfigs(state, []), 'to equal', selected)
+  })
+})
+
+describe('selectCommonMaterialPathOfModelConfigs()', () => {
+  let state
+  let sandbox
+
+  beforeEach(() => {
+    state = {
+      core: {
+        materialGroups: [
+          {
+            id: 'material-group-1',
+            materials: [
+              {
+                id: 'material-1',
+                finishGroups: [
+                  {
+                    id: 'finish-group-1',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-1',
+                        finishGroupId: 'finish-group-1',
+                        materialId: 'material-1',
+                        materialGroupId: 'material-group-1'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                id: 'material-2',
+                finishGroups: [
+                  {
+                    id: 'finish-group-2',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-2',
+                        finishGroupId: 'finish-group-2',
+                        materialId: 'material-2',
+                        materialGroupId: 'material-group-1'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            id: 'material-group-3',
+            materials: [
+              {
+                id: 'material-3',
+                finishGroups: [
+                  {
+                    id: 'finish-group-3',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-3',
+                        finishGroupId: 'finish-group-3',
+                        materialId: 'material-3',
+                        materialGroupId: 'material-group-3'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        quotes: {
+          'quote-1': {
+            materialConfigId: 'material-config-1',
+            vendorId: 'vendor-id-1'
+          },
+          'quote-2': {
+            materialConfigId: 'material-config-1',
+            vendorId: 'vendor-id-2'
+          }
+        },
+        shippings: [
+          {
+            shippingId: 'shipping-1'
+          },
+          {
+            shippingId: 'shipping-2'
+          }
+        ],
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-2'
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: 'quote-2',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'some-config-id'
+          }
+        ],
+        uploadingFiles: {
+          'some-file-id': {
+            fileId: 'some-file-id',
+            fileName: 'ome-file-name',
+            fileSize: 42,
+            progress: 1,
+            error: false
+          }
+        },
+        backendModels: {
+          'some-model-id': {
+            modelId: 'some-model-id',
+            fileName: 'some-file-name',
+            fileUnit: 'some-file-uni',
+            area: 42,
+            volume: 23,
+            thumbnailUrl: 'some-url',
+            sceneId: 'some-scene-id'
+          }
+        }
+      }
+    }
+
+    sandbox = sinon.sandbox.create()
+
+    sandbox.stub(materialLib, 'getMaterialTreeByMaterialConfigId').returns({
+      materialConfig: {
+        id: 'material-config-id',
+        colorCode: 'color-code',
+        color: 'color',
+        colorImage: 'color-image'
+      },
+      finishGroup: {
+        properties: {
+          printingMethodShort: 'printing-method',
+          printingServiceName: {
+            'vendor-id-1': 'provider-info',
+            'vendor-id-2': 'provider-info-2'
+          }
+        }
+      }
+    })
+  })
+
+  afterEach(() => {
+    sandbox.restore()
+  })
+
+  it('returns all informations about all configured models', () => {
+    expect(selectConfiguredModelInformation(state), 'to equal', [
+      {
+        modelConfig: {
+          type: 'UPLOADED',
+          quantity: 1,
+          modelId: 'some-model-id',
+          id: 'some-config-id',
+          quoteId: 'quote-1',
+          shippingId: 'shipping-2'
+        },
+        model: {
+          modelId: 'some-model-id',
+          fileName: 'some-file-name',
+          fileUnit: 'some-file-uni',
+          area: 42,
+          volume: 23,
+          thumbnailUrl: 'some-url',
+          sceneId: 'some-scene-id'
+        },
+        shipping: {shippingId: 'shipping-2'},
+        quote: {
+          materialConfigId: 'material-config-1',
+          vendorId: 'vendor-id-1'
+        },
+        process: 'printing-method',
+        providerInfo: 'provider-info',
+        materialConfigId: 'material-config-id',
+        colorCode: 'color-code',
+        color: 'color',
+        colorImage: 'color-image'
+      },
+      {
+        modelConfig: {
+          type: 'UPLOADED',
+          quantity: 1,
+          modelId: 'some-model-id',
+          id: 'some-config-id',
+          quoteId: 'quote-2',
+          shippingId: 'shipping-1'
+        },
+        model: {
+          modelId: 'some-model-id',
+          fileName: 'some-file-name',
+          fileUnit: 'some-file-uni',
+          area: 42,
+          volume: 23,
+          thumbnailUrl: 'some-url',
+          sceneId: 'some-scene-id'
+        },
+        shipping: {shippingId: 'shipping-1'},
+        quote: {
+          materialConfigId: 'material-config-1',
+          vendorId: 'vendor-id-2'
+        },
+        process: 'printing-method',
+        providerInfo: 'provider-info-2',
+        materialConfigId: 'material-config-id',
+        colorCode: 'color-code',
+        color: 'color',
+        colorImage: 'color-image'
+      }
+    ])
   })
 })

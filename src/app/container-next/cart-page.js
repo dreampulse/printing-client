@@ -2,19 +2,13 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import unzip from 'lodash/unzip'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 
 import type {AppState} from '../reducer-next'
-import {
-  selectModelsOfModelConfigs,
-  selectShippingsOfModelConfigs,
-  selectUniqueChosenShippings,
-  selectQuotesOfModelConfigs
-} from '../lib/selector'
+import {selectUniqueChosenShippings, selectConfiguredModelInformation} from '../lib/selector'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
-import {getProviderName, getMaterialTreeByMaterialConfigId} from '../lib/material'
+import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
 
 import Link from '../component/link'
@@ -52,7 +46,6 @@ const CartPage = ({
   onDeleteModelConfigs,
   cart,
   chosenShippings,
-  materialGroups,
   onMagnifyModel,
   onChooseMaterial,
   numAddedItems
@@ -97,17 +90,19 @@ const CartPage = ({
   const modelListSection = () => (
     <Section>
       <ModelListPartial editMode>
-        {modelsWithConfig.map(([modelConfig, model, shipping, quote]) => {
-          const materialTree = getMaterialTreeByMaterialConfigId(
-            materialGroups,
-            quote.materialConfigId
-          )
-          const process = materialTree.finishGroup.properties.printingMethodShort
-          const providerInfo =
-            materialTree.finishGroup.properties.printingServiceName[quote.vendorId]
-          const {id: materialConfigId, colorCode, color, colorImage} = materialTree.materialConfig
-
-          return (
+        {modelsWithConfig.map(
+          ({
+            modelConfig,
+            model,
+            shipping,
+            quote,
+            process,
+            providerInfo,
+            materialConfigId,
+            colorCode,
+            color,
+            colorImage
+          }) => (
             <ModelItem
               key={modelConfig.id}
               id={modelConfig.id}
@@ -119,7 +114,7 @@ const CartPage = ({
               price={formatPrice(quote.price, quote.currency)}
               deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
               shippingMethod={shipping.name}
-              providerName={shipping.vendorId}
+              providerId={shipping.vendorId}
               materialName={process}
               providerMaterialName={providerInfo}
               color={
@@ -137,7 +132,7 @@ const CartPage = ({
               onMagnify={() => onMagnifyModel(model)}
             />
           )
-        })}
+        )}
       </ModelListPartial>
     </Section>
   )
@@ -231,20 +226,11 @@ const CartPage = ({
 }
 
 const mapStateToProps = (state: AppState) => ({
-  modelsWithConfig: unzip([
-    state.core.modelConfigs,
-    selectModelsOfModelConfigs(state),
-    selectShippingsOfModelConfigs(state),
-    selectQuotesOfModelConfigs(state)
-  ]).filter(([modelConfig]) => {
-    const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
-    return mc.type === 'UPLOADED' && mc.quoteId !== null
-  }),
+  modelsWithConfig: selectConfiguredModelInformation(state),
   modelConfigs: state.core.modelConfigs,
   chosenShippings: selectUniqueChosenShippings(state),
   currency: state.core.currency,
-  cart: state.core.cart,
-  materialGroups: state.core.materialGroups
+  cart: state.core.cart
 })
 
 const mapDispatchToProps = {
