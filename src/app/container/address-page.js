@@ -23,6 +23,7 @@ import {getCountriesMenu, getStateName, getStates, getCountryName} from '../serv
 import {renderField} from './util/form'
 import {guard} from './util/guard'
 import CheckoutLayout from './checkout-layout'
+import scrollTo from '../service/scroll-to'
 
 // TODO: this should go into a lib and should be tested
 const required = value => (value ? undefined : 'Required')
@@ -287,25 +288,26 @@ const AddressPage = ({
               type="checkbox"
             />
           </FormRow>
-
+          <div id="shipping-address" />
           {useDifferentBillingAddress && billingAddressSection}
         </FormLayout>
-
-        <Button
-          type="submit"
-          label={submitting ? 'Reviewing…' : 'Review Order'}
-          disabled={submitting}
-        />
+        <div id="billing-address">
+          <Button
+            type="submit"
+            label={submitting ? 'Reviewing…' : 'Review Order'}
+            disabled={submitting}
+          />
+        </div>
       </form>
     </CheckoutLayout>
   )
 }
 
-const transformLocationToInitialUser = location => ({
+const transformLocationToInitialUser = userLocation => ({
   isCompany: false,
   useDifferentBillingAddress: false,
   shippingAddress: {
-    ...location
+    ...userLocation
   }
 })
 
@@ -314,7 +316,7 @@ const selector = formValueSelector(FORM_NAME)
 
 const mapStateToProps = state => ({
   cart: state.core.cart,
-  location: state.core.location,
+  userLocation: state.core.location,
   initialValues:
     (state.core.user && omit(state.core.user, 'userId')) ||
     transformLocationToInitialUser(state.core.location),
@@ -361,11 +363,11 @@ const enhance = compose(
         props.onGoToReviewOrder()
       })
     },
-    handleLocationChange: props => location => {
-      props.onChangeFormValue(FORM_NAME, 'shippingAddress.city', location.city)
-      props.onChangeFormValue(FORM_NAME, 'shippingAddress.zipCode', location.zipCode)
-      props.onChangeFormValue(FORM_NAME, 'shippingAddress.stateCode', location.stateCode)
-      props.onChangeFormValue(FORM_NAME, 'shippingAddress.countryCode', location.countryCode)
+    handleLocationChange: props => userLocation => {
+      props.onChangeFormValue(FORM_NAME, 'shippingAddress.city', userLocation.city)
+      props.onChangeFormValue(FORM_NAME, 'shippingAddress.zipCode', userLocation.zipCode)
+      props.onChangeFormValue(FORM_NAME, 'shippingAddress.stateCode', userLocation.stateCode)
+      props.onChangeFormValue(FORM_NAME, 'shippingAddress.countryCode', userLocation.countryCode)
     },
     handleBillingChange: props => useDifferentBillingAddress => {
       if (useDifferentBillingAddress === false) {
@@ -384,9 +386,33 @@ const enhance = compose(
   }),
   reduxForm({form: FORM_NAME}),
   lifecycle({
+    componentDidMount() {
+      if (
+        this.props.location.state &&
+        this.props.location.state.section &&
+        this.props.location.state.section !== 'billing-address'
+      ) {
+        scrollTo(`#${this.props.location.state.section}`)
+      }
+    },
     componentDidUpdate(prevProps) {
-      if (this.props.location !== prevProps.location) {
-        this.props.handleLocationChange(this.props.location)
+      // Special case for the billing address because the dom is not ready in
+      // componentDidMount because of REDUX FORM
+      // TODO: refactor when removing redux form
+      if (
+        this.props.useDifferentBillingAddress !== prevProps.useDifferentBillingAddress &&
+        this.props.useDifferentBillingAddress === true &&
+        this.props.location.state &&
+        this.props.location.state.section &&
+        this.props.location.state.section === 'billing-address'
+      ) {
+        setTimeout(() => {
+          scrollTo(`#billing-address`)
+        }, 100)
+      }
+
+      if (this.props.userLocation !== prevProps.userLocation) {
+        this.props.handleLocationChange(this.props.userLocation)
       }
 
       if (this.props.isCompany !== prevProps.isCompany) {
