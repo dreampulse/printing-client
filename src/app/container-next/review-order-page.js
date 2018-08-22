@@ -49,7 +49,8 @@ const ReviewOrderPage = ({
   onExecutePaypalPayment,
   paymentInProgress,
   setPaymentInProgress,
-  featureFlags
+  featureFlags,
+  urlParams
 }) => {
   const shippingStateName = getStateName(
     user.shippingAddress.countryCode,
@@ -60,6 +61,14 @@ const ReviewOrderPage = ({
       user.billingAddress.stateCode &&
       getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode)) ||
     shippingStateName
+
+  const utmParams = {
+    source: urlParams.utm_source,
+    medium: urlParams.utm_medium,
+    campaign: urlParams.utm_campaign,
+    term: urlParams.utm_term,
+    content: urlParams.utm_content
+  }
 
   const renderAddressSection = () => (
     <Section>
@@ -155,7 +164,8 @@ const ReviewOrderPage = ({
             cartId: cart.cartId,
             email: user.emailAddress,
             price: cart.totalPrice,
-            currency: cart.currency
+            currency: cart.currency,
+            utmParams
           })
           onPaid({orderNumber, paymentId})
           setPaymentInProgress(false)
@@ -179,7 +189,8 @@ const ReviewOrderPage = ({
               userId: user.userId,
               cartId: cart.cartId,
               currency: cart.currency,
-              invoiceKey: 'TODO' // Issue #716
+              invoiceKey: urlParams.invoice_key,
+              utmParams
             })
             onGoToSuccess()
           } catch (error) {
@@ -197,7 +208,8 @@ const ReviewOrderPage = ({
         const {paymentToken, orderNumber, paymentId} = await payWithPaypal({
           userId: user.userId,
           cartId: cart.cartId,
-          currency: cart.currency
+          currency: cart.currency,
+          utmParams
         })
         onPaid({orderNumber, paymentId})
         return paymentToken
@@ -341,7 +353,8 @@ const mapStateToProps = state => ({
   modelConfigs: state.core.modelConfigs,
   modelsWithConfig: selectConfiguredModelInformation(state),
   chosenShippings: selectUniqueChosenShippings(state),
-  featureFlags: state.core.featureFlags
+  featureFlags: state.core.featureFlags,
+  urlParams: state.core.urlParams
 })
 
 const mapDispatchToProps = {

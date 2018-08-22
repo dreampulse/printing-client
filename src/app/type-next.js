@@ -220,6 +220,16 @@ export type Features = {
   invoice?: true
 }
 
+export type UrlParams = {[key: string]: string}
+
+export type UtmParams = {
+  source: string,
+  medium: string,
+  campaign: string,
+  term: string,
+  content: string
+}
+
 export type User = {
   userId: ?UserId,
   emailAddress: string,

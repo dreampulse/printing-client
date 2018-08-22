@@ -8,7 +8,7 @@ import browserUpdate from 'browser-update'
 import 'babel-polyfill'
 
 import './service/logging'
-import {getFeatureFlags} from './lib/feature-flags'
+import {getFeatureFlags, getUrlParams} from './lib/url'
 
 import Store from './store'
 import Router from './router'
@@ -35,16 +35,20 @@ function renderApp(CurrentRouter) {
   )
 }
 
-store.dispatch(init({featureFlags: getFeatureFlags(global.location)})).then(() => {
-  renderApp(Router)
+store
+  .dispatch(
+    init({featureFlags: getFeatureFlags(global.location), urlParams: getUrlParams(global.location)})
+  )
+  .then(() => {
+    renderApp(Router)
 
-  const bootsplash = global.document.getElementById('bootsplash')
-  // TODO: lets fade out the bootsplash, looks nicer
-  if (bootsplash) {
-    // Otherwise hot reloading breaks
-    bootsplash.remove()
-  }
-})
+    const bootsplash = global.document.getElementById('bootsplash')
+    // TODO: lets fade out the bootsplash, looks nicer
+    if (bootsplash) {
+      // Otherwise hot reloading breaks
+      bootsplash.remove()
+    }
+  })
 
 // Webpack (uglify) will remove this code in the production build
 if (process.env.NODE_ENV !== 'production') {
