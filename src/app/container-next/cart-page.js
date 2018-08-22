@@ -158,7 +158,7 @@ const CartPage = ({
         vat={formatPrice(cart.vatPrice, cart.currency)}
         total={formatPrice(cart.totalPrice, cart.currency)}
       >
-        <Button modifiers={['block']} label="Checkout" onClick={onCheckout} />
+        <Button modifiers={['block']} label="Checkout" onClick={() => onCheckout()} />
       </PaymentSection>
     )
   }
