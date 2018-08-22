@@ -10,7 +10,6 @@ import {selectCartShippings, selectConfiguredModelInformation} from '../lib/sele
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
-import {guard} from './util/guard'
 
 import Link from '../component/link'
 import SidebarLayout from '../component/sidebar-layout'
@@ -27,7 +26,6 @@ import Notification from '../component/notification'
 
 import * as navigationAction from '../action-next/navigation'
 import * as modelAction from '../action-next/model'
-import * as cartAction from '../action-next/cart'
 import * as modelViewerAction from '../action-next/model-viewer'
 
 import AppLayout from './app-layout'
@@ -238,14 +236,12 @@ const mapDispatchToProps = {
   onGoToUpload: navigationAction.goToUpload,
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onDuplicateModelConfig: modelAction.duplicateModelConfig,
-  onCreateCart: cartAction.createCart,
   onCheckout: navigationAction.goToAddress,
   onChooseMaterial: navigationAction.goToMaterial,
   onMagnifyModel: modelViewerAction.open
 }
 
 export default compose(
-  guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withProps(({location}) => ({
     numAddedItems: (location.state || {}).numAddedItems || 0
