@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 
 import {getProviderName} from '../lib/provider-selector'
 import type {AppState} from '../reducer-next'
+import {selectConfiguredModelInformation} from '../lib/selector'
 
 import AppLayout from './app-layout'
 
@@ -16,7 +17,7 @@ import PageHeader from '../component/page-header'
 import Paragraph from '../component/paragraph'
 import Link from '../component/link'
 
-const SuccessPage = ({orderNumber, quotes}) => (
+const SuccessPage = ({orderNumber, modelInformations}) => (
   <AppLayout>
     <PageHeader label="Thank you for your order at All3DP!" />
     <Section modifiers={['highlight']}>
@@ -31,11 +32,11 @@ const SuccessPage = ({orderNumber, quotes}) => (
       </Paragraph>
 
       <ProviderTeaser modifiers={['left']}>
-        {quotes.map(quote => (
+        {modelInformations.map(info => (
           <ProviderImage
-            key={quote.vendorId}
-            slug={quote.vendorId}
-            name={getProviderName(quote.vendorId)}
+            key={info.quote.vendorId}
+            slug={info.quote.vendorId}
+            name={getProviderName(info.quote.vendorId)}
           />
         ))}
       </ProviderTeaser>
@@ -56,25 +57,9 @@ const SuccessPage = ({orderNumber, quotes}) => (
   </AppLayout>
 )
 
-const mapStateToProps = (_state: AppState) => ({
-  orderNumber: 'some-order-number',
-  quotes: [
-    {
-      vendorId: 'shapeways'
-    },
-    {
-      vendorId: 'sculpteo'
-    },
-    {
-      vendorId: 'ff3dm'
-    },
-    {
-      vendorId: 'trinckle'
-    },
-    {
-      vendorId: 'treatstock'
-    }
-  ]
+const mapStateToProps = (state: AppState) => ({
+  orderNumber: state.core.orderNumber,
+  modelInformations: selectConfiguredModelInformation(state)
 })
 
 const mapDispatchToProps = {}

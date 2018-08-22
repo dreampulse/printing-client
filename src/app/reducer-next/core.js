@@ -32,7 +32,8 @@ import type {
   PollingId,
   Shipping,
   User,
-  Cart
+  Cart,
+  PaymentId
 } from '../type-next'
 
 import * as coreAction from '../action-next/core'
@@ -59,7 +60,9 @@ export type CoreState = {
     [printingServiceName: string]: boolean
   },
   user: ?User,
-  cart: ?Cart
+  cart: ?Cart,
+  paymentId: ?PaymentId,
+  orderNumber: ?string
 }
 
 const initialState: CoreState = {
@@ -77,7 +80,9 @@ const initialState: CoreState = {
   quotes: {},
   printingServiceComplete: {},
   user: null,
-  cart: null
+  cart: null,
+  paymentId: null,
+  orderNumber: null
 }
 
 const init = (state, {payload: {featureFlags}}) =>
@@ -565,6 +570,20 @@ const cartReceived = (state, {payload: {cart}}) => ({
   cart
 })
 
+const paid = (state, {payload: {paymentId, orderNumber}}) => ({
+  ...state,
+  paymentId,
+  orderNumber
+})
+
+const executePaypalPayment = (state, {payload}) =>
+  loop(
+    state,
+    Cmd.run(printingEngine.executePaypalPayment, {
+      args: [state.paymentId, {payerId: payload.payerID}]
+    })
+  )
+
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
     case 'CORE.INIT':
@@ -619,6 +638,10 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return createCart(state, action)
     case 'CART.CART_RECEIVED':
       return cartReceived(state, action)
+    case 'ORDER.PAID':
+      return paid(state, action)
+    case 'ORDER.EXECUTE_PAYPAL_PAYMENT':
+      return executePaypalPayment(state, action)
     default:
       return state
   }

@@ -1,7 +1,10 @@
 import React from 'react'
-import {compose} from 'recompose'
+import {compose, withState, withHandlers} from 'recompose'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
+
+import * as printingEngine from '../lib/printing-engine'
+import * as stripe from '../service/stripe'
 
 import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
@@ -26,22 +29,32 @@ import ModelItem from '../component/model-item'
 import SelectField from '../component/select-field'
 
 import * as navigationActions from '../action-next/navigation'
-import * as modelViewerAction from '../action-next/model-viewer'
+import * as modelViewerActions from '../action-next/model-viewer'
+import * as orderActions from '../action-next/order'
 
 import creditCardIcon from '../../asset/icon/credit-card.svg'
-import paypalIcon from '../../../src/asset/icon/paypal.svg'
 
 import {guard} from './util/guard'
 import CheckoutLayout from './checkout-layout'
+import PaypalButton from '../component/paypal-button'
 
 const ReviewOrderPage = ({
   user,
   onGoToAddress,
   onGoToCart,
+  onGoToSuccess,
+  onPaid,
   cart,
   modelsWithConfig,
   chosenShippings,
-  onMagnifyModel
+  onMagnifyModel,
+  onExecutePaypalPayment,
+  paymentInProgress,
+  setPaymentInProgress,
+  featureFlags,
+  payWithPaypal,
+  payWithStripe,
+  payWithInvoice
 }) => {
   const shippingStateName = getStateName(
     user.shippingAddress.countryCode,
@@ -133,8 +146,65 @@ const ReviewOrderPage = ({
   )
 
   const paymentButtons = compact([
-    <Button key="payment1" modifiers={['block']} icon={creditCardIcon} label="Credit card" />,
-    <Button key="payment2" modifiers={['block']} icon={paypalIcon} label="Paypal" />
+    <Button
+      key="payment-stripe"
+      modifiers={['block']}
+      disabled={paymentInProgress}
+      icon={creditCardIcon}
+      label="Credit card"
+      onClick={async () => {
+        try {
+          setPaymentInProgress(true)
+          const {orderNumber, paymentId} = await payWithStripe()
+          onPaid({orderNumber, paymentId})
+          setPaymentInProgress(false)
+          onGoToSuccess()
+        } catch (error) {
+          // Payment aborted by user
+          setPaymentInProgress(false)
+        }
+      }}
+    />,
+    featureFlags.invoice && (
+      <Button
+        key="payment-invoice"
+        modifiers={['block']}
+        disabled={paymentInProgress}
+        label="Pay with Invoice"
+        onClick={async () => {
+          try {
+            setPaymentInProgress(true)
+            const {orderNumber, paymentId} = await payWithInvoice()
+            onPaid({orderNumber, paymentId})
+            onGoToSuccess()
+          } catch (error) {
+            // Payment aborted by user
+            setPaymentInProgress(false)
+          }
+        }}
+      />
+    ),
+    <PaypalButton
+      key="payment-paypal"
+      disabled={paymentInProgress}
+      onClick={async () => {
+        setPaymentInProgress(true)
+        const {paymentToken, orderNumber, paymentId} = await payWithPaypal()
+        onPaid({orderNumber, paymentId})
+        return paymentToken
+      }}
+      onAuthorize={async data => {
+        try {
+          const payment = await onExecutePaypalPayment(data)
+
+          onGoToSuccess()
+          return payment
+        } finally {
+          setPaymentInProgress(false)
+        }
+      }}
+      onCancel={() => setPaymentInProgress(false)}
+    />
   ])
 
   const renderPaymentSection = () => (
@@ -265,18 +335,72 @@ const mapStateToProps = state => ({
   shippings: state.core.shippings,
   modelConfigs: state.core.modelConfigs,
   modelsWithConfig: selectConfiguredModelInformation(state),
-  chosenShippings: selectUniqueChosenShippings(state)
+  chosenShippings: selectUniqueChosenShippings(state),
+  featureFlags: state.core.featureFlags
 })
 
 const mapDispatchToProps = {
   onGoToAddress: navigationActions.goToAddress,
   onGoToCart: navigationActions.goToCart,
-  onMagnifyModel: modelViewerAction.open
+  onGoToSuccess: navigationActions.goToSuccess,
+  onMagnifyModel: modelViewerActions.open,
+  onPaid: orderActions.paid,
+  onExecutePaypalPayment: orderActions.executePaypalPayment
 }
 
 const enhance = compose(
   guard(state => state.core.cart),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  withState('paymentInProgress', 'setPaymentInProgress', false),
+  withHandlers({
+    payWithPaypal: props => async () => {
+      const userId = props.user.userId
+      const cartId = props.cart.cartId
+      const currency = props.cart.currency
+
+      const {orderId, orderNumber} = await printingEngine.createOrder({userId, cartId, currency})
+      const {paymentId, providerFields} = await printingEngine.createPaypalPayment({orderId})
+
+      return {
+        orderId,
+        orderNumber,
+        paymentId,
+        paymentToken: providerFields.paymentId
+      }
+    },
+    payWithStripe: props => async () => {
+      const userId = props.user.userId
+      const cartId = props.cart.cartId
+      const email = props.user.emailAddress
+      const price = props.cart.totalPrice
+      const currency = props.cart.currency
+
+      const {orderId, orderNumber} = await printingEngine.createOrder({userId, cartId, currency})
+      const stripeTokenObject = await stripe.checkout({price, currency, email})
+      const token = stripeTokenObject.id
+
+      await printingEngine.createStripePayment({orderId, token})
+
+      return {
+        orderId,
+        orderNumber
+      }
+    },
+    payWithInvoice: props => async () => {
+      const userId = props.user.userId
+      const cartId = props.cart.cartId
+      const currency = props.cart.currency
+      const invoiceKey = 'TODO' // Issue #716
+
+      const {orderId, orderNumber} = await printingEngine.createOrder({userId, cartId, currency})
+      await printingEngine.createInvoicePayment({orderId, token: invoiceKey})
+
+      return {
+        orderId,
+        orderNumber
+      }
+    }
+  })
 )
 
 export default enhance(ReviewOrderPage)

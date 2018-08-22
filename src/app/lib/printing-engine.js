@@ -123,7 +123,7 @@ export type InvoicePaymentResponse = PaymentRequest & {
   status: boolean
 }
 
-export type PaypalPaymentRequest = PaymentResponse
+export type PaypalPaymentRequest = PaymentRequest
 
 export type PaypalPaymentResponse = PaymentResponse & {
   providerFields: {
