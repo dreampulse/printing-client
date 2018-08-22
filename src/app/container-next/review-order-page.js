@@ -1,5 +1,5 @@
 import React from 'react'
-import {compose} from 'recompose'
+import {compose, withState} from 'recompose'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
 
@@ -9,6 +9,7 @@ import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatte
 import {getProviderName} from '../lib/material'
 import {selectUniqueChosenShippings, selectConfiguredModelInformation} from '../lib/selector'
 import getCloudinaryUrl from '../lib/cloudinary'
+import {payWithPaypal, payWithStripe, payWithInvoice} from '../service/order'
 
 import PageHeader from '../component/page-header'
 import SidebarLayout from '../component/sidebar-layout'
@@ -26,22 +27,29 @@ import ModelItem from '../component/model-item'
 import SelectField from '../component/select-field'
 
 import * as navigationActions from '../action-next/navigation'
-import * as modelViewerAction from '../action-next/model-viewer'
+import * as modelViewerActions from '../action-next/model-viewer'
+import * as orderActions from '../action-next/order'
 
 import creditCardIcon from '../../asset/icon/credit-card.svg'
-import paypalIcon from '../../../src/asset/icon/paypal.svg'
 
 import {guard} from './util/guard'
 import CheckoutLayout from './checkout-layout'
+import PaypalButton from '../component/paypal-button'
 
 const ReviewOrderPage = ({
   user,
   onGoToAddress,
   onGoToCart,
+  onGoToSuccess,
+  onPaid,
   cart,
   modelsWithConfig,
   chosenShippings,
-  onMagnifyModel
+  onMagnifyModel,
+  onExecutePaypalPayment,
+  paymentInProgress,
+  setPaymentInProgress,
+  featureFlags
 }) => {
   const shippingStateName = getStateName(
     user.shippingAddress.countryCode,
@@ -133,8 +141,75 @@ const ReviewOrderPage = ({
   )
 
   const paymentButtons = compact([
-    <Button key="payment1" modifiers={['block']} icon={creditCardIcon} label="Credit card" />,
-    <Button key="payment2" modifiers={['block']} icon={paypalIcon} label="Paypal" />
+    <Button
+      key="payment-stripe"
+      modifiers={['block']}
+      disabled={paymentInProgress}
+      icon={creditCardIcon}
+      label="Credit card"
+      onClick={async () => {
+        try {
+          setPaymentInProgress(true)
+          const {orderNumber, paymentId} = await payWithStripe({
+            userId: user.userId,
+            cartId: cart.cartId,
+            email: user.emailAddress,
+            price: cart.totalPrice,
+            currency: cart.currency
+          })
+          onPaid({orderNumber, paymentId})
+          setPaymentInProgress(false)
+          onGoToSuccess()
+        } catch (error) {
+          // Payment aborted by user
+          setPaymentInProgress(false)
+        }
+      }}
+    />,
+    featureFlags.invoice && (
+      <Button
+        key="payment-invoice"
+        modifiers={['block']}
+        disabled={paymentInProgress}
+        label="Pay with Invoice"
+        onClick={async () => {
+          try {
+            setPaymentInProgress(true)
+            await payWithInvoice({
+              userId: user.userId,
+              cartId: cart.cartId,
+              currency: cart.currency,
+              invoiceKey: 'TODO' // Issue #716
+            })
+            onGoToSuccess()
+          } catch (error) {
+            // Payment aborted by user
+            setPaymentInProgress(false)
+          }
+        }}
+      />
+    ),
+    <PaypalButton
+      key="payment-paypal"
+      disabled={paymentInProgress}
+      onClick={async () => {
+        setPaymentInProgress(true)
+        const {paymentToken, orderNumber, paymentId} = await payWithPaypal({
+          userId: user.userId,
+          cartId: cart.cartId,
+          currency: cart.currency
+        })
+        onPaid({orderNumber, paymentId})
+        return paymentToken
+      }}
+      onAuthorize={async data => {
+        const payment = await onExecutePaypalPayment(data)
+        setPaymentInProgress(false)
+        onGoToSuccess()
+        return payment
+      }}
+      onCancel={() => setPaymentInProgress(false)}
+    />
   ])
 
   const renderPaymentSection = () => (
@@ -265,18 +340,23 @@ const mapStateToProps = state => ({
   shippings: state.core.shippings,
   modelConfigs: state.core.modelConfigs,
   modelsWithConfig: selectConfiguredModelInformation(state),
-  chosenShippings: selectUniqueChosenShippings(state)
+  chosenShippings: selectUniqueChosenShippings(state),
+  featureFlags: state.core.featureFlags
 })
 
 const mapDispatchToProps = {
   onGoToAddress: navigationActions.goToAddress,
   onGoToCart: navigationActions.goToCart,
-  onMagnifyModel: modelViewerAction.open
+  onGoToSuccess: navigationActions.goToSuccess,
+  onMagnifyModel: modelViewerActions.open,
+  onPaid: orderActions.paid,
+  onExecutePaypalPayment: orderActions.executePaypalPayment
 }
 
 const enhance = compose(
   guard(state => state.core.cart),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  withState('paymentInProgress', 'setPaymentInProgress', false)
 )
 
 export default enhance(ReviewOrderPage)
