@@ -42,7 +42,6 @@ const ReviewOrderPage = ({
   user,
   onGoToAddress,
   onGoToCart,
-  onGoToSuccess,
   onPaid,
   cart,
   modelsWithConfig,
@@ -54,7 +53,8 @@ const ReviewOrderPage = ({
   featureFlags,
   payWithPaypal,
   payWithStripe,
-  payWithInvoice
+  payWithInvoice,
+  success
 }) => {
   const shippingStateName = getStateName(
     user.shippingAddress.countryCode,
@@ -158,10 +158,7 @@ const ReviewOrderPage = ({
           const {orderNumber, paymentId} = await payWithStripe()
           onPaid({orderNumber, paymentId})
           setPaymentInProgress(false)
-          onGoToSuccess({
-            orderNumber,
-            vendorIds: modelsWithConfig.map(info => info.quote.vendorId)
-          })
+          success()
         } catch (error) {
           // Payment aborted by user
           setPaymentInProgress(false)
@@ -179,7 +176,7 @@ const ReviewOrderPage = ({
             setPaymentInProgress(true)
             const {orderNumber, paymentId} = await payWithInvoice()
             onPaid({orderNumber, paymentId})
-            onGoToSuccess()
+            success()
           } catch (error) {
             // Payment aborted by user
             setPaymentInProgress(false)
@@ -200,7 +197,7 @@ const ReviewOrderPage = ({
         try {
           const payment = await onExecutePaypalPayment(data)
 
-          onGoToSuccess()
+          success()
           return payment
         } finally {
           setPaymentInProgress(false)
@@ -335,6 +332,7 @@ const ReviewOrderPage = ({
 const mapStateToProps = state => ({
   user: state.core.user,
   cart: state.core.cart,
+  orderNumber: state.core.orderNumber,
   shippings: state.core.shippings,
   modelConfigs: state.core.modelConfigs,
   modelsWithConfig: selectConfiguredModelInformation(state),
@@ -356,6 +354,11 @@ const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   withState('paymentInProgress', 'setPaymentInProgress', false),
   withHandlers({
+    success: props => () =>
+      props.onGoToSuccess({
+        orderNumber: props.orderNumber,
+        vendorIds: props.modelsWithConfig.map(info => info.quote.vendorId)
+      }),
     payWithPaypal: props => async () => {
       const userId = props.user.userId
       const cartId = props.cart.cartId

@@ -7,7 +7,7 @@ import {push} from 'react-router-redux'
 
 import type {ConfigId, Notification, VendorId} from '../type-next'
 
-type SuccessPageRouteState {
+export type SuccessPageRouteState = {
   vendorIds: Array<VendorId>,
   orderNumber: string
 }

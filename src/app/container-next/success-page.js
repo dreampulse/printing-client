@@ -2,10 +2,9 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
+import {compose, lifecycle} from 'recompose'
 
 import {getProviderName} from '../lib/provider-selector'
-import type {AppState} from '../reducer-next'
-import {selectConfiguredModelInformation} from '../lib/selector'
 
 import AppLayout from './app-layout'
 
@@ -17,12 +16,18 @@ import PageHeader from '../component/page-header'
 import Paragraph from '../component/paragraph'
 import Link from '../component/link'
 
-const SuccessPage = ({orderNumber, modelInformations}) => (
+import * as coreActions from '../action-next/core'
+
+const SuccessPage = ({location}) => (
   <AppLayout>
     <PageHeader label="Thank you for your order at All3DP!" />
     <Section modifiers={['highlight']}>
       <Headline
-        label={orderNumber ? `Order number: ${orderNumber}` : 'Thank you for ordering at All3DP!'}
+        label={
+          location.state.orderNumber
+            ? `Order number: ${location.state.orderNumber}`
+            : 'Thank you for ordering at All3DP!'
+        }
       />
       <Paragraph modifiers={['l']}>
         You should shortly receive an email confirming your order.
@@ -32,12 +37,8 @@ const SuccessPage = ({orderNumber, modelInformations}) => (
       </Paragraph>
 
       <ProviderTeaser modifiers={['left']}>
-        {modelInformations.map(info => (
-          <ProviderImage
-            key={info.quote.vendorId}
-            slug={info.quote.vendorId}
-            name={getProviderName(info.quote.vendorId)}
-          />
+        {location.state.vendorIds.map(vendorId => (
+          <ProviderImage key={vendorId} slug={vendorId} name={getProviderName(vendorId)} />
         ))}
       </ProviderTeaser>
 
@@ -57,11 +58,19 @@ const SuccessPage = ({orderNumber, modelInformations}) => (
   </AppLayout>
 )
 
-const mapStateToProps = (state: AppState) => ({
-  orderNumber: state.core.orderNumber,
-  modelInformations: selectConfiguredModelInformation(state)
-})
+const mapStateToProps = () => ({})
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  reset: coreActions.reset
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(SuccessPage)
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  lifecycle({
+    componentDidMount() {
+      this.props.reset()
+    }
+  })
+)
+
+export default enhance(SuccessPage)

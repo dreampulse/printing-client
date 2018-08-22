@@ -6,6 +6,7 @@ import isEqual from 'lodash/isEqual'
 import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
 import omit from 'lodash/omit'
+import pick from 'lodash/pick'
 import compact from 'lodash/compact'
 
 import config from '../../../config'
@@ -43,6 +44,7 @@ import * as modelAction from '../action-next/model'
 import * as pollingAction from '../action-next/polling'
 import * as quoteAction from '../action-next/quote'
 import * as cartAction from '../action-next/cart'
+import pickLocation from '../container-next/modal/pick-location';
 
 export type CoreState = {
   materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
@@ -585,10 +587,13 @@ const executePaypalPayment = (state, {payload}) =>
     })
   )
 
-const reset = () => ({
-  ...omit(initialState, 'modelConfigs')
+const reset = state => ({
+  ...state,
+  ...omit(initialState, 'materialGroups', 'location', 'featureFlags'),
+  user: {
+    ...omit(state.user, 'userId')
+  }
 })
-
 
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
@@ -649,7 +654,7 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
     case 'ORDER.EXECUTE_PAYPAL_PAYMENT':
       return executePaypalPayment(state, action)
     case 'CORE.RESET':
-      return reset()
+      return reset(state)
     default:
       return state
   }

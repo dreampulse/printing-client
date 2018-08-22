@@ -202,10 +202,13 @@ const cancel = (state, action) => {
 }
 
 const reset = state =>
-  Cmd.list(
-    Object.keys(state.activePollings).map(pollingId => {
-      return Cmd.action(pollingAction.cancel(pollingId))
-    })
+  loop(
+    state,
+    Cmd.list(
+      Object.keys(state.activePollings).map(pollingId =>
+        Cmd.action(pollingAction.cancel(pollingId))
+      )
+    )
   )
 
 export const reducer = (state: PollingState = initialState, action: AppAction): PollingState => {
