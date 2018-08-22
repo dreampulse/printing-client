@@ -10,11 +10,9 @@ if (process.env.NODE_ENV === 'production') {
   }).install()
 }
 
-export const captureException = exception => Raven && Raven.captureException(exception)
 export const setUserContext = userId =>
   Raven &&
   Raven.setUserContext({
     userId
   })
-export const showReportDialog = () => Raven && Raven.showReportDialog()
 export const ravenMiddleware = createRavenMiddleware(Raven, {})

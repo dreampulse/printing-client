@@ -8,6 +8,7 @@ export const identify = (...params) => {
   if (mixpanel && mixpanel.identify) mixpanel.identify(...params)
 }
 
-export const peopleSet = (...params) => {
-  if (mixpanel && mixpanel.people && mixpanel.people.set) mixpanel.people.set(...params)
-}
+// TODO: do we need this?
+// export const peopleSet = (...params) => {
+//   if (mixpanel && mixpanel.people && mixpanel.people.set) mixpanel.people.set(...params)
+// }
