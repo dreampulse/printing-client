@@ -15,7 +15,7 @@ import type {
   FinishGroupId,
   MaterialId,
   MaterialGroupId
-} from '../type-next'
+} from '../type'
 import {getMaterialConfigById, getMaterialTreeByMaterialConfigId} from './material'
 
 export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile | BackendModel> =>

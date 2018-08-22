@@ -1,11 +1,16 @@
-import React from 'react'
+// @flow
 
-import {selectMaterial} from '../../lib/selector'
+import React from 'react'
+import {connect} from 'react-redux'
+import compose from 'recompose/compose'
+import withProps from 'recompose/withProps'
+
 import getCloudinaryUrl from '../../lib/cloudinary'
-import {getMaterialFinishGroupProviderNames} from '../../lib/material'
+import {getMaterialFinishGroupProviderNames, getMaterialById} from '../../lib/material'
 import {getFinishGroupProviderNames} from '../../lib/provider-selector'
 
-import {close} from '../../action/modal'
+import type {AppState} from '../../reducer'
+import * as modalActions from '../../action/modal'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -15,8 +20,6 @@ import Grid from '../../component/grid'
 import Column from '../../component/column'
 import Image from '../../component/image'
 import ProviderDefinitionList from '../../component/provider-definition-list'
-
-import {connectLegacy} from '../util/connect-legacy'
 
 const MaterialModal = ({material, onClose}) => {
   const headline = <Headline label={material.name} modifiers={['l']} />
@@ -47,12 +50,17 @@ const MaterialModal = ({material, onClose}) => {
   )
 }
 
-const mapStateToProps = (state, props) => ({
-  material: selectMaterial(state, props.materialId)
+const mapStateToProps = (state: AppState) => ({
+  materialGroups: state.core.materialGroups
 })
 
 const mapDispatchToProps = {
-  onClose: close
+  onClose: modalActions.close
 }
 
-export default connectLegacy(mapStateToProps, mapDispatchToProps)(MaterialModal)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withProps(({materialGroups, materialId}) => ({
+    material: getMaterialById(materialGroups, materialId)
+  }))
+)(MaterialModal)

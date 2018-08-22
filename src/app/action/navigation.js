@@ -1,26 +1,20 @@
-import {routerActions} from 'react-router-redux'
+// @flow
 
-import {createUser} from '../action/user'
+// Note: This code is not tested,
+// because the route-middleware handles this
 
-// Push the new path without overwriting the search-query
-const pushPath = pathname => (dispatch, getState) => {
-  const search = getState().routing.location.search
+import {push} from 'react-router-redux'
 
-  return dispatch(routerActions.push({pathname, search}))
+import type {ConfigId, Notification, VendorId} from '../type'
+
+export type SuccessPageRouteState = {
+  vendorIds: Array<VendorId>,
+  orderNumber: string
 }
 
-export const goToAddress = () => pushPath('/address')
-export const goToReviewOrder = () => pushPath('/review-order')
-export const goToCart = () => pushPath('/cart')
-export const goToHome = () => (dispatch, getState) => {
-  const configurationId = getState().configuration.configurationId
-  if (configurationId) {
-    dispatch(pushPath(`/configuration/${configurationId}`))
-  } else {
-    dispatch(pushPath('/'))
-  }
-}
-export const goToSuccess = () => async dispatch => {
-  await dispatch(pushPath('/success'))
-  await dispatch(createUser())
-}
+export const goToUpload = (notification: ?Notification) => push('/', {notification})
+export const goToMaterial = (configIds: Array<ConfigId>) => push('/material', {configIds})
+export const goToCart = (numAddedItems: ?number) => push('/cart', {numAddedItems})
+export const goToAddress = () => push('/address')
+export const goToReviewOrder = () => push('/review-order')
+export const goToSuccess = (state: SuccessPageRouteState) => push('/success', state)

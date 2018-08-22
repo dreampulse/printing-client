@@ -1,119 +1,115 @@
 // @flow
 
-import type {Dispatch} from 'redux'
-import {createAction} from 'redux-actions'
 import uniqueId from 'lodash/uniqueId'
+import type {Action, BackendModel, ConfigId, FileId} from '../type'
 
-import {uploadModel} from '../service/printing-engine'
-import {createPriceRequest, createDebouncedPriceRequest} from './price'
+type UploadFileAction = Action<
+  'MODEL.UPLOAD_FILE',
+  {fileId: FileId, configId: ConfigId, file: File, unit: string}
+>
+type UploadFilesAction = Action<'MODEL.UPLOAD_FILES', {files: Array<File>, unit: string}>
+type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, progress: number}>
+type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: string, model: BackendModel}>
+type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
+type DeleteModelConfigsAction = Action<'MODEL.DELETE_MODEL_CONFIGS', {ids: Array<ConfigId>}>
+type UpdateSelectedModelConfigsAction = Action<
+  'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
+  {ids: Array<ConfigId>}
+>
+type UpdateQuantitiesAction = Action<
+  'MODEL.UPDATE_QUANTITIES',
+  {ids: Array<ConfigId>, quantity: number}
+>
+type DuplicateModelConfigAction = Action<
+  'MODEL.DUPLICATE_MODEL_CONFIG',
+  {id: ConfigId, nextId: ConfigId}
+>
 
-import type {State, File, ModelBackend} from '../type'
-import TYPE from '../action-type'
+export type ModelAction =
+  | UploadFileAction
+  | UploadFilesAction
+  | UploadProgressAction
+  | UploadCompleteAction
+  | UploadFailAction
+  | DeleteModelConfigsAction
+  | UpdateSelectedModelConfigsAction
+  | UpdateQuantitiesAction
+  | DuplicateModelConfigAction
 
-class FileUploadError extends Error {}
-
-// Sync actions
-
-const quantityChanged = createAction(TYPE.MODEL.QUANTITIY_CHANGED, (quantity: number) => ({
-  quantity
-}))
-const individualQuantityChanged = createAction(
-  TYPE.MODEL.INDIVIDUAL_QUANTITIY_CHANGED,
-  (modelId: string, quantity: number) => ({modelId, quantity})
-)
-const fileUploadStarted = createAction(
-  TYPE.MODEL.FILE_UPLOAD_STARTED,
-  (fileId: string, file: File) => ({
-    fileId,
-    fileName: file.name,
-    fileSize: file.size
-  })
-)
-const fileUploadProgressed = createAction(
-  TYPE.MODEL.FILE_UPLOAD_PROGRESSED,
-  (fileId: string, progress: number) => ({fileId, progress})
-)
-const fileUploadFailed = createAction(
-  TYPE.MODEL.FILE_UPLOAD_FAILED,
-  (fileId: string, error: Error) => ({fileId, error})
-)
-const fileUploaded = createAction(
-  TYPE.MODEL.FILE_UPLOADED,
-  (fileId: string, model: ModelBackend) => ({
-    fileId,
-    modelId: model.modelId,
-    thumbnailUrl: model.thumbnailUrl,
-    fileName: model.fileName,
-    fileUnit: model.fileUnit,
-    dimensions: model.dimensions,
-    area: model.area,
-    volume: model.volume
-  })
-)
-const fileDeleted = createAction(TYPE.MODEL.FILE_DELETED, (fileId: string) => ({fileId}))
-export const changeUnit = createAction(
-  TYPE.MODEL.UNIT_CHANGED,
-  ({unit}: {unit: 'mm' | 'cm' | 'in'}) => ({unit})
-) // @TODO improve interface
-
-// Async actions
-
-export const changeQuantity = ({
-  quantity
-}: {
-  quantity: number // @TODO improve interface
-}) => (dispatch: Dispatch<*>) => {
-  dispatch(quantityChanged(quantity))
-  // Update prices
-  return dispatch(createDebouncedPriceRequest())
-}
-
-export const changeIndividualQuantity = ({
-  quantity,
-  modelId
-}: {
-  quantity: number,
-  modelId: string
-}) => (dispatch: Dispatch<*>) => {
-  dispatch(individualQuantityChanged(modelId, quantity))
-  // Update prices
-  return dispatch(createDebouncedPriceRequest())
-}
-
-const uploadFile = (file: File) => async (dispatch: Dispatch<*>, getState: () => State) => {
-  const fileId = uniqueId('file-id-')
-  const unit = getState().model.selectedUnit
-
-  // TODO: reduce number of actions here and let multiple reducers listen to the same action
-  dispatch(createAction(TYPE.PRICE.CLEAR_OFFERS)())
-  dispatch(createAction(TYPE.MATERIAL.CONFIG_SELECTED)()) // Resets current selection
-  dispatch(fileUploadStarted(fileId, file))
-
-  const onUploadProgressed = progress => dispatch(fileUploadProgressed(fileId, progress))
-
-  try {
-    const modelData = await uploadModel(file, {unit}, onUploadProgressed)
-    dispatch(fileUploaded(fileId, modelData))
-  } catch (error) {
-    const uploadError = new FileUploadError(fileId)
-    dispatch(fileUploadFailed(fileId, uploadError))
-    throw uploadError // Prevent to create a price request if upload failed
+export const uploadFile = (file: File, unit: string): UploadFileAction => ({
+  type: 'MODEL.UPLOAD_FILE',
+  payload: {
+    file,
+    fileId: uniqueId('file-id-'),
+    configId: uniqueId('config-id-'),
+    unit
   }
-}
+})
 
-export const uploadFiles = (files: File[]) => async (dispatch: Dispatch<*>) => {
-  try {
-    await Promise.all(files.map(file => dispatch(uploadFile(file))))
-  } catch (err) {
-    // Ignore upload error
-    // It has already been handled in uploadFile()
-    return
+export const uploadFiles = (files: FileList, unit: string): UploadFilesAction => ({
+  type: 'MODEL.UPLOAD_FILES',
+  payload: {
+    files: Array.from(files),
+    unit
   }
+})
 
-  await dispatch(createPriceRequest())
-}
+export const uploadProgress = (fileId: FileId, progress: number): UploadProgressAction => ({
+  type: 'MODEL.UPLOAD_PROGRESS',
+  payload: {progress, fileId}
+})
 
-export const deleteFile = (fileId: string) => async (dispatch: Dispatch<*>) => {
-  dispatch(fileDeleted(fileId))
-  await dispatch(createPriceRequest())
-}
+export const uploadComplete = (fileId: FileId, model: BackendModel): UploadCompleteAction => ({
+  type: 'MODEL.UPLOAD_COMPLETE',
+  payload: {fileId, model}
+})
+
+export const uploadFail = (fileId: FileId, error: Error): UploadFailAction => ({
+  type: 'MODEL.UPLOAD_FAIL',
+  payload: {
+    fileId,
+    error
+  }
+})
+
+export const deleteModelConfigs = (ids: Array<ConfigId>): DeleteModelConfigsAction => ({
+  type: 'MODEL.DELETE_MODEL_CONFIGS',
+  payload: {
+    ids
+  }
+})
+
+export const updateSelectedModelConfigs = (
+  ids: Array<ConfigId>
+): UpdateSelectedModelConfigsAction => ({
+  type: 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
+  payload: {
+    ids
+  }
+})
+
+export const clearSelectedModelConfigs = (): UpdateSelectedModelConfigsAction => ({
+  type: 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
+  payload: {
+    ids: []
+  }
+})
+
+export const updateQuantities = (
+  ids: Array<ConfigId>,
+  quantity: number
+): UpdateQuantitiesAction => ({
+  type: 'MODEL.UPDATE_QUANTITIES',
+  payload: {
+    ids,
+    quantity
+  }
+})
+
+export const duplicateModelConfig = (id: ConfigId): DuplicateModelConfigAction => ({
+  type: 'MODEL.DUPLICATE_MODEL_CONFIG',
+  payload: {
+    id,
+    nextId: uniqueId('config-id-')
+  }
+})

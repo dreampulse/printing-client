@@ -4,7 +4,7 @@ import {request} from '../service/http'
 import timeout from './timeout'
 import config from '../../../config'
 
-import type {Location, GoogleMapsPlace} from '../type-next'
+import type {Location, GoogleMapsPlace} from '../type'
 
 const URL = `https://pro.ip-api.com/json/?key=${config.ipApiKey}`
 

@@ -1,8 +1,8 @@
 // @flow
 
-import type {HttpJsonResponse, HttpUploadOptions} from '../type-next'
+import type {HttpJsonResponse, HttpUploadOptions} from '../type'
 import {HttpResponseUnexpectedStatusError, HttpResponseBodyParseError} from './error'
-import * as http from '../service/http-next'
+import * as http from '../service/http'
 
 const getBodyTextIfPossible = async (response: Response): Promise<string | null> => {
   try {

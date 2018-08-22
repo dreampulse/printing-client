@@ -1,7 +1,7 @@
 // @flow
 // Not using the "global" object here so that flow picks up the correct types.
 /* global fetch, Headers, XMLHttpRequest, FormData */
-import type {HttpUploadOptions} from '../type-next'
+import type {HttpUploadOptions} from '../type'
 import {HttpUploadError} from '../lib/error'
 
 // If fetch is called on a different object, an illegal invocation error is thrown. Therefore we need to bind() it.

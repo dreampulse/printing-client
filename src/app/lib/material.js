@@ -13,7 +13,7 @@ import type {
   VendorId,
   FinishGroupId,
   FinishGroup
-} from '../type-next'
+} from '../type'
 
 export function hasMaterialMultipleConfigs(material: Material) {
   return !material.finishGroups.every(finishGroup => finishGroup.materialConfigs.length <= 1)

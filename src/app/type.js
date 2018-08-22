@@ -1,70 +1,124 @@
 // @flow
 
-import type {UtmParams} from './lib/search-params'
+import type {AppAction as _AppAction} from './action'
+import type {AppState as _AppState} from './reducer'
 
-export type Address = {
-  firstName: string,
-  lastName: string,
-  address: string,
-  addressLine2: string,
-  city: string,
-  zipCode: string,
-  stateCode: string,
-  countryCode: string
+export type Action<Type, Payload> = {
+  type: Type,
+  payload: Payload
 }
 
-export type User = {
-  shippingAddress: Address,
-  emailAddress: string,
-  isCompany: boolean,
-  companyName: ?string,
-  vatId: string,
-  phoneNumber: string,
-  useDifferentBillingAddress: ?boolean,
-  emailAddress: string,
-  billingAddress: Address
+export type MaterialConfigId = string
+export type FinishGroupId = string
+export type MaterialGroupId = string
+export type MaterialId = string
+export type QuoteId = string
+export type VendorId = string
+export type ConfigId = string
+export type ShippingId = string
+export type ModelId = string
+export type ModelSceneId = string
+export type FileId = string
+export type PriceId = string
+export type CartId = string
+export type ConfigurationId = string
+export type OrderId = string
+export type PaymentId = string
+export type UserId = string
+
+// Material structure json-schema
+// https://github.com/all3dp/material-structure/blob/master/src/schema.js
+
+export type Notification = {
+  message: string,
+  warning: ?boolean
 }
 
-export type Offer = {
-  offerId: string,
-  materialConfigId: string,
-  printingService: string,
-  subTotalPrice: number,
-  vatPercentage: number,
-  vatPrice: number,
-  totalPrice: number,
-  currency: string,
-  priceEstimated: boolean,
-  items: {
-    modelId: string,
-    price: number,
-    quantity: number
-  }[],
-  shipping: {
-    name: string,
-    displayName: string,
-    deliveryTime: string,
-    price: number
+export type PrintingService = {
+  [VendorId]: {
+    materialId: MaterialId,
+    finishId: FinishGroupId,
+    printingMethodShort: string,
+    printingMethod: string,
+    materialName: string,
+    productionTimeFast: number,
+    productionTimeSlow: number
   }
 }
 
-// @TODO: why is this object needed? What is this?
-// It seems to be a mongo object from the backend
-export type Price = {
-  _id: string,
-  offers: Array<Offer>,
-  printingServiceComplete: {
-    shapeways: boolean,
-    imaterialse: boolean,
-    sculpteo: boolean,
-    trinckle: boolean,
-    treatstock: boolean,
-    ff3dm: boolean
-  }
+export type MaterialConfig = {
+  id: MaterialConfigId,
+  name: string,
+  color: string,
+  colorCode: string,
+  colorImage: string,
+  printingService: PrintingService,
+  finishGroupId: FinishGroupId,
+  materialId: MaterialId,
+  materialGroupId: MaterialGroupId
 }
 
-export type ModelBackend = {
-  modelId: string,
+export type FinishGroup = {
+  id: FinishGroupId,
+  name: string,
+  description: string,
+  descriptionShort: string,
+  materialGroupId: MaterialGroupId,
+  materialId: MaterialId,
+  materialName: string,
+  summary: string,
+  featuredImage: string,
+  properties: {
+    printingServiceName: {
+      [VendorId]: string
+    },
+    printingMethod: string,
+    printingMethodShort: string,
+    materialSpec: string,
+    strength: number,
+    flexibility: number,
+    levelOfDetail: number,
+    freedomOfDesign: number,
+    postProcessing: number,
+    fragile: boolean,
+    waterproof: boolean,
+    foodSafe: boolean,
+    dishwasherSafe: boolean,
+    paintable: boolean,
+    interlockingAndEnclosedParts: boolean,
+    uvResistant: boolean,
+    recyclable: boolean
+  },
+  materialConfigs: Array<MaterialConfig>
+}
+
+export type Material = {
+  id: MaterialId,
+  name: string,
+  description: string,
+  descriptionShort: string,
+  materialGroupId: MaterialGroupId,
+  featuredImage: string,
+  finishGroups: Array<FinishGroup>
+}
+
+export type MaterialGroup = {
+  id: MaterialGroupId,
+  name: string,
+  materials: Array<Material>
+}
+
+export type UploadingFile = {
+  fileId: FileId,
+  fileName: string,
+  fileSize: number,
+  progress: number,
+  error: boolean,
+  errorMessage?: string
+}
+
+export type BackendModel = {
+  modelId: ModelId,
   fileName: string,
   fileUnit: 'mm' | 'cm' | 'in',
   area: ?number,
@@ -74,195 +128,163 @@ export type ModelBackend = {
     y: ?number,
     z: ?number
   },
-  thumbnailUrl: string
+  thumbnailUrl: string,
+  sceneId?: ModelSceneId
 }
 
-export type ModelCompleted = ModelBackend & {
-  // The folowing fields are differend from the backend:
-  fileId: string,
-  fileSize: number,
+export type Quote = {
+  quoteId: QuoteId,
+  vendorId: VendorId,
+  modelId: ModelId,
+  materialConfigId: MaterialConfigId,
+  price: number,
+  grossPrice: number,
   quantity: number,
-  // This are static for a completed upload
-  progress: 1,
-  uploadFinished: true
+  currency: string,
+  isPrintable: boolean
 }
 
-type ModelUploading = {
-  fileId: string,
-  fileName: string,
-  fileSize: number,
-  progress: number,
-  // This is static for an uncompleted upload
-  uploadFinished: false
+export type MultiModelQuote = {
+  vendorId: VendorId,
+  materialConfigId: MaterialConfigId,
+  price: number,
+  grossPrice: number,
+  currency: string,
+  isPrintable: boolean,
+  quotes: Array<Quote>
 }
 
-// @TODO: simplify this compex data model
-export type Model = ModelCompleted | ModelUploading
-
-export type File = {
-  // This is the browsers native file object
+export type Shipping = {
+  shippingId: ShippingId,
+  vendorId: VendorId,
   name: string,
-  size: number
-}
-
-export type Configuration = {
-  _id: string,
-  materialConfigId: string,
-  items: Array<
-    ModelBackend & {
-      // @TODO: why is this response different from the rest?
-      quantity: number
-    }
-  >
-}
-
-export type MaterialConfig = {
-  id: string,
-  name: string,
-  color: string,
-  colorCode: string,
-  colorImage: string
-}
-
-export type FinishGroup = {
-  id: string,
-  name: string,
-  description: string,
-  descriptionShort: string,
-  materialGroupId: string,
-  materialId: string,
-  materialName: string,
-  summary: string,
-  featuredImage: string,
-  properties: {
-    flexibility: number,
-    freedomOfDesign: number,
-    interlockingAndEnclosedParts: boolean,
-    levelOfDetail: number,
-    printingMethod: string,
-    printingMethodShort: string,
-    printingServiceName: {
-      [string]: string
-    },
-    strength: number
-  },
-  materialConfigs: Array<MaterialConfig>
-}
-
-export type Material = {
-  id: string,
-  name: string,
-  description: string,
-  descriptionShort: string,
-  materialGroupId: string,
-  featuredImage: string,
-  finishGroups: Array<FinishGroup>
-}
-
-export type MaterialGroup = {
-  id: string,
-  name: string,
-  materials: Array<{
-    id: string,
-    name: string,
-    description: string,
-    descriptionShort: string,
-    materialGroupId: string,
-    featuredImage: string,
-    finishGroups: Array<FinishGroup>
-  }>
-}
-
-//
-// Feature-Flags
-
-export type Features = {
-  share?: true,
-  refresh?: true,
-  invoice?: true
-}
-
-//
-// States
-
-export type UserState = {
-  userId: ?string,
-  user: User,
-  utmParams: UtmParams,
+  deliveryTime: string,
+  price: number,
+  grossPrice: number,
   currency: string
 }
 
-export type OrderState = {
-  orderId: ?string,
-  orderNumber: ?string,
-  paymentToken: ?string,
-  orderInProgress: boolean
+export type ModelConfigUploading = {
+  type: 'UPLOADING',
+  fileId: FileId,
+  id: ConfigId
 }
 
-export type ModelState = {
-  numberOfUploads: number,
-  selectedUnit: 'mm' | 'cm' | 'in',
-  models: Array<Model>
+export type ModelConfigUploaded = {
+  type: 'UPLOADED',
+  quantity: number,
+  modelId: ModelId,
+  id: ConfigId,
+  quoteId: ?QuoteId,
+  shippingId: ?ShippingId
 }
 
-export type PriceState = {
-  priceId: ?string,
-  offers: ?Array<Offer>,
-  printingServiceComplete: ?{
-    shapeways: boolean,
-    imaterialse: boolean,
-    sculpteo: boolean,
-    trinckle: boolean,
-    treatstock: boolean,
-    ff3dm: boolean
-  },
-  selectedOffer: ?Offer
+export type ModelConfig = ModelConfigUploading | ModelConfigUploaded
+
+export type Cart = {
+  cartId: CartId,
+  shippingIds: Array<ShippingId>,
+  subTotalPrice: number,
+  shippingTotal: number,
+  vatPercentage: number,
+  vatPrice: number,
+  totalPrice: number,
+  currency: string
 }
 
-export type ModalStateContentType =
-  | 'MODAL.SHIPPING_ADDRESS'
-  | 'MODAL.FETCHING_PRICE'
-  | 'MODAL.PRICE_CHANGED'
-  | 'MODAL.PRICE_LOCATION_CHANGED'
-  | 'MODAL.MATERIAL'
-  | 'MODAL.FATAL_ERROR'
-  | null
+export type Location = {
+  city: string,
+  zipCode: string,
+  stateCode: string,
+  countryCode: string
+}
 
-export type ModalState = {
-  isOpen: boolean,
+export type Address = Location & {
+  firstName: string,
+  lastName: string,
+  address: string,
+  addressLine2: ?string
+}
+
+export type GoogleMapsPlace = {
+  address_components: ?Array<{
+    types: Array<string>,
+    short_name: string,
+    long_name: string
+  }>
+}
+
+export type Features = {[key: string]: boolean}
+
+export type UrlParams = {[key: string]: string}
+
+export type UtmParams = {
+  source: string,
+  medium: string,
+  campaign: string,
+  term: string,
+  content: string
+}
+
+export type User = {
+  userId: ?UserId,
+  emailAddress: string,
+  isCompany: boolean,
+  companyName: ?string,
+  vatId: ?string,
+  phoneNumber: string,
+  useDifferentBillingAddress: boolean,
+  shippingAddress: Address,
+  billingAddress: Address
+}
+
+export type ModalContentType =
+  | 'PICK_LOCATION'
+  | 'PICK_UNIT'
+  | 'MODEL_VIEWER'
+  | 'FATAL_ERROR'
+  | 'MATERIAL'
+  | 'FINISH_GROUP'
+  | 'CONFIRM_LOCATION_CHANGE'
+  | 'CONFIRM_CURRENCY_CHANGE'
+export type ModalConfigClosed = null
+export type ModalConfigOpened = {
   isCloseable: boolean,
-  contentType: ModalStateContentType,
-  contentProps: ?any
+  contentType: ModalContentType,
+  contentProps: any
+}
+export type ModalConfig = ModalConfigOpened | ModalConfigClosed
+
+export type TimeoutId = string
+export type TimeoutCallId = string
+export type TimeoutOnEndActionCreator = () => _AppAction
+
+export type POLLING_STATUS = 'POLLING_CONTINUE' | 'POLLING_DONE'
+
+export type PollingId = string
+export type PollingArgs = Array<any>
+export type PollingResult = {
+  status: POLLING_STATUS,
+  result: any
+}
+export type PollingFunction = (...args: PollingArgs) => PollingResult | Promise<PollingResult>
+export type PollingOnSuccessActionCreator = (result: any) => _AppAction
+export type PollingOnPartialResultActionCreator = (result: any) => _AppAction
+export type PollingOnFailActionCreator = (error: Error) => _AppAction
+
+export type ModelOnProgressActionCreator = (progress: number) => _AppAction
+
+export type HttpUploadOptions = {
+  url: string,
+  body: {[string]: string | Blob},
+  headers?: Headers,
+  method?: string,
+  onProgress?: (progress: number) => void
+}
+export type HttpJsonResponse = {
+  json: any,
+  http: Response
 }
 
-export type ConfigurationState = {
-  configurationId: ?string,
-  isDirectSales: boolean
-}
-
-export type MaterialState = {
-  materialGroups: ?Array<MaterialGroup>,
-  // Id of the selected material group
-  selectedMaterialGroup?: string,
-  // This value reflects the material selection from the first material slider
-  selectedMaterial?: string,
-  // This value reflects the actual user selection after the user
-  // clicked the 'Select' button on the finish material slider
-  selectedMaterialConfig?: string,
-  // This object stores the current color selection for each material card.
-  // It does not reflect the final user selection.
-  selectedMaterialConfigs?: any,
-  materialFilter?: string
-}
-
-export type State = {
-  user: UserState,
-  order: OrderState,
-  price: PriceState,
-  material: MaterialState,
-  model: ModelState,
-  modal: ModalState,
-  configuration: ConfigurationState,
-  routing: any, // Managed by react-router-redux
-  form: any // Managed by redux-form
-}
+export type AppAction = _AppAction
+export type AppState = _AppState

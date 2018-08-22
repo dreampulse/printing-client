@@ -8,7 +8,7 @@ import type {
   Quote,
   MaterialConfigId,
   MultiModelQuote
-} from '../type-next'
+} from '../type'
 
 export function getBestMultiModelQuote(quotes: Array<MultiModelQuote>): ?MultiModelQuote {
   return quotes.reduce((bestQuote, quote) => {

@@ -2,12 +2,12 @@ import React from 'react'
 import {ConnectedRouter} from 'react-router-redux'
 import {Route, Switch} from 'react-router'
 
-import UploadPage from './container-next/upload-page'
-import MaterialPage from './container-next/material-page'
-import CartPage from './container-next/cart-page'
-import AddressPage from './container-next/address-page'
-import ReviewOrderPage from './container-next/review-order-page'
-import SuccessPage from './container-next/success-page'
+import UploadPage from './container/upload-page'
+import MaterialPage from './container/material-page'
+import CartPage from './container/cart-page'
+import AddressPage from './container/address-page'
+import ReviewOrderPage from './container/review-order-page'
+import SuccessPage from './container/success-page'
 
 /* eslint-disable react/prop-types */
 export default ({history}) => (

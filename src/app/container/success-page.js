@@ -1,78 +1,84 @@
+// @flow
+
 import React from 'react'
-import {compose} from 'recompose'
+import {Redirect} from 'react-router'
+import {connect} from 'react-redux'
+import uniq from 'lodash/uniq'
 
-import PageHeader from '../component/page-header'
-import Link from '../component/link'
-import Section from '../component/section'
-import Headline from '../component/headline'
-import Paragraph from '../component/paragraph'
-import ProviderImage from '../component/provider-image'
+import {compose, lifecycle} from 'recompose'
 
-import {connectLegacy} from './util/connect-legacy'
-import {guard} from './util/guard'
-import AppLayout from './app-layout'
 import {getProviderName} from '../lib/provider-selector'
 
-const CartPage = ({offer, order}) => {
-  const referralUrl = `https://3d-printing-price.all3dp.com/?utm_source=all3dp&utm_campaign=referral&utm_content=${order.orderNumber}`
-  const SuccessSection = () => (
-    <Section modifiers={['highlight']}>
-      <Headline
-        label={
-          order.orderNumber
-            ? `Order number: ${order.orderNumber}`
-            : 'Thank you for ordering at All3DP!'
-        }
-      />
-      <Paragraph modifiers={['l']}>
-        You should shortly receive an email confirming your order.
-      </Paragraph>
-      <Paragraph modifiers={['l']}>
-        Please note that your order will be produced and sent from:
-      </Paragraph>
-      <Paragraph modifiers={['l']}>
-        <ProviderImage slug={offer.printingService} name={getProviderName(offer.printingService)} />
-      </Paragraph>
-      <Headline label="We have extended our special offer: Refer us now and earn 20% commission" />
-      <Paragraph modifiers={['l']}>
-        If you enjoyed using our service, you can refer us by sharing the link below and earn some
-        money for yourself.
-      </Paragraph>
-      <Paragraph modifiers={['l']}>
-        <Link href={referralUrl} label={referralUrl} />
-      </Paragraph>
-      <Paragraph modifiers={['l']}>
-        By placing an order through the link above, you will receive 20% commission on the total
-        amount of the referred customer&apos;s first order. You can earn even more money if you
-        refer our service to additional friends and colleagues. The money will be credited to the
-        account that you used to place this order.
-      </Paragraph>
-      <Paragraph modifiers={['l']}>This offer is valid until July 31st 2018.</Paragraph>
-      <Headline label="Any questions?" />
-      <Paragraph modifiers={['l']}>
-        Email us on <Link href="mailto:support@all3dp.com" label="support@all3dp.com" />
-      </Paragraph>
-    </Section>
-  )
+import AppLayout from './app-layout'
 
+import ProviderTeaser from '../component/provider-teaser'
+import ProviderImage from '../component/provider-image'
+import Section from '../component/section'
+import Headline from '../component/headline'
+import PageHeader from '../component/page-header'
+import Paragraph from '../component/paragraph'
+import Link from '../component/link'
+
+import * as coreActions from '../action/core'
+
+const SuccessPage = ({location}) => {
+  if (!location.state || !location.state.orderNumber) {
+    return <Redirect to="/" />
+  }
   return (
     <AppLayout>
       <PageHeader label="Thank you for your order at All3DP!" />
-      <SuccessSection />
+      <Section modifiers={['highlight']}>
+        <Headline
+          label={
+            location.state.orderNumber
+              ? `Order number: ${location.state.orderNumber}`
+              : 'Thank you for ordering at All3DP!'
+          }
+        />
+        <Paragraph modifiers={['l']}>
+          You should shortly receive an email confirming your order.
+        </Paragraph>
+        <Paragraph modifiers={['l']}>
+          Please note that your order will be produced and sent from:
+        </Paragraph>
+
+        <ProviderTeaser modifiers={['left']}>
+          {uniq(location.state.vendorIds).map(vendorId => (
+            <ProviderImage key={vendorId} slug={vendorId} name={getProviderName(vendorId)} />
+          ))}
+        </ProviderTeaser>
+
+        <Headline label="What happens now?" />
+        <Paragraph modifiers={['l']}>
+          Your order is going through manual checks for printability at the manufacturer. At this
+          first step they make sure that small details and necessary parts are printable. Thereafter
+          the order is pushed to production, finishing and finally to quality control before being
+          shipped out. We will send you an update on your order when we have received the tracking
+          number from the manufacturer.
+        </Paragraph>
+        <Headline label="Should you have any questions regarding your order" />
+        <Paragraph modifiers={['l']}>
+          Email us on <Link href="mailto:support@all3dp.com" label="support@all3dp.com" />
+        </Paragraph>
+      </Section>
     </AppLayout>
   )
 }
 
-const mapStateToProps = state => ({
-  offer: state.price.selectedOffer,
-  order: state.order
-})
+const mapStateToProps = () => ({})
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  reset: coreActions.reset
+}
 
 const enhance = compose(
-  guard(state => state.legacy.price.selectedOffer),
-  connectLegacy(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  lifecycle({
+    componentDidMount() {
+      this.props.reset()
+    }
+  })
 )
 
-export default enhance(CartPage)
+export default enhance(SuccessPage)

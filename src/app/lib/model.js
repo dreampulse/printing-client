@@ -1,7 +1,7 @@
 // @flow
 import keyBy from 'lodash/keyBy'
 
-import type {ModelConfig, Quote, Shipping, ConfigId} from '../type-next'
+import type {ModelConfig, Quote, Shipping, ConfigId} from '../type'
 
 export const resetModelConfigs = (modelConfigs: Array<ModelConfig>) =>
   modelConfigs.map(modelConfig => {

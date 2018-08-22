@@ -23,7 +23,7 @@ import type {
   MaterialGroup,
   Cart,
   UtmParams
-} from '../type-next'
+} from '../type'
 import * as httpJson from './http-json'
 
 // printing-engine types
