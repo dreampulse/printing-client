@@ -59,7 +59,7 @@ export default class UploadArea extends Component {
   }
 
   onInputChange = event => {
-    this.props.onChange(event.target.files)
+    if (event.target.files.length > 0) this.props.onChange(event.target.files)
   }
 
   render() {
