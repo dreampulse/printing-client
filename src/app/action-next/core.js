@@ -1,9 +1,19 @@
 // @flow
 
-import type {Action, MaterialGroup, Location, Features, Shipping, User, UserId} from '../type-next'
+import type {
+  Action,
+  MaterialGroup,
+  UrlParams,
+  Location,
+  Features,
+  Shipping,
+  User,
+  UserId
+} from '../type-next'
 
 type InitPayload = {
-  featureFlags: Features
+  featureFlags: Features,
+  urlParams: UrlParams
 }
 
 type InitAction = Action<'CORE.INIT', InitPayload>
@@ -18,6 +28,7 @@ type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Array<Shipping>>
 type SaveUserAction = Action<'CORE.SAVE_USER', User>
 type UserReceivedAction = Action<'CORE.USER_RECEIVED', {userId: UserId}>
+type ResetAction = Action<'CORE.RESET', void>
 
 export type CoreAction =
   | InitAction
@@ -29,11 +40,13 @@ export type CoreAction =
   | UpdateShippingsAction
   | SaveUserAction
   | UserReceivedAction
+  | ResetAction
 
-export const init = ({featureFlags}: InitPayload): InitAction => ({
+export const init = ({featureFlags, urlParams}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
   payload: {
-    featureFlags
+    featureFlags,
+    urlParams
   }
 })
 
@@ -80,4 +93,9 @@ export const saveUser = (user: User): SaveUserAction => ({
 export const userReceived = (payload: {userId: UserId}): UserReceivedAction => ({
   type: 'CORE.USER_RECEIVED',
   payload
+})
+
+export const reset = (): ResetAction => ({
+  type: 'CORE.RESET',
+  payload: undefined
 })

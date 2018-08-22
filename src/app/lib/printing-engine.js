@@ -21,7 +21,8 @@ import type {
   Quote,
   BackendModel,
   MaterialGroup,
-  Cart
+  Cart,
+  UtmParams
 } from '../type-next'
 import * as httpJson from './http-json'
 
@@ -85,13 +86,7 @@ export type OrderRequest = {
   userId: UserId,
   cartId: CartId,
   currency: string,
-  utmParams?: {
-    source: string,
-    medium: string,
-    campaign: string,
-    term: string,
-    content: string
-  }
+  utmParams?: UtmParams
 }
 
 export type OrderResponse = {
@@ -123,7 +118,7 @@ export type InvoicePaymentResponse = PaymentRequest & {
   status: boolean
 }
 
-export type PaypalPaymentRequest = PaymentResponse
+export type PaypalPaymentRequest = PaymentRequest
 
 export type PaypalPaymentResponse = PaymentResponse & {
   providerFields: {

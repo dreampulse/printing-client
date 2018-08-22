@@ -5,6 +5,8 @@ import invariant from 'invariant'
 import isEqual from 'lodash/isEqual'
 import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
+import omit from 'lodash/omit'
+import pick from 'lodash/pick'
 import compact from 'lodash/compact'
 
 import config from '../../../config'
@@ -32,7 +34,9 @@ import type {
   PollingId,
   Shipping,
   User,
-  Cart
+  Cart,
+  PaymentId,
+  UrlParams
 } from '../type-next'
 
 import * as coreAction from '../action-next/core'
@@ -49,6 +53,7 @@ export type CoreState = {
   location: ?Location,
   shippings: Array<Shipping>,
   featureFlags: Features,
+  urlParams: UrlParams,
   uploadingFiles: {[id: FileId]: UploadingFile},
   backendModels: {[id: ModelId]: BackendModel},
   modelConfigs: Array<ModelConfig>,
@@ -59,7 +64,9 @@ export type CoreState = {
     [printingServiceName: string]: boolean
   },
   user: ?User,
-  cart: ?Cart
+  cart: ?Cart,
+  paymentId: ?PaymentId,
+  orderNumber: ?string
 }
 
 const initialState: CoreState = {
@@ -69,6 +76,7 @@ const initialState: CoreState = {
   location: null,
   shippings: [],
   featureFlags: {},
+  urlParams: {},
   uploadingFiles: {},
   backendModels: {},
   modelConfigs: [],
@@ -77,14 +85,17 @@ const initialState: CoreState = {
   quotes: {},
   printingServiceComplete: {},
   user: null,
-  cart: null
+  cart: null,
+  paymentId: null,
+  orderNumber: null
 }
 
-const init = (state, {payload: {featureFlags}}) =>
+const init = (state, {payload: {featureFlags, urlParams}}) =>
   loop(
     {
       ...state,
-      featureFlags
+      featureFlags,
+      urlParams
     },
     Cmd.list([
       Cmd.run(printingEngine.getMaterialGroups, {
@@ -102,7 +113,16 @@ const init = (state, {payload: {featureFlags}}) =>
   )
 
 const fatalError = (state, {payload: error}) =>
-  loop(state, Cmd.action(modalAction.openFatalError(error)))
+  loop(
+    state,
+    Cmd.list([
+      Cmd.action(modalAction.openFatalError(error)),
+      Cmd.run(() => {
+        // This will re-throw the error
+        throw error
+      })
+    ])
+  )
 
 const updateMaterialGroups = (state, action) => ({
   ...state,
@@ -198,6 +218,9 @@ const saveUser = (state, action) =>
   loop(
     {
       ...state,
+      location: {
+        ...pick(action.payload.shippingAddress, 'city', 'zipCode', 'stateCode', 'countryCode')
+      },
       user: {
         ...state.user,
         ...action.payload,
@@ -565,6 +588,28 @@ const cartReceived = (state, {payload: {cart}}) => ({
   cart
 })
 
+const paid = (state, {payload: {paymentId, orderNumber}}) => ({
+  ...state,
+  paymentId,
+  orderNumber
+})
+
+const executePaypalPayment = (state, {payload}) =>
+  loop(
+    state,
+    Cmd.run(printingEngine.executePaypalPayment, {
+      args: [state.paymentId, {payerId: payload.payerID}]
+    })
+  )
+
+const reset = state => ({
+  ...state,
+  ...omit(initialState, 'materialGroups', 'location', 'featureFlags', 'shippings', 'urlParams'),
+  user: {
+    ...omit(state.user, 'userId')
+  }
+})
+
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
     case 'CORE.INIT':
@@ -619,6 +664,12 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return createCart(state, action)
     case 'CART.CART_RECEIVED':
       return cartReceived(state, action)
+    case 'ORDER.PAID':
+      return paid(state, action)
+    case 'ORDER.EXECUTE_PAYPAL_PAYMENT':
+      return executePaypalPayment(state, action)
+    case 'CORE.RESET':
+      return reset(state)
     default:
       return state
   }
