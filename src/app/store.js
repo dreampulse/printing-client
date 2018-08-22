@@ -5,7 +5,7 @@ import {track as trackMixpanel} from './service/mixpanel'
 import {track as trackGoogleAnalytics} from './service/google-analytics'
 import {ravenMiddleware} from './service/logging'
 
-import rootReducer from './reducer-next'
+import rootReducer from './reducer'
 
 function trackingReduxMiddleware() {
   return next => action => {
@@ -35,10 +35,10 @@ export default (history, initialState = {}) => {
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./reducer-next', () => {
+    module.hot.accept('./reducer', () => {
       /* eslint global-require: 0 */
       /* eslint import/newline-after-import: 0 */
-      const nextReducer = require('./reducer-next').default
+      const nextReducer = require('./reducer').default
       store.replaceReducer(nextReducer)
     })
   }

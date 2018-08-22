@@ -1,9 +1,15 @@
+// @flow
+
 import React from 'react'
+import {connect} from 'react-redux'
+import compose from 'recompose/compose'
+import withProps from 'recompose/withProps'
 
-import {selectFinishGroup} from '../../lib/selector'
 import getCloudinaryUrl from '../../lib/cloudinary'
+import {getFinishGroupById} from '../../lib/material'
 
-import {close} from '../../action/modal'
+import type {AppState} from '../../reducer'
+import * as modalActions from '../../action/modal'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -16,8 +22,6 @@ import FeatureListItem from '../../component/feature-list-item'
 import Grid from '../../component/grid'
 import Column from '../../component/column'
 import Image from '../../component/image'
-
-import {connectLegacy} from '../util/connect-legacy'
 
 const FinishGroupModal = ({finishGroup, onClose}) => {
   const headline = <Headline label={finishGroup.name} modifiers={['l']} />
@@ -89,12 +93,17 @@ const FinishGroupModal = ({finishGroup, onClose}) => {
   )
 }
 
-const mapStateToProps = (state, props) => ({
-  finishGroup: selectFinishGroup(state, props.materialId, props.finishGroupId)
+const mapStateToProps = (state: AppState) => ({
+  materialGroups: state.core.materialGroups
 })
 
 const mapDispatchToProps = {
-  onClose: close
+  onClose: modalActions.close
 }
 
-export default connectLegacy(mapStateToProps, mapDispatchToProps)(FinishGroupModal)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withProps(({materialGroups, finishGroupId}) => ({
+    finishGroup: getFinishGroupById(materialGroups, finishGroupId)
+  }))
+)(FinishGroupModal)

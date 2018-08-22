@@ -13,7 +13,7 @@ export default {
   stripeName: 'All3DP',
   ravenUrl: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
   ravenRelease: process.env.SENTRY_RELEASE_VERSION,
-  ipApiKey: '0TrLHRAixWyJhe3',
+  geolocationApiUrl: 'https://pro.ip-api.com/json/?key=0TrLHRAixWyJhe3',
   currencies: [
     {value: 'USD', label: 'USD', symbol: '$', prefix: true},
     {value: 'EUR', label: 'EUR', symbol: '€', prefix: false},

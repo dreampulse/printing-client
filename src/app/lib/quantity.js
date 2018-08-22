@@ -1,5 +1,5 @@
 // @flow
-import type {ModelConfig} from '../type-next'
+import type {ModelConfig} from '../type'
 
 export const getCommonQuantity = (selectedModelConfigs: Array<ModelConfig>): ?number => {
   const result = selectedModelConfigs.reduce((quantity, modelConfig) => {

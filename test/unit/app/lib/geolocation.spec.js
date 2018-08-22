@@ -3,7 +3,7 @@ import {
   convertPlaceToLocation,
   isLocationValid
 } from '../../../../src/app/lib/geolocation'
-import * as http from '../../../../src/app/service/http'
+import * as http from '../../../../src/app/lib/http-json'
 import config from '../../../../config'
 
 describe('geolocation lib', () => {
@@ -13,6 +13,7 @@ describe('geolocation lib', () => {
     beforeEach(() => {
       sandbox = sinon.sandbox.create()
       sandbox.stub(http)
+      sandbox.stub(config, 'geolocationApiUrl').value('http://example.com')
     })
 
     afterEach(() => {
@@ -26,7 +27,7 @@ describe('geolocation lib', () => {
         region: 'BY',
         countryCode: 'DE'
       }
-      http.request.resolves(geolocationResponse)
+      http.fetch.withArgs('http://example.com', {headers: {}}).resolves({json: geolocationResponse})
 
       const result = await getLocationByIp()
       expect(result, 'to equal', {
@@ -39,7 +40,7 @@ describe('geolocation lib', () => {
 
     it('aborts request after a configured timeout', () => {
       const endlessPromise = new Promise(() => {})
-      http.request.resolves(endlessPromise)
+      http.fetch.returns(endlessPromise)
       sandbox.stub(config, 'fetchTimout').value(1) // Faster timeout
 
       return getLocationByIp().catch(result => {
@@ -54,7 +55,7 @@ describe('geolocation lib', () => {
         region: 'something',
         countryCode: '' // A key is missing
       }
-      http.request.resolves(geolocationResponse)
+      http.fetch.resolves({json: geolocationResponse})
 
       return getLocationByIp().catch(result => {
         expect(result, 'to equal', Error('Location detection failed'))

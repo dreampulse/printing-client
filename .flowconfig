@@ -3,9 +3,6 @@
 <PROJECT_ROOT>/node_modules/radium/.*
 <PROJECT_ROOT>/node_modules/immutable/.*
 <PROJECT_ROOT>/node_modules/mitt/.*
-# TODO: remove when multi model upload branch is merged
-<PROJECT_ROOT>/src/app/action/.*
-<PROJECT_ROOT>/src/app/reducer/.*
 
 [include]
 
