@@ -5,6 +5,8 @@ import invariant from 'invariant'
 import isEqual from 'lodash/isEqual'
 import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
+import omit from 'lodash/omit'
+import pick from 'lodash/pick'
 import compact from 'lodash/compact'
 
 import config from '../../../config'
@@ -207,6 +209,9 @@ const saveUser = (state, action) =>
   loop(
     {
       ...state,
+      location: {
+        ...pick(action.payload.shippingAddress, 'city', 'zipCode', 'stateCode', 'countryCode')
+      },
       user: {
         ...state.user,
         ...action.payload,
@@ -588,6 +593,14 @@ const executePaypalPayment = (state, {payload}) =>
     })
   )
 
+const reset = state => ({
+  ...state,
+  ...omit(initialState, 'materialGroups', 'location', 'featureFlags', 'shippings', 'urlParams'),
+  user: {
+    ...omit(state.user, 'userId')
+  }
+})
+
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
     case 'CORE.INIT':
@@ -646,6 +659,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return paid(state, action)
     case 'ORDER.EXECUTE_PAYPAL_PAYMENT':
       return executePaypalPayment(state, action)
+    case 'CORE.RESET':
+      return reset(state)
     default:
       return state
   }

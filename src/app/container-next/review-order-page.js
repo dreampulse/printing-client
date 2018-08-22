@@ -45,7 +45,6 @@ const ReviewOrderPage = ({
   user,
   onGoToAddress,
   onGoToCart,
-  onGoToSuccess,
   onPaid,
   cart,
   modelsWithConfig,
@@ -57,14 +56,15 @@ const ReviewOrderPage = ({
   featureFlags,
   payWithPaypal,
   payWithStripe,
-  payWithInvoice
+  payWithInvoice,
+  success
 }) => {
-  const shippingStateName = getStateName(
-    user.shippingAddress.countryCode,
-    user.shippingAddress.stateCode
-  )
+  const shippingStateName =
+    user && getStateName(user.shippingAddress.countryCode, user.shippingAddress.stateCode)
+
   const billingStateName =
-    (user.billingAddress &&
+    (user &&
+      user.billingAddress &&
       user.billingAddress.stateCode &&
       getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode)) ||
     shippingStateName
@@ -159,9 +159,9 @@ const ReviewOrderPage = ({
         try {
           setPaymentInProgress(true)
           const {orderNumber, paymentId} = await payWithStripe()
-          onPaid({orderNumber, paymentId})
+          await onPaid({orderNumber, paymentId})
           setPaymentInProgress(false)
-          onGoToSuccess()
+          success()
         } catch (error) {
           // Payment aborted by user
           setPaymentInProgress(false)
@@ -178,8 +178,8 @@ const ReviewOrderPage = ({
           try {
             setPaymentInProgress(true)
             const {orderNumber, paymentId} = await payWithInvoice()
-            onPaid({orderNumber, paymentId})
-            onGoToSuccess()
+            await onPaid({orderNumber, paymentId})
+            success()
           } catch (error) {
             // Payment aborted by user
             setPaymentInProgress(false)
@@ -199,8 +199,7 @@ const ReviewOrderPage = ({
       onAuthorize={async data => {
         try {
           const payment = await onExecutePaypalPayment(data)
-
-          onGoToSuccess()
+          success()
           return payment
         } finally {
           setPaymentInProgress(false)
@@ -335,6 +334,7 @@ const ReviewOrderPage = ({
 const mapStateToProps = state => ({
   user: state.core.user,
   cart: state.core.cart,
+  orderNumber: state.core.orderNumber,
   shippings: state.core.shippings,
   modelConfigs: state.core.modelConfigs,
   modelsWithConfig: selectConfiguredModelInformation(state),
@@ -366,6 +366,11 @@ const enhance = compose(
     }
   })),
   withHandlers({
+    success: props => () =>
+      props.onGoToSuccess({
+        orderNumber: props.orderNumber,
+        vendorIds: props.modelsWithConfig.map(info => info.quote.vendorId)
+      }),
     payWithPaypal: props => async () => {
       const userId = props.user.userId
       const cartId = props.cart.cartId

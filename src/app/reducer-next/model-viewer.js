@@ -68,6 +68,10 @@ const close = (state, _action) => {
   return state
 }
 
+const reset = () => ({
+  ...initialState
+})
+
 export const reducer = (
   state: ModelViewerState = initialState,
   action: AppAction
@@ -79,6 +83,8 @@ export const reducer = (
       return handleSceneId(state, action)
     case 'MODEL_VIEWER.CLOSE':
       return close(state, action)
+    case 'CORE.RESET':
+      return reset()
     default:
       return state
   }
