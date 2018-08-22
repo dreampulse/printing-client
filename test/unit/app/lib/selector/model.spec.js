@@ -6,7 +6,7 @@ import {
   selectUploadedModelConfigs,
   selectShippingsOfModelConfigs,
   selectQuotesOfModelConfigs,
-  selectUniqueChosenShippings,
+  selectCartShippings,
   selectCommonMaterialPathOfModelConfigs,
   selectConfiguredModelInformation
 } from '../../../../../src/app/lib/selector/model'
@@ -341,8 +341,8 @@ describe('selectModelConfigsByIds()', () => {
   })
 })
 
-describe('selectUniqueChosenShippings()', () => {
-  it('returns all shippings from model configs in cart', () => {
+describe('selectCartShippings()', () => {
+  it('returns all shippings from cart', () => {
     const state = {
       core: {
         shippings: [
@@ -351,44 +351,30 @@ describe('selectUniqueChosenShippings()', () => {
           },
           {
             shippingId: 'shipping-2'
+          },
+          {
+            shippingId: 'shipping-3'
           }
         ],
-        modelConfigs: [
-          {
-            type: 'UPLOADED',
-            quantity: 1,
-            modelId: 'some-model-id',
-            id: 'config-id-0',
-            quoteId: 'quote-1',
-            shippingId: 'shipping-1'
-          },
-          {
-            type: 'UPLOADED',
-            quantity: 1,
-            modelId: 'some-model-id',
-            id: 'config-id-2',
-            quoteId: null,
-            shippingId: null
-          },
-          {
-            type: 'UPLOADING',
-            fileId: 'some-file-id',
-            id: 'config-id-3'
-          }
-        ]
+        cart: {
+          shippingIds: ['shipping-1', 'shipping-3']
+        }
       }
     }
 
     const selected = [
       {
         shippingId: 'shipping-1'
+      },
+      {
+        shippingId: 'shipping-3'
       }
     ]
 
-    expect(selectUniqueChosenShippings(state), 'to equal', selected)
+    expect(selectCartShippings(state), 'to equal', selected)
   })
 
-  it('returns every shipping just once', () => {
+  it('returns empty array if there is no cart', () => {
     const state = {
       core: {
         shippings: [
@@ -399,34 +385,11 @@ describe('selectUniqueChosenShippings()', () => {
             shippingId: 'shipping-2'
           }
         ],
-        modelConfigs: [
-          {
-            type: 'UPLOADED',
-            quantity: 1,
-            modelId: 'some-model-id',
-            id: 'config-id-0',
-            quoteId: 'quote-1',
-            shippingId: 'shipping-1'
-          },
-          {
-            type: 'UPLOADED',
-            quantity: 1,
-            modelId: 'some-model-id',
-            id: 'config-id-2',
-            quoteId: 'quote-1',
-            shippingId: 'shipping-1'
-          }
-        ]
+        cart: null
       }
     }
 
-    const selected = [
-      {
-        shippingId: 'shipping-1'
-      }
-    ]
-
-    expect(selectUniqueChosenShippings(state), 'to equal', selected)
+    expect(selectCartShippings(state), 'to equal', [])
   })
 })
 

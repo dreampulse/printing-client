@@ -13,7 +13,7 @@ import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
-import {selectUniqueChosenShippings, selectConfiguredModelInformation} from '../lib/selector'
+import {selectCartShippings, selectConfiguredModelInformation} from '../lib/selector'
 import getCloudinaryUrl from '../lib/cloudinary'
 
 import PageHeader from '../component/page-header'
@@ -48,7 +48,7 @@ const ReviewOrderPage = ({
   onPaid,
   cart,
   modelsWithConfig,
-  chosenShippings,
+  cartShippings,
   onMagnifyModel,
   onExecutePaypalPayment,
   paymentInProgress,
@@ -214,7 +214,7 @@ const ReviewOrderPage = ({
       <PaymentSection
         classNames={['u-margin-bottom']}
         subtotal={formatPrice(cart.subTotalPrice, cart.currency)}
-        shippings={chosenShippings.map(shipping => ({
+        shippings={cartShippings.map(shipping => ({
           label: getProviderName(shipping.vendorId),
           price: formatPrice(shipping.price, shipping.currency)
         }))}
@@ -338,7 +338,7 @@ const mapStateToProps = state => ({
   shippings: state.core.shippings,
   modelConfigs: state.core.modelConfigs,
   modelsWithConfig: selectConfiguredModelInformation(state),
-  chosenShippings: selectUniqueChosenShippings(state),
+  cartShippings: selectCartShippings(state),
   featureFlags: state.core.featureFlags,
   urlParams: state.core.urlParams
 })
