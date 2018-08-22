@@ -51,7 +51,6 @@ if (process.env.NODE_ENV !== 'production') {
   console.info('NODE_ENV', process.env.NODE_ENV) // eslint-disable-line no-console
 
   global.store = store
-  global.selectors = selectors
 
   if (module.hot) {
     // Enable Webpack hot module replacement
