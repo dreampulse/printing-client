@@ -276,7 +276,8 @@ const uploadFile = (state, {payload}) => {
           fileId,
           id: payload.configId
         }
-      ]
+      ],
+      selectedModelConfigs: [...state.selectedModelConfigs, payload.configId]
     },
     Cmd.run(printingEngine.uploadModel, {
       args: [
