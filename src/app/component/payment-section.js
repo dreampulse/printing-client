@@ -34,7 +34,7 @@ const PaymentSection = ({classNames, modifiers, children, subtotal, shippings, v
           <span className="payment-section__price-value">{total}</span>
         </li>
       </ul>
-      {children && <div className="payment-section__section-label">Pay with</div>}
+      {children && <div className="payment-section__section-label">Go to checkout</div>}
       <ul className="payment-section__buttons">
         {React.Children.map(children, child => (
           <li key={child.key} className="payment-section__button">
