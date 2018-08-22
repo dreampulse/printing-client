@@ -141,7 +141,9 @@ const ReviewOrderPage = ({
               ? getCountryName(user.billingAddress.countryCode)
               : getCountryName(user.shippingAddress.countryCode)}
             <br />
-            <EditLink label="edit" onClick={() => onGoToAddress('billing-address')} />
+            {user.useDifferentBillingAddress && (
+              <EditLink label="edit" onClick={() => onGoToAddress('billing-address')} />
+            )}
           </Paragraph>
         </Column>
       </Grid>
