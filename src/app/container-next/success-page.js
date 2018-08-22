@@ -3,6 +3,8 @@
 import React from 'react'
 import {Redirect} from 'react-router'
 import {connect} from 'react-redux'
+import uniq from 'lodash/uniq'
+
 import {compose, lifecycle} from 'recompose'
 
 import {getProviderName} from '../lib/provider-selector'
@@ -42,7 +44,7 @@ const SuccessPage = ({location}) => {
         </Paragraph>
 
         <ProviderTeaser modifiers={['left']}>
-          {location.state.vendorIds.map(vendorId => (
+          {uniq(location.state.vendorIds).map(vendorId => (
             <ProviderImage key={vendorId} slug={vendorId} name={getProviderName(vendorId)} />
           ))}
         </ProviderTeaser>
