@@ -5,6 +5,7 @@ import invariant from 'invariant'
 import isEqual from 'lodash/isEqual'
 import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
+import omit from 'lodash/omit'
 import compact from 'lodash/compact'
 
 import config from '../../../config'
@@ -565,6 +566,10 @@ const cartReceived = (state, {payload: {cart}}) => ({
   cart
 })
 
+const reset = () => ({
+  ...omit(initialState, 'modelConfigs')
+})
+
 export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
   switch (action.type) {
     case 'CORE.INIT':
@@ -619,6 +624,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return createCart(state, action)
     case 'CART.CART_RECEIVED':
       return cartReceived(state, action)
+    case 'CORE.RESET':
+      return reset()
     default:
       return state
   }

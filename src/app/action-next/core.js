@@ -18,6 +18,7 @@ type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Array<Shipping>>
 type SaveUserAction = Action<'CORE.SAVE_USER', User>
 type UserReceivedAction = Action<'CORE.USER_RECEIVED', {userId: UserId}>
+type ResetAction = Action<'CORE.RESET', void>
 
 export type CoreAction =
   | InitAction
@@ -29,6 +30,7 @@ export type CoreAction =
   | UpdateShippingsAction
   | SaveUserAction
   | UserReceivedAction
+  | ResetAction
 
 export const init = ({featureFlags}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
@@ -80,4 +82,9 @@ export const saveUser = (user: User): SaveUserAction => ({
 export const userReceived = (payload: {userId: UserId}): UserReceivedAction => ({
   type: 'CORE.USER_RECEIVED',
   payload
+})
+
+export const reset = (): ResetAction => ({
+  type: 'CORE.RESET',
+  payload: undefined
 })

@@ -1,6 +1,7 @@
 // @flow
 
-import type {AppAction, ModalConfig} from '../type-next'
+import typeimport {reset} from "../action-next/core";
+ {AppAction, ModalConfig} from '../type-next'
 
 export type ModalState = {
   isOpen: boolean,
@@ -19,12 +20,18 @@ const openModal = (state, action) => ({
 
 const closeModal = (_state, _action) => initialState
 
+const reset = () => ({
+  ...initialState
+})
+
 const reducer = (state: ModalState = initialState, action: AppAction): ModalState => {
   switch (action.type) {
     case 'MODAL.OPEN':
       return openModal(state, action)
     case 'MODAL.CLOSE':
       return closeModal(state, action)
+    case 'CORE.RESET':
+      return reset()
     default:
       return state
   }

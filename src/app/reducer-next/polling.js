@@ -201,6 +201,13 @@ const cancel = (state, action) => {
     : loop(newState, Cmd.action(timeoutAction.cancel(activePolling.timeoutId)))
 }
 
+const reset = state =>
+  Cmd.list(
+    Object.keys(state.activePollings).map(pollingId => {
+      return Cmd.action(pollingAction.cancel(pollingId))
+    })
+  )
+
 export const reducer = (state: PollingState = initialState, action: AppAction): PollingState => {
   switch (action.type) {
     case 'POLLING.START':
@@ -211,6 +218,8 @@ export const reducer = (state: PollingState = initialState, action: AppAction): 
       return handleRetry(state, action)
     case 'POLLING.CANCEL':
       return cancel(state, action)
+    case 'CORE.RESET':
+      return reset(state)
     default:
       return state
   }
