@@ -1,7 +1,6 @@
 // @flow
 import invariant from 'invariant'
 import compact from 'lodash/compact'
-import uniq from 'lodash/uniq'
 import unzip from 'lodash/unzip'
 
 import type {
@@ -62,16 +61,15 @@ export const selectSelectedModelConfigs = (state: AppState): Array<ModelConfig> 
 export const selectModelConfigsByIds = (state: AppState, configIds: Array<ConfigId>) =>
   state.core.modelConfigs.filter(modelConfig => configIds.includes(modelConfig.id))
 
-export const selectUniqueChosenShippings = (state: AppState) => {
-  const shippingIds = compact(
-    uniq(
-      state.core.modelConfigs.map(
-        modelConfig => (modelConfig.type === 'UPLOADED' ? modelConfig.shippingId : null)
-      )
-    )
-  )
+export const selectCartShippings = (state: AppState) => {
+  const cart = state.core.cart
+  if (!cart) {
+    return []
+  }
 
-  return shippingIds.map(id => state.core.shippings.find(shipping => shipping.shippingId === id))
+  return cart.shippingIds.map(id =>
+    state.core.shippings.find(shipping => shipping.shippingId === id)
+  )
 }
 
 export const selectCommonMaterialPathOfModelConfigs = (

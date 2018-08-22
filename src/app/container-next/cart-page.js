@@ -6,7 +6,7 @@ import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 
 import type {AppState} from '../reducer-next'
-import {selectUniqueChosenShippings, selectConfiguredModelInformation} from '../lib/selector'
+import {selectCartShippings, selectConfiguredModelInformation} from '../lib/selector'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
@@ -45,7 +45,7 @@ const CartPage = ({
   onDuplicateModelConfig,
   onDeleteModelConfigs,
   cart,
-  chosenShippings,
+  cartShippings,
   onMagnifyModel,
   onChooseMaterial,
   numAddedItems
@@ -150,7 +150,7 @@ const CartPage = ({
       <PaymentSection
         classNames={['u-margin-bottom']}
         subtotal={formatPrice(cart.subTotalPrice, cart.currency)}
-        shippings={chosenShippings.map(shipping => ({
+        shippings={cartShippings.map(shipping => ({
           label: getProviderName(shipping.vendorId),
           price: formatPrice(shipping.price, shipping.currency)
         }))}
@@ -228,7 +228,7 @@ const CartPage = ({
 const mapStateToProps = (state: AppState) => ({
   modelsWithConfig: selectConfiguredModelInformation(state),
   modelConfigs: state.core.modelConfigs,
-  chosenShippings: selectUniqueChosenShippings(state),
+  cartShippings: selectCartShippings(state),
   currency: state.core.currency,
   cart: state.core.cart
 })
