@@ -314,8 +314,14 @@ const uploadProgress = (state, {payload}) => {
 const uploadComplete = (state, {payload}) => {
   const fileId = payload.fileId
   const model = payload.model
+  const modelConfig: any = state.modelConfigs.find(
+    mc => mc.type === 'UPLOADING' && mc.fileId === fileId
+  )
 
+  invariant(modelConfig, 'Model config not found')
   invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
+
+  const configId = modelConfig.id
 
   return {
     ...state,
@@ -335,7 +341,8 @@ const uploadComplete = (state, {payload}) => {
               shippingId: null
             }
           : modelConfig
-    )
+    ),
+    selectedModelConfigs: [...state.selectedModelConfigs, configId]
   }
 }
 
@@ -426,7 +433,8 @@ const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
       ...state.modelConfigs.slice(0, modelConfigIndex + 1),
       nextModelConfig,
       ...state.modelConfigs.slice(modelConfigIndex + 1)
-    ]
+    ],
+    selectedModelConfigs: [...state.selectedModelConfigs, nextId]
   }
 
   // Create new cart if modelConfig is already in cart
