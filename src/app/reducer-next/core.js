@@ -595,7 +595,7 @@ const executePaypalPayment = (state, {payload}) =>
 
 const reset = state => ({
   ...state,
-  ...omit(initialState, 'materialGroups', 'location', 'featureFlags', 'shippings'),
+  ...omit(initialState, 'materialGroups', 'location', 'featureFlags', 'shippings', 'urlParams'),
   user: {
     ...omit(state.user, 'userId')
   }

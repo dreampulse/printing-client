@@ -10,6 +10,7 @@ import {selectUniqueChosenShippings, selectConfiguredModelInformation} from '../
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
+import {guard} from './util/guard'
 
 import Link from '../component/link'
 import SidebarLayout from '../component/sidebar-layout'
@@ -244,6 +245,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
+  guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withProps(({location}) => ({
     numAddedItems: (location.state || {}).numAddedItems || 0

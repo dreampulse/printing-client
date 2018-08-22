@@ -340,8 +340,9 @@ const MaterialPage = ({
                 includesVat={false}
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
                 onAddToCartClick={() => {
-                  onAddToCart(configIds, multiModelQuote.quotes, shipping)
-                  onGotoCart(configIds.length)
+                  onAddToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
+                    onGotoCart(configIds.length)
+                  })
                 }}
               />
             )

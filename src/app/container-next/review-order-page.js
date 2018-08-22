@@ -59,12 +59,12 @@ const ReviewOrderPage = ({
   payWithInvoice,
   success
 }) => {
-  const shippingStateName = getStateName(
-    user.shippingAddress.countryCode,
-    user.shippingAddress.stateCode
-  )
+  const shippingStateName =
+    user && getStateName(user.shippingAddress.countryCode, user.shippingAddress.stateCode)
+
   const billingStateName =
-    (user.billingAddress &&
+    (user &&
+      user.billingAddress &&
       user.billingAddress.stateCode &&
       getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode)) ||
     shippingStateName
@@ -159,7 +159,7 @@ const ReviewOrderPage = ({
         try {
           setPaymentInProgress(true)
           const {orderNumber, paymentId} = await payWithStripe()
-          onPaid({orderNumber, paymentId})
+          await onPaid({orderNumber, paymentId})
           setPaymentInProgress(false)
           success()
         } catch (error) {
@@ -178,7 +178,7 @@ const ReviewOrderPage = ({
           try {
             setPaymentInProgress(true)
             const {orderNumber, paymentId} = await payWithInvoice()
-            onPaid({orderNumber, paymentId})
+            await onPaid({orderNumber, paymentId})
             success()
           } catch (error) {
             // Payment aborted by user
@@ -199,7 +199,6 @@ const ReviewOrderPage = ({
       onAuthorize={async data => {
         try {
           const payment = await onExecutePaypalPayment(data)
-
           success()
           return payment
         } finally {
