@@ -33,7 +33,8 @@ import type {
   Shipping,
   User,
   Cart,
-  PaymentId
+  PaymentId,
+  UrlParams
 } from '../type-next'
 
 import * as coreAction from '../action-next/core'
@@ -50,6 +51,7 @@ export type CoreState = {
   location: ?Location,
   shippings: Array<Shipping>,
   featureFlags: Features,
+  urlParams: UrlParams,
   uploadingFiles: {[id: FileId]: UploadingFile},
   backendModels: {[id: ModelId]: BackendModel},
   modelConfigs: Array<ModelConfig>,
@@ -72,6 +74,7 @@ const initialState: CoreState = {
   location: null,
   shippings: [],
   featureFlags: {},
+  urlParams: {},
   uploadingFiles: {},
   backendModels: {},
   modelConfigs: [],
@@ -85,11 +88,12 @@ const initialState: CoreState = {
   orderNumber: null
 }
 
-const init = (state, {payload: {featureFlags}}) =>
+const init = (state, {payload: {featureFlags, urlParams}}) =>
   loop(
     {
       ...state,
-      featureFlags
+      featureFlags,
+      urlParams
     },
     Cmd.list([
       Cmd.run(printingEngine.getMaterialGroups, {

@@ -1,8 +1,9 @@
 // @flow
 
 import URLSearchParams from 'url-search-params'
+import zipObject from 'lodash/zipObject'
 
-import type {Features} from '../type-next'
+import type {Features, UrlParams} from '../type-next'
 
 export const getFeatureFlags = (location: Location) => {
   const searchParams = new URLSearchParams(location.search)
@@ -17,4 +18,10 @@ export const getFeatureFlags = (location: Location) => {
     })
 
   return features
+}
+
+export const getUrlParams = (location: Location): UrlParams => {
+  const searchParams = new URLSearchParams(location.search)
+
+  return zipObject(Array.from(searchParams.keys()), Array.from(searchParams.values()))
 }

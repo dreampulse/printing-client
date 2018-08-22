@@ -214,10 +214,16 @@ export type GoogleMapsPlace = {
   }>
 }
 
-export type Features = {
-  share?: true,
-  refresh?: true,
-  invoice?: true
+export type Features = {[key: string]: boolean}
+
+export type UrlParams = {[key: string]: string}
+
+export type UtmParams = {
+  source: string,
+  medium: string,
+  campaign: string,
+  term: string,
+  content: string
 }
 
 export type User = {
