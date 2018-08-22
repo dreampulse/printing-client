@@ -1,8 +1,8 @@
 // @flow
 
-import type {HttpJsonResponse, HttpUploadOptions} from '../type-next'
+import type {HttpJsonResponse, HttpUploadOptions} from '../type'
 import {HttpResponseUnexpectedStatusError, HttpResponseBodyParseError} from './error'
-import * as http from '../service/http-next'
+import * as http from '../service/http'
 
 const getBodyTextIfPossible = async (response: Response): Promise<string | null> => {
   try {
@@ -37,18 +37,16 @@ const processResponse = async (response: Response): Promise<HttpJsonResponse> =>
 export const fetch = async (
   url: string,
   options?: {
-    headers?: Headers,
+    headers?: {[string]: string},
     method?: string,
     body?: any
   } = {}
 ): Promise<HttpJsonResponse> => {
-  const headers = new http.Headers(options.headers)
   const fetchOptions: RequestOptions = {
-    headers,
+    headers: new http.Headers(options.headers || {'Content-Type': 'application/json'}),
     method: options.method
   }
 
-  headers.set('Content-Type', 'application/json')
   if (options.body) {
     fetchOptions.body = JSON.stringify(options.body)
   }

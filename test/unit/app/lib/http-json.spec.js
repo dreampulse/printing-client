@@ -1,4 +1,4 @@
-import * as http from '../../../../src/app/service/http-next'
+import * as http from '../../../../src/app/service/http'
 import {fetch, upload} from '../../../../src/app/lib/http-json'
 import {
   HttpResponseUnexpectedStatusError,
@@ -32,7 +32,6 @@ describe('http-json lib', () => {
         text: () => {}
       }
       sandbox.stub(http, 'fetch').resolves(responseMock)
-      sandbox.stub(http, 'Headers').returns(headersMock)
     })
 
     it('calls http.fetch() with the given url', async () => {
@@ -47,7 +46,7 @@ describe('http-json lib', () => {
         expectAnything,
         {
           headers: expect.it(headers => {
-            expect(headers.set, 'to have a call satisfying', ['Content-Type', 'application/json'])
+            expect(headers.get('Content-Type'), 'to equal', 'application/json')
           })
         }
       ])
@@ -61,7 +60,15 @@ describe('http-json lib', () => {
       await fetch('http://example.com', {
         headers: customHeaders
       })
-      expect(http.Headers, 'to have a call satisfying', [customHeaders])
+
+      expect(http.fetch, 'to have a call satisfying', [
+        expectAnything,
+        {
+          headers: expect.it(headers => {
+            expect(headers.get('Some'), 'to equal', 'Header')
+          })
+        }
+      ])
     })
 
     it('stringifies the body if present', async () => {

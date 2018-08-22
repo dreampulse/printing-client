@@ -1,82 +1,69 @@
-// TODO: this is not a service. Should be a tested lib.
-import 'whatwg-fetch'
+// @flow
+// Not using the "global" object here so that flow picks up the correct types.
+/* global fetch, Headers, XMLHttpRequest, FormData */
+import type {HttpUploadOptions} from '../type'
+import {HttpUploadError} from '../lib/error'
 
-export const fetch = global.fetch
-export const Xhr = global.XMLHttpRequest
+// If fetch is called on a different object, an illegal invocation error is thrown. Therefore we need to bind() it.
+const boundFetch = fetch.bind(null)
 
-function isJSON({headers}) {
-  const contentType = headers.get('content-type')
-  if (contentType) return contentType.indexOf('application/json') >= 0
-  return false
-}
+export {Headers, boundFetch as fetch}
 
-export function checkStatus(response) {
-  if (response.status >= 200 && response.status < 400) {
-    if (isJSON(response)) return response.json()
-    return null
-  }
-
-  const error = new Error(response.statusText)
-  error.status = response.status
-  error.response = response
-  throw error
-}
-
-export async function requestJson(url, additionalOptions = {}) {
-  const options = {
-    ...additionalOptions
-  }
-  options.headers = {'Content-Type': 'application/json'}
-  if (options.body) options.body = JSON.stringify(options.body)
-  const response = await fetch(url, options)
-  return checkStatus(response)
-}
-
-export async function request(url, options) {
-  const response = await fetch(url, options)
-  return checkStatus(response)
-}
-
-export async function requestWithResponse(url, options) {
-  const response = await fetch(url, options)
-  return {
-    data: await checkStatus(response),
-    rawResponse: response
-  }
-}
-
-export function upload(url, file, params, onProgress) {
-  const xhr = new Xhr()
-
-  xhr.upload.addEventListener('progress', event => {
-    if (event.lengthComputable) {
-      const progress = event.loaded / event.total
-      if (onProgress) {
-        onProgress(progress)
-      }
-    }
+const responseFromXhr = (xhr: XMLHttpRequest): Response =>
+  new Response(xhr.responseText, {
+    status: xhr.status,
+    statusText: xhr.statusText,
+    headers: xhr
+      .getAllResponseHeaders()
+      .trim()
+      .split(/[\r\n]+/)
+      .map(line => line.split(': '))
+      .reduce((headers: Headers, [key, value]): Headers => {
+        headers.append(key, value)
+        return headers
+      }, new Headers())
   })
 
-  const promise = new Promise((resolve, reject) => {
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          resolve(JSON.parse(xhr.responseText))
-        } else {
-          reject(xhr.responseText)
+export const upload = ({
+  url,
+  body,
+  headers,
+  method = 'POST',
+  onProgress
+}: HttpUploadOptions): Promise<Response> =>
+  new Promise((resolve, reject) => {
+    const urlAsString = url.toString()
+    const methodUppercase = method.toUpperCase()
+    const xhr = new XMLHttpRequest()
+    const form = new FormData()
+    const rejectWithUploadErrorWhileUploading = () =>
+      reject(new HttpUploadError(methodUppercase, urlAsString, HttpUploadError.PHASE_UPLOADING))
+    const rejectWithUploadErrorWhileDownloading = () =>
+      reject(new HttpUploadError(methodUppercase, urlAsString, HttpUploadError.PHASE_DOWNLOADING))
+
+    if (onProgress) {
+      xhr.upload.addEventListener('progress', (event: ProgressEvent) => {
+        if (event.lengthComputable && onProgress) {
+          onProgress(event.loaded / event.total)
         }
-      }
+      })
     }
+
+    xhr.upload.addEventListener('error', rejectWithUploadErrorWhileUploading)
+    xhr.upload.addEventListener('abort', rejectWithUploadErrorWhileUploading)
+    xhr.addEventListener('error', rejectWithUploadErrorWhileDownloading)
+    xhr.addEventListener('abort', rejectWithUploadErrorWhileDownloading)
+    xhr.addEventListener('load', () => resolve(responseFromXhr(xhr)))
+
+    if (headers) {
+      Object.entries(headers).forEach(([header, value]) => {
+        xhr.setRequestHeader(header, value)
+      })
+    }
+
+    xhr.open(method.toUpperCase(), urlAsString)
+    Object.entries(body).forEach(([key, value]) => {
+      form.append(key, value)
+    })
+    xhr.send(form)
   })
-
-  const form = new global.FormData()
-  form.append('file', file)
-  Object.keys(params).forEach(param => {
-    form.append(param, params[param])
-  })
-
-  xhr.open('POST', url)
-  xhr.send(form)
-
-  return promise
-}

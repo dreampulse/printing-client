@@ -1,50 +1,53 @@
 import React, {createElement} from 'react'
+import {connect} from 'react-redux'
 import {Portal} from 'react-portal'
 import lifecycle from 'recompose/lifecycle'
 import compose from 'recompose/compose'
 
-import {close} from '../../action/modal'
-
-import {connectLegacy} from '../util/connect-legacy'
-import {MODAL_TYPE} from '../../action-type'
-
-import ShippingAddressModal from './shipping-address'
+import {CONTENT_TYPE, close} from '../../action/modal'
+import FatalErrorModal from './fatal-error'
+import ModelViewerModal from './model-viewer'
 import MaterialModal from './material'
 import FinishGroupModal from './finish-group'
-import FetchingPriceModal from './fetching-price'
-import PriceChangedModal from './price-changed'
-import PriceLocationChangedModal from './price-location-changed'
-import FatalErrorModal from './fatal-error'
+import PickLocationModal from './pick-location'
+import PickUnitModal from './pick-unit'
+import ConfirmLocationChangeModal from './confirm-location-change'
+import ConfirmCurrencyChangeModal from './confirm-currency-change'
 
 const modals = {
-  [MODAL_TYPE.SHIPPING_ADDRESS]: ShippingAddressModal,
-  [MODAL_TYPE.MATERIAL]: MaterialModal,
-  [MODAL_TYPE.FINISH_GROUP]: FinishGroupModal,
-  [MODAL_TYPE.FETCHING_PRICE]: FetchingPriceModal,
-  [MODAL_TYPE.PRICE_CHANGED]: PriceChangedModal,
-  [MODAL_TYPE.PRICE_LOCATION_CHANGED]: PriceLocationChangedModal,
-  [MODAL_TYPE.FATAL_ERROR]: FatalErrorModal
+  [CONTENT_TYPE.FATAL_ERROR]: FatalErrorModal,
+  [CONTENT_TYPE.MODEL_VIEWER]: ModelViewerModal,
+  [CONTENT_TYPE.MATERIAL]: MaterialModal,
+  [CONTENT_TYPE.FINISH_GROUP]: FinishGroupModal,
+  [CONTENT_TYPE.PICK_LOCATION]: PickLocationModal,
+  [CONTENT_TYPE.PICK_UNIT]: PickUnitModal,
+  [CONTENT_TYPE.CONFIRM_LOCATION_CHANGE]: ConfirmLocationChangeModal,
+  [CONTENT_TYPE.CONFIRM_CURRENCY_CHANGE]: ConfirmCurrencyChangeModal
 }
 
-const getContent = (contentType, contentProps) => {
+const getContent = (contentType, contentProps, meta) => {
   if (contentType === null) {
     return <div />
   }
   if (contentType in modals) {
-    return createElement(modals[contentType], contentProps)
+    return createElement(modals[contentType], {...contentProps, meta})
   }
-  throw new Error(`Unknown modal content type "${contentType}"`)
+  throw new Error(`Unknown modal contentType "${contentType}"`)
 }
 
-const Modal = ({isOpen, contentType, contentProps}) =>
-  isOpen && <Portal>{getContent(contentType, contentProps)}</Portal>
+const Modal = ({isOpen, contentType, contentProps, isCloseable, showWarning}) =>
+  isOpen && (
+    <Portal>
+      {getContent(contentType, contentProps, {
+        isCloseable,
+        showWarning
+      })}
+    </Portal>
+  )
 
 const mapStateToProps = state => ({
-  isOpen: state.modal.isOpen,
-  isCloseable: state.modal.isCloseable,
-  contentType: state.modal.contentType,
-  contentProps: state.modal.contentProps,
-  contentModifiers: state.modal.contentModifiers
+  ...state.modal.modalConfig,
+  isOpen: state.modal.isOpen
 })
 
 const mapDispatchToProps = {
@@ -52,7 +55,7 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  connectLegacy(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidMount() {
       this.handleKeyDown = event => {

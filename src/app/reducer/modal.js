@@ -1,35 +1,36 @@
 // @flow
 
-import type {ModalState} from '../type'
-import TYPE, {type Action} from '../action-type'
+import type {AppAction, ModalConfig} from '../type'
 
-const initialState = {
+export type ModalState = {
+  isOpen: boolean,
+  modalConfig: ModalConfig
+}
+
+const initialState: ModalState = {
   isOpen: false,
-  isCloseable: true,
-  contentType: null,
-  contentProps: {}
+  modalConfig: null
 }
 
-function handleClose() {
-  return initialState
-}
+const openModal = (state, action) => ({
+  isOpen: true,
+  modalConfig: action.payload
+})
 
-function handleOpen(state, action) {
-  return {
-    isOpen: true,
-    isCloseable: action.payload.isCloseable !== undefined ? action.payload.isCloseable : true, // Default: isCloseable = true
-    contentType: action.payload.contentType,
-    contentProps: action.payload.contentProps || {}
-  }
-}
+const closeModal = (_state, _action) => initialState
 
-const reducer = (state: ModalState = initialState, action: Action): ModalState => {
+const reset = () => ({
+  ...initialState
+})
+
+const reducer = (state: ModalState = initialState, action: AppAction): ModalState => {
   switch (action.type) {
-    case TYPE.MODAL.OPEN:
-      return handleOpen(state, action)
-    case TYPE.MODAL.CLOSE:
-      return handleClose()
-
+    case 'MODAL.OPEN':
+      return openModal(state, action)
+    case 'MODAL.CLOSE':
+      return closeModal(state, action)
+    case 'CORE.RESET':
+      return reset()
     default:
       return state
   }

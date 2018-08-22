@@ -3,7 +3,7 @@
 import URLSearchParams from 'url-search-params'
 import zipObject from 'lodash/zipObject'
 
-import type {Features, UrlParams} from '../type-next'
+import type {Features, UrlParams} from '../type'
 
 export const getFeatureFlags = (location: Location) => {
   const searchParams = new URLSearchParams(location.search)
