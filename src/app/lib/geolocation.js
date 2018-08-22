@@ -1,12 +1,10 @@
 // @flow
 
-import {request} from '../service/http'
+import {fetch} from '../lib/http-json'
 import timeout from './timeout'
 import config from '../../../config'
 
 import type {Location, GoogleMapsPlace} from '../type'
-
-const URL = `https://pro.ip-api.com/json/?key=${config.ipApiKey}`
 
 const findInGoogleMapsPlace = (property: string) => (
   place: GoogleMapsPlace,
@@ -23,7 +21,11 @@ const shortNameFrom = findInGoogleMapsPlace('short_name')
 const longNameFrom = findInGoogleMapsPlace('long_name')
 
 export const getLocationByIp = async (): Promise<Location> => {
-  const {city, zip, region, countryCode} = await timeout(request(URL), config.fetchTimout)
+  // We have to define an empty headers object because the API doesn't allow setting the content type header
+  const {json: {city, zip, region, countryCode}} = await timeout(
+    fetch(config.geolocationApiUrl, {headers: {}}),
+    config.fetchTimout
+  )
 
   if (!countryCode) {
     throw new Error('Location detection failed')

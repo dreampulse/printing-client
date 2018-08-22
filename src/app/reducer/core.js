@@ -315,13 +315,11 @@ const uploadComplete = (state, {payload}) => {
   const fileId = payload.fileId
   const model = payload.model
   const modelConfig: any = state.modelConfigs.find(
-    mc => mc.type === 'UPLOADING' && mc.fileId === fileId
+    item => item.type === 'UPLOADING' && item.fileId === fileId
   )
 
   invariant(modelConfig, 'Model config not found')
   invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
-
-  const configId = modelConfig.id
 
   return {
     ...state,
@@ -330,19 +328,19 @@ const uploadComplete = (state, {payload}) => {
       [model.modelId]: model
     },
     modelConfigs: state.modelConfigs.map(
-      modelConfig =>
-        modelConfig.type === 'UPLOADING' && modelConfig.fileId === fileId
+      item =>
+        item.type === 'UPLOADING' && item.fileId === fileId
           ? {
               type: 'UPLOADED',
               quantity: 1,
               modelId: model.modelId,
-              id: modelConfig.id,
+              id: item.id,
               quoteId: null,
               shippingId: null
             }
-          : modelConfig
+          : item
     ),
-    selectedModelConfigs: [...state.selectedModelConfigs, configId]
+    selectedModelConfigs: [...state.selectedModelConfigs, modelConfig.id]
   }
 }
 

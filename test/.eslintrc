@@ -5,14 +5,7 @@
   },
   "globals": {
     "expect": true,
-    "sinon": true,
-    "mockStore": true,
-    "getModel": true,
-    "getCmd": true,
-    "Cmd": true,
-    "findCmd": true,
-    "findAction": true,
-    "createLegacyStore": true
+    "sinon": true
   },
   "env": {
     "mocha": true

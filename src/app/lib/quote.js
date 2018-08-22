@@ -2,13 +2,7 @@
 import groupBy from 'lodash/groupBy'
 import compact from 'lodash/compact'
 
-import type {
-  Material,
-  ModelConfigUploaded,
-  Quote,
-  MaterialConfigId,
-  MultiModelQuote
-} from '../type'
+import type {Material, ModelConfigUploaded, Quote, MaterialConfigId, MultiModelQuote} from '../type'
 
 export function getBestMultiModelQuote(quotes: Array<MultiModelQuote>): ?MultiModelQuote {
   return quotes.reduce((bestQuote, quote) => {
