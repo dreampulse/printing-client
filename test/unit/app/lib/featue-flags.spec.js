@@ -1,6 +1,6 @@
 import URLSearchParams from 'url-search-params'
 
-import {getFeatureFlags} from '../../../../src/app/lib/feature-flags'
+import {getFeatureFlags, getUrlParams} from '../../../../src/app/lib/url'
 
 describe('getFeatureFlags()', () => {
   it('returns the feature toggles in an object without prototype', () => {
@@ -41,6 +41,27 @@ describe('getFeatureFlags()', () => {
       }),
       'to equal',
       features
+    )
+  })
+})
+
+describe('getUrlParams()', () => {
+  it('return url params as object', () => {
+    const query = new URLSearchParams()
+    const params = {
+      foo: 'bar',
+      baz: 'foo'
+    }
+
+    query.append('foo', 'bar')
+    query.append('baz', 'foo')
+
+    expect(
+      getUrlParams({
+        search: query.toString()
+      }),
+      'to equal',
+      params
     )
   })
 })

@@ -1,5 +1,8 @@
 import React from 'react'
-import {compose, withState, withHandlers} from 'recompose'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
+import withProps from 'recompose/withProps'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
 
@@ -337,7 +340,8 @@ const mapStateToProps = state => ({
   modelConfigs: state.core.modelConfigs,
   modelsWithConfig: selectConfiguredModelInformation(state),
   chosenShippings: selectUniqueChosenShippings(state),
-  featureFlags: state.core.featureFlags
+  featureFlags: state.core.featureFlags,
+  urlParams: state.core.urlParams
 })
 
 const mapDispatchToProps = {
@@ -353,6 +357,15 @@ const enhance = compose(
   guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withState('paymentInProgress', 'setPaymentInProgress', false),
+  withProps(props => ({
+    utmParams: {
+      source: props.urlParams.utm_source,
+      medium: props.urlParams.utm_medium,
+      campaign: props.urlParams.utm_campaign,
+      term: props.urlParams.utm_term,
+      content: props.urlParams.utm_content
+    }
+  })),
   withHandlers({
     success: props => () =>
       props.onGoToSuccess({
@@ -363,8 +376,14 @@ const enhance = compose(
       const userId = props.user.userId
       const cartId = props.cart.cartId
       const currency = props.cart.currency
+      const utmParams = props.utmParams
 
-      const {orderId, orderNumber} = await printingEngine.createOrder({userId, cartId, currency})
+      const {orderId, orderNumber} = await printingEngine.createOrder({
+        userId,
+        cartId,
+        currency,
+        utmParams
+      })
       const {paymentId, providerFields} = await printingEngine.createPaypalPayment({orderId})
 
       return {
@@ -380,8 +399,14 @@ const enhance = compose(
       const email = props.user.emailAddress
       const price = props.cart.totalPrice
       const currency = props.cart.currency
+      const utmParams = props.utmParams
 
-      const {orderId, orderNumber} = await printingEngine.createOrder({userId, cartId, currency})
+      const {orderId, orderNumber} = await printingEngine.createOrder({
+        userId,
+        cartId,
+        currency,
+        utmParams
+      })
       const stripeTokenObject = await stripe.checkout({price, currency, email})
       const token = stripeTokenObject.id
 
@@ -396,9 +421,15 @@ const enhance = compose(
       const userId = props.user.userId
       const cartId = props.cart.cartId
       const currency = props.cart.currency
-      const invoiceKey = 'TODO' // Issue #716
+      const utmParams = props.utmParams
+      const invoiceKey = props.urlParams.invoice_key
 
-      const {orderId, orderNumber} = await printingEngine.createOrder({userId, cartId, currency})
+      const {orderId, orderNumber} = await printingEngine.createOrder({
+        userId,
+        cartId,
+        currency,
+        utmParams
+      })
       await printingEngine.createInvoicePayment({orderId, token: invoiceKey})
 
       return {

@@ -1,9 +1,19 @@
 // @flow
 
-import type {Action, MaterialGroup, Location, Features, Shipping, User, UserId} from '../type-next'
+import type {
+  Action,
+  MaterialGroup,
+  UrlParams,
+  Location,
+  Features,
+  Shipping,
+  User,
+  UserId
+} from '../type-next'
 
 type InitPayload = {
-  featureFlags: Features
+  featureFlags: Features,
+  urlParams: UrlParams
 }
 
 type InitAction = Action<'CORE.INIT', InitPayload>
@@ -32,10 +42,11 @@ export type CoreAction =
   | UserReceivedAction
   | ResetAction
 
-export const init = ({featureFlags}: InitPayload): InitAction => ({
+export const init = ({featureFlags, urlParams}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
   payload: {
-    featureFlags
+    featureFlags,
+    urlParams
   }
 })
 
