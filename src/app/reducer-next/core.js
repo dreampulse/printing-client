@@ -44,7 +44,6 @@ import * as modelAction from '../action-next/model'
 import * as pollingAction from '../action-next/polling'
 import * as quoteAction from '../action-next/quote'
 import * as cartAction from '../action-next/cart'
-import pickLocation from '../container-next/modal/pick-location';
 
 export type CoreState = {
   materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
@@ -206,6 +205,9 @@ const saveUser = (state, action) =>
   loop(
     {
       ...state,
+      location: {
+        ...pick(action.payload.shippingAddress, 'city', 'zipCode', 'stateCode', 'countryCode')
+      },
       user: {
         ...state.user,
         ...action.payload,
@@ -589,7 +591,7 @@ const executePaypalPayment = (state, {payload}) =>
 
 const reset = state => ({
   ...state,
-  ...omit(initialState, 'materialGroups', 'location', 'featureFlags'),
+  ...omit(initialState, 'materialGroups', 'location', 'featureFlags', 'shippings'),
   user: {
     ...omit(state.user, 'userId')
   }

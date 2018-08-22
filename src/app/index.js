@@ -12,7 +12,6 @@ import {getFeatureFlags} from './lib/feature-flags'
 
 import Store from './store'
 import Router from './router'
-import * as selectors from './lib/selector'
 
 import '../sass/main.scss'
 
