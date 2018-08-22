@@ -40,4 +40,9 @@
     background: $color-blue-very-light;
     border-image: none;
   }
+
+  &--l {
+    padding-top: $space-xxxxl;
+    padding-bottom: $space-xxxxl;
+  }
 }
