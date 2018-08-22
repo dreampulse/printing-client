@@ -356,15 +356,15 @@ const enhance = compose(
   guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withState('paymentInProgress', 'setPaymentInProgress', false),
-  withProps({
-    utmParams: props => ({
+  withProps(props => ({
+    utmParams: {
       source: props.urlParams.utm_source,
       medium: props.urlParams.utm_medium,
       campaign: props.urlParams.utm_campaign,
       term: props.urlParams.utm_term,
       content: props.urlParams.utm_content
-    })
-  }),
+    }
+  })),
   withHandlers({
     payWithPaypal: props => async () => {
       const userId = props.user.userId
