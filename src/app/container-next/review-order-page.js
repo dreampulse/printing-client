@@ -159,7 +159,10 @@ const ReviewOrderPage = ({
           })
           onPaid({orderNumber, paymentId})
           setPaymentInProgress(false)
-          onGoToSuccess()
+          onGoToSuccess({
+            orderNumber,
+            vendorIds: modelsWithConfig.map(info => info.quote.vendorId)
+          })
         } catch (error) {
           // Payment aborted by user
           setPaymentInProgress(false)
