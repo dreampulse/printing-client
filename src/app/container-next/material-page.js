@@ -333,7 +333,7 @@ const MaterialPage = ({
                 deliveryProvider={shipping.name}
                 shippingPrice={
                   usedShippingIdsById[shipping.shippingId]
-                    ? '-'
+                    ? formatPrice(0, shipping.currency)
                     : formatPrice(shipping.grossPrice, shipping.currency)
                 }
                 totalPrice={formatPrice(grossPrice, multiModelQuote.currency)}
