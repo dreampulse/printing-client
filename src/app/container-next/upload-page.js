@@ -3,6 +3,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
+import compact from 'lodash/compact'
 import {withRouter} from 'react-router'
 import {compose} from 'recompose'
 
@@ -113,6 +114,7 @@ const UploadPage = ({
         description="Supported file formats: STL, OBJ, WRL, SKP, DAE, 3DS, IGS, FBX, PLY, X3D, STP, PRT, …"
         accept="*"
         onChange={onUploadFiles}
+        modifiers={compact([numModels === 0 && 'l'])}
       />
     </Section>
   )
