@@ -111,7 +111,16 @@ const init = (state, {payload: {featureFlags, urlParams}}) =>
   )
 
 const fatalError = (state, {payload: error}) =>
-  loop(state, Cmd.action(modalAction.openFatalError(error)))
+  loop(
+    state,
+    Cmd.list([
+      Cmd.action(modalAction.openFatalError(error)),
+      Cmd.run(() => {
+        // This will re-throw the error
+        throw error
+      })
+    ])
+  )
 
 const updateMaterialGroups = (state, action) => ({
   ...state,
