@@ -174,7 +174,8 @@ const ReviewOrderPage = ({
         onClick={async () => {
           try {
             setPaymentInProgress(true)
-            await payWithInvoice()
+            const {orderNumber, paymentId} = await payWithInvoice()
+            onPaid({orderNumber, paymentId})
             onGoToSuccess()
           } catch (error) {
             // Payment aborted by user
