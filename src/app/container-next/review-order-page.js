@@ -1,7 +1,13 @@
 import React from 'react'
-import {compose, withState} from 'recompose'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
+import withProps from 'recompose/withProps'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
+
+import * as printingEngine from '../lib/printing-engine'
+import * as stripe from '../service/stripe'
 
 import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
@@ -9,7 +15,6 @@ import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatte
 import {getProviderName} from '../lib/material'
 import {selectUniqueChosenShippings, selectConfiguredModelInformation} from '../lib/selector'
 import getCloudinaryUrl from '../lib/cloudinary'
-import {payWithPaypal, payWithStripe, payWithInvoice} from '../service/order'
 
 import PageHeader from '../component/page-header'
 import SidebarLayout from '../component/sidebar-layout'
@@ -50,7 +55,9 @@ const ReviewOrderPage = ({
   paymentInProgress,
   setPaymentInProgress,
   featureFlags,
-  urlParams
+  payWithPaypal,
+  payWithStripe,
+  payWithInvoice
 }) => {
   const shippingStateName = getStateName(
     user.shippingAddress.countryCode,
@@ -61,14 +68,6 @@ const ReviewOrderPage = ({
       user.billingAddress.stateCode &&
       getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode)) ||
     shippingStateName
-
-  const utmParams = {
-    source: urlParams.utm_source,
-    medium: urlParams.utm_medium,
-    campaign: urlParams.utm_campaign,
-    term: urlParams.utm_term,
-    content: urlParams.utm_content
-  }
 
   const renderAddressSection = () => (
     <Section>
@@ -159,14 +158,7 @@ const ReviewOrderPage = ({
       onClick={async () => {
         try {
           setPaymentInProgress(true)
-          const {orderNumber, paymentId} = await payWithStripe({
-            userId: user.userId,
-            cartId: cart.cartId,
-            email: user.emailAddress,
-            price: cart.totalPrice,
-            currency: cart.currency,
-            utmParams
-          })
+          const {orderNumber, paymentId} = await payWithStripe()
           onPaid({orderNumber, paymentId})
           setPaymentInProgress(false)
           onGoToSuccess()
@@ -185,13 +177,8 @@ const ReviewOrderPage = ({
         onClick={async () => {
           try {
             setPaymentInProgress(true)
-            await payWithInvoice({
-              userId: user.userId,
-              cartId: cart.cartId,
-              currency: cart.currency,
-              invoiceKey: urlParams.invoice_key,
-              utmParams
-            })
+            const {orderNumber, paymentId} = await payWithInvoice()
+            onPaid({orderNumber, paymentId})
             onGoToSuccess()
           } catch (error) {
             // Payment aborted by user
@@ -205,20 +192,19 @@ const ReviewOrderPage = ({
       disabled={paymentInProgress}
       onClick={async () => {
         setPaymentInProgress(true)
-        const {paymentToken, orderNumber, paymentId} = await payWithPaypal({
-          userId: user.userId,
-          cartId: cart.cartId,
-          currency: cart.currency,
-          utmParams
-        })
+        const {paymentToken, orderNumber, paymentId} = await payWithPaypal()
         onPaid({orderNumber, paymentId})
         return paymentToken
       }}
       onAuthorize={async data => {
-        const payment = await onExecutePaypalPayment(data)
-        setPaymentInProgress(false)
-        onGoToSuccess()
-        return payment
+        try {
+          const payment = await onExecutePaypalPayment(data)
+
+          onGoToSuccess()
+          return payment
+        } finally {
+          setPaymentInProgress(false)
+        }
       }}
       onCancel={() => setPaymentInProgress(false)}
     />
@@ -369,7 +355,83 @@ const mapDispatchToProps = {
 const enhance = compose(
   guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
-  withState('paymentInProgress', 'setPaymentInProgress', false)
+  withState('paymentInProgress', 'setPaymentInProgress', false),
+  withProps({
+    utmParams: props => ({
+      source: props.urlParams.utm_source,
+      medium: props.urlParams.utm_medium,
+      campaign: props.urlParams.utm_campaign,
+      term: props.urlParams.utm_term,
+      content: props.urlParams.utm_content
+    })
+  }),
+  withHandlers({
+    payWithPaypal: props => async () => {
+      const userId = props.user.userId
+      const cartId = props.cart.cartId
+      const currency = props.cart.currency
+      const utmParams = props.utmParams
+
+      const {orderId, orderNumber} = await printingEngine.createOrder({
+        userId,
+        cartId,
+        currency,
+        utmParams
+      })
+      const {paymentId, providerFields} = await printingEngine.createPaypalPayment({orderId})
+
+      return {
+        orderId,
+        orderNumber,
+        paymentId,
+        paymentToken: providerFields.paymentId
+      }
+    },
+    payWithStripe: props => async () => {
+      const userId = props.user.userId
+      const cartId = props.cart.cartId
+      const email = props.user.emailAddress
+      const price = props.cart.totalPrice
+      const currency = props.cart.currency
+      const utmParams = props.utmParams
+
+      const {orderId, orderNumber} = await printingEngine.createOrder({
+        userId,
+        cartId,
+        currency,
+        utmParams
+      })
+      const stripeTokenObject = await stripe.checkout({price, currency, email})
+      const token = stripeTokenObject.id
+
+      await printingEngine.createStripePayment({orderId, token})
+
+      return {
+        orderId,
+        orderNumber
+      }
+    },
+    payWithInvoice: props => async () => {
+      const userId = props.user.userId
+      const cartId = props.cart.cartId
+      const currency = props.cart.currency
+      const utmParams = props.utmParams
+      const invoiceKey = props.urlParams.invoice_key
+
+      const {orderId, orderNumber} = await printingEngine.createOrder({
+        userId,
+        cartId,
+        currency,
+        utmParams
+      })
+      await printingEngine.createInvoicePayment({orderId, token: invoiceKey})
+
+      return {
+        orderId,
+        orderNumber
+      }
+    }
+  })
 )
 
 export default enhance(ReviewOrderPage)
