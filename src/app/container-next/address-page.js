@@ -96,7 +96,7 @@ const AddressPage = ({
   )
 
   const billingAddressSection = (
-    <div id="billing-address">
+    <div>
       <FormRow>
         <Headline modifiers={['xs']} label="Billing address" />
       </FormRow>
@@ -173,7 +173,7 @@ const AddressPage = ({
   return (
     <CheckoutLayout title="Address" currentStep={0}>
       <PageHeader label="Shipping address" />
-      <form id="shipping-address" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <FormLayout>
           <FormRow>
             <Headline modifiers={['xs']} label="Personal information" />
@@ -288,15 +288,16 @@ const AddressPage = ({
               type="checkbox"
             />
           </FormRow>
-
+          <div id="shipping-address" />
           {useDifferentBillingAddress && billingAddressSection}
         </FormLayout>
-
-        <Button
-          type="submit"
-          label={submitting ? 'Reviewing…' : 'Review Order'}
-          disabled={submitting}
-        />
+        <div id="billing-address">
+          <Button
+            type="submit"
+            label={submitting ? 'Reviewing…' : 'Review Order'}
+            disabled={submitting}
+          />
+        </div>
       </form>
     </CheckoutLayout>
   )
@@ -386,11 +387,30 @@ const enhance = compose(
   reduxForm({form: FORM_NAME}),
   lifecycle({
     componentDidMount() {
-      if (this.props.location.state && this.props.location.state.section) {
+      if (
+        this.props.location.state &&
+        this.props.location.state.section &&
+        this.props.location.state.section !== 'billing-address'
+      ) {
         scrollTo(`#${this.props.location.state.section}`)
       }
     },
     componentDidUpdate(prevProps) {
+      // Special case for the billing address because the dom is not ready in
+      // componentDidMount because of REDUX FORM
+      // TODO: refactor when removing redux form
+      if (
+        this.props.useDifferentBillingAddress !== prevProps.useDifferentBillingAddress &&
+        this.props.useDifferentBillingAddress === true &&
+        this.props.location.state &&
+        this.props.location.state.section &&
+        this.props.location.state.section === 'billing-address'
+      ) {
+        setTimeout(() => {
+          scrollTo(`#billing-address`)
+        }, 100)
+      }
+
       if (this.props.userLocation !== prevProps.userLocation) {
         this.props.handleLocationChange(this.props.userLocation)
       }
