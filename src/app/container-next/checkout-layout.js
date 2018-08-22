@@ -38,6 +38,7 @@ const CheckoutLayout = ({children, currentStep, onPush, title}) => {
       onClickClose={() => onPush('/cart')}
       actions={[
         <IconLink
+          key="intercom"
           modifiers={['invert']}
           icon={helpIcon}
           onClick={event => {
