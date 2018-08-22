@@ -3,6 +3,8 @@ import {compose} from 'recompose'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
 
+import {openIntercom} from '../service/intercom'
+
 import App from '../component/app'
 import Container from '../component/container'
 import OverlayHeaderBar from '../component/overlay-header-bar'
@@ -36,11 +38,13 @@ const CheckoutLayout = ({children, currentStep, onPush, title}) => {
       onClickClose={() => onPush('/cart')}
       actions={[
         <IconLink
-          key="help"
-          // TODO: define help link
-          onClick={() => onPush('/help')}
-          modifiers={['invert', 'l']}
+          key="intercom"
+          modifiers={['invert']}
           icon={helpIcon}
+          onClick={event => {
+            event.preventDefault()
+            openIntercom()
+          }}
         />
       ]}
     >
