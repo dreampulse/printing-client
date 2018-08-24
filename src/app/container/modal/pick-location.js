@@ -38,15 +38,23 @@ const PickLocationModal = ({
   const currencyMenu = <SelectMenu values={currencies} />
 
   const headline = <Headline label="Shipping address required" modifiers={['l']} />
-  const headlineWarning = <Headline label="Change shipping address" modifiers={['l', 'warning']} />
+  const headlineWarning = (
+    <Headline label="Warning: Lost configuration" modifiers={['l', 'warning']} />
+  )
 
   const buttons = [
     meta.isCloseable && (
-      <Button key="close" label="Cancel" modifiers={['text']} onClick={() => onClose()} />
+      <Button
+        key="close"
+        label="Cancel"
+        modifiers={compact([!meta.showWarning && 'text'])}
+        onClick={() => onClose()}
+      />
     ),
     <Button
       label="OK"
       key="ok"
+      modifiers={compact([meta.showWarning && 'text'])}
       disabled={!isLocationValid(location) || !currency}
       onClick={() => {
         onUpdateLocation(location, true)
