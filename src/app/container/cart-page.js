@@ -157,6 +157,7 @@ const CartPage = ({
         }))}
         vat={formatPrice(cart.vatPrice, cart.currency)}
         total={formatPrice(cart.totalPrice, cart.currency)}
+        childrenLabel="Go to:"
       >
         <Button modifiers={['block']} label="Checkout" onClick={() => onCheckout()} />
       </PaymentSection>
@@ -189,7 +190,7 @@ const CartPage = ({
   const addedNotificationSection = () => (
     <Notification
       classNames={['u-margin-bottom']}
-      message={`${numAddedItems} item${numAddedItems > 1 ? 's' : ''} added to your cart`}
+      message={`${numAddedItems} item${numAddedItems > 1 ? 's' : ''} added to your cart.`}
     />
   )
 
