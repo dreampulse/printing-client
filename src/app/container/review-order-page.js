@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
