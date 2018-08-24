@@ -27,7 +27,7 @@ const SuccessPage = ({location}) => {
   }
   return (
     <AppLayout>
-      <PageHeader label="Thank you for your order at All3DP!" />
+      <PageHeader label="Thank you for your order with All3DP!" />
       <Section modifiers={['highlight']}>
         <Headline
           label={
@@ -57,9 +57,9 @@ const SuccessPage = ({location}) => {
           shipped out. We will send you an update on your order when we have received the tracking
           number from the manufacturer.
         </Paragraph>
-        <Headline label="Should you have any questions regarding your order" />
+        <Headline label="Questions regarding your order?" />
         <Paragraph modifiers={['l']}>
-          Email us on <Link href="mailto:support@all3dp.com" label="support@all3dp.com" />
+          Email us at <Link href="mailto:support@all3dp.com" label="support@all3dp.com" />
         </Paragraph>
       </Section>
     </AppLayout>
