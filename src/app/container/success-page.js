@@ -10,6 +10,7 @@ import {compose, lifecycle} from 'recompose'
 import {getProviderName} from '../lib/provider-selector'
 
 import AppLayout from './app-layout'
+import {scrollToTop} from './util/scroll-to-top'
 
 import ProviderTeaser from '../component/provider-teaser'
 import ProviderImage from '../component/provider-image'
@@ -73,6 +74,7 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
+  scrollToTop(),
   connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidMount() {

@@ -11,6 +11,7 @@ import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatte
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {guard} from './util/guard'
+import {scrollToTop} from './util/scroll-to-top'
 
 import Link from '../component/link'
 import SidebarLayout from '../component/sidebar-layout'
@@ -245,6 +246,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
+  scrollToTop(),
   guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withProps(({location}) => ({
