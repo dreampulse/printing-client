@@ -29,7 +29,7 @@ const open = (config: ModalConfigOpened): OpenModalAction => ({
   payload: config
 })
 
-export const openPickLocation = (
+export const openPickLocationModal = (
   isCloseable: boolean = false,
   showWarning: boolean = false
 ): OpenModalAction =>
@@ -40,7 +40,7 @@ export const openPickLocation = (
     contentProps: null
   })
 
-export const openPickUnit = (files: FileList): OpenModalAction =>
+export const openPickUnitModal = (files: FileList): OpenModalAction =>
   open({
     isCloseable: false,
     contentType: CONTENT_TYPE.PICK_UNIT,
@@ -49,7 +49,7 @@ export const openPickUnit = (files: FileList): OpenModalAction =>
     }
   })
 
-export const openModelViewer = (modelName: string): OpenModalAction =>
+export const openModelViewerModal = (modelName: string): OpenModalAction =>
   open({
     isCloseable: true,
     contentType: CONTENT_TYPE.MODEL_VIEWER,
@@ -58,7 +58,7 @@ export const openModelViewer = (modelName: string): OpenModalAction =>
     }
   })
 
-export const openMaterial = (materialId: MaterialId) =>
+export const openMaterialModal = (materialId: MaterialId) =>
   open({
     isCloseable: true,
     contentType: CONTENT_TYPE.MATERIAL,
@@ -72,21 +72,21 @@ export const openFinishGroupModal = (finishGroupId: FinishGroupId) =>
     contentProps: {finishGroupId}
   })
 
-export const openConfirmLocationChange = (location: Location) =>
+export const openConfirmLocationChangeModal = (location: Location) =>
   open({
     isCloseable: true,
     contentType: CONTENT_TYPE.CONFIRM_LOCATION_CHANGE,
     contentProps: {location}
   })
 
-export const openConfirmCurrencyChange = (currency: string) =>
+export const openConfirmCurrencyChangeModal = (currency: string) =>
   open({
     isCloseable: true,
     contentType: CONTENT_TYPE.CONFIRM_CURRENCY_CHANGE,
     contentProps: {currency}
   })
 
-export const openFatalError = (error: Error): OpenModalAction =>
+export const openFatalErrorModal = (error: Error): OpenModalAction =>
   open({
     isCloseable: false,
     contentType: CONTENT_TYPE.FATAL_ERROR,
@@ -95,7 +95,7 @@ export const openFatalError = (error: Error): OpenModalAction =>
     }
   })
 
-export const close = (): CloseModalAction => ({
+export const closeModal = (): CloseModalAction => ({
   type: 'MODAL.CLOSE',
   payload: undefined
 })
