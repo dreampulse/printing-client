@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {compose, lifecycle, withHandlers} from 'recompose'
 import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
@@ -73,10 +73,14 @@ const AddressPage = ({
     )
   }
 
-  const companySection = (
-    <div>
+  const renderCompanySection = () => (
+    <Fragment>
       <FormRow>
-        <Headline modifiers={['xs']} label="Company information" />
+        <Headline
+          modifiers={['xs']}
+          label="Company information"
+          classNames={['u-no-margin-bottom']}
+        />
       </FormRow>
       <FormRow modifiers={['half-half']}>
         <Field
@@ -92,13 +96,13 @@ const AddressPage = ({
           name="vatId"
         />
       </FormRow>
-    </div>
+    </Fragment>
   )
 
   const billingAddressSection = (
     <div>
       <FormRow>
-        <Headline modifiers={['xs']} label="Billing address" />
+        <Headline modifiers={['xs']} label="Billing address" classNames={['u-no-margin-bottom']} />
       </FormRow>
 
       <FormRow modifiers={['half-half']}>
@@ -163,7 +167,7 @@ const AddressPage = ({
         <Field
           validate={required}
           component={renderField(CountrySelect)}
-          label="Country"
+          placeholder="Country"
           name="billingAddress.countryCode"
         />
       </FormRow>
@@ -176,7 +180,11 @@ const AddressPage = ({
       <form onSubmit={handleSubmit}>
         <FormLayout>
           <FormRow>
-            <Headline modifiers={['xs']} label="Personal information" />
+            <Headline
+              modifiers={['xs']}
+              label="Personal information"
+              classNames={['u-no-margin-bottom']}
+            />
           </FormRow>
 
           <FormRow modifiers={['half-half']}>
@@ -196,6 +204,23 @@ const AddressPage = ({
             />
           </FormRow>
 
+          <FormRow modifiers={['half-half']}>
+            <Field
+              validate={email}
+              component={renderField(InputField)}
+              label="Email address"
+              name="emailAddress"
+              type="email"
+            />
+            <Field
+              validate={tel}
+              component={renderField(InputField)}
+              label="Phone number"
+              name="phoneNumber"
+              type="tel"
+            />
+          </FormRow>
+
           <FormRow>
             <Field
               onChangeValue={handleIsCompanyChange}
@@ -206,10 +231,14 @@ const AddressPage = ({
             />
           </FormRow>
 
-          {isCompany && companySection}
+          {isCompany && renderCompanySection()}
 
           <FormRow>
-            <Headline modifiers={['xs']} label="Shipping address" />
+            <Headline
+              modifiers={['xs']}
+              label="Shipping address"
+              classNames={['u-no-margin-bottom']}
+            />
           </FormRow>
 
           <FormRow>
@@ -259,23 +288,6 @@ const AddressPage = ({
               value={getCountryName(shippingAddress.countryCode || 'de')}
               changeLinkLabel="Change…"
               onChangeLinkClick={() => onOpenPickLocation(true, true)}
-            />
-          </FormRow>
-
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={email}
-              component={renderField(InputField)}
-              label="Email address"
-              name="emailAddress"
-              type="email"
-            />
-            <Field
-              validate={tel}
-              component={renderField(InputField)}
-              label="Phone number"
-              name="phoneNumber"
-              type="tel"
             />
           </FormRow>
 
