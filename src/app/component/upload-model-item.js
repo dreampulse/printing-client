@@ -1,11 +1,17 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import fallbackSource from '../../asset/image/model-thumbnail-fallback.png'
+
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
 import MagnifyableItem from './magnifyable-item'
 import ImageContainer from './image-container'
+
+// Preload fallbackSource as early as possible
+const preloadImage = new global.Image()
+preloadImage.src = fallbackSource
 
 const UploadModelItem = ({
   classNames,
@@ -19,7 +25,11 @@ const UploadModelItem = ({
 }) => (
   <div className={buildClassName('upload-model-item', modifiers, classNames)}>
     <MagnifyableItem ariaLabel={`Load ${title} in interactive model viewer`} onClick={onMagnify}>
-      <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
+      <ImageContainer
+        source={imageSource}
+        fallbackSource={fallbackSource}
+        alt={`Preview image of ${title}`}
+      />
     </MagnifyableItem>
     <div className="upload-model-item__content">
       {Boolean(title) && <strong className="upload-model-item__title">{title}</strong>}
