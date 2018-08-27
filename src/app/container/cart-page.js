@@ -2,8 +2,11 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
+import type {Dispatch} from 'redux'
+import {bindActionCreators} from 'redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
+import lifecycle from 'recompose/lifecycle'
 
 import type {AppState} from '../reducer'
 import {selectCartShippings, selectConfiguredModelInformation} from '../lib/selector'
@@ -27,7 +30,6 @@ import Notification from '../component/notification'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
-import * as cartAction from '../action/cart'
 import * as modelViewerAction from '../action/model-viewer'
 
 import AppLayout from './app-layout'
@@ -41,14 +43,14 @@ import copyIcon from '../../asset/icon/copy.svg'
 const CartPage = ({
   modelsWithConfig,
   modelConfigs,
-  onGoToUpload,
-  onCheckout,
-  onDuplicateModelConfig,
-  onDeleteModelConfigs,
+  goToUpload,
+  goToAddress,
+  duplicateModelConfig,
+  deleteModelConfigs,
   cart,
   cartShippings,
-  onMagnifyModel,
-  onChooseMaterial,
+  magnifyModel,
+  goToMaterial,
   numAddedItems
 }) => {
   const numModels = modelsWithConfig.length
@@ -59,7 +61,7 @@ const CartPage = ({
       <Button
         label="Edit material …"
         modifiers={['tiny', 'minor']}
-        onClick={() => onChooseMaterial([modelConfig.id])}
+        onClick={() => goToMaterial([modelConfig.id])}
       />
       {/*
       TODO: Quantity change in card is hard to solve because we have to do another price request and match old to new quotes afterwards, which makes all of this async
@@ -78,12 +80,12 @@ const CartPage = ({
       <Button
         icon={copyIcon}
         modifiers={['tiny', 'circular', 'minor']}
-        onClick={() => onDuplicateModelConfig(modelConfig.id)}
+        onClick={() => duplicateModelConfig(modelConfig.id)}
       />
       <Button
         icon={deleteIcon}
         modifiers={['tiny', 'circular', 'minor']}
-        onClick={() => onDeleteModelConfigs([modelConfig.id])}
+        onClick={() => deleteModelConfigs([modelConfig.id])}
       />
     </ButtonBar>
   )
@@ -130,7 +132,7 @@ const CartPage = ({
                   }}
                 />
               }
-              onMagnify={() => onMagnifyModel(model)}
+              onMagnify={() => magnifyModel(model)}
             />
           )
         )}
@@ -158,7 +160,7 @@ const CartPage = ({
         vat={formatPrice(cart.vatPrice, cart.currency)}
         total={formatPrice(cart.totalPrice, cart.currency)}
       >
-        <Button modifiers={['block']} label="Checkout" onClick={() => onCheckout()} />
+        <Button modifiers={['block']} label="Checkout" onClick={() => goToAddress()} />
       </PaymentSection>
     )
   }
@@ -173,7 +175,8 @@ const CartPage = ({
         <Button
           label="Choose material …"
           onClick={() =>
-            onChooseMaterial(
+            goToUpload(
+              null,
               modelConfigs
                 .filter(
                   modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null
@@ -215,7 +218,7 @@ const CartPage = ({
             href="/"
             onClick={event => {
               event.preventDefault()
-              onGoToUpload()
+              goToUpload()
             }}
             label="uploading your 3D model"
           />{' '}
@@ -234,20 +237,32 @@ const mapStateToProps = (state: AppState) => ({
   cart: state.core.cart
 })
 
-const mapDispatchToProps = {
-  onGoToUpload: navigationAction.goToUpload,
-  onDeleteModelConfigs: modelAction.deleteModelConfigs,
-  onDuplicateModelConfig: modelAction.duplicateModelConfig,
-  onCreateCart: cartAction.createCart,
-  onCheckout: navigationAction.goToAddress,
-  onChooseMaterial: navigationAction.goToMaterial,
-  onMagnifyModel: modelViewerAction.open
-}
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
+  deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
+  duplicateModelConfig: bindActionCreators(modelAction.duplicateModelConfig, dispatch),
+  goToAddress: bindActionCreators(navigationAction.goToAddress, dispatch),
+  goToMaterial: bindActionCreators(navigationAction.goToMaterial, dispatch),
+  magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
+  duplicateModelConfig: (id: ConfigId) => {
+    const action = modelAction.duplicateModelConfig(id)
+    return dispatch(action).then(() => {
+      dispatch(navigationAction.goToUpload(null, [action.payload.nextId]))
+    })
+  }
+})
 
 export default compose(
   guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withProps(({location}) => ({
     numAddedItems: (location.state || {}).numAddedItems || 0
-  }))
+  })),
+  lifecycle({
+    componentDidUpdate(prevProps) {
+      if (prevProps.modelsWithConfig.length > 0 && this.props.modelsWithConfig === 0) {
+        this.props.goToUpload()
+      }
+    }
+  })
 )(CartPage)
