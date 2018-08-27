@@ -38,6 +38,7 @@ import * as orderActions from '../action/order'
 import creditCardIcon from '../../asset/icon/credit-card.svg'
 
 import {guard} from './util/guard'
+import {scrollToTop} from './util/scroll-to-top'
 import CheckoutLayout from './checkout-layout'
 import PaypalButton from '../component/paypal-button'
 
@@ -355,6 +356,7 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
+  scrollToTop(),
   guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withState('paymentInProgress', 'setPaymentInProgress', false),

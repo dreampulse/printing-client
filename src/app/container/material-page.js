@@ -40,8 +40,8 @@ import {
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
-import scrollTo from '../service/scroll-to'
 import {openIntercom} from '../service/intercom'
+import {scrollToTop} from './util/scroll-to-top'
 
 import FooterPartial from './footer-partial'
 import ConfigurationHeaderPartial from './configuration-header-partial'
@@ -120,10 +120,7 @@ const MaterialPage = ({
           loading={!bestQuote}
           selected={selectedMaterial && selectedMaterial.id === material.id}
           unavailable={!bestQuote && isPollingDone}
-          onSelectClick={() => {
-            selectMaterial(material.id)
-            scrollTo('#section-finish')
-          }}
+          onSelectClick={() => selectMaterial(material.id)}
           onMoreClick={() => {
             onOpenMaterialModal(material.id)
           }}
@@ -248,11 +245,7 @@ const MaterialPage = ({
           loading={!bestQuote}
           unavailable={!bestQuote && isPollingDone}
           onSelectClick={
-            (selectedColor &&
-              (() => {
-                selectMaterialConfig(selectedColor && selectedColor.value)
-                scrollTo('#section-provider')
-              })) ||
+            (selectedColor && (() => selectMaterialConfig(selectedColor && selectedColor.value))) ||
             null
           }
           onMoreClick={() => {
@@ -402,6 +395,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
+  scrollToTop(),
   withProps(({location}) => ({
     configIds: (location.state && location.state.configIds) || []
   })),

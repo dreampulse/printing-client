@@ -22,6 +22,7 @@ import StaticField from '../component/static-field'
 import {getCountriesMenu, getStateName, getStates, getCountryName} from '../service/country'
 import {renderField} from './util/form'
 import {guard} from './util/guard'
+import {scrollToTop} from './util/scroll-to-top'
 import CheckoutLayout from './checkout-layout'
 import scrollTo from '../service/scroll-to'
 
@@ -288,7 +289,6 @@ const AddressPage = ({
               type="checkbox"
             />
           </FormRow>
-          <div id="shipping-address" />
           {useDifferentBillingAddress && billingAddressSection}
         </FormLayout>
         <div id="billing-address">
@@ -349,6 +349,7 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
+  scrollToTop(),
   guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
@@ -386,15 +387,6 @@ const enhance = compose(
   }),
   reduxForm({form: FORM_NAME}),
   lifecycle({
-    componentDidMount() {
-      if (
-        this.props.location.state &&
-        this.props.location.state.section &&
-        this.props.location.state.section !== 'billing-address'
-      ) {
-        scrollTo(`#${this.props.location.state.section}`)
-      }
-    },
     componentDidUpdate(prevProps) {
       // Special case for the billing address because the dom is not ready in
       // componentDidMount because of REDUX FORM
