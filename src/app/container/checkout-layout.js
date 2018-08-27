@@ -51,7 +51,7 @@ const CheckoutLayout = ({
       title={title}
       onClickClose={() => goToCart()}
       actions={[
-        <Route path="/" exact>
+        <Route key="upload" path="/" exact>
           {({match}) =>
             !match ? (
               <Button
@@ -62,6 +62,7 @@ const CheckoutLayout = ({
             ) : null}
         </Route>,
         <IconLink
+          key="cart"
           modifiers={['invert']}
           icon={cartIcon}
           disabled={cartCount < 1}
