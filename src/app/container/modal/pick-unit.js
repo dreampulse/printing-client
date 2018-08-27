@@ -16,16 +16,16 @@ import LabeledField from '../../component/labeled-field'
 import RadioButtonGroup from '../../component/radio-button-group'
 import RadioButton from '../../component/radio-button'
 
-const PickUnitModal = ({unit, setUnit, onUpdateUnit, onClose, files, onUploadFiles}) => {
+const PickUnitModal = ({unit, setUnit, onUpdateUnit, closeModal, files, onUploadFiles}) => {
   const headline = <Headline label="Pick file unit" modifiers={['l']} />
   const buttons = [
-    <Button label="Cancel" modifiers={['text']} onClick={() => onClose()} />,
+    <Button label="Cancel" modifiers={['text']} onClick={() => closeModal()} />,
     <Button
       label="Upload"
       onClick={() => {
         onUpdateUnit(unit)
         onUploadFiles(files, unit)
-        onClose()
+        closeModal()
       }}
     />
   ]
@@ -51,7 +51,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onUpdateUnit: coreActions.updateUnit,
   onUploadFiles: modelActions.uploadFiles,
-  onClose: modalActions.close
+  closeModal: modalActions.closeModal
 }
 
 export default compose(

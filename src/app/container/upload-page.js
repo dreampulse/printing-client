@@ -256,7 +256,7 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = {
-  onUploadFiles: modalAction.openPickUnit,
+  onUploadFiles: modalAction.openPickUnitModal,
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onChangeQuantities: modelAction.updateQuantities,
   onDuplicateModelConfig: modelAction.duplicateModelConfig,

@@ -82,10 +82,11 @@ const MaterialPage = ({
   selectedMaterialConfigId,
   selectMaterialConfig,
   setMaterialFilter,
-  onOpenMaterialModal,
-  onOpenFinishGroupModal,
-  onAddToCart,
-  onGotoCart,
+  openMaterialModal,
+  openFinishGroupModal,
+  addToCart,
+  goToCart,
+  goToUpload,
   quotes,
   selectedModelConfigs,
   shippings,
@@ -99,6 +100,13 @@ const MaterialPage = ({
   const numCheckedProviders = pollingProgress.complete || 0
   const numTotalProviders = pollingProgress.total || 0
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, quotes)
+
+  const finishSectionEnabled = Boolean(selectedMaterial)
+  const providerSectionEnabled = selectedMaterialConfigId
+
+  const hasItemsOnUploadPage = uploadedModelConfigs.some(
+    modelConfig => !configIds.find(id => id === modelConfig.id) && !modelConfig.quoteId
+  )
 
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
@@ -122,7 +130,7 @@ const MaterialPage = ({
           unavailable={!bestQuote && isPollingDone}
           onSelectClick={() => selectMaterial(material.id)}
           onMoreClick={() => {
-            onOpenMaterialModal(material.id)
+            openMaterialModal(material.id)
           }}
         />
       )
@@ -249,7 +257,7 @@ const MaterialPage = ({
             null
           }
           onMoreClick={() => {
-            onOpenFinishGroupModal(finishGroup.id)
+            openFinishGroupModal(finishGroup.id)
           }}
         />
       )
@@ -333,8 +341,12 @@ const MaterialPage = ({
                 includesVat={false}
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
                 onAddToCartClick={() => {
-                  onAddToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
-                    onGotoCart(configIds.length)
+                  addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
+                    if (hasItemsOnUploadPage) {
+                      goToUpload()
+                    } else {
+                      goToCart(configIds.length)
+                    }
                   })
                 }}
               />
@@ -344,9 +356,6 @@ const MaterialPage = ({
       </Section>
     )
   }
-
-  const finishSectionEnabled = Boolean(selectedMaterial)
-  const providerSectionEnabled = selectedMaterialConfigId
 
   return (
     <App
@@ -384,14 +393,13 @@ const mapStateToProps = (state: AppState, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-  onGoToUpload: navigationAction.goToUpload,
-  onGoToCart: navigationAction.goToCart,
-  onOpenMaterialModal: modalAction.openMaterial,
-  onOpenFinishGroupModal: modalAction.openFinishGroupModal,
-  onReceiveQuotes: quoteAction.receiveQuotes,
-  onStopReceivingQuotes: quoteAction.stopReceivingQuotes,
-  onAddToCart: cartAction.addToCart,
-  onGotoCart: navigationAction.goToCart
+  goToUpload: navigationAction.goToUpload,
+  goToCart: navigationAction.goToCart,
+  openMaterialModal: modalAction.openMaterialModal,
+  openFinishGroupModal: modalAction.openFinishGroupModal,
+  receiveQuotes: quoteAction.receiveQuotes,
+  stopReceivingQuotes: quoteAction.stopReceivingQuotes,
+  addToCart: cartAction.addToCart
 }
 
 export default compose(
@@ -459,7 +467,7 @@ export default compose(
       const {refresh} = props.featureFlags
       const currency = props.currency
       const {countryCode} = props.location
-      props.onReceiveQuotes({
+      props.receiveQuotes({
         modelConfigs,
         countryCode,
         currency,
@@ -469,16 +477,16 @@ export default compose(
     onClosePage: props => () => {
       // Go to cart page if selected model config has already a quote
       if (props.selectedModelConfigs.length > 0 && props.selectedModelConfigs[0].quoteId) {
-        props.onGoToCart()
+        props.goToCart()
       } else {
-        props.onGoToUpload()
+        props.goToUpload()
       }
     }
   }),
   lifecycle({
     componentWillMount() {
       if (this.props.selectedModelConfigs.length === 0) {
-        this.props.onGoToUpload()
+        this.props.goToUpload()
         return
       }
 
@@ -494,7 +502,7 @@ export default compose(
       }
     },
     componentWillUnmount() {
-      this.props.onStopReceivingQuotes()
+      this.props.stopReceivingQuotes()
     }
   })
 )(MaterialPage)

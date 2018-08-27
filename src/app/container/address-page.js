@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
 import omit from 'lodash/omit'
 
-import {openPickLocation} from '../action/modal'
+import {openPickLocationModal} from '../action/modal'
 import {saveUser} from '../action/core'
 import * as navigationAction from '../action/navigation'
 
@@ -44,7 +44,7 @@ const AddressPage = ({
   handleBillingChange,
   billingAddress,
   shippingAddress,
-  onOpenPickLocation
+  onOpenPickLocationModal
 }) => {
   const CountrySelect = ({onChange, value, ...props}) => {
     const changeCountry = val => onChange(val.value)
@@ -259,7 +259,7 @@ const AddressPage = ({
               // TODO: remove default
               value={getCountryName(shippingAddress.countryCode || 'de')}
               changeLinkLabel="Change…"
-              onChangeLinkClick={() => onOpenPickLocation(true, true)}
+              onChangeLinkClick={() => onOpenPickLocationModal(true, true)}
             />
           </FormRow>
 
@@ -343,7 +343,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onChangeFormValue: change,
   onSaveUser: saveUser,
-  onOpenPickLocation: openPickLocation,
+  onOpenPickLocationModal: openPickLocationModal,
   onGoToReviewOrder: navigationAction.goToReviewOrder,
   onGoToUpload: navigationAction.goToUpload
 }

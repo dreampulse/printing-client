@@ -13,15 +13,15 @@ import Overlay from '../../component/overlay'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 
-const ConfirmLocationChangeModal = ({location, onUpdateLocation, onClose}) => {
+const ConfirmLocationChangeModal = ({location, updateLocation, closeModal}) => {
   const headline = <Headline label="Confirmation necessary" modifiers={['l']} />
   const buttons = [
-    <Button label="Cancel" modifiers={['text']} onClick={() => onClose()} />,
+    <Button label="Cancel" modifiers={['text']} onClick={() => closeModal()} />,
     <Button
       label="Confirm"
       onClick={() => {
-        onUpdateLocation(location, true)
-        onClose()
+        updateLocation(location, true)
+        closeModal()
       }}
     />
   ]
@@ -41,8 +41,8 @@ const ConfirmLocationChangeModal = ({location, onUpdateLocation, onClose}) => {
 const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {
-  onUpdateLocation: coreActions.updateLocation,
-  onClose: modalActions.close
+  updateLocation: coreActions.updateLocation,
+  closeModal: modalActions.closeModal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmLocationChangeModal)
