@@ -8,7 +8,9 @@ import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 
+import type {ConfigId} from '../type'
 import type {AppState} from '../reducer'
+import type {AppAction} from '../action'
 import {selectCartShippings, selectConfiguredModelInformation} from '../lib/selector'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
@@ -237,16 +239,16 @@ const mapStateToProps = (state: AppState) => ({
   cart: state.core.cart
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => ({
   goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
-  duplicateModelConfig: bindActionCreators(modelAction.duplicateModelConfig, dispatch),
   goToAddress: bindActionCreators(navigationAction.goToAddress, dispatch),
   goToMaterial: bindActionCreators(navigationAction.goToMaterial, dispatch),
   magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
   duplicateModelConfig: (id: ConfigId) => {
     const action = modelAction.duplicateModelConfig(id)
-    return dispatch(action).then(() => {
+    // Fucking flow
+    return (dispatch(action): any).then(() => {
       dispatch(navigationAction.goToUpload(null, [action.payload.nextId]))
     })
   }
