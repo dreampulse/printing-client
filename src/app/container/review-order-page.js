@@ -223,6 +223,7 @@ const ReviewOrderPage = ({
         }))}
         vat={formatPrice(cart.vatPrice, cart.currency)}
         total={formatPrice(cart.totalPrice, cart.currency)}
+        childrenLabel="Pay with:"
       >
         {paymentButtons}
       </PaymentSection>
@@ -235,10 +236,10 @@ const ReviewOrderPage = ({
         />
         <Link
           label="Contact us."
-          href="mailto:contact@all3dp.com"
+          href="#"
           onClick={event => {
-            openIntercom()
             event.preventDefault()
+            openIntercom()
           }}
         />
       </Paragraph>
@@ -251,10 +252,10 @@ const ReviewOrderPage = ({
         />
         <Link
           label="Get in touch"
-          href="mailto:contact@all3dp.com"
+          href="#"
           onClick={event => {
-            openIntercom()
             event.preventDefault()
+            openIntercom()
           }}
         />
         {' or '}
