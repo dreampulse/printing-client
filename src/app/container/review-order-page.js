@@ -292,7 +292,7 @@ const ReviewOrderPage = ({
               model,
               shipping,
               quote,
-              process,
+              materialName,
               providerInfo,
               materialConfigId,
               colorCode,
@@ -311,7 +311,7 @@ const ReviewOrderPage = ({
                 deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
                 shippingMethod={shipping.name}
                 providerId={shipping.vendorId}
-                materialName={process}
+                materialName={materialName}
                 providerMaterialName={providerInfo}
                 onMagnify={() => onMagnifyModel(model)}
                 color={
