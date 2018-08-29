@@ -3,6 +3,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import compact from 'lodash/compact'
+import intersection from 'lodash/intersection'
+import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 
@@ -15,7 +17,7 @@ import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
 import {getCommonQuantity} from '../lib/quantity'
-import {selectSelectedModelConfigs} from '../lib/selector'
+import {selectSelectedModelConfigs, selectUploadedModelConfigs} from '../lib/selector'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 
@@ -24,10 +26,10 @@ const ModelListPartial = ({
   editMode = false,
   selectedModelConfigIds,
   commonQuantity,
-  onChangeSelectedModelConfigs,
-  onDeleteModelConfigs,
-  onChangeQuantities,
-  onChooseMaterial
+  updateSelectedModelConfigs,
+  deleteModelConfigs,
+  updateQuantities,
+  goToMaterial
 }) => {
   const disabled = selectedModelConfigIds.length === 0
   const numberOfItems = React.Children.count(children)
@@ -42,7 +44,7 @@ const ModelListPartial = ({
     <Button
       disabled={disabled}
       label={primaryActionLabel}
-      onClick={() => onChooseMaterial(selectedModelConfigIds)}
+      onClick={() => goToMaterial(selectedModelConfigIds)}
     />
   )
 
@@ -53,7 +55,7 @@ const ModelListPartial = ({
           disabled={disabled || commonQuantity === null}
           key="quantity"
           value={commonQuantity}
-          onChange={quantity => onChangeQuantities(selectedModelConfigIds, quantity)}
+          onChange={quantity => updateQuantities(selectedModelConfigIds, quantity)}
         />
       ),
       <Button
@@ -61,14 +63,14 @@ const ModelListPartial = ({
         modifiers={['minor']}
         icon={deleteIcon}
         key="delete"
-        onClick={() => onDeleteModelConfigs(selectedModelConfigIds)}
+        onClick={() => deleteModelConfigs(selectedModelConfigIds)}
       />
     ])
 
   return (
     <ModelList
       checkedIds={selectedModelConfigIds}
-      onChangeCheckedIds={onChangeSelectedModelConfigs}
+      onChangeCheckedIds={updateSelectedModelConfigs}
       primaryActions={renderPrimaryActions()}
       secondaryActions={renderSecondaryActions()}
     >
@@ -79,22 +81,33 @@ const ModelListPartial = ({
 
 const mapStateToProps = (state: AppState) => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
+  uploadedModelConfigs: selectUploadedModelConfigs(state),
   commonQuantity: getCommonQuantity(selectSelectedModelConfigs(state))
 })
 
 const mapDispatchToProps = {
-  onChangeSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
-  onClearSelectedModelConfigs: modelAction.clearSelectedModelConfigs,
-  onDeleteModelConfigs: modelAction.deleteModelConfigs,
-  onChangeQuantities: modelAction.updateQuantities,
-  onChooseMaterial: navigationAction.goToMaterial
+  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
+  clearSelectedModelConfigs: modelAction.clearSelectedModelConfigs,
+  deleteModelConfigs: modelAction.deleteModelConfigs,
+  updateQuantities: modelAction.updateQuantities,
+  goToMaterial: navigationAction.goToMaterial
 }
 
 export default compose(
+  withRouter,
   connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
+    componentDidMount() {
+      const {location} = this.props
+      const allModelConfigIds = this.props.uploadedModelConfigs.map(modelConfig => modelConfig.id)
+      const selectModelConfigIds = (location.state && location.state.selectModelConfigIds) || []
+      const filteredModelConfigIds = intersection(allModelConfigIds, selectModelConfigIds)
+      if (filteredModelConfigIds.length > 0) {
+        this.props.updateSelectedModelConfigs(filteredModelConfigIds)
+      }
+    },
     componentWillUnmount() {
-      this.props.onClearSelectedModelConfigs()
+      this.props.clearSelectedModelConfigs()
     }
   })
 )(ModelListPartial)

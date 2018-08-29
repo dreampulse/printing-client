@@ -428,10 +428,12 @@ const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
   // Cause flow is crap!
   const nextModelConfig: any = {
     ...modelConfig,
-    id: nextId
+    id: nextId,
+    quoteId: null,
+    shippingId: null
   }
 
-  const nextState = {
+  return {
     ...state,
     modelConfigs: [
       ...state.modelConfigs.slice(0, modelConfigIndex + 1),
@@ -440,13 +442,6 @@ const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
     ],
     selectedModelConfigs: [...state.selectedModelConfigs, nextId]
   }
-
-  // Create new cart if modelConfig is already in cart
-  if (modelConfig.quoteId) {
-    return loop(nextState, Cmd.action(cartAction.createCart()))
-  }
-
-  return nextState
 }
 
 const receiveQuotes = (state, {payload: {countryCode, currency, modelConfigs, refresh}}) => {
