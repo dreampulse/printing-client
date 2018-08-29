@@ -14,12 +14,9 @@ deploy:
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_ACCESS_KEY
   region: eu-west-1
-  bucket: print.all3dp.com
+  bucket: print-stage.all3dp.com
   acl: public_read
   local_dir: dist
   on:
     repo: all3dp/printing-engine-client
-    branch: master
-after_deploy:
-  - ./bin/create-sentry-release.sh
-  - ./bin/purge-cloudflare-cache.sh
+    branch: multi-model-upload
