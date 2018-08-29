@@ -14,11 +14,12 @@ import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 
 const ConfirmLocationChangeModal = ({location, updateLocation, closeModal}) => {
-  const headline = <Headline label="Confirmation necessary" modifiers={['l']} />
+  const headline = <Headline label="Confirmation necessary" modifiers={['l', 'warning']} />
   const buttons = [
     <Button label="Cancel" modifiers={['text']} onClick={() => closeModal()} />,
     <Button
       label="Confirm"
+      modifiers={['text']}
       onClick={() => {
         updateLocation(location, true)
         closeModal()

@@ -12,11 +12,12 @@ import * as modalActions from '../../action/modal'
 import * as coreActions from '../../action/core'
 
 const ConfirmCurrencyChangeModal = ({currency, updateCurrency, closeModal}) => {
-  const headline = <Headline label="Confirmation necessary" modifiers={['l']} />
+  const headline = <Headline label="Confirmation necessary" modifiers={['l', 'warning']} />
   const buttons = [
     <Button label="Cancel" modifiers={['text']} onClick={() => closeModal()} />,
     <Button
       label="Confirm"
+      modifiers={['text']}
       onClick={() => {
         updateCurrency(currency, true)
         closeModal()
