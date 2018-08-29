@@ -1,7 +1,8 @@
 .model-viewer {
-  @include scut-ratio-box(4/3);
   position: relative;
-  background: $color-gray-3;
+  background: $color-gray-4;
+  width: 100%;
+  height: 100vh;
 
   &__iframe {
     position: absolute;
