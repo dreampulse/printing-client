@@ -98,7 +98,7 @@ const CartPage = ({
             model,
             shipping,
             quote,
-            process,
+            materialName,
             providerInfo,
             materialConfigId,
             colorCode,
@@ -117,7 +117,7 @@ const CartPage = ({
               deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
               shippingMethod={shipping.name}
               providerId={shipping.vendorId}
-              materialName={process}
+              materialName={materialName}
               providerMaterialName={providerInfo}
               color={
                 <SelectField
