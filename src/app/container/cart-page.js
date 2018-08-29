@@ -247,7 +247,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => ({
   magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
   duplicateModelConfig: (id: ConfigId) => {
     const action = modelAction.duplicateModelConfig(id)
-    // Fucking flow
+    // Flow is crap
     return (dispatch(action): any).then(() => {
       dispatch(navigationAction.goToUpload(null, [action.payload.nextId]))
     })
