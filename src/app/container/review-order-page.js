@@ -40,6 +40,7 @@ import * as orderActions from '../action/order'
 import creditCardIcon from '../../asset/icon/credit-card.svg'
 
 import {guard} from './util/guard'
+import {scrollToTop} from './util/scroll-to-top'
 import CheckoutLayout from './checkout-layout'
 import PaypalButton from '../component/paypal-button'
 
@@ -224,6 +225,7 @@ const ReviewOrderPage = ({
         }))}
         vat={formatPrice(cart.vatPrice, cart.currency)}
         total={formatPrice(cart.totalPrice, cart.currency)}
+        childrenLabel="Pay with:"
       >
         {paymentButtons}
       </PaymentSection>
@@ -236,10 +238,10 @@ const ReviewOrderPage = ({
         />
         <Link
           label="Contact us."
-          href="mailto:contact@all3dp.com"
+          href="#"
           onClick={event => {
-            openIntercom()
             event.preventDefault()
+            openIntercom()
           }}
         />
       </Paragraph>
@@ -252,10 +254,10 @@ const ReviewOrderPage = ({
         />
         <Link
           label="Get in touch"
-          href="mailto:contact@all3dp.com"
+          href="#"
           onClick={event => {
-            openIntercom()
             event.preventDefault()
+            openIntercom()
           }}
         />
         {' or '}
@@ -357,6 +359,7 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
+  scrollToTop(),
   guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withState('paymentInProgress', 'setPaymentInProgress', false),

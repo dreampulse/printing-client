@@ -23,12 +23,17 @@ import Grid from '../../component/grid'
 import Column from '../../component/column'
 import Image from '../../component/image'
 
-const FinishGroupModal = ({finishGroup, onClose}) => {
+const FinishGroupModal = ({finishGroup, closeModal}) => {
   const headline = <Headline label={finishGroup.name} modifiers={['l']} />
-  const buttons = [<Button label="Close" onClick={() => onClose()} />]
+  const buttons = [<Button label="Close" onClick={() => closeModal()} />]
 
   return (
-    <Overlay modifiers={['l']} headline={headline} buttons={buttons} closePortal={() => onClose()}>
+    <Overlay
+      modifiers={['l']}
+      headline={headline}
+      buttons={buttons}
+      closePortal={() => closeModal()}
+    >
       <Grid>
         <Column sm={12} md={8} lg={7}>
           <Paragraph classNames={['u-margin-bottom-xl']}>{finishGroup.description}</Paragraph>
@@ -98,7 +103,7 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = {
-  onClose: modalActions.close
+  closeModal: modalActions.closeModal
 }
 
 export default compose(

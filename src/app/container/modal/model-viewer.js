@@ -11,12 +11,17 @@ import Overlay from '../../component/overlay'
 import Headline from '../../component/headline'
 import ModelViewer from '../../component/model-viewer'
 
-const ModelViewerModal = ({onClose, sceneId, modelName}) => {
+const ModelViewerModal = ({closeModal, sceneId, modelName}) => {
   const headline = <Headline label={`Preview ${modelName}`} modifiers={['l']} />
-  const buttons = [<Button label="Close" onClick={onClose} />]
+  const buttons = [<Button label="Close" onClick={closeModal} />]
 
   return (
-    <Overlay modifiers={['l']} headline={headline} buttons={buttons} closePortal={() => onClose()}>
+    <Overlay
+      modifiers={['l']}
+      headline={headline}
+      buttons={buttons}
+      closePortal={() => closeModal()}
+    >
       <ModelViewer sceneId={sceneId} />
     </Overlay>
   )
@@ -27,7 +32,7 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = {
-  onClose: modalActions.close
+  closeModal: modalActions.closeModal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModelViewerModal)

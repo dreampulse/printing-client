@@ -11,6 +11,7 @@ import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatte
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {guard} from './util/guard'
+import {scrollToTop} from './util/scroll-to-top'
 
 import Link from '../component/link'
 import SidebarLayout from '../component/sidebar-layout'
@@ -157,6 +158,7 @@ const CartPage = ({
         }))}
         vat={formatPrice(cart.vatPrice, cart.currency)}
         total={formatPrice(cart.totalPrice, cart.currency)}
+        childrenLabel="Go to:"
       >
         <Button modifiers={['block']} label="Checkout" onClick={() => onCheckout()} />
       </PaymentSection>
@@ -189,7 +191,7 @@ const CartPage = ({
   const addedNotificationSection = () => (
     <Notification
       classNames={['u-margin-bottom']}
-      message={`${numAddedItems} item${numAddedItems > 1 ? 's' : ''} added to your cart`}
+      message={`${numAddedItems} item${numAddedItems > 1 ? 's' : ''} added to your cart.`}
     />
   )
 
@@ -245,6 +247,7 @@ const mapDispatchToProps = {
 }
 
 export default compose(
+  scrollToTop(),
   guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withProps(({location}) => ({
