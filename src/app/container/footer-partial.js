@@ -1,12 +1,22 @@
 // @flow
 
 import React from 'react'
+
+import {openIntercom} from '../service/intercom'
+
 import Footer from '../component/footer'
 import Link from '../component/link'
 
 const FooterPartial = () => (
   <Footer copyline="© 2018 All3DP">
-    <Link label="Contact Us" href="mailto:support@all3dp.com" />
+    <Link
+      label="Contact Us"
+      href="#"
+      onClick={event => {
+        event.preventDefault()
+        openIntercom()
+      }}
+    />
     <Link
       label="Terms and conditions"
       target="_blank"

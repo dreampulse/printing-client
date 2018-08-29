@@ -43,7 +43,7 @@ const open = (state, action) => {
       sceneId: null
     },
     Cmd.list([
-      Cmd.action(modalAction.openModelViewer(model.fileName)),
+      Cmd.action(modalAction.openModelViewerModal(model.fileName)),
       Cmd.action(startPollingAction)
     ])
   )
@@ -57,7 +57,7 @@ const handleSceneId = (state, action) => ({
 const close = (state, _action) => {
   const pollingId = state.pollingId
   if (pollingId) {
-    const closeModalAction = modalAction.close()
+    const closeModalAction = modalAction.closeModal()
     const cancelPollingAction = pollingAction.cancel(pollingId)
 
     return loop(

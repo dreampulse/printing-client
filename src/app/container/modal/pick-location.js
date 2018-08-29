@@ -30,7 +30,7 @@ const PickLocationModal = ({
   setCurrency,
   onUpdateLocation,
   onUpdateCurrency,
-  onClose,
+  closeModal,
   meta
 }) => {
   const currencies = config.currencies
@@ -48,7 +48,7 @@ const PickLocationModal = ({
         key="close"
         label="Cancel"
         modifiers={compact([!meta.showWarning && 'text'])}
-        onClick={() => onClose()}
+        onClick={() => closeModal()}
       />
     ),
     <Button
@@ -59,7 +59,7 @@ const PickLocationModal = ({
       onClick={() => {
         onUpdateLocation(location, true)
         onUpdateCurrency(currency, true)
-        onClose()
+        closeModal()
       }}
     />
   ]
@@ -108,7 +108,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onUpdateLocation: coreActions.updateLocation,
   onUpdateCurrency: coreActions.updateCurrency,
-  onClose: modalActions.close
+  closeModal: modalActions.closeModal
 }
 
 export default compose(

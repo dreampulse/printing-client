@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {compose, lifecycle, withHandlers} from 'recompose'
 import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
 import omit from 'lodash/omit'
 
-import {openPickLocation} from '../action/modal'
+import {openPickLocationModal} from '../action/modal'
 import {saveUser} from '../action/core'
 import * as navigationAction from '../action/navigation'
 
@@ -22,6 +22,7 @@ import StaticField from '../component/static-field'
 import {getCountriesMenu, getStateName, getStates, getCountryName} from '../service/country'
 import {renderField} from './util/form'
 import {guard} from './util/guard'
+import {scrollToTop} from './util/scroll-to-top'
 import CheckoutLayout from './checkout-layout'
 import scrollTo from '../service/scroll-to'
 
@@ -43,7 +44,7 @@ const AddressPage = ({
   handleBillingChange,
   billingAddress,
   shippingAddress,
-  onOpenPickLocation
+  onOpenPickLocationModal
 }) => {
   const CountrySelect = ({onChange, value, ...props}) => {
     const changeCountry = val => onChange(val.value)
@@ -73,10 +74,14 @@ const AddressPage = ({
     )
   }
 
-  const companySection = (
-    <div>
+  const renderCompanySection = () => (
+    <Fragment>
       <FormRow>
-        <Headline modifiers={['xs']} label="Company information" />
+        <Headline
+          modifiers={['xs']}
+          label="Company information"
+          classNames={['u-no-margin-bottom']}
+        />
       </FormRow>
       <FormRow modifiers={['half-half']}>
         <Field
@@ -92,13 +97,13 @@ const AddressPage = ({
           name="vatId"
         />
       </FormRow>
-    </div>
+    </Fragment>
   )
 
   const billingAddressSection = (
     <div>
       <FormRow>
-        <Headline modifiers={['xs']} label="Billing address" />
+        <Headline modifiers={['xs']} label="Billing address" classNames={['u-no-margin-bottom']} />
       </FormRow>
 
       <FormRow modifiers={['half-half']}>
@@ -163,7 +168,7 @@ const AddressPage = ({
         <Field
           validate={required}
           component={renderField(CountrySelect)}
-          label="Country"
+          placeholder="Country"
           name="billingAddress.countryCode"
         />
       </FormRow>
@@ -176,7 +181,11 @@ const AddressPage = ({
       <form onSubmit={handleSubmit}>
         <FormLayout>
           <FormRow>
-            <Headline modifiers={['xs']} label="Personal information" />
+            <Headline
+              modifiers={['xs']}
+              label="Personal information"
+              classNames={['u-no-margin-bottom']}
+            />
           </FormRow>
 
           <FormRow modifiers={['half-half']}>
@@ -196,6 +205,23 @@ const AddressPage = ({
             />
           </FormRow>
 
+          <FormRow modifiers={['half-half']}>
+            <Field
+              validate={email}
+              component={renderField(InputField)}
+              label="Email address"
+              name="emailAddress"
+              type="email"
+            />
+            <Field
+              validate={tel}
+              component={renderField(InputField)}
+              label="Phone number"
+              name="phoneNumber"
+              type="tel"
+            />
+          </FormRow>
+
           <FormRow>
             <Field
               onChangeValue={handleIsCompanyChange}
@@ -206,10 +232,14 @@ const AddressPage = ({
             />
           </FormRow>
 
-          {isCompany && companySection}
+          {isCompany && renderCompanySection()}
 
           <FormRow>
-            <Headline modifiers={['xs']} label="Shipping address" />
+            <Headline
+              modifiers={['xs']}
+              label="Shipping address"
+              classNames={['u-no-margin-bottom']}
+            />
           </FormRow>
 
           <FormRow>
@@ -258,24 +288,7 @@ const AddressPage = ({
               // TODO: remove default
               value={getCountryName(shippingAddress.countryCode || 'de')}
               changeLinkLabel="Change…"
-              onChangeLinkClick={() => onOpenPickLocation(true, true)}
-            />
-          </FormRow>
-
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={email}
-              component={renderField(InputField)}
-              label="Email address"
-              name="emailAddress"
-              type="email"
-            />
-            <Field
-              validate={tel}
-              component={renderField(InputField)}
-              label="Phone number"
-              name="phoneNumber"
-              type="tel"
+              onChangeLinkClick={() => onOpenPickLocationModal(true, true)}
             />
           </FormRow>
 
@@ -288,7 +301,6 @@ const AddressPage = ({
               type="checkbox"
             />
           </FormRow>
-          <div id="shipping-address" />
           {useDifferentBillingAddress && billingAddressSection}
         </FormLayout>
         <div id="billing-address">
@@ -343,12 +355,13 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onChangeFormValue: change,
   onSaveUser: saveUser,
-  onOpenPickLocation: openPickLocation,
+  onOpenPickLocationModal: openPickLocationModal,
   onGoToReviewOrder: navigationAction.goToReviewOrder,
   onGoToUpload: navigationAction.goToUpload
 }
 
 const enhance = compose(
+  scrollToTop(),
   guard(state => state.core.cart),
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
@@ -386,15 +399,6 @@ const enhance = compose(
   }),
   reduxForm({form: FORM_NAME}),
   lifecycle({
-    componentDidMount() {
-      if (
-        this.props.location.state &&
-        this.props.location.state.section &&
-        this.props.location.state.section !== 'billing-address'
-      ) {
-        scrollTo(`#${this.props.location.state.section}`)
-      }
-    },
     componentDidUpdate(prevProps) {
       // Special case for the billing address because the dom is not ready in
       // componentDidMount because of REDUX FORM

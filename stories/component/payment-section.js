@@ -16,6 +16,7 @@ storiesOf('Payment Section', module).add('default', () => (
     ]}
     vat="$50.00"
     total="$345.00"
+    childrenLabel="Pay with:"
   >
     <Button modifiers={['block']} icon={creditCardIcon} label="Pay by credit card" />
     <Button modifiers={['block']} icon={paypalIcon} label="Pay with Paypal" />

@@ -106,7 +106,7 @@ const init = (state, {payload: {featureFlags, urlParams}}) =>
       }),
       Cmd.run(getLocationByIp, {
         successActionCreator: coreAction.updateLocation,
-        failActionCreator: modalAction.openPickLocation,
+        failActionCreator: modalAction.openPickLocationModal,
         args: []
       })
     ])
@@ -116,7 +116,7 @@ const fatalError = (state, {payload: error}) =>
   loop(
     state,
     Cmd.list([
-      Cmd.action(modalAction.openFatalError(error)),
+      Cmd.action(modalAction.openFatalErrorModal(error)),
       Cmd.run(() => {
         // This will re-throw the error
         throw error
@@ -143,7 +143,7 @@ const updateLocation = (state, action) => {
       },
       Cmd.action(
         // TODO: show warning in PickLocationModal when action.payload.needsConfirmation is true
-        modalAction.openPickLocation()
+        modalAction.openPickLocationModal()
       )
     )
   }
@@ -153,7 +153,10 @@ const updateLocation = (state, action) => {
     (state.location && state.location.countryCode !== action.payload.location.countryCode) &&
     hasModelConfigWithQuote(state.modelConfigs)
   ) {
-    return loop(state, Cmd.action(modalAction.openConfirmLocationChange(action.payload.location)))
+    return loop(
+      state,
+      Cmd.action(modalAction.openConfirmLocationChangeModal(action.payload.location))
+    )
   }
 
   return loop(
@@ -187,7 +190,10 @@ const updateCurrency = (state, action) => {
   }
 
   if (!action.payload.force && hasModelConfigWithQuote(state.modelConfigs)) {
-    return loop(state, Cmd.action(modalAction.openConfirmCurrencyChange(action.payload.currency)))
+    return loop(
+      state,
+      Cmd.action(modalAction.openConfirmCurrencyChangeModal(action.payload.currency))
+    )
   }
 
   return loop(

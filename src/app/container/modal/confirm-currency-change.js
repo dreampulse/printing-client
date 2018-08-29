@@ -11,16 +11,16 @@ import Paragraph from '../../component/paragraph'
 import * as modalActions from '../../action/modal'
 import * as coreActions from '../../action/core'
 
-const ConfirmCurrencyChangeModal = ({currency, onUpdateCurrency, onClose}) => {
+const ConfirmCurrencyChangeModal = ({currency, updateCurrency, closeModal}) => {
   const headline = <Headline label="Confirmation necessary" modifiers={['l', 'warning']} />
   const buttons = [
-    <Button label="Cancel" onClick={() => onClose()} />,
+    <Button label="Cancel" modifiers={['text']} onClick={() => closeModal()} />,
     <Button
       label="Confirm"
       modifiers={['text']}
       onClick={() => {
-        onUpdateCurrency(currency, true)
-        onClose()
+        updateCurrency(currency, true)
+        closeModal()
       }}
     />
   ]
@@ -40,8 +40,8 @@ const ConfirmCurrencyChangeModal = ({currency, onUpdateCurrency, onClose}) => {
 const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {
-  onUpdateCurrency: coreActions.updateCurrency,
-  onClose: modalActions.close
+  updateCurrency: coreActions.updateCurrency,
+  closeModal: modalActions.closeModal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmCurrencyChangeModal)

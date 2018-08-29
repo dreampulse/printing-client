@@ -20,6 +20,7 @@ import cartIcon from '../../asset/icon/cart.svg'
 
 import {formatDimensions, formatPrice} from '../lib/formatter'
 import {selectModelsOfModelConfigs, selectCartCount} from '../lib/selector'
+import {scrollToTop} from './util/scroll-to-top'
 import type {AppState} from '../reducer'
 
 import * as modelAction from '../action/model'
@@ -255,7 +256,7 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = {
-  onUploadFiles: modalAction.openPickUnit,
+  onUploadFiles: modalAction.openPickUnitModal,
   onDeleteModelConfigs: modelAction.deleteModelConfigs,
   onChangeQuantities: modelAction.updateQuantities,
   onDuplicateModelConfig: modelAction.duplicateModelConfig,
@@ -264,6 +265,6 @@ const mapDispatchToProps = {
   onMagnifyModel: modelViewerAction.open
 }
 
-const enhance = compose(withRouter, connect(mapStateToProps, mapDispatchToProps))
+const enhance = compose(scrollToTop(), withRouter, connect(mapStateToProps, mapDispatchToProps))
 
 export default enhance(UploadPage)
