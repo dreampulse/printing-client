@@ -1,4 +1,6 @@
-import React from 'react'
+// @flow
+
+import React, {Fragment} from 'react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
@@ -213,7 +215,7 @@ const ReviewOrderPage = ({
   ])
 
   const renderPaymentSection = () => (
-    <React.Fragment>
+    <Fragment>
       <PaymentSection
         classNames={['u-margin-bottom']}
         subtotal={formatPrice(cart.subTotalPrice, cart.currency)}
@@ -268,7 +270,7 @@ const ReviewOrderPage = ({
           href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
         />
       </Paragraph>
-    </React.Fragment>
+    </Fragment>
   )
 
   return (
@@ -280,9 +282,9 @@ const ReviewOrderPage = ({
           tag="strong"
           modifiers={['minor', 'l', 'inline']}
           label={
-            <React.Fragment key="label">
+            <Fragment key="label">
               Your Order <EditLink label="edit" onClick={() => onGoToCart()} />
-            </React.Fragment>
+            </Fragment>
           }
         />
         <CheckoutModelList>

@@ -1,10 +1,13 @@
 .overlay-header-bar {
-  $logo-height: 40px;
-
-  padding: $space-l 0;
   background: $color-invert-bg;
   color: $color-invert-text;
   font-size: $font-size-l;
+
+  padding: $space-l 0;
+
+  @include respond-to(medium) {
+    padding: 0;
+  }
 
   &__main {
     display: flex;
@@ -13,7 +16,7 @@
 
     @include respond-to(medium) {
       flex-direction: row;
-      height: $nav-bar-content-height;
+      height: $nav-bar-content-height + 2 * $space-l;
     }
   }
 
