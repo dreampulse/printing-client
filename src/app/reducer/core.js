@@ -631,10 +631,15 @@ const configurationReceived = (state, {payload: {items}}) => {
     type: 'UPLOADED'
   }))
 
+  const backendModels = {}
+  items.forEach(item => {
+    backendModels[item.modelId] = omit(item, 'quantity')
+  })
+
   return {
     ...state,
     modelConfigs,
-    backendModels: keyBy(items, item => item.modelId),
+    backendModels,
     selectedModelConfigs: modelConfigs.map(modelConfig => modelConfig.id)
   }
 }
