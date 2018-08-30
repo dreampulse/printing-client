@@ -9,6 +9,7 @@ import type {PollingAction} from './polling'
 import type {QuoteAction} from './quote'
 import type {CartAction} from './cart'
 import type {OrderAction} from './order'
+import type {ConfigurationAction} from './configuration'
 
 export type AppAction =
   | CoreAction
@@ -20,3 +21,4 @@ export type AppAction =
   | QuoteAction
   | CartAction
   | OrderAction
+  | ConfigurationAction
