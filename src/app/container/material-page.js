@@ -41,6 +41,7 @@ import {
 } from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
+import scrollTo from '../service/scroll-to'
 import {scrollToTop} from './util/scroll-to-top'
 
 import FooterPartial from './footer-partial'
@@ -128,7 +129,10 @@ const MaterialPage = ({
           loading={!bestQuote}
           selected={selectedMaterial && selectedMaterial.id === material.id}
           unavailable={!bestQuote && isPollingDone}
-          onSelectClick={() => selectMaterial(material.id)}
+          onSelectClick={() => {
+            selectMaterial(material.id)
+            scrollTo('#section-finish')
+          }}
           onMoreClick={() => {
             openMaterialModal(material.id)
           }}
@@ -253,7 +257,11 @@ const MaterialPage = ({
           loading={!bestQuote}
           unavailable={!bestQuote && isPollingDone}
           onSelectClick={
-            (selectedColor && (() => selectMaterialConfig(selectedColor && selectedColor.value))) ||
+            (selectedColor &&
+              (() => {
+                selectMaterialConfig(selectedColor && selectedColor.value)
+                scrollTo('#section-provider')
+              })) ||
             null
           }
           onMoreClick={() => {
