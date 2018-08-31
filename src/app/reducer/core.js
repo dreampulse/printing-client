@@ -8,7 +8,6 @@ import uniq from 'lodash/uniq'
 import omit from 'lodash/omit'
 import pick from 'lodash/pick'
 import compact from 'lodash/compact'
-import uniqueId from 'lodash/uniqueId'
 
 import config from '../../../config'
 import {getLocationByIp, isLocationValid} from '../lib/geolocation'
@@ -623,7 +622,7 @@ const loadConfiguration = (state, {payload: {id}}) =>
 
 const configurationReceived = (state, {payload: {items}}) => {
   const modelConfigs = items.map(item => ({
-    id: uniqueId('config-id-'),
+    id: item.id,
     quoteId: null,
     shippingId: null,
     modelId: item.modelId,

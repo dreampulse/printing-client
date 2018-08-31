@@ -1,12 +1,16 @@
 // @flow
 
-import type {Action, ConfigurationId} from '../type'
+import uniqueId from 'lodash/uniqueId'
+
+import type {Action, ConfigId, ConfigurationId, BackendModel} from '../type'
 import type {BackendConfiguration} from '../lib/printing-engine'
 
 type LoadConfigurationAction = Action<'CONFIGURATION.LOAD_CONFIGURATION', {id: ConfigurationId}>
 type ConfigurationReceivedAction = Action<
   'CONFIGURATION.CONFIGURATION_RECEIVED',
-  BackendConfiguration
+  {
+    items: Array<BackendModel & {id: ConfigId, quantity: number}>
+  }
 >
 export type ConfigurationAction = LoadConfigurationAction | ConfigurationReceivedAction
 
@@ -19,5 +23,10 @@ export const configurationReceived = (
   payload: BackendConfiguration
 ): ConfigurationReceivedAction => ({
   type: 'CONFIGURATION.CONFIGURATION_RECEIVED',
-  payload
+  payload: {
+    items: payload.items.map(item => ({
+      ...item,
+      id: uniqueId('config-id-')
+    }))
+  }
 })

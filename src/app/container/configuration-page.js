@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
@@ -9,9 +9,16 @@ import lifecycle from 'recompose/lifecycle'
 import * as configurationAction from '../action/configuration'
 import * as navigationAction from '../action/navigation'
 
+import Modal from './modal'
+
 import LoadingContainer from '../component/loading-container'
 
-const ConfigurationPage = () => <LoadingContainer />
+const ConfigurationPage = () => (
+  <Fragment>
+    <LoadingContainer />
+    <Modal />
+  </Fragment>
+)
 
 const mapStateToProps = () => ({})
 
