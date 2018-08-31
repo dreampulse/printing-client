@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 import compact from 'lodash/compact'
 import {withRouter} from 'react-router'
-import {compose} from 'recompose'
+import compose from 'recompose/compose'
 
 // TODO: Use final svg images here!
 // import feature1Image from '../../asset/image/feature1.png'

@@ -78,7 +78,7 @@ export type ConfigurationResponse = {
 }
 
 export type BackendConfiguration = {
-  items: Array<BackendModel>,
+  items: Array<BackendModel & {quantity: number}>,
   materialConfigId: MaterialConfigId
 }
 

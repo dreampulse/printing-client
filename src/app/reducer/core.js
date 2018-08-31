@@ -45,6 +45,7 @@ import * as modelAction from '../action/model'
 import * as pollingAction from '../action/polling'
 import * as quoteAction from '../action/quote'
 import * as cartAction from '../action/cart'
+import * as configurationAction from '../action/configuration'
 
 export type CoreState = {
   materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
@@ -609,6 +610,39 @@ const executePaypalPayment = (state, {payload}) =>
     })
   )
 
+const loadConfiguration = (state, {payload: {id}}) =>
+  loop(
+    state,
+    Cmd.run(printingEngine.getConfiguration, {
+      args: [id],
+      successActionCreator: configurationAction.configurationReceived,
+      failActionCreator: coreAction.fatalError
+    })
+  )
+
+const configurationReceived = (state, {payload: {items}}) => {
+  const modelConfigs = items.map(item => ({
+    id: item.id,
+    quoteId: null,
+    shippingId: null,
+    modelId: item.modelId,
+    quantity: item.quantity,
+    type: 'UPLOADED'
+  }))
+
+  const backendModels = {}
+  items.forEach(item => {
+    backendModels[item.modelId] = omit(item, 'quantity')
+  })
+
+  return {
+    ...state,
+    modelConfigs,
+    backendModels,
+    selectedModelConfigs: modelConfigs.map(modelConfig => modelConfig.id)
+  }
+}
+
 const reset = state => ({
   ...state,
   ...omit(initialState, 'materialGroups', 'location', 'featureFlags', 'shippings', 'urlParams'),
@@ -675,6 +709,10 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return paid(state, action)
     case 'ORDER.EXECUTE_PAYPAL_PAYMENT':
       return executePaypalPayment(state, action)
+    case 'CONFIGURATION.LOAD_CONFIGURATION':
+      return loadConfiguration(state, action)
+    case 'CONFIGURATION.CONFIGURATION_RECEIVED':
+      return configurationReceived(state, action)
     case 'CORE.RESET':
       return reset(state)
     default:
