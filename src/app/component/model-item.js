@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import fallbackSource from '../../asset/image/model-thumbnail-fallback-1-1.png'
+
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
@@ -11,6 +13,10 @@ import ProviderImage from './provider-image'
 import MagnifyableItem from './magnifyable-item'
 
 import ShippingIcon from '../../asset/icon/shipping.svg'
+
+// Preload fallbackSource as early as possible
+const preloadImage = new global.Image()
+preloadImage.src = fallbackSource
 
 const ModelItem = ({
   classNames,
@@ -34,6 +40,7 @@ const ModelItem = ({
       <ImageContainer
         modifiers={['ratio-1-1']}
         source={imageSource}
+        fallbackSource={fallbackSource}
         alt={`Preview image of ${title}`}
       />
     </MagnifyableItem>
