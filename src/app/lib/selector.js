@@ -1,248 +1,178 @@
 // @flow
+import invariant from 'invariant'
+import compact from 'lodash/compact'
+import unzip from 'lodash/unzip'
+import sum from 'lodash/sum'
+import uniq from 'lodash/uniq'
 
-import get from 'lodash/get'
-import URLSearchParams from 'url-search-params'
+import type {
+  AppState,
+  ModelConfig,
+  UploadingFile,
+  ConfigId,
+  BackendModel,
+  MaterialConfigId,
+  FinishGroupId,
+  MaterialId,
+  MaterialGroupId
+} from '../type'
+import {getMaterialConfigById, getMaterialTreeByMaterialConfigId} from './material'
 
-import type {State, Features} from '../type'
+export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile | BackendModel> =>
+  state.core.modelConfigs.map(
+    modelConfig =>
+      modelConfig.type === 'UPLOADED'
+        ? state.core.backendModels[modelConfig.modelId]
+        : state.core.uploadingFiles[modelConfig.fileId]
+  )
 
-export const selectCommonQuantity = (state: State) => {
-  // Common quantity exists only if all models have the same individual quantity
-  const {model: {models}} = state
+export const selectShippingsOfModelConfigs = (state: AppState) =>
+  state.core.modelConfigs.map(
+    modelConfig =>
+      modelConfig.type === 'UPLOADED' && modelConfig.shippingId
+        ? state.core.shippings.find(
+            shipping =>
+              modelConfig.type === 'UPLOADED' && shipping.shippingId === modelConfig.shippingId
+          )
+        : null
+  )
 
-  if (models.length === 0) {
-    return undefined
-  }
+export const selectQuotesOfModelConfigs = (state: AppState) =>
+  state.core.modelConfigs.map(
+    modelConfig =>
+      modelConfig.type === 'UPLOADED' && modelConfig.quoteId
+        ? state.core.quotes[modelConfig.quoteId]
+        : null
+  )
 
-  return models.reduce((quantity, model) => {
-    let modelQuantity
-    if (model.quantity) {
-      modelQuantity = model.quantity
-    }
-    if (quantity === null) {
-      return modelQuantity
-    }
-    if (quantity === modelQuantity) {
-      return quantity
-    }
-    return undefined
-  }, null)
-}
+export const selectCartCount = (state: AppState) =>
+  state.core.modelConfigs.filter(
+    modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
+  ).length
 
-export const selectMaterialGroup = (state: State, groupId: ?string) => {
-  const {material: {materialGroups}} = state
+export const selectUploadedModelConfigs = (state: AppState) =>
+  state.core.modelConfigs.filter(modelConfig => modelConfig.type === 'UPLOADED')
 
-  if (!materialGroups) {
-    return null
-  }
-
-  // Search for group by id
-  let materialGroup = null
-
-  materialGroups.forEach(item => {
-    if (item.id === groupId) {
-      materialGroup = item
-    }
+export const selectSelectedModelConfigs = (state: AppState): Array<ModelConfig> =>
+  state.core.selectedModelConfigs.map(id => {
+    const item = state.core.modelConfigs.find(modelConfig => modelConfig.id === id)
+    invariant(item, `ModelConfig for selectedModelConfig ${id} not found!`)
+    return item
   })
 
-  return materialGroup
-}
+export const selectModelConfigsByIds = (state: AppState, configIds: Array<ConfigId>) =>
+  state.core.modelConfigs.filter(modelConfig => configIds.includes(modelConfig.id))
 
-export const selectMaterial = (state: State, materialId: ?string) => {
-  const {material: {materialGroups}} = state
-
-  if (!materialGroups || !materialId) {
-    return null
+export const selectCartShippings = (state: AppState) => {
+  const cart = state.core.cart
+  if (!cart) {
+    return []
   }
 
-  // Search for material by id
-  let material = null
-
-  materialGroups.forEach(materialGroup => {
-    materialGroup.materials.forEach(item => {
-      if (item.id === materialId) {
-        material = item
-      }
-    })
-  })
-
-  return material
-}
-
-export const selectMaterialByName = (state: State, name: string) => {
-  const {material: {materialGroups}} = state
-
-  if (!materialGroups) {
-    return null
-  }
-
-  // Search for material by name
-  let material = null
-
-  materialGroups.forEach(materialGroup => {
-    materialGroup.materials.forEach(item => {
-      if (item.name === name) {
-        material = item
-      }
-    })
-  })
-
-  return material
-}
-
-export const selectMaterialByMaterialConfigId = (state: State, materialConfigId: string) => {
-  const materialGroups = state.material.materialGroups
-
-  if (!materialGroups) {
-    return null
-  }
-
-  let selectedMaterial
-  let selectedFinishGroup
-  let selectedMaterialConfig
-  materialGroups.every(materialGroup => {
-    materialGroup.materials.every(material => {
-      material.finishGroups.every(finishGroup => {
-        finishGroup.materialConfigs.every(materialConfig => {
-          if (materialConfig.id === materialConfigId) {
-            selectedMaterial = material
-            selectedFinishGroup = finishGroup
-            selectedMaterialConfig = materialConfig
-          }
-          return !selectedMaterial
-        })
-        return !selectedMaterial
-      })
-      return !selectedMaterial
-    })
-    return !selectedMaterial
-  })
-
-  return {
-    material: selectedMaterial,
-    finishGroup: selectedFinishGroup,
-    materialConfig: selectedMaterialConfig
-  }
-}
-
-export const selectedOfferMaterial = (state: State) => {
-  if (!state.price.selectedOffer) {
-    return null
-  }
-
-  const materialConfigId = state.price.selectedOffer.materialConfigId
-  return selectMaterialByMaterialConfigId(state, materialConfigId)
-}
-
-export const selectFinishGroup = (state: State, materialId: string, finishGroupId: string) => {
-  const material = selectMaterial(state, materialId)
-  if (!material) {
-    return null
-  }
-
-  // Search for finish group by id
-  let finishGroup = null
-
-  material.finishGroups.forEach(item => {
-    if (item.id === finishGroupId) {
-      finishGroup = item
-    }
-  })
-
-  return finishGroup
-}
-
-export const selectCurrentMaterialGroup = (state: State) => {
-  const {material: {materialGroups, selectedMaterialGroup}} = state
-
-  if (!materialGroups) {
-    return null
-  }
-
-  return selectMaterialGroup(state, selectedMaterialGroup)
-}
-
-export const selectCurrentMaterial = (state: State) => {
-  const selectedMaterial = state.material.selectedMaterial
-  return selectMaterial(state, selectedMaterial)
-}
-
-export const selectModelByModelId = (state: State, modelId: string) => {
-  const {model: {models}} = state
-
-  return (
-    models.find(model => {
-      if (!model.modelId) return false
-      return model.modelId === modelId
-    }) || null
+  return cart.shippingIds.map(id =>
+    state.core.shippings.find(shipping => shipping.shippingId === id)
   )
 }
 
-export const selectOfferItems = (state: State) => {
-  if (!state.price.selectedOffer) {
-    return null
+export const selectCommonMaterialPathOfModelConfigs = (
+  state: AppState,
+  configIds: Array<ConfigId>
+): {
+  materialConfigId: ?MaterialConfigId,
+  finishGroupId: ?FinishGroupId,
+  materialId: ?MaterialId,
+  materialGroupId: ?MaterialGroupId
+} => {
+  const modelConfigs = selectModelConfigsByIds(state, configIds)
+  const materialConfigs = compact(
+    modelConfigs.map(modelConfig => {
+      if (modelConfig.type === 'UPLOADED' && modelConfig.quoteId) {
+        return getMaterialConfigById(
+          state.core.materialGroups,
+          state.core.quotes[modelConfig.quoteId].materialConfigId
+        )
+      }
+
+      return null
+    })
+  )
+
+  const findCommonProperty = (arr, getProperty) => {
+    const commonProperty = arr.length > 0 ? getProperty(arr[0]) : null
+    return arr.every(item => getProperty(item) === commonProperty) ? commonProperty : null
   }
 
-  const items = state.price.selectedOffer.items
-
-  return items.map(item => {
-    const model = selectModelByModelId(state, item.modelId)
-
-    let thumbnailUrl = null
-    if (model && model.thumbnailUrl) {
-      thumbnailUrl = model.thumbnailUrl
-    }
-    return {
-      ...item,
-      thumbnailUrl,
-      fileName: model ? model.fileName : null
-    }
-  })
-}
-
-export const selectOffersForSelectedMaterialConfig = (state: State) => {
-  const {price: {offers}, material: {selectedMaterialConfig}} = state
-
-  if (!offers) {
-    return null
-  }
-
-  return offers.filter(offer => offer.materialConfigId === selectedMaterialConfig)
-}
-
-export const selectPrintingServiceRequests = (state: State) => {
-  const {price: {printingServiceComplete}} = state
-
-  if (!printingServiceComplete) {
-    return null
-  }
-
-  const printingServices = Object.keys(printingServiceComplete)
   return {
-    complete: printingServices.filter(key => printingServiceComplete[key]).length,
-    total: printingServices.length
+    materialConfigId: findCommonProperty(materialConfigs, materialConfig => materialConfig.id),
+    finishGroupId: findCommonProperty(
+      materialConfigs,
+      materialConfig => materialConfig.finishGroupId
+    ),
+    materialId: findCommonProperty(materialConfigs, materialConfig => materialConfig.materialId),
+    materialGroupId: findCommonProperty(
+      materialConfigs,
+      materialConfig => materialConfig.materialGroupId
+    )
   }
 }
 
-export const selectAreAllUploadsFinished = (state: State) => {
-  const {model: {numberOfUploads, models}} = state
+export const selectConfiguredModelInformation = (state: AppState) =>
+  unzip([
+    state.core.modelConfigs,
+    selectModelsOfModelConfigs(state),
+    selectShippingsOfModelConfigs(state),
+    selectQuotesOfModelConfigs(state)
+  ])
+    .filter(([modelConfig]) => {
+      const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
+      return mc.type === 'UPLOADED' && mc.quoteId !== null
+    })
+    .map(([modelConfig, model, shipping, quote]: any) => {
+      const materialTree = getMaterialTreeByMaterialConfigId(
+        state.core.materialGroups,
+        quote.materialConfigId
+      )
+      const process = materialTree.finishGroup.properties.printingMethodShort
+      const materialName = materialTree.finishGroup.materialName
+      const providerInfo = materialTree.finishGroup.properties.printingServiceName[quote.vendorId]
+      const {id: materialConfigId, colorCode, color, colorImage} = materialTree.materialConfig
 
-  return numberOfUploads === 0 && models.length > 0
-}
-
-export const selectSearchParams = (state: State) =>
-  // TODO: This should be part of our own state
-  new URLSearchParams(get(state, 'routing.location.search') || '')
-
-export const selectFeatures = (state: State): Features => {
-  const searchParams = selectSearchParams(state)
-  const features: Features = {}
-
-  Array.from(searchParams.keys())
-    .filter(name => /^feature:/.test(name))
-    .map(name => name.substr('feature:'.length))
-    .forEach((name: string) => {
-      features[name] = true
+      return {
+        modelConfig,
+        model,
+        shipping,
+        quote,
+        process,
+        materialName,
+        providerInfo,
+        materialConfigId,
+        colorCode,
+        color,
+        colorImage
+      }
     })
 
-  return features
-}
+export const isQuotePollingDone = (state: AppState) => !state.core.quotePollingId
+
+export const selectQuotePollingProgress = (state: AppState) => ({
+  complete: sum(Object.values(state.core.printingServiceComplete)),
+  total: Object.keys(state.core.printingServiceComplete).length
+})
+
+export const selectQuotes = (state: AppState) => Object.values(state.core.quotes)
+
+export const selectUsedShippingIdsAndFilter = (
+  state: AppState,
+  excludeConfigIds: Array<ConfigId> = []
+) =>
+  uniq(
+    compact(
+      state.core.modelConfigs.map(
+        modelConfig =>
+          modelConfig.type === 'UPLOADED' &&
+          !excludeConfigIds.find(id => modelConfig.type === 'UPLOADED' && id === modelConfig.id)
+            ? modelConfig.shippingId
+            : null
+      )
+    )
+  )

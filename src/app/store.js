@@ -7,18 +7,6 @@ import {ravenMiddleware} from './service/logging'
 
 import rootReducer from './reducer'
 
-function legacyThunk({dispatch, getState}) {
-  const getLegacyState = () => getState().legacy
-
-  return next => action => {
-    if (typeof action === 'function') {
-      return action(dispatch, getLegacyState)
-    }
-
-    return next(action)
-  }
-}
-
 function trackingReduxMiddleware() {
   return next => action => {
     // Only track the production environment
@@ -33,13 +21,8 @@ function trackingReduxMiddleware() {
 
 export default (history, initialState = {}) => {
   let enhancer = compose(
-    applyMiddleware(
-      legacyThunk,
-      routerMiddleware(history),
-      trackingReduxMiddleware,
-      ravenMiddleware
-    ),
-    installReduxLoop()
+    installReduxLoop(),
+    applyMiddleware(routerMiddleware(history), trackingReduxMiddleware, ravenMiddleware)
   )
 
   if (global.devToolsExtension) {

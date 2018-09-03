@@ -56,4 +56,8 @@
       color: $color-warning;
     }
   }
+
+  &--inline {
+    display: inline-block;
+  }
 }

@@ -1,17 +1,28 @@
 .nav-bar {
-  padding: $space-l 0;
   background: $color-invert-bg;
   color: $color-invert-text;
   font-size: $font-size-l;
 
-  &__grid {
-    @include grid;
+  padding: $space-l 0;
+
+  @include respond-to(medium) {
+    padding: 0;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include respond-to(medium) {
+      flex-direction: row;
+      height: $nav-bar-content-height + 2 * $space-l;
+    }
   }
 
   &__identity {
-    @include span(12);
-    @include scut-clearfix;
     display: flex;
+    flex-grow: 1;
     align-items: center;
     justify-content: center;
     margin-bottom: $space-l;
@@ -20,24 +31,8 @@
     height: $nav-bar-content-height;
 
     @include respond-to(large) {
-      @include span(6);
       margin-bottom: 0;
       justify-content: flex-start;
-    }
-  }
-
-  &__content {
-    @include span(12);
-    text-align: center;
-    height: $nav-bar-content-height; // To keep fixed nav bar height event if content doesn't fit
-
-    @include respond-to(large) {
-      @include span(6);
-      text-align: right;
-    }
-
-    & > * + * {
-      margin-left: $space-l;
     }
   }
 
@@ -51,5 +46,12 @@
     line-height: $line-height-s;
     margin-top: -1em; // Center subline and let it overflow
     margin-bottom: -1em;
+  }
+
+  &__content {
+    margin-left: $space-l;
+    & > * + * {
+      margin-left: $space-l;
+    }
   }
 }

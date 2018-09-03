@@ -23,7 +23,7 @@ const Headline = ({modifiers = [], classNames, label, tag = 'h1', icon}) => {
 Headline.propTypes = {
   ...propTypes.component,
   tag: PropTypes.oneOf(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong']),
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   icon: PropTypes.string
 }
 

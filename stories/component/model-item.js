@@ -3,47 +3,69 @@ import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
 import ModelItem from '../../src/app/component/model-item'
-import ModelItemError from '../../src/app/component/model-item-error'
-import ModelItemLoad from '../../src/app/component/model-item-load'
+import Button from '../../src/app/component/button'
+import ButtonBar from '../../src/app/component/button-bar'
+import SelectField from '../../src/app/component/select-field'
+
+import placeholderIcon from '../../src/asset/icon/placeholder.svg'
+
+const buttonBar = () => (
+  <ButtonBar>
+    <Button label="Button" modifiers={['tiny', 'minor']} onClick={action('click')} />
+    <Button
+      icon={placeholderIcon}
+      modifiers={['tiny', 'circular', 'minor']}
+      onClick={action('click')}
+    />
+    <Button
+      icon={placeholderIcon}
+      modifiers={['tiny', 'circular', 'minor']}
+      onClick={action('click')}
+    />
+  </ButtonBar>
+)
+
+const color = () => (
+  <SelectField
+    modifiers={['compact']}
+    value={{value: 'item2', colorValue: 'ff0000', label: 'Color'}}
+  />
+)
 
 storiesOf('Model Item', module)
   .add('default', () => (
     <ModelItem
-      imageSource="http://placehold.it/130x98"
-      quantity={1}
+      id="some-id"
+      imageSource="http://placehold.it/180x180"
       title="model_item_title.stl"
       subline="42 x 42 x 42 mm"
-      onQuantityChange={action('quantity change')}
-      onDelete={action('discard')}
-      onMagnify={action('magnify')}
-    />
-  ))
-  .add('no subline', () => (
-    <ModelItem
-      imageSource="http://placehold.it/130x98"
       quantity={1}
-      title="model_item_title.stl"
-      onQuantityChange={action('quantity change')}
-      onDelete={action('discard')}
+      price="80.99€"
+      deliveryTime="2-5 Days"
+      shippingMethod="DHL Express"
+      providerId="shapeways"
+      materialName="Metal, polished"
+      providerMaterialName="Polyamide (SLS)"
+      color={color()}
+      buttonBar={buttonBar()}
       onMagnify={action('magnify')}
     />
   ))
-  .add('error', () => (
-    <ModelItemError
-      imageSource="http://placehold.it/130x98"
-      modifiers={['error']}
-      title="Upload failed"
-      subline="This is why"
-      onDelete={action('discard')}
-    />
-  ))
-  .add('load', () => (
-    <ModelItemLoad
-      modifiers={['load']}
-      status={0.7}
-      title="Uploading"
-      subline="model_item_title.stl"
-      onStatusChange={action('Status change')}
-      onDelete={action('discard')}
+  .add('read-only', () => (
+    <ModelItem
+      modifiers={['read-only']}
+      id="some-id"
+      imageSource="http://placehold.it/180x180"
+      title="model_item_title.stl"
+      subline="42 x 42 x 42 mm"
+      quantity={1}
+      price="80.99€"
+      deliveryTime="2-5 Days"
+      shippingMethod="DHL Express"
+      providerId="shapeways"
+      materialName="Metal, polished"
+      providerMaterialName="Polyamide (SLS)"
+      color={color()}
+      onMagnify={action('magnify')}
     />
   ))

@@ -8,13 +8,13 @@ import Grid from '../../component/grid'
 import Column from '../../component/column'
 import Image from '../../component/image'
 
-import {reloadPage} from '../../service//location'
+import {reloadPage} from '../../service/location'
 
 import errorImage from '../../../asset/image/error.svg'
 
 export default ({error}) => {
   const buttons = [<Button label="OK" onClick={() => reloadPage()} />]
-  const headline = <Headline label={error.message} modifiers={['l']} />
+  const headline = <Headline label="System error occured" modifiers={['l']} />
 
   return (
     <Overlay headline={headline} buttons={buttons} closeable={false}>
@@ -23,6 +23,7 @@ export default ({error}) => {
           <Image src={errorImage} alt="System Error" />
         </Column>
         <Column sm={9}>
+          <Paragraph modifiers={['minor']}>{error.message}</Paragraph>
           <Paragraph>
             An unexpected error occured. Our technicians have been automatically warned and are
             working to fix the problem.

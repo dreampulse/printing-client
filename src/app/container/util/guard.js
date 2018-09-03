@@ -1,6 +1,10 @@
-import {compose, lifecycle} from 'recompose'
+import React from 'react'
+import {compose, branch, renderComponent} from 'recompose'
 import {connect} from 'react-redux'
-import {replace} from 'react-router-redux'
+import {Redirect} from 'react-router'
+import {push} from 'react-router-redux'
+
+const createRedirectHoc = redirectRoute => () => <Redirect to={redirectRoute} />
 
 // Higher order component that enshures that a parameter exists
 // It redirects otherwise (by default to `/`)
@@ -11,15 +15,8 @@ export const guard = (predicate, redirectRoute = '/') =>
         guardPassed: predicate(state)
       }),
       {
-        replaceRoute: replace
+        pushRoute: push
       }
     ),
-    lifecycle({
-      componentWillMount() {
-        const {guardPassed, replaceRoute} = this.props
-        if (!guardPassed) {
-          replaceRoute(redirectRoute)
-        }
-      }
-    })
+    branch(({guardPassed}) => !guardPassed, renderComponent(createRedirectHoc(redirectRoute)))
   )

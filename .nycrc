@@ -15,7 +15,9 @@
     "src/app/*.js",
     "src/app/service/*.js",
     "src/app/action/*.js",
-    "src/app/reducer/*.js"
+    "src/app/reducer/*.js",
+    "src/app/action-next/*.js",
+    "src/app/reducer-next/*.js"
   ],
   "reporter": [
     "text",

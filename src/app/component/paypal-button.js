@@ -3,6 +3,8 @@ import React, {Component} from 'react'
 
 import config from '../../../config'
 
+const BUTTON_HEIGHT = 50
+
 class PaypalButton extends Component {
   componentDidMount() {
     const {onClick, onAuthorize, onCancel, onError} = this.props
@@ -14,7 +16,13 @@ class PaypalButton extends Component {
       onCancel,
       onError,
       commit: true, // Show 'Pay Now' button during checkout
-      style: {size: 'responsive', color: 'gold', shape: 'rect'}
+      style: {
+        size: 'responsive',
+        color: 'gold',
+        shape: 'rect',
+        tagline: 'false',
+        height: BUTTON_HEIGHT
+      }
     }
 
     global.paypal.Button.render(options, this.paypalButton)
@@ -23,6 +31,7 @@ class PaypalButton extends Component {
   render() {
     return (
       <div
+        style={{pointerEvents: this.props.disabled ? 'none' : 'auto'}}
         ref={el => {
           this.paypalButton = el
         }}
@@ -35,7 +44,8 @@ PaypalButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   onAuthorize: PropTypes.func.isRequired,
   onCancel: PropTypes.func,
-  onError: PropTypes.func
+  onError: PropTypes.func,
+  disabled: PropTypes.bool
 }
 
 export default PaypalButton

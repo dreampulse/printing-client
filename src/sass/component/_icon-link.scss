@@ -31,6 +31,7 @@
     cursor: not-allowed;
     color: $color-disabled;
     filter: none;
+    pointer-events: none;
 
     .icon-link__cart-count {
       display: none;
@@ -48,5 +49,9 @@
     &[aria-disabled="true"] {
       color: $color-invert-disabled;
     }
+  }
+
+  &--l {
+    font-size: $font-size-xxxl;
   }
 }

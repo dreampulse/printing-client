@@ -13,7 +13,7 @@ import minusIcon from '../../asset/icon/minus.svg'
 const NumberField = ({
   classNames,
   modifiers = [],
-  value = '',
+  value = null,
   onChange = () => {},
   lowerLimit = 1,
   upperLimit = 999,
@@ -73,7 +73,7 @@ const NumberField = ({
       <input
         type="number"
         className="number-field__value"
-        value={value}
+        value={typeof value === 'number' ? value : ''}
         onChange={handleInputChange}
         onFocus={() => {
           setFocus(true)

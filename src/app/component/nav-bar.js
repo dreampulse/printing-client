@@ -11,7 +11,7 @@ import logoImage from '../../asset/image/logo.svg'
 const NavBar = ({classNames, modifiers, children, onClickIdentity = () => {}}) => (
   <header className={buildClassName('nav-bar', modifiers, classNames)}>
     <Container>
-      <div className="nav-bar__grid">
+      <div className="nav-bar__main">
         <button className="nav-bar__identity" type="button" onClick={onClickIdentity}>
           <img className="nav-bar__logo" src={logoImage} alt="All3DP" />
           <strong className="nav-bar__subline">

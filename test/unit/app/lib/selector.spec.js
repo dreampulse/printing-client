@@ -1,758 +1,985 @@
-import URLSearchParams from 'url-search-params'
 import {
-  selectCommonQuantity,
-  selectMaterialGroup,
-  selectMaterial,
-  selectMaterialByName,
-  selectFinishGroup,
-  selectCurrentMaterialGroup,
-  selectCurrentMaterial,
-  selectOffersForSelectedMaterialConfig,
-  selectPrintingServiceRequests,
-  selectMaterialByMaterialConfigId,
-  selectedOfferMaterial,
-  selectModelByModelId,
-  selectOfferItems,
-  selectAreAllUploadsFinished,
-  selectFeatures,
-  selectSearchParams
+  selectModelsOfModelConfigs,
+  selectCartCount,
+  selectSelectedModelConfigs,
+  selectModelConfigsByIds,
+  selectUploadedModelConfigs,
+  selectShippingsOfModelConfigs,
+  selectQuotesOfModelConfigs,
+  selectCartShippings,
+  selectCommonMaterialPathOfModelConfigs,
+  selectConfiguredModelInformation,
+  isQuotePollingDone,
+  selectQuotePollingProgress,
+  selectQuotes,
+  selectUsedShippingIdsAndFilter
 } from '../../../../src/app/lib/selector'
 
-describe('Selector lib', () => {
-  describe('selectCommonQuantity', () => {
-    it('returns common quantity if all individual model quantities are the same', () => {
-      const state = {
-        model: {
-          models: [{quantity: 2}, {quantity: 2}]
-        }
-      }
+import * as materialLib from '../../../../src/app/lib/material'
 
-      expect(selectCommonQuantity(state), 'to equal', 2)
-    })
-
-    it('returns undefined if not all individual model quantities are the same', () => {
-      const state = {
-        model: {
-          models: [{quantity: 2}, {quantity: 1}]
-        }
-      }
-
-      expect(selectCommonQuantity(state), 'to be', undefined)
-    })
-
-    it('returns undefined if there are no models', () => {
-      const state = {
-        model: {
-          models: []
-        }
-      }
-
-      expect(selectCommonQuantity(state), 'to be', undefined)
-    })
-
-    it('returns undefined if a model has no quantity', () => {
-      const state = {
-        model: {
-          models: [{}, {quantity: 1}]
-        }
-      }
-
-      expect(selectCommonQuantity(state), 'to be', undefined)
-    })
-  })
-
-  describe('selectMaterialGroup()', () => {
-    let materialGroups
-
-    beforeEach(() => {
-      materialGroups = [
-        {
-          id: 'group-1'
-        },
-        {
-          id: 'group-2'
-        }
-      ]
-    })
-
-    it('returns expected material group', () => {
-      const state = {
-        material: {materialGroups}
-      }
-
-      expect(selectMaterialGroup(state, 'group-2'), 'to equal', {id: 'group-2'})
-    })
-
-    it('returns null if there are no materialGroups in state', () => {
-      const state = {
-        material: {
-          materialGroups: undefined
-        }
-      }
-
-      expect(selectMaterialGroup(state, 'group-2'), 'to be', null)
-    })
-  })
-
-  describe('selectMaterial()', () => {
-    let materialGroups
-
-    beforeEach(() => {
-      materialGroups = [
-        {
-          materials: []
-        },
-        {
-          materials: [
-            {
-              id: 'material-1'
-            },
-            {
-              id: 'material-2'
-            }
-          ]
-        }
-      ]
-    })
-
-    it('returns expected material', () => {
-      const state = {
-        material: {materialGroups}
-      }
-
-      expect(selectMaterial(state, 'material-2'), 'to equal', {id: 'material-2'})
-    })
-
-    it('returns null if there are no materialGroups in state', () => {
-      const state = {
-        material: {
-          materialGroups: undefined
-        }
-      }
-
-      expect(selectMaterial(state, 'material-2'), 'to be', null)
-    })
-
-    it('returns null if the given material id is undefined', () => {
-      const state = {
-        material: {materialGroups}
-      }
-
-      expect(selectMaterial(state), 'to be', null)
-    })
-  })
-
-  describe('selectMaterialByName()', () => {
-    let materialGroups
-
-    beforeEach(() => {
-      materialGroups = [
-        {
-          materials: []
-        },
-        {
-          materials: [
-            {
-              id: 'material-1',
-              name: 'Material 1'
-            },
-            {
-              id: 'material-2',
-              name: 'Material 2'
-            }
-          ]
-        }
-      ]
-    })
-
-    it('returns expected material', () => {
-      const state = {
-        material: {materialGroups}
-      }
-
-      expect(selectMaterialByName(state, 'Material 2'), 'to equal', {
-        id: 'material-2',
-        name: 'Material 2'
-      })
-    })
-
-    it('returns null if there are no materialGroups in state', () => {
-      const state = {
-        material: {
-          materialGroups: undefined
-        }
-      }
-
-      expect(selectMaterialByName(state, 'Material 2'), 'to be', null)
-    })
-  })
-
-  describe('selectFinishGroup()', () => {
-    let materialGroups
-
-    beforeEach(() => {
-      materialGroups = [
-        {
-          materials: []
-        },
-        {
-          materials: [
-            {
-              id: 'material-1',
-              finishGroups: [
-                {
-                  id: 'finish-group-1'
-                }
-              ]
-            },
-            {
-              id: 'material-2',
-              finishGroups: [
-                {
-                  id: 'finish-group-2'
-                },
-                {
-                  id: 'finish-group-3'
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    })
-
-    it('returns expected finish group', () => {
-      const state = {
-        material: {materialGroups}
-      }
-
-      expect(selectFinishGroup(state, 'material-2', 'finish-group-2'), 'to equal', {
-        id: 'finish-group-2'
-      })
-    })
-
-    it('returns null if materialGroups does not exist', () => {
-      const state = {
-        material: {materialGroups}
-      }
-
-      expect(selectFinishGroup(state, 'some-other-material', 'finish-group-2'), 'to be', null)
-    })
-
-    it('returns null if finish group does not exist', () => {
-      const state = {
-        material: {materialGroups}
-      }
-
-      expect(selectFinishGroup(state, 'material-2', 'some-other-finish-group'), 'to be', null)
-    })
-  })
-
-  describe('selectCurrentMaterialGroup()', () => {
-    let materialGroups
-    let sandbox
-
-    beforeEach(() => {
-      sandbox = sinon.sandbox.create()
-
-      materialGroups = [
-        {
-          id: 'group-1'
-        },
-        {
-          id: 'group-2'
-        }
-      ]
-    })
-
-    afterEach(() => {
-      sandbox.restore()
-    })
-
-    it('returns expected material group', () => {
-      const state = {
-        material: {
-          materialGroups,
-          selectedMaterialGroup: 'group-2'
-        }
-      }
-
-      expect(selectCurrentMaterialGroup(state), 'to equal', {
-        id: 'group-2'
-      })
-    })
-
-    it('returns null if there are no materialGroups in state', () => {
-      const state = {
-        material: {
-          materialGroups: undefined,
-          selectedMaterialGroup: 'group-2'
-        }
-      }
-
-      expect(selectCurrentMaterialGroup(state), 'to be', null)
-    })
-
-    it('returns null if selected material is undefined', () => {
-      const state = {
-        material: {
-          materialGroups,
-          selectedMaterialGroup: undefined
-        }
-      }
-
-      expect(selectCurrentMaterialGroup(state), 'to be', null)
-    })
-  })
-
-  describe('selectCurrentMaterial()', () => {
-    let materialGroups
-    let sandbox
-
-    beforeEach(() => {
-      sandbox = sinon.sandbox.create()
-
-      materialGroups = [
-        {
-          materials: []
-        },
-        {
-          materials: [
-            {
-              id: 'material-1',
-              name: 'Material 1'
-            },
-            {
-              id: 'material-2',
-              name: 'Material 2'
-            }
-          ]
-        }
-      ]
-    })
-
-    afterEach(() => {
-      sandbox.restore()
-    })
-
-    it('returns expected material', () => {
-      const state = {
-        material: {
-          materialGroups,
-          selectedMaterial: 'material-2'
-        }
-      }
-
-      expect(selectCurrentMaterial(state), 'to equal', {
-        id: 'material-2',
-        name: 'Material 2'
-      })
-    })
-
-    it('returns null if there are no materialGroups in state', () => {
-      const state = {
-        material: {
-          materialGroups: undefined,
-          selectedMaterial: 'material-2'
-        }
-      }
-
-      expect(selectCurrentMaterial(state), 'to be', null)
-    })
-
-    it('returns null if selected material is undefined', () => {
-      const state = {
-        material: {
-          materialGroups,
-          selectedMaterial: undefined
-        }
-      }
-
-      expect(selectCurrentMaterial(state), 'to be', null)
-    })
-  })
-
-  describe('selectPrintingServiceRequests()', () => {
-    let state
-
-    beforeEach(() => {
-      state = {
-        price: {
-          printingServiceComplete: {
-            imaterialize: false,
-            shapeways: true
+describe('selectModelsOfModelConfigs()', () => {
+  it('returns selected models of model configs', () => {
+    const state = {
+      core: {
+        uploadingFiles: {
+          'some-file-id': {
+            fileId: 'some-file-id',
+            fileName: 'ome-file-name',
+            fileSize: 42,
+            progress: 1,
+            error: false
           }
-        }
-      }
-    })
-
-    it('returns expected counts', () => {
-      expect(selectPrintingServiceRequests(state), 'to equal', {
-        complete: 1,
-        total: 2
-      })
-    })
-
-    it('returns null if printingServiceComplete object is missing', () => {
-      state.price.printingServiceComplete = null
-      expect(selectPrintingServiceRequests(state), 'to equal', null)
-    })
-  })
-
-  describe('selectOffersForSelectedMaterialConfig', () => {
-    let state
-
-    beforeEach(() => {
-      state = {
-        price: {
-          offers: [
-            {
-              materialConfigId: 'config-1',
-              totalPrice: 10
-            },
-            {
-              materialConfigId: 'config-2',
-              totalPrice: 10
-            },
-            {
-              materialConfigId: 'config-1',
-              totalPrice: 20
-            }
-          ]
         },
-        material: {
-          selectedMaterialConfig: 'config-1'
-        }
-      }
-    })
-
-    it('returns expected offers', () => {
-      expect(selectOffersForSelectedMaterialConfig(state), 'to equal', [
-        {
-          materialConfigId: 'config-1',
-          totalPrice: 10
+        backendModels: {
+          'some-model-id': {
+            modelId: 'some-model-id',
+            fileName: 'some-file-name',
+            fileUnit: 'some-file-uni',
+            area: 42,
+            volume: 23,
+            thumbnailUrl: 'some-url',
+            sceneId: 'some-scene-id'
+          }
         },
-        {
-          materialConfigId: 'config-1',
-          totalPrice: 20
-        }
-      ])
-    })
-
-    it('returns null if offers is null', () => {
-      state.price.offers = null
-      expect(selectOffersForSelectedMaterialConfig(state), 'to equal', null)
-    })
-  })
-
-  describe('selectMaterialByMaterialConfigId', () => {
-    let state
-    let material
-    let materialConfig
-    let otherMaterialConfig
-
-    beforeEach(() => {
-      materialConfig = {
-        id: 'some-material-config-id'
-      }
-      otherMaterialConfig = {
-        id: 'some-other-material-config-id'
-      }
-      material = {
-        finishGroups: [
+        modelConfigs: [
           {
-            materialConfigs: [materialConfig, otherMaterialConfig]
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'some-config-id'
           }
         ]
       }
-      state = {
-        material: {
-          materialGroups: [
-            {
-              materials: [material]
-            }
-          ]
-        }
+    }
+
+    const selected = [
+      {
+        modelId: 'some-model-id',
+        fileName: 'some-file-name',
+        fileUnit: 'some-file-uni',
+        area: 42,
+        volume: 23,
+        thumbnailUrl: 'some-url',
+        sceneId: 'some-scene-id'
+      },
+      {
+        fileId: 'some-file-id',
+        fileName: 'ome-file-name',
+        fileSize: 42,
+        progress: 1,
+        error: false
       }
-    })
+    ]
 
-    it('selects the material by id and returns it together with finish group and material config', () => {
-      expect(selectMaterialByMaterialConfigId(state, 'some-other-material-config-id'), 'to equal', {
-        material,
-        finishGroup: {
-          materialConfigs: [materialConfig, otherMaterialConfig]
-        },
-        materialConfig: otherMaterialConfig
-      })
-    })
-
-    it('returns empty object if it does not find a materialConfig', () => {
-      expect(selectMaterialByMaterialConfigId(state, 'some-3rd-material-config-id'), 'to equal', {})
-    })
-
-    it('returns null if materialGroups are not defined', () => {
-      state.material.materialGroups = undefined
-      expect(selectMaterialByMaterialConfigId(state, 'some-material-config-id'), 'to be', null)
-    })
+    expect(selectModelsOfModelConfigs(state), 'to equal', selected)
   })
+})
 
-  describe('selectedOfferMaterial', () => {
-    let state
-    let material
-    let materialConfig
-
-    beforeEach(() => {
-      materialConfig = {
-        id: 'some-material-config-id'
-      }
-      material = {
-        finishGroups: [
+describe('selectQuotesOfModelConfigs()', () => {
+  it('returns selected quotes of model configs', () => {
+    const state = {
+      core: {
+        quotes: {
+          'quote-1': {
+            quoteId: 'quote-1'
+          }
+        },
+        modelConfigs: [
           {
-            materialConfigs: [materialConfig]
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'some-config-id'
           }
         ]
       }
-      state = {
-        price: {
-          selectedOffer: {
-            materialConfigId: 'some-material-config-id'
+    }
+
+    const selected = [
+      null,
+      {
+        quoteId: 'quote-1'
+      },
+      null
+    ]
+
+    expect(selectQuotesOfModelConfigs(state), 'to equal', selected)
+  })
+})
+
+describe('selectShippingsOfModelConfigs()', () => {
+  it('returns selected shippings of model configs', () => {
+    const state = {
+      core: {
+        shippings: [
+          {
+            shippingId: 'shipping-1'
           }
-        },
-        material: {
-          materialGroups: [
-            {
-              materials: [material]
-            }
-          ]
+        ],
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'some-config-id'
+          }
+        ]
+      }
+    }
+
+    const selected = [
+      null,
+      {
+        shippingId: 'shipping-1'
+      },
+      null
+    ]
+
+    expect(selectShippingsOfModelConfigs(state), 'to equal', selected)
+  })
+})
+
+describe('selectCartCount()', () => {
+  it('returns how many model are in the cart', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: 'some-quote-id', // Is in cart
+            shippingId: null
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: null, // Is not in cart
+            shippingId: null
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'some-config-id'
+          }
+        ]
+      }
+    }
+
+    expect(selectCartCount(state), 'to equal', 1)
+  })
+})
+
+describe('selectUploadedModelConfigs()', () => {
+  it('returns all modelConfigs with type UPLOADED', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'model-id-1',
+            id: 'id-1'
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'model-id-2',
+            id: 'id-2'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'file-id3',
+            id: 'id-3'
+          }
+        ]
+      }
+    }
+
+    expect(selectUploadedModelConfigs(state), 'to equal', [
+      {
+        type: 'UPLOADED',
+        quantity: 1,
+        modelId: 'model-id-1',
+        id: 'id-1'
+      },
+      {
+        type: 'UPLOADED',
+        quantity: 1,
+        modelId: 'model-id-2',
+        id: 'id-2'
+      }
+    ])
+  })
+})
+
+describe('selectSelectedModelConfigs()', () => {
+  it('returns selected model configs', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'config-id-0',
+            quoteId: 'some-quote-id',
+            shippingId: null
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'config-id-1',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'config-id-2'
+          }
+        ],
+        selectedModelConfigs: ['config-id-1']
+      }
+    }
+
+    const selected = [
+      {
+        type: 'UPLOADED',
+        quantity: 1,
+        modelId: 'some-model-id',
+        id: 'config-id-1',
+        quoteId: null,
+        shippingId: null
+      }
+    ]
+
+    expect(selectSelectedModelConfigs(state), 'to equal', selected)
+  })
+})
+
+describe('selectModelConfigsByIds()', () => {
+  it('return selected model configs by id', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'config-id-0',
+            quoteId: 'some-quote-id',
+            shippingId: null
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'config-id-1',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'config-id-2'
+          }
+        ],
+        selectedModelConfigs: ['config-id-1']
+      }
+    }
+
+    const selected = [
+      {
+        type: 'UPLOADED',
+        quantity: 1,
+        modelId: 'some-model-id',
+        id: 'config-id-1',
+        quoteId: null,
+        shippingId: null
+      }
+    ]
+
+    expect(selectModelConfigsByIds(state, ['config-id-1']), 'to equal', selected)
+  })
+})
+
+describe('selectCartShippings()', () => {
+  it('returns all shippings from cart', () => {
+    const state = {
+      core: {
+        shippings: [
+          {
+            shippingId: 'shipping-1'
+          },
+          {
+            shippingId: 'shipping-2'
+          },
+          {
+            shippingId: 'shipping-3'
+          }
+        ],
+        cart: {
+          shippingIds: ['shipping-1', 'shipping-3']
         }
       }
-    })
+    }
 
-    it('selects the material defined in the selectedOffer', () => {
-      expect(selectedOfferMaterial(state), 'to equal', {
-        material,
-        finishGroup: {
-          materialConfigs: [materialConfig]
-        },
-        materialConfig
-      })
-    })
-
-    it('returns null if there is no selected offer', () => {
-      state.price.selectedOffer = undefined
-      expect(selectedOfferMaterial(state), 'to be', null)
-    })
-  })
-
-  describe('selectModelByModelId', () => {
-    let state
-
-    beforeEach(() => {
-      state = {
-        model: {
-          models: [{}, {modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
-        }
+    const selected = [
+      {
+        shippingId: 'shipping-1'
+      },
+      {
+        shippingId: 'shipping-3'
       }
-    })
+    ]
 
-    it('returns expected model', () => {
-      expect(selectModelByModelId(state, 'some-model-2'), 'to equal', {modelId: 'some-model-2'})
-    })
-
-    it('returns null if the model does not exist', () => {
-      expect(selectModelByModelId(state, 'some-other-model-id'), 'to be', null)
-    })
+    expect(selectCartShippings(state), 'to equal', selected)
   })
 
-  describe('selectOfferItems', () => {
-    let state
+  it('returns empty array if there is no cart', () => {
+    const state = {
+      core: {
+        shippings: [
+          {
+            shippingId: 'shipping-1'
+          },
+          {
+            shippingId: 'shipping-2'
+          }
+        ],
+        cart: null
+      }
+    }
 
-    beforeEach(() => {
-      state = {
-        price: {
-          selectedOffer: {
-            items: [
+    expect(selectCartShippings(state), 'to equal', [])
+  })
+})
+
+describe('selectCommonMaterialPathOfModelConfigs()', () => {
+  let state
+
+  beforeEach(() => {
+    state = {
+      core: {
+        materialGroups: [
+          {
+            id: 'material-group-1',
+            materials: [
               {
-                modelId: 'some-model-id'
+                id: 'material-1',
+                finishGroups: [
+                  {
+                    id: 'finish-group-1',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-1',
+                        finishGroupId: 'finish-group-1',
+                        materialId: 'material-1',
+                        materialGroupId: 'material-group-1'
+                      }
+                    ]
+                  }
+                ]
               },
               {
-                modelId: 'some-other-model-id'
-              },
+                id: 'material-2',
+                finishGroups: [
+                  {
+                    id: 'finish-group-2',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-2',
+                        finishGroupId: 'finish-group-2',
+                        materialId: 'material-2',
+                        materialGroupId: 'material-group-1'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            id: 'material-group-3',
+            materials: [
               {
-                modelId: 'some-unknown-id'
+                id: 'material-3',
+                finishGroups: [
+                  {
+                    id: 'finish-group-3',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-3',
+                        finishGroupId: 'finish-group-3',
+                        materialId: 'material-3',
+                        materialGroupId: 'material-group-3'
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           }
+        ],
+        quotes: {
+          'quote-1': {
+            materialConfigId: 'material-config-1'
+          },
+          'quote-2': {
+            materialConfigId: 'material-config-1'
+          },
+          'quote-3': {
+            materialConfigId: 'material-config-2'
+          },
+          'quote-4': {
+            materialConfigId: 'material-config-3'
+          }
         },
-        model: {
-          models: [
-            {
-              modelId: 'some-model-id',
-              thumbnailUrl: 'some-thumbnail-url',
-              fileName: 'some-model-name'
-            },
-            {
-              modelId: 'some-other-model-id',
-              thumbnailUrl: 'some-other-thumbnail-url',
-              fileName: 'some-other-model-name'
-            },
-            {
-              modelId: 'some-other-model-id',
-              fileName: 'some-other-model-name'
-            }
-          ]
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            id: 'model-config-1',
+            quoteId: 'quote-1'
+          },
+          {
+            type: 'UPLOADED',
+            id: 'model-config-2',
+            quoteId: 'quote-2'
+          },
+          {
+            type: 'UPLOADED',
+            id: 'model-config-3',
+            quoteId: 'quote-3'
+          },
+          {
+            type: 'UPLOADED',
+            id: 'model-config-4',
+            quoteId: 'quote-4'
+          },
+          {
+            type: 'UPLOADING',
+            id: 'model-config-5'
+          },
+          {
+            type: 'UPLOADED',
+            id: 'model-config-6',
+            quoteId: null
+          }
+        ]
+      }
+    }
+  })
+
+  it('returns common material path when all material config ids are the same', () => {
+    const selected = {
+      materialConfigId: 'material-config-1',
+      finishGroupId: 'finish-group-1',
+      materialId: 'material-1',
+      materialGroupId: 'material-group-1'
+    }
+
+    expect(
+      selectCommonMaterialPathOfModelConfigs(state, ['model-config-1', 'model-config-2']),
+      'to equal',
+      selected
+    )
+  })
+
+  it('returns null for all values if there is no common path', () => {
+    const selected = {
+      materialConfigId: null,
+      finishGroupId: null,
+      materialId: null,
+      materialGroupId: null
+    }
+
+    expect(
+      selectCommonMaterialPathOfModelConfigs(state, ['model-config-1', 'model-config-4']),
+      'to equal',
+      selected
+    )
+  })
+
+  it('returns common path as far as possible', () => {
+    const selected = {
+      materialConfigId: null,
+      finishGroupId: null,
+      materialId: null,
+      materialGroupId: 'material-group-1'
+    }
+
+    expect(
+      selectCommonMaterialPathOfModelConfigs(state, ['model-config-1', 'model-config-3']),
+      'to equal',
+      selected
+    )
+  })
+
+  it('ignores modelConfig of type UPLOADING', () => {
+    const selected = {
+      materialConfigId: 'material-config-1',
+      finishGroupId: 'finish-group-1',
+      materialId: 'material-1',
+      materialGroupId: 'material-group-1'
+    }
+
+    expect(
+      selectCommonMaterialPathOfModelConfigs(state, ['model-config-1', 'model-config-5']),
+      'to equal',
+      selected
+    )
+  })
+
+  it('ignores modelConfig without quote', () => {
+    const selected = {
+      materialConfigId: 'material-config-1',
+      finishGroupId: 'finish-group-1',
+      materialId: 'material-1',
+      materialGroupId: 'material-group-1'
+    }
+
+    expect(
+      selectCommonMaterialPathOfModelConfigs(state, ['model-config-1', 'model-config-6']),
+      'to equal',
+      selected
+    )
+  })
+
+  it('handles empty array', () => {
+    const selected = {
+      materialConfigId: null,
+      finishGroupId: null,
+      materialId: null,
+      materialGroupId: null
+    }
+
+    expect(selectCommonMaterialPathOfModelConfigs(state, []), 'to equal', selected)
+  })
+})
+
+describe('selectCommonMaterialPathOfModelConfigs()', () => {
+  let state
+  let sandbox
+
+  beforeEach(() => {
+    state = {
+      core: {
+        materialGroups: [
+          {
+            id: 'material-group-1',
+            materials: [
+              {
+                id: 'material-1',
+                finishGroups: [
+                  {
+                    id: 'finish-group-1',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-1',
+                        finishGroupId: 'finish-group-1',
+                        materialId: 'material-1',
+                        materialGroupId: 'material-group-1'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                id: 'material-2',
+                finishGroups: [
+                  {
+                    id: 'finish-group-2',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-2',
+                        finishGroupId: 'finish-group-2',
+                        materialId: 'material-2',
+                        materialGroupId: 'material-group-1'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            id: 'material-group-3',
+            materials: [
+              {
+                id: 'material-3',
+                finishGroups: [
+                  {
+                    id: 'finish-group-3',
+                    materialConfigs: [
+                      {
+                        id: 'material-config-3',
+                        finishGroupId: 'finish-group-3',
+                        materialId: 'material-3',
+                        materialGroupId: 'material-group-3'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        quotes: {
+          'quote-1': {
+            materialConfigId: 'material-config-1',
+            vendorId: 'vendor-id-1'
+          },
+          'quote-2': {
+            materialConfigId: 'material-config-1',
+            vendorId: 'vendor-id-2'
+          }
+        },
+        shippings: [
+          {
+            shippingId: 'shipping-1'
+          },
+          {
+            shippingId: 'shipping-2'
+          }
+        ],
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-2'
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: 'quote-2',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'some-config-id'
+          }
+        ],
+        uploadingFiles: {
+          'some-file-id': {
+            fileId: 'some-file-id',
+            fileName: 'ome-file-name',
+            fileSize: 42,
+            progress: 1,
+            error: false
+          }
+        },
+        backendModels: {
+          'some-model-id': {
+            modelId: 'some-model-id',
+            fileName: 'some-file-name',
+            fileUnit: 'some-file-uni',
+            area: 42,
+            volume: 23,
+            thumbnailUrl: 'some-url',
+            sceneId: 'some-scene-id'
+          }
+        }
+      }
+    }
+
+    sandbox = sinon.sandbox.create()
+
+    sandbox.stub(materialLib, 'getMaterialTreeByMaterialConfigId').returns({
+      materialConfig: {
+        id: 'material-config-id',
+        colorCode: 'color-code',
+        color: 'color',
+        colorImage: 'color-image'
+      },
+      finishGroup: {
+        properties: {
+          printingMethodShort: 'printing-method',
+          printingServiceName: {
+            'vendor-id-1': 'provider-info',
+            'vendor-id-2': 'provider-info-2'
+          }
         }
       }
     })
+  })
 
-    it('returns selectedOffer items with thumbnailUrl', () => {
-      expect(selectOfferItems(state), 'to equal', [
-        {
+  afterEach(() => {
+    sandbox.restore()
+  })
+
+  it('returns all informations about all configured models', () => {
+    expect(selectConfiguredModelInformation(state), 'to equal', [
+      {
+        modelConfig: {
+          type: 'UPLOADED',
+          quantity: 1,
           modelId: 'some-model-id',
-          thumbnailUrl: 'some-thumbnail-url',
-          fileName: 'some-model-name'
+          id: 'some-config-id',
+          quoteId: 'quote-1',
+          shippingId: 'shipping-2'
         },
-        {
-          modelId: 'some-other-model-id',
-          thumbnailUrl: 'some-other-thumbnail-url',
-          fileName: 'some-other-model-name'
+        model: {
+          modelId: 'some-model-id',
+          fileName: 'some-file-name',
+          fileUnit: 'some-file-uni',
+          area: 42,
+          volume: 23,
+          thumbnailUrl: 'some-url',
+          sceneId: 'some-scene-id'
         },
-        {modelId: 'some-unknown-id', thumbnailUrl: null, fileName: null}
-      ])
-    })
-
-    it('returns null if there is no selected offer', () => {
-      state.price.selectedOffer = undefined
-      expect(selectOfferItems(state), 'to be', null)
-    })
-  })
-
-  describe('selectAreAllUploadsFinished()', () => {
-    it('returns true if all uploads are finished', () => {
-      expect(
-        selectAreAllUploadsFinished({
-          model: {
-            numberOfUploads: 0,
-            models: [{modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
-          }
-        }),
-        'to be',
-        true
-      )
-    })
-
-    it('returns false if not all uploads are finished', () => {
-      expect(
-        selectAreAllUploadsFinished({
-          model: {
-            numberOfUploads: 1,
-            models: [{modelId: 'some-model-1'}, {modelId: 'some-model-2'}]
-          }
-        }),
-        'to be',
-        false
-      )
-    })
-
-    it('returns false if no models are uploaded', () => {
-      expect(
-        selectAreAllUploadsFinished({
-          model: {
-            numberOfUploads: 0,
-            models: []
-          }
-        }),
-        'to be',
-        false
-      )
-    })
-  })
-
-  describe('selectFeatures()', () => {
-    it('returns the feature toggles in an object without prototype', () => {
-      const query = new URLSearchParams()
-      const features = {
-        a: true,
-        b: true,
-        c: true,
-        d: true
+        shipping: {shippingId: 'shipping-2'},
+        quote: {
+          materialConfigId: 'material-config-1',
+          vendorId: 'vendor-id-1'
+        },
+        process: 'printing-method',
+        providerInfo: 'provider-info',
+        materialConfigId: 'material-config-id',
+        colorCode: 'color-code',
+        color: 'color',
+        colorImage: 'color-image'
+      },
+      {
+        modelConfig: {
+          type: 'UPLOADED',
+          quantity: 1,
+          modelId: 'some-model-id',
+          id: 'some-config-id',
+          quoteId: 'quote-2',
+          shippingId: 'shipping-1'
+        },
+        model: {
+          modelId: 'some-model-id',
+          fileName: 'some-file-name',
+          fileUnit: 'some-file-uni',
+          area: 42,
+          volume: 23,
+          thumbnailUrl: 'some-url',
+          sceneId: 'some-scene-id'
+        },
+        shipping: {shippingId: 'shipping-1'},
+        quote: {
+          materialConfigId: 'material-config-1',
+          vendorId: 'vendor-id-2'
+        },
+        process: 'printing-method',
+        providerInfo: 'provider-info-2',
+        materialConfigId: 'material-config-id',
+        colorCode: 'color-code',
+        color: 'color',
+        colorImage: 'color-image'
       }
+    ])
+  })
+})
+describe('isQuotePollingDone()', () => {
+  it('returns false when quote polling is not done', () => {
+    const state = {
+      core: {
+        quotePollingId: 'some-polling-id'
+      }
+    }
 
-      query.append('feature:a', true)
-      query.append('feature:b', '')
-      query.append('feature:c', null)
-      query.append('feature:d', false)
+    expect(isQuotePollingDone(state), 'to equal', false)
+  })
 
-      expect(
-        selectFeatures({
-          routing: {
-            location: {
-              search: query.toString()
-            }
-          }
-        }),
-        'to equal',
-        features
-      )
-    })
+  it('returns true when quote polling is done', () => {
+    const state = {
+      core: {
+        quotePollingId: null
+      }
+    }
 
-    it('does not detect query parameters without "feature:" prefix as feature', () => {
-      const query = new URLSearchParams()
-      const features = {}
+    expect(isQuotePollingDone(state), 'to equal', true)
+  })
+})
 
-      query.append('a', true)
-      query.append('b', '')
-      query.append('c', null)
-      query.append('d', false)
+describe('selectQuotePollingProgress()', () => {
+  it('returns the current progress of the polling of the quotes', () => {
+    const state = {
+      core: {
+        printingServiceComplete: {
+          'service-1': true,
+          'service-2': false,
+          'service-3': true
+        }
+      }
+    }
 
-      expect(
-        selectFeatures({
-          routing: {
-            location: {
-              search: query.toString()
-            }
-          }
-        }),
-        'to equal',
-        features
-      )
+    expect(selectQuotePollingProgress(state), 'to equal', {
+      complete: 2,
+      total: 3
     })
   })
 
-  describe('selectSearchParams()', () => {
-    describe('when there is no location query', () => {
-      it('returns an instance of URLSearchParams', () => {
-        const params = selectSearchParams({})
+  it('returns complete 1 if only one service is completed', () => {
+    const state = {
+      core: {
+        printingServiceComplete: {
+          'service-1': true,
+          'service-2': false,
+          'service-3': false
+        }
+      }
+    }
 
-        expect(params instanceof URLSearchParams, 'to equal', true)
-      })
-
-      it('returns an empty URLSearchParams', () => {
-        const params = selectSearchParams({})
-
-        expect([...params.entries()], 'to equal', [])
-      })
+    expect(selectQuotePollingProgress(state), 'to equal', {
+      complete: 1,
+      total: 3
     })
+  })
+})
 
-    describe('when there is a location query', () => {
-      it('returns an instance of URLSearchParams', () => {
-        const params = selectSearchParams({})
+describe('selectQuotes()', () => {
+  it('returns the quotes', () => {
+    const state = {
+      core: {
+        quotes: {
+          'some-id-1': 'some-quote-1',
+          'some-id-2': 'some-quote-2'
+        }
+      }
+    }
 
-        expect(params instanceof URLSearchParams, 'to equal', true)
-      })
+    expect(selectQuotes(state), 'to equal', ['some-quote-1', 'some-quote-2'])
+  })
+})
 
-      it('returns a params object that provides access to the query params', () => {
-        const params = selectSearchParams({
-          routing: {
-            location: {
-              search: 'a&b=false&c=2'
-            }
+describe('selectUsedShippingIdsAndFilter()', () => {
+  it('returns all shipping ids', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            id: 'config-1',
+            type: 'UPLOADED',
+            shippingId: 'shipping-1'
+          },
+          {
+            id: 'config-2',
+            type: 'UPLOADED',
+            shippingId: 'shipping-2'
           }
-        })
-        const pairs = [...params.entries()]
+        ]
+      }
+    }
 
-        expect(pairs, 'to equal', [['a', ''], ['b', 'false'], ['c', '2']])
-      })
-    })
+    expect(selectUsedShippingIdsAndFilter(state), 'to equal', ['shipping-1', 'shipping-2'])
+  })
+
+  it('removes empty values from return list', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            id: 'config-1',
+            type: 'UPLOADED',
+            shippingId: 'shipping-1'
+          },
+          {
+            id: 'config-2',
+            type: 'UPLOADED',
+            shippingId: null
+          },
+          {
+            id: 'config-3',
+            type: 'UPLOADING',
+            shippingId: null
+          }
+        ]
+      }
+    }
+
+    expect(selectUsedShippingIdsAndFilter(state), 'to equal', ['shipping-1'])
+  })
+
+  it('removes duplicates from return list', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            id: 'config-1',
+            type: 'UPLOADED',
+            shippingId: 'shipping-1'
+          },
+          {
+            id: 'config-2',
+            type: 'UPLOADED',
+            shippingId: 'shipping-1'
+          }
+        ]
+      }
+    }
+
+    expect(selectUsedShippingIdsAndFilter(state), 'to equal', ['shipping-1'])
+  })
+
+  it('excludes given model config ids', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            id: 'config-1',
+            type: 'UPLOADED',
+            shippingId: 'shipping-1'
+          },
+          {
+            id: 'config-2',
+            type: 'UPLOADED',
+            shippingId: 'shipping-2'
+          }
+        ]
+      }
+    }
+
+    expect(selectUsedShippingIdsAndFilter(state, ['config-2']), 'to equal', ['shipping-1'])
   })
 })

@@ -1,13 +1,8 @@
-import curry from 'lodash/curry'
+// @flow
 
-export const updateArrayItems = curry((array, test, changes) =>
-  array.map(
-    element =>
-      test(element)
-        ? {
-            ...element,
-            ...changes
-          }
-        : element
-  )
-)
+import partition from 'lodash/partition'
+
+export function partitionBy<T>(array: Array<T>, predicate: T => boolean): Array<T> {
+  const [partitionA, partitionB] = partition(array, predicate)
+  return [...partitionA, ...partitionB]
+}

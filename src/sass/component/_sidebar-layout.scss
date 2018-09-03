@@ -2,11 +2,11 @@
   @include grid;
 
   &__main {
-    @include span(8);
+    @include span(9);
   }
 
   &__aside {
-    @include span(4);
+    @include span(3);
     position: sticky;
     top: 0;
   }

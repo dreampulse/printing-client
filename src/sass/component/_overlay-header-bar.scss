@@ -1,10 +1,13 @@
 .overlay-header-bar {
-  $logo-height: 40px;
-
-  padding: $space-l 0;
   background: $color-invert-bg;
   color: $color-invert-text;
   font-size: $font-size-l;
+
+  padding: $space-l 0;
+
+  @include respond-to(medium) {
+    padding: 0;
+  }
 
   &__main {
     display: flex;
@@ -13,7 +16,7 @@
 
     @include respond-to(medium) {
       flex-direction: row;
-      height: $nav-bar-content-height;
+      height: $nav-bar-content-height + 2 * $space-l;
     }
   }
 
@@ -35,7 +38,19 @@
     @include respond-to(medium) {
       margin-left: $space-l;
       margin-top: 0;
-      width: 300px; // Design decision
+      width: 550px; // Design decision
+
+      & > .provider-progress-bar {
+        width: 300px; // Design decision
+        margin-left: auto;
+      }
+    }
+  }
+
+  &__actions {
+    margin-left: $space-l;
+    & > * + * {
+      margin-left: $space-l;
     }
   }
 }

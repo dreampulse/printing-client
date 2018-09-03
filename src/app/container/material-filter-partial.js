@@ -1,17 +1,14 @@
+// @flow
+
 import React from 'react'
+import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import debounce from 'lodash/debounce'
 
-import {selectCurrentMaterialGroup} from '../lib/selector'
-
 import SearchField from '../component/search-field'
-
-import {filterMaterials} from '../action/material'
-
-import {connectLegacy} from './util/connect-legacy'
 
 const MaterialFilterPartial = ({
   value,
@@ -20,6 +17,7 @@ const MaterialFilterPartial = ({
   onFilterMaterials
 }) => (
   <SearchField
+    classNames={['u-margin-bottom']}
     name="material-search"
     placeholder="Search…"
     value={value}
@@ -35,25 +33,21 @@ const MaterialFilterPartial = ({
 )
 
 const mapStateToProps = state => ({
-  materialGroups: state.material.materialGroups,
-  materialFilter: state.material.materialFilter,
-  selectedMaterialGroup: selectCurrentMaterialGroup(state)
+  materialGroups: state.core.materialGroups
 })
 
-const mapDispatchToProps = {
-  onFilterMaterials: filterMaterials
-}
+const mapDispatchToProps = {}
 
 export default compose(
-  connectLegacy(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     debouncedOnFilterMaterials: props => debounce(props.onFilterMaterials, 300)
   }),
   withState('value', 'setValue', props => props.materialFilter),
   lifecycle({
-    componentWillReceiveProps(nextProps) {
-      if (!this.props.selectedMaterialGroup && nextProps.selectedMaterialGroup) {
-        this.props.setValue('')
+    componentDidUpdate(prevProps) {
+      if (prevProps.materialFilter !== this.props.materialFilter) {
+        this.props.setValue(this.props.materialFilter)
       }
     }
   })

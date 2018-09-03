@@ -1,20 +1,18 @@
 import PropTypes from 'prop-types'
-import React, {Children} from 'react'
+import React from 'react'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
 import Container from './container'
 
-const ConfigurationHeader = ({classNames, modifiers, children}) => (
+const ConfigurationHeader = ({classNames, modifiers, location, currency, text}) => (
   <div className={buildClassName('configuration-header', modifiers, classNames)}>
     <Container>
-      <div className="configuration-header__grid">
-        {Children.map(children, (child, index) => (
-          <div className="configuration-header__cell" key={index}>
-            {child}
-          </div>
-        ))}
+      <div className="configuration-header__wrapper">
+        <div className="configuration-header__location">{location}</div>
+        <div className="configuration-header__currency">{currency}</div>
+        <div className="configuration-header__text">{text}</div>
       </div>
     </Container>
   </div>
@@ -22,7 +20,9 @@ const ConfigurationHeader = ({classNames, modifiers, children}) => (
 
 ConfigurationHeader.propTypes = {
   ...propTypes.component,
-  children: PropTypes.node.isRequired // Expected to have exactly 2 children
+  location: PropTypes.node.isRequired,
+  currency: PropTypes.node.isRequired,
+  text: PropTypes.node.isRequired
 }
 
 export default ConfigurationHeader

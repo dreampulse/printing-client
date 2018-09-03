@@ -1,47 +1,40 @@
-import React from 'react'
-import {compose, lifecycle, renderComponent, branch, withState} from 'recompose'
+// @flow
 
-import {restoreConfiguration} from '../action/configuration'
+import React, {Fragment} from 'react'
+import {connect} from 'react-redux'
+import {withRouter} from 'react-router'
+import compose from 'recompose/compose'
+import lifecycle from 'recompose/lifecycle'
+
+import * as configurationAction from '../action/configuration'
+import * as navigationAction from '../action/navigation'
+
+import Modal from './modal'
 
 import LoadingContainer from '../component/loading-container'
 
-import {connectLegacy} from './util/connect-legacy'
-import ModelPage from './model-page'
-import DirectConfigurationPage from './direct-configuration-page'
+const ConfigurationPage = () => (
+  <Fragment>
+    <LoadingContainer />
+    <Modal />
+  </Fragment>
+)
 
-const mapStateToProps = state => ({
-  configurationId: state.configuration.configurationId,
-  isDirectSales: state.configuration.isDirectSales
-})
+const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {
-  onRestoreConfiguration: restoreConfiguration
+  goToUpload: navigationAction.goToUpload,
+  loadConfiguration: configurationAction.loadConfiguration
 }
 
-export default compose(
-  connectLegacy(mapStateToProps, mapDispatchToProps),
-  withState('isLoading', 'setIsLoading', true),
+const enhance = compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
-    componentWillMount() {
-      const {match: {params}, configurationId, onRestoreConfiguration} = this.props
-
-      // Restore only if configuration id changed
-      if (configurationId !== params.id) {
-        onRestoreConfiguration(params.id).then(() => {
-          this.props.setIsLoading(false)
-        })
-      } else {
-        this.props.setIsLoading(false)
-      }
+    componentDidMount() {
+      this.props.loadConfiguration(this.props.match.params.id).then(() => this.props.goToUpload())
     }
-  }),
-  branch(
-    props => props.isLoading,
-    renderComponent(() => (
-      <div>
-        <LoadingContainer />
-      </div>
-    ))
-  ),
-  branch(props => props.isDirectSales, renderComponent(DirectConfigurationPage))
-)(ModelPage)
+  })
+)
+
+export default enhance(ConfigurationPage)

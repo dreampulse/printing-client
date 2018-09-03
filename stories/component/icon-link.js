@@ -10,6 +10,7 @@ import cartIcon from '../../src/asset/icon/cart.svg'
 storiesOf('Icon Link', module)
   .add('default', () => <IconLink icon={placeholderIcon} onClick={action('click')} />)
   .add('disabled', () => <IconLink icon={placeholderIcon} disabled onClick={action('click')} />)
+  .add('l', () => <IconLink modifiers={['l']} icon={placeholderIcon} onClick={action('click')} />)
   .add('invert', () => (
     <div className="u-invert" style={{width: '100%', minHeight: '100vh'}}>
       <IconLink icon={placeholderIcon} modifiers={['invert']} onClick={action('click')} />

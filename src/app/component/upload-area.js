@@ -59,7 +59,11 @@ export default class UploadArea extends Component {
   }
 
   onInputChange = event => {
-    this.props.onChange(event.target.files)
+    if (event.target.files.length > 0) {
+      this.props.onChange([...event.target.files])
+    }
+    // Clear file input
+    event.target.value = null
   }
 
   render() {
@@ -74,18 +78,16 @@ export default class UploadArea extends Component {
     ]
 
     return (
-      <div
+      <label
         className={buildClassName('upload-area', finalModifiers, classNames)}
         onDragEnter={this.onDragEnter}
         onDragLeave={this.onDragLeave}
         onDragOver={this.onDragOver}
         onDrop={this.onDrop}
+        htmlFor={inputId}
       >
         <Icon source={uploadIcon} />
-        {label}{' '}
-        <label className="upload-area__link" htmlFor={inputId}>
-          {linkLabel}
-        </label>
+        {label} <span className="upload-area__link">{linkLabel}</span>
         <div className="upload-area__description">{description}</div>
         <input
           id={inputId}
@@ -95,7 +97,7 @@ export default class UploadArea extends Component {
           accept={accept}
           onChange={this.onInputChange}
         />
-      </div>
+      </label>
     )
   }
 }

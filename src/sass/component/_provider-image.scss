@@ -2,4 +2,8 @@
   display: block;
   max-width: 100%;
   max-height: 30px;
+
+  &--s {
+    max-height: 20px;
+  }
 }

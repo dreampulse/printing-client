@@ -1,45 +1,101 @@
 // @flow
 
-import {createAction} from 'redux-actions'
+import type {
+  Action,
+  ModalContentType,
+  ModalConfigOpened,
+  MaterialId,
+  FinishGroupId,
+  Location
+} from '../type'
 
-import type {Address} from '../type'
-import TYPE, {MODAL_TYPE} from '../action-type'
+type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
+type CloseModalAction = Action<'MODAL.CLOSE', void>
+export type ModalAction = OpenModalAction | CloseModalAction
 
-export const open = createAction(
-  TYPE.MODAL.OPEN,
-  (contentType: string, contentProps: ?any, isCloseable: ?boolean) => ({
-    contentType,
-    contentProps,
-    isCloseable
+export const CONTENT_TYPE: {[ModalContentType]: ModalContentType} = {
+  PICK_LOCATION: 'PICK_LOCATION',
+  PICK_UNIT: 'PICK_UNIT',
+  MODEL_VIEWER: 'MODEL_VIEWER',
+  MATERIAL: 'MATERIAL',
+  FINISH_GROUP: 'FINISH_GROUP',
+  CONFIRM_LOCATION_CHANGE: 'CONFIRM_LOCATION_CHANGE',
+  CONFIRM_CURRENCY_CHANGE: 'CONFIRM_CURRENCY_CHANGE',
+  FATAL_ERROR: 'FATAL_ERROR'
+}
+
+const open = (config: ModalConfigOpened): OpenModalAction => ({
+  type: 'MODAL.OPEN',
+  payload: config
+})
+
+export const openPickLocationModal = (
+  isCloseable: boolean = false,
+  showWarning: boolean = false
+): OpenModalAction =>
+  open({
+    isCloseable,
+    showWarning,
+    contentType: CONTENT_TYPE.PICK_LOCATION,
+    contentProps: null
   })
-)
 
-export const close = createAction(TYPE.MODAL.CLOSE)
-
-export const openAddressModal = () => open(MODAL_TYPE.SHIPPING_ADDRESS, undefined, false)
-
-export const openFetchingPriceModal = () => open(MODAL_TYPE.FETCHING_PRICE)
-
-export const openPriceLocationChangedModal = (
-  oldShippingAddress: Address,
-  newShippingAddress: Address
-) =>
-  open(MODAL_TYPE.PRICE_LOCATION_CHANGED, {
-    oldShippingAddress,
-    newShippingAddress
+export const openPickUnitModal = (files: FileList): OpenModalAction =>
+  open({
+    isCloseable: false,
+    contentType: CONTENT_TYPE.PICK_UNIT,
+    contentProps: {
+      files
+    }
   })
 
-export const openPriceChangedModal = () => open(MODAL_TYPE.PRICE_CHANGED)
+export const openModelViewerModal = (modelName: string): OpenModalAction =>
+  open({
+    isCloseable: true,
+    contentType: CONTENT_TYPE.MODEL_VIEWER,
+    contentProps: {
+      modelName
+    }
+  })
 
-export const openMaterialModal = ({materialId}: {materialId: string}) =>
-  open(MODAL_TYPE.MATERIAL, {materialId})
+export const openMaterialModal = (materialId: MaterialId) =>
+  open({
+    isCloseable: true,
+    contentType: CONTENT_TYPE.MATERIAL,
+    contentProps: {materialId}
+  })
 
-export const openFinishGroupModal = ({
-  materialId,
-  finishGroupId
-}: {
-  materialId: string,
-  finishGroupId: string
-}) => open(MODAL_TYPE.FINISH_GROUP, {materialId, finishGroupId})
+export const openFinishGroupModal = (finishGroupId: FinishGroupId) =>
+  open({
+    isCloseable: true,
+    contentType: CONTENT_TYPE.FINISH_GROUP,
+    contentProps: {finishGroupId}
+  })
 
-export const openFatalErrorModal = (error: Error) => open(MODAL_TYPE.FATAL_ERROR, {error}, false)
+export const openConfirmLocationChangeModal = (location: Location) =>
+  open({
+    isCloseable: true,
+    contentType: CONTENT_TYPE.CONFIRM_LOCATION_CHANGE,
+    contentProps: {location}
+  })
+
+export const openConfirmCurrencyChangeModal = (currency: string) =>
+  open({
+    isCloseable: true,
+    contentType: CONTENT_TYPE.CONFIRM_CURRENCY_CHANGE,
+    contentProps: {currency}
+  })
+
+export const openFatalErrorModal = (error: Error): OpenModalAction =>
+  open({
+    isCloseable: false,
+    contentType: CONTENT_TYPE.FATAL_ERROR,
+    contentProps: {
+      error
+    }
+  })
+
+export const closeModal = (): CloseModalAction => ({
+  type: 'MODAL.CLOSE',
+  payload: undefined
+})

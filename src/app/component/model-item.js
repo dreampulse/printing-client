@@ -1,61 +1,86 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import fallbackSource from '../../asset/image/model-thumbnail-fallback-1-1.png'
+
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
 
 import ImageContainer from './image-container'
-import NumberField from './number-field'
 import Icon from './icon'
+import Info from './info'
+import ProviderImage from './provider-image'
 import MagnifyableItem from './magnifyable-item'
 
-import deleteIcon from '../../asset/icon/delete.svg'
+import ShippingIcon from '../../asset/icon/shipping.svg'
+
+// Preload fallbackSource as early as possible
+const preloadImage = new global.Image()
+preloadImage.src = fallbackSource
 
 const ModelItem = ({
   classNames,
-  modifiers,
+  modifiers = [],
   imageSource,
-  quantity,
   title,
   subline,
-  onQuantityChange = Function.prototype,
-  onDelete = Function.prototype,
+  quantity,
+  buttonBar,
+  price,
+  deliveryTime,
+  shippingMethod,
+  materialName,
+  color,
+  providerId,
+  providerMaterialName,
   onMagnify = Function.prototype
-}) => {
-  const handleDeleteClick = event => {
-    event.preventDefault()
-    onDelete()
-  }
-
-  return (
-    <div className={buildClassName('model-item', modifiers, classNames)}>
-      <MagnifyableItem
-        classNames={['model-item__preview']}
-        ariaLabel={`Load ${title} in interactive model viewer`}
-        onClick={onMagnify}
-      >
-        <ImageContainer source={imageSource} alt={`Preview image of ${title}`} />
-      </MagnifyableItem>
-      <NumberField modifiers={['compact']} value={quantity} onChange={onQuantityChange} />
-      <div className="model-item__description">
-        {Boolean(title) && <strong className="model-item__title">{title}</strong>}
-        {Boolean(subline) && <span className="model-item__subline">{subline}</span>}
+}) => (
+  <div className={buildClassName('model-item', modifiers, classNames)}>
+    <MagnifyableItem ariaLabel={`Load ${title} in interactive model viewer`} onClick={onMagnify}>
+      <ImageContainer
+        modifiers={['ratio-1-1']}
+        source={imageSource}
+        fallbackSource={fallbackSource}
+        alt={`Preview image of ${title}`}
+      />
+    </MagnifyableItem>
+    <div className="model-item__center-content">
+      <strong className="model-item__title">{title}</strong>
+      {Boolean(subline) && <div className="model-item__subline">{subline}</div>}
+      <div className="model-item__value">{materialName}</div>
+      <div className="model-item__value">{color}</div>
+      <div className="model-item__provider">
+        <ProviderImage slug={providerId} modifiers={['s']} />{' '}
+        {Boolean(providerMaterialName) && <Info modifiers={['minor']}>{providerMaterialName}</Info>}
       </div>
-      <button type="button" className="model-item__delete" onClick={handleDeleteClick}>
-        <Icon source={deleteIcon} />
-      </button>
     </div>
-  )
-}
+    <div className="model-item__right-content">
+      <div className="model-item__price">{price}</div>
+      <div className="model-item__value">Qty: {quantity}</div>
+      <div className="model-item__value">
+        <Icon source={ShippingIcon} /> {deliveryTime}
+      </div>
+      <div className="model-item__value">{shippingMethod}</div>
+    </div>
+    {buttonBar && <div className="model-item__buttons">{buttonBar}</div>}
+  </div>
+)
 
 ModelItem.propTypes = {
   ...propTypes.component,
+  id: PropTypes.string.isRequired, // Necessary for ModelList
   imageSource: PropTypes.string.isRequired,
-  quantity: PropTypes.number.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
   subline: PropTypes.string,
-  onQuantityChange: PropTypes.func,
-  onDelete: PropTypes.func,
+  quantity: PropTypes.number.isRequired,
+  buttonBar: PropTypes.node,
+  color: PropTypes.node.isRequired,
+  price: PropTypes.string.isRequired,
+  deliveryTime: PropTypes.string.isRequired,
+  shippingMethod: PropTypes.string.isRequired,
+  materialName: PropTypes.string.isRequired,
+  providerId: PropTypes.string.isRequired,
+  providerMaterialName: PropTypes.string,
   onMagnify: PropTypes.func
 }
 

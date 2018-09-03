@@ -1,11 +1,16 @@
-import React from 'react'
+// @flow
 
-import {selectMaterial} from '../../lib/selector'
+import React from 'react'
+import {connect} from 'react-redux'
+import compose from 'recompose/compose'
+import withProps from 'recompose/withProps'
+
 import getCloudinaryUrl from '../../lib/cloudinary'
-import {getMaterialFinishGroupProviderNames} from '../../lib/material'
+import {getMaterialFinishGroupProviderNames, getMaterialById} from '../../lib/material'
 import {getFinishGroupProviderNames} from '../../lib/provider-selector'
 
-import {close} from '../../action/modal'
+import type {AppState} from '../../reducer'
+import * as modalActions from '../../action/modal'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -16,14 +21,17 @@ import Column from '../../component/column'
 import Image from '../../component/image'
 import ProviderDefinitionList from '../../component/provider-definition-list'
 
-import {connectLegacy} from '../util/connect-legacy'
-
-const MaterialModal = ({material, onClose}) => {
+const MaterialModal = ({material, closeModal}) => {
   const headline = <Headline label={material.name} modifiers={['l']} />
-  const buttons = [<Button label="Close" onClick={() => onClose()} />]
+  const buttons = [<Button label="Close" onClick={() => closeModal()} />]
 
   return (
-    <Overlay modifiers={['l']} headline={headline} buttons={buttons} closePortal={() => onClose()}>
+    <Overlay
+      modifiers={['l']}
+      headline={headline}
+      buttons={buttons}
+      closePortal={() => closeModal()}
+    >
       <Grid>
         <Column sm={12} md={8} lg={7}>
           <Paragraph classNames={['u-margin-bottom-xl']}>{material.description}</Paragraph>
@@ -47,12 +55,17 @@ const MaterialModal = ({material, onClose}) => {
   )
 }
 
-const mapStateToProps = (state, props) => ({
-  material: selectMaterial(state, props.materialId)
+const mapStateToProps = (state: AppState) => ({
+  materialGroups: state.core.materialGroups
 })
 
 const mapDispatchToProps = {
-  onClose: close
+  closeModal: modalActions.closeModal
 }
 
-export default connectLegacy(mapStateToProps, mapDispatchToProps)(MaterialModal)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withProps(({materialGroups, materialId}) => ({
+    material: getMaterialById(materialGroups, materialId)
+  }))
+)(MaterialModal)

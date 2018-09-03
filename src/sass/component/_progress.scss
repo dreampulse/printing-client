@@ -1,0 +1,36 @@
+.progress {
+  height: 100%;
+
+  &__bar {
+    $progress-bar-background: transparent;
+    $progress-bar-value: currentColor;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+    appearance: none;
+    color: $progress-bar-value;
+    background-color: $progress-bar-background;
+    border: 0;
+
+    &::-webkit-progress-bar {
+      background-color: $progress-bar-background;
+    }
+
+    &::-moz-progress-bar {
+      background-color: $progress-bar-value;
+    }
+
+    &::-ms-fill {
+      border: 0;
+    }
+
+    &::-webkit-progress-value {
+      background-color: $progress-bar-value;
+    }
+
+    &:indeterminate {
+      background-color: $progress-bar-value;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 .upload-area {
   $border-image: url('../asset/image/upload-area-border.gif');
 
+  display: block;
   padding: $space-xxl $space-l;
   margin-bottom: $space-base;
   text-align: center;
@@ -39,5 +40,10 @@
   &--drag {
     background: $color-blue-very-light;
     border-image: none;
+  }
+
+  &--l {
+    padding-top: $space-xxxxl;
+    padding-bottom: $space-xxxxl;
   }
 }
