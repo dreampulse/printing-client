@@ -123,7 +123,7 @@ const UploadPage = ({
   const buttonBar = modelConfig => (
     <ButtonBar>
       <Button
-        label="Choose material …"
+        label="Choose material"
         modifiers={['tiny', 'minor']}
         onClick={() => onChooseMaterial([modelConfig.id])}
       />
