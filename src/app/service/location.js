@@ -1,1 +1,1 @@
-export const reloadPage = () => global.location.reload()
+export const reloadPage = () => global.location.reload(true)
