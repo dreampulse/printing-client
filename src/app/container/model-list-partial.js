@@ -37,8 +37,8 @@ const ModelListPartial = ({
   const primaryActionCounter =
     numberOfSelectedItems > 0 ? ` (${numberOfSelectedItems}/${numberOfItems})` : ''
   const primaryActionLabel = editMode
-    ? `Edit Material${primaryActionCounter} …`
-    : `Choose Material${primaryActionCounter} …`
+    ? `Edit Material${primaryActionCounter}`
+    : `Choose Material${primaryActionCounter}`
 
   const renderPrimaryActions = () => (
     <Button

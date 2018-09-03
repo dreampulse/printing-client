@@ -177,7 +177,7 @@ const CartPage = ({
         modelsWithConfig.length} of ${modelConfigs.length} uploaded items you have not chosen a material. They have not been added to your cart.`}
       button={
         <Button
-          label="Choose material …"
+          label="Choose material"
           onClick={() =>
             goToUpload(
               null,
