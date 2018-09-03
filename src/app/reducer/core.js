@@ -142,10 +142,7 @@ const updateLocation = (state, action) => {
         ...state,
         location: null
       },
-      Cmd.action(
-        // TODO: show warning in PickLocationModal when action.payload.needsConfirmation is true
-        modalAction.openPickLocationModal()
-      )
+      Cmd.action(modalAction.openPickLocationModal())
     )
   }
 
@@ -160,14 +157,20 @@ const updateLocation = (state, action) => {
     )
   }
 
+  const nextState = {
+    ...state,
+    location: action.payload.location
+  }
+
+  // Reset parts of state if countryCode changes
+  if (state.location && state.location.countryCode !== action.payload.location.countryCode) {
+    nextState.quotes = {}
+    nextState.modelConfigs = resetModelConfigs(state.modelConfigs)
+    nextState.cart = null
+  }
+
   return loop(
-    {
-      ...state,
-      location: action.payload.location,
-      quotes: {},
-      modelConfigs: resetModelConfigs(state.modelConfigs),
-      cart: null
-    },
+    nextState,
     Cmd.list([
       Cmd.action(quoteAction.stopReceivingQuotes()),
       Cmd.run(printingEngine.getShippings, {
@@ -524,18 +527,19 @@ const quotesComplete = (state, {payload}) =>
   )
 
 const stopReceivingQuotes = (state, _action) => {
-  const nextState = {
-    ...state,
-    quotePollingId: null,
-    printingServiceComplete: {}
-  }
-
   // Check if we have to quit some active polling
   if (state.quotePollingId) {
-    return loop(nextState, Cmd.action(pollingAction.cancel(state.quotePollingId)))
+    return loop(
+      {
+        ...state,
+        quotePollingId: null,
+        printingServiceComplete: {}
+      },
+      Cmd.action(pollingAction.cancel(state.quotePollingId))
+    )
   }
 
-  return nextState
+  return state
 }
 
 const addToCart = (state, {payload: {configIds, quotes, shipping}}) =>

@@ -15,7 +15,7 @@ import LocationField from '../component/location-field'
 import SelectField from '../component/select-field'
 import SelectMenu from '../component/select-menu'
 
-const ConfigurationHeaderPartial = ({currency, location, onUpdateLocation, onUpdateCurrency}) => {
+const ConfigurationHeaderPartial = ({currency, location, updateLocation, updateCurrency}) => {
   const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
   const currencyMenu = <SelectMenu values={currencies} />
@@ -27,7 +27,7 @@ const ConfigurationHeaderPartial = ({currency, location, onUpdateLocation, onUpd
           <LocationField
             value={location ? formatLocation(location) : ''}
             googleMapsApiKey={config.googleMapsApiKey}
-            onChange={place => onUpdateLocation(convertPlaceToLocation(place))}
+            onChange={place => updateLocation(convertPlaceToLocation(place))}
           />
         </LabeledField>
       }
@@ -36,7 +36,7 @@ const ConfigurationHeaderPartial = ({currency, location, onUpdateLocation, onUpd
           menu={currencyMenu}
           value={selectedCurrencyValue}
           disabled={!(location && location.countryCode)}
-          onChange={({value}) => onUpdateCurrency(value)}
+          onChange={({value}) => updateCurrency(value)}
         />
       }
       text="Printing and shipping prices depend on your location"
@@ -49,8 +49,8 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = {
-  onUpdateLocation: coreAction.updateLocation,
-  onUpdateCurrency: coreAction.updateCurrency
+  updateLocation: coreAction.updateLocation,
+  updateCurrency: coreAction.updateCurrency
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfigurationHeaderPartial)
