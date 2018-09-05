@@ -46,14 +46,14 @@ import PaypalButton from '../component/paypal-button'
 
 const ReviewOrderPage = ({
   user,
-  onGoToAddress,
-  onGoToCart,
-  onPaid,
+  goToAddress,
+  goToCart,
+  orderPaid,
   cart,
   modelsWithConfig,
   cartShippings,
-  onMagnifyModel,
-  onExecutePaypalPayment,
+  openModelViewer,
+  executePaypalPayment,
   paymentInProgress,
   setPaymentInProgress,
   featureFlags,
@@ -106,7 +106,7 @@ const ReviewOrderPage = ({
             )}
             {getCountryName(user.shippingAddress.countryCode)}
             <br />
-            <EditLink label="edit" onClick={() => onGoToAddress('shipping-address')} />
+            <EditLink label="edit" onClick={() => goToAddress('shipping-address')} />
           </Paragraph>
         </Column>
         <Column md={6}>
@@ -145,7 +145,7 @@ const ReviewOrderPage = ({
               : getCountryName(user.shippingAddress.countryCode)}
             <br />
             {user.useDifferentBillingAddress && (
-              <EditLink label="edit" onClick={() => onGoToAddress('billing-address')} />
+              <EditLink label="edit" onClick={() => goToAddress('billing-address')} />
             )}
           </Paragraph>
         </Column>
@@ -164,7 +164,7 @@ const ReviewOrderPage = ({
         try {
           setPaymentInProgress(true)
           const {orderNumber, paymentId} = await payWithStripe()
-          await onPaid({orderNumber, paymentId})
+          await orderPaid({orderNumber, paymentId})
           setPaymentInProgress(false)
           success()
         } catch (error) {
@@ -183,7 +183,7 @@ const ReviewOrderPage = ({
           try {
             setPaymentInProgress(true)
             const {orderNumber, paymentId} = await payWithInvoice()
-            await onPaid({orderNumber, paymentId})
+            await orderPaid({orderNumber, paymentId})
             success()
           } catch (error) {
             // Payment aborted by user
@@ -198,12 +198,12 @@ const ReviewOrderPage = ({
       onClick={async () => {
         setPaymentInProgress(true)
         const {paymentToken, orderNumber, paymentId} = await payWithPaypal()
-        onPaid({orderNumber, paymentId})
+        orderPaid({orderNumber, paymentId})
         return paymentToken
       }}
       onAuthorize={async data => {
         try {
-          const payment = await onExecutePaypalPayment(data)
+          const payment = await executePaypalPayment(data)
           success()
           return payment
         } finally {
@@ -283,7 +283,7 @@ const ReviewOrderPage = ({
           modifiers={['minor', 'l', 'inline']}
           label={
             <Fragment key="label">
-              Your Order <EditLink label="edit" onClick={() => onGoToCart()} />
+              Your Order <EditLink label="edit" onClick={() => goToCart()} />
             </Fragment>
           }
         />
@@ -315,7 +315,7 @@ const ReviewOrderPage = ({
                 providerId={shipping.vendorId}
                 materialName={materialName}
                 providerMaterialName={providerInfo}
-                onMagnify={() => onMagnifyModel(model)}
+                onMagnify={() => openModelViewer(model)}
                 color={
                   <SelectField
                     modifiers={['compact']}
@@ -350,12 +350,12 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onGoToAddress: navigationActions.goToAddress,
-  onGoToCart: navigationActions.goToCart,
-  onGoToSuccess: navigationActions.goToSuccess,
-  onMagnifyModel: modelViewerActions.open,
-  onPaid: orderActions.paid,
-  onExecutePaypalPayment: orderActions.executePaypalPayment
+  goToAddress: navigationActions.goToAddress,
+  goToCart: navigationActions.goToCart,
+  goToSuccess: navigationActions.goToSuccess,
+  openModelViewer: modelViewerActions.open,
+  orderPaid: orderActions.paid,
+  executePaypalPayment: orderActions.executePaypalPayment
 }
 
 const enhance = compose(
@@ -374,7 +374,7 @@ const enhance = compose(
   })),
   withHandlers({
     success: props => () =>
-      props.onGoToSuccess({
+      props.goToSuccess({
         orderNumber: props.orderNumber,
         vendorIds: props.modelsWithConfig.map(info => info.quote.vendorId)
       }),

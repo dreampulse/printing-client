@@ -6,8 +6,8 @@ import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
 import omit from 'lodash/omit'
 
-import {openPickLocationModal} from '../action/modal'
-import {saveUser} from '../action/core'
+import * as modalAction from '../action/modal'
+import * as coreAction from '../action/core'
 import * as navigationAction from '../action/navigation'
 
 import FormLayout from '../component/form-layout'
@@ -46,7 +46,7 @@ const AddressPage = ({
   handleBillingChange,
   billingAddress,
   shippingAddress,
-  onOpenPickLocationModal
+  openPickLocationModal
 }) => {
   const CountrySelect = ({onChange, value, ...props}) => {
     const changeCountry = val => onChange(val.value)
@@ -290,7 +290,7 @@ const AddressPage = ({
               // TODO: remove default
               value={getCountryName(shippingAddress.countryCode || 'de')}
               changeLinkLabel="Change…"
-              onChangeLinkClick={() => onOpenPickLocationModal(true, true)}
+              onChangeLinkClick={() => openPickLocationModal(true, true)}
             />
           </FormRow>
 
@@ -355,11 +355,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onChangeFormValue: change,
-  onSaveUser: saveUser,
-  onOpenPickLocationModal: openPickLocationModal,
-  onGoToReviewOrder: navigationAction.goToReviewOrder,
-  onGoToUpload: navigationAction.goToUpload
+  changeFormValue: change,
+  saveUser: coreAction.saveUser,
+  openPickLocationModal: modalAction.openPickLocationModal,
+  goToReviewOrder: navigationAction.goToReviewOrder,
+  goToUpload: navigationAction.goToUpload
 }
 
 const enhance = compose(
@@ -369,33 +369,33 @@ const enhance = compose(
   withHandlers({
     handleIsCompanyChange: props => isCompany => {
       if (isCompany === false) {
-        props.onChangeFormValue(FORM_NAME, 'companyName', '')
-        props.onChangeFormValue(FORM_NAME, 'vatId', '')
+        props.changeFormValue(FORM_NAME, 'companyName', '')
+        props.changeFormValue(FORM_NAME, 'vatId', '')
       }
     },
     onSubmit: props => values => {
-      props.onSaveUser(values).then(() => {
-        props.onGoToReviewOrder()
+      props.saveUser(values).then(() => {
+        props.goToReviewOrder()
       })
     },
     handleLocationChange: props => userLocation => {
-      props.onChangeFormValue(FORM_NAME, 'shippingAddress.city', userLocation.city)
-      props.onChangeFormValue(FORM_NAME, 'shippingAddress.zipCode', userLocation.zipCode)
-      props.onChangeFormValue(FORM_NAME, 'shippingAddress.stateCode', userLocation.stateCode)
-      props.onChangeFormValue(FORM_NAME, 'shippingAddress.countryCode', userLocation.countryCode)
+      props.changeFormValue(FORM_NAME, 'shippingAddress.city', userLocation.city)
+      props.changeFormValue(FORM_NAME, 'shippingAddress.zipCode', userLocation.zipCode)
+      props.changeFormValue(FORM_NAME, 'shippingAddress.stateCode', userLocation.stateCode)
+      props.changeFormValue(FORM_NAME, 'shippingAddress.countryCode', userLocation.countryCode)
     },
     handleBillingChange: props => useDifferentBillingAddress => {
       if (useDifferentBillingAddress === false) {
-        props.onChangeFormValue(FORM_NAME, 'billingAddress.firstName', '')
-        props.onChangeFormValue(FORM_NAME, 'billingAddress.lastName', '')
-        props.onChangeFormValue(FORM_NAME, 'billingAddress.address', '')
-        props.onChangeFormValue(FORM_NAME, 'billingAddress.addressLine2', '')
-        props.onChangeFormValue(FORM_NAME, 'billingAddress.city', '')
-        props.onChangeFormValue(FORM_NAME, 'billingAddress.zipCode', '')
-        props.onChangeFormValue(FORM_NAME, 'billingAddress.stateCode', '')
-        props.onChangeFormValue(FORM_NAME, 'billingAddress.countryCode', '')
+        props.changeFormValue(FORM_NAME, 'billingAddress.firstName', '')
+        props.changeFormValue(FORM_NAME, 'billingAddress.lastName', '')
+        props.changeFormValue(FORM_NAME, 'billingAddress.address', '')
+        props.changeFormValue(FORM_NAME, 'billingAddress.addressLine2', '')
+        props.changeFormValue(FORM_NAME, 'billingAddress.city', '')
+        props.changeFormValue(FORM_NAME, 'billingAddress.zipCode', '')
+        props.changeFormValue(FORM_NAME, 'billingAddress.stateCode', '')
+        props.changeFormValue(FORM_NAME, 'billingAddress.countryCode', '')
       } else {
-        props.onChangeFormValue(FORM_NAME, 'billingAddress', props.shippingAddress)
+        props.changeFormValue(FORM_NAME, 'billingAddress', props.shippingAddress)
       }
     }
   }),
@@ -430,10 +430,12 @@ const enhance = compose(
       }
 
       if (this.props.cart !== prevProps.cart) {
-        this.props.onGoToUpload({
-          warning: true,
-          message:
-            'We had to remove all model configurations due to an address or currency change. Please reconfigure all uploaded models.'
+        this.props.goToUpload({
+          notification: {
+            warning: true,
+            message:
+              'We had to remove all model configurations due to an address or currency change. Please reconfigure all uploaded models.'
+          }
         })
       }
     }

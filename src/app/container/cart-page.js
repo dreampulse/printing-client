@@ -179,14 +179,13 @@ const CartPage = ({
         <Button
           label="Choose material"
           onClick={() =>
-            goToUpload(
-              null,
-              modelConfigs
+            goToUpload({
+              selectModelConfigIds: modelConfigs
                 .filter(
                   modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null
                 )
                 .map(modelConfig => modelConfig.id)
-            )}
+            })}
           modifiers={['compact', 'minor']}
         />
       }
@@ -251,7 +250,11 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => ({
     const action = modelAction.duplicateModelConfig(id)
     // Flow is crap
     return (dispatch(action): any).then(() => {
-      dispatch(navigationAction.goToUpload(null, [action.payload.nextId]))
+      dispatch(
+        navigationAction.goToUpload({
+          selectModelConfigIds: [action.payload.nextId]
+        })
+      )
     })
   }
 })
