@@ -1,6 +1,6 @@
 // @flow
 
-import {fetch} from '../lib/http-json'
+import {fetch} from './http-json'
 import timeout from './timeout'
 import config from '../../../config'
 
