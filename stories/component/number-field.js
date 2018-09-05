@@ -30,3 +30,8 @@ storiesOf('Number Field', module)
       <NumberField modifiers={['compact']} />
     </HandleValue>
   ))
+  .add('tiny', () => (
+    <HandleValue initialValue={42}>
+      <NumberField modifiers={['tiny']} />
+    </HandleValue>
+  ))

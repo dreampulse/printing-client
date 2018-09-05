@@ -42,19 +42,19 @@ storiesOf('Button', module)
       <Button label="Inverted Button" modifiers={['invert']} onClick={action('click')} />
     </div>
   ))
-  .add('circular', () => (
-    <Button icon={placeholderIcon} modifiers={['circular']} onClick={action('click')} />
+  .add('icon-only', () => (
+    <Button icon={placeholderIcon} modifiers={['icon-only']} onClick={action('click')} />
   ))
-  .add('circular & compact', () => (
-    <Button icon={placeholderIcon} modifiers={['circular', 'compact']} onClick={action('click')} />
+  .add('icon-only & compact', () => (
+    <Button icon={placeholderIcon} modifiers={['icon-only', 'compact']} onClick={action('click')} />
   ))
-  .add('circular & tiny', () => (
-    <Button icon={placeholderIcon} modifiers={['circular', 'tiny']} onClick={action('click')} />
+  .add('icon-only & tiny', () => (
+    <Button icon={placeholderIcon} modifiers={['icon-only', 'tiny']} onClick={action('click')} />
   ))
-  .add('circular & tiny & minor', () => (
+  .add('icon-only & tiny & minor', () => (
     <Button
       icon={placeholderIcon}
-      modifiers={['circular', 'tiny', 'minor']}
+      modifiers={['icon-only', 'tiny', 'minor']}
       onClick={action('click')}
     />
   ))

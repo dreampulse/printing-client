@@ -10,6 +10,7 @@
   border: 1px solid $color-primary;
   border-radius: $border-radius;
   box-shadow: $box-shadow-base;
+  vertical-align: middle;
 
   &__less,
   &__more {
@@ -98,5 +99,22 @@
 
   &--compact {
     height: $compact-field-height;
+  }
+
+  &--tiny {
+    height: $tiny-field-height;
+    width: 100px;
+    padding-left: 30px;
+    padding-right: 30px;
+
+    .number-field__less,
+    .number-field__more {
+      width: 30px;
+      font-size: $font-size-s;
+    }
+
+    .number-field__value {
+      font-size: $font-size-base;
+    }
   }
 }

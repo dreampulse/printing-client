@@ -13,8 +13,6 @@ import compose from 'recompose/compose'
 // import feature3Image from '../../../asset/image/feature3.png'
 
 import deleteIcon from '../../asset/icon/delete.svg'
-import plusIcon from '../../asset/icon/plus.svg'
-import minusIcon from '../../asset/icon/minus.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 import cartIcon from '../../asset/icon/cart.svg'
 
@@ -40,6 +38,7 @@ import UploadModelItem from '../component/upload-model-item'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import Notification from '../component/notification'
+import NumberField from '../component/number-field'
 
 const UploadPage = ({
   onUploadFiles,
@@ -127,25 +126,19 @@ const UploadPage = ({
         modifiers={['tiny', 'minor']}
         onClick={() => onChooseMaterial([modelConfig.id])}
       />
-      <Button
-        icon={minusIcon}
-        disabled={modelConfig.quantity === 1}
-        modifiers={['tiny', 'circular', 'minor']}
-        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity - 1)}
-      />
-      <Button
-        icon={plusIcon}
-        modifiers={['tiny', 'circular', 'minor']}
-        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity + 1)}
+      <NumberField
+        modifiers={['tiny']}
+        value={modelConfig.quantity}
+        onChange={quantity => onChangeQuantities([modelConfig.id], quantity)}
       />
       <Button
         icon={copyIcon}
-        modifiers={['tiny', 'circular', 'minor']}
+        modifiers={['tiny', 'icon-only', 'minor']}
         onClick={() => onDuplicateModelConfig(modelConfig.id)}
       />
       <Button
         icon={deleteIcon}
-        modifiers={['tiny', 'circular', 'minor']}
+        modifiers={['tiny', 'icon-only', 'minor']}
         onClick={() => onDeleteModelConfigs([modelConfig.id])}
       />
     </ButtonBar>
@@ -187,7 +180,6 @@ const UploadPage = ({
               <UploadModelItem
                 key={modelConfig.id}
                 id={modelConfig.id}
-                quantity={modelConfig.quantity}
                 imageSource={model.thumbnailUrl}
                 title={model.fileName}
                 subline={formatDimensions(model.dimensions, model.fileUnit)}
