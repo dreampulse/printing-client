@@ -1,7 +1,9 @@
 // @flow
 
 import React, {Fragment} from 'react'
-import {compose, lifecycle, withHandlers} from 'recompose'
+import compose from 'recompose/compose'
+import lifecycle from 'recompose/lifecycle'
+import withHandlers from 'recompose/withHandlers'
 import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
 import omit from 'lodash/omit'

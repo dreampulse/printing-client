@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import {compose} from 'recompose'
+import compose from 'recompose/compose'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
 

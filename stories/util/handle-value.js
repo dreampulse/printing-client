@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, {cloneElement} from 'react'
-import {compose, withState} from 'recompose'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
 
 const HandleValue = ({
   children,

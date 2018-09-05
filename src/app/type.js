@@ -247,6 +247,7 @@ export type ModalContentType =
   | 'FINISH_GROUP'
   | 'CONFIRM_LOCATION_CHANGE'
   | 'CONFIRM_CURRENCY_CHANGE'
+  | 'SHARE_CONFIGURATION'
 export type ModalConfigClosed = null
 export type ModalConfigOpened = {
   isCloseable: boolean,
