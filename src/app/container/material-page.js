@@ -97,7 +97,7 @@ const MaterialPage = ({
   uploadedModelConfigs,
   usedShippingIds
 }) => {
-  const title = `Choose material (${configIds.length}/${uploadedModelConfigs.length} Items)`
+  const title = `Choose material (${configIds.length} of ${uploadedModelConfigs.length} Items)`
   const numCheckedProviders = pollingProgress.complete || 0
   const numTotalProviders = pollingProgress.total || 0
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, quotes)

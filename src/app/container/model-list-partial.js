@@ -35,7 +35,7 @@ const ModelListPartial = ({
   const numberOfItems = React.Children.count(children)
   const numberOfSelectedItems = selectedModelConfigIds.length
   const primaryActionCounter =
-    numberOfSelectedItems > 0 ? ` (${numberOfSelectedItems}/${numberOfItems})` : ''
+    numberOfSelectedItems > 0 ? ` (${numberOfSelectedItems} of ${numberOfItems})` : ''
   const primaryActionLabel = editMode
     ? `Edit Material${primaryActionCounter}`
     : `Choose Material${primaryActionCounter}`
