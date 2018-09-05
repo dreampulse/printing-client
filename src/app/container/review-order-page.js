@@ -297,6 +297,7 @@ const ReviewOrderPage = ({
               materialName,
               providerInfo,
               materialConfigId,
+              finishGroupName,
               colorCode,
               color,
               colorImage
@@ -322,7 +323,7 @@ const ReviewOrderPage = ({
                     value={{
                       value: materialConfigId,
                       colorValue: colorCode,
-                      label: color,
+                      label: `${color}, ${finishGroupName}`,
                       colorImage:
                         colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
                     }}
