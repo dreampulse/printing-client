@@ -3,10 +3,13 @@ import 'source-map-support/register'
 import expect from 'unexpected'
 import unexpectedSinon from 'unexpected-sinon'
 import sinon from 'sinon'
-import fetch from 'isomorphic-fetch'
+import noop from 'lodash/noop'
 
 expect.use(unexpectedSinon)
 
 global.expect = expect
 global.sinon = sinon
-global.fetch = fetch
+
+// Needs mocks for http service
+global.fetch = noop
+global.Headers = Object
