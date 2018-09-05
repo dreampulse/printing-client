@@ -28,7 +28,7 @@ module.exports = {
   output: {
     path: path.resolve(projectRoot, './dist'),
     publicPath: '/', // All our ressources are placed under the '/'-route (we use aws s3)
-    filename: '[name].[hash].bundle.js',
+    filename: '[name].app.[hash].js',
     // Using the webpack default 'webpack://' conflicts with third-party scripts that have been bundled with webpack
     // As a result, their source folders are merged with ours which can be confusing
     devtoolModuleFilenameTemplate: 'printing-engine-client/[resource-path]'
@@ -112,7 +112,7 @@ module.exports = {
   },
   plugins: compact([
     new ExtractTextPlugin({
-      filename: '[hash].app.css',
+      filename: 'app.[hash].css',
       disable: isDev
     }),
     new webpack.DefinePlugin({
