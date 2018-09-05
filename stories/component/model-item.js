@@ -14,12 +14,12 @@ const buttonBar = () => (
     <Button label="Button" modifiers={['tiny', 'minor']} onClick={action('click')} />
     <Button
       icon={placeholderIcon}
-      modifiers={['tiny', 'circular', 'minor']}
+      modifiers={['tiny', 'icon-only', 'minor']}
       onClick={action('click')}
     />
     <Button
       icon={placeholderIcon}
-      modifiers={['tiny', 'circular', 'minor']}
+      modifiers={['tiny', 'icon-only', 'minor']}
       onClick={action('click')}
     />
   </ButtonBar>

@@ -93,11 +93,8 @@
     padding: 0 1em;
   }
 
-  &--circular {
-    width: $field-height;
-    border-radius: 50%;
-    padding: 0;
-    text-align: center;
+  &--icon-only {
+    padding: 0.5em;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -106,14 +103,6 @@
       top: initial;
       font-size: 1em;
       margin: 0;
-    }
-
-    &.button--compact {
-      width: $compact-field-height;
-    }
-
-    &.button--tiny {
-      width: $tiny-field-height;
     }
   }
 
