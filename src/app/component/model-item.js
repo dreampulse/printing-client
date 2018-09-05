@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import fallbackSource from '../../asset/image/model-thumbnail-fallback-1-1.png'
+import fallbackSource from '../../asset/image/model-thumbnail-fallback.png'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'
