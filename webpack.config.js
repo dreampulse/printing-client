@@ -28,10 +28,10 @@ module.exports = {
   output: {
     path: path.resolve(projectRoot, './dist'),
     publicPath: '/', // All our ressources are placed under the '/'-route (we use aws s3)
-    filename: 'bundle.js',
+    filename: '[name].[hash].bundle.js',
     // Using the webpack default 'webpack://' conflicts with third-party scripts that have been bundled with webpack
     // As a result, their source folders are merged with ours which can be confusing
-    devtoolModuleFilenameTemplate: '/all3dp/printing-engine-client/[resource-path]'
+    devtoolModuleFilenameTemplate: 'printing-engine-client/[resource-path]'
   },
   module: {
     // Throw an error in production build if an export can be found
@@ -44,27 +44,27 @@ module.exports = {
           fallback: {
             loader: 'style-loader',
             options: {
-              sourceMap: isDev
+              sourceMap: true
             }
           },
           use: [
             {
               loader: 'css-loader',
               options: {
-                sourceMap: isDev
+                sourceMap: true
               }
             },
             {
               loader: 'postcss-loader',
               options: {
-                sourceMap: isDev,
+                sourceMap: true,
                 plugins: [autoprefixer({browsers: ['last 2 versions']})]
               }
             },
             {
               loader: 'sass-loader',
               options: {
-                sourceMap: isDev
+                sourceMap: true
               }
             },
             {
@@ -112,7 +112,7 @@ module.exports = {
   },
   plugins: compact([
     new ExtractTextPlugin({
-      filename: 'app.css',
+      filename: '[hash].app.css',
       disable: isDev
     }),
     new webpack.DefinePlugin({
