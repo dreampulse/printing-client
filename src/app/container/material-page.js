@@ -20,7 +20,8 @@ import {
   getMaterialById,
   getMaterialGroupById,
   getMaterialTreeByMaterialConfigId,
-  getProviderName
+  getProviderName,
+  getMaterialConfigById
 } from '../lib/material'
 import {
   getBestMultiModelQuoteForMaterial,
@@ -448,16 +449,25 @@ export default compose(
       selectMaterialConfig: () => id => ({
         selectedMaterialConfigId: id
       }),
-      selectMaterialConfigForFinishGroup: ({selectedMaterialConfigs}) => (
-        materialConfigId,
-        finishGroupId
-      ) => ({
-        selectedMaterialConfigId: null,
-        selectedMaterialConfigs: {
-          ...selectedMaterialConfigs,
-          [finishGroupId]: materialConfigId
+      selectMaterialConfigForFinishGroup: (
+        {selectedMaterialConfigs, selectedMaterialConfigId},
+        {materialGroups}
+      ) => (materialConfigId, finishGroupId) => {
+        const materialConfig = selectedMaterialConfigId
+          ? getMaterialConfigById(materialGroups, selectedMaterialConfigId)
+          : null
+        return {
+          // Keep selection if possible
+          selectedMaterialConfigId:
+            materialConfig && materialConfig.finishGroupId === finishGroupId
+              ? materialConfigId
+              : null,
+          selectedMaterialConfigs: {
+            ...selectedMaterialConfigs,
+            [finishGroupId]: materialConfigId
+          }
         }
-      }),
+      },
       setMaterialFilter: () => materialFilter => ({materialFilter})
     }
   ),
