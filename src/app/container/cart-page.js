@@ -105,6 +105,7 @@ const CartPage = ({
             materialName,
             providerInfo,
             materialConfigId,
+            finishGroupName,
             colorCode,
             color,
             colorImage
@@ -129,7 +130,7 @@ const CartPage = ({
                   value={{
                     value: materialConfigId,
                     colorValue: colorCode,
-                    label: color,
+                    label: `${color}, ${finishGroupName}`,
                     colorImage:
                       colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
                   }}

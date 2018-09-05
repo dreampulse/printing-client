@@ -132,7 +132,8 @@ export const selectConfiguredModelInformation = (state: AppState) =>
         state.core.materialGroups,
         quote.materialConfigId
       )
-      const process = materialTree.finishGroup.properties.printingMethodShort
+
+      const finishGroupName = materialTree.finishGroup.name
       const materialName = materialTree.finishGroup.materialName
       const providerInfo = materialTree.finishGroup.properties.printingServiceName[quote.vendorId]
       const {id: materialConfigId, colorCode, color, colorImage} = materialTree.materialConfig
@@ -142,7 +143,7 @@ export const selectConfiguredModelInformation = (state: AppState) =>
         model,
         shipping,
         quote,
-        process,
+        finishGroupName,
         materialName,
         providerInfo,
         materialConfigId,

@@ -740,8 +740,8 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
         colorImage: 'color-image'
       },
       finishGroup: {
+        name: 'finish-group',
         properties: {
-          printingMethodShort: 'printing-method',
           printingServiceName: {
             'vendor-id-1': 'provider-info',
             'vendor-id-2': 'provider-info-2'
@@ -780,7 +780,7 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
           materialConfigId: 'material-config-1',
           vendorId: 'vendor-id-1'
         },
-        process: 'printing-method',
+        finishGroupName: 'finish-group',
         providerInfo: 'provider-info',
         materialConfigId: 'material-config-id',
         colorCode: 'color-code',
@@ -810,7 +810,7 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
           materialConfigId: 'material-config-1',
           vendorId: 'vendor-id-2'
         },
-        process: 'printing-method',
+        finishGroupName: 'finish-group',
         providerInfo: 'provider-info-2',
         materialConfigId: 'material-config-id',
         colorCode: 'color-code',
@@ -820,6 +820,7 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
     ])
   })
 })
+
 describe('isQuotePollingDone()', () => {
   it('returns false when quote polling is not done', () => {
     const state = {
