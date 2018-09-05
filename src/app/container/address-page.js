@@ -29,15 +29,8 @@ import {guard} from './util/guard'
 import {scrollToTop} from './util/scroll-to-top'
 import CheckoutLayout from './checkout-layout'
 import scrollTo from '../service/scroll-to'
-
-// TODO: this should go into a lib and should be tested
-const required = value => (value ? undefined : 'Required')
-const email = value =>
-  !value || (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value))
-    ? 'Invalid email address'
-    : undefined
-const tel = value =>
-  !value || (value && !/^[+]?[0-9\-\s()]*$/i.test(value)) ? 'Invalid phone number' : undefined
+import {formatTelephoneNumber} from '../lib/formatter'
+import {required, email} from '../lib/validator'
 
 const AddressPage = ({
   handleSubmit,
@@ -65,7 +58,6 @@ const AddressPage = ({
     const stateName = getStateName(countryCode, value)
     const actualValue = !stateName || isDisabled ? undefined : {value, label: stateName}
 
-    // TODO: validation of the select field is not working
     return (
       <SelectField
         validate={!isDisabled ? required : undefined}
@@ -218,7 +210,7 @@ const AddressPage = ({
               type="email"
             />
             <Field
-              validate={tel}
+              normalize={formatTelephoneNumber}
               component={renderField(InputField)}
               label="Phone number"
               name="phoneNumber"

@@ -3,7 +3,8 @@ import {
   formatDeliveryTime,
   formatLocation,
   formatDimensions,
-  formatTimeRange
+  formatTimeRange,
+  formatTelephoneNumber
 } from '../../../../src/app/lib/formatter'
 
 describe('formatPrice()', () => {
@@ -142,4 +143,9 @@ describe('formatDimensions', () => {
   it('returns null if all parameter are undefined', () => {
     expect(formatDimensions({x: null, y: null, z: null}), 'to be null')
   })
+})
+
+describe('formatTelephoneNumber()', () => {
+  it('formats a telephone number', () =>
+    expect(formatTelephoneNumber('0 (751) 12-23'), 'to equal', '07511223'))
 })

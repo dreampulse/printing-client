@@ -44,3 +44,5 @@ export function formatDimensions({x, y, z}, unit) {
 
   return `${round(x)} × ${round(y)}${zStr} ${unit}`
 }
+
+export const formatTelephoneNumber = value => value.replace(/\D/g, '')
