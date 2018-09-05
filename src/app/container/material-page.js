@@ -353,7 +353,9 @@ const MaterialPage = ({
                     if (hasItemsOnUploadPage) {
                       goToUpload()
                     } else {
-                      goToCart(configIds.length)
+                      goToCart({
+                        numAddedItems: configIds.length
+                      })
                     }
                   })
                 }}
@@ -485,9 +487,9 @@ export default compose(
     onClosePage: props => () => {
       // Go to cart page if selected model config has already a quote
       if (props.selectedModelConfigs.length > 0 && props.selectedModelConfigs[0].quoteId) {
-        props.goToCart()
+        props.goToCart({selectModelConfigIds: props.configIds})
       } else {
-        props.goToUpload()
+        props.goToUpload({selectModelConfigIds: props.configIds})
       }
     }
   }),

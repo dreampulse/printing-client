@@ -42,14 +42,14 @@ import ButtonBar from '../component/button-bar'
 import Notification from '../component/notification'
 
 const UploadPage = ({
-  onUploadFiles,
-  onDeleteModelConfigs,
-  onChangeQuantities,
-  onChooseMaterial,
-  onDuplicateModelConfig,
+  openPickUnitModal,
+  deleteModelConfigs,
+  updateQuantities,
+  goToMaterial,
+  duplicateModelConfig,
   modelsWithConfig,
-  onGoToCart,
-  onMagnifyModel,
+  goToCart,
+  openModelViewer,
   cart,
   cartCount,
   location
@@ -114,7 +114,7 @@ const UploadPage = ({
         linkLabel="select files"
         description="Supported file formats: STL, OBJ, WRL, SKP, DAE, 3DS, IGS, FBX, PLY, X3D, STP, PRT, …"
         accept="*"
-        onChange={onUploadFiles}
+        onChange={openPickUnitModal}
         modifiers={compact([numModels === 0 && 'l'])}
       />
     </Section>
@@ -125,28 +125,28 @@ const UploadPage = ({
       <Button
         label="Choose material"
         modifiers={['tiny', 'minor']}
-        onClick={() => onChooseMaterial([modelConfig.id])}
+        onClick={() => goToMaterial([modelConfig.id])}
       />
       <Button
         icon={minusIcon}
         disabled={modelConfig.quantity === 1}
         modifiers={['tiny', 'circular', 'minor']}
-        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity - 1)}
+        onClick={() => updateQuantities([modelConfig.id], modelConfig.quantity - 1)}
       />
       <Button
         icon={plusIcon}
         modifiers={['tiny', 'circular', 'minor']}
-        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity + 1)}
+        onClick={() => updateQuantities([modelConfig.id], modelConfig.quantity + 1)}
       />
       <Button
         icon={copyIcon}
         modifiers={['tiny', 'circular', 'minor']}
-        onClick={() => onDuplicateModelConfig(modelConfig.id)}
+        onClick={() => duplicateModelConfig(modelConfig.id)}
       />
       <Button
         icon={deleteIcon}
         modifiers={['tiny', 'circular', 'minor']}
-        onClick={() => onDeleteModelConfigs([modelConfig.id])}
+        onClick={() => deleteModelConfigs([modelConfig.id])}
       />
     </ButtonBar>
   )
@@ -168,7 +168,7 @@ const UploadPage = ({
                   key={modelConfig.id}
                   title="Upload failed"
                   subline={model.errorMessage}
-                  onDelete={() => onDeleteModelConfigs([modelConfig.id])}
+                  onDelete={() => deleteModelConfigs([modelConfig.id])}
                 />
               )
             }
@@ -178,7 +178,7 @@ const UploadPage = ({
                 status={model.progress}
                 title="Uploading"
                 subline={model.fileName}
-                onDelete={() => onDeleteModelConfigs([modelConfig.id])}
+                onDelete={() => deleteModelConfigs([modelConfig.id])}
               />
             )
           }
@@ -192,7 +192,7 @@ const UploadPage = ({
                 title={model.fileName}
                 subline={formatDimensions(model.dimensions, model.fileUnit)}
                 buttonBar={buttonBar(modelConfig)}
-                onMagnify={() => onMagnifyModel(model)}
+                onMagnify={() => openModelViewer(model)}
               />
             )
           }
@@ -210,7 +210,7 @@ const UploadPage = ({
         <Button
           label="Cart"
           icon={cartIcon}
-          onClick={() => onGoToCart()}
+          onClick={() => goToCart()}
           modifiers={['compact', 'minor']}
         />
       }
@@ -256,13 +256,13 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = {
-  onUploadFiles: modalAction.openPickUnitModal,
-  onDeleteModelConfigs: modelAction.deleteModelConfigs,
-  onChangeQuantities: modelAction.updateQuantities,
-  onDuplicateModelConfig: modelAction.duplicateModelConfig,
-  onChooseMaterial: navigationAction.goToMaterial,
-  onGoToCart: navigationAction.goToCart,
-  onMagnifyModel: modelViewerAction.open
+  openPickUnitModal: modalAction.openPickUnitModal,
+  deleteModelConfigs: modelAction.deleteModelConfigs,
+  updateQuantities: modelAction.updateQuantities,
+  duplicateModelConfig: modelAction.duplicateModelConfig,
+  goToMaterial: navigationAction.goToMaterial,
+  goToCart: navigationAction.goToCart,
+  openModelViewer: modelViewerAction.open
 }
 
 const enhance = compose(scrollToTop(), withRouter, connect(mapStateToProps, mapDispatchToProps))
