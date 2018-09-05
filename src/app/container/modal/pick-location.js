@@ -38,9 +38,7 @@ const PickLocationModal = ({
   const currencyMenu = <SelectMenu values={currencies} />
 
   const headline = <Headline label="Shipping address required" modifiers={['l']} />
-  const headlineWarning = (
-    <Headline label="Warning: Lost configuration" modifiers={['l', 'warning']} />
-  )
+  const headlineWarning = <Headline label="Warning" modifiers={['l', 'warning']} />
 
   const buttons = [
     meta.isCloseable && (

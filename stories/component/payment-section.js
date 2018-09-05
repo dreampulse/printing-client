@@ -7,18 +7,31 @@ import Button from '../../src/app/component/button'
 import creditCardIcon from '../../src/asset/icon/credit-card.svg'
 import paypalIcon from '../../src/asset/icon/paypal.svg'
 
-storiesOf('Payment Section', module).add('default', () => (
-  <PaymentSection
-    subtotal="$245.25"
-    shippings={[
-      {label: 'shipping provider', price: '$5.00'},
-      {label: 'shipping provider', price: '$5.30'}
-    ]}
-    vat="$50.00"
-    total="$345.00"
-    childrenLabel="Pay with:"
-  >
-    <Button modifiers={['block']} icon={creditCardIcon} label="Pay by credit card" />
-    <Button modifiers={['block']} icon={paypalIcon} label="Pay with Paypal" />
-  </PaymentSection>
-))
+storiesOf('Payment Section', module)
+  .add('default', () => (
+    <PaymentSection
+      subtotal="$245.25"
+      shippings={[{label: 'shipping provider', price: '$5.00'}]}
+      vat="$50.00"
+      total="$345.00"
+      childrenLabel="Pay with:"
+    >
+      <Button modifiers={['block']} icon={creditCardIcon} label="Pay by credit card" />
+      <Button modifiers={['block']} icon={paypalIcon} label="Pay with Paypal" />
+    </PaymentSection>
+  ))
+  .add('multiple shippings', () => (
+    <PaymentSection
+      subtotal="$245.25"
+      shippings={[
+        {label: 'shipping provider', price: '$5.00'},
+        {label: 'shipping provider', price: '$5.30'}
+      ]}
+      vat="$50.00"
+      total="$345.00"
+      childrenLabel="Pay with:"
+    >
+      <Button modifiers={['block']} icon={creditCardIcon} label="Pay by credit card" />
+      <Button modifiers={['block']} icon={paypalIcon} label="Pay with Paypal" />
+    </PaymentSection>
+  ))

@@ -17,15 +17,13 @@
     "react-hot-loader/babel"
   ],
   "retainLines": true,
+  "sourceMaps": true,
   "env": {
     "test": {
       "plugins": [
         "istanbul"
       ],
       "sourceMaps": "inline"
-    },
-    "production": {
-      "sourceMaps": true
     }
   }
 }

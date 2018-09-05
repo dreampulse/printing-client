@@ -1,6 +1,8 @@
 // @flow
 // Not using the "global" object here so that flow picks up the correct types.
 /* global fetch, Headers, XMLHttpRequest, FormData */
+import 'whatwg-fetch'
+
 import type {HttpUploadOptions} from '../type'
 import {HttpUploadError} from '../lib/error'
 

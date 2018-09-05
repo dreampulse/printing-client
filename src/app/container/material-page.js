@@ -20,7 +20,8 @@ import {
   getMaterialById,
   getMaterialGroupById,
   getMaterialTreeByMaterialConfigId,
-  getProviderName
+  getProviderName,
+  getMaterialConfigById
 } from '../lib/material'
 import {
   getBestMultiModelQuoteForMaterial,
@@ -97,7 +98,7 @@ const MaterialPage = ({
   uploadedModelConfigs,
   usedShippingIds
 }) => {
-  const title = `Choose material (${configIds.length}/${uploadedModelConfigs.length} Items)`
+  const title = `Choose material (${configIds.length} of ${uploadedModelConfigs.length} Items)`
   const numCheckedProviders = pollingProgress.complete || 0
   const numTotalProviders = pollingProgress.total || 0
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, quotes)
@@ -353,7 +354,9 @@ const MaterialPage = ({
                     if (hasItemsOnUploadPage) {
                       goToUpload()
                     } else {
-                      goToCart(configIds.length)
+                      goToCart({
+                        numAddedItems: configIds.length
+                      })
                     }
                   })
                 }}
@@ -446,16 +449,25 @@ export default compose(
       selectMaterialConfig: () => id => ({
         selectedMaterialConfigId: id
       }),
-      selectMaterialConfigForFinishGroup: ({selectedMaterialConfigs}) => (
-        materialConfigId,
-        finishGroupId
-      ) => ({
-        selectedMaterialConfigId: null,
-        selectedMaterialConfigs: {
-          ...selectedMaterialConfigs,
-          [finishGroupId]: materialConfigId
+      selectMaterialConfigForFinishGroup: (
+        {selectedMaterialConfigs, selectedMaterialConfigId},
+        {materialGroups}
+      ) => (materialConfigId, finishGroupId) => {
+        const materialConfig = selectedMaterialConfigId
+          ? getMaterialConfigById(materialGroups, selectedMaterialConfigId)
+          : null
+        return {
+          // Keep selection if possible
+          selectedMaterialConfigId:
+            materialConfig && materialConfig.finishGroupId === finishGroupId
+              ? materialConfigId
+              : null,
+          selectedMaterialConfigs: {
+            ...selectedMaterialConfigs,
+            [finishGroupId]: materialConfigId
+          }
         }
-      }),
+      },
       setMaterialFilter: () => materialFilter => ({materialFilter})
     }
   ),
@@ -485,9 +497,9 @@ export default compose(
     onClosePage: props => () => {
       // Go to cart page if selected model config has already a quote
       if (props.selectedModelConfigs.length > 0 && props.selectedModelConfigs[0].quoteId) {
-        props.goToCart()
+        props.goToCart({selectModelConfigIds: props.configIds})
       } else {
-        props.goToUpload()
+        props.goToUpload({selectModelConfigIds: props.configIds})
       }
     }
   }),

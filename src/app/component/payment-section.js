@@ -24,14 +24,19 @@ const PaymentSection = ({
         {shippings.length > 0 && (
           <li className="payment-section__price-component">
             <span className="payment-section__price-label">Shipping:</span>
-            <ul className="payment-section__price-detail">
-              {shippings.map(shipping => (
-                <li key={shipping.label} className="payment-section__price-detail-item">
-                  <span className="payment-section__price-detail-label">{shipping.label}</span>
-                  <span className="payment-section__price-detail-value">{shipping.price}</span>
-                </li>
-              ))}
-            </ul>
+            {shippings.length === 1 && (
+              <span className="payment-section__price-value">{shippings[0].price}</span>
+            )}
+            {shippings.length > 1 && (
+              <ul className="payment-section__price-detail">
+                {shippings.map(shipping => (
+                  <li key={shipping.label} className="payment-section__price-detail-item">
+                    <span className="payment-section__price-detail-label">{shipping.label}</span>
+                    <span className="payment-section__price-detail-value">{shipping.price}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         )}
         <li className="payment-section__price-component">
