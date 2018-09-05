@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {compose, withState} from 'recompose'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
 
 import propTypes from '../lib/prop-types'
 import buildClassName from '../lib/build-class-name'

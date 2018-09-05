@@ -1,4 +1,4 @@
-import {lifecycle} from 'recompose'
+import lifecycle from 'recompose/lifecycle'
 
 // Scrolls to top on mount
 export const scrollToTop = () =>

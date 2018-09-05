@@ -13,6 +13,7 @@ import PickLocationModal from './pick-location'
 import PickUnitModal from './pick-unit'
 import ConfirmLocationChangeModal from './confirm-location-change'
 import ConfirmCurrencyChangeModal from './confirm-currency-change'
+import ShareConfigurationModal from './share-configuration'
 
 const modals = {
   [CONTENT_TYPE.FATAL_ERROR]: FatalErrorModal,
@@ -22,7 +23,8 @@ const modals = {
   [CONTENT_TYPE.PICK_LOCATION]: PickLocationModal,
   [CONTENT_TYPE.PICK_UNIT]: PickUnitModal,
   [CONTENT_TYPE.CONFIRM_LOCATION_CHANGE]: ConfirmLocationChangeModal,
-  [CONTENT_TYPE.CONFIRM_CURRENCY_CHANGE]: ConfirmCurrencyChangeModal
+  [CONTENT_TYPE.CONFIRM_CURRENCY_CHANGE]: ConfirmCurrencyChangeModal,
+  [CONTENT_TYPE.SHARE_CONFIGURATION]: ShareConfigurationModal
 }
 
 const getContent = (contentType, contentProps, meta) => {

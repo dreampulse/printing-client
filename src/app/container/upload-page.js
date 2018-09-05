@@ -52,7 +52,8 @@ const UploadPage = ({
   onMagnifyModel,
   cart,
   cartCount,
-  location
+  location,
+  featureFlags
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -159,7 +160,7 @@ const UploadPage = ({
         }
         modifiers={['xl']}
       />
-      <ModelListPartial>
+      <ModelListPartial enableShare={featureFlags.share}>
         {modelsWithConfig.map(([modelConfig, model]) => {
           if (modelConfig.type === 'UPLOADING') {
             if (model.error) {
@@ -252,7 +253,8 @@ const mapStateToProps = (state: AppState) => ({
     return mc.type !== 'UPLOADED' || mc.quoteId === null
   }),
   cart: state.core.cart,
-  cartCount: selectCartCount(state)
+  cartCount: selectCartCount(state),
+  featureFlags: state.core.featureFlags
 })
 
 const mapDispatchToProps = {

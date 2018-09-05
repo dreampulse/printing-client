@@ -4,8 +4,8 @@ import React from 'react'
 import {Redirect} from 'react-router'
 import {connect} from 'react-redux'
 import uniq from 'lodash/uniq'
-
-import {compose, lifecycle} from 'recompose'
+import compose from 'recompose/compose'
+import lifecycle from 'recompose/lifecycle'
 
 import {getProviderName} from '../lib/provider-selector'
 

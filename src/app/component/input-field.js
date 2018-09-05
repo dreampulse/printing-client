@@ -13,6 +13,8 @@ export default class InputField extends Component {
     name: PropTypes.string,
     type: PropTypes.string,
     onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+    autoFocus: PropTypes.bool,
     id: PropTypes.string,
     disabled: PropTypes.bool
   }

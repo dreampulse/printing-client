@@ -2,7 +2,8 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import {compose, withState} from 'recompose'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
 
 import * as modalActions from '../../action/modal'
 import * as modelActions from '../../action/model'

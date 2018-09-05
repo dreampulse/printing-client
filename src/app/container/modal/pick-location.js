@@ -2,7 +2,8 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import {compose, withState} from 'recompose'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
 import compact from 'lodash/compact'
 
 import Button from '../../component/button'
