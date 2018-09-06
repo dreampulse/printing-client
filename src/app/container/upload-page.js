@@ -140,7 +140,7 @@ const UploadPage = ({
       <Button
         icon={deleteIcon}
         modifiers={['tiny', 'icon-only', 'minor']}
-        onClick={() => duplicateModelConfig([modelConfig.id])}
+        onClick={() => deleteModelConfigs([modelConfig.id])}
       />
     </ButtonBar>
   )
