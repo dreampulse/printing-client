@@ -101,7 +101,11 @@ const MaterialPage = ({
   const title = `Choose material (${configIds.length} of ${uploadedModelConfigs.length} Items)`
   const numCheckedProviders = pollingProgress.complete || 0
   const numTotalProviders = pollingProgress.total || 0
-  const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, quotes)
+  // Filter out quotes which do not have a valid shipping method
+  const validQuotes = quotes.filter(quote =>
+    shippings.some(shipping => shipping.vendorId === quote.vendorId)
+  )
+  const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, validQuotes)
 
   const finishSectionEnabled = Boolean(selectedMaterial)
   const providerSectionEnabled = selectedMaterialConfigId
