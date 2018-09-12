@@ -15,7 +15,6 @@ import checkoutIcon from '../../../asset/icon/checkout.svg'
 const ProviderItem = ({
   classNames,
   modifiers,
-  providerSlug,
   providerName,
   price,
   shippingPrice,
@@ -31,19 +30,17 @@ const ProviderItem = ({
 }) => (
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
     <td className="provider-item__provider">
-      <AnnotatedTableCell annotation={providerInfo}>
-        <ProviderImage name={providerName} slug={providerSlug} />
-      </AnnotatedTableCell>
+      <AnnotatedTableCell annotation={providerInfo}>{providerName}</AnnotatedTableCell>
     </td>
     <td className="provider-item__process">
       <AnnotatedTableCell>{process}</AnnotatedTableCell>
     </td>
     <td className="provider-item__price">
-      <AnnotatedTableCell annotation={productionTime}>{price}</AnnotatedTableCell>
+      <AnnotatedTableCell annotation={price}>{productionTime}</AnnotatedTableCell>
     </td>
     <td className="provider-item__shipping-price">
-      <AnnotatedTableCell annotation={deliveryTime}>
-        {shippingPrice}
+      <AnnotatedTableCell annotation={shippingPrice}>
+        {deliveryTime}
         <Info modifiers={['minor']}>
           <Paragraph>{deliveryProvider}</Paragraph>
         </Info>
@@ -51,7 +48,7 @@ const ProviderItem = ({
     </td>
     <td className="provider-item__total-price">
       <AnnotatedTableCell>
-        {totalPrice}
+        <strong>{totalPrice}</strong>
         {includesVat && (
           <Info modifiers={['minor']}>
             <Paragraph>incl. 19% VAT</Paragraph>
