@@ -105,6 +105,7 @@ const ModelListPartial = ({
       onChangeCheckedIds={updateSelectedModelConfigs}
       primaryActions={renderPrimaryActions()}
       secondaryActions={renderSecondaryActions()}
+      headerAlwaysVisible={enableShare}
     >
       {children}
     </ModelList>

@@ -19,7 +19,8 @@ const ModelList = ({
   ids,
   checkedIds,
   toggleId,
-  toggleAll
+  toggleAll,
+  headerAlwaysVisible
 }) => {
   const numChildren = React.Children.count(children)
   const childrenList = React.Children.map(children, (child, index) => {
@@ -28,7 +29,7 @@ const ModelList = ({
       <li className="model-list__item" key={id || index}>
         {child}
         {id &&
-          numChildren > 1 && (
+          (numChildren > 1 || headerAlwaysVisible) && (
             <div className="model-list__checkbox">
               <CheckboxField checked={checkedIds.includes(id)} onChange={() => toggleId(id)} />
             </div>
@@ -51,7 +52,7 @@ const ModelList = ({
 
   return (
     <div className={buildClassName('model-list', modifiers, classNames)}>
-      {numChildren > 1 && (
+      {(numChildren > 1 || headerAlwaysVisible) && (
         <div className="model-list__header">
           <div className="model-list__header-checkbox">
             <CheckboxField checked={ids.length === checkedIds.length} onChange={toggleAll} />
