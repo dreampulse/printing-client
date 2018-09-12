@@ -19,6 +19,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       providerInfo="Provider Material Name"
       onAddToCartClick={action('click')}
       productionTime="4-6 days"
+      checkoutLabel="Checkout"
     />
     <ProviderItem
       providerSlug="sculpteo"
@@ -33,6 +34,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       providerInfo="Provider Material Name"
       onAddToCartClick={action('click')}
       productionTime="6-10 days"
+      checkoutLabel="Checkout"
     />
     <ProviderItem
       providerSlug="shapeways"
@@ -46,6 +48,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       providerInfo="Provider Material Name"
       onAddToCartClick={action('click')}
       productionTime="4-6 days"
+      checkoutLabel="Checkout"
     />
     <ProviderItem
       providerSlug="trinckle"
@@ -59,6 +62,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       providerInfo="Provider Material Name"
       onAddToCartClick={action('click')}
       productionTime="4-6 days"
+      checkoutLabel="Checkout"
     />
     <ProviderItem
       providerSlug="treatstock"
@@ -72,6 +76,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       providerInfo="Provider Material Name"
       onAddToCartClick={action('click')}
       productionTime="4-6 days"
+      checkoutLabel="Checkout"
     />
     <ProviderItem
       providerSlug="ff3dm"
@@ -85,6 +90,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       providerInfo="Provider Material Name"
       onAddToCartClick={action('click')}
       productionTime="4-6 days"
+      checkoutLabel="Checkout"
     />
   </ProviderList>
 ))
