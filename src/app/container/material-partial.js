@@ -80,7 +80,7 @@ const MaterialPartial = ({
   openMaterialModal,
   openFinishGroupModal,
   addToCart,
-  goToCart,
+  goToAddress,
   quotes,
   selectedModelConfigs,
   shippings,
@@ -344,6 +344,7 @@ const MaterialPartial = ({
                 totalPrice={formatPrice(grossPrice, multiModelQuote.currency)}
                 includesVat={false}
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
+                checkoutLabel={hasItemsOnUploadPage ? 'Add to cart' : 'Checkout'}
                 onAddToCartClick={() => {
                   addToCart(configIds, multiModelQuote.quotes, shipping)
                   if (isUploadPage && hasItemsOnUploadPage) {
@@ -359,9 +360,7 @@ const MaterialPartial = ({
                     )
                     scrollTo('#root')
                   } else {
-                    goToCart({
-                      numAddedItems: configIds.length
-                    })
+                    goToAddress()
                   }
                 }}
               />
@@ -398,8 +397,7 @@ const mapStateToProps = (state: AppState, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-  goToUpload: navigationAction.goToUpload,
-  goToCart: navigationAction.goToCart,
+  goToAddress: navigationAction.goToAddress,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,
