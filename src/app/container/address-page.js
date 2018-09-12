@@ -210,6 +210,7 @@ const AddressPage = ({
               type="email"
             />
             <Field
+              validate={required}
               normalize={formatTelephoneNumber}
               component={renderField(InputField)}
               label="Phone number"
