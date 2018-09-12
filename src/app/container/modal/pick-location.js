@@ -32,7 +32,8 @@ const PickLocationModal = ({
   onUpdateLocation,
   onUpdateCurrency,
   closeModal,
-  meta
+  meta,
+  confirmation
 }) => {
   const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
@@ -46,14 +47,14 @@ const PickLocationModal = ({
       <Button
         key="close"
         label="Cancel"
-        modifiers={compact([!meta.showWarning && 'text'])}
+        modifiers={compact([!confirmation && 'text'])}
         onClick={() => closeModal()}
       />
     ),
     <Button
       label="OK"
       key="ok"
-      modifiers={compact([meta.showWarning && 'text'])}
+      modifiers={compact([confirmation && 'text'])}
       disabled={!isLocationValid(location) || !currency}
       onClick={() => {
         onUpdateLocation(location, true)
@@ -65,11 +66,11 @@ const PickLocationModal = ({
 
   return (
     <Overlay
-      headline={meta.showWarning ? headlineWarning : headline}
+      headline={confirmation ? headlineWarning : headline}
       buttons={compact(buttons)}
-      closeable={false}
+      closeable={meta.isCloseable}
     >
-      {meta.showWarning ? (
+      {confirmation ? (
         <Paragraph>
           If you change your country or currency you have to reconfigure all models.
         </Paragraph>

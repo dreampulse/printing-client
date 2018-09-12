@@ -285,7 +285,7 @@ const AddressPage = ({
               // TODO: remove default
               value={getCountryName(shippingAddress.countryCode || 'de')}
               changeLinkLabel="Change…"
-              onChangeLinkClick={() => openPickLocationModal(true, true)}
+              onChangeLinkClick={() => openPickLocationModal({confirmation: true})}
             />
           </FormRow>
 

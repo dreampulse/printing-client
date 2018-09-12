@@ -4,7 +4,7 @@ import {Portal} from 'react-portal'
 import lifecycle from 'recompose/lifecycle'
 import compose from 'recompose/compose'
 
-import {CONTENT_TYPE, close} from '../../action/modal'
+import {CONTENT_TYPE, closeModal} from '../../action/modal'
 import FatalErrorModal from './fatal-error'
 import ModelViewerModal from './model-viewer'
 import MaterialModal from './material'
@@ -37,12 +37,11 @@ const getContent = (contentType, contentProps, meta) => {
   throw new Error(`Unknown modal contentType "${contentType}"`)
 }
 
-const Modal = ({isOpen, contentType, contentProps, isCloseable, showWarning}) =>
+const Modal = ({isOpen, contentType, contentProps, isCloseable}) =>
   isOpen && (
     <Portal>
       {getContent(contentType, contentProps, {
-        isCloseable,
-        showWarning
+        isCloseable
       })}
     </Portal>
   )
@@ -53,7 +52,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onModalClose: close
+  onModalClose: closeModal
 }
 
 const enhance = compose(

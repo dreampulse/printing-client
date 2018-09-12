@@ -107,7 +107,7 @@ const init = (state, {payload: {featureFlags, urlParams}}) =>
       }),
       Cmd.run(getLocationByIp, {
         successActionCreator: coreAction.updateLocation,
-        failActionCreator: modalAction.openPickLocationModal,
+        failActionCreator: () => modalAction.openPickLocationModal({confirmation: false}),
         args: []
       })
     ])
@@ -131,9 +131,14 @@ const updateMaterialGroups = (state, action) => ({
 })
 
 const updateLocation = (state, action) => {
-  // Do nothing if location did not change
+  const nextState = {
+    ...state,
+    location: action.payload.location
+  }
+
+  // No side effects if location did not change
   if (isEqual(state.location, action.payload.location)) {
-    return state
+    return nextState
   }
 
   if (!isLocationValid(action.payload.location)) {
@@ -142,7 +147,7 @@ const updateLocation = (state, action) => {
         ...state,
         location: null
       },
-      Cmd.action(modalAction.openPickLocationModal())
+      Cmd.action(modalAction.openPickLocationModal({confirmation: false}))
     )
   }
 
@@ -153,13 +158,13 @@ const updateLocation = (state, action) => {
   ) {
     return loop(
       state,
-      Cmd.action(modalAction.openConfirmLocationChangeModal(action.payload.location))
+      Cmd.action(
+        modalAction.openConfirmLocationChangeModal({
+          location: action.payload.location,
+          previousLocation: state.location
+        })
+      )
     )
-  }
-
-  const nextState = {
-    ...state,
-    location: action.payload.location
   }
 
   // Reset parts of state if countryCode changes
@@ -171,14 +176,11 @@ const updateLocation = (state, action) => {
 
   return loop(
     nextState,
-    Cmd.list([
-      Cmd.action(quoteAction.stopReceivingQuotes()),
-      Cmd.run(printingEngine.getShippings, {
-        args: [action.payload.location.countryCode, state.currency],
-        successActionCreator: coreAction.updateShippings,
-        failActionCreator: coreAction.fatalError
-      })
-    ])
+    Cmd.run(printingEngine.getShippings, {
+      args: [action.payload.location.countryCode, state.currency],
+      successActionCreator: coreAction.updateShippings,
+      failActionCreator: coreAction.fatalError
+    })
   )
 }
 
@@ -208,14 +210,11 @@ const updateCurrency = (state, action) => {
       modelConfigs: resetModelConfigs(state.modelConfigs),
       cart: null
     },
-    Cmd.list([
-      Cmd.action(quoteAction.stopReceivingQuotes()),
-      Cmd.run(printingEngine.getShippings, {
-        args: [state.location && state.location.countryCode, action.payload.currency],
-        successActionCreator: coreAction.updateShippings,
-        failActionCreator: coreAction.fatalError
-      })
-    ])
+    Cmd.run(printingEngine.getShippings, {
+      args: [state.location && state.location.countryCode, action.payload.currency],
+      successActionCreator: coreAction.updateShippings,
+      failActionCreator: coreAction.fatalError
+    })
   )
 }
 

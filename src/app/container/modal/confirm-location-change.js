@@ -13,10 +13,16 @@ import Overlay from '../../component/overlay'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 
-const ConfirmLocationChangeModal = ({location, updateLocation, closeModal}) => {
+const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation, closeModal}) => {
   const headline = <Headline label="Confirmation necessary" modifiers={['l', 'warning']} />
   const buttons = [
-    <Button label="Cancel" modifiers={['text']} onClick={() => closeModal()} />,
+    <Button
+      label="Cancel"
+      onClick={() => {
+        updateLocation({...previousLocation}, true)
+        closeModal()
+      }}
+    />,
     <Button
       label="Confirm"
       modifiers={['text']}
