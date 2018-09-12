@@ -1,5 +1,4 @@
 // @flow
-
 import React from 'react'
 import {connect} from 'react-redux'
 import compact from 'lodash/compact'
@@ -12,8 +11,9 @@ import withHandlers from 'recompose/withHandlers'
 import ModelList from '../component/model-list'
 import Button from '../component/button'
 import NumberField from '../component/number-field'
-import type {AppState} from '../reducer'
+import Link from '../component/link'
 
+import type {AppState} from '../reducer'
 import * as coreAction from '../action/core'
 import * as modelAction from '../action/model'
 import * as modalAction from '../action/modal'
@@ -39,19 +39,37 @@ const ModelListPartial = ({
   const disabled = selectedModelConfigIds.length === 0
   const numberOfItems = React.Children.count(children)
   const numberOfSelectedItems = selectedModelConfigIds.length
-  const primaryActionCounter =
-    numberOfSelectedItems > 0 ? ` (${numberOfSelectedItems} of ${numberOfItems})` : ''
-  const primaryActionLabel = editMode
-    ? `Edit Material${primaryActionCounter}`
-    : `Choose Material${primaryActionCounter}`
 
-  const renderPrimaryActions = () => (
-    <Button
-      disabled={disabled}
-      label={primaryActionLabel}
-      onClick={() => onPrimaryActionClick(selectedModelConfigIds)}
-    />
-  )
+  const renderPrimaryActions = () => {
+    if (editMode) {
+      return (
+        <Button
+          modifiers={['tiny', 'minor']}
+          disabled={disabled}
+          label={`Edit Material${numberOfSelectedItems > 0
+            ? ` (${numberOfSelectedItems} of ${numberOfItems})`
+            : ''}`}
+          onClick={() => onPrimaryActionClick(selectedModelConfigIds)}
+        />
+      )
+    }
+
+    return (
+      <span>
+        {numberOfSelectedItems} of {numberOfItems} files selected
+        {numberOfSelectedItems > 0 && ' – '}
+        {numberOfSelectedItems > 0 && (
+          <Link
+            label="Proceed"
+            onClick={event => {
+              event.preventDefault()
+              onPrimaryActionClick(selectedModelConfigIds)
+            }}
+          />
+        )}
+      </span>
+    )
+  }
 
   const renderSecondaryActions = () =>
     compact([
@@ -59,13 +77,14 @@ const ModelListPartial = ({
         <NumberField
           disabled={disabled || commonQuantity === null}
           key="quantity"
+          modifiers={['tiny']}
           value={commonQuantity}
           onChange={quantity => updateQuantities(selectedModelConfigIds, quantity)}
         />
       ),
       <Button
         disabled={disabled}
-        modifiers={['minor']}
+        modifiers={['tiny', 'minor', 'icon-only']}
         icon={deleteIcon}
         key="delete"
         onClick={() => deleteModelConfigs(selectedModelConfigIds)}
@@ -73,7 +92,7 @@ const ModelListPartial = ({
       enableShare && (
         <Button
           disabled={disabled}
-          modifiers={['minor']}
+          modifiers={['tiny', 'minor']}
           label="Share configuration"
           onClick={() => createConfiguration(selectedModelConfigIds)}
         />
