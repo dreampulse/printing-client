@@ -46,8 +46,8 @@ const ProviderItem = ({
       </AnnotatedTableCell>
     </td>
     <td className="provider-item__total-price">
-      <AnnotatedTableCell>
-        <strong>{totalPrice}</strong>
+      <AnnotatedTableCell modifiers={['strong']}>
+        {totalPrice}
         {includesVat && (
           <Info modifiers={['minor']}>
             <Paragraph>incl. 19% VAT</Paragraph>
