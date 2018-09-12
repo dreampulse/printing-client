@@ -2,7 +2,6 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import cloneDeep from 'lodash/cloneDeep'
 
 import * as modalActions from '../../action/modal'
 import * as coreActions from '../../action/core'
@@ -20,7 +19,7 @@ const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation,
     <Button
       label="Cancel"
       onClick={() => {
-        updateLocation(cloneDeep(previousLocation), true)
+        updateLocation({...previousLocation}, true)
         closeModal()
       }}
     />,
