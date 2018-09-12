@@ -2,6 +2,7 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
+import cloneDeep from 'lodash/cloneDeep'
 
 import * as modalActions from '../../action/modal'
 import * as coreActions from '../../action/core'
@@ -13,10 +14,16 @@ import Overlay from '../../component/overlay'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 
-const ConfirmLocationChangeModal = ({location, updateLocation, closeModal}) => {
+const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation, closeModal}) => {
   const headline = <Headline label="Confirmation necessary" modifiers={['l', 'warning']} />
   const buttons = [
-    <Button label="Cancel" modifiers={['text']} onClick={() => closeModal()} />,
+    <Button
+      label="Cancel"
+      onClick={() => {
+        updateLocation(cloneDeep(previousLocation), true)
+        closeModal()
+      }}
+    />,
     <Button
       label="Confirm"
       modifiers={['text']}

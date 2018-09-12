@@ -37,12 +37,11 @@ const getContent = (contentType, contentProps, meta) => {
   throw new Error(`Unknown modal contentType "${contentType}"`)
 }
 
-const Modal = ({isOpen, contentType, contentProps, isCloseable, showWarning}) =>
+const Modal = ({isOpen, contentType, contentProps, isCloseable}) =>
   isOpen && (
     <Portal>
       {getContent(contentType, contentProps, {
-        isCloseable,
-        showWarning
+        isCloseable
       })}
     </Portal>
   )

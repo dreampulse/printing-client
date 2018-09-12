@@ -31,15 +31,13 @@ const open = (config: ModalConfigOpened): OpenModalAction => ({
   payload: config
 })
 
-export const openPickLocationModal = (
-  isCloseable: boolean = false,
-  showWarning: boolean = false
-): OpenModalAction =>
+export const openPickLocationModal = ({confirmation}: {confirmation: boolean}): OpenModalAction =>
   open({
-    isCloseable,
-    showWarning,
+    isCloseable: confirmation,
     contentType: CONTENT_TYPE.PICK_LOCATION,
-    contentProps: null
+    contentProps: {
+      confirmation
+    }
   })
 
 export const openPickUnitModal = (files: FileList): OpenModalAction =>
@@ -74,11 +72,17 @@ export const openFinishGroupModal = (finishGroupId: FinishGroupId) =>
     contentProps: {finishGroupId}
   })
 
-export const openConfirmLocationChangeModal = (location: Location) =>
+export const openConfirmLocationChangeModal = ({
+  location,
+  previousLocation
+}: {
+  location: Location,
+  previousLocation: Location
+}) =>
   open({
     isCloseable: true,
     contentType: CONTENT_TYPE.CONFIRM_LOCATION_CHANGE,
-    contentProps: {location}
+    contentProps: {location, previousLocation}
   })
 
 export const openConfirmCurrencyChangeModal = (currency: string) =>
