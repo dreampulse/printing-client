@@ -107,7 +107,10 @@ const UploadPage = ({
         }
         modifiers={['xl']}
       />
-      <ModelListPartial enableShare={featureFlags.share}>
+      <ModelListPartial
+        enableShare={featureFlags.share}
+        onPrimaryActionClick={() => scrollTo('#section-material')}
+      >
         {modelsWithConfig.map(([modelConfig, model]) => {
           if (modelConfig.type === 'UPLOADING') {
             if (model.error) {

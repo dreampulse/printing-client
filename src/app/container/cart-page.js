@@ -95,7 +95,7 @@ const CartPage = ({
 
   const modelListSection = () => (
     <Section>
-      <ModelListPartial editMode>
+      <ModelListPartial editMode onPrimaryActionClick={goToMaterial}>
         {modelsWithConfig.map(
           ({
             modelConfig,

@@ -346,22 +346,23 @@ const MaterialPartial = ({
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
                 checkoutLabel={hasItemsOnUploadPage ? 'Add to cart' : 'Checkout'}
                 onAddToCartClick={() => {
-                  addToCart(configIds, multiModelQuote.quotes, shipping)
-                  if (isUploadPage && hasItemsOnUploadPage) {
-                    updateSelectedModelConfigs(
-                      modelConfigs
-                        .filter(
-                          modelConfig =>
-                            modelConfig.type === 'UPLOADED' &&
-                            modelConfig.quoteId === null &&
-                            !configIds.includes(modelConfig.id)
-                        )
-                        .map(modelConfig => modelConfig.id)
-                    )
-                    scrollTo('#root')
-                  } else {
-                    goToAddress()
-                  }
+                  addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
+                    if (isUploadPage && hasItemsOnUploadPage) {
+                      updateSelectedModelConfigs(
+                        modelConfigs
+                          .filter(
+                            modelConfig =>
+                              modelConfig.type === 'UPLOADED' &&
+                              modelConfig.quoteId === null &&
+                              !configIds.includes(modelConfig.id)
+                          )
+                          .map(modelConfig => modelConfig.id)
+                      )
+                      scrollTo('#root')
+                    } else {
+                      goToAddress()
+                    }
+                  })
                 }}
               />
             )
