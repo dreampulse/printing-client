@@ -26,6 +26,7 @@ const ProviderItem = ({
   deliveryProvider,
   providerInfo,
   productionTime,
+  checkoutLabel,
   onAddToCartClick = () => {}
 }) => (
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
@@ -62,7 +63,7 @@ const ProviderItem = ({
       <Button
         icon={checkoutIcon}
         modifiers={['block']}
-        label="Add to cart"
+        label={checkoutLabel}
         onClick={onAddToCartClick}
       />
     </td>
@@ -82,7 +83,8 @@ ProviderItem.propTypes = {
   deliveryTime: PropTypes.string.isRequired,
   providerInfo: PropTypes.string,
   deliveryProvider: PropTypes.string.isRequired,
-  productionTime: PropTypes.string.isRequired
+  productionTime: PropTypes.string.isRequired,
+  checkoutLabel: PropTypes.string.isRequired
 }
 
 export default ProviderItem

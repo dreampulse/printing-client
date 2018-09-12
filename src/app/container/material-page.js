@@ -87,7 +87,7 @@ const MaterialPage = ({
   openMaterialModal,
   openFinishGroupModal,
   addToCart,
-  goToCart,
+  goToAddress,
   goToUpload,
   quotes,
   selectedModelConfigs,
@@ -353,14 +353,13 @@ const MaterialPage = ({
                 totalPrice={formatPrice(grossPrice, multiModelQuote.currency)}
                 includesVat={false}
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
+                checkoutLabel={hasItemsOnUploadPage ? 'Add to cart' : 'Checkout'}
                 onAddToCartClick={() => {
                   addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
                     if (hasItemsOnUploadPage) {
                       goToUpload()
                     } else {
-                      goToCart({
-                        numAddedItems: configIds.length
-                      })
+                      goToAddress()
                     }
                   })
                 }}
@@ -410,6 +409,7 @@ const mapStateToProps = (state: AppState, ownProps) => ({
 const mapDispatchToProps = {
   goToUpload: navigationAction.goToUpload,
   goToCart: navigationAction.goToCart,
+  goToAddress: navigationAction.goToAddress,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,
