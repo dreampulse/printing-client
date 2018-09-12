@@ -1,11 +1,24 @@
 .model-list {
+  position: relative;
   margin-bottom: $space-base;
   border-top: 1px solid $color-border;
 
   &__header {
+    position: sticky;
+    top: 0;
+    // To let header disappear before last model item
+    margin-bottom: $upload-model-item-height;
     display: flex;
     flex-direction: row;
     padding: $space-l 0;
+    z-index: 1;
+    background: $color-bg;
+    border-bottom: 1px solid $color-border-minor;
+
+    & + .model-list__items {
+      // To pull items back to top (due to position sticky)
+      margin-top: -1 * $upload-model-item-height;
+    }
   }
 
   &__header-checkbox {
@@ -19,6 +32,7 @@
   &__secondary-actions {
     display: flex;
     flex-direction: row;
+    align-items: center;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -36,7 +50,6 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    border-top: 1px solid $color-border-minor;
   }
 
   &__item {

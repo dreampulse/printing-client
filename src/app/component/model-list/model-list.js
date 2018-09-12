@@ -21,16 +21,18 @@ const ModelList = ({
   toggleId,
   toggleAll
 }) => {
+  const numChildren = React.Children.count(children)
   const childrenList = React.Children.map(children, (child, index) => {
     const id = child.props.id
     return (
       <li className="model-list__item" key={id || index}>
         {child}
-        {id && (
-          <div className="model-list__checkbox">
-            <CheckboxField checked={checkedIds.includes(id)} onChange={() => toggleId(id)} />
-          </div>
-        )}
+        {id &&
+          numChildren > 1 && (
+            <div className="model-list__checkbox">
+              <CheckboxField checked={checkedIds.includes(id)} onChange={() => toggleId(id)} />
+            </div>
+          )}
       </li>
     )
   })
@@ -49,13 +51,15 @@ const ModelList = ({
 
   return (
     <div className={buildClassName('model-list', modifiers, classNames)}>
-      <div className="model-list__header">
-        <div className="model-list__header-checkbox">
-          <CheckboxField checked={ids.length === checkedIds.length} onChange={toggleAll} />
+      {numChildren > 1 && (
+        <div className="model-list__header">
+          <div className="model-list__header-checkbox">
+            <CheckboxField checked={ids.length === checkedIds.length} onChange={toggleAll} />
+          </div>
+          <ul className="model-list__primary-actions">{primaryActionList}</ul>
+          <ul className="model-list__secondary-actions">{secondaryActionList}</ul>
         </div>
-        <ul className="model-list__primary-actions">{primaryActionList}</ul>
-        <ul className="model-list__secondary-actions">{secondaryActionList}</ul>
-      </div>
+      )}
       <ul className="model-list__items">{childrenList}</ul>
     </div>
   )
