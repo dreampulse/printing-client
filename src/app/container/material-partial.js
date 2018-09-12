@@ -148,7 +148,7 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        <Headline label="1. Material" modifiers={['xl']} />
+        <Headline label="1. Select Material" modifiers={['xl']} />
         <Grid>
           <Column lg={8} classNames={['u-margin-bottom']}>
             <RadioButtonGroup
@@ -276,7 +276,7 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        <Headline label="2. Finish" modifiers={['xl']} />
+        <Headline label="2. Select Finish" modifiers={['xl']} />
         {selectedMaterial.finishGroups.length > 0 && (
           <MaterialSlider>
             {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
@@ -310,7 +310,7 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        <Headline label="3. Provider and shipping" modifiers={['xl']} />
+        <Headline label="3. Select Offer" modifiers={['xl']} />
         <ProviderList>
           {providerList.map(([multiModelQuote, shipping, grossPrice]) => {
             const materialTree = getMaterialTreeByMaterialConfigId(

@@ -103,7 +103,9 @@ const UploadPage = ({
     <Section>
       <Headline
         label={
-          isUploadCompleted ? 'Choose material' : `Uploading (${numModelsUploading}/${numModels})…`
+          isUploadCompleted
+            ? 'Your Files'
+            : `Uploading files ${numModelsUploading} of ${numModels}…`
         }
         modifiers={['xl']}
       />
