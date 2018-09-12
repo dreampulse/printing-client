@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React, {Fragment} from 'react'
 import compose from 'recompose/compose'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
@@ -18,11 +18,13 @@ import Modal from './modal'
 
 import App from '../component/app'
 import Container from '../component/container'
-import OverlayHeaderBar from '../component/overlay-header-bar'
+import NavBar from '../component/nav-bar'
 import ProcessStepBar from '../component/process-step-bar'
 import ProcessStep from '../component/process-step'
 import IconLink from '../component/icon-link'
 import Button from '../component/button'
+import CloseButton from '../component/close-button'
+import Headline from '../component/headline'
 
 const CheckoutLayout = ({
   children,
@@ -47,44 +49,47 @@ const CheckoutLayout = ({
     </ProcessStepBar>
   )
   const header = (
-    <OverlayHeaderBar
-      title={title}
-      onClickClose={() => goToCart()}
-      actions={[
-        <Route key="upload" path="/" exact>
-          {({match}) =>
-            !match ? (
-              <Button
-                label="Upload"
-                onClick={() => goToUpload()}
-                modifiers={['invert', 'compact']}
-              />
-            ) : null}
-        </Route>,
-        <IconLink
-          key="cart"
-          modifiers={['invert']}
-          icon={cartIcon}
-          disabled={cartCount < 1}
-          cartCount={cartCount}
-          onClick={event => {
-            event.preventDefault()
-            goToCart()
-          }}
-        />,
-        <IconLink
-          key="intercom"
-          modifiers={['invert']}
-          icon={helpIcon}
-          onClick={event => {
-            event.preventDefault()
-            openIntercom()
-          }}
-        />
-      ]}
-    >
-      {currentStep >= 0 && processStepBar}
-    </OverlayHeaderBar>
+    <NavBar
+      leftContent={
+        <Fragment>
+          <CloseButton modifiers={['invert', 'l']} onClick={() => goToCart()} />
+          <Headline modifiers={['l', 'invert']} label={title} />
+        </Fragment>
+      }
+      rightContent={
+        <Fragment>
+          {currentStep >= 0 && processStepBar}
+          <Route path="/" exact>
+            {({match}) =>
+              !match ? (
+                <Button
+                  label="Upload"
+                  onClick={() => goToUpload()}
+                  modifiers={['invert', 'compact']}
+                />
+              ) : null}
+          </Route>
+          <IconLink
+            modifiers={['invert']}
+            icon={cartIcon}
+            disabled={cartCount < 1}
+            cartCount={cartCount}
+            onClick={event => {
+              event.preventDefault()
+              goToCart()
+            }}
+          />
+          <IconLink
+            modifiers={['invert']}
+            icon={helpIcon}
+            onClick={event => {
+              event.preventDefault()
+              openIntercom()
+            }}
+          />
+        </Fragment>
+      }
+    />
   )
 
   return (
