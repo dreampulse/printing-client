@@ -1,24 +1,25 @@
 // @flow
-
 import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 import compact from 'lodash/compact'
 import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
-
-// TODO: Use final svg images here!
-// import feature1Image from '../../asset/image/feature1.png'
-// import feature2Image from '../../asset/image/feature2.png'
-// import feature3Image from '../../../asset/image/feature3.png'
+import withProps from 'recompose/withProps'
+import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 import cartIcon from '../../asset/icon/cart.svg'
 
 import {formatDimensions, formatPrice} from '../lib/formatter'
-import {selectModelsOfModelConfigs, selectCartCount} from '../lib/selector'
+import {
+  selectModelsOfModelConfigs,
+  selectCartCount,
+  selectQuotePollingProgress
+} from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
+import scrollTo from '../service/scroll-to'
 import type {AppState} from '../reducer'
 
 import * as modelAction from '../action/model'
@@ -28,6 +29,8 @@ import * as modalAction from '../action/modal'
 
 import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
+import MaterialPartial from './material-partial'
+import ConfigurationHeaderPartial from './configuration-header-partial'
 
 import Section from '../component/section'
 import Headline from '../component/headline'
@@ -39,12 +42,12 @@ import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import Notification from '../component/notification'
 import NumberField from '../component/number-field'
+import ProviderProgressBar from '../component/provider-progress-bar'
 
 const UploadPage = ({
   openPickUnitModal,
   deleteModelConfigs,
   updateQuantities,
-  goToMaterial,
   duplicateModelConfig,
   modelsWithConfig,
   goToCart,
@@ -52,60 +55,16 @@ const UploadPage = ({
   cart,
   cartCount,
   location,
-  featureFlags
+  featureFlags,
+  selectedModelConfigIds,
+  pollingProgress,
+  numModelsUploading,
+  isUploadCompleted
 }) => {
+  const numCheckedProviders = pollingProgress.complete || 0
+  const numTotalProviders = pollingProgress.total || 0
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
-  const numModelsUploading = modelsWithConfig.reduce(
-    (sum, [modelConfig, model]) =>
-      modelConfig.type === 'UPLOADING' && !model.error ? sum + 1 : sum,
-    0
-  )
-  const isUploadCompleted = numModelsUploading === 0
-
-  /*
-  const promoSection = () => (
-    <Fragment>
-      <Section>
-        <Headline
-          label="Save up to 70% on industrial 3D printing"
-          modifiers={['l', 'light']}
-          classNames={['u-margin-bottom-xxl']}
-        />
-        <SplitLayout
-          leftContent={[
-            <FeatureParagraph key="feature1" image={<Image src={feature1Image} />}>
-              Compare offers from the top providers and order instantly
-            </FeatureParagraph>,
-            <FeatureParagraph key="feature2" image={<Image src={feature2Image} />}>
-              The widest material choice and the fastest delivery
-            </FeatureParagraph>
-            <FeatureParagraph key="feature3" image={feature3Image}>
-              Split your order accross multiple providers, effortlessly
-            </FeatureParagraph>
-          ]}
-          rightContent={[
-            <Baloon key="baloon1">
-              Impossible! My favorite printing service is always the cheapest.
-            </Baloon>,
-            <Baloon key="baloon2" modifiers={['right']}>
-              Not Always! Prices vary hugely based on model and material. Here you will always find
-              the best deal.
-            </Baloon>
-          ]}
-        />
-      </Section>
-      <ProviderTeaser>
-        <ProviderImage slug="shapeways" name={getProviderName('shapeways')} />
-        <ProviderImage slug="imaterialise" name={getProviderName('imaterialise')} />
-        <ProviderImage slug="sculpteo" name={getProviderName('sculpteo')} />
-        <ProviderImage slug="trinckle" name={getProviderName('trinckle')} />
-        <ProviderImage slug="treatstock" name={getProviderName('treatstock')} />
-        <ProviderImage slug="ff3dm" name={getProviderName('ff3dm')} />
-      </ProviderTeaser>
-    </Fragment>
-  )
-  */
 
   const uploadSection = () => (
     <Section>
@@ -122,11 +81,6 @@ const UploadPage = ({
 
   const buttonBar = modelConfig => (
     <ButtonBar>
-      <Button
-        label="Choose material"
-        modifiers={['tiny', 'minor']}
-        onClick={() => goToMaterial([modelConfig.id])}
-      />
       <NumberField
         modifiers={['tiny']}
         value={modelConfig.quantity}
@@ -153,7 +107,10 @@ const UploadPage = ({
         }
         modifiers={['xl']}
       />
-      <ModelListPartial enableShare={featureFlags.share}>
+      <ModelListPartial
+        enableShare={featureFlags.share}
+        onPrimaryActionClick={() => scrollTo('#section-material')}
+      >
         {modelsWithConfig.map(([modelConfig, model]) => {
           if (modelConfig.type === 'UPLOADING') {
             if (model.error) {
@@ -227,16 +184,28 @@ const UploadPage = ({
   )
 
   return (
-    <AppLayout>
+    <AppLayout
+      navBarContent={
+        selectedModelConfigIds.length > 0 && (
+          <ProviderProgressBar currentStep={numCheckedProviders} totalSteps={numTotalProviders} />
+        )
+      }
+      headerContent={<ConfigurationHeaderPartial />}
+    >
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
-      {/* !hasModels && promoSection() */}
+      {hasModels &&
+        selectedModelConfigIds.length > 0 && (
+          <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
+        )}
     </AppLayout>
   )
 }
 
 const mapStateToProps = (state: AppState) => ({
+  selectedModelConfigIds: state.core.selectedModelConfigs,
+  pollingProgress: selectQuotePollingProgress(state),
   modelsWithConfig: unzip([
     state.core.modelConfigs,
     selectModelsOfModelConfigs(state)
@@ -254,11 +223,34 @@ const mapDispatchToProps = {
   deleteModelConfigs: modelAction.deleteModelConfigs,
   updateQuantities: modelAction.updateQuantities,
   duplicateModelConfig: modelAction.duplicateModelConfig,
-  goToMaterial: navigationAction.goToMaterial,
   goToCart: navigationAction.goToCart,
   openModelViewer: modelViewerAction.open
 }
 
-const enhance = compose(scrollToTop(), withRouter, connect(mapStateToProps, mapDispatchToProps))
+const enhance = compose(
+  scrollToTop(),
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+  withProps(({modelsWithConfig}) => {
+    const numModelsUploading = modelsWithConfig.reduce(
+      (sum, [modelConfig, model]) =>
+        modelConfig.type === 'UPLOADING' && !model.error ? sum + 1 : sum,
+      0
+    )
+    const isUploadCompleted = numModelsUploading === 0
+
+    return {
+      numModelsUploading,
+      isUploadCompleted
+    }
+  }),
+  lifecycle({
+    componentDidUpdate(prevProps) {
+      if (this.props.isUploadCompleted && !prevProps.isUploadCompleted) {
+        scrollTo('#section-material')
+      }
+    }
+  })
+)
 
 export default enhance(UploadPage)

@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withStateHandlers from 'recompose/withStateHandlers'
@@ -10,11 +10,13 @@ import lifecycle from 'recompose/lifecycle'
 import withPropsOnChange from 'recompose/withPropsOnChange'
 import flatMap from 'lodash/flatMap'
 import keyBy from 'lodash/keyBy'
+import isEqual from 'lodash/isEqual'
 
 import * as navigationAction from '../action/navigation'
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
 import * as cartAction from '../action/cart'
+import * as modelAction from '../action/model'
 import type {AppState} from '../reducer'
 import {
   getMaterialById,
@@ -43,17 +45,9 @@ import {
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
 import scrollTo from '../service/scroll-to'
-import {scrollToTop} from './util/scroll-to-top'
 
-import FooterPartial from './footer-partial'
-import ConfigurationHeaderPartial from './configuration-header-partial'
 import MaterialFilterPartial from './material-filter-partial'
-import Modal from './modal'
 
-import App from '../component/app'
-import Container from '../component/container'
-import OverlayHeaderBar from '../component/overlay-header-bar'
-import ProviderProgressBar from '../component/provider-progress-bar'
 import Section from '../component/section'
 import Grid from '../component/grid'
 import Column from '../component/column'
@@ -70,8 +64,7 @@ import SelectMenu from '../component/select-menu'
 import ProviderItem from '../component/provider-item'
 import ProviderList from '../component/provider-list'
 
-const MaterialPage = ({
-  onClosePage,
+const MaterialPartial = ({
   selectMaterialConfigForFinishGroup,
   selectedMaterialConfigs,
   materialGroups,
@@ -88,19 +81,17 @@ const MaterialPage = ({
   openFinishGroupModal,
   addToCart,
   goToAddress,
-  goToUpload,
   quotes,
   selectedModelConfigs,
   shippings,
-  pollingProgress,
   isPollingDone,
   configIds,
   uploadedModelConfigs,
-  usedShippingIds
+  usedShippingIds,
+  isUploadPage,
+  updateSelectedModelConfigs,
+  modelConfigs
 }) => {
-  const title = `Choose material (${configIds.length} of ${uploadedModelConfigs.length} Items)`
-  const numCheckedProviders = pollingProgress.complete || 0
-  const numTotalProviders = pollingProgress.total || 0
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
     shippings.some(shipping => shipping.vendorId === quote.vendorId)
@@ -356,8 +347,18 @@ const MaterialPage = ({
                 checkoutLabel={hasItemsOnUploadPage ? 'Add to cart' : 'Checkout'}
                 onAddToCartClick={() => {
                   addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
-                    if (hasItemsOnUploadPage) {
-                      goToUpload()
+                    if (isUploadPage && hasItemsOnUploadPage) {
+                      updateSelectedModelConfigs(
+                        modelConfigs
+                          .filter(
+                            modelConfig =>
+                              modelConfig.type === 'UPLOADED' &&
+                              modelConfig.quoteId === null &&
+                              !configIds.includes(modelConfig.id)
+                          )
+                          .map(modelConfig => modelConfig.id)
+                      )
+                      scrollTo('#root')
                     } else {
                       goToAddress()
                     }
@@ -372,26 +373,16 @@ const MaterialPage = ({
   }
 
   return (
-    <App
-      header={[
-        <OverlayHeaderBar key="header-bar" onClickClose={() => onClosePage()} title={title}>
-          <ProviderProgressBar currentStep={numCheckedProviders} totalSteps={numTotalProviders} />
-        </OverlayHeaderBar>,
-        <ConfigurationHeaderPartial key="configuration-header" />
-      ]}
-      footer={<FooterPartial />}
-    >
-      <Container>
-        <div id="section-material">{renderMaterialSection()}</div>
-        <div id="section-finish">{finishSectionEnabled && renderFinishSection()}</div>
-        <div id="section-provider">{providerSectionEnabled && renderProviderSection()}</div>
-      </Container>
-      <Modal />
-    </App>
+    <Fragment>
+      <div id="section-material">{renderMaterialSection()}</div>
+      <div id="section-finish">{finishSectionEnabled && renderFinishSection()}</div>
+      <div id="section-provider">{providerSectionEnabled && renderProviderSection()}</div>
+    </Fragment>
   )
 }
 
 const mapStateToProps = (state: AppState, ownProps) => ({
+  modelConfigs: state.core.modelConfigs,
   quotes: selectQuotes(state),
   materialGroups: state.core.materialGroups,
   pollingProgress: selectQuotePollingProgress(state),
@@ -407,21 +398,16 @@ const mapStateToProps = (state: AppState, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-  goToUpload: navigationAction.goToUpload,
-  goToCart: navigationAction.goToCart,
   goToAddress: navigationAction.goToAddress,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,
   stopReceivingQuotes: quoteAction.stopReceivingQuotes,
-  addToCart: cartAction.addToCart
+  addToCart: cartAction.addToCart,
+  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
 }
 
 export default compose(
-  scrollToTop(),
-  withProps(({location}) => ({
-    configIds: (location.state && location.state.configIds) || []
-  })),
   connect(mapStateToProps, mapDispatchToProps),
   withStateHandlers(
     ({commonMaterialPath}) => ({
@@ -497,30 +483,25 @@ export default compose(
         currency,
         refresh
       })
-    },
-    onClosePage: props => () => {
-      // Go to cart page if selected model config has already a quote
-      if (props.selectedModelConfigs.length > 0 && props.selectedModelConfigs[0].quoteId) {
-        props.goToCart({selectModelConfigIds: props.configIds})
-      } else {
-        props.goToUpload({selectModelConfigIds: props.configIds})
-      }
     }
   }),
   lifecycle({
     componentWillMount() {
-      if (this.props.selectedModelConfigs.length === 0) {
-        this.props.goToUpload()
-        return
+      if (this.props.selectedModelConfigs.length > 0) {
+        this.props.receiveQuotes()
       }
-
-      this.props.receiveQuotes()
     },
     componentDidUpdate(prevProps) {
-      // Refresh quotes if countryCode or currency changed
+      // Refresh quotes if...
+      // - countryCode changed
+      // - currency changed
+      // - configIds changed
+      // - quantities changed
       if (
-        this.props.currency !== prevProps.currency ||
-        this.props.location.countryCode !== prevProps.location.countryCode
+        this.props.selectedModelConfigs.length > 0 &&
+        (this.props.currency !== prevProps.currency ||
+          this.props.location.countryCode !== prevProps.location.countryCode ||
+          !isEqual(this.props.selectedModelConfigs, prevProps.selectedModelConfigs))
       ) {
         this.props.receiveQuotes()
       }
@@ -529,4 +510,4 @@ export default compose(
       this.props.stopReceivingQuotes()
     }
   })
-)(MaterialPage)
+)(MaterialPartial)

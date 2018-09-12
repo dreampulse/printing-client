@@ -13,9 +13,9 @@ const ProviderProgressBar = ({classNames, modifiers, currentStep, totalSteps}) =
   <div className={buildClassName('provider-progress-bar', modifiers, classNames)}>
     <div className="provider-progress-bar__content">
       {(totalSteps === 0 || currentStep < totalSteps) && <LoadingIndicator />}
+      {(totalSteps === 0 || currentStep < totalSteps) && 'Receiving prices…'}
       {totalSteps > 0 && currentStep === totalSteps && <Icon source={selectedIcon} />}
-      {totalSteps > 0 && `Checked ${currentStep} of ${totalSteps} providers`}
-      {totalSteps === 0 && 'Loading…'}
+      {totalSteps > 0 && currentStep === totalSteps && `Received prices.`}
     </div>
     {totalSteps > 0 && (
       <div

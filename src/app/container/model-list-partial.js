@@ -16,7 +16,6 @@ import type {AppState} from '../reducer'
 
 import * as coreAction from '../action/core'
 import * as modelAction from '../action/model'
-import * as navigationAction from '../action/navigation'
 import * as modalAction from '../action/modal'
 
 import {getCommonQuantity} from '../lib/quantity'
@@ -34,7 +33,7 @@ const ModelListPartial = ({
   updateSelectedModelConfigs,
   deleteModelConfigs,
   updateQuantities,
-  goToMaterial,
+  onPrimaryActionClick,
   createConfiguration
 }) => {
   const disabled = selectedModelConfigIds.length === 0
@@ -50,7 +49,7 @@ const ModelListPartial = ({
     <Button
       disabled={disabled}
       label={primaryActionLabel}
-      onClick={() => goToMaterial(selectedModelConfigIds)}
+      onClick={() => onPrimaryActionClick(selectedModelConfigIds)}
     />
   )
 
@@ -104,7 +103,6 @@ const mapDispatchToProps = {
   clearSelectedModelConfigs: modelAction.clearSelectedModelConfigs,
   deleteModelConfigs: modelAction.deleteModelConfigs,
   updateQuantities: modelAction.updateQuantities,
-  goToMaterial: navigationAction.goToMaterial,
   openShareConfigurationModal: modalAction.openShareConfigurationModal,
   fatalError: coreAction.fatalError
 }

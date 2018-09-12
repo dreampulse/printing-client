@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
 
@@ -21,40 +21,59 @@ import Container from '../component/container'
 import NavBar from '../component/nav-bar'
 import IconLink from '../component/icon-link'
 import Button from '../component/button'
+import Logo from '../component/logo'
 
-const AppLayout = ({children, cartCount, onHomeClick, onUploadClick, onCartClick}) => (
+const AppLayout = ({
+  children,
+  navBarContent,
+  headerContent,
+  cartCount,
+  onHomeClick,
+  onUploadClick,
+  onCartClick
+}) => (
   <App
     header={
-      <NavBar key="navbar" onClickIdentity={() => onHomeClick()}>
-        <Route path="/" exact>
-          {({match}) =>
-            !match ? (
-              <Button
-                label="Upload"
-                onClick={() => onUploadClick()}
-                modifiers={['invert', 'compact']}
+      <Fragment>
+        <NavBar
+          key="navbar"
+          leftContent={<Logo onClick={() => onHomeClick()} />}
+          rightContent={
+            <Fragment>
+              {navBarContent}
+              <Route path="/" exact>
+                {({match}) =>
+                  !match ? (
+                    <Button
+                      label="Upload"
+                      onClick={() => onUploadClick()}
+                      modifiers={['invert', 'compact']}
+                    />
+                  ) : null}
+              </Route>
+              <IconLink
+                modifiers={['invert']}
+                icon={cartIcon}
+                disabled={cartCount < 1}
+                cartCount={cartCount}
+                onClick={event => {
+                  event.preventDefault()
+                  onCartClick()
+                }}
               />
-            ) : null}
-        </Route>
-        <IconLink
-          modifiers={['invert']}
-          icon={cartIcon}
-          disabled={cartCount < 1}
-          cartCount={cartCount}
-          onClick={event => {
-            event.preventDefault()
-            onCartClick()
-          }}
+              <IconLink
+                modifiers={['invert']}
+                icon={helpIcon}
+                onClick={event => {
+                  event.preventDefault()
+                  openIntercom()
+                }}
+              />
+            </Fragment>
+          }
         />
-        <IconLink
-          modifiers={['invert']}
-          icon={helpIcon}
-          onClick={event => {
-            event.preventDefault()
-            openIntercom()
-          }}
-        />
-      </NavBar>
+        {headerContent}
+      </Fragment>
     }
     footer={<FooterPartial />}
   >
