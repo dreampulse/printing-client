@@ -477,6 +477,7 @@ export default compose(
       const {refresh} = props.featureFlags
       const currency = props.currency
       const {countryCode} = props.location
+
       props.receiveQuotes({
         modelConfigs,
         countryCode,
@@ -487,7 +488,8 @@ export default compose(
   }),
   lifecycle({
     componentWillMount() {
-      if (this.props.selectedModelConfigs.length > 0) {
+      // It is possible that we do not have a location yet!
+      if (this.props.selectedModelConfigs.length > 0 && this.props.location) {
         this.props.receiveQuotes()
       }
     },
