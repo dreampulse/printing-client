@@ -42,6 +42,7 @@ import {
   selectCommonMaterialPathOfModelConfigs,
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
+import {buildClassArray} from '../lib/build-class-name'
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
 import scrollTo from '../service/scroll-to'
@@ -312,7 +313,7 @@ const MaterialPartial = ({
       <Section>
         <Headline label="3. Select Offer" modifiers={['xl']} />
         <ProviderList>
-          {providerList.map(([multiModelQuote, shipping, grossPrice]) => {
+          {providerList.map(([multiModelQuote, shipping, grossPrice], index) => {
             const materialTree = getMaterialTreeByMaterialConfigId(
               materialGroups,
               multiModelQuote.materialConfigId
@@ -326,8 +327,11 @@ const MaterialPartial = ({
               productionTimeSlow
             } = materialTree.materialConfig.printingService[multiModelQuote.vendorId]
 
+            const providerItemModifiers = buildClassArray([{highlighted: index === 0}])
+
             return (
               <ProviderItem
+                modifiers={providerItemModifiers}
                 key={multiModelQuote.quoteId + shipping.shippingId}
                 process={process}
                 providerSlug={multiModelQuote.vendorId}

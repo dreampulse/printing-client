@@ -29,16 +29,20 @@ const ProviderItem = ({
 }) => (
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
     <td className="provider-item__provider">
-      <AnnotatedTableCell annotation={providerInfo}>{providerName}</AnnotatedTableCell>
+      <AnnotatedTableCell modifiers={modifiers} annotation={providerInfo}>
+        {providerName}
+      </AnnotatedTableCell>
     </td>
     <td className="provider-item__process">
       <AnnotatedTableCell>{process}</AnnotatedTableCell>
     </td>
     <td className="provider-item__price">
-      <AnnotatedTableCell annotation={price}>{productionTime}</AnnotatedTableCell>
+      <AnnotatedTableCell modifiers={modifiers} annotation={price}>
+        {productionTime}
+      </AnnotatedTableCell>
     </td>
     <td className="provider-item__shipping-price">
-      <AnnotatedTableCell annotation={shippingPrice}>
+      <AnnotatedTableCell modifiers={modifiers} annotation={shippingPrice}>
         {deliveryTime}
         <Info modifiers={['minor']}>
           <Paragraph>{deliveryProvider}</Paragraph>

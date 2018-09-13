@@ -25,4 +25,8 @@
     white-space: nowrap;
     padding-left: $space-base;
   }
+
+  &--highlighted {
+    background: $color-cheapest-provider-bg;
+  }
 }
