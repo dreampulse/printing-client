@@ -36,6 +36,7 @@ $color-yellow: #f6a623;
 $color-red: #ca0f0f;
 $color-red-light: #fcd1d1;
 $color-green: #559c03;
+$color-green-light: #eaffe5;
 $color-white: #ffffff;
 $color-black: #000000;
 
@@ -46,6 +47,7 @@ $color-text-label: $color-gray-1;
 $color-primary: $color-blue;
 $color-primary-active: $color-blue-light;
 $color-minor: $color-gray-2;
+$color-minor-highlighted: $color-gray-1;
 $color-border: $color-gray-2;
 $color-border-minor: $color-gray-4;
 $color-warning: $color-yellow;
@@ -62,6 +64,7 @@ $color-tooltip-text: $color-white;
 $color-invert-bg: $color-blue-light;
 $color-invert-text: $color-white;
 $color-invert-disabled: #82BCEE;
+$color-cheapest-provider-bg: $color-green-light;
 
 
 // Layout & Grid

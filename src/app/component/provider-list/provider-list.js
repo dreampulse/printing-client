@@ -8,7 +8,7 @@ const ProviderList = ({classNames, modifiers, children}) => (
   <table className={buildClassName('provider-list', modifiers, classNames)}>
     <thead>
       <tr className="provider-list__header">
-        <th className="provider-list__provider">Provider</th>
+        <th className="provider-list__provider">Fulfilled by</th>
         <th className="provider-list__process">Process</th>
         <th className="provider-list__price">Production</th>
         <th className="provider-list__shipping">Shipping</th>

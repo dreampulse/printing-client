@@ -19,4 +19,10 @@
       font-weight: $font-weight-bold;
     }
   }
+
+  &--highlighted {
+    .annotated-table-cell__annotation {
+      color: $color-minor-highlighted;
+    }
+  }
 }
