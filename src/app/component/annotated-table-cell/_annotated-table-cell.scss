@@ -13,13 +13,7 @@
     display: block;
     min-height: $font-size-s * $line-height-base;
   }
-
-  &--strong {
-    .annotated-table-cell__value {
-      font-weight: $font-weight-bold;
-    }
-  }
-
+  
   &--highlighted {
     .annotated-table-cell__annotation {
       color: $color-minor-highlighted;

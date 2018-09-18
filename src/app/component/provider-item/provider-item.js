@@ -50,7 +50,7 @@ const ProviderItem = ({
       </AnnotatedTableCell>
     </td>
     <td className="provider-item__total-price">
-      <AnnotatedTableCell modifiers={['strong']}>
+      <AnnotatedTableCell modifiers={modifiers}>
         {totalPrice}
         {includesVat && (
           <Info modifiers={['minor']}>
