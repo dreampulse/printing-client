@@ -17,7 +17,7 @@ import {
   setQuotesAndShippingInModelConfigs
 } from '../lib/model'
 import * as printingEngine from '../lib/printing-engine'
-import {singletonPromise, PromiseCancelledError} from '../lib/promise'
+import {singletonPromise} from '../lib/promise'
 import type {PriceRequest} from '../lib/printing-engine'
 import type {
   AppAction,
