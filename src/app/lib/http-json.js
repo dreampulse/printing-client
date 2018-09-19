@@ -44,7 +44,7 @@ export const fetch = async (
 ): Promise<HttpJsonResponse> => {
   const fetchOptions: RequestOptions = {
     headers: new http.Headers(options.headers || {'Content-Type': 'application/json'}),
-    method: options.method
+    method: options.method || 'GET'
   }
 
   if (options.body) {

@@ -39,6 +39,17 @@ describe('http-json lib', () => {
       expect(http.fetch, 'to have a call satisfying', ['http://example.com', expectAnything])
     })
 
+    it('calls http.fetch() with default method', async () => {
+      headersMock.set = sinon.spy()
+      await fetch('http://example.com')
+      expect(http.fetch, 'to have a call satisfying', [
+        expectAnything,
+        {
+          method: 'GET'
+        }
+      ])
+    })
+
     it('calls http.fetch() with default headers', async () => {
       headersMock.set = sinon.spy()
       await fetch('http://example.com')
