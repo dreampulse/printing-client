@@ -503,9 +503,11 @@ export default compose(
       // - currency changed
       // - configIds changed
       // - quantities changed
+      // - we had no location before
       if (
         this.props.selectedModelConfigs.length > 0 &&
         (this.props.currency !== prevProps.currency ||
+          !prevProps.location ||
           this.props.location.countryCode !== prevProps.location.countryCode ||
           !isEqual(this.props.selectedModelConfigs, prevProps.selectedModelConfigs))
       ) {
