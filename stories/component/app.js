@@ -8,7 +8,6 @@ import NavBar from '../../src/app/component/nav-bar'
 import Footer from '../../src/app/component/footer'
 import Link from '../../src/app/component/link'
 import ConfigurationHeader from '../../src/app/component/configuration-header'
-import LabeledField from '../../src/app/component/labeled-field'
 import LocationField from '../../src/app/component/location-field'
 import Button from '../../src/app/component/button'
 import IconLink from '../../src/app/component/icon-link'
@@ -32,11 +31,9 @@ const navBar = () => (
 const configurationHeader = () => (
   <ConfigurationHeader
     location={
-      <LabeledField label="Shipping:" modifiers={['block']}>
-        <HandleValue>
-          <LocationField googleMapsApiKey={googleMapsApiKey} />
-        </HandleValue>
-      </LabeledField>
+      <HandleValue>
+        <LocationField googleMapsApiKey={googleMapsApiKey} />
+      </HandleValue>
     }
     currency={
       <HandleValue initialValue={{value: 'USD', label: 'USD'}}>
