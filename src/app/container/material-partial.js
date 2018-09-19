@@ -11,6 +11,7 @@ import withPropsOnChange from 'recompose/withPropsOnChange'
 import flatMap from 'lodash/flatMap'
 import keyBy from 'lodash/keyBy'
 import isEqual from 'lodash/isEqual'
+import get from 'lodash/get'
 
 import * as navigationAction from '../action/navigation'
 import * as modalAction from '../action/modal'
@@ -507,8 +508,7 @@ export default compose(
       if (
         this.props.selectedModelConfigs.length > 0 &&
         (this.props.currency !== prevProps.currency ||
-          !prevProps.location ||
-          this.props.location.countryCode !== prevProps.location.countryCode ||
+          get(this.props.location, 'countryCode') !== get(prevProps.location, 'countryCode') ||
           !isEqual(this.props.selectedModelConfigs, prevProps.selectedModelConfigs))
       ) {
         this.props.receiveQuotes()
