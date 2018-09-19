@@ -36,6 +36,7 @@ import SelectField from '../component/select-field'
 import * as navigationActions from '../action/navigation'
 import * as modelViewerActions from '../action/model-viewer'
 import * as orderActions from '../action/order'
+import * as coreActions from '../action/core'
 
 import creditCardIcon from '../../asset/icon/credit-card.svg'
 
@@ -60,6 +61,7 @@ const ReviewOrderPage = ({
   payWithPaypal,
   payWithStripe,
   payWithInvoice,
+  fatalError,
   success
 }) => {
   const shippingStateName =
@@ -186,8 +188,8 @@ const ReviewOrderPage = ({
             await orderPaid({orderNumber, paymentId})
             success()
           } catch (error) {
-            // Payment aborted by user
             setPaymentInProgress(false)
+            fatalError(error)
           }
         }}
       />
@@ -356,7 +358,8 @@ const mapDispatchToProps = {
   goToSuccess: navigationActions.goToSuccess,
   openModelViewer: modelViewerActions.open,
   orderPaid: orderActions.paid,
-  executePaypalPayment: orderActions.executePaypalPayment
+  executePaypalPayment: orderActions.executePaypalPayment,
+  fatalError: coreActions.fatalError
 }
 
 const enhance = compose(
