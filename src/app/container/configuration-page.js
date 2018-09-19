@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
+import {replace} from 'react-router-redux'
 
 import * as configurationAction from '../action/configuration'
 import * as navigationAction from '../action/navigation'
@@ -32,7 +33,9 @@ const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidMount() {
-      this.props.loadConfiguration(this.props.match.params.id).then(() => this.props.goToUpload())
+      this.props
+        .loadConfiguration(this.props.match.params.id)
+        .then(() => this.props.goToUpload(undefined, replace))
     }
   })
 )

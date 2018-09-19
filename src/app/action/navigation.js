@@ -3,7 +3,7 @@
 // Note: This code is not tested,
 // because the route-middleware handles this
 
-import {push} from 'react-router-redux'
+import {push, RouterAction} from 'react-router-redux'
 
 import type {ConfigId, Notification, VendorId} from '../type'
 
@@ -21,9 +21,11 @@ export const goToUpload = (
   }: {
     notification?: Notification,
     selectModelConfigIds?: Array<ConfigId>
-  } = {}
-) => push('/', {notification, selectModelConfigIds})
-export const goToMaterial = (configIds: Array<ConfigId>) => push('/material', {configIds})
+  } = {},
+  routerAction: RouterAction = push
+) => routerAction('/', {notification, selectModelConfigIds})
+export const goToMaterial = (configIds: Array<ConfigId>, routerAction: RouterAction = push) =>
+  routerAction('/material', {configIds})
 export const goToCart = (
   {
     numAddedItems,
@@ -31,8 +33,11 @@ export const goToCart = (
   }: {
     numAddedItems?: number,
     selectModelConfigIds?: Array<ConfigId>
-  } = {}
-) => push('/cart', {numAddedItems, selectModelConfigIds})
-export const goToAddress = (section: ?AddressPageSection) => push('/address', {section})
-export const goToReviewOrder = () => push('/review-order')
-export const goToSuccess = (state: SuccessPageRouteState) => push('/success', state)
+  } = {},
+  routerAction: RouterAction = push
+) => routerAction('/cart', {numAddedItems, selectModelConfigIds})
+export const goToAddress = (section: ?AddressPageSection, routerAction: RouterAction = push) =>
+  routerAction('/address', {section})
+export const goToReviewOrder = (routerAction: RouterAction = push) => routerAction('/review-order')
+export const goToSuccess = (state: SuccessPageRouteState, routerAction: RouterAction = push) =>
+  routerAction('/success', state)
