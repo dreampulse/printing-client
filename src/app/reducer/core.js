@@ -17,6 +17,7 @@ import {
   setQuotesAndShippingInModelConfigs
 } from '../lib/model'
 import * as printingEngine from '../lib/printing-engine'
+import {singletonPromise, PromiseCancelledError} from '../lib/promise'
 import type {PriceRequest} from '../lib/printing-engine'
 import type {
   AppAction,
@@ -91,6 +92,8 @@ const initialState: CoreState = {
   orderNumber: null
 }
 
+const createPriceRequestSingleton = singletonPromise()
+
 const init = (state, {payload: {featureFlags, urlParams}}) =>
   loop(
     {
@@ -113,8 +116,13 @@ const init = (state, {payload: {featureFlags, urlParams}}) =>
     ])
   )
 
-const fatalError = (state, {payload: error}) =>
-  loop(
+const fatalError = (state, {payload: error}) => {
+  // Ignore promise cancelled errors (e.g. when price request got cancelled)
+  if (error.name === 'PromiseCancelledError') {
+    return state
+  }
+
+  return loop(
     state,
     Cmd.list([
       Cmd.action(modalAction.openFatalErrorModal(error)),
@@ -124,6 +132,7 @@ const fatalError = (state, {payload: error}) =>
       })
     ])
   )
+}
 
 const updateMaterialGroups = (state, action) => ({
   ...state,
@@ -458,11 +467,13 @@ const receiveQuotes = (state, {payload: {countryCode, currency, modelConfigs, re
     }))
   }
 
-  const createPriceRequestCmd = Cmd.run(printingEngine.createPriceRequest, {
-    args: [priceRequest],
-    successActionCreator: quoteAction.startPollingQuotes,
-    failActionCreator: coreAction.fatalError
-  })
+  const createPriceRequestCmd = Cmd.run(
+    () => createPriceRequestSingleton(printingEngine.createPriceRequest(priceRequest)),
+    {
+      successActionCreator: quoteAction.startPollingQuotes,
+      failActionCreator: coreAction.fatalError
+    }
+  )
 
   // Is polling still in progress
   if (state.quotePollingId) {
