@@ -235,7 +235,8 @@ export type User = {
   phoneNumber: string,
   useDifferentBillingAddress: boolean,
   shippingAddress: Address,
-  billingAddress: Address
+  billingAddress: Address,
+  saveAddress?: boolean
 }
 
 export type ModalContentType =

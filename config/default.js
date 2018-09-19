@@ -29,5 +29,6 @@ export default {
     shapeways: 'Shapeways',
     trinckle: 'Trinckle',
     treatstock: 'Treatstock'
-  }
+  },
+  localStorageAddressKey: 'address_v1'
 }
