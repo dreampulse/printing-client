@@ -3,11 +3,6 @@ context('Simple application flow', () => {
     cy.visit(
       '/?feature:refresh&feature:invoice&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test'
     )
-
-    cy.on('uncaught:exception', error => {
-      debugger
-      return false
-    })
   })
 
   it('uploads test model', () => {
