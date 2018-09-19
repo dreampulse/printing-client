@@ -8,6 +8,9 @@ import {connect} from 'react-redux'
 import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
 import omit from 'lodash/omit'
 
+import config from '../../../config'
+
+import * as localStorage from '../service/local-storage'
 import * as modalAction from '../action/modal'
 import * as coreAction from '../action/core'
 import * as navigationAction from '../action/navigation'
@@ -299,6 +302,14 @@ const AddressPage = ({
             />
           </FormRow>
           {useDifferentBillingAddress && billingAddressSection}
+          <FormRow>
+            <Field
+              name="saveAddress"
+              component={renderField(LabeledCheckbox)}
+              label="Save address for your next purchase"
+              type="checkbox"
+            />
+          </FormRow>
         </FormLayout>
         <div id="billing-address">
           <Button
@@ -315,6 +326,7 @@ const AddressPage = ({
 const transformLocationToInitialUser = userLocation => ({
   isCompany: false,
   useDifferentBillingAddress: false,
+  saveAddress: true,
   shippingAddress: {
     ...userLocation
   }
@@ -328,6 +340,7 @@ const mapStateToProps = state => ({
   userLocation: state.core.location,
   initialValues:
     (state.core.user && omit(state.core.user, 'userId')) ||
+    localStorage.getItem(config.localStorageAddressKey) ||
     transformLocationToInitialUser(state.core.location),
   isCompany: selector(state, 'isCompany'),
   useDifferentBillingAddress: selector(state, 'useDifferentBillingAddress'),
@@ -369,6 +382,12 @@ const enhance = compose(
       }
     },
     onSubmit: props => values => {
+      if (values.saveAddress) {
+        localStorage.setItem(config.localStorageAddressKey, values)
+      } else {
+        localStorage.removeItem(config.localStorageAddressKey)
+      }
+
       props.saveUser(values).then(() => {
         props.goToReviewOrder()
       })

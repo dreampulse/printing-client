@@ -239,8 +239,12 @@ const saveUser = (state, action) =>
       }
     },
     Cmd.run(
-      (user, userId) =>
-        userId ? printingEngine.updateUser(userId, user) : printingEngine.createUser(user),
+      (user, userId) => {
+        const finalUser = omit(user, 'saveAddress')
+        return userId
+          ? printingEngine.updateUser(userId, finalUser)
+          : printingEngine.createUser(finalUser)
+      },
       {
         args: [action.payload, state.user && state.user.userId],
         successActionCreator: coreAction.userReceived,
