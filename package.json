@@ -13,7 +13,7 @@
     "start:cypress": "PORT=3002 WEBPACK_ENV=cypress webpack-dev-server",
     "start:storybook": "start-storybook -p 3001 -s src",
     "start": "babel-node bin/app-server",
-    "test": "NODE_ENV=test nyc mocha --opts test/mocha.opts ./src/**/*.spec.js",
+    "test": "NODE_ENV=test nyc mocha --opts test/unit/mocha.opts ./src/**/*.spec.js",
     "posttest": "npm run test:lint && npm run test:flow",
     "test:lint": "eslint --ignore-pattern src/app/container src test bin stories .storybook ./*.js",
     "test:flow": "flow",
