@@ -10,7 +10,6 @@ import * as coreAction from '../action/core'
 import type {AppState} from '../reducer'
 
 import ConfigurationHeader from '../component/configuration-header'
-import LabeledField from '../component/labeled-field'
 import LocationField from '../component/location-field'
 import SelectField from '../component/select-field'
 import SelectMenu from '../component/select-menu'
@@ -23,13 +22,11 @@ const ConfigurationHeaderPartial = ({currency, location, updateLocation, updateC
   return (
     <ConfigurationHeader
       location={
-        <LabeledField label="Shipping:" modifiers={['block']}>
-          <LocationField
-            value={location ? formatLocation(location) : ''}
-            googleMapsApiKey={config.googleMapsApiKey}
-            onChange={place => updateLocation(convertPlaceToLocation(place))}
-          />
-        </LabeledField>
+        <LocationField
+          value={location ? formatLocation(location) : ''}
+          googleMapsApiKey={config.googleMapsApiKey}
+          onChange={place => updateLocation(convertPlaceToLocation(place))}
+        />
       }
       currency={
         <SelectField

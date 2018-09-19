@@ -28,5 +28,9 @@
 
   &--highlighted {
     background: $color-cheapest-provider-bg;
+
+    .provider-item__total-price {
+      font-weight: $font-weight-bold;
+    }
   }
 }
