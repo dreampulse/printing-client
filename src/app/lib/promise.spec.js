@@ -52,7 +52,7 @@ describe('Promise lib', () => {
       )
 
       cancelable.cancel()
-      setTimeout(resolve, 1)
+      resolve()
 
       return expect(
         cancelable.promise,
@@ -71,7 +71,7 @@ describe('Promise lib', () => {
       )
 
       cancelable.cancel()
-      setTimeout(reject, 1)
+      reject()
 
       return expect(
         cancelable.promise,
