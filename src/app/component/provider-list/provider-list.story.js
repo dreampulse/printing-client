@@ -92,5 +92,19 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       productionTime="4-6 days"
       checkoutLabel="Checkout"
     />
+    <ProviderItem
+      providerSlug="jawstec"
+      providerName="JawsTec"
+      process="DLP"
+      price="$410.11"
+      shippingPrice="$15.00"
+      deliveryTime="1-2 Days"
+      totalPrice="$40.00"
+      deliveryProvider="UPS"
+      providerInfo="Provider Material Name"
+      onAddToCartClick={action('click')}
+      productionTime="4-6 days"
+      checkoutLabel="Checkout"
+    />
   </ProviderList>
 ))

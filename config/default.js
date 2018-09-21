@@ -25,6 +25,7 @@ export default {
   providerNames: {
     ff3dm: 'FF3DM',
     imaterialise: 'i.Materialise',
+    jawstec: 'JawsTec',
     sculpteo: 'Sculpteo',
     shapeways: 'Shapeways',
     trinckle: 'Trinckle',
