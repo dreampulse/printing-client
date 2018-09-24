@@ -113,7 +113,7 @@ const MaterialPartial = ({
       const price = (
         <Price
           value={bestQuote ? formatPrice(bestQuote.grossPrice, bestQuote.currency) : undefined}
-          prefix="From"
+          prefix="Total price"
         />
       )
 
@@ -230,7 +230,7 @@ const MaterialPartial = ({
       const materialPrice = (
         <Price
           value={bestQuote && formatPrice(bestQuote.grossPrice, bestQuote.currency)}
-          prefix="From"
+          prefix="Total price"
         />
       )
       const colorSelect = (
