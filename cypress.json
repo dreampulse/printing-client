@@ -1,0 +1,7 @@
+{
+  "projectId": "7t13f7",
+  "fixturesFolder": "test/cypress/fixtures",
+  "integrationFolder": "test/cypress/integration",
+  "baseUrl": "http://localhost:3002",
+  "defaultCommandTimeout": 20000
+}

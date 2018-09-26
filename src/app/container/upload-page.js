@@ -233,7 +233,7 @@ const enhance = compose(
   scrollToTop(),
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
-  withProps(({modelsWithConfig}) => {
+  withProps(({modelsWithConfig, selectedModelConfigIds}) => {
     const numModelsUploading = modelsWithConfig.reduce(
       (sum, [modelConfig, model]) =>
         modelConfig.type === 'UPLOADING' && !model.error ? sum + 1 : sum,
@@ -241,9 +241,20 @@ const enhance = compose(
     )
     const isUploadCompleted = numModelsUploading === 0
 
+    // Special case when there is only one uploaded model the checkbox for selecting the model aren't shown anymore
+    // therefore we have to guarantee that the model is always selected.
+    const updatedSelectedModelConfigIds = [...selectedModelConfigIds];
+    if (updatedSelectedModelConfigIds.length === 0 && modelsWithConfig.length === 1) {
+      const modelConfig = modelsWithConfig[0][0]
+      if (modelConfig.type === 'UPLOADED') {
+        updatedSelectedModelConfigIds.push(modelConfig.id)
+      }
+    }
+
     return {
       numModelsUploading,
-      isUploadCompleted
+      isUploadCompleted,
+      selectedModelConfigIds: updatedSelectedModelConfigIds
     }
   }),
   lifecycle({

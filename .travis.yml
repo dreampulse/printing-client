@@ -5,9 +5,14 @@ node_js:
 cache:
   directories:
     - node_modules
+    - ~/.npm
+    - ~/.cache
 script:
   - npm test
   - npm run build
+  - npm run test:cypress
+install:
+  - npm ci
 deploy:
   skip_cleanup: true
   provider: s3
