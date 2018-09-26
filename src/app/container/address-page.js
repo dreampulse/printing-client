@@ -323,14 +323,31 @@ const AddressPage = ({
   )
 }
 
-const transformLocationToInitialUser = userLocation => ({
-  isCompany: false,
-  useDifferentBillingAddress: false,
-  saveAddress: true,
-  shippingAddress: {
-    ...userLocation
+const getInitialUserFormValues = state => {
+  const userFromLocalStorage = localStorage.getItem(config.localStorageAddressKey)
+
+  let initialUser
+  if (userFromLocalStorage) {
+    initialUser = {
+      ...userFromLocalStorage,
+      shippingAddress: {
+        ...userFromLocalStorage.shippingAddress,
+        ...state.core.location
+      }
+    }
+  } else {
+    initialUser = {
+      isCompany: false,
+      useDifferentBillingAddress: false,
+      saveAddress: true,
+      shippingAddress: {
+        ...state.core.location
+      }
+    }
   }
-})
+
+  return (state.core.user && omit(state.core.user, 'userId')) || initialUser
+}
 
 const FORM_NAME = 'address'
 const selector = formValueSelector(FORM_NAME)
@@ -338,10 +355,7 @@ const selector = formValueSelector(FORM_NAME)
 const mapStateToProps = state => ({
   cart: state.core.cart,
   userLocation: state.core.location,
-  initialValues:
-    (state.core.user && omit(state.core.user, 'userId')) ||
-    localStorage.getItem(config.localStorageAddressKey) ||
-    transformLocationToInitialUser(state.core.location),
+  initialValues: getInitialUserFormValues(state),
   isCompany: selector(state, 'isCompany'),
   useDifferentBillingAddress: selector(state, 'useDifferentBillingAddress'),
   valid: isValid(FORM_NAME)(state),
@@ -384,7 +398,7 @@ const enhance = compose(
     },
     onSubmit: props => values => {
       if (values.saveAddress) {
-        localStorage.setItem(config.localStorageAddressKey, values)
+        localStorage.setItem(config.localStorageAddressKey, omit(values, 'userId'))
       } else {
         localStorage.removeItem(config.localStorageAddressKey)
       }
