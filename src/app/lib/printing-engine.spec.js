@@ -191,7 +191,7 @@ describe('printing-engine lib', () => {
 
     beforeEach(async () => {
       sandbox.stub(httpJson, 'fetch').resolves({
-        json: null
+        json: 'some-user-result'
       })
 
       result = await updateUser('some-user-id', 'some-user-request')
@@ -203,7 +203,7 @@ describe('printing-engine lib', () => {
         {method: 'PUT', body: 'some-user-request'}
       ]))
 
-    it('returns the json result', () => expect(result, 'to be undefined'))
+    it('returns the json result', () => expect(result, 'to equal', 'some-user-result'))
   })
 
   describe('getShippings()', () => {

@@ -39,10 +39,12 @@ const PaymentSection = ({
             )}
           </li>
         )}
-        <li className="payment-section__price-component">
-          <span className="payment-section__price-label">VAT:</span>
-          <span className="payment-section__price-value">{vat}</span>
-        </li>
+        {vat && (
+          <li className="payment-section__price-component">
+            <span className="payment-section__price-label">VAT:</span>
+            <span className="payment-section__price-value">{vat}</span>
+          </li>
+        )}
         <li className="payment-section__total-price">
           <span className="payment-section__price-label">Total:</span>
           <span className="payment-section__price-value">{total}</span>
@@ -71,7 +73,7 @@ PaymentSection.propTypes = {
       price: PropTypes.string.isRequired
     })
   ),
-  vat: PropTypes.string.isRequired,
+  vat: PropTypes.string,
   total: PropTypes.string.isRequired
 }
 

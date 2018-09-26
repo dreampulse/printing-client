@@ -250,7 +250,8 @@ const saveUser = (state, action) =>
     },
     Cmd.run(
       (user, userId) => {
-        const finalUser = omit(user, 'saveAddress')
+        const finalUser = omit(user, 'saveAddress', 'liableForVat')
+
         return userId
           ? printingEngine.updateUser(userId, finalUser)
           : printingEngine.createUser(finalUser)
@@ -267,10 +268,8 @@ const userReceived = (state, action) => ({
   ...state,
   user: {
     ...state.user,
-    userId:
-      action.payload && action.payload.userId
-        ? action.payload.userId
-        : state.user && state.user.userId
+    userId: action.payload.userId,
+    liableForVat: action.payload.liableForVat
   }
 })
 
