@@ -343,7 +343,7 @@ const MaterialPartial = ({
             return (
               <ProviderItem
                 modifiers={providerItemModifiers}
-                key={multiModelQuote.quoteId + shipping.shippingId}
+                key={shipping.shippingId}
                 process={process}
                 providerSlug={multiModelQuote.vendorId}
                 providerName={getProviderName(multiModelQuote.vendorId)}
