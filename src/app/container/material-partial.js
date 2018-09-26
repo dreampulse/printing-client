@@ -27,10 +27,10 @@ import {
   getMaterialConfigById
 } from '../lib/material'
 import {
-  getBestMultiModelQuoteForMaterial,
-  getBestMultiModelQuoteForMaterialConfig,
-  getMultiModelQuotes
-} from '../lib/quote'
+  getBestMultiModelOfferForMaterial,
+  getBestMultiModelOffersForMaterialConfig
+} from '../lib/offer'
+import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {partitionBy} from '../lib/util'
@@ -109,10 +109,15 @@ const MaterialPartial = ({
 
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
-      const bestQuote = getBestMultiModelQuoteForMaterial(multiModelQuotes, material)
+      const bestOffer = getBestMultiModelOfferForMaterial(
+        multiModelQuotes,
+        usedShippingIds,
+        shippings,
+        material
+      )
       const price = (
         <Price
-          value={bestQuote ? formatPrice(bestQuote.grossPrice, bestQuote.currency) : undefined}
+          value={bestOffer ? formatPrice(bestOffer[2], bestOffer[0].currency) : undefined}
           prefix="Total price"
         />
       )
@@ -124,9 +129,9 @@ const MaterialPartial = ({
           description={material.descriptionShort}
           price={price}
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
-          loading={!bestQuote}
+          loading={!bestOffer}
           selected={selectedMaterial && selectedMaterial.id === material.id}
-          unavailable={!bestQuote && isPollingDone}
+          unavailable={!bestOffer && isPollingDone}
           onSelectClick={() => {
             selectMaterial(material.id)
             scrollTo('#section-finish')
@@ -145,7 +150,9 @@ const MaterialPartial = ({
 
     const sortMaterials = unsortedMaterials =>
       partitionBy(unsortedMaterials, material =>
-        Boolean(getBestMultiModelQuoteForMaterial(multiModelQuotes, material))
+        Boolean(
+          getBestMultiModelOfferForMaterial(multiModelQuotes, usedShippingIds, shippings, material)
+        )
       )
 
     return (
@@ -199,7 +206,14 @@ const MaterialPartial = ({
       const colors = finishGroup.materialConfigs
         // Filter out material configs which do not have an offer
         .filter(materialConfig =>
-          Boolean(getBestMultiModelQuoteForMaterialConfig(multiModelQuotes, materialConfig.id))
+          Boolean(
+            getBestMultiModelOffersForMaterialConfig(
+              multiModelQuotes,
+              usedShippingIds,
+              shippings,
+              materialConfig.id
+            ).length
+          )
         )
         .map(({id, color, colorCode, colorImage}) => ({
           value: id,
@@ -208,8 +222,10 @@ const MaterialPartial = ({
           colorImage: colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
         }))
 
-      let bestQuote = getBestMultiModelQuoteForMaterialConfig(
+      let sortedOffers = getBestMultiModelOffersForMaterialConfig(
         multiModelQuotes,
+        usedShippingIds,
+        shippings,
         selectedMaterialConfigs[finishGroup.id]
       )
       let selectedColor = colors.find(
@@ -222,14 +238,21 @@ const MaterialPartial = ({
       if (!selectedColor) {
         selectedColor = colors.length > 0 && colors[0]
         if (selectedColor) {
-          bestQuote = getBestMultiModelQuoteForMaterialConfig(multiModelQuotes, selectedColor.value)
+          sortedOffers = getBestMultiModelOffersForMaterialConfig(
+            multiModelQuotes,
+            usedShippingIds,
+            shippings,
+            selectedColor.value
+          )
         }
       }
+
+      const [bestOffer] = sortedOffers
 
       const colorMenu = colors.length > 1 && <SelectMenu values={colors} />
       const materialPrice = (
         <Price
-          value={bestQuote && formatPrice(bestQuote.grossPrice, bestQuote.currency)}
+          value={bestOffer && formatPrice(bestOffer[2], bestOffer[0].currency)}
           prefix="Total price"
         />
       )
@@ -252,8 +275,8 @@ const MaterialPartial = ({
           image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           colorSelect={colorSelect}
           selected={selectedColor && selectedColor.value === selectedMaterialConfigId}
-          loading={!bestQuote}
-          unavailable={!bestQuote && isPollingDone}
+          loading={!bestOffer}
+          unavailable={!bestOffer && isPollingDone}
           onSelectClick={
             (selectedColor &&
               (() => {
@@ -289,26 +312,13 @@ const MaterialPartial = ({
   }
 
   const renderProviderSection = () => {
-    const multiModelQuotesForSelectedMaterialConfig = multiModelQuotes.filter(
-      multiModelQuote =>
-        multiModelQuote.isPrintable && multiModelQuote.materialConfigId === selectedMaterialConfigId
-    )
     const usedShippingIdsById = keyBy(usedShippingIds, id => id)
-
-    const providerList = flatMap(
-      (multiModelQuotesForSelectedMaterialConfig: any), // Because flatMap is broken in flow
-      multiModelQuote =>
-        shippings
-          .filter(shipping => shipping.vendorId === multiModelQuote.vendorId)
-          .map(shipping => [
-            multiModelQuote,
-            shipping,
-            multiModelQuote.grossPrice +
-              (usedShippingIdsById[shipping.shippingId]
-                ? 0 // No additional costs if shipping method is already in cart
-                : shipping.grossPrice)
-          ])
-    ).sort(([, , priceA], [, , priceB]) => priceA - priceB)
+    const providerList = getBestMultiModelOffersForMaterialConfig(
+      multiModelQuotes,
+      usedShippingIds,
+      shippings,
+      selectedMaterialConfigId
+    )
 
     return (
       <Section>
