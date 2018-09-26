@@ -2,38 +2,7 @@
 import groupBy from 'lodash/groupBy'
 import compact from 'lodash/compact'
 
-import type {Material, ModelConfigUploaded, Quote, MaterialConfigId, MultiModelQuote} from '../type'
-
-export function getBestMultiModelQuote(quotes: Array<MultiModelQuote>): ?MultiModelQuote {
-  return quotes.reduce((bestQuote, quote) => {
-    const bestPrice = (bestQuote && bestQuote.price) || Number.MAX_SAFE_INTEGER
-    if (quote.isPrintable && bestPrice > quote.price) {
-      return quote
-    }
-    return bestQuote
-  }, null)
-}
-
-export function getBestMultiModelQuoteForMaterialConfig(
-  quotes: Array<MultiModelQuote>,
-  materialConfigId: MaterialConfigId
-): ?MultiModelQuote {
-  return getBestMultiModelQuote(quotes.filter(quote => quote.materialConfigId === materialConfigId))
-}
-
-export function getBestMultiModelQuoteForMaterial(
-  quotes: Array<MultiModelQuote>,
-  material: Material
-): ?MultiModelQuote {
-  const materialConfigs = {}
-  material.finishGroups.forEach(finishGroup => {
-    finishGroup.materialConfigs.forEach(materialConfig => {
-      materialConfigs[materialConfig.id] = true
-    })
-  })
-
-  return getBestMultiModelQuote(quotes.filter(quote => materialConfigs[quote.materialConfigId]))
-}
+import type {ModelConfigUploaded, Quote, MultiModelQuote} from '../type'
 
 export function getMultiModelQuotes(
   modelConfigs: Array<ModelConfigUploaded>,
