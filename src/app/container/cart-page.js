@@ -157,7 +157,7 @@ const CartPage = ({
     return (
       <PaymentSection
         classNames={['u-margin-bottom']}
-        subtotal={formatPrice(cart.subTotalPrice)}
+        subtotal={formatPrice(cart.subTotalPrice, cart.currency)}
         shippings={cartShippings.map(shipping => ({
           label: getProviderName(shipping.vendorId),
           price: formatPrice(shipping.price, shipping.currency)
