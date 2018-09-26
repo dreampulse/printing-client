@@ -5,7 +5,7 @@ import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 import withHandlers from 'recompose/withHandlers'
 import {connect} from 'react-redux'
-import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
+import {Field, reduxForm, formValueSelector, isValid, change, unregisterField} from 'redux-form'
 import omit from 'lodash/omit'
 
 import config from '../../../config'
@@ -364,6 +364,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   changeFormValue: change,
+  removeFormValue: unregisterField,
   saveUser: coreAction.saveUser,
   openPickLocationModal: modalAction.openPickLocationModal,
   goToReviewOrder: navigationAction.goToReviewOrder,
@@ -400,14 +401,16 @@ const enhance = compose(
     },
     handleBillingChange: props => useDifferentBillingAddress => {
       if (useDifferentBillingAddress === false) {
-        props.changeFormValue(FORM_NAME, 'billingAddress.firstName', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.lastName', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.address', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.addressLine2', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.city', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.zipCode', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.stateCode', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.countryCode', '')
+        props.removeFormValue(FORM_NAME, 'billingAddress.firstName')
+        props.removeFormValue(FORM_NAME, 'billingAddress.lastName')
+        props.removeFormValue(FORM_NAME, 'billingAddress.address')
+        props.removeFormValue(FORM_NAME, 'billingAddress.addressLine2')
+        props.removeFormValue(FORM_NAME, 'billingAddress.city')
+        props.removeFormValue(FORM_NAME, 'billingAddress.zipCode')
+        props.removeFormValue(FORM_NAME, 'billingAddress.stateCode')
+        props.removeFormValue(FORM_NAME, 'billingAddress.countryCode')
+        props.removeFormValue(FORM_NAME, 'billingAddress.countryCode')
+        props.removeFormValue(FORM_NAME, 'billingAddress')
       } else {
         props.changeFormValue(FORM_NAME, 'billingAddress', props.shippingAddress)
       }
