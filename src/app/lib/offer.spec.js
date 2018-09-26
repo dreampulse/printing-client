@@ -46,8 +46,16 @@ describe('getBestMultiModelPriceForMaterialConfig()', () => {
       ),
       'to equal',
       [
-        [quotes[1], shippings[0], quotes[1].grossPrice + shippings[0].grossPrice],
-        [quotes[0], shippings[0], quotes[0].grossPrice + shippings[0].grossPrice]
+        {
+          multiModelQuote: quotes[1],
+          shipping: shippings[0],
+          totalGrossPrice: quotes[1].grossPrice + shippings[0].grossPrice
+        },
+        {
+          multiModelQuote: quotes[0],
+          shipping: shippings[0],
+          totalGrossPrice: quotes[0].grossPrice + shippings[0].grossPrice
+        }
       ]
     )
   })
@@ -70,8 +78,8 @@ describe('getBestMultiModelPriceForMaterialConfig()', () => {
       ),
       'to equal',
       [
-        [quotes[1], shippings[0], quotes[1].grossPrice],
-        [quotes[0], shippings[0], quotes[0].grossPrice]
+        {multiModelQuote: quotes[1], shipping: shippings[0], totalGrossPrice: quotes[1].grossPrice},
+        {multiModelQuote: quotes[0], shipping: shippings[0], totalGrossPrice: quotes[0].grossPrice}
       ]
     )
   })
@@ -104,7 +112,11 @@ describe('getBestMultiModelPriceForMaterial()', () => {
     expect(
       getBestMultiModelOfferForMaterial(quotes, usedShippingIds, shippings, material),
       'to equal',
-      [quotes[3], shippings[0], quotes[3].grossPrice + shippings[0].grossPrice]
+      {
+        multiModelQuote: quotes[3],
+        shipping: shippings[0],
+        totalGrossPrice: quotes[3].grossPrice + shippings[0].grossPrice
+      }
     )
   })
 

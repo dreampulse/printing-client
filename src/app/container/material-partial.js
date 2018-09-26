@@ -117,7 +117,11 @@ const MaterialPartial = ({
       )
       const price = (
         <Price
-          value={bestOffer ? formatPrice(bestOffer[2], bestOffer[0].currency) : undefined}
+          value={
+            bestOffer
+              ? formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
+              : undefined
+          }
           prefix="Total price"
         />
       )
@@ -252,7 +256,9 @@ const MaterialPartial = ({
       const colorMenu = colors.length > 1 && <SelectMenu values={colors} />
       const materialPrice = (
         <Price
-          value={bestOffer && formatPrice(bestOffer[2], bestOffer[0].currency)}
+          value={
+            bestOffer && formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
+          }
           prefix="Total price"
         />
       )
@@ -324,7 +330,7 @@ const MaterialPartial = ({
       <Section>
         <Headline label="3. Select Offer" modifiers={['xl']} />
         <ProviderList>
-          {providerList.map(([multiModelQuote, shipping, grossPrice], index) => {
+          {providerList.map(({multiModelQuote, shipping, totalGrossPrice}, index) => {
             const materialTree = getMaterialTreeByMaterialConfigId(
               materialGroups,
               multiModelQuote.materialConfigId
@@ -356,7 +362,7 @@ const MaterialPartial = ({
                     ? formatPrice(0, shipping.currency)
                     : formatPrice(shipping.grossPrice, shipping.currency)
                 }
-                totalPrice={formatPrice(grossPrice, multiModelQuote.currency)}
+                totalPrice={formatPrice(totalGrossPrice, multiModelQuote.currency)}
                 includesVat={false}
                 productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
                 checkoutLabel={hasItemsOnUploadPage ? 'Add to cart' : 'Checkout'}
