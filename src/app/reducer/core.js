@@ -180,6 +180,7 @@ const updateLocation = (state, action) => {
   if (state.location && state.location.countryCode !== action.payload.location.countryCode) {
     nextState.quotes = {}
     nextState.modelConfigs = resetModelConfigs(state.modelConfigs)
+    nextState.user = null
     nextState.cart = null
   }
 
@@ -242,7 +243,7 @@ const saveUser = (state, action) =>
       user: {
         ...state.user,
         ...action.payload,
-        billingAddress: action.payload.billingAddress
+        billingAddress: action.payload.useDifferentBillingAddress
           ? action.payload.billingAddress
           : action.payload.shippingAddress
       }
