@@ -5,7 +5,7 @@ import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 import withHandlers from 'recompose/withHandlers'
 import {connect} from 'react-redux'
-import {Field, reduxForm, formValueSelector, isValid, change} from 'redux-form'
+import {Field, reduxForm, formValueSelector, isValid, change, unregisterField} from 'redux-form'
 import omit from 'lodash/omit'
 
 import config from '../../../config'
@@ -323,14 +323,31 @@ const AddressPage = ({
   )
 }
 
-const transformLocationToInitialUser = userLocation => ({
-  isCompany: false,
-  useDifferentBillingAddress: false,
-  saveAddress: true,
-  shippingAddress: {
-    ...userLocation
+const getInitialUserFormValues = state => {
+  const userFromLocalStorage = localStorage.getItem(config.localStorageAddressKey)
+
+  let initialUser
+  if (userFromLocalStorage) {
+    initialUser = {
+      ...userFromLocalStorage,
+      shippingAddress: {
+        ...userFromLocalStorage.shippingAddress,
+        ...state.core.location
+      }
+    }
+  } else {
+    initialUser = {
+      isCompany: false,
+      useDifferentBillingAddress: false,
+      saveAddress: true,
+      shippingAddress: {
+        ...state.core.location
+      }
+    }
   }
-})
+
+  return (state.core.user && omit(state.core.user, 'userId')) || initialUser
+}
 
 const FORM_NAME = 'address'
 const selector = formValueSelector(FORM_NAME)
@@ -338,10 +355,7 @@ const selector = formValueSelector(FORM_NAME)
 const mapStateToProps = state => ({
   cart: state.core.cart,
   userLocation: state.core.location,
-  initialValues:
-    (state.core.user && omit(state.core.user, 'userId')) ||
-    localStorage.getItem(config.localStorageAddressKey) ||
-    transformLocationToInitialUser(state.core.location),
+  initialValues: getInitialUserFormValues(state),
   isCompany: selector(state, 'isCompany'),
   useDifferentBillingAddress: selector(state, 'useDifferentBillingAddress'),
   valid: isValid(FORM_NAME)(state),
@@ -364,6 +378,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   changeFormValue: change,
+  removeFormValue: unregisterField,
   saveUser: coreAction.saveUser,
   openPickLocationModal: modalAction.openPickLocationModal,
   goToReviewOrder: navigationAction.goToReviewOrder,
@@ -383,7 +398,7 @@ const enhance = compose(
     },
     onSubmit: props => values => {
       if (values.saveAddress) {
-        localStorage.setItem(config.localStorageAddressKey, values)
+        localStorage.setItem(config.localStorageAddressKey, omit(values, 'userId'))
       } else {
         localStorage.removeItem(config.localStorageAddressKey)
       }
@@ -400,14 +415,16 @@ const enhance = compose(
     },
     handleBillingChange: props => useDifferentBillingAddress => {
       if (useDifferentBillingAddress === false) {
-        props.changeFormValue(FORM_NAME, 'billingAddress.firstName', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.lastName', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.address', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.addressLine2', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.city', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.zipCode', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.stateCode', '')
-        props.changeFormValue(FORM_NAME, 'billingAddress.countryCode', '')
+        props.removeFormValue(FORM_NAME, 'billingAddress.firstName')
+        props.removeFormValue(FORM_NAME, 'billingAddress.lastName')
+        props.removeFormValue(FORM_NAME, 'billingAddress.address')
+        props.removeFormValue(FORM_NAME, 'billingAddress.addressLine2')
+        props.removeFormValue(FORM_NAME, 'billingAddress.city')
+        props.removeFormValue(FORM_NAME, 'billingAddress.zipCode')
+        props.removeFormValue(FORM_NAME, 'billingAddress.stateCode')
+        props.removeFormValue(FORM_NAME, 'billingAddress.countryCode')
+        props.removeFormValue(FORM_NAME, 'billingAddress.countryCode')
+        props.removeFormValue(FORM_NAME, 'billingAddress')
       } else {
         props.changeFormValue(FORM_NAME, 'billingAddress', props.shippingAddress)
       }

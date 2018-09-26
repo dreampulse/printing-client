@@ -31,5 +31,5 @@ export default {
     trinckle: 'Trinckle',
     treatstock: 'Treatstock'
   },
-  localStorageAddressKey: 'address_v1'
+  localStorageAddressKey: 'address_v2'
 }
