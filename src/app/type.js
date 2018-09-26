@@ -164,6 +164,8 @@ export type Shipping = {
   currency: string
 }
 
+export type Offer = [MultiModelQuote, Shipping, number]
+
 export type ModelConfigUploading = {
   type: 'UPLOADING',
   fileId: FileId,
