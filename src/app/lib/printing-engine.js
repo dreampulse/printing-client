@@ -55,7 +55,8 @@ export type QuotesResponse = {
 }
 
 export type UserResponse = {
-  userId: UserId
+  userId: UserId,
+  liableForVat: boolean
 }
 
 export type CartRequest = {
