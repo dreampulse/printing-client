@@ -73,7 +73,7 @@ PaymentSection.propTypes = {
       price: PropTypes.string.isRequired
     })
   ),
-  vat: PropTypes.string.isRequired,
+  vat: PropTypes.string,
   total: PropTypes.string.isRequired
 }
 

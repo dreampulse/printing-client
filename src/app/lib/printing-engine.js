@@ -198,11 +198,12 @@ export const createUser = async (user: User): Promise<UserResponse> => {
   return response.json
 }
 
-export const updateUser = async (userId: UserId, user: User): Promise<void> => {
-  await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/user/${userId}`, {
+export const updateUser = async (userId: UserId, user: User): Promise<UserResponse> => {
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/user/${userId}`, {
     method: 'PUT',
     body: user
   })
+  return response.json
 }
 
 export const getShippings = async (
