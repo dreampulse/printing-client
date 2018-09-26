@@ -18,7 +18,7 @@ import {
   createPaypalPayment,
   executePaypalPayment
 } from './printing-engine'
-import getFileMock from '../../../test/mock/file'
+import getFileMock from '../../../test/unit/mock/file'
 
 describe('printing-engine lib', () => {
   let sandbox
