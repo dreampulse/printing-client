@@ -8,7 +8,6 @@ import buildClassName from '../../lib/build-class-name'
 
 import ImageContainer from '../image-container'
 import Icon from '../icon'
-import Info from '../info'
 import ProviderImage from '../provider-image'
 import MagnifyableItem from '../magnifyable-item'
 
@@ -32,7 +31,6 @@ const ModelItem = ({
   materialName,
   color,
   providerId,
-  providerMaterialName,
   onMagnify = Function.prototype
 }) => (
   <div className={buildClassName('model-item', modifiers, classNames)}>
@@ -45,18 +43,17 @@ const ModelItem = ({
       />
     </MagnifyableItem>
     <div className="model-item__center-content">
+      <span className="model-item__quantity">{`${quantity}x`}</span>
       <strong className="model-item__title">{title}</strong>
       {Boolean(subline) && <div className="model-item__subline">{subline}</div>}
       <div className="model-item__value">{materialName}</div>
       <div className="model-item__value">{color}</div>
       <div className="model-item__provider">
         <ProviderImage slug={providerId} modifiers={['s']} />{' '}
-        {Boolean(providerMaterialName) && <Info modifiers={['minor']}>{providerMaterialName}</Info>}
       </div>
     </div>
     <div className="model-item__right-content">
       <div className="model-item__price">{price}</div>
-      <div className="model-item__value">Qty: {quantity}</div>
       <div className="model-item__value">
         <Icon source={ShippingIcon} /> {deliveryTime}
       </div>
@@ -80,7 +77,6 @@ ModelItem.propTypes = {
   shippingMethod: PropTypes.string.isRequired,
   materialName: PropTypes.string.isRequired,
   providerId: PropTypes.string.isRequired,
-  providerMaterialName: PropTypes.string,
   onMagnify: PropTypes.func
 }
 

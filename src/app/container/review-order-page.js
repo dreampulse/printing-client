@@ -297,7 +297,6 @@ const ReviewOrderPage = ({
               shipping,
               quote,
               materialName,
-              providerInfo,
               materialConfigId,
               finishGroupName,
               colorCode,
@@ -317,7 +316,6 @@ const ReviewOrderPage = ({
                 shippingMethod={shipping.name}
                 providerId={shipping.vendorId}
                 materialName={materialName}
-                providerMaterialName={providerInfo}
                 onMagnify={() => openModelViewer(model)}
                 color={
                   <SelectField
