@@ -189,6 +189,7 @@ export type Cart = {
   vatPercentage: number,
   vatPrice: number,
   totalPrice: number,
+  totalNetPrice: number,
   currency: string
 }
 
@@ -236,7 +237,8 @@ export type User = {
   useDifferentBillingAddress: boolean,
   shippingAddress: Address,
   billingAddress: Address,
-  saveAddress?: boolean
+  saveAddress?: boolean,
+  liableForVat: boolean
 }
 
 export type ModalContentType =

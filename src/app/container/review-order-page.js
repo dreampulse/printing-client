@@ -62,7 +62,8 @@ const ReviewOrderPage = ({
   payWithStripe,
   payWithInvoice,
   fatalError,
-  success
+  success,
+  liableForVat
 }) => {
   const shippingStateName =
     user && getStateName(user.shippingAddress.countryCode, user.shippingAddress.stateCode)
@@ -225,8 +226,8 @@ const ReviewOrderPage = ({
           label: getProviderName(shipping.vendorId),
           price: formatPrice(shipping.price, shipping.currency)
         }))}
-        vat={formatPrice(cart.vatPrice, cart.currency)}
-        total={formatPrice(cart.totalPrice, cart.currency)}
+        vat={liableForVat && formatPrice(cart.vatPrice, cart.currency)}
+        total={formatPrice(liableForVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
         childrenLabel="Pay with:"
       >
         {paymentButtons}
@@ -347,7 +348,8 @@ const mapStateToProps = state => ({
   modelsWithConfig: selectConfiguredModelInformation(state),
   cartShippings: selectCartShippings(state),
   featureFlags: state.core.featureFlags,
-  urlParams: state.core.urlParams
+  urlParams: state.core.urlParams,
+  liableForVat: state.core.user && state.core.user.liableForVat
 })
 
 const mapDispatchToProps = {
@@ -405,7 +407,7 @@ const enhance = compose(
       const userId = props.user.userId
       const cartId = props.cart.cartId
       const email = props.user.emailAddress
-      const price = props.cart.totalPrice
+      const price = props.liableForVat ? props.cart.totalPrice : props.cart.totalNetPrice
       const currency = props.cart.currency
       const utmParams = props.utmParams
 

@@ -54,7 +54,8 @@ const CartPage = ({
   cartShippings,
   magnifyModel,
   goToMaterial,
-  numAddedItems
+  numAddedItems,
+  liableForVat
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -159,8 +160,8 @@ const CartPage = ({
           label: getProviderName(shipping.vendorId),
           price: formatPrice(shipping.price, shipping.currency)
         }))}
-        vat={formatPrice(cart.vatPrice, cart.currency)}
-        total={formatPrice(cart.totalPrice, cart.currency)}
+        vat={liableForVat && formatPrice(cart.vatPrice, cart.currency)}
+        total={formatPrice(liableForVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
       >
         <Button modifiers={['block']} label="Checkout" onClick={() => goToAddress()} />
       </PaymentSection>
@@ -235,7 +236,8 @@ const mapStateToProps = (state: AppState) => ({
   modelConfigs: state.core.modelConfigs,
   cartShippings: selectCartShippings(state),
   currency: state.core.currency,
-  cart: state.core.cart
+  cart: state.core.cart,
+  liableForVat: state.core.user && state.core.user.liableForVat
 })
 
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => ({

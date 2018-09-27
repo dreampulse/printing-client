@@ -180,6 +180,7 @@ const updateLocation = (state, action) => {
   if (state.location && state.location.countryCode !== action.payload.location.countryCode) {
     nextState.quotes = {}
     nextState.modelConfigs = resetModelConfigs(state.modelConfigs)
+    nextState.user = null
     nextState.cart = null
   }
 
@@ -242,14 +243,15 @@ const saveUser = (state, action) =>
       user: {
         ...state.user,
         ...action.payload,
-        billingAddress: action.payload.billingAddress
+        billingAddress: action.payload.useDifferentBillingAddress
           ? action.payload.billingAddress
           : action.payload.shippingAddress
       }
     },
     Cmd.run(
       (user, userId) => {
-        const finalUser = omit(user, 'saveAddress')
+        const finalUser = omit(user, 'saveAddress', 'liableForVat')
+
         return userId
           ? printingEngine.updateUser(userId, finalUser)
           : printingEngine.createUser(finalUser)
@@ -266,10 +268,8 @@ const userReceived = (state, action) => ({
   ...state,
   user: {
     ...state.user,
-    userId:
-      action.payload && action.payload.userId
-        ? action.payload.userId
-        : state.user && state.user.userId
+    userId: action.payload.userId,
+    liableForVat: action.payload.liableForVat
   }
 })
 

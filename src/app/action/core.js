@@ -1,15 +1,8 @@
 // @flow
 
-import type {
-  Action,
-  MaterialGroup,
-  UrlParams,
-  Location,
-  Features,
-  Shipping,
-  User,
-  UserId
-} from '../type'
+import type {Action, MaterialGroup, UrlParams, Location, Features, Shipping, User} from '../type'
+
+import type {UserResponse} from '../lib/printing-engine'
 
 type InitPayload = {
   featureFlags: Features,
@@ -27,7 +20,7 @@ type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string, fo
 type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Array<Shipping>>
 type SaveUserAction = Action<'CORE.SAVE_USER', User>
-type UserReceivedAction = Action<'CORE.USER_RECEIVED', {userId: UserId}>
+type UserReceivedAction = Action<'CORE.USER_RECEIVED', UserResponse>
 type ResetAction = Action<'CORE.RESET', void>
 
 export type CoreAction =
@@ -90,7 +83,7 @@ export const saveUser = (user: User): SaveUserAction => ({
   payload: user
 })
 
-export const userReceived = (payload: {userId: UserId}): UserReceivedAction => ({
+export const userReceived = (payload: UserResponse): UserReceivedAction => ({
   type: 'CORE.USER_RECEIVED',
   payload
 })
