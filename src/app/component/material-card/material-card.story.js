@@ -14,7 +14,7 @@ import HandleValue from '../../../../stories/util/handle-value'
 import {selectMenuColorValues} from '../../../../stories/util/data'
 
 const colorMenu = <SelectMenu values={selectMenuColorValues} />
-const price = <Price value="$19.99" prefix="From" />
+const price = <Price value="$19.99" prefix="Total price" />
 const colorSelect = (
   <HandleValue>
     <SelectField modifiers={['compact']} placeholder="Placeholder" menu={colorMenu} />
