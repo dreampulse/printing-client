@@ -227,7 +227,7 @@ const AddressPage = ({
               onChangeValue={handleIsCompanyChange}
               name="isCompany"
               component={renderField(LabeledCheckbox)}
-              label="I am ordering for a company"
+              label="I am ordering on behalf of a company"
               type="checkbox"
             />
           </FormRow>

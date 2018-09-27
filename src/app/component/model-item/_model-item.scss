@@ -29,11 +29,15 @@
     text-align: right;
   }
 
+  &__headline {
+    display: flex;
+  }
+
   &__title {
     @include scut-truncate;
-    display: block;
     color: $color-text;
     font-weight: $font-weight-bold;
+    margin-left: $space-s;
   }
 
   &__subline {

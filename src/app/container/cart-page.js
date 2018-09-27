@@ -104,7 +104,6 @@ const CartPage = ({
             shipping,
             quote,
             materialName,
-            providerInfo,
             materialConfigId,
             finishGroupName,
             colorCode,
@@ -124,7 +123,6 @@ const CartPage = ({
               shippingMethod={shipping.name}
               providerId={shipping.vendorId}
               materialName={materialName}
-              providerMaterialName={providerInfo}
               color={
                 <SelectField
                   modifiers={['compact']}
@@ -164,7 +162,6 @@ const CartPage = ({
         }))}
         vat={liableForVat && formatPrice(cart.vatPrice, cart.currency)}
         total={formatPrice(liableForVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
-        childrenLabel="Go to:"
       >
         <Button modifiers={['block']} label="Checkout" onClick={() => goToAddress()} />
       </PaymentSection>
