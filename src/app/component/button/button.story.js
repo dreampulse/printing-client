@@ -58,3 +58,9 @@ storiesOf('Button', module)
       onClick={action('click')}
     />
   ))
+  .add('warning', () => (
+    <Button label="Warning Button" modifiers={['warning']} onClick={action('click')} />
+  ))
+  .add('warning & disabled', () => (
+    <Button label="Warning Button" disabled modifiers={['warning']} onClick={action('click')} />
+  ))
