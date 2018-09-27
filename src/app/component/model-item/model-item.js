@@ -43,8 +43,10 @@ const ModelItem = ({
       />
     </MagnifyableItem>
     <div className="model-item__center-content">
-      <span className="model-item__quantity">{`${quantity}x`}</span>
-      <strong className="model-item__title">{title}</strong>
+      <div className="model-item__headline">
+        <div className="model-item__quantity">{`${quantity}x`}</div>
+        <div className="model-item__title">{title}</div>
+      </div>
       {Boolean(subline) && <div className="model-item__subline">{subline}</div>}
       <div className="model-item__value">{materialName}</div>
       <div className="model-item__value">{color}</div>

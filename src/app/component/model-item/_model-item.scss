@@ -29,6 +29,10 @@
     text-align: right;
   }
 
+  &__headline {
+    display: flex;
+  }
+
   &__title {
     @include scut-truncate;
     color: $color-text;
