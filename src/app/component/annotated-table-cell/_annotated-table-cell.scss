@@ -3,17 +3,13 @@
     @include scut-truncate();
     color: $color-text;
     font-size: $font-size-l;
-    display: block;
+    min-height: $font-size-l * $line-height-base;
   }
 
   &__annotation {
-    @include scut-truncate();
-    color: $color-minor;
     font-size: $font-size-s;
-    display: block;
-    min-height: $font-size-s * $line-height-base;
   }
-  
+
   &--highlighted {
     .annotated-table-cell__annotation {
       color: $color-minor-highlighted;

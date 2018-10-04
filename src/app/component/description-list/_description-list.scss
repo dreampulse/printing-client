@@ -8,6 +8,7 @@
   text-align: left;
 
   :nth-child(2n) {
+    @include scut-truncate();
     margin-left: 0;
   }
 

@@ -2,35 +2,12 @@
   border-bottom: 1px solid $color-border-minor;
 
   &__provider,
+  &__time,
   &__price,
-  &__shipping-price,
-  &__total-price,
-  &__action,
-  &__process {
+  &__action {
     padding: $space-l $space-l;
     vertical-align: middle;
     font-size: $font-size-l;
     text-align: left;
-  }
-
-  &__shipping-price,
-  &__total-price {
-    .info {
-      font-size: $font-size-base;
-      margin-left: $space-s;
-    }
-  }
-
-  &__provider {
-    white-space: nowrap;
-    padding-left: $space-base;
-  }
-
-  &--highlighted {
-    background: $color-cheapest-provider-bg;
-
-    .provider-item__total-price {
-      font-weight: $font-weight-bold;
-    }
   }
 }
