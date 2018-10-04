@@ -21,7 +21,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
         </DescriptionList>
       }
       provider={<ProviderImage modifiers={['s']} name="imaterialise" slug="imaterialise" />}
-      deliveryTimeAnnotation={
+      timeAnnotation={
         <DescriptionList>
           <dt>Production:</dt>
           <dd>8-10 days</dd>
@@ -29,7 +29,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
           <dd>2 days</dd>
         </DescriptionList>
       }
-      deliveryTime="10-12 days"
+      time="10-12 days"
       priceAnnotation={
         <DescriptionList>
           <dt>Production:</dt>
@@ -51,7 +51,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
         </DescriptionList>
       }
       provider={<ProviderImage modifiers={['s']} name="shapeways" slug="shapeways" />}
-      deliveryTimeAnnotation={
+      timeAnnotation={
         <DescriptionList>
           <dt>Production:</dt>
           <dd>3-4 days</dd>
@@ -59,7 +59,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
           <dd>2 days</dd>
         </DescriptionList>
       }
-      deliveryTime={<strong>5-6 days</strong>}
+      time={<strong>5-6 days</strong>}
       priceAnnotation={
         <DescriptionList>
           <dt>Production:</dt>

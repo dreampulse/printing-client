@@ -14,7 +14,7 @@ const AnnotatedTableCell = ({classNames, modifiers, children, annotation = ''}) 
 AnnotatedTableCell.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
-  annotation: PropTypes.string
+  annotation: PropTypes.node
 }
 
 export default AnnotatedTableCell

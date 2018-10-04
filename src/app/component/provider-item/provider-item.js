@@ -11,8 +11,8 @@ const ProviderItem = ({
   modifiers,
   providerAnnotation,
   provider,
-  deliveryTimeAnnotation,
-  deliveryTime,
+  timeAnnotation,
+  time,
   priceAnnotation,
   price,
   action
@@ -22,7 +22,7 @@ const ProviderItem = ({
       <AnnotatedTableCell annotation={providerAnnotation}>{provider}</AnnotatedTableCell>
     </td>
     <td className="provider-item__time">
-      <AnnotatedTableCell annotation={deliveryTimeAnnotation}>{deliveryTime}</AnnotatedTableCell>
+      <AnnotatedTableCell annotation={timeAnnotation}>{time}</AnnotatedTableCell>
     </td>
     <td className="provider-item__price">
       <AnnotatedTableCell annotation={priceAnnotation}>{price}</AnnotatedTableCell>
@@ -35,8 +35,8 @@ ProviderItem.propTypes = {
   ...propTypes.component,
   providerAnnotation: PropTypes.node.isRequired,
   provider: PropTypes.node.isRequired,
-  deliveryTimeAnnotation: PropTypes.node.isRequired,
-  deliveryTime: PropTypes.node.isRequired,
+  timeAnnotation: PropTypes.node.isRequired,
+  time: PropTypes.node.isRequired,
   priceAnnotation: PropTypes.node.isRequired,
   price: PropTypes.node.isRequired,
   action: PropTypes.node.isRequired

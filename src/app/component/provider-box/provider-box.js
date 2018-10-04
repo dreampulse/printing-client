@@ -41,9 +41,9 @@ ProviderBox.propTypes = {
   icon: PropTypes.node.isRequired,
   headline: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  day: PropTypes.string.isRequired,
+  day: PropTypes.node.isRequired,
   daysColumn: PropTypes.node.isRequired,
-  price: PropTypes.string.isRequired,
+  price: PropTypes.node.isRequired,
   priceColumn: PropTypes.node.isRequired,
   materialColumn: PropTypes.node.isRequired,
   actionButton: PropTypes.node.isRequired
