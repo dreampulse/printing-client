@@ -1,4 +1,8 @@
-import {getBestMultiModelOfferForMaterial, getBestMultiModelOffersForMaterialConfig} from './offer'
+import {
+  getBestMultiModelOfferForMaterial,
+  getBestMultiModelOffersForMaterialConfig,
+  isSameOffer
+} from './offer'
 
 const usedShippingIds = []
 const shippings = [
@@ -125,5 +129,42 @@ describe('getBestMultiModelPriceForMaterial()', () => {
       getBestMultiModelOfferForMaterial([], usedShippingIds, shippings, material),
       'to be undefined'
     )
+  })
+})
+
+describe('isSameOffer()', () => {
+  it('returns true if the offer is the same', () => {
+    const offer = {
+      multiModelQuote: {
+        materialConfigId: 'some-config-id-1'
+      },
+      shipping: {
+        shippingId: 'some-shipping-id-1'
+      }
+    }
+
+    expect(isSameOffer(offer, offer), 'to be true')
+  })
+
+  it('returns false if the offer differs', () => {
+    const offer1 = {
+      multiModelQuote: {
+        materialConfigId: 'some-config-id-1'
+      },
+      shipping: {
+        shippingId: 'some-shipping-id-1'
+      }
+    }
+
+    const offer2 = {
+      multiModelQuote: {
+        materialConfigId: 'some-config-id-2'
+      },
+      shipping: {
+        shippingId: 'some-shipping-id-2'
+      }
+    }
+
+    expect(isSameOffer(offer1, offer2), 'to be false')
   })
 })
