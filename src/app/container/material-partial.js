@@ -109,8 +109,15 @@ const MaterialPartial = ({
   )
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, validQuotes)
 
+  const providerList = getBestMultiModelOffersForMaterialConfig(
+    multiModelQuotes,
+    usedShippingIds,
+    shippings,
+    selectedMaterialConfigId
+  )
+
   const finishSectionEnabled = Boolean(selectedMaterial)
-  const providerSectionEnabled = selectedMaterialConfigId
+  const providerSectionEnabled = selectedMaterialConfigId && providerList.length > 0
 
   const hasItemsOnUploadPage = uploadedModelConfigs.some(
     modelConfig => !configIds.find(id => id === modelConfig.id) && !modelConfig.quoteId
@@ -457,13 +464,6 @@ const MaterialPartial = ({
   }
 
   const renderProviderSection = () => {
-    const providerList = getBestMultiModelOffersForMaterialConfig(
-      multiModelQuotes,
-      usedShippingIds,
-      shippings,
-      selectedMaterialConfigId
-    )
-
     const cheapestOffer = providerList[0]
     const fastestOffer = [...providerList].sort(
       (offer1, offer2) => getDeliveryTime(offer1) - getDeliveryTime(offer2)
