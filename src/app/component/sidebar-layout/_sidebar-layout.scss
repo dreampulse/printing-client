@@ -1,7 +1,7 @@
 .sidebar-layout {
   display: grid;
   grid-template-columns: 9fr 3fr;
-  grid-gap: $space-xl;
+  grid-gap: $gutter-width;
 
   &__aside {
     position: sticky;
