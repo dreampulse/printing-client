@@ -23,17 +23,17 @@
     font-weight: $font-weight-bold;
     text-transform: uppercase;
 
-    > .icon {
+    & > .icon {
       margin-right: $space-base;
       font-size: $font-size-xxl;
     }
   }
 
   &__image {
+    @include scut-ratio-box(26/17);
     grid-area: image;
     background-size: cover;
     background-repeat: no-repeat;
-    @include scut-ratio-box(26/17);
     margin-left: $space-l;
   }
 
@@ -58,9 +58,7 @@
 
   &__action-button {
     grid-area: action-button;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    text-align: right;
     margin-right: $space-l;
     margin-bottom: $space-l;
   }
