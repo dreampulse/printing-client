@@ -140,4 +140,13 @@
       border-color: $color-gray-5;
     }
   }
+
+  &--warning {
+    background: $color-warning;
+
+    &:hover:not([disabled]),
+    &:focus:not([disabled]) {
+      background: $color-warning-active;
+    }
+  }
 }

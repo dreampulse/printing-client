@@ -1,0 +1,11 @@
+.provider-box-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: $space-l;
+  margin-bottom: $space-xxl;
+
+  @include respond-to(medium) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+

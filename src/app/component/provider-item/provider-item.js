@@ -4,87 +4,45 @@ import React from 'react'
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
-import Button from '../button'
 import AnnotatedTableCell from '../annotated-table-cell'
-import Info from '../info'
-import Paragraph from '../paragraph'
-
-import checkoutIcon from '../../../asset/icon/checkout.svg'
 
 const ProviderItem = ({
   classNames,
   modifiers,
-  providerName,
+  providerAnnotation,
+  provider,
+  timeAnnotation,
+  time,
+  priceAnnotation,
   price,
-  shippingPrice,
-  totalPrice,
-  includesVat = false,
-  process,
-  deliveryTime,
-  deliveryProvider,
-  providerInfo,
-  productionTime,
-  checkoutLabel,
-  onAddToCartClick = () => {}
+  action,
+  icons
 }) => (
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
     <td className="provider-item__provider">
-      <AnnotatedTableCell modifiers={modifiers} annotation={providerInfo}>
-        {providerName}
-      </AnnotatedTableCell>
+      <AnnotatedTableCell annotation={providerAnnotation}>{provider}</AnnotatedTableCell>
     </td>
-    <td className="provider-item__process">
-      <AnnotatedTableCell>{process}</AnnotatedTableCell>
+    <td className="provider-item__time">
+      <AnnotatedTableCell annotation={timeAnnotation}>{time}</AnnotatedTableCell>
     </td>
     <td className="provider-item__price">
-      <AnnotatedTableCell modifiers={modifiers} annotation={price}>
-        {productionTime}
-      </AnnotatedTableCell>
+      <AnnotatedTableCell annotation={priceAnnotation}>{price}</AnnotatedTableCell>
     </td>
-    <td className="provider-item__shipping-price">
-      <AnnotatedTableCell modifiers={modifiers} annotation={shippingPrice}>
-        {deliveryTime}
-        <Info modifiers={['minor']}>
-          <Paragraph>{deliveryProvider}</Paragraph>
-        </Info>
-      </AnnotatedTableCell>
-    </td>
-    <td className="provider-item__total-price">
-      <AnnotatedTableCell modifiers={modifiers}>
-        {totalPrice}
-        {includesVat && (
-          <Info modifiers={['minor']}>
-            <Paragraph>incl. 19% VAT</Paragraph>
-          </Info>
-        )}
-      </AnnotatedTableCell>
-    </td>
-    <td className="provider-item__action">
-      <Button
-        icon={checkoutIcon}
-        modifiers={['block']}
-        label={checkoutLabel}
-        onClick={onAddToCartClick}
-      />
-    </td>
+    <td className="provider-item__icon">{icons}</td>
+    <td className="provider-item__action">{action}</td>
   </tr>
 )
 
 ProviderItem.propTypes = {
   ...propTypes.component,
-  providerSlug: PropTypes.string.isRequired,
-  providerName: PropTypes.string.isRequired,
-  price: PropTypes.string.isRequired,
-  totalPrice: PropTypes.string.isRequired,
-  includesVat: PropTypes.bool,
-  shippingPrice: PropTypes.string.isRequired,
-  onAddToCartClick: PropTypes.func.isRequired,
-  process: PropTypes.string.isRequired,
-  deliveryTime: PropTypes.string.isRequired,
-  providerInfo: PropTypes.string,
-  deliveryProvider: PropTypes.string.isRequired,
-  productionTime: PropTypes.string.isRequired,
-  checkoutLabel: PropTypes.string.isRequired
+  providerAnnotation: PropTypes.node.isRequired,
+  provider: PropTypes.node.isRequired,
+  timeAnnotation: PropTypes.node.isRequired,
+  time: PropTypes.node.isRequired,
+  priceAnnotation: PropTypes.node.isRequired,
+  price: PropTypes.node.isRequired,
+  action: PropTypes.node.isRequired,
+  icons: PropTypes.node
 }
 
 export default ProviderItem

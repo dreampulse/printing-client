@@ -1,110 +1,83 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {storiesOf} from '@storybook/react'
-import {action} from '@storybook/addon-actions'
+
+import checkoutIcon from '../../../asset/icon/checkout.svg'
 
 import ProviderList from '.'
 import ProviderItem from '../provider-item'
+import DescriptionList from '../description-list'
+import ProviderImage from '../provider-image'
+import Button from '../button'
+import Icon from '../icon'
 
 storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
   <ProviderList>
     <ProviderItem
-      providerSlug="imaterialise"
-      providerName="i.Materialise"
-      process="DLS"
+      providerAnnotation={
+        <DescriptionList>
+          <dt>Material:</dt>
+          <dd>Strong Flexible Plastic</dd>
+          <dt>Process:</dt>
+          <dd>MJF</dd>
+        </DescriptionList>
+      }
+      provider={<ProviderImage modifiers={['s']} name="imaterialise" slug="imaterialise" />}
+      timeAnnotation={
+        <DescriptionList>
+          <dt>Production:</dt>
+          <dd>8-10 days</dd>
+          <dt>Shipping:</dt>
+          <dd>2 days</dd>
+        </DescriptionList>
+      }
+      time="10-12 days"
+      priceAnnotation={
+        <DescriptionList>
+          <dt>Production:</dt>
+          <dd>$10.00</dd>
+          <dt>Shipping:</dt>
+          <dd>$4.90</dd>
+        </DescriptionList>
+      }
+      price={<strong>$350.23</strong>}
+      action={<Button modifiers={['minor']} icon={checkoutIcon} label="Add to Basket" />}
+      icons={
+        <Fragment>
+          <Icon />
+          <Icon />
+        </Fragment>
+      }
+    />
+    <ProviderItem
+      providerAnnotation={
+        <DescriptionList>
+          <dt>Material:</dt>
+          <dd>Strong Flexible Plastic</dd>
+          <dt>Process:</dt>
+          <dd>MJF</dd>
+        </DescriptionList>
+      }
+      provider={<ProviderImage modifiers={['s']} name="shapeways" slug="shapeways" />}
+      timeAnnotation={
+        <DescriptionList>
+          <dt>Production:</dt>
+          <dd>3-4 days</dd>
+          <dt>Shipping:</dt>
+          <dd>2 days</dd>
+        </DescriptionList>
+      }
+      time={<strong>5-6 days</strong>}
+      priceAnnotation={
+        <DescriptionList>
+          <dt>Production:</dt>
+          <dd>$10.00</dd>
+          <dt>Shipping:</dt>
+          <dd>$4.90</dd>
+        </DescriptionList>
+      }
       price="$350.23"
-      shippingPrice="$20.00"
-      deliveryTime="3-4 Days"
-      totalPrice="$40.00"
-      deliveryProvider="DHL Express"
-      providerInfo="Provider Material Name"
-      onAddToCartClick={action('click')}
-      productionTime="4-6 days"
-      checkoutLabel="Checkout"
-    />
-    <ProviderItem
-      providerSlug="sculpteo"
-      providerName="Sculpteo"
-      process="SLS"
-      price="$370.58"
-      shippingPrice="$10.00"
-      deliveryTime="6-10 Days"
-      includesVat
-      totalPrice="$40.00"
-      deliveryProvider="DHL"
-      providerInfo="Provider Material Name"
-      onAddToCartClick={action('click')}
-      productionTime="6-10 days"
-      checkoutLabel="Checkout"
-    />
-    <ProviderItem
-      providerSlug="shapeways"
-      providerName="Shapeways"
-      process="DLP"
-      price="$410.11"
-      shippingPrice="$15.00"
-      deliveryTime="1-2 Days"
-      totalPrice="$40.00"
-      deliveryProvider="UPS"
-      providerInfo="Provider Material Name"
-      onAddToCartClick={action('click')}
-      productionTime="4-6 days"
-      checkoutLabel="Checkout"
-    />
-    <ProviderItem
-      providerSlug="trinckle"
-      providerName="Trinckle"
-      process="DLP"
-      price="$410.11"
-      shippingPrice="$15.00"
-      deliveryTime="1-2 Days"
-      totalPrice="$40.00"
-      deliveryProvider="UPS"
-      providerInfo="Provider Material Name"
-      onAddToCartClick={action('click')}
-      productionTime="4-6 days"
-      checkoutLabel="Checkout"
-    />
-    <ProviderItem
-      providerSlug="treatstock"
-      providerName="Treatstock"
-      process="DLP"
-      price="$410.11"
-      shippingPrice="$15.00"
-      deliveryTime="1-2 Days"
-      totalPrice="$40.00"
-      deliveryProvider="UPS"
-      providerInfo="Provider Material Name"
-      onAddToCartClick={action('click')}
-      productionTime="4-6 days"
-      checkoutLabel="Checkout"
-    />
-    <ProviderItem
-      providerSlug="ff3dm"
-      providerName="FF3DM"
-      process="DLP"
-      price="$410.11"
-      shippingPrice="$15.00"
-      deliveryTime="1-2 Days"
-      totalPrice="$40.00"
-      deliveryProvider="UPS"
-      providerInfo="Provider Material Name"
-      onAddToCartClick={action('click')}
-      productionTime="4-6 days"
-      checkoutLabel="Checkout"
-    />
-    <ProviderItem
-      providerSlug="jawstec"
-      providerName="JawsTec"
-      process="DLP"
-      price="$410.11"
-      shippingPrice="$15.00"
-      deliveryTime="1-2 Days"
-      totalPrice="$40.00"
-      deliveryProvider="UPS"
-      providerInfo="Provider Material Name"
-      onAddToCartClick={action('click')}
-      productionTime="4-6 days"
-      checkoutLabel="Checkout"
+      action={<Button modifiers={['minor']} icon={checkoutIcon} label="Add to Basket" />}
+      icons={<Icon />}
     />
   </ProviderList>
 ))

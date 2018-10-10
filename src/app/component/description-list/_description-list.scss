@@ -1,0 +1,22 @@
+.description-list {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  grid-column-gap: $space-base;
+  font-size: $font-size-s;
+  color: $color-minor;
+  margin: 0;
+  text-align: left;
+
+  & > :nth-child(2n) {
+    @include scut-truncate();
+    margin-left: 0;
+  }
+
+  &--align-right {
+    & > :nth-child(2n) {
+      margin-left: 0;
+      text-align: right;
+    }
+  }
+}
+

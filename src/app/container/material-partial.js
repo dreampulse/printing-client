@@ -28,7 +28,8 @@ import {
 } from '../lib/material'
 import {
   getBestMultiModelOfferForMaterial,
-  getBestMultiModelOffersForMaterialConfig
+  getBestMultiModelOffersForMaterialConfig,
+  isSameOffer
 } from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
@@ -43,10 +44,12 @@ import {
   selectCommonMaterialPathOfModelConfigs,
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
-import {buildClassArray} from '../lib/build-class-name'
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
 import scrollTo from '../service/scroll-to'
+import checkoutIcon from '../../asset/icon/checkout.svg'
+import fastestIcon from '../../asset/icon/fastest.svg'
+import cheapestIcon from '../../asset/icon/cheapest.svg'
 
 import MaterialFilterPartial from './material-filter-partial'
 
@@ -65,6 +68,12 @@ import SelectField from '../component/select-field'
 import SelectMenu from '../component/select-menu'
 import ProviderItem from '../component/provider-item'
 import ProviderList from '../component/provider-list'
+import DescriptionList from '../component/description-list'
+import ProviderImage from '../component/provider-image'
+import Button from '../component/button'
+import ProviderBox from '../component/provider-box'
+import Icon from '../component/icon'
+import ProviderBoxSection from '../component/provider-box-section'
 
 const MaterialPartial = ({
   selectMaterialConfigForFinishGroup,
@@ -106,6 +115,8 @@ const MaterialPartial = ({
   const hasItemsOnUploadPage = uploadedModelConfigs.some(
     modelConfig => !configIds.find(id => id === modelConfig.id) && !modelConfig.quoteId
   )
+
+  const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
@@ -317,8 +328,135 @@ const MaterialPartial = ({
     )
   }
 
+  const getDeliveryTime = ({multiModelQuote, shipping}) => {
+    const materialTree = getMaterialTreeByMaterialConfigId(
+      materialGroups,
+      multiModelQuote.materialConfigId
+    )
+
+    const {productionTimeFast} = materialTree.materialConfig.printingService[
+      multiModelQuote.vendorId
+    ]
+
+    return productionTimeFast + parseInt(shipping.deliveryTime, 10)
+  }
+
+  const getOfferInfos = ({multiModelQuote, shipping, totalGrossPrice}) => {
+    const materialTree = getMaterialTreeByMaterialConfigId(
+      materialGroups,
+      multiModelQuote.materialConfigId
+    )
+
+    const {productionTimeFast, productionTimeSlow} = materialTree.materialConfig.printingService[
+      multiModelQuote.vendorId
+    ]
+
+    return {
+      shippingId: shipping.shippingId,
+      materialName: materialTree.finishGroup.name,
+      process: materialTree.finishGroup.properties.printingMethodShort,
+      providerName: getProviderName(multiModelQuote.vendorId),
+      vendorId: multiModelQuote.vendorId,
+      productionTime: formatTimeRange(productionTimeFast, productionTimeSlow),
+      deliveryTime: formatDeliveryTime(shipping.deliveryTime),
+      time: formatTimeRange(
+        productionTimeFast + parseInt(shipping.deliveryTime, 10),
+        productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+      ),
+      productionPrice: formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency),
+      shippingPrice: usedShippingIdsById[shipping.shippingId]
+        ? formatPrice(0, shipping.currency)
+        : formatPrice(shipping.grossPrice, shipping.currency),
+      totalPrice: formatPrice(totalGrossPrice, multiModelQuote.currency),
+      finishImageUrl: getCloudinaryUrl(materialTree.finishGroup.featuredImage, [
+        'w_700',
+        'h_458',
+        'c_fill'
+      ]),
+      addToCartLabel: hasItemsOnUploadPage ? 'Add to cart' : 'Checkout',
+      handleAddToCart: () =>
+        addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
+          if (isUploadPage && hasItemsOnUploadPage) {
+            updateSelectedModelConfigs(
+              modelConfigs
+                .filter(
+                  modelConfig =>
+                    modelConfig.type === 'UPLOADED' &&
+                    modelConfig.quoteId === null &&
+                    !configIds.includes(modelConfig.id)
+                )
+                .map(modelConfig => modelConfig.id)
+            )
+            scrollTo('#root')
+          } else {
+            goToAddress()
+          }
+        })
+    }
+  }
+
+  const renderPromotedOffer = ({offer, cheapest}) => {
+    const {
+      materialName,
+      process,
+      providerName,
+      productionTime,
+      deliveryTime,
+      time,
+      productionPrice,
+      shippingPrice,
+      totalPrice,
+      finishImageUrl,
+      addToCartLabel,
+      handleAddToCart
+    } = getOfferInfos(offer)
+
+    return (
+      <ProviderBox
+        icon={<Icon source={cheapest ? cheapestIcon : fastestIcon} />}
+        headline={cheapest ? 'Best Price' : 'Express'}
+        actionButton={
+          <Button
+            modifiers={['warning']}
+            icon={checkoutIcon}
+            label={addToCartLabel}
+            onClick={handleAddToCart}
+          />
+        }
+        image={finishImageUrl}
+        day={cheapest ? time : <strong>{time}</strong>}
+        price={cheapest ? <strong>{totalPrice}</strong> : totalPrice}
+        daysColumn={
+          <DescriptionList>
+            <dt>Production:</dt>
+            <dd>{productionTime}</dd>
+            <dt>Shipping:</dt>
+            <dd>{deliveryTime}</dd>
+          </DescriptionList>
+        }
+        priceColumn={
+          <DescriptionList>
+            <dt>Production:</dt>
+            <dd>{productionPrice}</dd>
+            <dt>Shipping:</dt>
+            <dd>{shippingPrice}</dd>
+          </DescriptionList>
+        }
+        materialColumn={
+          <DescriptionList>
+            <dt>Fulfilled by:</dt>
+            <dd>{providerName}</dd>
+            <dt>Material:</dt>
+            <dd>{materialName}</dd>
+            <dt>Process:</dt>
+            <dd>{process}</dd>
+          </DescriptionList>
+        }
+      />
+    )
+  }
+
   const renderProviderSection = () => {
-    const usedShippingIdsById = keyBy(usedShippingIds, id => id)
     const providerList = getBestMultiModelOffersForMaterialConfig(
       multiModelQuotes,
       usedShippingIds,
@@ -326,65 +464,83 @@ const MaterialPartial = ({
       selectedMaterialConfigId
     )
 
+    const cheapestOffer = providerList[0]
+    const fastestOffer = [...providerList].sort(
+      (offer1, offer2) => getDeliveryTime(offer1) - getDeliveryTime(offer2)
+    )[0]
+
     return (
       <Section>
         <Headline label="3. Select Offer" modifiers={['xl']} />
+        <ProviderBoxSection>
+          {renderPromotedOffer({offer: cheapestOffer, cheapest: true})}
+          {renderPromotedOffer({offer: fastestOffer, cheapest: false})}
+        </ProviderBoxSection>
         <ProviderList>
-          {providerList.map(({multiModelQuote, shipping, totalGrossPrice}, index) => {
-            const materialTree = getMaterialTreeByMaterialConfigId(
-              materialGroups,
-              multiModelQuote.materialConfigId
-            )
-
-            const process = materialTree.finishGroup.properties.printingMethodShort
-            const providerInfo =
-              materialTree.finishGroup.properties.printingServiceName[multiModelQuote.vendorId]
+          {providerList.map(offer => {
             const {
-              productionTimeFast,
-              productionTimeSlow
-            } = materialTree.materialConfig.printingService[multiModelQuote.vendorId]
+              shippingId,
+              materialName,
+              process,
+              providerName,
+              vendorId,
+              productionTime,
+              deliveryTime,
+              time,
+              productionPrice,
+              shippingPrice,
+              totalPrice,
+              addToCartLabel,
+              handleAddToCart
+            } = getOfferInfos(offer)
 
-            const providerItemModifiers = buildClassArray([{highlighted: index === 0}])
+            const isCheapestOffer = isSameOffer(offer, cheapestOffer)
+            const isFastestOffer = isSameOffer(offer, fastestOffer)
 
             return (
               <ProviderItem
-                modifiers={providerItemModifiers}
-                key={shipping.shippingId}
-                process={process}
-                providerSlug={multiModelQuote.vendorId}
-                providerName={getProviderName(multiModelQuote.vendorId)}
-                providerInfo={providerInfo}
-                price={formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
-                deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
-                deliveryProvider={shipping.name}
-                shippingPrice={
-                  usedShippingIdsById[shipping.shippingId]
-                    ? formatPrice(0, shipping.currency)
-                    : formatPrice(shipping.grossPrice, shipping.currency)
+                key={shippingId}
+                providerAnnotation={
+                  <DescriptionList>
+                    <dt>Material:</dt>
+                    <dd>{materialName}</dd>
+                    <dt>Process:</dt>
+                    <dd>{process}</dd>
+                  </DescriptionList>
                 }
-                totalPrice={formatPrice(totalGrossPrice, multiModelQuote.currency)}
-                includesVat={false}
-                productionTime={formatTimeRange(productionTimeFast, productionTimeSlow)}
-                checkoutLabel={hasItemsOnUploadPage ? 'Add to cart' : 'Checkout'}
-                onAddToCartClick={() => {
-                  addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
-                    if (isUploadPage && hasItemsOnUploadPage) {
-                      updateSelectedModelConfigs(
-                        modelConfigs
-                          .filter(
-                            modelConfig =>
-                              modelConfig.type === 'UPLOADED' &&
-                              modelConfig.quoteId === null &&
-                              !configIds.includes(modelConfig.id)
-                          )
-                          .map(modelConfig => modelConfig.id)
-                      )
-                      scrollTo('#root')
-                    } else {
-                      goToAddress()
-                    }
-                  })
-                }}
+                provider={<ProviderImage modifiers={['s']} name={providerName} slug={vendorId} />}
+                timeAnnotation={
+                  <DescriptionList>
+                    <dt>Production:</dt>
+                    <dd>{productionTime}</dd>
+                    <dt>Shipping:</dt>
+                    <dd>{deliveryTime}</dd>
+                  </DescriptionList>
+                }
+                time={time}
+                priceAnnotation={
+                  <DescriptionList>
+                    <dt>Production:</dt>
+                    <dd>{productionPrice}</dd>
+                    <dt>Shipping:</dt>
+                    <dd>{shippingPrice}</dd>
+                  </DescriptionList>
+                }
+                price={totalPrice}
+                action={
+                  <Button
+                    modifiers={['minor']}
+                    icon={checkoutIcon}
+                    label={addToCartLabel}
+                    onClick={handleAddToCart}
+                  />
+                }
+                icons={
+                  <Fragment>
+                    {isCheapestOffer && <Icon source={cheapestIcon} />}
+                    {isFastestOffer && <Icon source={fastestIcon} />}
+                  </Fragment>
+                }
               />
             )
           })}

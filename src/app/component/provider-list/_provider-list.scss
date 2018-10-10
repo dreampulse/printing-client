@@ -5,30 +5,27 @@
   border-collapse: collapse;
 
   &__header {
-    background: $color-invert-bg;
-    color: $color-invert-text;
-    font-weight: $font-weight-bold;
+    color: $color-text;
+    font-weight: $font-weight-regular;
     font-size: $font-size-l;
+    border-bottom: solid 1px $color-border;
   }
 
   &__provider,
   &__price,
-  &__total-price,
-  &__delivery,
-  &__shipping,
-  &__production-time,
-  &__process,
-  &__checkout {
+  &__time,
+  &__icon,
+  &__action {
     padding: $space-base $space-l;
     text-align: left;
+    font-weight: inherit;
   }
 
-  &__provider {
-    width: 170px;
-    padding-left: $space-base;
+  &__icon {
+    width: 100px;
   }
 
-  &__checkout {
+  &__action {
     width: 250px;
     padding-right: 0;
   }
