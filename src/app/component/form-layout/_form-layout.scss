@@ -1,8 +1,0 @@
-.form-layout {
-  @include with-layout($susy-form-layout) {
-    @include scut-clearfix;
-
-    margin-left: -1 * gutter();
-    margin-right: -1 * gutter();
-  }
-}

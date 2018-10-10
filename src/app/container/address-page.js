@@ -15,7 +15,6 @@ import * as modalAction from '../action/modal'
 import * as coreAction from '../action/core'
 import * as navigationAction from '../action/navigation'
 
-import FormLayout from '../component/form-layout'
 import FormRow from '../component/form-row'
 import InputField from '../component/input-field'
 import LabeledCheckbox from '../component/labeled-checkbox'
@@ -178,139 +177,137 @@ const AddressPage = ({
     <CheckoutLayout title="Address" currentStep={0}>
       <PageHeader label="Shipping address" />
       <form onSubmit={handleSubmit}>
-        <FormLayout>
-          <FormRow>
-            <Headline
-              modifiers={['xs']}
-              label="Personal information"
-              classNames={['u-no-margin-bottom']}
-            />
-          </FormRow>
+        <FormRow>
+          <Headline
+            modifiers={['xs']}
+            label="Personal information"
+            classNames={['u-no-margin-bottom']}
+          />
+        </FormRow>
 
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={required}
-              component={renderField(InputField)}
-              label="First name"
-              name="shippingAddress.firstName"
-              maxLength="20"
-            />
-            <Field
-              validate={required}
-              component={renderField(InputField)}
-              label="Last name"
-              name="shippingAddress.lastName"
-              maxLength="20"
-            />
-          </FormRow>
+        <FormRow modifiers={['half-half']}>
+          <Field
+            validate={required}
+            component={renderField(InputField)}
+            label="First name"
+            name="shippingAddress.firstName"
+            maxLength="20"
+          />
+          <Field
+            validate={required}
+            component={renderField(InputField)}
+            label="Last name"
+            name="shippingAddress.lastName"
+            maxLength="20"
+          />
+        </FormRow>
 
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={email}
-              component={renderField(InputField)}
-              label="Email address"
-              name="emailAddress"
-              type="email"
-            />
-            <Field
-              validate={required}
-              normalize={formatTelephoneNumber}
-              component={renderField(InputField)}
-              label="Phone number"
-              name="phoneNumber"
-              type="tel"
-            />
-          </FormRow>
+        <FormRow modifiers={['half-half']}>
+          <Field
+            validate={email}
+            component={renderField(InputField)}
+            label="Email address"
+            name="emailAddress"
+            type="email"
+          />
+          <Field
+            validate={required}
+            normalize={formatTelephoneNumber}
+            component={renderField(InputField)}
+            label="Phone number"
+            name="phoneNumber"
+            type="tel"
+          />
+        </FormRow>
 
-          <FormRow>
-            <Field
-              onChangeValue={handleIsCompanyChange}
-              name="isCompany"
-              component={renderField(LabeledCheckbox)}
-              label="I am ordering on behalf of a company"
-              type="checkbox"
-            />
-          </FormRow>
+        <FormRow>
+          <Field
+            onChangeValue={handleIsCompanyChange}
+            name="isCompany"
+            component={renderField(LabeledCheckbox)}
+            label="I am ordering on behalf of a company"
+            type="checkbox"
+          />
+        </FormRow>
 
-          {isCompany && renderCompanySection()}
+        {isCompany && renderCompanySection()}
 
-          <FormRow>
-            <Headline
-              modifiers={['xs']}
-              label="Shipping address"
-              classNames={['u-no-margin-bottom']}
-            />
-          </FormRow>
+        <FormRow>
+          <Headline
+            modifiers={['xs']}
+            label="Shipping address"
+            classNames={['u-no-margin-bottom']}
+          />
+        </FormRow>
 
-          <FormRow>
-            <Field
-              validate={required}
-              component={renderField(InputField)}
-              label="Address"
-              name="shippingAddress.address"
-              maxLength="35"
-            />
-          </FormRow>
+        <FormRow>
+          <Field
+            validate={required}
+            component={renderField(InputField)}
+            label="Address"
+            name="shippingAddress.address"
+            maxLength="35"
+          />
+        </FormRow>
 
-          <FormRow>
-            <Field
-              component={renderField(InputField)}
-              label="Address line 2"
-              name="shippingAddress.addressLine2"
-              maxLength="35"
-            />
-          </FormRow>
+        <FormRow>
+          <Field
+            component={renderField(InputField)}
+            label="Address line 2"
+            name="shippingAddress.addressLine2"
+            maxLength="35"
+          />
+        </FormRow>
 
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={required}
-              component={renderField(InputField)}
-              label="City"
-              name="shippingAddress.city"
-            />
-            <Field
-              validate={required}
-              component={renderField(InputField)}
-              label="Zip code"
-              name="shippingAddress.zipCode"
-            />
-          </FormRow>
+        <FormRow modifiers={['half-half']}>
+          <Field
+            validate={required}
+            component={renderField(InputField)}
+            label="City"
+            name="shippingAddress.city"
+          />
+          <Field
+            validate={required}
+            component={renderField(InputField)}
+            label="Zip code"
+            name="shippingAddress.zipCode"
+          />
+        </FormRow>
 
-          <FormRow modifiers={['half-half']}>
-            <Field
-              component={renderField(StateSelect)}
-              placeholder="State"
-              name="shippingAddress.stateCode"
-              type="select"
-              countryCode={shippingAddress.countryCode}
-            />
-            <StaticField
-              // TODO: remove default
-              value={getCountryName(shippingAddress.countryCode || 'de')}
-              changeLinkLabel="Change…"
-              onChangeLinkClick={() => openPickLocationModal({confirmation: true})}
-            />
-          </FormRow>
+        <FormRow modifiers={['half-half']}>
+          <Field
+            component={renderField(StateSelect)}
+            placeholder="State"
+            name="shippingAddress.stateCode"
+            type="select"
+            countryCode={shippingAddress.countryCode}
+          />
+          <StaticField
+            // TODO: remove default
+            value={getCountryName(shippingAddress.countryCode || 'de')}
+            changeLinkLabel="Change…"
+            onChangeLinkClick={() => openPickLocationModal({confirmation: true})}
+          />
+        </FormRow>
 
-          <FormRow>
-            <Field
-              onChangeValue={handleBillingChange}
-              name="useDifferentBillingAddress"
-              component={renderField(LabeledCheckbox)}
-              label="Use different billing address"
-              type="checkbox"
-            />
-          </FormRow>
-          {useDifferentBillingAddress && billingAddressSection}
-          <FormRow>
-            <Field
-              name="saveAddress"
-              component={renderField(LabeledCheckbox)}
-              label="Save address for your next purchase"
-              type="checkbox"
-            />
-          </FormRow>
-        </FormLayout>
+        <FormRow>
+          <Field
+            onChangeValue={handleBillingChange}
+            name="useDifferentBillingAddress"
+            component={renderField(LabeledCheckbox)}
+            label="Use different billing address"
+            type="checkbox"
+          />
+        </FormRow>
+        {useDifferentBillingAddress && billingAddressSection}
+        <FormRow>
+          <Field
+            name="saveAddress"
+            component={renderField(LabeledCheckbox)}
+            label="Save address for your next purchase"
+            type="checkbox"
+          />
+        </FormRow>
         <div id="billing-address">
           <Button
             type="submit"

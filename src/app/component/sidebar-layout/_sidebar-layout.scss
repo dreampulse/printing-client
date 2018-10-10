@@ -1,12 +1,9 @@
 .sidebar-layout {
-  @include grid;
-
-  &__main {
-    @include span(9);
-  }
+  display: grid;
+  grid-template-columns: 9fr 3fr;
+  grid-gap: $space-xl;
 
   &__aside {
-    @include span(3);
     position: sticky;
     top: 0;
   }

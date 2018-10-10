@@ -5,28 +5,27 @@
   text-align: center;
 
   &__grid {
-    @include grid;
+    display: grid;
+    grid-template-columns: 12fr;
+    grid-gap: $space-base;
+
+    @include respond-to(medium) {
+      grid-template-columns: 6fr 6fr;
+    }
   }
 
   &__copyline {
-    @include span(12);
-    margin-bottom: $space-base;
-
     @include respond-to(medium) {
-      @include span(6);
-      margin-bottom: 0;
       text-align: left;
     }
   }
 
   &__link-list {
-    @include span(12);
     list-style: none;
     margin: 0;
     padding: 0;
 
     @include respond-to(medium) {
-      @include span(6);
       text-align: right;
     }
   }
