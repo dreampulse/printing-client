@@ -79,7 +79,15 @@ const ReviewOrderPage = ({
     <Section>
       <Grid>
         <Column md={6}>
-          <Headline modifiers={['minor', 'l']} label="Shipping Address" />
+          <Headline
+            modifiers={['minor', 'l']}
+            label={
+              <Fragment>
+                Shipping Address{' '}
+                <EditLink label="edit" onClick={() => goToAddress('shipping-address')} />
+              </Fragment>
+            }
+          />
           <Paragraph modifiers={['l']}>
             {user.companyName ? (
               <span>
@@ -108,8 +116,6 @@ const ReviewOrderPage = ({
               </span>
             )}
             {getCountryName(user.shippingAddress.countryCode)}
-            <br />
-            <EditLink label="edit" onClick={() => goToAddress('shipping-address')} />
           </Paragraph>
         </Column>
         <Column md={6}>

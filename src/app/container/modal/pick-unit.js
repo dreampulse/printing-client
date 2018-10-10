@@ -13,7 +13,6 @@ import Button from '../../component/button'
 import Overlay from '../../component/overlay'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
-import LabeledField from '../../component/labeled-field'
 import RadioButtonGroup from '../../component/radio-button-group'
 import RadioButton from '../../component/radio-button'
 
@@ -34,13 +33,11 @@ const PickUnitModal = ({unit, setUnit, onUpdateUnit, closeModal, files, onUpload
   return (
     <Overlay headline={headline} buttons={buttons} closeable={false}>
       <Paragraph>In which unit are the chosen files?</Paragraph>
-      <LabeledField label="Unit:">
-        <RadioButtonGroup name="unit" value={unit} onChange={setUnit}>
-          <RadioButton value="mm" />
-          <RadioButton value="cm" />
-          <RadioButton value="in" />
-        </RadioButtonGroup>
-      </LabeledField>
+      <RadioButtonGroup name="unit" value={unit} onChange={setUnit}>
+        <RadioButton value="mm" />
+        <RadioButton value="cm" />
+        <RadioButton value="in" />
+      </RadioButtonGroup>
     </Overlay>
   )
 }
