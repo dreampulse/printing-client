@@ -13,7 +13,7 @@
 
   &__header {
     grid-area: header;
-    height: 56px; // design decision
+    height: 56px; // Design decision
     background-color: $color-invert-bg;
     color: $color-invert-text;
     display: flex;
@@ -25,6 +25,7 @@
 
     > .icon {
       margin-right: $space-base;
+      font-size: $font-size-xxl;
     }
   }
 

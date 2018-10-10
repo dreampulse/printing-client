@@ -15,7 +15,8 @@ const ProviderItem = ({
   time,
   priceAnnotation,
   price,
-  action
+  action,
+  icons
 }) => (
   <tr className={buildClassName('provider-item', modifiers, classNames)}>
     <td className="provider-item__provider">
@@ -27,6 +28,7 @@ const ProviderItem = ({
     <td className="provider-item__price">
       <AnnotatedTableCell annotation={priceAnnotation}>{price}</AnnotatedTableCell>
     </td>
+    <td className="provider-item__icon">{icons}</td>
     <td className="provider-item__action">{action}</td>
   </tr>
 )
@@ -39,7 +41,8 @@ ProviderItem.propTypes = {
   time: PropTypes.node.isRequired,
   priceAnnotation: PropTypes.node.isRequired,
   price: PropTypes.node.isRequired,
-  action: PropTypes.node.isRequired
+  action: PropTypes.node.isRequired,
+  icons: PropTypes.node
 }
 
 export default ProviderItem

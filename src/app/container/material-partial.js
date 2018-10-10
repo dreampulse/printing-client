@@ -28,7 +28,8 @@ import {
 } from '../lib/material'
 import {
   getBestMultiModelOfferForMaterial,
-  getBestMultiModelOffersForMaterialConfig
+  getBestMultiModelOffersForMaterialConfig,
+  isSameOffer
 } from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
@@ -72,7 +73,7 @@ import ProviderImage from '../component/provider-image'
 import Button from '../component/button'
 import ProviderBox from '../component/provider-box'
 import Icon from '../component/icon'
-import ProviderBoxSection from '../component/provider-box-section';
+import ProviderBoxSection from '../component/provider-box-section'
 
 const MaterialPartial = ({
   selectMaterialConfigForFinishGroup,
@@ -413,7 +414,7 @@ const MaterialPartial = ({
     return (
       <ProviderBox
         icon={<Icon source={cheapest ? cheapestIcon : fastestIcon} />}
-        headline={cheapest ? 'The cheapest' : 'The fastest'}
+        headline={cheapest ? 'Best Price' : 'Express'}
         actionButton={
           <Button
             modifiers={['warning']}
@@ -493,6 +494,9 @@ const MaterialPartial = ({
               handleAddToCart
             } = getOfferInfos(offer)
 
+            const isCheapestOffer = isSameOffer(offer, cheapestOffer)
+            const isFastestOffer = isSameOffer(offer, fastestOffer)
+
             return (
               <ProviderItem
                 key={shippingId}
@@ -530,6 +534,12 @@ const MaterialPartial = ({
                     label={addToCartLabel}
                     onClick={handleAddToCart}
                   />
+                }
+                icons={
+                  <Fragment>
+                    {isCheapestOffer && <Icon source={cheapestIcon} />}
+                    {isFastestOffer && <Icon source={fastestIcon} />}
+                  </Fragment>
                 }
               />
             )

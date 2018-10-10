@@ -5,18 +5,24 @@
   border-collapse: collapse;
 
   &__header {
-    background: $color-invert-bg;
-    color: $color-invert-text;
-    font-weight: $font-weight-bold;
+    color: $color-text;
+    font-weight: $font-weight-regular;
     font-size: $font-size-l;
+    border-bottom: solid 1px $color-border;
   }
 
   &__provider,
   &__price,
   &__time,
+  &__icon,
   &__action {
     padding: $space-base $space-l;
     text-align: left;
+    font-weight: inherit;
+  }
+
+  &__icon {
+    width: 100px;
   }
 
   &__action {

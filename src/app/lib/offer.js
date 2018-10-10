@@ -67,3 +67,10 @@ export function getBestMultiModelOffersForMaterialConfig(
     shippings
   )
 }
+
+export function isSameOffer(offer1: Offer, offer2: Offer) {
+  return (
+    offer1.multiModelQuote.materialConfigId === offer2.multiModelQuote.materialConfigId &&
+    offer1.shipping.shippingId === offer2.shipping.shippingId
+  )
+}

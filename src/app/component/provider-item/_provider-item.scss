@@ -11,6 +11,18 @@
     text-align: left;
   }
 
+  &__icon {
+    padding: 0;
+    font-size: $font-size-xxl;
+    color: $color-primary;
+    text-align: right;
+    vertical-align: middle;
+
+    & > * + * {
+      margin-left: $space-base;
+    }
+  }
+
   &__action {
     text-align: right;
   }
