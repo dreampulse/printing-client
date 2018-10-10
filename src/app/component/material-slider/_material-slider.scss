@@ -2,7 +2,7 @@
   $item-width: 245px;
   $item-gutter: $space-l;
   $item-space-top: 2px; // Due to material card shadow
-  $wide-nav-width: $global-max-width - $gutter-width - 4 * ($item-width + $item-gutter) + 0.5 * $item-gutter;
+  $wide-nav-width: $global-max-width - 4 * ($item-width + $item-gutter) + 0.5 * $item-gutter;
   $stacking: edge, button;
 
   position: relative;

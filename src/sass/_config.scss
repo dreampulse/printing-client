@@ -80,11 +80,8 @@ $space-xxl: 40px;
 $space-xxxl: 70px;
 $space-xxxxl: 100px;
 
-$global-max-width: 1170px;
-
-$columns: 12;
+$global-max-width: 1140px;
 $gutter-width: $space-xl;
-$column-width: $global-max-width / $columns - $gutter-width;
 
 // Breakpoints
 // ---------------------------------------------------
