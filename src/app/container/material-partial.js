@@ -473,8 +473,8 @@ const MaterialPartial = ({
       <Section>
         <Headline label="3. Select Offer" modifiers={['xl']} />
         <ProviderBoxSection>
-          {renderPromotedOffer({offer: cheapestOffer, cheapest: true})}
-          {renderPromotedOffer({offer: fastestOffer, cheapest: false})}
+          {cheapestOffer && renderPromotedOffer({offer: cheapestOffer, cheapest: true})}
+          {fastestOffer && renderPromotedOffer({offer: fastestOffer, cheapest: false})}
         </ProviderBoxSection>
         <ProviderList>
           {providerList.map(offer => {
