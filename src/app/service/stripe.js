@@ -1,5 +1,7 @@
 import config from '../../../config'
 
+import {PaymentAbortedError} from '../lib/error'
+
 export function checkout({price, currency, email}) {
   return new Promise((resolve, reject) => {
     const checkoutHandler = global.StripeCheckout.configure({
@@ -8,7 +10,7 @@ export function checkout({price, currency, email}) {
       name: config.stripeName,
       bitcoin: false,
       token: token => resolve(token),
-      closed: () => reject(new Error('Payment aborted by user.'))
+      closed: () => reject(new PaymentAbortedError())
     })
 
     checkoutHandler.open({

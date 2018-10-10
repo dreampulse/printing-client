@@ -37,6 +37,7 @@ import * as navigationActions from '../action/navigation'
 import * as modelViewerActions from '../action/model-viewer'
 import * as orderActions from '../action/order'
 import * as coreActions from '../action/core'
+import * as modalActions from '../action/modal'
 
 import creditCardIcon from '../../asset/icon/credit-card.svg'
 
@@ -44,6 +45,7 @@ import {guard} from './util/guard'
 import {scrollToTop} from './util/scroll-to-top'
 import CheckoutLayout from './checkout-layout'
 import PaypalButton from '../component/paypal-button'
+import {PaymentAbortedError} from '../lib/error'
 
 const ReviewOrderPage = ({
   user,
@@ -51,6 +53,7 @@ const ReviewOrderPage = ({
   goToCart,
   orderPaid,
   cart,
+  openErrorModal,
   modelsWithConfig,
   cartShippings,
   openModelViewer,
@@ -82,7 +85,7 @@ const ReviewOrderPage = ({
           <Headline
             modifiers={['minor', 'l']}
             label={
-              <Fragment>
+              <Fragment key="label">
                 Shipping Address{' '}
                 <EditLink label="edit" onClick={() => goToAddress('shipping-address')} />
               </Fragment>
@@ -177,6 +180,10 @@ const ReviewOrderPage = ({
           setPaymentInProgress(false)
           success()
         } catch (error) {
+          if (error.type !== PaymentAbortedError.TYPE) {
+            openErrorModal(error)
+            openIntercom()
+          }
           // Payment aborted by user
           setPaymentInProgress(false)
         }
@@ -196,7 +203,7 @@ const ReviewOrderPage = ({
             success()
           } catch (error) {
             setPaymentInProgress(false)
-            fatalError(error)
+            openErrorModal(error)
           }
         }}
       />
@@ -365,7 +372,8 @@ const mapDispatchToProps = {
   openModelViewer: modelViewerActions.open,
   orderPaid: orderActions.paid,
   executePaypalPayment: orderActions.executePaypalPayment,
-  fatalError: coreActions.fatalError
+  fatalError: coreActions.fatalError,
+  openErrorModal: modalActions.openErrorModal
 }
 
 const enhance = compose(

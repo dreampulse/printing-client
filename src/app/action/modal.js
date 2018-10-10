@@ -23,7 +23,8 @@ export const CONTENT_TYPE: {[ModalContentType]: ModalContentType} = {
   CONFIRM_LOCATION_CHANGE: 'CONFIRM_LOCATION_CHANGE',
   CONFIRM_CURRENCY_CHANGE: 'CONFIRM_CURRENCY_CHANGE',
   SHARE_CONFIGURATION: 'SHARE_CONFIGURATION',
-  FATAL_ERROR: 'FATAL_ERROR'
+  FATAL_ERROR: 'FATAL_ERROR',
+  ERROR: 'ERROR'
 }
 
 const open = (config: ModalConfigOpened): OpenModalAction => ({
@@ -103,6 +104,15 @@ export const openFatalErrorModal = (error: Error): OpenModalAction =>
   open({
     isCloseable: false,
     contentType: CONTENT_TYPE.FATAL_ERROR,
+    contentProps: {
+      error
+    }
+  })
+
+export const openErrorModal = (error: Error): OpenModalAction =>
+  open({
+    isCloseable: true,
+    contentType: CONTENT_TYPE.ERROR,
     contentProps: {
       error
     }
