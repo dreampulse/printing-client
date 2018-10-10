@@ -135,7 +135,6 @@
     "redux-thunk": "^2.0.1",
     "scut": "^1.4.0",
     "serve-favicon": "^2.3.0",
-    "susy": "^2.2.12",
     "timeout-as-promise": "^1.0.0",
     "timezones.json": "^1.1.0",
     "url-search-params": "^0.10.0",

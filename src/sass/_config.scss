@@ -80,24 +80,8 @@ $space-xxl: 40px;
 $space-xxxl: 70px;
 $space-xxxxl: 100px;
 
-$global-max-width: 1170px;
-
-$columns: 12;
-$gutter-width: 30px;
-$column-width: $global-max-width / $columns - $gutter-width;
-
-$susy: (
-  columns: $columns,
-  math: fluid,
-  column-width: $column-width,
-  gutters: $gutter-width / $column-width,
-  gutter-position: inside-static,
-  global-box-sizing: border-box
-);
-
-$susy-form-layout: (
-  gutters: $gutter-width / $column-width
-);
+$global-max-width: 1140px;
+$gutter-width: $space-xl;
 
 // Breakpoints
 // ---------------------------------------------------

@@ -1,52 +1,28 @@
 .form-row {
-  @include with-layout($susy-form-layout) {
-    & > .form-row__column {
-      @include span(12);
+  display: grid;
+  grid-gap: $gutter-width;
+
+  &--half-half {
+    grid-template-columns: 12fr;
+
+    @include respond-to(medium) {
+      grid-template-columns: 6fr 6fr;
     }
+  }
 
-    &--half-half {
-      & > .form-row__column {
-        @include span(12);
-        @include respond-to(medium) {
-          @include span(6);
-        }
-      }
+  &--s-l {
+    grid-template-columns: 12fr;
+
+    @include respond-to(medium) {
+      grid-template-columns: 3fr 9fr;
     }
+  }
 
-    &--s-l {
-      .form-row__column {
-        @include span(12);
+  &--l-s {
+    grid-template-columns: 12fr;
 
-        &:first-child {
-          @include respond-to(medium) {
-            @include span(3);
-          }
-        }
-
-        &:last-child {
-          @include respond-to(medium) {
-            @include span(9);
-          }
-        }
-      }
-    }
-
-    &--l-s {
-      .form-row__column {
-        @include span(12);
-
-        &:first-child {
-          @include respond-to(medium) {
-            @include span(9);
-          }
-        }
-
-        &:last-child {
-          @include respond-to(medium) {
-            @include span(3);
-          }
-        }
-      }
+    @include respond-to(medium) {
+      grid-template-columns: 9fr 3fr;
     }
   }
 

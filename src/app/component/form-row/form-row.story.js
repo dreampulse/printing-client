@@ -1,7 +1,6 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import FormLayout from '../form-layout'
 import FormRow from '.'
 
 const style = {
@@ -11,34 +10,26 @@ const column = <div style={style}>column</div>
 
 storiesOf('Form Row', module)
   .add('default', () => (
-    <FormLayout>
-      <FormRow>
-        {column}
-        {column}
-      </FormRow>
-    </FormLayout>
+    <FormRow>
+      {column}
+      {column}
+    </FormRow>
   ))
   .add('half-half', () => (
-    <FormLayout>
-      <FormRow modifiers={['half-half']}>
-        {column}
-        {column}
-      </FormRow>
-    </FormLayout>
+    <FormRow modifiers={['half-half']}>
+      {column}
+      {column}
+    </FormRow>
   ))
   .add('small-large', () => (
-    <FormLayout>
-      <FormRow modifiers={['s-l']}>
-        {column}
-        {column}
-      </FormRow>
-    </FormLayout>
+    <FormRow modifiers={['s-l']}>
+      {column}
+      {column}
+    </FormRow>
   ))
   .add('large-small', () => (
-    <FormLayout>
-      <FormRow modifiers={['l-s']}>
-        {column}
-        {column}
-      </FormRow>
-    </FormLayout>
+    <FormRow modifiers={['l-s']}>
+      {column}
+      {column}
+    </FormRow>
   ))

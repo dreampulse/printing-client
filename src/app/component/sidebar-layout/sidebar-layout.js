@@ -6,8 +6,10 @@ import buildClassName from '../../lib/build-class-name'
 
 const SidebarLayout = ({classNames, modifiers, children, sidebar}) => (
   <section className={buildClassName('sidebar-layout', modifiers, classNames)}>
-    <div className="sidebar-layout__main">{children}</div>
-    <aside className="sidebar-layout__aside">{sidebar}</aside>
+    <div>{children}</div>
+    <div>
+      <aside className="sidebar-layout__aside">{sidebar}</aside>
+    </div>
   </section>
 )
 
