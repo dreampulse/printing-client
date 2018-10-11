@@ -16,7 +16,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       providerAnnotation={
         <DescriptionList>
           <dt>Material:</dt>
-          <dd>Strong Flexible Plastic</dd>
+          <dd>Nylon, Strong Flexible Plastic (White)</dd>
           <dt>Process:</dt>
           <dd>MJF</dd>
         </DescriptionList>
@@ -52,7 +52,7 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       providerAnnotation={
         <DescriptionList>
           <dt>Material:</dt>
-          <dd>Strong Flexible Plastic</dd>
+          <dd>Nylon, Strong Flexible Plastic (White)</dd>
           <dt>Process:</dt>
           <dd>MJF</dd>
         </DescriptionList>

@@ -358,9 +358,12 @@ const MaterialPartial = ({
       multiModelQuote.vendorId
     ]
 
+    const materialName = `${materialTree.material.name}, ${materialTree.finishGroup
+      .name} (${materialTree.materialConfig.color})`
+
     return {
       shippingId: shipping.shippingId,
-      materialName: materialTree.finishGroup.name,
+      materialName,
       process: materialTree.finishGroup.properties.printingMethodShort,
       providerName: getProviderName(multiModelQuote.vendorId),
       vendorId: multiModelQuote.vendorId,

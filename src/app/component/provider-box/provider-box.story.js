@@ -38,7 +38,7 @@ storiesOf('ProviderBox', module).add('default', () => (
         <dt>Fulfilled by:</dt>
         <dd>i.Materialise</dd>
         <dt>Material:</dt>
-        <dd>Strong Flexible Plastic</dd>
+        <dd>Nylon, Strong Flexible Plastic (White)</dd>
         <dt>Process:</dt>
         <dd>MJF</dd>
       </DescriptionList>
