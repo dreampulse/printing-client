@@ -5,6 +5,7 @@ import ProviderBox from '.'
 import Icon from '../icon'
 import Button from '../button'
 import DescriptionList from '../description-list'
+import ProviderImage from '../provider-image'
 
 import checkoutIcon from '../../../asset/icon/checkout.svg'
 import fastestIcon from '../../../asset/icon/fastest.svg'
@@ -12,8 +13,8 @@ import fastestIcon from '../../../asset/icon/fastest.svg'
 storiesOf('ProviderBox', module).add('default', () => (
   <ProviderBox
     icon={<Icon source={fastestIcon} />}
-    headline="The cheapest"
-    actionButton={<Button modifiers={['warning']} icon={checkoutIcon} label="Add to Basked" />}
+    headline="Best Price"
+    actionButton={<Button icon={checkoutIcon} label="Add to Basket" />}
     image="http://placehold.it/260x170/cccccc"
     day="10-12 days"
     price={<strong>$350.23</strong>}
@@ -35,12 +36,12 @@ storiesOf('ProviderBox', module).add('default', () => (
     }
     materialColumn={
       <DescriptionList>
-        <dt>Fulfilled by:</dt>
-        <dd>i.Materialise</dd>
         <dt>Material:</dt>
         <dd>Nylon, Strong Flexible Plastic (White)</dd>
         <dt>Process:</dt>
         <dd>MJF</dd>
+        <dt>Fulfilled by:</dt>
+        <dd>{<ProviderImage modifiers={['xs']} name="imaterialise" slug="imaterialise" />}</dd>
       </DescriptionList>
     }
   />

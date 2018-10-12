@@ -14,18 +14,18 @@
   &__header {
     grid-area: header;
     height: 56px; // Design decision
-    background-color: $color-invert-bg;
-    color: $color-invert-text;
+    background-color: $color-gray-5;
+    color: $color-minor;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: $font-size-l;
+    font-size: $font-size-xl;
     font-weight: $font-weight-bold;
-    text-transform: uppercase;
 
     & > .icon {
       margin-right: $space-base;
       font-size: $font-size-xxl;
+      color: $color-success
     }
   }
 
@@ -42,7 +42,7 @@
   }
 
   &__column-head {
-    font-size: $font-size-l;
+    font-size: $font-size-xl;
   }
 
   &__price-column {

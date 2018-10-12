@@ -418,7 +418,8 @@ const MaterialPartial = ({
       totalPrice,
       finishImageUrl,
       addToCartLabel,
-      handleAddToCart
+      handleAddToCart,
+      vendorId
     } = getOfferInfos(offer)
 
     return (
@@ -426,12 +427,7 @@ const MaterialPartial = ({
         icon={<Icon source={cheapest ? cheapestIcon : fastestIcon} />}
         headline={cheapest ? 'Best Price' : 'Express'}
         actionButton={
-          <Button
-            modifiers={['warning']}
-            icon={checkoutIcon}
-            label={addToCartLabel}
-            onClick={handleAddToCart}
-          />
+          <Button icon={checkoutIcon} label={addToCartLabel} onClick={handleAddToCart} />
         }
         image={finishImageUrl}
         day={cheapest ? time : <strong>{time}</strong>}
@@ -454,12 +450,12 @@ const MaterialPartial = ({
         }
         materialColumn={
           <DescriptionList>
-            <dt>Fulfilled by:</dt>
-            <dd>{providerName}</dd>
             <dt>Material:</dt>
             <dd>{materialName}</dd>
             <dt>Process:</dt>
             <dd>{process}</dd>
+            <dt>Fulfilled by:</dt>
+            <dd>{<ProviderImage modifiers={['xs']} name={providerName} slug={vendorId} />}</dd>
           </DescriptionList>
         }
       />
