@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {storiesOf} from '@storybook/react'
 
 import checkoutIcon from '../../../asset/icon/checkout.svg'
@@ -8,7 +8,6 @@ import ProviderItem from '../provider-item'
 import DescriptionList from '../description-list'
 import ProviderImage from '../provider-image'
 import Button from '../button'
-import Icon from '../icon'
 
 storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
   <ProviderList>
@@ -41,12 +40,6 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       }
       price={<strong>$350.23</strong>}
       action={<Button modifiers={['minor']} icon={checkoutIcon} label="Add to Basket" />}
-      icons={
-        <Fragment>
-          <Icon />
-          <Icon />
-        </Fragment>
-      }
     />
     <ProviderItem
       providerAnnotation={
@@ -77,7 +70,6 @@ storiesOf('ProviderList & ProviderListItem', module).add('default', () => (
       }
       price="$350.23"
       action={<Button modifiers={['minor']} icon={checkoutIcon} label="Add to Basket" />}
-      icons={<Icon />}
     />
   </ProviderList>
 ))

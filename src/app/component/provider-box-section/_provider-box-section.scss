@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: $space-l;
-  margin-bottom: $space-xxl;
+  margin-bottom: $space-xxxxl;
 
   @include respond-to(medium) {
     grid-template-columns: 1fr 1fr;
