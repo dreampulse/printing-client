@@ -516,7 +516,7 @@ const MaterialPartial = ({
                     <dd>{deliveryTime}</dd>
                   </DescriptionList>
                 }
-                time={time}
+                time={isFastestOffer ? <strong>{time}</strong> : time}
                 priceAnnotation={
                   <DescriptionList>
                     <dt>Production:</dt>
@@ -525,7 +525,7 @@ const MaterialPartial = ({
                     <dd>{shippingPrice}</dd>
                   </DescriptionList>
                 }
-                price={totalPrice}
+                price={isCheapestOffer ? <strong>{totalPrice}</strong> : totalPrice}
                 action={
                   <Button
                     modifiers={['minor']}
@@ -533,12 +533,6 @@ const MaterialPartial = ({
                     label={addToCartLabel}
                     onClick={handleAddToCart}
                   />
-                }
-                icons={
-                  <Fragment>
-                    {isCheapestOffer && <Icon source={cheapestIcon} />}
-                    {isFastestOffer && <Icon source={fastestIcon} />}
-                  </Fragment>
                 }
               />
             )
