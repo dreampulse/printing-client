@@ -10,7 +10,7 @@ import pick from 'lodash/pick'
 import compact from 'lodash/compact'
 
 import config from '../../../config'
-import {getLocationByIp, isLocationValid} from '../lib/geolocation'
+import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
 import {
   resetModelConfigs,
   hasModelConfigWithQuote,
@@ -108,7 +108,7 @@ const init = (state, {payload: {featureFlags, urlParams}}) =>
         failActionCreator: coreAction.fatalError,
         args: []
       }),
-      Cmd.run(getLocationByIp, {
+      Cmd.run(getLocationFromCookie, {
         successActionCreator: coreAction.updateLocation,
         failActionCreator: () => modalAction.openPickLocationModal({confirmation: false}),
         args: []

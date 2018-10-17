@@ -1,10 +1,7 @@
 // @flow
-
-import {fetch} from './http-json'
-import timeout from './timeout'
 import config from '../../../config'
-
 import type {Location, GoogleMapsPlace} from '../type'
+import {getCookie} from '../service/cookie'
 
 const findInGoogleMapsPlace = (property: string) => (
   place: GoogleMapsPlace,
@@ -20,23 +17,18 @@ const findInGoogleMapsPlace = (property: string) => (
 const shortNameFrom = findInGoogleMapsPlace('short_name')
 const longNameFrom = findInGoogleMapsPlace('long_name')
 
-export const getLocationByIp = async (): Promise<Location> => {
-  // We have to define an empty headers object because the API doesn't allow setting the content type header
-  const {json: {city, zip, region, countryCode}} = await timeout(
-    fetch(config.geolocationApiUrl, {headers: {}}),
-    config.fetchTimout
-  )
+export const getLocationFromCookie = (): Location => {
+  const countryCode = getCookie(config.countryCookie)
 
   if (!countryCode) {
     throw new Error('Location detection failed')
   }
 
-  // Returns the object as we need it
   return {
-    city,
-    zipCode: zip,
-    stateCode: region,
-    countryCode
+    city: null,
+    zipCode: null,
+    stateCode: null,
+    countryCode: countryCode.toUpperCase()
   }
 }
 

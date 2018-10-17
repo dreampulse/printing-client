@@ -1,61 +1,49 @@
-import {getLocationByIp, convertPlaceToLocation, isLocationValid} from './geolocation'
-import * as http from './http-json'
+import {getLocationFromCookie, convertPlaceToLocation, isLocationValid} from './geolocation'
 import config from '../../../config'
+import * as cookie from '../service/cookie'
 
 describe('geolocation lib', () => {
-  describe('getLocationByIp()', () => {
+  describe('getLocationFromCookie()', () => {
     let sandbox
 
     beforeEach(() => {
       sandbox = sinon.sandbox.create()
-      sandbox.stub(http)
-      sandbox.stub(config, 'geolocationApiUrl').value('http://example.com')
+      sandbox.stub(cookie)
+      sandbox.stub(config, 'countryCookie').value('country')
     })
 
     afterEach(() => {
       sandbox.restore()
     })
 
-    it('works for the success case', async () => {
-      const geolocationResponse = {
-        city: 'Munich',
-        zip: '80333',
-        region: 'BY',
-        countryCode: 'DE'
-      }
-      http.fetch.withArgs('http://example.com', {headers: {}}).resolves({json: geolocationResponse})
+    it('returns location with countryCode from cookie', () => {
+      cookie.getCookie.withArgs('country').returns('DE')
 
-      const result = await getLocationByIp()
+      const result = getLocationFromCookie()
       expect(result, 'to equal', {
-        city: 'Munich',
-        zipCode: '80333',
-        stateCode: 'BY',
+        city: null,
+        zipCode: null,
+        stateCode: null,
         countryCode: 'DE'
       })
     })
 
-    it('aborts request after a configured timeout', () => {
-      const endlessPromise = new Promise(() => {})
-      http.fetch.returns(endlessPromise)
-      sandbox.stub(config, 'fetchTimout').value(1) // Faster timeout
+    it('returns location with countryCode in uppercase', () => {
+      cookie.getCookie.withArgs('country').returns('de')
 
-      return getLocationByIp().catch(result => {
-        expect(result, 'to equal', Error('Operation timed out'))
+      const result = getLocationFromCookie()
+      expect(result, 'to equal', {
+        city: null,
+        zipCode: null,
+        stateCode: null,
+        countryCode: 'DE'
       })
     })
 
-    it('handels a missing keys in response', async () => {
-      const geolocationResponse = {
-        city: 'something',
-        zip: 'something',
-        region: 'something',
-        countryCode: '' // A key is missing
-      }
-      http.fetch.resolves({json: geolocationResponse})
+    it('throw error when cookie not found', async () => {
+      cookie.getCookie.withArgs('country').returns(undefined)
 
-      return getLocationByIp().catch(result => {
-        expect(result, 'to equal', Error('Location detection failed'))
-      })
+      expect(getLocationFromCookie, 'to throw error', Error('Location detection failed'))
     })
   })
 

@@ -1,4 +1,3 @@
-// TODO: split this file into a config part and a lib and test it!
 import createCountryList from 'country-list'
 
 const usStates = {
