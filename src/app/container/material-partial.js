@@ -76,13 +76,13 @@ import ProviderBox from '../component/provider-box'
 import Icon from '../component/icon'
 import ProviderBoxSection from '../component/provider-box-section'
 
-const HidableProviderList = withState('isHidden', 'hide', true)(props => (
-  <ProviderList
-    modifiers={props.isHidden ? ['hidden', ...(props.modifiers || [])] : props.modifiers}
-    onShowOffers={() => props.hide(false)}
-    {...props}
-  />
-))
+// const HidableProviderList = withState('isHidden', 'hide', true)(props => (
+//   <ProviderList
+//     modifiers={props.isHidden ? ['hidden', ...props.modifiers] : props.modifiers}
+//     onShowOffers={() => props.hide(false)}
+//     {...props}
+//   />
+// ))
 
 const MaterialPartial = ({
   selectMaterialConfigForFinishGroup,
@@ -110,7 +110,9 @@ const MaterialPartial = ({
   usedShippingIds,
   isUploadPage,
   updateSelectedModelConfigs,
-  modelConfigs
+  modelConfigs,
+  setProviderListHidden,
+  isProviderListHidden
 }) => {
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
@@ -484,7 +486,10 @@ const MaterialPartial = ({
           {renderPromotedOffer({offer: cheapestOffer, cheapest: true})}
           {renderPromotedOffer({offer: fastestOffer, cheapest: false})}
         </ProviderBoxSection>
-        <HidableProviderList>
+        <ProviderList
+          modifiers={isProviderListHidden ? ['hidden'] : []}
+          onShowOffers={() => setProviderListHidden(false)}
+        >
           {providerList.map(offer => {
             const {
               shippingId,
@@ -546,7 +551,7 @@ const MaterialPartial = ({
               />
             )
           })}
-        </HidableProviderList>
+        </ProviderList>
       </Section>
     )
   }
@@ -665,6 +670,7 @@ export default compose(
       })
     }
   }),
+  withState('isProviderListHidden', 'setProviderListHidden', true),
   lifecycle({
     componentWillMount() {
       // It is possible that we do not have a location yet!
