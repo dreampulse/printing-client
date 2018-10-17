@@ -25,9 +25,9 @@ export const getLocationFromCookie = (): Location => {
   }
 
   return {
-    city: null,
-    zipCode: null,
-    stateCode: null,
+    city: '',
+    zipCode: '',
+    stateCode: '',
     countryCode: countryCode.toUpperCase()
   }
 }

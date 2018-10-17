@@ -1,5 +1,6 @@
 context('Simple application flow', () => {
   it('loads', () => {
+    cy.setCookie('country', 'DE')
     cy.visit(
       '/?feature:refresh&feature:invoice&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test'
     )
@@ -46,6 +47,8 @@ context('Simple application flow', () => {
     cy.get('input[name="shippingAddress.firstName"]').type('TEST firstName')
     cy.get('input[name="shippingAddress.lastName"]').type('TEST lastName')
     cy.get('input[name="shippingAddress.address"]').type('TEST address')
+    cy.get('input[name="shippingAddress.city"]').type('TEST city')
+    cy.get('input[name="shippingAddress.zipCode"]').type('TEST zipCode')
     cy.get('input[name="emailAddress"]').type('TEST@example.com')
     cy.get('input[name="phoneNumber"]').type('0123456789')
 
