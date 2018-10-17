@@ -131,7 +131,7 @@
     &:hover:not([disabled]),
     &:focus:not([disabled]),
     &:active:not([disabled]) {
-      background-color: inherit;
+      background-color: $color-bg;
       color: $color-primary-active;
       border-color: $color-primary-active;
     }

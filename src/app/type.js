@@ -200,9 +200,9 @@ export type Cart = {
 }
 
 export type Location = {
-  city: ?string,
-  zipCode: ?string,
-  stateCode: ?string,
+  city: string,
+  zipCode: string,
+  stateCode: string,
   countryCode: string
 }
 

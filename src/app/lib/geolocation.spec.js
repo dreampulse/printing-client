@@ -21,9 +21,9 @@ describe('geolocation lib', () => {
 
       const result = getLocationFromCookie()
       expect(result, 'to equal', {
-        city: null,
-        zipCode: null,
-        stateCode: null,
+        city: '',
+        zipCode: '',
+        stateCode: '',
         countryCode: 'DE'
       })
     })
@@ -33,9 +33,9 @@ describe('geolocation lib', () => {
 
       const result = getLocationFromCookie()
       expect(result, 'to equal', {
-        city: null,
-        zipCode: null,
-        stateCode: null,
+        city: '',
+        zipCode: '',
+        stateCode: '',
         countryCode: 'DE'
       })
     })
