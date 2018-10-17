@@ -2,7 +2,8 @@ import {
   AppError,
   HttpResponseUnexpectedStatusError,
   HttpResponseBodyParseError,
-  HttpUploadError
+  HttpUploadError,
+  PaymentAbortedError
 } from './error'
 
 describe('Error lib', () => {
@@ -15,6 +16,18 @@ describe('Error lib', () => {
     it('sets some error message ', () => {
       const error = new AppError('some-error-type', 'some-message')
       expect(error.message, 'to equal', 'some-message (some-error-type)')
+    })
+  })
+
+  describe('PaymentAbortedError', () => {
+    it('sets PAYMENT_ABORTED_ERROR type', () => {
+      const error = new PaymentAbortedError()
+      expect(error.type, 'to equal', 'PAYMENT_ABORTED_ERROR')
+    })
+
+    it('sets error message ', () => {
+      const error = new PaymentAbortedError()
+      expect(error.message, 'to equal', 'Payment aborted by user. (PAYMENT_ABORTED_ERROR)')
     })
   })
 

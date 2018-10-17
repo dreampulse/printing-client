@@ -4,6 +4,7 @@ export type ErrorType =
   | 'HTTP_RESPONSE_UNEXPECTED_STATUS_ERROR'
   | 'HTTP_RESPONSE_BODY_PARSE_ERROR'
   | 'HTTP_UPLOAD_ERROR'
+  | 'PAYMENT_ABORTED_ERROR'
 
 // TODO: Make this private. There should be a dedicated error class for every error type
 export class AppError extends Error {
@@ -12,6 +13,14 @@ export class AppError extends Error {
   constructor(type: ErrorType | string, message: string) {
     super(`${message} (${type})`)
     this.type = type
+  }
+}
+
+export class PaymentAbortedError extends AppError {
+  static TYPE: string = 'PAYMENT_ABORTED_ERROR'
+
+  constructor() {
+    super(PaymentAbortedError.TYPE, 'Payment aborted by user.')
   }
 }
 
