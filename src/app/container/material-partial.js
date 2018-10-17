@@ -7,6 +7,7 @@ import withStateHandlers from 'recompose/withStateHandlers'
 import withHandlers from 'recompose/withHandlers'
 import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
+import withState from 'recompose/withState'
 import withPropsOnChange from 'recompose/withPropsOnChange'
 import flatMap from 'lodash/flatMap'
 import keyBy from 'lodash/keyBy'
@@ -74,6 +75,14 @@ import Button from '../component/button'
 import ProviderBox from '../component/provider-box'
 import Icon from '../component/icon'
 import ProviderBoxSection from '../component/provider-box-section'
+
+const HidableProviderList = withState('isHidden', 'hide', true)(props => (
+  <ProviderList
+    modifiers={props.isHidden ? ['hidden', ...(props.modifiers || [])] : props.modifiers}
+    onShowOffers={() => props.hide(false)}
+    {...props}
+  />
+))
 
 const MaterialPartial = ({
   selectMaterialConfigForFinishGroup,
@@ -475,7 +484,7 @@ const MaterialPartial = ({
           {renderPromotedOffer({offer: cheapestOffer, cheapest: true})}
           {renderPromotedOffer({offer: fastestOffer, cheapest: false})}
         </ProviderBoxSection>
-        <ProviderList>
+        <HidableProviderList>
           {providerList.map(offer => {
             const {
               shippingId,
@@ -537,7 +546,7 @@ const MaterialPartial = ({
               />
             )
           })}
-        </ProviderList>
+        </HidableProviderList>
       </Section>
     )
   }
