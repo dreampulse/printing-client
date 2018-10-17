@@ -5,11 +5,20 @@ import type {Action, BackendModel, ConfigId, FileId} from '../type'
 
 type UploadFileAction = Action<
   'MODEL.UPLOAD_FILE',
-  {fileId: FileId, configId: ConfigId, file: File, unit: string}
+  {
+    fileId: FileId,
+    configId: ConfigId,
+    file: File,
+    unit: string,
+    fileIndex: number
+  }
 >
 type UploadFilesAction = Action<'MODEL.UPLOAD_FILES', {files: Array<File>, unit: string}>
 type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, progress: number}>
-type UploadCompleteAction = Action<'MODEL.UPLOAD_COMPLETE', {fileId: string, model: BackendModel}>
+type UploadCompleteAction = Action<
+  'MODEL.UPLOAD_COMPLETE',
+  {fileId: string, model: BackendModel, fileIndex: number}
+>
 type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
 type DeleteModelConfigsAction = Action<'MODEL.DELETE_MODEL_CONFIGS', {ids: Array<ConfigId>}>
 type UpdateSelectedModelConfigsAction = Action<
@@ -36,13 +45,14 @@ export type ModelAction =
   | UpdateQuantitiesAction
   | DuplicateModelConfigAction
 
-export const uploadFile = (file: File, unit: string): UploadFileAction => ({
+export const uploadFile = (file: File, unit: string, fileIndex: number): UploadFileAction => ({
   type: 'MODEL.UPLOAD_FILE',
   payload: {
     file,
     fileId: uniqueId('file-id-'),
     configId: uniqueId('config-id-'),
-    unit
+    unit,
+    fileIndex
   }
 })
 
@@ -59,9 +69,13 @@ export const uploadProgress = (fileId: FileId, progress: number): UploadProgress
   payload: {progress, fileId}
 })
 
-export const uploadComplete = (fileId: FileId, model: BackendModel): UploadCompleteAction => ({
+export const uploadComplete = (
+  fileId: FileId,
+  model: BackendModel,
+  fileIndex: number
+): UploadCompleteAction => ({
   type: 'MODEL.UPLOAD_COMPLETE',
-  payload: {fileId, model}
+  payload: {fileId, model, fileIndex}
 })
 
 export const uploadFail = (fileId: FileId, error: Error): UploadFailAction => ({

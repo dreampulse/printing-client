@@ -52,6 +52,7 @@ export type CoreState = {
   materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
   currency: string,
   unit: string,
+  useSameMaterial: boolean,
   location: ?Location,
   shippings: Array<Shipping>,
   featureFlags: Features,
@@ -75,6 +76,7 @@ const initialState: CoreState = {
   materialGroups: [],
   currency: config.defaultCurrency,
   unit: 'mm',
+  useSameMaterial: true,
   location: null,
   shippings: [],
   featureFlags: {},
@@ -199,6 +201,11 @@ const updateUnit = (state, action) => ({
   unit: action.payload.unit
 })
 
+const updateUseSameMaterial = (state, action) => ({
+  ...state,
+  useSameMaterial: action.payload
+})
+
 const updateCurrency = (state, action) => {
   // Do nothing if currency did not change
   if (state.currency === action.payload.currency) {
@@ -307,14 +314,17 @@ const uploadFile = (state, {payload}) => {
         Cmd.dispatch,
         progress => modelAction.uploadProgress(fileId, progress)
       ],
-      successActionCreator: model => modelAction.uploadComplete(fileId, model),
+      successActionCreator: model => modelAction.uploadComplete(fileId, model, payload.fileIndex),
       failActionCreator: error => modelAction.uploadFail(fileId, error)
     })
   )
 }
 
 const uploadFiles = (state, {payload: {files, unit}}) =>
-  loop(state, Cmd.list(files.map(file => Cmd.action(modelAction.uploadFile(file, unit)))))
+  loop(
+    state,
+    Cmd.list(files.map((file, index) => Cmd.action(modelAction.uploadFile(file, unit, index))))
+  )
 
 const uploadProgress = (state, {payload}) => {
   const fileId = payload.fileId
@@ -343,6 +353,12 @@ const uploadComplete = (state, {payload}) => {
   invariant(modelConfig, 'Model config not found')
   invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
 
+  let selectedModelConfigs = [...state.selectedModelConfigs, modelConfig.id]
+
+  if (!state.useSameMaterial) {
+    selectedModelConfigs = payload.fileIndex === 0 ? [modelConfig.id] : state.selectedModelConfigs
+  }
+
   return {
     ...state,
     backendModels: {
@@ -362,7 +378,7 @@ const uploadComplete = (state, {payload}) => {
             }
           : item
     ),
-    selectedModelConfigs: [...state.selectedModelConfigs, modelConfig.id]
+    selectedModelConfigs
   }
 }
 
@@ -681,6 +697,8 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
       return updateLocation(state, action)
     case 'CORE.UPDATE_UNIT':
       return updateUnit(state, action)
+    case 'CORE.UPDATE_USE_SAME_MATERIAL':
+      return updateUseSameMaterial(state, action)
     case 'CORE.UPDATE_CURRENCY':
       return updateCurrency(state, action)
     case 'CORE.UPDATE_SHIPPINGS':
