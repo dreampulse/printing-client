@@ -1,6 +1,4 @@
 // @flow
-import uniq from 'lodash/uniq'
-
 import config from '../../../config'
 
 import type {
@@ -30,17 +28,6 @@ export function getMaterialConfigIdsOfMaterialGroup(materialGroup: MaterialGroup
   })
 
   return materialConfigIds
-}
-
-export function getMaterialFinishGroupProviderNames(material: Material) {
-  return material.finishGroups.reduce((acc, finishGroup) => {
-    Object.keys(finishGroup.properties.printingServiceName).forEach(printingService => {
-      if (!acc[printingService]) acc[printingService] = []
-      acc[printingService].push(finishGroup.properties.printingServiceName[printingService])
-      acc[printingService] = uniq(acc[printingService])
-    })
-    return acc
-  }, {})
 }
 
 export const getMaterialGroupById = (
