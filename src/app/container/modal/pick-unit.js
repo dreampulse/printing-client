@@ -49,17 +49,22 @@ const PickUnitModal = ({
         <RadioButton value="cm" />
         <RadioButton value="in" />
       </RadioButtonGroup>
-      {files.length > 1 && (
-        <Fragment>
-          <Paragraph classNames={['u-margin-top-l']}>
-            Do you want to use the same material for all files?
-          </Paragraph>
-          <RadioButtonGroup name="sameMaterials" value={sameMaterials} onChange={setSameMaterials}>
-            <RadioButton value="yes" />
-            <RadioButton value="no" />
-          </RadioButtonGroup>
-        </Fragment>
-      )}
+      {files.length > 1 &&
+        sameMaterials && (
+          <Fragment>
+            <Paragraph classNames={['u-margin-top-l']}>
+              Do you want to use the same material for all files?
+            </Paragraph>
+            <RadioButtonGroup
+              name="sameMaterials"
+              value={sameMaterials}
+              onChange={setSameMaterials}
+            >
+              <RadioButton value="yes" />
+              <RadioButton value="no" />
+            </RadioButtonGroup>
+          </Fragment>
+        )}
     </Overlay>
   )
 }
@@ -79,5 +84,5 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withState('unit', 'setUnit', props => props.globalUnit),
-  withState('sameMaterials', 'setSameMaterials', 'yes') // Use `yes` as a default
+  withState('sameMaterials', 'setSameMaterials', props => props.useSameMaterial && 'yes')
 )(PickUnitModal)
