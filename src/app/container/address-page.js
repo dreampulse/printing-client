@@ -88,12 +88,7 @@ const AddressPage = ({
           label="Company Name"
           name="companyName"
         />
-        <Field
-          validate={required}
-          component={renderField(InputField)}
-          label="VAT ID"
-          name="vatId"
-        />
+        <Field component={renderField(InputField)} label="VAT ID" name="vatId" />
       </FormRow>
     </Fragment>
   )
@@ -419,7 +414,6 @@ const enhance = compose(
         props.removeFormValue(FORM_NAME, 'billingAddress.city')
         props.removeFormValue(FORM_NAME, 'billingAddress.zipCode')
         props.removeFormValue(FORM_NAME, 'billingAddress.stateCode')
-        props.removeFormValue(FORM_NAME, 'billingAddress.countryCode')
         props.removeFormValue(FORM_NAME, 'billingAddress.countryCode')
         props.removeFormValue(FORM_NAME, 'billingAddress')
       } else {
