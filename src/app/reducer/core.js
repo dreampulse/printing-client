@@ -203,7 +203,7 @@ const updateUnit = (state, action) => ({
 
 const updateUseSameMaterial = (state, action) => ({
   ...state,
-  useSameMaterial: action.payload
+  useSameMaterial: state.useSameMaterial && action.payload
 })
 
 const updateCurrency = (state, action) => {
