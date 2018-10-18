@@ -6,8 +6,7 @@ import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 
 import getCloudinaryUrl from '../../lib/cloudinary'
-import {getMaterialFinishGroupProviderNames, getMaterialById} from '../../lib/material'
-import {getFinishGroupProviderNames} from '../../lib/provider-selector'
+import {getMaterialById} from '../../lib/material'
 
 import type {AppState} from '../../reducer'
 import * as modalActions from '../../action/modal'
@@ -19,7 +18,6 @@ import Paragraph from '../../component/paragraph'
 import Grid from '../../component/grid'
 import Column from '../../component/column'
 import Image from '../../component/image'
-import ProviderDefinitionList from '../../component/provider-definition-list'
 
 const MaterialModal = ({material, closeModal}) => {
   const headline = <Headline label={material.name} modifiers={['l']} />
@@ -40,14 +38,6 @@ const MaterialModal = ({material, closeModal}) => {
           <Image
             src={getCloudinaryUrl(material.featuredImage, ['w_360', 'h_270', 'c_limit'])}
             alt="Image of material"
-          />
-        </Column>
-        <Column sm={12}>
-          <Headline modifiers={['xs']} label="Provider names" />
-          <ProviderDefinitionList
-            providerValues={getFinishGroupProviderNames(
-              getMaterialFinishGroupProviderNames(material)
-            )}
           />
         </Column>
       </Grid>
