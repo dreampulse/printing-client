@@ -4,6 +4,7 @@ import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
+import lifecycle from 'recompose/lifecycle'
 
 import * as modalActions from '../../action/modal'
 import * as modelActions from '../../action/model'
@@ -25,7 +26,8 @@ const PickUnitModal = ({
   files,
   onUploadFiles,
   sameMaterials,
-  setSameMaterials
+  setSameMaterials,
+  showMaterialsOption
 }) => {
   const headline = <Headline label="Pick file unit" modifiers={['l']} />
   const buttons = [
@@ -49,22 +51,17 @@ const PickUnitModal = ({
         <RadioButton value="cm" />
         <RadioButton value="in" />
       </RadioButtonGroup>
-      {files.length > 1 &&
-        sameMaterials && (
-          <Fragment>
-            <Paragraph classNames={['u-margin-top-l']}>
-              Do you want to use the same material for all files?
-            </Paragraph>
-            <RadioButtonGroup
-              name="sameMaterials"
-              value={sameMaterials}
-              onChange={setSameMaterials}
-            >
-              <RadioButton value="yes" />
-              <RadioButton value="no" />
-            </RadioButtonGroup>
-          </Fragment>
-        )}
+      {showMaterialsOption && (
+        <Fragment>
+          <Paragraph classNames={['u-margin-top-l']}>
+            Do you want to use the same material for all files?
+          </Paragraph>
+          <RadioButtonGroup name="sameMaterials" value={sameMaterials} onChange={setSameMaterials}>
+            <RadioButton value="yes" />
+            <RadioButton value="no" />
+          </RadioButtonGroup>
+        </Fragment>
+      )}
     </Overlay>
   )
 }
@@ -84,5 +81,12 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withState('unit', 'setUnit', props => props.globalUnit),
-  withState('sameMaterials', 'setSameMaterials', props => props.useSameMaterial && 'yes')
+  withState('sameMaterials', 'setSameMaterials', props => (props.useSameMaterial ? 'yes' : 'no')),
+  lifecycle({
+    componentWillMount() {
+      this.setState({
+        showMaterialsOption: this.props.files.length > 1 && this.props.useSameMaterial
+      })
+    }
+  })
 )(PickUnitModal)
