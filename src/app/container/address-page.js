@@ -62,7 +62,6 @@ const AddressPage = ({
 
     return (
       <SelectField
-        validate={!isDisabled ? required : undefined}
         menu={stateMenu}
         value={actualValue}
         onChange={changeState}
@@ -152,6 +151,7 @@ const AddressPage = ({
 
       <FormRow modifiers={['half-half']}>
         <Field
+          validate={getStates(billingAddress.countryCode) ? required : undefined}
           component={renderField(StateSelect)}
           placeholder="State"
           name="billingAddress.stateCode"
@@ -271,6 +271,7 @@ const AddressPage = ({
 
         <FormRow modifiers={['half-half']}>
           <Field
+            validate={getStates(shippingAddress.countryCode) ? required : undefined}
             component={renderField(StateSelect)}
             placeholder="State"
             name="shippingAddress.stateCode"
