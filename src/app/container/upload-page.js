@@ -217,7 +217,8 @@ const mapStateToProps = (state: AppState) => ({
   }),
   cart: state.core.cart,
   cartCount: selectCartCount(state),
-  featureFlags: state.core.featureFlags
+  featureFlags: state.core.featureFlags,
+  useSameMaterial: state.core.useSameMaterial
 })
 
 const mapDispatchToProps = {
@@ -243,7 +244,7 @@ const enhance = compose(
 
     // Special case when there is only one uploaded model the checkbox for selecting the model aren't shown anymore
     // therefore we have to guarantee that the model is always selected.
-    const updatedSelectedModelConfigIds = [...selectedModelConfigIds];
+    const updatedSelectedModelConfigIds = [...selectedModelConfigIds]
     if (updatedSelectedModelConfigIds.length === 0 && modelsWithConfig.length === 1) {
       const modelConfig = modelsWithConfig[0][0]
       if (modelConfig.type === 'UPLOADED') {
@@ -259,7 +260,11 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidUpdate(prevProps) {
-      if (this.props.isUploadCompleted && !prevProps.isUploadCompleted) {
+      if (
+        this.props.isUploadCompleted &&
+        !prevProps.isUploadCompleted &&
+        this.props.useSameMaterial
+      ) {
         scrollTo('#section-material')
       }
     }
