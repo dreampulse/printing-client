@@ -624,25 +624,17 @@ export default compose(
       selectMaterialConfig: () => id => ({
         selectedMaterialConfigId: id
       }),
-      selectMaterialConfigForFinishGroup: (
-        {selectedMaterialConfigs, selectedMaterialConfigId},
-        {materialGroups}
-      ) => (materialConfigId, finishGroupId) => {
-        const materialConfig = selectedMaterialConfigId
-          ? getMaterialConfigById(materialGroups, selectedMaterialConfigId)
-          : null
-        return {
-          // Keep selection if possible
-          selectedMaterialConfigId:
-            materialConfig && materialConfig.finishGroupId === finishGroupId
-              ? materialConfigId
-              : null,
-          selectedMaterialConfigs: {
-            ...selectedMaterialConfigs,
-            [finishGroupId]: materialConfigId
-          }
+      selectMaterialConfigForFinishGroup: ({selectedMaterialConfigs, selectedMaterialConfigId}) => (
+        materialConfigId,
+        finishGroupId
+      ) => ({
+        // Update selected material config if there was a selection before.
+        selectedMaterialConfigId: selectedMaterialConfigId ? materialConfigId : null,
+        selectedMaterialConfigs: {
+          ...selectedMaterialConfigs,
+          [finishGroupId]: materialConfigId
         }
-      },
+      }),
       setMaterialFilter: () => materialFilter => ({materialFilter})
     }
   ),
