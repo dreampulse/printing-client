@@ -9,7 +9,6 @@ import omit from 'lodash/omit'
 import pick from 'lodash/pick'
 import compact from 'lodash/compact'
 
-import config from '../../../config'
 import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
 import {
   resetModelConfigs,
