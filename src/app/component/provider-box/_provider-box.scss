@@ -1,32 +1,37 @@
 .provider-box {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  grid-template-areas: 'header header header header header header header header header header header header'
+    'material material material material material material days days days price price price';
+  grid-gap: $space-l;
   border-radius: $border-radius;
   box-shadow: $box-shadow-base;
   overflow: hidden;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: auto;
-  grid-template-areas:
-    "header header header header header header"
-    "image image days days price price"
-    "material material material action-button action-button action-button";
-  grid-gap: $space-l;
+  padding: $space-l;
+  align-items: flex-end;
+  border: 1px solid $color-primary;
 
   &__header {
     grid-area: header;
-    height: 56px; // Design decision
-    background-color: $color-gray-5;
-    color: $color-minor;
+    border-bottom: 1px solid $color-border-minor;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
+    padding-bottom: $space-l;
 
     & > .icon {
       margin-right: $space-base;
       font-size: $font-size-xxl;
-      color: $color-success
+      color: $color-primary;
     }
+  }
+
+  &__headline {
+    flex-grow: 1;
+    margin-right: $space-base;
   }
 
   &__image {
@@ -34,7 +39,6 @@
     grid-area: image;
     background-size: cover;
     background-repeat: no-repeat;
-    margin-left: $space-l;
   }
 
   &__days-column {
@@ -42,25 +46,23 @@
   }
 
   &__column-head {
-    font-size: $font-size-xl;
+    @include scut-truncate;
+    font-size: $font-size-l;
+    line-height: $line-height-s;
   }
 
   &__price-column {
     grid-area: price;
-    margin-right: $space-l;
   }
 
   &__material-column {
     grid-area: material;
-    margin-left: $space-l;
-    margin-bottom: $space-l;
   }
 
   &__action-button {
     grid-area: action-button;
     text-align: right;
-    margin-right: $space-l;
-    margin-bottom: $space-l;
+    border-top: 1px solid $color-border-minor;
+    padding-top: $space-l;
   }
 }
-
