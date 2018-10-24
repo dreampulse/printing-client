@@ -15,6 +15,14 @@ storiesOf('Select Menu Item', module)
       onClick={action('click')}
     />
   ))
+  .add('with price', () => (
+    <SelectMenuItem
+      modifiers={['color']}
+      value={{value: 'value', label: 'Select Menu Item', colorValue: 'ff0000', price: '$39.99'}}
+      selected
+      onClick={action('click')}
+    />
+  ))
   .add('color value', () => (
     <SelectMenuItem
       modifiers={['color']}

@@ -36,6 +36,7 @@ const SelectMenuItem = ({
         <ColorSquare color={value.colorValue} image={value.colorImage} />
       )}
       <span className="select-menu-item__label">{getLabel(value)}</span>
+      {value.price && <small className="select-menu-item__price">{value.price}</small>}
     </button>
   )
 }
@@ -46,7 +47,8 @@ SelectMenuItem.propTypes = {
     value: PropTypes.any.isRequired,
     label: PropTypes.string, // When not provided value will be shown
     colorValue: propTypes.string, // Optional color square
-    colorImage: PropTypes.string // Optional color image URL
+    colorImage: PropTypes.string, // Optional color image URL
+    price: PropTypes.string
   }).isRequired,
   selected: PropTypes.bool,
   onClick: PropTypes.func

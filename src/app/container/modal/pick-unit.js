@@ -20,7 +20,7 @@ const PickUnitModal = ({
   unit,
   setUnit,
   onUpdateUnit,
-  onUpdateUseSameMaterials,
+  onUpdateUseSameMaterial,
   closeModal,
   files,
   onUploadFiles,
@@ -34,7 +34,7 @@ const PickUnitModal = ({
       label="Upload"
       onClick={() => {
         onUpdateUnit(unit)
-        onUpdateUseSameMaterials(sameMaterials === 'yes')
+        onUpdateUseSameMaterial(sameMaterials === 'yes')
         onUploadFiles(files, unit)
         closeModal()
       }}
@@ -71,7 +71,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onUpdateUnit: coreActions.updateUnit,
-  onUpdateUseSameMaterials: coreActions.updateUseSameMaterial,
+  onUpdateUseSameMaterial: coreActions.updateUseSameMaterial,
   onUploadFiles: modelActions.uploadFiles,
   closeModal: modalActions.closeModal
 }
@@ -79,5 +79,5 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withState('unit', 'setUnit', props => props.globalUnit),
-  withState('sameMaterials', 'setSameMaterials', 'yes') // Use `yes` as a default
+  withState('sameMaterials', 'setSameMaterials', props => (props.useSameMaterial ? 'yes' : 'no'))
 )(PickUnitModal)

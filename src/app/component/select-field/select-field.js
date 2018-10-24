@@ -44,7 +44,7 @@ export default class SelectField extends Component {
           ? selectSize.top - menuSize.height + global.scrollY
           : selectSize.top + selectSize.height + global.scrollY,
         left: selectSize.left + global.scrollX,
-        width: selectSize.width
+        minWidth: selectSize.width
       }
     })
   }
