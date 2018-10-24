@@ -19,6 +19,7 @@ import {
 import * as printingEngine from '../lib/printing-engine'
 import {singletonPromise} from '../lib/promise'
 import type {PriceRequest} from '../lib/printing-engine'
+import {getValidCurrency} from '../lib/currency'
 import type {
   AppAction,
   MaterialGroup,
@@ -50,7 +51,7 @@ import * as configurationAction from '../action/configuration'
 
 export type CoreState = {
   materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
-  currency: string,
+  currency: ?string,
   unit: string,
   useSameMaterial: boolean,
   location: ?Location,
@@ -74,7 +75,7 @@ export type CoreState = {
 
 const initialState: CoreState = {
   materialGroups: [],
-  currency: config.defaultCurrency,
+  currency: null,
   unit: 'mm',
   useSameMaterial: true,
   location: null,
@@ -142,9 +143,12 @@ const updateMaterialGroups = (state, action) => ({
 })
 
 const updateLocation = (state, action) => {
+  const currency = state.currency || getValidCurrency(action.payload.location.countryCode)
+
   const nextState = {
     ...state,
-    location: action.payload.location
+    location: action.payload.location,
+    currency
   }
 
   // No side effects if location did not change
@@ -189,7 +193,7 @@ const updateLocation = (state, action) => {
   return loop(
     nextState,
     Cmd.run(printingEngine.getShippings, {
-      args: [action.payload.location.countryCode, state.currency],
+      args: [action.payload.location.countryCode, currency],
       successActionCreator: coreAction.updateShippings,
       failActionCreator: coreAction.fatalError
     })

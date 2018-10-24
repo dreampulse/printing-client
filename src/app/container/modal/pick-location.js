@@ -6,6 +6,8 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import compact from 'lodash/compact'
 
+import type {Location} from '../../type'
+
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
 import Headline from '../../component/headline'
@@ -18,6 +20,7 @@ import SelectMenu from '../../component/select-menu'
 
 import {formatLocation} from '../../lib/formatter'
 import {isLocationValid, convertPlaceToLocation} from '../../lib/geolocation'
+import {getValidCurrency} from '../../lib/currency'
 
 import * as modalActions from '../../action/modal'
 import * as coreActions from '../../action/core'
@@ -83,7 +86,12 @@ const PickLocationModal = ({
             value={location ? formatLocation(location) : ''}
             googleMapsApiKey={config.googleMapsApiKey}
             onChange={place => {
-              setLocation(convertPlaceToLocation(place))
+              const nextLocation: Location = convertPlaceToLocation(place)
+              setLocation(nextLocation)
+
+              if (isLocationValid(nextLocation)) {
+                setCurrency(getValidCurrency(nextLocation.countryCode))
+              }
             }}
           />
         </Column>
@@ -114,5 +122,5 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withState('location', 'setLocation', props => props.globalLocation),
-  withState('currency', 'setCurrency', props => props.globalCurrency)
+  withState('currency', 'setCurrency', props => props.globalCurrency || config.defaultCurrency)
 )(PickLocationModal)
