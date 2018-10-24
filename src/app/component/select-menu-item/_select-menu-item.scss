@@ -2,7 +2,8 @@
   $height: 40px;
 
   position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
   height: $height;
   line-height: $height;
@@ -20,19 +21,21 @@
   }
 
   & > .color-square {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-
-    & + .select-menu-item__label {
-      margin-left: $color-square-size + $space-base;
-    }
+    flex-shrink: 0;
+    margin-right: $space-base;
   }
 
   &__label {
     @include scut-truncate;
 
     display: block;
+    flex-grow: 1;
+  }
+
+  &__price {
+    flex-shrink: 0;
+    color: $color-minor;
+    margin-left: $space-base;
   }
 
   &:hover:not(.select-menu-item--selected) {
