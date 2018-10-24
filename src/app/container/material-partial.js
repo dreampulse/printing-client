@@ -9,7 +9,6 @@ import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 import withState from 'recompose/withState'
 import withPropsOnChange from 'recompose/withPropsOnChange'
-import flatMap from 'lodash/flatMap'
 import keyBy from 'lodash/keyBy'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
@@ -20,7 +19,7 @@ import * as quoteAction from '../action/quote'
 import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
 import type {AppState} from '../reducer'
-import {getMaterialTreeByMaterialConfigId, getProviderName} from '../lib/material'
+import {getProviderName} from '../lib/material'
 import {
   getBestMultiModelOfferForMaterial,
   getBestMultiModelOffersForMaterialConfig,
@@ -82,6 +81,9 @@ const MaterialPartial = ({
   selectMaterialConfigForFinishGroup,
   selectedMaterialConfigs,
   materialGroups,
+  materials,
+  materialConfigs,
+  finishGroups,
   filteredMaterials,
   selectedMaterialGroup,
   selectedMaterial,
@@ -170,10 +172,10 @@ const MaterialPartial = ({
       )
     }
 
-    const materials =
+    const showMaterials =
       filteredMaterials ||
       (selectedMaterialGroup && selectedMaterialGroup.materials) ||
-      flatMap(materialGroups, group => group.materials)
+      Object.values(materials)
 
     const sortMaterials = unsortedMaterials =>
       partitionBy(unsortedMaterials, material =>
@@ -193,7 +195,7 @@ const MaterialPartial = ({
               onChange={selectMaterialGroup}
             >
               <RadioButton key="__ALL__" value={undefined} label="All" />
-              {materialGroups.map(group => (
+              {Object.values(materialGroups).map(group => (
                 <RadioButton key={group.id} value={group.id} label={group.name} />
               ))}
             </RadioButtonGroup>
@@ -216,10 +218,10 @@ const MaterialPartial = ({
             </Paragraph>
           </Column>
         </Grid>
-        {materials.length > 0 && (
-          <MaterialSlider>{sortMaterials(materials).map(renderMaterialCard)}</MaterialSlider>
+        {showMaterials.length > 0 && (
+          <MaterialSlider>{sortMaterials(showMaterials).map(renderMaterialCard)}</MaterialSlider>
         )}
-        {materials.length === 0 && (
+        {showMaterials.length === 0 && (
           <Paragraph modifiers={['l']} classNames={['u-align-center']}>
             No materials found.
           </Paragraph>
@@ -342,12 +344,7 @@ const MaterialPartial = ({
   }
 
   const getDeliveryTime = ({multiModelQuote, shipping}) => {
-    const materialTree = getMaterialTreeByMaterialConfigId(
-      materialGroups,
-      multiModelQuote.materialConfigId
-    )
-
-    const {productionTimeFast} = materialTree.materialConfig.printingService[
+    const {productionTimeFast} = materialConfigs[multiModelQuote.materialConfigId].printingService[
       multiModelQuote.vendorId
     ]
 
@@ -355,22 +352,20 @@ const MaterialPartial = ({
   }
 
   const getOfferInfos = ({multiModelQuote, shipping, totalGrossPrice}) => {
-    const materialTree = getMaterialTreeByMaterialConfigId(
-      materialGroups,
-      multiModelQuote.materialConfigId
-    )
+    const materialConfig = materialConfigs[multiModelQuote.materialConfigId]
+    const material = materials[materialConfig.materialId]
+    const finishGroup = finishGroups[materialConfig.finishGroupId]
 
-    const {productionTimeFast, productionTimeSlow} = materialTree.materialConfig.printingService[
+    const {productionTimeFast, productionTimeSlow} = materialConfig.printingService[
       multiModelQuote.vendorId
     ]
 
-    const materialName = `${materialTree.material.name}, ${materialTree.finishGroup
-      .name} (${materialTree.materialConfig.color})`
+    const materialName = `${material.name}, ${finishGroup.name} (${materialConfig.color})`
 
     return {
       shippingId: shipping.shippingId,
       materialName,
-      process: materialTree.finishGroup.properties.printingMethodShort,
+      process: finishGroup.properties.printingMethodShort,
       providerName: getProviderName(multiModelQuote.vendorId),
       vendorId: multiModelQuote.vendorId,
       productionTime: formatTimeRange(productionTimeFast, productionTimeSlow),
@@ -384,11 +379,7 @@ const MaterialPartial = ({
         ? formatPrice(0, shipping.currency)
         : formatPrice(shipping.grossPrice, shipping.currency),
       totalPrice: formatPrice(totalGrossPrice, multiModelQuote.currency),
-      finishImageUrl: getCloudinaryUrl(materialTree.finishGroup.featuredImage, [
-        'w_700',
-        'h_458',
-        'c_fill'
-      ]),
+      finishImageUrl: getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill']),
       addToCartLabel: hasItemsOnUploadPage ? 'Add to cart' : 'Checkout',
       handleAddToCart: () =>
         addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
@@ -566,6 +557,7 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   materialGroups: state.core.materialGroups,
   materials: state.core.materials,
   materialConfigs: state.core.materialConfigs,
+  finishGroups: state.core.finishGroups,
   pollingProgress: selectQuotePollingProgress(state),
   isPollingDone: isQuotePollingDone(state),
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
@@ -638,8 +630,8 @@ export default compose(
     selectedMaterialGroup: materialGroups[selectedMaterialGroupId],
     selectedMaterial: materials[selectedMaterialId]
   })),
-  withPropsOnChange(['materialGroups'], ({materialGroups}) => ({
-    materialSearch: createMaterialSearch(flatMap(materialGroups, group => group.materials))
+  withPropsOnChange(['materials'], ({materials}) => ({
+    materialSearch: createMaterialSearch(Object.values(materials))
   })),
   withPropsOnChange(['materialFilter', 'materialSearch'], ({materialFilter, materialSearch}) => ({
     filteredMaterials: materialFilter.length > 0 ? materialSearch.search(materialFilter) : undefined

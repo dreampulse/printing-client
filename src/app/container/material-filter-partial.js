@@ -32,14 +32,7 @@ const MaterialFilterPartial = ({
   />
 )
 
-const mapStateToProps = state => ({
-  materialGroups: state.core.materialGroups
-})
-
-const mapDispatchToProps = {}
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     debouncedOnFilterMaterials: props => debounce(props.onFilterMaterials, 300)
   }),

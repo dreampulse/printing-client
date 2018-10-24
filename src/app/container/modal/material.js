@@ -2,11 +2,8 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import compose from 'recompose/compose'
-import withProps from 'recompose/withProps'
 
 import getCloudinaryUrl from '../../lib/cloudinary'
-import {getMaterialById} from '../../lib/material'
 
 import type {AppState} from '../../reducer'
 import * as modalActions from '../../action/modal'
@@ -45,17 +42,12 @@ const MaterialModal = ({material, closeModal}) => {
   )
 }
 
-const mapStateToProps = (state: AppState) => ({
-  materialGroups: state.core.materialGroups
+const mapStateToProps = (state: AppState, ownProps) => ({
+  material: state.core.materials[ownProps.materialId]
 })
 
 const mapDispatchToProps = {
   closeModal: modalActions.closeModal
 }
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withProps(({materialGroups, materialId}) => ({
-    material: getMaterialById(materialGroups, materialId)
-  }))
-)(MaterialModal)
+export default connect(mapStateToProps, mapDispatchToProps)(MaterialModal)
