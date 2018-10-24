@@ -237,22 +237,23 @@ const MaterialPartial = ({
   const renderFinishSection = () => {
     const renderFinishCard = finishGroup => {
       const colors = finishGroup.materialConfigs
-        // Filter out material configs which do not have an offer
-        .filter(materialConfig =>
-          Boolean(
-            getBestMultiModelOffersForMaterialConfig(
-              multiModelQuotes,
-              usedShippingIds,
-              shippings,
-              materialConfig.id
-            ).length
+        .map(materialConfig => [
+          materialConfig,
+          getBestMultiModelOffersForMaterialConfig(
+            multiModelQuotes,
+            usedShippingIds,
+            shippings,
+            materialConfig.id
           )
-        )
-        .map(({id, color, colorCode, colorImage}) => ({
+        ])
+        // Filter out material configs which do not have an offer
+        .filter(([, offers]) => Boolean(offers.length))
+        .map(([{id, color, colorCode, colorImage}, [bestOffer]]) => ({
           value: id,
           colorValue: colorCode,
           label: color,
-          colorImage: colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
+          colorImage: colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']),
+          price: formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
         }))
 
       let sortedOffers = getBestMultiModelOffersForMaterialConfig(

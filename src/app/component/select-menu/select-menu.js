@@ -49,7 +49,7 @@ SelectMenu.propTypes = {
       colorValue: propTypes.string, // Optional color square
       colorImage: PropTypes.string, // Optional color image URL
       hasColor: PropTypes.bool, // Only if type is material
-      price: PropTypes.string, // Only if type is material
+      price: PropTypes.string,
       children: PropTypes.arrayOf(
         PropTypes.shape({
           // Only if type is group
@@ -59,7 +59,7 @@ SelectMenu.propTypes = {
           colorValue: propTypes.string, // Optional color square
           colorImage: PropTypes.string, // Optional color image URL
           hasColor: PropTypes.bool, // Only if type is material
-          price: PropTypes.string // Only if type is material
+          price: PropTypes.string
         })
       )
     })
