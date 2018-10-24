@@ -20,13 +20,7 @@ import * as quoteAction from '../action/quote'
 import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
 import type {AppState} from '../reducer'
-import {
-  getMaterialById,
-  getMaterialGroupById,
-  getMaterialTreeByMaterialConfigId,
-  getProviderName,
-  getMaterialConfigById
-} from '../lib/material'
+import {getMaterialTreeByMaterialConfigId, getProviderName} from '../lib/material'
 import {
   getBestMultiModelOfferForMaterial,
   getBestMultiModelOffersForMaterialConfig,
@@ -569,6 +563,8 @@ const mapStateToProps = (state: AppState, ownProps) => ({
   modelConfigs: state.core.modelConfigs,
   quotes: selectQuotes(state),
   materialGroups: state.core.materialGroups,
+  materials: state.core.materials,
+  materialConfigs: state.core.materialConfigs,
   pollingProgress: selectQuotePollingProgress(state),
   isPollingDone: isQuotePollingDone(state),
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
@@ -645,9 +641,9 @@ export default compose(
       setMaterialFilter: () => materialFilter => ({materialFilter})
     }
   ),
-  withProps(({materialGroups, selectedMaterialGroupId, selectedMaterialId}) => ({
-    selectedMaterialGroup: getMaterialGroupById(materialGroups, selectedMaterialGroupId),
-    selectedMaterial: getMaterialById(materialGroups, selectedMaterialId)
+  withProps(({materialGroups, materials, selectedMaterialGroupId, selectedMaterialId}) => ({
+    selectedMaterialGroup: materialGroups[selectedMaterialGroupId],
+    selectedMaterial: materials[selectedMaterialId]
   })),
   withPropsOnChange(['materialGroups'], ({materialGroups}) => ({
     materialSearch: createMaterialSearch(flatMap(materialGroups, group => group.materials))

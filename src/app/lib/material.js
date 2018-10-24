@@ -1,4 +1,6 @@
 // @flow
+import keyBy from 'lodash/keyBy'
+import flatMap from 'lodash/flatMap'
 import config from '../../../config'
 
 import type {
@@ -12,6 +14,30 @@ import type {
   FinishGroupId,
   FinishGroup
 } from '../type'
+
+export const getMaterialGroupLookupTable = (
+  materialGroups: Array<MaterialGroup>
+): {[MaterialGroup]: MaterialGroup} => keyBy(materialGroups, materialGroup => materialGroup.id)
+
+export const getMaterialLookupTable = (
+  materialGroups: Array<MaterialGroup>
+): {[MaterialId]: Material} => flatMap(materialGroups, materialGroup => materialGroup.materials)
+
+export const getFinishGroupLookupTable = (
+  materialGroups: Array<MaterialGroup>
+): {[FinishGroupId]: FinishGroup} =>
+  flatMap(materialGroups, materialGroup =>
+    flatMap(materialGroup.materials, material => material.finishGroups)
+  )
+
+export const getMaterialConfigLookupTable = (
+  materialGroups: Array<MaterialGroup>
+): {[MaterialConfigId]: MaterialConfig} =>
+  flatMap(materialGroups, materialGroup =>
+    flatMap(materialGroup.materials, material =>
+      flatMap(material.finishGroups, finishGroup => finishGroup.materialConfigs)
+    )
+  )
 
 export function hasMaterialMultipleConfigs(material: Material) {
   return !material.finishGroups.every(finishGroup => finishGroup.materialConfigs.length <= 1)
