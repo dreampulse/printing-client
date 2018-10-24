@@ -4,7 +4,6 @@ import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
-import lifecycle from 'recompose/lifecycle'
 
 import * as modalActions from '../../action/modal'
 import * as modelActions from '../../action/model'
@@ -21,13 +20,12 @@ const PickUnitModal = ({
   unit,
   setUnit,
   onUpdateUnit,
-  onUpdateUseSameMaterials,
+  onUpdateUseSameMaterial,
   closeModal,
   files,
   onUploadFiles,
   sameMaterials,
-  setSameMaterials,
-  showMaterialsOption
+  setSameMaterials
 }) => {
   const headline = <Headline label="Pick file unit" modifiers={['l']} />
   const buttons = [
@@ -36,7 +34,7 @@ const PickUnitModal = ({
       label="Upload"
       onClick={() => {
         onUpdateUnit(unit)
-        onUpdateUseSameMaterials(sameMaterials === 'yes')
+        onUpdateUseSameMaterial(sameMaterials === 'yes')
         onUploadFiles(files, unit)
         closeModal()
       }}
@@ -51,7 +49,7 @@ const PickUnitModal = ({
         <RadioButton value="cm" />
         <RadioButton value="in" />
       </RadioButtonGroup>
-      {showMaterialsOption && (
+      {files.length > 1 && (
         <Fragment>
           <Paragraph classNames={['u-margin-top-l']}>
             Do you want to use the same material for all files?
@@ -73,7 +71,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onUpdateUnit: coreActions.updateUnit,
-  onUpdateUseSameMaterials: coreActions.updateUseSameMaterial,
+  onUpdateUseSameMaterial: coreActions.updateUseSameMaterial,
   onUploadFiles: modelActions.uploadFiles,
   closeModal: modalActions.closeModal
 }
@@ -81,12 +79,5 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withState('unit', 'setUnit', props => props.globalUnit),
-  withState('sameMaterials', 'setSameMaterials', props => (props.useSameMaterial ? 'yes' : 'no')),
-  lifecycle({
-    componentWillMount() {
-      this.setState({
-        showMaterialsOption: this.props.files.length > 1 && this.props.useSameMaterial
-      })
-    }
-  })
+  withState('sameMaterials', 'setSameMaterials', props => (props.useSameMaterial ? 'yes' : 'no'))
 )(PickUnitModal)
