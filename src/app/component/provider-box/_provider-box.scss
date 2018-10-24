@@ -1,13 +1,11 @@
 .provider-box {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto;
-  grid-template-areas: 'header header header header header header header header header header header header'
-    'material material material material material material days days days price price price';
+  grid-template-areas: 'header header header header' 'material material days price';
   grid-gap: $space-l;
   border-radius: $border-radius;
   box-shadow: $box-shadow-base;
-  overflow: hidden;
   padding: $space-l;
   align-items: flex-end;
   border: 1px solid $color-primary;
@@ -16,7 +14,6 @@
     grid-area: header;
     border-bottom: 1px solid $color-border-minor;
     display: flex;
-    justify-content: flex-start;
     align-items: center;
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
