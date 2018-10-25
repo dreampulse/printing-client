@@ -16,12 +16,25 @@ import {
   hasModelConfigWithQuote,
   setQuotesAndShippingInModelConfigs
 } from '../lib/model'
+import {
+  getMaterialGroupLookupTable,
+  getMaterialLookupTable,
+  getFinishGroupLookupTable,
+  getMaterialConfigLookupTable
+} from '../lib/material'
 import * as printingEngine from '../lib/printing-engine'
 import {singletonPromise} from '../lib/promise'
 import type {PriceRequest} from '../lib/printing-engine'
 import type {
   AppAction,
   MaterialGroup,
+  MaterialGroupId,
+  Material,
+  MaterialId,
+  FinishGroup,
+  FinishGroupId,
+  MaterialConfig,
+  MaterialConfigId,
   Location,
   Features,
   UploadingFile,
@@ -49,7 +62,10 @@ import * as cartAction from '../action/cart'
 import * as configurationAction from '../action/configuration'
 
 export type CoreState = {
-  materialGroups: Array<MaterialGroup>, // This is the material-structure-Tree
+  materialGroups: {[MaterialGroupId]: MaterialGroup},
+  materials: {[MaterialId]: Material},
+  finishGroups: {[FinishGroupId]: FinishGroup},
+  materialConfigs: {[MaterialConfigId]: MaterialConfig},
   currency: string,
   unit: string,
   useSameMaterial: boolean,
@@ -73,7 +89,10 @@ export type CoreState = {
 }
 
 const initialState: CoreState = {
-  materialGroups: [],
+  materialGroups: {},
+  materials: {},
+  finishGroups: {},
+  materialConfigs: {},
   currency: config.defaultCurrency,
   unit: 'mm',
   useSameMaterial: true,
@@ -138,7 +157,10 @@ const fatalError = (state, {payload: error}) => {
 
 const updateMaterialGroups = (state, action) => ({
   ...state,
-  materialGroups: action.payload.materialGroups
+  materialGroups: getMaterialGroupLookupTable(action.payload.materialGroups),
+  materials: getMaterialLookupTable(action.payload.materialGroups),
+  finishGroups: getFinishGroupLookupTable(action.payload.materialGroups),
+  materialConfigs: getMaterialConfigLookupTable(action.payload.materialGroups)
 })
 
 const updateLocation = (state, action) => {

@@ -2,11 +2,8 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import compose from 'recompose/compose'
-import withProps from 'recompose/withProps'
 
 import getCloudinaryUrl from '../../lib/cloudinary'
-import {getFinishGroupById} from '../../lib/material'
 
 import type {AppState} from '../../reducer'
 import * as modalActions from '../../action/modal'
@@ -98,17 +95,12 @@ const FinishGroupModal = ({finishGroup, closeModal}) => {
   )
 }
 
-const mapStateToProps = (state: AppState) => ({
-  materialGroups: state.core.materialGroups
+const mapStateToProps = (state: AppState, ownProps) => ({
+  finishGroup: state.core.finishGroups[ownProps.finishGroupId]
 })
 
 const mapDispatchToProps = {
   closeModal: modalActions.closeModal
 }
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withProps(({materialGroups, finishGroupId}) => ({
-    finishGroup: getFinishGroupById(materialGroups, finishGroupId)
-  }))
-)(FinishGroupModal)
+export default connect(mapStateToProps, mapDispatchToProps)(FinishGroupModal)

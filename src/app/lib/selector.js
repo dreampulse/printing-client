@@ -16,7 +16,6 @@ import type {
   MaterialId,
   MaterialGroupId
 } from '../type'
-import {getMaterialConfigById, getMaterialTreeByMaterialConfigId} from './material'
 
 export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile | BackendModel> =>
   state.core.modelConfigs.map(
@@ -87,10 +86,7 @@ export const selectCommonMaterialPathOfModelConfigs = (
   const materialConfigs = compact(
     modelConfigs.map(modelConfig => {
       if (modelConfig.type === 'UPLOADED' && modelConfig.quoteId) {
-        return getMaterialConfigById(
-          state.core.materialGroups,
-          state.core.quotes[modelConfig.quoteId].materialConfigId
-        )
+        return state.core.materialConfigs[state.core.quotes[modelConfig.quoteId].materialConfigId]
       }
 
       return null
@@ -128,15 +124,13 @@ export const selectConfiguredModelInformation = (state: AppState) =>
       return mc.type === 'UPLOADED' && mc.quoteId !== null
     })
     .map(([modelConfig, model, shipping, quote]: any) => {
-      const materialTree = getMaterialTreeByMaterialConfigId(
-        state.core.materialGroups,
-        quote.materialConfigId
-      )
+      const materialConfig = state.core.materialConfigs[quote.materialConfigId]
+      const finishGroup = state.core.finishGroups[materialConfig.finishGroupId]
 
-      const finishGroupName = materialTree.finishGroup.name
-      const materialName = materialTree.finishGroup.materialName
-      const providerInfo = materialTree.finishGroup.properties.printingServiceName[quote.vendorId]
-      const {id: materialConfigId, colorCode, color, colorImage} = materialTree.materialConfig
+      const finishGroupName = finishGroup.name
+      const materialName = finishGroup.materialName
+      const providerInfo = finishGroup.properties.printingServiceName[quote.vendorId]
+      const {id: materialConfigId, colorCode, color, colorImage} = materialConfig
 
       return {
         modelConfig,
