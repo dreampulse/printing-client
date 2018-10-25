@@ -9,20 +9,21 @@ const ProviderBox = ({
   modifiers = [],
   icon,
   headline,
-  image,
+  material,
   day,
   daysColumn,
   price,
   priceColumn,
   materialColumn,
-  actionButton
+  actionButton,
+  onClick
 }) => (
-  <div className={buildClassName('provider-box', modifiers, classNames)}>
+  <div className={buildClassName('provider-box', modifiers, classNames)} onClick={onClick}>
     <div className="provider-box__header">
       {icon}
-      {headline}
+      <div className="provider-box__headline">{headline}</div>
+      {actionButton}
     </div>
-    <div className="provider-box__image" style={{backgroundImage: `url(${image})`}} />
     <div className="provider-box__days-column">
       <div className="provider-box__column-head">{day}</div>
       {daysColumn}
@@ -31,8 +32,10 @@ const ProviderBox = ({
       <div className="provider-box__column-head">{price}</div>
       {priceColumn}
     </div>
-    <div className="provider-box__material-column">{materialColumn}</div>
-    <div className="provider-box__action-button">{actionButton}</div>
+    <div className="provider-box__material-column">
+      <div className="provider-box__column-head">{material}</div>
+      {materialColumn}
+    </div>
   </div>
 )
 
@@ -40,13 +43,14 @@ ProviderBox.propTypes = {
   ...propTypes.component,
   icon: PropTypes.node.isRequired,
   headline: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  day: PropTypes.node.isRequired,
+  day: PropTypes.string.isRequired,
   daysColumn: PropTypes.node.isRequired,
-  price: PropTypes.node.isRequired,
+  price: PropTypes.string.isRequired,
   priceColumn: PropTypes.node.isRequired,
+  material: PropTypes.string.isRequired,
   materialColumn: PropTypes.node.isRequired,
-  actionButton: PropTypes.node.isRequired
+  actionButton: PropTypes.node.isRequired,
+  onClick: PropTypes.func
 }
 
 export default ProviderBox

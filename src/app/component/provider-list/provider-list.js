@@ -12,7 +12,7 @@ const ProviderList = ({classNames, modifiers = [], children, onShowOffers = noop
     <table className="provider-list__table">
       <thead>
         <tr className="provider-list__header">
-          <th className="provider-list__provider">Fulfilled by</th>
+          <th className="provider-list__provider">Material</th>
           <th className="provider-list__time">Delivery time</th>
           <th className="provider-list__price">Price</th>
           <th className="provider-list__action" />

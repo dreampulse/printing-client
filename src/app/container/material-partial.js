@@ -422,13 +422,14 @@ const MaterialPartial = ({
     return (
       <ProviderBox
         icon={<Icon source={cheapest ? cheapestIcon : fastestIcon} />}
-        headline={cheapest ? 'Best Price' : 'Express'}
+        headline={cheapest ? `Best Price: ${totalPrice}` : `Express: ${time}`}
+        onClick={handleAddToCart}
         actionButton={
           <Button icon={checkoutIcon} label={addToCartLabel} onClick={handleAddToCart} />
         }
         image={finishImageUrl}
-        day={cheapest ? time : <strong>{time}</strong>}
-        price={cheapest ? <strong>{totalPrice}</strong> : totalPrice}
+        day={time}
+        price={totalPrice}
         daysColumn={
           <DescriptionList>
             <dt>Production:</dt>
@@ -445,10 +446,9 @@ const MaterialPartial = ({
             <dd>{shippingPrice}</dd>
           </DescriptionList>
         }
+        material={materialName}
         materialColumn={
           <DescriptionList>
-            <dt>Material:</dt>
-            <dd>{materialName}</dd>
             <dt>Process:</dt>
             <dd>{process}</dd>
             <dt>Fulfilled by:</dt>
@@ -501,13 +501,15 @@ const MaterialPartial = ({
                 key={shippingId}
                 providerAnnotation={
                   <DescriptionList>
-                    <dt>Material:</dt>
-                    <dd>{materialName}</dd>
                     <dt>Process:</dt>
                     <dd>{process}</dd>
+                    <dt>Fulfilled by:</dt>
+                    <dd>
+                      {<ProviderImage modifiers={['xs']} name={providerName} slug={vendorId} />}
+                    </dd>
                   </DescriptionList>
                 }
-                provider={<ProviderImage modifiers={['s']} name={providerName} slug={vendorId} />}
+                provider={materialName}
                 timeAnnotation={
                   <DescriptionList>
                     <dt>Production:</dt>
