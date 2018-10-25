@@ -15,4 +15,7 @@ export const setUserContext = userId =>
   Raven.setUserContext({
     userId
   })
+
+export const captureException = error => Raven && Raven.captureException(error)
+
 export const ravenMiddleware = createRavenMiddleware(Raven, {})

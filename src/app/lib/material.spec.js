@@ -1,230 +1,65 @@
 import config from '../../../config'
 
 import {
-  hasMaterialMultipleConfigs,
-  getMaterialByName,
-  getMaterialById,
-  getMaterialGroupById,
-  getFinishGroupById,
-  getMaterialConfigById,
-  getMaterialConfigIdsOfMaterialGroup,
-  getMaterialTreeByMaterialConfigId,
-  getProviderName
+  getProviderName,
+  getMaterialGroupLookupTable,
+  getMaterialLookupTable,
+  getFinishGroupLookupTable,
+  getMaterialConfigLookupTable
 } from './material'
 
-describe('hasMaterialMultipleConfigs()', () => {
-  it('returns true if at least one finish group has multiple configs', () => {
-    const material = {
-      finishGroups: [
-        {
-          materialConfigs: [{some: 'config-1'}]
-        },
-        {
-          materialConfigs: [{some: 'config-1'}, {some: 'config-2'}]
-        }
-      ]
-    }
-    expect(hasMaterialMultipleConfigs(material), 'to be', true)
-  })
+describe('getMaterialGroupLookupTable()', () => {
+  it('returns map of material groups', () => {
+    const materialGroups = [
+      {
+        id: 'material-group-1'
+      },
+      {
+        id: 'material-group-2'
+      }
+    ]
 
-  it('returns false if no finish group has multiple configs', () => {
-    const material = {
-      finishGroups: [
-        {
-          materialConfigs: [{some: 'config-1'}]
-        },
-        {
-          materialConfigs: [{some: 'config-1'}]
-        }
-      ]
-    }
-    expect(hasMaterialMultipleConfigs(material), 'to be', false)
+    expect(getMaterialGroupLookupTable(materialGroups), 'to equal', {
+      'material-group-1': {id: 'material-group-1'},
+      'material-group-2': {id: 'material-group-2'}
+    })
   })
 })
 
-describe('getMaterialByName()', () => {
-  let materialGroups
-
-  beforeEach(() => {
-    materialGroups = [
+describe('getMaterialLookupTable()', () => {
+  it('returns map of materials', () => {
+    const materialGroups = [
       {
-        name: 'Group 1',
         materials: [
           {
-            id: 'material-1',
-            name: 'Material 1'
-          }
-        ]
-      },
-      {
-        name: 'Group 2',
-        materials: [
-          {
-            id: 'material-2',
-            name: 'Material 2'
+            id: 'material-1'
           },
           {
-            id: 'material-3',
-            name: 'Material 3'
+            id: 'material-2'
           }
         ]
       }
     ]
-  })
 
-  it('returns null if material cannot be found', () => {
-    expect(getMaterialByName(materialGroups, 'some-other-material'), 'to be', null)
-  })
-
-  it('returns expected material', () => {
-    expect(getMaterialByName(materialGroups, 'Material 3'), 'to equal', {
-      id: 'material-3',
-      name: 'Material 3'
+    expect(getMaterialLookupTable(materialGroups), 'to equal', {
+      'material-1': {id: 'material-1'},
+      'material-2': {id: 'material-2'}
     })
   })
 })
 
-describe('getMaterialById()', () => {
-  let materialGroups
-
-  beforeEach(() => {
-    materialGroups = [
-      {
-        name: 'Group 1',
-        materials: [
-          {
-            id: 'material-1',
-            name: 'Material 1'
-          }
-        ]
-      },
-      {
-        name: 'Group 2',
-        materials: [
-          {
-            id: 'material-2',
-            name: 'Material 2'
-          },
-          {
-            id: 'material-3',
-            name: 'Material 3'
-          }
-        ]
-      }
-    ]
-  })
-
-  it('returns null if material cannot be found', () => {
-    expect(getMaterialById(materialGroups, 'some-other-material'), 'to be', null)
-  })
-
-  it('returns expected material', () => {
-    expect(getMaterialById(materialGroups, 'material-3'), 'to equal', {
-      id: 'material-3',
-      name: 'Material 3'
-    })
-  })
-})
-
-describe('getMaterialGroupById()', () => {
-  let materialGroups
-
-  beforeEach(() => {
-    materialGroups = [
-      {
-        id: 'group-1',
-        name: 'Group 1',
-        materials: [
-          {
-            id: 'material-1',
-            name: 'Material 1'
-          }
-        ]
-      },
-      {
-        id: 'group-2',
-        name: 'Group 2',
-        materials: [
-          {
-            id: 'material-2',
-            name: 'Material 2'
-          }
-        ]
-      }
-    ]
-  })
-
-  it('returns null if material cannot be found', () => {
-    expect(getMaterialGroupById(materialGroups, 'some-other-group'), 'to be', null)
-  })
-
-  it('returns expected material', () => {
-    expect(getMaterialGroupById(materialGroups, 'group-2'), 'to equal', {
-      id: 'group-2',
-      name: 'Group 2',
-      materials: [
-        {
-          id: 'material-2',
-          name: 'Material 2'
-        }
-      ]
-    })
-  })
-})
-
-describe('getMaterialConfigIdsOfMaterialGroup()', () => {
-  let materialGroup
-
-  beforeEach(() => {
-    materialGroup = {
-      name: 'Group 1',
-      materials: [
-        {
-          id: 'material-1',
-          name: 'Material 1',
-          finishGroups: [
-            {
-              materialConfigs: [{id: 'config-1'}]
-            },
-            {
-              materialConfigs: [{id: 'config-2'}]
-            }
-          ]
-        },
-        {
-          id: 'material-2',
-          name: 'Material 2',
-          finishGroups: [
-            {
-              materialConfigs: [{id: 'config-3'}]
-            }
-          ]
-        }
-      ]
-    }
-  })
-
-  it('returns array of material config ids', () => {
-    expect(getMaterialConfigIdsOfMaterialGroup(materialGroup), 'to equal', [
-      'config-1',
-      'config-2',
-      'config-3'
-    ])
-  })
-})
-
-describe('getFinishGroupById()', () => {
-  it('returns matching finish groups', () => {
+describe('getFinishGroupLookupTable()', () => {
+  it('returns map of finish groups', () => {
     const materialGroups = [
       {
         materials: [
           {
             finishGroups: [
               {
-                id: 'some-finish-group-id-1'
+                id: 'finish-group-1'
               },
               {
-                id: 'some-finish-group-id-2'
+                id: 'finish-group-2'
               }
             ]
           }
@@ -232,35 +67,15 @@ describe('getFinishGroupById()', () => {
       }
     ]
 
-    expect(getFinishGroupById(materialGroups, 'some-finish-group-id-1'), 'to equal', {
-      id: 'some-finish-group-id-1'
+    expect(getFinishGroupLookupTable(materialGroups), 'to equal', {
+      'finish-group-1': {id: 'finish-group-1'},
+      'finish-group-2': {id: 'finish-group-2'}
     })
-  })
-
-  it('returns null for no match', () => {
-    const materialGroups = [
-      {
-        materials: [
-          {
-            finishGroups: [
-              {
-                id: 'some-finish-group-id-1'
-              },
-              {
-                id: 'some-finish-group-id-2'
-              }
-            ]
-          }
-        ]
-      }
-    ]
-
-    expect(getFinishGroupById(materialGroups, 'some-finish-group-id-3'), 'to equal', null)
   })
 })
 
-describe('getMaterialConfigById()', () => {
-  it('returns matching material config', () => {
+describe('getMaterialConfigLookupTable()', () => {
+  it('returns map of material configs', () => {
     const materialGroups = [
       {
         materials: [
@@ -282,72 +97,10 @@ describe('getMaterialConfigById()', () => {
       }
     ]
 
-    expect(getMaterialConfigById(materialGroups, 'material-config-1'), 'to equal', {
-      id: 'material-config-1'
+    expect(getMaterialConfigLookupTable(materialGroups), 'to equal', {
+      'material-config-1': {id: 'material-config-1'},
+      'material-config-2': {id: 'material-config-2'}
     })
-  })
-
-  it('returns null for no match', () => {
-    const materialGroups = [
-      {
-        materials: [
-          {
-            finishGroups: [
-              {
-                materialConfigs: [
-                  {
-                    id: 'material-config-1'
-                  },
-                  {
-                    id: 'material-config-2'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-
-    expect(getMaterialConfigById(materialGroups, 'material-config-3'), 'to equal', null)
-  })
-})
-
-describe('getMaterialTreeByMaterialConfigId()', () => {
-  it('returns the matching material tree', () => {
-    const materialGroups = [
-      {
-        materials: [
-          {
-            finishGroups: [
-              {
-                materialConfigs: [
-                  {
-                    id: 'some-material-config-id-1'
-                  },
-                  {
-                    id: 'some-material-config-id-2'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-
-    expect(
-      getMaterialTreeByMaterialConfigId(materialGroups, 'some-material-config-id-2'),
-      'to satisfy',
-      {
-        material: expect.it('to be', materialGroups[0].materials[0]),
-        finishGroup: expect.it('to be', materialGroups[0].materials[0].finishGroups[0]),
-        materialConfig: expect.it(
-          'to be',
-          materialGroups[0].materials[0].finishGroups[0].materialConfigs[1]
-        )
-      }
-    )
   })
 })
 

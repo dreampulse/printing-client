@@ -15,8 +15,6 @@ import {
   selectUsedShippingIdsAndFilter
 } from './selector'
 
-import * as materialLib from './material'
-
 describe('selectModelsOfModelConfigs()', () => {
   it('returns selected models of model configs', () => {
     const state = {
@@ -403,66 +401,26 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
   beforeEach(() => {
     state = {
       core: {
-        materialGroups: [
-          {
-            id: 'material-group-1',
-            materials: [
-              {
-                id: 'material-1',
-                finishGroups: [
-                  {
-                    id: 'finish-group-1',
-                    materialConfigs: [
-                      {
-                        id: 'material-config-1',
-                        finishGroupId: 'finish-group-1',
-                        materialId: 'material-1',
-                        materialGroupId: 'material-group-1'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                id: 'material-2',
-                finishGroups: [
-                  {
-                    id: 'finish-group-2',
-                    materialConfigs: [
-                      {
-                        id: 'material-config-2',
-                        finishGroupId: 'finish-group-2',
-                        materialId: 'material-2',
-                        materialGroupId: 'material-group-1'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
+        materialConfigs: {
+          'material-config-1': {
+            id: 'material-config-1',
+            finishGroupId: 'finish-group-1',
+            materialId: 'material-1',
+            materialGroupId: 'material-group-1'
           },
-          {
-            id: 'material-group-3',
-            materials: [
-              {
-                id: 'material-3',
-                finishGroups: [
-                  {
-                    id: 'finish-group-3',
-                    materialConfigs: [
-                      {
-                        id: 'material-config-3',
-                        finishGroupId: 'finish-group-3',
-                        materialId: 'material-3',
-                        materialGroupId: 'material-group-3'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
+          'material-config-2': {
+            id: 'material-config-2',
+            finishGroupId: 'finish-group-2',
+            materialId: 'material-2',
+            materialGroupId: 'material-group-1'
+          },
+          'material-config-3': {
+            id: 'material-config-3',
+            finishGroupId: 'finish-group-3',
+            materialId: 'material-3',
+            materialGroupId: 'material-group-3'
           }
-        ],
+        },
         quotes: {
           'quote-1': {
             materialConfigId: 'material-config-1'
@@ -599,73 +557,97 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
   })
 })
 
-describe('selectCommonMaterialPathOfModelConfigs()', () => {
+describe('selectConfiguredModelInformation()', () => {
   let state
-  let sandbox
 
   beforeEach(() => {
     state = {
       core: {
-        materialGroups: [
-          {
-            id: 'material-group-1',
-            materials: [
+        materialConfigs: {
+          'material-config-1': {
+            id: 'material-config-1',
+            finishGroupId: 'finish-group-1',
+            materialId: 'material-1',
+            materialGroupId: 'material-group-1',
+            colorCode: 'color-code',
+            color: 'color',
+            colorImage: 'color-image'
+          },
+          'material-config-2': {
+            id: 'material-config-2',
+            finishGroupId: 'finish-group-2',
+            materialId: 'material-2',
+            materialGroupId: 'material-group-1',
+            colorCode: 'color-code',
+            color: 'color',
+            colorImage: 'color-image'
+          },
+          'material-config-3': {
+            id: 'material-config-3',
+            finishGroupId: 'finish-group-3',
+            materialId: 'material-3',
+            materialGroupId: 'material-group-3',
+            colorCode: 'color-code',
+            color: 'color',
+            colorImage: 'color-image'
+          }
+        },
+        finishGroups: {
+          'finish-group-1': {
+            id: 'finish-group-1',
+            name: 'finish-group-name',
+            properties: {
+              printingServiceName: {
+                'vendor-id-1': 'provider-info',
+                'vendor-id-2': 'provider-info-2'
+              }
+            },
+            materialConfigs: [
               {
-                id: 'material-1',
-                finishGroups: [
-                  {
-                    id: 'finish-group-1',
-                    materialConfigs: [
-                      {
-                        id: 'material-config-1',
-                        finishGroupId: 'finish-group-1',
-                        materialId: 'material-1',
-                        materialGroupId: 'material-group-1'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                id: 'material-2',
-                finishGroups: [
-                  {
-                    id: 'finish-group-2',
-                    materialConfigs: [
-                      {
-                        id: 'material-config-2',
-                        finishGroupId: 'finish-group-2',
-                        materialId: 'material-2',
-                        materialGroupId: 'material-group-1'
-                      }
-                    ]
-                  }
-                ]
+                id: 'material-config-1',
+                finishGroupId: 'finish-group-1',
+                materialId: 'material-1',
+                materialGroupId: 'material-group-1'
               }
             ]
           },
-          {
-            id: 'material-group-3',
-            materials: [
+          'finish-group-2': {
+            id: 'finish-group-2',
+            name: 'finish-group-name',
+            properties: {
+              printingServiceName: {
+                'vendor-id-1': 'provider-info',
+                'vendor-id-2': 'provider-info-2'
+              }
+            },
+            materialConfigs: [
               {
-                id: 'material-3',
-                finishGroups: [
-                  {
-                    id: 'finish-group-3',
-                    materialConfigs: [
-                      {
-                        id: 'material-config-3',
-                        finishGroupId: 'finish-group-3',
-                        materialId: 'material-3',
-                        materialGroupId: 'material-group-3'
-                      }
-                    ]
-                  }
-                ]
+                id: 'material-config-2',
+                finishGroupId: 'finish-group-2',
+                materialId: 'material-2',
+                materialGroupId: 'material-group-1'
+              }
+            ]
+          },
+          'finish-group-3': {
+            id: 'finish-group-3',
+            name: 'finish-group-name',
+            properties: {
+              printingServiceName: {
+                'vendor-id-1': 'provider-info',
+                'vendor-id-2': 'provider-info-2'
+              }
+            },
+            materialConfigs: [
+              {
+                id: 'material-config-3',
+                finishGroupId: 'finish-group-3',
+                materialId: 'material-3',
+                materialGroupId: 'material-group-3'
               }
             ]
           }
-        ],
+        },
         quotes: {
           'quote-1': {
             materialConfigId: 'material-config-1',
@@ -729,30 +711,6 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
         }
       }
     }
-
-    sandbox = sinon.sandbox.create()
-
-    sandbox.stub(materialLib, 'getMaterialTreeByMaterialConfigId').returns({
-      materialConfig: {
-        id: 'material-config-id',
-        colorCode: 'color-code',
-        color: 'color',
-        colorImage: 'color-image'
-      },
-      finishGroup: {
-        name: 'finish-group',
-        properties: {
-          printingServiceName: {
-            'vendor-id-1': 'provider-info',
-            'vendor-id-2': 'provider-info-2'
-          }
-        }
-      }
-    })
-  })
-
-  afterEach(() => {
-    sandbox.restore()
   })
 
   it('returns all informations about all configured models', () => {
@@ -780,9 +738,9 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
           materialConfigId: 'material-config-1',
           vendorId: 'vendor-id-1'
         },
-        finishGroupName: 'finish-group',
+        finishGroupName: 'finish-group-name',
         providerInfo: 'provider-info',
-        materialConfigId: 'material-config-id',
+        materialConfigId: 'material-config-1',
         colorCode: 'color-code',
         color: 'color',
         colorImage: 'color-image'
@@ -810,9 +768,9 @@ describe('selectCommonMaterialPathOfModelConfigs()', () => {
           materialConfigId: 'material-config-1',
           vendorId: 'vendor-id-2'
         },
-        finishGroupName: 'finish-group',
+        finishGroupName: 'finish-group-name',
         providerInfo: 'provider-info-2',
-        materialConfigId: 'material-config-id',
+        materialConfigId: 'material-config-1',
         colorCode: 'color-code',
         color: 'color',
         colorImage: 'color-image'
