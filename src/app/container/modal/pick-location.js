@@ -89,7 +89,7 @@ const PickLocationModal = ({
               const nextLocation: Location = convertPlaceToLocation(place)
               setLocation(nextLocation)
 
-              if (isLocationValid(nextLocation)) {
+              if (isLocationValid(nextLocation) && !currency) {
                 setCurrency(getValidCurrency(nextLocation.countryCode))
               }
             }}
@@ -122,5 +122,5 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withState('location', 'setLocation', props => props.globalLocation),
-  withState('currency', 'setCurrency', props => props.globalCurrency || config.defaultCurrency)
+  withState('currency', 'setCurrency', props => props.globalCurrency)
 )(PickLocationModal)
