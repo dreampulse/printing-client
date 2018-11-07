@@ -7,6 +7,8 @@ import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
 import omit from 'lodash/omit'
 import pick from 'lodash/pick'
+import uniqueId from 'lodash/uniqueId'
+import fromPairs from 'lodash/fromPairs'
 import compact from 'lodash/compact'
 
 import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
@@ -339,7 +341,7 @@ const uploadFile = (state, {payload}) => {
         Cmd.dispatch,
         progress => modelAction.uploadProgress(fileId, progress)
       ],
-      successActionCreator: model => modelAction.uploadComplete(fileId, model, payload.fileIndex),
+      successActionCreator: models => modelAction.uploadComplete(fileId, models, payload.fileIndex),
       failActionCreator: error => modelAction.uploadFail(fileId, error)
     })
   )
@@ -370,39 +372,60 @@ const uploadProgress = (state, {payload}) => {
 
 const uploadComplete = (state, {payload}) => {
   const fileId = payload.fileId
-  const model = payload.model
+  const models = payload.models
+  const [model, ...additionalModels] = models
+
   const modelConfig: any = state.modelConfigs.find(
     item => item.type === 'UPLOADING' && item.fileId === fileId
   )
 
+  invariant(models.length > 0, 'At least one model required')
   invariant(modelConfig, 'Model config not found')
   invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
 
-  let selectedModelConfigs = [...state.selectedModelConfigs, modelConfig.id]
+  const additionalModelConfigs = additionalModels.map((m: BackendModel) => ({
+    type: 'UPLOADED',
+    quantity: 1,
+    modelId: m.modelId,
+    id: uniqueId('config-id-'),
+    quoteId: null,
+    shippingId: null
+  }))
+
+  let selectedModelConfigs = [
+    ...state.selectedModelConfigs,
+    modelConfig.id,
+    ...additionalModelConfigs.map(m => m.id)
+  ]
 
   if (!state.useSameMaterial) {
     selectedModelConfigs = payload.fileIndex === 0 ? [modelConfig.id] : state.selectedModelConfigs
   }
 
+  const backendModels = fromPairs(models.map(m => [m.modelId, m]))
+
   return {
     ...state,
     backendModels: {
       ...state.backendModels,
-      [model.modelId]: model
+      ...backendModels
     },
-    modelConfigs: state.modelConfigs.map(
-      item =>
-        item.type === 'UPLOADING' && item.fileId === fileId
-          ? {
-              type: 'UPLOADED',
-              quantity: 1,
-              modelId: model.modelId,
-              id: item.id,
-              quoteId: null,
-              shippingId: null
-            }
-          : item
-    ),
+    modelConfigs: [
+      ...state.modelConfigs.map(
+        item =>
+          item.type === 'UPLOADING' && item.fileId === fileId
+            ? {
+                type: 'UPLOADED',
+                quantity: 1,
+                modelId: model.modelId,
+                id: item.id,
+                quoteId: null,
+                shippingId: null
+              }
+            : item
+      ),
+      ...additionalModelConfigs
+    ],
     selectedModelConfigs
   }
 }
