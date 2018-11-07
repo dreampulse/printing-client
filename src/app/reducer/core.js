@@ -7,8 +7,7 @@ import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
 import omit from 'lodash/omit'
 import pick from 'lodash/pick'
-import uniqueId from 'lodash/uniqueId'
-import fromPairs from 'lodash/fromPairs'
+import zip from 'lodash/zip'
 import compact from 'lodash/compact'
 
 import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
@@ -382,12 +381,19 @@ const uploadComplete = (state, {payload}) => {
   invariant(models.length > 0, 'At least one model required')
   invariant(modelConfig, 'Model config not found')
   invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
+  invariant(
+    payload.additionalConfigIds.length === additionalModels.length,
+    'Length of additionalModels out of sync'
+  )
 
-  const additionalModelConfigs = additionalModels.map((m: BackendModel) => ({
+  const additionalModelConfigs = zip(
+    additionalModels,
+    payload.additionalConfigIds
+  ).map(([m: BackendModel, configId: ConfigId]) => ({
     type: 'UPLOADED',
     quantity: 1,
     modelId: m.modelId,
-    id: uniqueId('config-id-'),
+    id: configId,
     quoteId: null,
     shippingId: null
   }))
@@ -402,13 +408,11 @@ const uploadComplete = (state, {payload}) => {
     selectedModelConfigs = payload.fileIndex === 0 ? [modelConfig.id] : state.selectedModelConfigs
   }
 
-  const backendModels = fromPairs(models.map(m => [m.modelId, m]))
-
   return {
     ...state,
     backendModels: {
       ...state.backendModels,
-      ...backendModels
+      ...keyBy(models, 'modelId')
     },
     modelConfigs: [
       ...state.modelConfigs.map(
