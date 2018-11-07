@@ -1,6 +1,6 @@
 {
   "presets": [
-    ["env", {
+    ["@babel/preset-env", {
       "targets": {
         "browsers": [
           "last 2 versions",
@@ -8,21 +8,20 @@
         ]
       }
     }],
-    "flow",
-    "react"
+    "@babel/preset-flow",
+    "@babel/preset-react"
   ],
   "plugins": [
-    "transform-class-properties",
-    "transform-object-rest-spread",
-    "react-hot-loader/babel"
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread"
   ],
   "retainLines": true,
   "sourceMaps": true,
   "env": {
-    "test": {
-      "plugins": [
-        "istanbul"
-      ],
+    "coverage": {
+        "plugins": [
+          "istanbul"
+        ],
       "sourceMaps": "inline"
     }
   }
