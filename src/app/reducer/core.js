@@ -7,6 +7,7 @@ import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
 import omit from 'lodash/omit'
 import pick from 'lodash/pick'
+import zip from 'lodash/zip'
 import compact from 'lodash/compact'
 
 import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
@@ -339,7 +340,7 @@ const uploadFile = (state, {payload}) => {
         Cmd.dispatch,
         progress => modelAction.uploadProgress(fileId, progress)
       ],
-      successActionCreator: model => modelAction.uploadComplete(fileId, model, payload.fileIndex),
+      successActionCreator: models => modelAction.uploadComplete(fileId, models, payload.fileIndex),
       failActionCreator: error => modelAction.uploadFail(fileId, error)
     })
   )
@@ -370,15 +371,38 @@ const uploadProgress = (state, {payload}) => {
 
 const uploadComplete = (state, {payload}) => {
   const fileId = payload.fileId
-  const model = payload.model
+  const models = payload.models
+  const [model, ...additionalModels] = models
+
   const modelConfig: any = state.modelConfigs.find(
     item => item.type === 'UPLOADING' && item.fileId === fileId
   )
 
+  invariant(models.length > 0, 'At least one model required')
   invariant(modelConfig, 'Model config not found')
   invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
+  invariant(
+    payload.additionalConfigIds.length === additionalModels.length,
+    'Length of additionalModels out of sync'
+  )
 
-  let selectedModelConfigs = [...state.selectedModelConfigs, modelConfig.id]
+  const additionalModelConfigs = zip(
+    additionalModels,
+    payload.additionalConfigIds
+  ).map(([m: BackendModel, configId: ConfigId]) => ({
+    type: 'UPLOADED',
+    quantity: 1,
+    modelId: m.modelId,
+    id: configId,
+    quoteId: null,
+    shippingId: null
+  }))
+
+  let selectedModelConfigs = [
+    ...state.selectedModelConfigs,
+    modelConfig.id,
+    ...additionalModelConfigs.map(m => m.id)
+  ]
 
   if (!state.useSameMaterial) {
     selectedModelConfigs = payload.fileIndex === 0 ? [modelConfig.id] : state.selectedModelConfigs
@@ -388,21 +412,24 @@ const uploadComplete = (state, {payload}) => {
     ...state,
     backendModels: {
       ...state.backendModels,
-      [model.modelId]: model
+      ...keyBy(models, 'modelId')
     },
-    modelConfigs: state.modelConfigs.map(
-      item =>
-        item.type === 'UPLOADING' && item.fileId === fileId
-          ? {
-              type: 'UPLOADED',
-              quantity: 1,
-              modelId: model.modelId,
-              id: item.id,
-              quoteId: null,
-              shippingId: null
-            }
-          : item
-    ),
+    modelConfigs: [
+      ...state.modelConfigs.map(
+        item =>
+          item.type === 'UPLOADING' && item.fileId === fileId
+            ? {
+                type: 'UPLOADED',
+                quantity: 1,
+                modelId: model.modelId,
+                id: item.id,
+                quoteId: null,
+                shippingId: null
+              }
+            : item
+      ),
+      ...additionalModelConfigs
+    ],
     selectedModelConfigs
   }
 }

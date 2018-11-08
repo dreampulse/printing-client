@@ -1,6 +1,7 @@
 // @flow
 
 import uniqueId from 'lodash/uniqueId'
+import range from 'lodash/range'
 import type {Action, BackendModel, ConfigId, FileId} from '../type'
 
 type UploadFileAction = Action<
@@ -17,7 +18,12 @@ type UploadFilesAction = Action<'MODEL.UPLOAD_FILES', {files: Array<File>, unit:
 type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, progress: number}>
 type UploadCompleteAction = Action<
   'MODEL.UPLOAD_COMPLETE',
-  {fileId: string, model: BackendModel, fileIndex: number}
+  {
+    fileId: string,
+    models: Array<BackendModel>,
+    fileIndex: number,
+    additionalConfigIds: Array<ConfigId>
+  }
 >
 type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
 type DeleteModelConfigsAction = Action<'MODEL.DELETE_MODEL_CONFIGS', {ids: Array<ConfigId>}>
@@ -71,11 +77,16 @@ export const uploadProgress = (fileId: FileId, progress: number): UploadProgress
 
 export const uploadComplete = (
   fileId: FileId,
-  model: BackendModel,
+  models: Array<BackendModel>,
   fileIndex: number
 ): UploadCompleteAction => ({
   type: 'MODEL.UPLOAD_COMPLETE',
-  payload: {fileId, model, fileIndex}
+  payload: {
+    fileId,
+    models,
+    fileIndex,
+    additionalConfigIds: range(models.length - 1).map(() => uniqueId('config-id-'))
+  }
 })
 
 export const uploadFail = (fileId: FileId, error: Error): UploadFailAction => ({
