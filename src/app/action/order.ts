@@ -1,10 +1,9 @@
-// @flow
+import {Action, PaymentId} from '../type'
 
-import type {Action, PaymentId} from '../type'
+type PaidActionParams = {orderNumber: string; paymentId: PaymentId}
 
-type PaidActionParams = {orderNumber: string, paymentId: PaymentId}
-type PaidAction = Action<'ORDER.PAID', PaidActionParams>
-type ExecutePaypalPaymentAction = Action<'ORDER.EXECUTE_PAYPAL_PAYMENT', any>
+export type PaidAction = Action<'ORDER.PAID', PaidActionParams>
+export type ExecutePaypalPaymentAction = Action<'ORDER.EXECUTE_PAYPAL_PAYMENT', any>
 
 export type OrderAction = PaidAction | ExecutePaypalPaymentAction
 

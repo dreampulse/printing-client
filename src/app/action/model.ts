@@ -1,10 +1,8 @@
-// @flow
-
 import uniqueId from 'lodash/uniqueId'
 import range from 'lodash/range'
-import type {Action, BackendModel, ConfigId, FileId} from '../type'
+import {Action, BackendModel, ConfigId, FileId} from '../type'
 
-type UploadFileAction = Action<
+export type UploadFileAction = Action<
   'MODEL.UPLOAD_FILE',
   {
     fileId: FileId,
@@ -14,28 +12,28 @@ type UploadFileAction = Action<
     fileIndex: number
   }
 >
-type UploadFilesAction = Action<'MODEL.UPLOAD_FILES', {files: Array<File>, unit: string}>
-type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, progress: number}>
-type UploadCompleteAction = Action<
+export type UploadFilesAction = Action<'MODEL.UPLOAD_FILES', {files: File[], unit: string}>
+export type UploadProgressAction = Action<'MODEL.UPLOAD_PROGRESS', {fileId: string, progress: number}>
+export type UploadCompleteAction = Action<
   'MODEL.UPLOAD_COMPLETE',
   {
     fileId: string,
-    models: Array<BackendModel>,
+    models: BackendModel[],
     fileIndex: number,
-    additionalConfigIds: Array<ConfigId>
+    additionalConfigIds: ConfigId[]
   }
 >
-type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
-type DeleteModelConfigsAction = Action<'MODEL.DELETE_MODEL_CONFIGS', {ids: Array<ConfigId>}>
-type UpdateSelectedModelConfigsAction = Action<
+export type UploadFailAction = Action<'MODEL.UPLOAD_FAIL', {fileId: string, error: Error}>
+export type DeleteModelConfigsAction = Action<'MODEL.DELETE_MODEL_CONFIGS', {ids: ConfigId[]}>
+export type UpdateSelectedModelConfigsAction = Action<
   'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
-  {ids: Array<ConfigId>}
+  {ids: ConfigId[]}
 >
-type UpdateQuantitiesAction = Action<
+export type UpdateQuantitiesAction = Action<
   'MODEL.UPDATE_QUANTITIES',
-  {ids: Array<ConfigId>, quantity: number}
+  {ids: ConfigId[], quantity: number}
 >
-type DuplicateModelConfigAction = Action<
+export type DuplicateModelConfigAction = Action<
   'MODEL.DUPLICATE_MODEL_CONFIG',
   {id: ConfigId, nextId: ConfigId}
 >
@@ -77,7 +75,7 @@ export const uploadProgress = (fileId: FileId, progress: number): UploadProgress
 
 export const uploadComplete = (
   fileId: FileId,
-  models: Array<BackendModel>,
+  models: BackendModel[],
   fileIndex: number
 ): UploadCompleteAction => ({
   type: 'MODEL.UPLOAD_COMPLETE',
@@ -97,7 +95,7 @@ export const uploadFail = (fileId: FileId, error: Error): UploadFailAction => ({
   }
 })
 
-export const deleteModelConfigs = (ids: Array<ConfigId>): DeleteModelConfigsAction => ({
+export const deleteModelConfigs = (ids: ConfigId[]): DeleteModelConfigsAction => ({
   type: 'MODEL.DELETE_MODEL_CONFIGS',
   payload: {
     ids
@@ -105,7 +103,7 @@ export const deleteModelConfigs = (ids: Array<ConfigId>): DeleteModelConfigsActi
 })
 
 export const updateSelectedModelConfigs = (
-  ids: Array<ConfigId>
+  ids: ConfigId[]
 ): UpdateSelectedModelConfigsAction => ({
   type: 'MODEL.UPDATE_SELECTED_MODEL_CONFIGS',
   payload: {
@@ -121,7 +119,7 @@ export const clearSelectedModelConfigs = (): UpdateSelectedModelConfigsAction =>
 })
 
 export const updateQuantities = (
-  ids: Array<ConfigId>,
+  ids: ConfigId[],
   quantity: number
 ): UpdateQuantitiesAction => ({
   type: 'MODEL.UPDATE_QUANTITIES',

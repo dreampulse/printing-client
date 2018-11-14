@@ -1,15 +1,13 @@
-// @flow
-
 import uniqueId from 'lodash/uniqueId'
 
-import type {Action, ConfigId, ConfigurationId, BackendModel} from '../type'
-import type {BackendConfiguration} from '../lib/printing-engine'
+import {Action, ConfigId, ConfigurationId, BackendModel} from '../type'
+import {BackendConfiguration} from '../lib/printing-engine'
 
-type LoadConfigurationAction = Action<'CONFIGURATION.LOAD_CONFIGURATION', {id: ConfigurationId}>
-type ConfigurationReceivedAction = Action<
+export type LoadConfigurationAction = Action<'CONFIGURATION.LOAD_CONFIGURATION', {id: ConfigurationId}>
+export type ConfigurationReceivedAction = Action<
   'CONFIGURATION.CONFIGURATION_RECEIVED',
   {
-    items: Array<BackendModel & {id: ConfigId, quantity: number}>
+    items: Array<BackendModel & {id: ConfigId; quantity: number}>
   }
 >
 export type ConfigurationAction = LoadConfigurationAction | ConfigurationReceivedAction

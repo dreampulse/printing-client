@@ -1,6 +1,5 @@
-// @flow
 import config from '../../../config'
-import type {Location, GoogleMapsPlace} from '../type'
+import {Location, GoogleMapsPlace} from '../type'
 import {getCookie} from '../service/cookie'
 
 const findInGoogleMapsPlace = (property: string) => (
@@ -9,9 +8,10 @@ const findInGoogleMapsPlace = (property: string) => (
 ): string => {
   const addressComponents = place.address_components
   if (!addressComponents) return ''
-  const component = addressComponents.find(c => c.types.find(t => t === type))
+  const component = addressComponents.find(c => Boolean(c.types.find(t => t === type)))
   if (!component) return ''
-  return component[property] || ''
+  // TODO update type
+  return (component as any)[property] || ''
 }
 
 const shortNameFrom = findInGoogleMapsPlace('short_name')
@@ -47,4 +47,4 @@ export const convertPlaceToLocation = (place: GoogleMapsPlace): Location => ({
   countryCode: shortNameFrom(place, 'country')
 })
 
-export const isLocationValid = (location: ?Location) => Boolean(location && location.countryCode)
+export const isLocationValid = (location?: Location) => Boolean(location && location.countryCode)

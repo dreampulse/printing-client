@@ -1,6 +1,4 @@
-// @flow
-
-import type {Action, BackendModel, ModelSceneId} from '../type'
+import {Action, BackendModel, ModelSceneId} from '../type'
 
 type OpenAction = Action<'MODEL_VIEWER.OPEN', {model: BackendModel}>
 type HandleSceneIdAction = Action<'MODEL_VIEWER.HANDLE_SCENE_ID', {sceneId: ModelSceneId}>

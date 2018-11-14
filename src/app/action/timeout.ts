@@ -1,14 +1,12 @@
-// @flow
-
 import uniqueId from 'lodash/uniqueId'
-import type {Action, TimeoutId, TimeoutCallId, TimeoutOnEndActionCreator} from '../type'
+import {Action, TimeoutId, TimeoutCallId, TimeoutOnEndActionCreator} from '../type'
 
 type StartAction = Action<
   'TIMEOUT.START',
   {
-    timeoutId: TimeoutId,
-    timeoutCallId: TimeoutCallId,
-    onEndActionCreator: TimeoutOnEndActionCreator,
+    timeoutId: TimeoutId
+    timeoutCallId: TimeoutCallId
+    onEndActionCreator: TimeoutOnEndActionCreator
     delay: number
   }
 >

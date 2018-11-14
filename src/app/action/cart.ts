@@ -1,19 +1,17 @@
-// @flow
+import {Action, Quote, Shipping, Cart, ConfigId} from '../type'
 
-import type {Action, Quote, Shipping, Cart, ConfigId} from '../type'
-
-type AddToCartAction = Action<
+export type AddToCartAction = Action<
   'CART.ADD_TO_CART',
-  {configIds: Array<ConfigId>, quotes: Array<Quote>, shipping: Shipping}
+  {configIds: ConfigId[]; quotes: Quote[]; shipping: Shipping}
 >
-type CreateCartAction = Action<'CART.CREATE_CART', void>
-type CartReceivedAction = Action<'CART.CART_RECEIVED', {cart: Cart}>
+export type CreateCartAction = Action<'CART.CREATE_CART', void>
+export type CartReceivedAction = Action<'CART.CART_RECEIVED', {cart: Cart}>
 
 export type CartAction = AddToCartAction | CreateCartAction | CartReceivedAction
 
 export const addToCart = (
-  configIds: Array<ConfigId>,
-  quotes: Array<Quote>,
+  configIds: ConfigId[],
+  quotes: Quote[],
   shipping: Shipping
 ): AddToCartAction => ({
   type: 'CART.ADD_TO_CART',

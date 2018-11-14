@@ -1,7 +1,5 @@
-// @flow
-
 import uniqueId from 'lodash/uniqueId'
-import type {
+import {
   Action,
   PollingId,
   PollingFunction,

@@ -1,28 +1,26 @@
-// @flow
+import {Action, MaterialGroup, UrlParams, Location, Features, Shipping, User} from '../type'
 
-import type {Action, MaterialGroup, UrlParams, Location, Features, Shipping, User} from '../type'
+import {UserResponse} from '../lib/printing-engine'
 
-import type {UserResponse} from '../lib/printing-engine'
-
-type InitPayload = {
-  featureFlags: Features,
+export type InitPayload = {
+  featureFlags: Features
   urlParams: UrlParams
 }
 
-type InitAction = Action<'CORE.INIT', InitPayload>
-type UpdateMaterialGroupsAction = Action<
+export type InitAction = Action<'CORE.INIT', InitPayload>
+export type UpdateMaterialGroupsAction = Action<
   'CORE.UPDATE_MATERIAL_GROUPS',
-  {materialGroups: Array<MaterialGroup>}
+  {materialGroups: MaterialGroup[]}
 >
-type UpdateLocationAction = Action<'CORE.UPDATE_LOCATION', {location: Location, force: boolean}>
-type UpdateUnitAction = Action<'CORE.UPDATE_UNIT', {unit: string}>
-type UpdateUseSameMaterialAction = Action<'CORE.UPDATE_USE_SAME_MATERIAL', boolean>
-type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string, force: boolean}>
-type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
-type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Array<Shipping>>
-type SaveUserAction = Action<'CORE.SAVE_USER', User>
-type UserReceivedAction = Action<'CORE.USER_RECEIVED', UserResponse>
-type ResetAction = Action<'CORE.RESET', void>
+export type UpdateLocationAction = Action<'CORE.UPDATE_LOCATION', {location: Location; force: boolean}>
+export type UpdateUnitAction = Action<'CORE.UPDATE_UNIT', {unit: string}>
+export type UpdateUseSameMaterialAction = Action<'CORE.UPDATE_USE_SAME_MATERIAL', boolean>
+export type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string; force: boolean}>
+export type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
+export type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Shipping[]>
+export type SaveUserAction = Action<'CORE.SAVE_USER', User>
+export type UserReceivedAction = Action<'CORE.USER_RECEIVED', UserResponse>
+export type ResetAction = Action<'CORE.RESET', void>
 
 export type CoreAction =
   | InitAction
@@ -46,7 +44,7 @@ export const init = ({featureFlags, urlParams}: InitPayload): InitAction => ({
 })
 
 export const updateMaterialGroups = (
-  materialGroups: Array<MaterialGroup>
+  materialGroups: MaterialGroup[]
 ): UpdateMaterialGroupsAction => ({
   type: 'CORE.UPDATE_MATERIAL_GROUPS',
   payload: {materialGroups}
@@ -80,7 +78,7 @@ export const fatalError = (error: Error): FatalErrorAction => ({
   payload: error
 })
 
-export const updateShippings = (payload: Array<Shipping>): UpdateShippingsAction => ({
+export const updateShippings = (payload: Shipping[]): UpdateShippingsAction => ({
   type: 'CORE.UPDATE_SHIPPINGS',
   payload
 })

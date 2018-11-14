@@ -1,31 +1,16 @@
-// @flow
-
-import type {
+import {
   Action,
-  ModalContentType,
   ModalConfigOpened,
   MaterialId,
   FinishGroupId,
   Location,
+  ModalContentType,
   ConfigurationId
 } from '../type'
 
 type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
 type CloseModalAction = Action<'MODAL.CLOSE', void>
 export type ModalAction = OpenModalAction | CloseModalAction
-
-export const CONTENT_TYPE: {[ModalContentType]: ModalContentType} = {
-  PICK_LOCATION: 'PICK_LOCATION',
-  PICK_UNIT: 'PICK_UNIT',
-  MODEL_VIEWER: 'MODEL_VIEWER',
-  MATERIAL: 'MATERIAL',
-  FINISH_GROUP: 'FINISH_GROUP',
-  CONFIRM_LOCATION_CHANGE: 'CONFIRM_LOCATION_CHANGE',
-  CONFIRM_CURRENCY_CHANGE: 'CONFIRM_CURRENCY_CHANGE',
-  SHARE_CONFIGURATION: 'SHARE_CONFIGURATION',
-  FATAL_ERROR: 'FATAL_ERROR',
-  ERROR: 'ERROR'
-}
 
 const open = (config: ModalConfigOpened): OpenModalAction => ({
   type: 'MODAL.OPEN',
@@ -35,7 +20,7 @@ const open = (config: ModalConfigOpened): OpenModalAction => ({
 export const openPickLocationModal = ({confirmation}: {confirmation: boolean}): OpenModalAction =>
   open({
     isCloseable: confirmation,
-    contentType: CONTENT_TYPE.PICK_LOCATION,
+    contentType: ModalContentType.PICK_LOCATION,
     contentProps: {
       confirmation
     }
@@ -44,7 +29,7 @@ export const openPickLocationModal = ({confirmation}: {confirmation: boolean}): 
 export const openPickUnitModal = (files: FileList): OpenModalAction =>
   open({
     isCloseable: false,
-    contentType: CONTENT_TYPE.PICK_UNIT,
+    contentType: ModalContentType.PICK_UNIT,
     contentProps: {
       files
     }
@@ -53,7 +38,7 @@ export const openPickUnitModal = (files: FileList): OpenModalAction =>
 export const openModelViewerModal = (modelName: string): OpenModalAction =>
   open({
     isCloseable: true,
-    contentType: CONTENT_TYPE.MODEL_VIEWER,
+    contentType: ModalContentType.MODEL_VIEWER,
     contentProps: {
       modelName
     }
@@ -62,14 +47,14 @@ export const openModelViewerModal = (modelName: string): OpenModalAction =>
 export const openMaterialModal = (materialId: MaterialId) =>
   open({
     isCloseable: true,
-    contentType: CONTENT_TYPE.MATERIAL,
+    contentType: ModalContentType.MATERIAL,
     contentProps: {materialId}
   })
 
 export const openFinishGroupModal = (finishGroupId: FinishGroupId) =>
   open({
     isCloseable: true,
-    contentType: CONTENT_TYPE.FINISH_GROUP,
+    contentType: ModalContentType.FINISH_GROUP,
     contentProps: {finishGroupId}
   })
 
@@ -77,33 +62,33 @@ export const openConfirmLocationChangeModal = ({
   location,
   previousLocation
 }: {
-  location: Location,
+  location: Location
   previousLocation: Location
 }) =>
   open({
     isCloseable: true,
-    contentType: CONTENT_TYPE.CONFIRM_LOCATION_CHANGE,
+    contentType: ModalContentType.CONFIRM_LOCATION_CHANGE,
     contentProps: {location, previousLocation}
   })
 
 export const openConfirmCurrencyChangeModal = (currency: string) =>
   open({
     isCloseable: true,
-    contentType: CONTENT_TYPE.CONFIRM_CURRENCY_CHANGE,
+    contentType: ModalContentType.CONFIRM_CURRENCY_CHANGE,
     contentProps: {currency}
   })
 
 export const openShareConfigurationModal = (configurationId: ConfigurationId) =>
   open({
     isCloseable: true,
-    contentType: CONTENT_TYPE.SHARE_CONFIGURATION,
+    contentType: ModalContentType.SHARE_CONFIGURATION,
     contentProps: {configurationId}
   })
 
 export const openFatalErrorModal = (error: Error): OpenModalAction =>
   open({
     isCloseable: false,
-    contentType: CONTENT_TYPE.FATAL_ERROR,
+    contentType: ModalContentType.FATAL_ERROR,
     contentProps: {
       error
     }
@@ -112,7 +97,7 @@ export const openFatalErrorModal = (error: Error): OpenModalAction =>
 export const openErrorModal = (error: Error): OpenModalAction =>
   open({
     isCloseable: true,
-    contentType: CONTENT_TYPE.ERROR,
+    contentType: ModalContentType.ERROR,
     contentProps: {
       error
     }

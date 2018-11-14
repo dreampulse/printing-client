@@ -1,12 +1,9 @@
-// @flow
-
-import type {Dispatch} from 'redux'
+import {Dispatch} from 'redux'
 
 import config from '../../../config'
-import type {
+import {
   ModelId,
   ModelOnProgressActionCreator,
-  AppAction,
   PriceId,
   MaterialConfigId,
   User,
@@ -24,12 +21,13 @@ import type {
   Cart,
   UtmParams
 } from '../type'
+import {Actions} from '../action'
 import * as httpJson from './http-json'
 
 // printing-engine types
 
-type ModelResponse = Array<BackendModel>
-type ShippingsResponse = Array<Shipping>
+type ModelResponse = BackendModel[]
+type ShippingsResponse = Shipping[]
 
 export type PriceRequest = {
   refresh: boolean,
@@ -39,7 +37,7 @@ export type PriceRequest = {
     modelId: ModelId,
     quantity: number
   }>,
-  materialConfigIds?: Array<MaterialConfigId>
+  materialConfigIds?: MaterialConfigId[]
 }
 
 export type PriceResponse = {
@@ -47,7 +45,7 @@ export type PriceResponse = {
 }
 
 export type QuotesResponse = {
-  quotes: Array<Quote>,
+  quotes: Quote[],
   allComplete: boolean,
   printingServiceComplete: {
     [printingServiceName: string]: boolean
@@ -60,8 +58,8 @@ export type UserResponse = {
 }
 
 export type CartRequest = {
-  quoteIds: Array<QuoteId>,
-  shippingIds: Array<ShippingId>,
+  quoteIds: QuoteId[],
+  shippingIds: ShippingId[],
   currency: string
 }
 
@@ -139,7 +137,7 @@ export type PaypalExecutePaymentResponse = {
 }
 
 export type MaterialGroupsResponse = {
-  materialStructure: Array<MaterialGroup>
+  materialStructure: MaterialGroup[]
 }
 
 // Implementations
@@ -154,7 +152,7 @@ export const uploadModel = async (
   meta: {
     unit: string
   },
-  dispatch: Dispatch<AppAction>,
+  dispatch: Dispatch<Actions>,
   onProgressActionCreator: ModelOnProgressActionCreator
 ): Promise<ModelResponse> => {
   const response = await httpJson.upload({
@@ -164,7 +162,7 @@ export const uploadModel = async (
       file,
       unit: meta.unit
     },
-    onProgress: progress => {
+    onProgress: (progress: number) => {
       dispatch(onProgressActionCreator(progress))
     }
   })

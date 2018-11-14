@@ -1,26 +1,24 @@
-// @flow
-
-import type {Action, ModelConfigUploaded, PriceId, Quote} from '../type'
+import {Action, ModelConfigUploaded, PriceId, Quote} from '../type'
 
 type ReceiveQuotesPayload = {
-  modelConfigs: Array<ModelConfigUploaded>,
+  modelConfigs: ModelConfigUploaded[],
   countryCode: string,
   currency: string,
   refresh: boolean
 }
 
 type QuotesReceivedPayload = {
-  quotes: Array<Quote>,
+  quotes: Quote[],
   printingServiceComplete: {
     [printingServiceName: string]: boolean
   }
 }
 
-type ReceiveQuotesAction = Action<'QUOTE.RECEIVE_QUOTES', ReceiveQuotesPayload>
-type StartPollingQuotesAction = Action<'QUOTE.START_POLLING_QUOTES', {priceId: PriceId}>
-type QuotesReceived = Action<'QUOTE.QUOTES_RECEIVED', QuotesReceivedPayload>
-type QuotesComplete = Action<'QUOTE.QUOTES_COMPLETE', QuotesReceivedPayload>
-type StopReceivingQuotes = Action<'QUOTE.STOP_RECEIVING_QUOTES', void>
+export type ReceiveQuotesAction = Action<'QUOTE.RECEIVE_QUOTES', ReceiveQuotesPayload>
+export type StartPollingQuotesAction = Action<'QUOTE.START_POLLING_QUOTES', {priceId: PriceId}>
+export type QuotesReceived = Action<'QUOTE.QUOTES_RECEIVED', QuotesReceivedPayload>
+export type QuotesComplete = Action<'QUOTE.QUOTES_COMPLETE', QuotesReceivedPayload>
+export type StopReceivingQuotes = Action<'QUOTE.STOP_RECEIVING_QUOTES', void>
 
 export type QuoteAction =
   | ReceiveQuotesAction

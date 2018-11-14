@@ -1,5 +1,3 @@
-// @flow
-
 import {loop, Cmd} from 'redux-loop'
 import invariant from 'invariant'
 import isEqual from 'lodash/isEqual'
@@ -24,10 +22,9 @@ import {
 } from '../lib/material'
 import * as printingEngine from '../lib/printing-engine'
 import {singletonPromise} from '../lib/promise'
-import type {PriceRequest} from '../lib/printing-engine'
+import {PriceRequest} from '../lib/printing-engine'
 import {getValidCurrency} from '../lib/currency'
-import type {
-  AppAction,
+import {
   MaterialGroup,
   MaterialGroupId,
   Material,
@@ -51,42 +48,46 @@ import type {
   User,
   Cart,
   PaymentId,
-  UrlParams
+  UrlParams,
+  UserId,
+  PollingStatus
 } from '../type'
 
-import * as coreAction from '../action/core'
-import * as modalAction from '../action/modal'
-import * as modelAction from '../action/model'
-import * as pollingAction from '../action/polling'
-import * as quoteAction from '../action/quote'
-import * as cartAction from '../action/cart'
-import * as configurationAction from '../action/configuration'
+import {Actions} from '../action'
+import * as coreActions from '../action/core'
+import * as modalActions from '../action/modal'
+import * as modelActions from '../action/model'
+import * as pollingActions from '../action/polling'
+import * as quoteActions from '../action/quote'
+import * as cartActions from '../action/cart'
+import * as orderActions from '../action/order'
+import * as configurationActions from '../action/configuration'
 
 export type CoreState = {
-  materialGroups: {[MaterialGroupId]: MaterialGroup},
-  materials: {[MaterialId]: Material},
-  finishGroups: {[FinishGroupId]: FinishGroup},
-  materialConfigs: {[MaterialConfigId]: MaterialConfig},
-  currency: ?string,
-  unit: string,
-  useSameMaterial: boolean,
-  location: ?Location,
-  shippings: Array<Shipping>,
-  featureFlags: Features,
-  urlParams: UrlParams,
-  uploadingFiles: {[id: FileId]: UploadingFile},
-  backendModels: {[id: ModelId]: BackendModel},
-  modelConfigs: Array<ModelConfig>,
-  selectedModelConfigs: Array<ConfigId>,
-  quotes: {[id: QuoteId]: Quote},
-  quotePollingId: ?PollingId,
+  materialGroups: {[materialGroupId: string]: MaterialGroup}
+  materials: {[materialId: string]: Material}
+  finishGroups: {[finishGroupId: string]: FinishGroup}
+  materialConfigs: {[materialConfigId: string]: MaterialConfig}
+  currency: string | null
+  unit: string
+  useSameMaterial: boolean
+  location: Location | null
+  shippings: Shipping[]
+  featureFlags: Features
+  urlParams: UrlParams
+  uploadingFiles: {[fileId: string]: UploadingFile}
+  backendModels: {[modelId: string]: BackendModel}
+  modelConfigs: ModelConfig[]
+  selectedModelConfigs: ConfigId[]
+  quotes: {[quoteId: string]: Quote}
+  quotePollingId: PollingId | null
   printingServiceComplete: {
     [printingServiceName: string]: boolean
-  },
-  user: ?User,
-  cart: ?Cart,
-  paymentId: ?PaymentId,
-  orderNumber: ?string
+  }
+  user: User | null
+  cart: Cart | null
+  paymentId: PaymentId | null
+  orderNumber: string | null
 }
 
 const initialState: CoreState = {
@@ -116,7 +117,7 @@ const initialState: CoreState = {
 
 const createPriceRequestSingleton = singletonPromise()
 
-const init = (state, {payload: {featureFlags, urlParams}}) =>
+const init = (state: CoreState, {payload: {featureFlags, urlParams}}: coreActions.InitAction) =>
   loop(
     {
       ...state,
@@ -124,21 +125,21 @@ const init = (state, {payload: {featureFlags, urlParams}}) =>
       urlParams
     },
     Cmd.list([
-      Cmd.run(printingEngine.getMaterialGroups, {
+      Cmd.run<Actions>(printingEngine.getMaterialGroups, {
         successActionCreator: response =>
-          coreAction.updateMaterialGroups(response.materialStructure),
-        failActionCreator: coreAction.fatalError,
+          coreActions.updateMaterialGroups(response.materialStructure),
+        failActionCreator: coreActions.fatalError,
         args: []
       }),
-      Cmd.run(getLocationFromCookie, {
-        successActionCreator: coreAction.updateLocation,
-        failActionCreator: () => modalAction.openPickLocationModal({confirmation: false}),
+      Cmd.run<Actions>(getLocationFromCookie, {
+        successActionCreator: coreActions.updateLocation,
+        failActionCreator: () => modalActions.openPickLocationModal({confirmation: false}),
         args: []
       })
     ])
   )
 
-const fatalError = (state, {payload: error}) => {
+const fatalError = (state: CoreState, {payload: error}: coreActions.FatalErrorAction) => {
   // Ignore promise cancelled errors (e.g. when price request got cancelled)
   if (error.name === 'PromiseCancelledError') {
     return state
@@ -147,7 +148,7 @@ const fatalError = (state, {payload: error}) => {
   return loop(
     state,
     Cmd.list([
-      Cmd.action(modalAction.openFatalErrorModal(error)),
+      Cmd.action(modalActions.openFatalErrorModal(error)),
       Cmd.run(() => {
         // This will re-throw the error
         throw error
@@ -156,7 +157,10 @@ const fatalError = (state, {payload: error}) => {
   )
 }
 
-const updateMaterialGroups = (state, action) => ({
+const updateMaterialGroups = (
+  state: CoreState,
+  action: coreActions.UpdateMaterialGroupsAction
+) => ({
   ...state,
   materialGroups: getMaterialGroupLookupTable(action.payload.materialGroups),
   materials: getMaterialLookupTable(action.payload.materialGroups),
@@ -164,7 +168,7 @@ const updateMaterialGroups = (state, action) => ({
   materialConfigs: getMaterialConfigLookupTable(action.payload.materialGroups)
 })
 
-const updateLocation = (state, action) => {
+const updateLocation = (state: CoreState, action: coreActions.UpdateLocationAction) => {
   const currency = state.currency || getValidCurrency(action.payload.location.countryCode)
 
   const nextState = {
@@ -184,7 +188,7 @@ const updateLocation = (state, action) => {
         ...state,
         location: null
       },
-      Cmd.action(modalAction.openPickLocationModal({confirmation: false}))
+      Cmd.action(modalActions.openPickLocationModal({confirmation: false}))
     )
   }
 
@@ -196,7 +200,7 @@ const updateLocation = (state, action) => {
     return loop(
       state,
       Cmd.action(
-        modalAction.openConfirmLocationChangeModal({
+        modalActions.openConfirmLocationChangeModal({
           location: action.payload.location,
           previousLocation: state.location
         })
@@ -214,25 +218,28 @@ const updateLocation = (state, action) => {
 
   return loop(
     nextState,
-    Cmd.run(printingEngine.getShippings, {
+    Cmd.run<Actions>(printingEngine.getShippings, {
       args: [action.payload.location.countryCode, currency],
-      successActionCreator: coreAction.updateShippings,
-      failActionCreator: coreAction.fatalError
+      successActionCreator: coreActions.updateShippings,
+      failActionCreator: coreActions.fatalError
     })
   )
 }
 
-const updateUnit = (state, action) => ({
+const updateUnit = (state: CoreState, action: coreActions.UpdateUnitAction) => ({
   ...state,
   unit: action.payload.unit
 })
 
-const updateUseSameMaterial = (state, action) => ({
+const updateUseSameMaterial = (
+  state: CoreState,
+  action: coreActions.UpdateUseSameMaterialAction
+) => ({
   ...state,
   useSameMaterial: action.payload
 })
 
-const updateCurrency = (state, action) => {
+const updateCurrency = (state: CoreState, action: coreActions.UpdateCurrencyAction) => {
   // Do nothing if currency did not change
   if (state.currency === action.payload.currency) {
     return state
@@ -241,7 +248,7 @@ const updateCurrency = (state, action) => {
   if (!action.payload.force && hasModelConfigWithQuote(state.modelConfigs)) {
     return loop(
       state,
-      Cmd.action(modalAction.openConfirmCurrencyChangeModal(action.payload.currency))
+      Cmd.action(modalActions.openConfirmCurrencyChangeModal(action.payload.currency))
     )
   }
 
@@ -253,20 +260,20 @@ const updateCurrency = (state, action) => {
       modelConfigs: resetModelConfigs(state.modelConfigs),
       cart: null
     },
-    Cmd.run(printingEngine.getShippings, {
+    Cmd.run<Actions>(printingEngine.getShippings, {
       args: [state.location && state.location.countryCode, action.payload.currency],
-      successActionCreator: coreAction.updateShippings,
-      failActionCreator: coreAction.fatalError
+      successActionCreator: coreActions.updateShippings,
+      failActionCreator: coreActions.fatalError
     })
   )
 }
 
-const updateShippings = (state, action) => ({
+const updateShippings = (state: CoreState, action: coreActions.UpdateShippingsAction) => ({
   ...state,
   shippings: action.payload
 })
 
-const saveUser = (state, action) =>
+const saveUser = (state: CoreState, action: coreActions.SaveUserAction) =>
   loop(
     {
       ...state,
@@ -281,8 +288,8 @@ const saveUser = (state, action) =>
           : action.payload.shippingAddress
       }
     },
-    Cmd.run(
-      (user, userId) => {
+    Cmd.run<Actions>(
+      (user: User, userId: UserId) => {
         const finalUser = omit(user, 'saveAddress', 'liableForVat')
 
         return userId
@@ -291,13 +298,13 @@ const saveUser = (state, action) =>
       },
       {
         args: [action.payload, state.user && state.user.userId],
-        successActionCreator: coreAction.userReceived,
-        failActionCreator: coreAction.fatalError
+        successActionCreator: coreActions.userReceived,
+        failActionCreator: coreActions.fatalError
       }
     )
   )
 
-const userReceived = (state, action) => ({
+const userReceived = (state: CoreState, action: coreActions.UserReceivedAction) => ({
   ...state,
   user: {
     ...state.user,
@@ -306,7 +313,7 @@ const userReceived = (state, action) => ({
   }
 })
 
-const uploadFile = (state, {payload}) => {
+const uploadFile = (state: CoreState, {payload}: modelActions.UploadFileAction) => {
   const fileId = payload.fileId
 
   const file = {
@@ -333,26 +340,27 @@ const uploadFile = (state, {payload}) => {
         }
       ]
     },
-    Cmd.run(printingEngine.uploadModel, {
+    Cmd.run<Actions>(printingEngine.uploadModel, {
       args: [
         payload.file,
         {unit: payload.unit},
         Cmd.dispatch,
-        progress => modelAction.uploadProgress(fileId, progress)
+        (progress: number) => modelActions.uploadProgress(fileId, progress)
       ],
-      successActionCreator: models => modelAction.uploadComplete(fileId, models, payload.fileIndex),
-      failActionCreator: error => modelAction.uploadFail(fileId, error)
+      successActionCreator: models =>
+        modelActions.uploadComplete(fileId, models, payload.fileIndex),
+      failActionCreator: error => modelActions.uploadFail(fileId, error)
     })
   )
 }
 
-const uploadFiles = (state, {payload: {files, unit}}) =>
+const uploadFiles = (state: CoreState, {payload: {files, unit}}: modelActions.UploadFilesAction) =>
   loop(
     state,
-    Cmd.list(files.map((file, index) => Cmd.action(modelAction.uploadFile(file, unit, index))))
+    Cmd.list(files.map((file, index) => Cmd.action(modelActions.uploadFile(file, unit, index))))
   )
 
-const uploadProgress = (state, {payload}) => {
+const uploadProgress = (state: CoreState, {payload}: modelActions.UploadProgressAction) => {
   const fileId = payload.fileId
 
   invariant(state.uploadingFiles[fileId], `Error in uploadProgress(): File ${fileId} is unknown`)
@@ -369,14 +377,14 @@ const uploadProgress = (state, {payload}) => {
   }
 }
 
-const uploadComplete = (state, {payload}) => {
+const uploadComplete = (state: CoreState, {payload}: modelActions.UploadCompleteAction) => {
   const fileId = payload.fileId
   const models = payload.models
   const [model, ...additionalModels] = models
 
-  const modelConfig: any = state.modelConfigs.find(
+  const modelConfig = state.modelConfigs.find(
     item => item.type === 'UPLOADING' && item.fileId === fileId
-  )
+  ) as ModelConfig
 
   invariant(models.length > 0, 'At least one model required')
   invariant(modelConfig, 'Model config not found')
@@ -390,7 +398,7 @@ const uploadComplete = (state, {payload}) => {
     ([m, configId]) => ({
       type: 'UPLOADED',
       quantity: 1,
-      modelId: m.modelId,
+      modelId: m && m.modelId,
       id: configId,
       quoteId: null,
       shippingId: null
@@ -432,7 +440,7 @@ const uploadComplete = (state, {payload}) => {
   }
 }
 
-const uploadFail = (state, {payload}) => {
+const uploadFail = (state: CoreState, {payload}: modelActions.UploadFailAction) => {
   const fileId = payload.fileId
 
   invariant(state.uploadingFiles[fileId], `Error in uploadFail(): File ${fileId} is unknown`)
@@ -450,12 +458,12 @@ const uploadFail = (state, {payload}) => {
   }
 }
 
-const deleteModelConfigs = (state, {payload}) => {
+const deleteModelConfigs = (state: CoreState, {payload}: modelActions.DeleteModelConfigsAction) => {
   const modelConfigsToDelete = state.modelConfigs.filter(
     modelConfig => payload.ids.indexOf(modelConfig.id) > -1
   )
   const isModelConfigInCart = modelConfigsToDelete.some(
-    modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId
+    modelConfig => Boolean(modelConfig.type === 'UPLOADED' && modelConfig.quoteId)
   )
 
   invariant(
@@ -473,18 +481,21 @@ const deleteModelConfigs = (state, {payload}) => {
 
   // Create new cart if a least one model config was deleted from cart
   if (isModelConfigInCart) {
-    return loop(nextState, Cmd.action(cartAction.createCart()))
+    return loop(nextState, Cmd.action(cartActions.createCart()))
   }
 
   return nextState
 }
 
-const updateSelectedModelConfigs = (state, {payload}) => ({
+const updateSelectedModelConfigs = (
+  state: CoreState,
+  {payload}: modelActions.UpdateSelectedModelConfigsAction
+) => ({
   ...state,
   selectedModelConfigs: payload.ids
 })
 
-const updateQuantities = (state, {payload}) => {
+const updateQuantities = (state: CoreState, {payload}: modelActions.UpdateQuantitiesAction) => {
   invariant(payload.quantity > 0, `Quantity has to be bigger than zero!`)
 
   return {
@@ -501,8 +512,11 @@ const updateQuantities = (state, {payload}) => {
   }
 }
 
-const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
-  const modelConfig = state.modelConfigs.find(item => item.id === id)
+const duplicateModelConfig = (
+  state: CoreState,
+  {payload: {id, nextId}}: modelActions.DuplicateModelConfigAction
+) => {
+  const modelConfig = state.modelConfigs.find(item => item.id === id) as ModelConfig
 
   invariant(modelConfig, `Error in duplicateModelConfig(): Model Config id ${id} is unknown`)
 
@@ -526,7 +540,10 @@ const duplicateModelConfig = (state, {payload: {id, nextId}}) => {
   }
 }
 
-const receiveQuotes = (state, {payload: {countryCode, currency, modelConfigs, refresh}}) => {
+const receiveQuotes = (
+  state: CoreState,
+  {payload: {countryCode, currency, modelConfigs, refresh}}: quoteActions.ReceiveQuotesAction
+) => {
   const priceRequest: PriceRequest = {
     refresh,
     countryCode,
@@ -537,18 +554,18 @@ const receiveQuotes = (state, {payload: {countryCode, currency, modelConfigs, re
     }))
   }
 
-  const createPriceRequestCmd = Cmd.run(
+  const createPriceRequestCmd = Cmd.run<Actions>(
     () => createPriceRequestSingleton(printingEngine.createPriceRequest(priceRequest)),
     {
-      successActionCreator: quoteAction.startPollingQuotes,
-      failActionCreator: coreAction.fatalError
+      successActionCreator: quoteActions.startPollingQuotes,
+      failActionCreator: coreActions.fatalError
     }
   )
 
   // Is polling still in progress
   if (state.quotePollingId) {
     // Cancel old polling, start a new one
-    const cancelPollingCmd = Cmd.action(pollingAction.cancel(state.quotePollingId))
+    const cancelPollingCmd = Cmd.action(pollingActions.cancel(state.quotePollingId))
     return loop(state, Cmd.list([cancelPollingCmd, createPriceRequestCmd], {sequence: true}))
   }
 
@@ -556,26 +573,29 @@ const receiveQuotes = (state, {payload: {countryCode, currency, modelConfigs, re
   return loop(state, createPriceRequestCmd)
 }
 
-const startPollingQuotes = (state, {payload: {priceId}}) => {
-  const startPollingAction = pollingAction.start({
+const startPollingQuotes = (
+  state: CoreState,
+  {payload: {priceId}}: quoteActions.StartPollingQuotesAction
+) => {
+  const startPollingAction = pollingActions.start({
     pollingFunction: async () => {
       const quotesResponse = await printingEngine.getQuotes(priceId)
       if (quotesResponse.allComplete) {
         return {
-          status: 'POLLING_DONE',
+          status: PollingStatus.POLLING_DONE,
           result: quotesResponse
         }
       }
 
       // Continue polling to get more results
       return {
-        status: 'POLLING_CONTINUE',
+        status: PollingStatus.POLLING_CONTINUE,
         result: quotesResponse
       }
     },
-    onSuccessActionCreator: quoteAction.quotesComplete,
-    onPartialResultActionCreator: quoteAction.quotesReceived,
-    onFailActionCreator: coreAction.fatalError
+    onSuccessActionCreator: quoteActions.quotesComplete,
+    onPartialResultActionCreator: quoteActions.quotesReceived,
+    onFailActionCreator: coreActions.fatalError
   })
 
   return loop(
@@ -588,7 +608,10 @@ const startPollingQuotes = (state, {payload: {priceId}}) => {
   )
 }
 
-const quotesReceived = (state, {payload: {quotes, printingServiceComplete}}) => ({
+const quotesReceived = (
+  state: CoreState,
+  {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceived
+) => ({
   ...state,
   quotes: {
     ...state.quotes,
@@ -597,16 +620,16 @@ const quotesReceived = (state, {payload: {quotes, printingServiceComplete}}) => 
   printingServiceComplete
 })
 
-const quotesComplete = (state, {payload}) =>
+const quotesComplete = (state: CoreState, {payload}: quoteActions.QuotesComplete) =>
   loop(
     {
       ...state,
       quotePollingId: null
     },
-    Cmd.action(quoteAction.quotesReceived(payload))
+    Cmd.action(quoteActions.quotesReceived(payload))
   )
 
-const stopReceivingQuotes = (state, _action) => {
+const stopReceivingQuotes = (state: CoreState) => {
   // Check if we have to quit some active polling
   if (state.quotePollingId) {
     return loop(
@@ -615,14 +638,17 @@ const stopReceivingQuotes = (state, _action) => {
         quotePollingId: null,
         printingServiceComplete: {}
       },
-      Cmd.action(pollingAction.cancel(state.quotePollingId))
+      Cmd.action(pollingActions.cancel(state.quotePollingId))
     )
   }
 
   return state
 }
 
-const addToCart = (state, {payload: {configIds, quotes, shipping}}) =>
+const addToCart = (
+  state: CoreState,
+  {payload: {configIds, quotes, shipping}}: cartActions.AddToCartAction
+) =>
   loop(
     {
       ...state,
@@ -633,10 +659,10 @@ const addToCart = (state, {payload: {configIds, quotes, shipping}}) =>
         shipping
       )
     },
-    Cmd.action(cartAction.createCart())
+    Cmd.action(cartActions.createCart())
   )
 
-const createCart = (state, _action) => {
+const createCart = (state: CoreState) => {
   const modelConfigs = state.modelConfigs.filter(
     modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
   )
@@ -661,7 +687,7 @@ const createCart = (state, _action) => {
 
   return loop(
     nextState,
-    Cmd.run(printingEngine.createCart, {
+    Cmd.run<Actions>(printingEngine.createCart, {
       args: [
         {
           shippingIds,
@@ -669,24 +695,27 @@ const createCart = (state, _action) => {
           currency
         }
       ],
-      successActionCreator: cartAction.cartReceived,
-      failActionCreator: coreAction.fatalError
+      successActionCreator: cartActions.cartReceived,
+      failActionCreator: coreActions.fatalError
     })
   )
 }
 
-const cartReceived = (state, {payload: {cart}}) => ({
+const cartReceived = (state: CoreState, {payload: {cart}}: cartActions.CartReceivedAction) => ({
   ...state,
   cart
 })
 
-const paid = (state, {payload: {paymentId, orderNumber}}) => ({
+const paid = (state: CoreState, {payload: {paymentId, orderNumber}}: orderActions.PaidAction) => ({
   ...state,
   paymentId,
   orderNumber
 })
 
-const executePaypalPayment = (state, {payload}) =>
+const executePaypalPayment = (
+  state: CoreState,
+  {payload}: orderActions.ExecutePaypalPaymentAction
+) =>
   loop(
     state,
     Cmd.run(printingEngine.executePaypalPayment, {
@@ -694,17 +723,23 @@ const executePaypalPayment = (state, {payload}) =>
     })
   )
 
-const loadConfiguration = (state, {payload: {id}}) =>
+const loadConfiguration = (
+  state: CoreState,
+  {payload: {id}}: configurationActions.LoadConfigurationAction
+) =>
   loop(
     state,
-    Cmd.run(printingEngine.getConfiguration, {
+    Cmd.run<Actions>(printingEngine.getConfiguration, {
       args: [id],
-      successActionCreator: configurationAction.configurationReceived,
-      failActionCreator: coreAction.fatalError
+      successActionCreator: configurationActions.configurationReceived,
+      failActionCreator: coreActions.fatalError
     })
   )
 
-const configurationReceived = (state, {payload: {items}}) => {
+const configurationReceived = (
+  state: CoreState,
+  {payload: {items}}: configurationActions.ConfigurationReceivedAction
+) => {
   const modelConfigs = items.map(item => ({
     id: item.id,
     quoteId: null,
@@ -714,7 +749,7 @@ const configurationReceived = (state, {payload: {items}}) => {
     type: 'UPLOADED'
   }))
 
-  const backendModels = {}
+  const backendModels: {[modelId: string]: BackendModel} = {}
   items.forEach(item => {
     backendModels[item.modelId] = omit(item, 'quantity')
   })
@@ -727,7 +762,7 @@ const configurationReceived = (state, {payload: {items}}) => {
   }
 }
 
-const reset = state => ({
+const reset = (state: CoreState) => ({
   ...state,
   ...omit(initialState, 'materialGroups', 'location', 'featureFlags', 'shippings', 'urlParams'),
   user: {
@@ -735,7 +770,10 @@ const reset = state => ({
   }
 })
 
-export const reducer = (state: CoreState = initialState, action: AppAction): CoreState => {
+export const reducer = (
+    state: CoreState = initialState,
+    action: Actions
+  ) => {
   switch (action.type) {
     case 'CORE.INIT':
       return init(state, action)
@@ -784,11 +822,11 @@ export const reducer = (state: CoreState = initialState, action: AppAction): Cor
     case 'QUOTE.QUOTES_COMPLETE':
       return quotesComplete(state, action)
     case 'QUOTE.STOP_RECEIVING_QUOTES':
-      return stopReceivingQuotes(state, action)
+      return stopReceivingQuotes(state)
     case 'CART.ADD_TO_CART':
       return addToCart(state, action)
     case 'CART.CREATE_CART':
-      return createCart(state, action)
+      return createCart(state)
     case 'CART.CART_RECEIVED':
       return cartReceived(state, action)
     case 'ORDER.PAID':

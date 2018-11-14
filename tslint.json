@@ -7,7 +7,11 @@
     "quotemark": [true, "single"],
     "semicolon": [true, "never"],
     "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
-    "ordered-imports": false
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "interface-over-type-literal": false,
+    "arrow-parens": false,
+    "curly": false
   },
   "rulesDirectory": []
 }
