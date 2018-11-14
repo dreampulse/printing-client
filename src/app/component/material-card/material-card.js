@@ -19,6 +19,7 @@ const MaterialCard = ({
   loading = false,
   selected = false,
   unavailable = false,
+  unavailableLink,
   image,
   onMoreClick = () => {},
   onSelectClick,
@@ -45,6 +46,7 @@ const MaterialCard = ({
   const unavailableFooter = (
     <footer className="material-card__footer">
       <div className="material-card__unavailable">Not printable</div>
+      <div className="material-card__unavailable-link">{unavailableLink}</div>
     </footer>
   )
 
@@ -91,7 +93,8 @@ MaterialCard.propTypes = {
   onMoreClick: PropTypes.func,
   onSelectClick: PropTypes.func,
   image: PropTypes.string,
-  selectLabel: PropTypes.string
+  selectLabel: PropTypes.string,
+  unavailableLink: PropTypes.node
 }
 
 export default MaterialCard

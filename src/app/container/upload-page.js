@@ -43,6 +43,9 @@ import ButtonBar from '../component/button-bar'
 import Notification from '../component/notification'
 import NumberField from '../component/number-field'
 import ProviderProgressBar from '../component/provider-progress-bar'
+import Grid from '../component/grid'
+import Column from '../component/column'
+import RichText from '../component/rich-text'
 
 const UploadPage = ({
   openPickUnitModal,
@@ -65,6 +68,30 @@ const UploadPage = ({
   const numTotalProviders = pollingProgress.total || 0
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
+
+  const promoSection = () => (
+    <React.Fragment>
+      <Section>
+        <Headline
+          label="Yeah do this!"
+          modifiers={['l', 'light']}
+          classNames={['u-margin-bottom-xxl', 'u-align-center']}
+        />
+        <Grid>
+          <Column md={0} lg={3} />
+          <Column md={12} lg={6}>
+            <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
+              Impossible! My favorite printing service is always the cheapest.
+            </RichText>
+            <div className="u-align-center ">
+              <Button modifiers={['minor']} label="Please click me!" />
+            </div>
+          </Column>
+          <Column md={0} lg={3} />
+        </Grid>
+      </Section>
+    </React.Fragment>
+  )
 
   const uploadSection = () => (
     <Section>
@@ -197,10 +224,10 @@ const UploadPage = ({
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
-      {hasModels &&
-        selectedModelConfigIds.length > 0 && (
-          <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
-        )}
+      {hasModels && selectedModelConfigIds.length > 0 && (
+        <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
+      )}
+      {!hasModels && promoSection()}
     </AppLayout>
   )
 }
@@ -208,13 +235,12 @@ const UploadPage = ({
 const mapStateToProps = (state: AppState) => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
   pollingProgress: selectQuotePollingProgress(state),
-  modelsWithConfig: unzip([
-    state.core.modelConfigs,
-    selectModelsOfModelConfigs(state)
-  ]).filter(([modelConfig]) => {
-    const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
-    return mc.type !== 'UPLOADED' || mc.quoteId === null
-  }),
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
+    ([modelConfig]) => {
+      const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
+      return mc.type !== 'UPLOADED' || mc.quoteId === null
+    }
+  ),
   cart: state.core.cart,
   cartCount: selectCartCount(state),
   featureFlags: state.core.featureFlags,
@@ -233,7 +259,10 @@ const mapDispatchToProps = {
 const enhance = compose(
   scrollToTop(),
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withProps(({modelsWithConfig, selectedModelConfigIds}) => {
     const numModelsUploading = modelsWithConfig.reduce(
       (sum, [modelConfig, model]) =>
