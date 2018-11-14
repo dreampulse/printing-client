@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {},
+  "rules": {
+    "quotemark": [true, "single"],
+    "semicolon": [true, "never"],
+    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
+    "ordered-imports": false
+  },
+  "rulesDirectory": []
+}
