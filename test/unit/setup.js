@@ -1,4 +1,3 @@
-// import 'source-map-support/register' // todo is this required?
 import expect from 'unexpected'
 import unexpectedSinon from 'unexpected-sinon'
 import sinon from 'sinon'

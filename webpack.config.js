@@ -23,7 +23,6 @@ module.exports = {
   target: 'web',
   entry: [
     '@babel/polyfill',
-    // 'babel-polyfill',  // Do we need that?
     'react-hot-loader/patch',
     path.resolve(__dirname, './src/app/index.js')
   ],
