@@ -28,7 +28,7 @@ import * as httpJson from './http-json'
 
 // printing-engine types
 
-type ModelResponse = BackendModel
+type ModelResponse = Array<BackendModel>
 type ShippingsResponse = Array<Shipping>
 
 export type PriceRequest = {
