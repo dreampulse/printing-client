@@ -1,17 +1,16 @@
 // @flow
 // Not using the "global" object here so that flow picks up the correct types.
-/* global fetch, Headers, XMLHttpRequest, FormData */
-// import 'whatwg-fetch'
+/* global fetch, XMLHttpRequest, FormData */
+import 'whatwg-fetch'
 
 import type {HttpUploadOptions} from '../type'
 import {HttpUploadError} from '../lib/error'
 
 // If fetch is called on a different object, an illegal invocation error is thrown. Therefore we need to bind() it.
-// const boundFetch = fetch.bind(null)
+const boundFetch = fetch.bind(null)
+const Headers = global.Headers
 
-// export {Headers, boundFetch as fetch}
-
-// TODO: here is something wrong
+export {Headers, boundFetch as fetch}
 
 const responseFromXhr = (xhr: XMLHttpRequest): Response =>
   new Response(xhr.responseText, {
