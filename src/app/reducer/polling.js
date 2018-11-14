@@ -66,7 +66,9 @@ const assertActivePollingInState = (handler, state, action, pollingState) => {
   invariant(activePolling, `Error in ${handler}(): There is no active polling with id ${pollingId}`)
   invariant(
     activePolling.currentState === pollingState,
-    `Error in ${handler}(): Polling with id ${pollingId} is in unexpected state ${activePolling.currentState}`
+    `Error in ${handler}(): Polling with id ${pollingId} is in unexpected state ${
+      activePolling.currentState
+    }`
   )
 }
 
@@ -99,7 +101,10 @@ const start = (state, action) => {
 }
 
 const handleSuccess = (state, action) => {
-  const {pollingId, pollingResult: {result}} = action.payload
+  const {
+    pollingId,
+    pollingResult: {result}
+  } = action.payload
   const activePolling = state.activePollings[pollingId]
 
   return loop(
@@ -121,7 +126,10 @@ const handleFailNoRemainingRetries = (state, action) => {
 }
 
 const handleFailWithRemainingRetries = (state, action) => {
-  const {pollingId, pollingResult: {result}} = action.payload
+  const {
+    pollingId,
+    pollingResult: {result}
+  } = action.payload
   const activePolling = state.activePollings[pollingId]
   const {retryInterval} = activePolling
   const onTimeoutEndActionCreator = () => pollingAction.handleRetry(pollingId)
@@ -150,7 +158,10 @@ const handleFailWithRemainingRetries = (state, action) => {
 }
 
 const handleResult = (state, action) => {
-  const {pollingId, pollingResult: {status}} = action.payload
+  const {
+    pollingId,
+    pollingResult: {status}
+  } = action.payload
 
   if (pollingId in state.activePollings === false) {
     return state

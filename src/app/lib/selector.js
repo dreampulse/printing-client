@@ -18,30 +18,27 @@ import type {
 } from '../type'
 
 export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile | BackendModel> =>
-  state.core.modelConfigs.map(
-    modelConfig =>
-      modelConfig.type === 'UPLOADED'
-        ? state.core.backendModels[modelConfig.modelId]
-        : state.core.uploadingFiles[modelConfig.fileId]
+  state.core.modelConfigs.map(modelConfig =>
+    modelConfig.type === 'UPLOADED'
+      ? state.core.backendModels[modelConfig.modelId]
+      : state.core.uploadingFiles[modelConfig.fileId]
   )
 
 export const selectShippingsOfModelConfigs = (state: AppState) =>
-  state.core.modelConfigs.map(
-    modelConfig =>
-      modelConfig.type === 'UPLOADED' && modelConfig.shippingId
-        ? state.core.shippings.find(
-            shipping =>
-              modelConfig.type === 'UPLOADED' && shipping.shippingId === modelConfig.shippingId
-          )
-        : null
+  state.core.modelConfigs.map(modelConfig =>
+    modelConfig.type === 'UPLOADED' && modelConfig.shippingId
+      ? state.core.shippings.find(
+          shipping =>
+            modelConfig.type === 'UPLOADED' && shipping.shippingId === modelConfig.shippingId
+        )
+      : null
   )
 
 export const selectQuotesOfModelConfigs = (state: AppState) =>
-  state.core.modelConfigs.map(
-    modelConfig =>
-      modelConfig.type === 'UPLOADED' && modelConfig.quoteId
-        ? state.core.quotes[modelConfig.quoteId]
-        : null
+  state.core.modelConfigs.map(modelConfig =>
+    modelConfig.type === 'UPLOADED' && modelConfig.quoteId
+      ? state.core.quotes[modelConfig.quoteId]
+      : null
   )
 
 export const selectCartCount = (state: AppState) =>
@@ -162,12 +159,11 @@ export const selectUsedShippingIdsAndFilter = (
 ) =>
   uniq(
     compact(
-      state.core.modelConfigs.map(
-        modelConfig =>
-          modelConfig.type === 'UPLOADED' &&
-          !excludeConfigIds.find(id => modelConfig.type === 'UPLOADED' && id === modelConfig.id)
-            ? modelConfig.shippingId
-            : null
+      state.core.modelConfigs.map(modelConfig =>
+        modelConfig.type === 'UPLOADED' &&
+        !excludeConfigIds.find(id => modelConfig.type === 'UPLOADED' && id === modelConfig.id)
+          ? modelConfig.shippingId
+          : null
       )
     )
   )

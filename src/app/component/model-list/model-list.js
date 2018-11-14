@@ -28,12 +28,11 @@ const ModelList = ({
     return (
       <li className="model-list__item" key={id || index}>
         {child}
-        {id &&
-          (numChildren > 1 || headerAlwaysVisible) && (
-            <div className="model-list__checkbox">
-              <CheckboxField checked={checkedIds.includes(id)} onChange={() => toggleId(id)} />
-            </div>
-          )}
+        {id && (numChildren > 1 || headerAlwaysVisible) && (
+          <div className="model-list__checkbox">
+            <CheckboxField checked={checkedIds.includes(id)} onChange={() => toggleId(id)} />
+          </div>
+        )}
       </li>
     )
   })
@@ -81,8 +80,7 @@ const enhance = compose(
     onChangeCheckedIds: () => {}
   }),
   withProps(({children}) => ({
-    ids: React.Children
-      .toArray(children)
+    ids: React.Children.toArray(children)
       .map(child => child.props.id)
       .filter(id => id !== undefined)
   })),

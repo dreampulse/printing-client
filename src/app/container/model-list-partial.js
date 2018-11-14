@@ -46,9 +46,9 @@ const ModelListPartial = ({
         <Button
           modifiers={['tiny', 'minor']}
           disabled={disabled}
-          label={`Edit Material${numberOfSelectedItems > 0
-            ? ` (${numberOfSelectedItems} of ${numberOfItems})`
-            : ''}`}
+          label={`Edit Material${
+            numberOfSelectedItems > 0 ? ` (${numberOfSelectedItems} of ${numberOfItems})` : ''
+          }`}
           onClick={() => onPrimaryActionClick(selectedModelConfigIds)}
         />
       )
@@ -129,7 +129,10 @@ const mapDispatchToProps = {
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withHandlers({
     createConfiguration: ({
       uploadedModelConfigs,

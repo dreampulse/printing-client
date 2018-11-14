@@ -67,7 +67,8 @@ const CheckoutLayout = ({
                   onClick={() => goToUpload()}
                   modifiers={['invert', 'compact']}
                 />
-              ) : null}
+              ) : null
+            }
           </Route>
           <IconLink
             modifiers={['invert']}
@@ -110,6 +111,11 @@ const mapDispatchToProps = {
   goToAddress: navigationAction.goToAddress
 }
 
-const enhance = compose(connect(mapStateToProps, mapDispatchToProps))
+const enhance = compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)
 
 export default enhance(CheckoutLayout)

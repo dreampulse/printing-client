@@ -583,7 +583,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withStateHandlers(
     ({commonMaterialPath}) => ({
       selectedMaterialGroupId: commonMaterialPath.materialGroupId,

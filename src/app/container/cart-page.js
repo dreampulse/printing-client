@@ -172,8 +172,9 @@ const CartPage = ({
     <Notification
       classNames={['u-margin-bottom']}
       warning
-      message={`For ${modelConfigs.length -
-        modelsWithConfig.length} of ${modelConfigs.length} uploaded items you have not chosen a material. They have not been added to your cart.`}
+      message={`For ${modelConfigs.length - modelsWithConfig.length} of ${
+        modelConfigs.length
+      } uploaded items you have not chosen a material. They have not been added to your cart.`}
       button={
         <Button
           label="Choose material"
@@ -184,7 +185,8 @@ const CartPage = ({
                   modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null
                 )
                 .map(modelConfig => modelConfig.id)
-            })}
+            })
+          }
           modifiers={['compact', 'minor']}
         />
       }
@@ -262,7 +264,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => ({
 export default compose(
   scrollToTop(),
   guard(state => state.core.cart),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withProps(({location}) => ({
     numAddedItems: (location.state || {}).numAddedItems || 0
   })),

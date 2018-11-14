@@ -381,7 +381,10 @@ const mapDispatchToProps = {
 const enhance = compose(
   scrollToTop(),
   guard(state => state.core.cart),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withHandlers({
     handleIsCompanyChange: props => isCompany => {
       if (isCompany === false) {

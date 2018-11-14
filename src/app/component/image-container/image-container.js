@@ -66,17 +66,15 @@ export default class ImageContainer extends Component {
     return (
       <div className={buildClassName('image-container', modifiers, classNames)}>
         {imageLoaded && <img className="image-container__image" src={source} alt={alt} />}
-        {!imageLoaded &&
-          fallbackSource && (
-            <img className="image-container__image" src={fallbackSource} alt={alt} />
-          )}
-        {!imageLoaded &&
-          !fallbackSource && (
-            <LoadingIndicator
-              classNames={['image-container__loading-indicator']}
-              modifiers={['invert']}
-            />
-          )}
+        {!imageLoaded && fallbackSource && (
+          <img className="image-container__image" src={fallbackSource} alt={alt} />
+        )}
+        {!imageLoaded && !fallbackSource && (
+          <LoadingIndicator
+            classNames={['image-container__loading-indicator']}
+            modifiers={['invert']}
+          />
+        )}
       </div>
     )
   }

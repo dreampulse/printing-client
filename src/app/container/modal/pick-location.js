@@ -120,7 +120,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withState('location', 'setLocation', props => props.globalLocation),
   withState('currency', 'setCurrency', props => props.globalCurrency)
 )(PickLocationModal)

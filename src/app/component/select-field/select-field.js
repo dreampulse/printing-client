@@ -81,10 +81,9 @@ export default class SelectField extends Component {
         onClick={portal.isOpen ? portal.closePortal : portal.openPortal}
         disabled={!menu || this.props.disabled}
       >
-        {Boolean(value) &&
-          (value.colorValue || value.colorImage) && (
-            <ColorSquare color={value.colorValue} image={value.colorImage} />
-          )}
+        {Boolean(value) && (value.colorValue || value.colorImage) && (
+          <ColorSquare color={value.colorValue} image={value.colorImage} />
+        )}
         <span className="select-field__value">{value ? this.getLabel(value) : placeholder}</span>
         <Icon source={arrowIcon} />
       </button>

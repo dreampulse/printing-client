@@ -5,7 +5,6 @@ import createHistory from 'history/createBrowserHistory'
 import {AppContainer} from 'react-hot-loader'
 import browserUpdate from 'browser-update'
 
-
 import './service/logging'
 import {getFeatureFlags, getUrlParams} from './lib/url'
 

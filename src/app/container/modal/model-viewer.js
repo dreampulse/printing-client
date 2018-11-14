@@ -35,4 +35,7 @@ const mapDispatchToProps = {
   closeModal: modalActions.closeModal
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModelViewerModal)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ModelViewerModal)

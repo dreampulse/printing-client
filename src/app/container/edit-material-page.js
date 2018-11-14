@@ -79,7 +79,10 @@ export default compose(
   withProps(({location}) => ({
     configIds: (location.state && location.state.configIds) || []
   })),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   lifecycle({
     componentWillMount() {
       if (this.props.selectedModelConfigs.length === 0) {

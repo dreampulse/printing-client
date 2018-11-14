@@ -75,7 +75,10 @@ const mapDispatchToProps = {
 
 const enhance = compose(
   scrollToTop(),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   lifecycle({
     componentDidMount() {
       this.props.reset()

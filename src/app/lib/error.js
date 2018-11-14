@@ -31,7 +31,9 @@ export class HttpResponseUnexpectedStatusError extends AppError {
   constructor(expectedStatus: string, response: Response, bodyText: string | null = null) {
     super(
       HttpResponseUnexpectedStatusError.TYPE,
-      `${response.url} returned with unexpected status ${response.status} ${response.statusText}. Expected status to be ${expectedStatus}.`
+      `${response.url} returned with unexpected status ${response.status} ${
+        response.statusText
+      }. Expected status to be ${expectedStatus}.`
     )
     this.response = response
     this.bodyText = bodyText
@@ -60,9 +62,11 @@ export class HttpUploadError extends AppError {
   constructor(method: string, url: string, during: HttpUploadErrorPhase) {
     super(
       HttpUploadError.TYPE,
-      `${method} ${url} failed ${during === HttpUploadError.PHASE_UPLOADING
-        ? 'during upload'
-        : 'after upload while downloading the response'}.`
+      `${method} ${url} failed ${
+        during === HttpUploadError.PHASE_UPLOADING
+          ? 'during upload'
+          : 'after upload while downloading the response'
+      }.`
     )
     this.url = url
     this.phase = during

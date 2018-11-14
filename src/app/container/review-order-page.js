@@ -386,7 +386,10 @@ const mapDispatchToProps = {
 const enhance = compose(
   scrollToTop(),
   guard(state => state.core.cart),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withState('paymentInProgress', 'setPaymentInProgress', false),
   withProps(props => ({
     utmParams: {

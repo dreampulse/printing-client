@@ -390,18 +390,17 @@ const uploadComplete = (state, {payload}) => {
       ...state.backendModels,
       [model.modelId]: model
     },
-    modelConfigs: state.modelConfigs.map(
-      item =>
-        item.type === 'UPLOADING' && item.fileId === fileId
-          ? {
-              type: 'UPLOADED',
-              quantity: 1,
-              modelId: model.modelId,
-              id: item.id,
-              quoteId: null,
-              shippingId: null
-            }
-          : item
+    modelConfigs: state.modelConfigs.map(item =>
+      item.type === 'UPLOADING' && item.fileId === fileId
+        ? {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: model.modelId,
+            id: item.id,
+            quoteId: null,
+            shippingId: null
+          }
+        : item
     ),
     selectedModelConfigs
   }

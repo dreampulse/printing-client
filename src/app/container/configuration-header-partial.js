@@ -50,4 +50,7 @@ const mapDispatchToProps = {
   updateCurrency: coreAction.updateCurrency
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConfigurationHeaderPartial)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ConfigurationHeaderPartial)

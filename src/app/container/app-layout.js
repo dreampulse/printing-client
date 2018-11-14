@@ -49,7 +49,8 @@ const AppLayout = ({
                       onClick={() => onUploadClick()}
                       modifiers={['invert', 'compact']}
                     />
-                  ) : null}
+                  ) : null
+                }
               </Route>
               <IconLink
                 modifiers={['invert']}
@@ -92,4 +93,7 @@ const mapDispatchToProps = {
   onCartClick: goToCart
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppLayout)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppLayout)

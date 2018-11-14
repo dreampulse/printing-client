@@ -5,6 +5,7 @@ import uniqueId from 'lodash/uniqueId'
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class InputField extends Component {
   static propTypes = {
     ...propTypes.component,
