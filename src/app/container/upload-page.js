@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 import compact from 'lodash/compact'
@@ -70,7 +70,7 @@ const UploadPage = ({
   const hasModels = numModels > 0
 
   const promoSection = () => (
-    <React.Fragment>
+    <Fragment>
       <Section>
         <Headline
           label="Make it Printable"
@@ -96,7 +96,7 @@ const UploadPage = ({
           <Column md={0} lg={3} />
         </Grid>
       </Section>
-    </React.Fragment>
+    </Fragment>
   )
 
   const uploadSection = () => (
