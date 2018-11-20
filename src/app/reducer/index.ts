@@ -1,19 +1,17 @@
-// @flow
-
 import {combineReducers} from 'redux-loop'
-import {routerReducer as routing} from 'react-router-redux'
-import {reducer as form} from 'redux-form'
+import {routerReducer as routing, RouterState} from 'react-router-redux'
+import {reducer as form, FormStateMap} from 'redux-form'
 
 import core from './core'
-import type {CoreState} from './core'
+import {CoreState} from './core'
 import modal from './modal'
-import type {ModalState} from './modal'
+import {ModalState} from './modal'
 import timeout from './timeout'
-import type {TimeoutState} from './timeout'
+import {TimeoutState} from './timeout'
 import polling from './polling'
-import type {PollingState} from './polling'
+import {PollingState} from './polling'
 import modelViewer from './model-viewer'
-import type {ModelViewerState} from './model-viewer'
+import {ModelViewerState} from './model-viewer'
 
 export type AppState = {
   core: CoreState,
@@ -21,8 +19,8 @@ export type AppState = {
   timeout: TimeoutState,
   polling: PollingState,
   modelViewer: ModelViewerState,
-  routing: any, // Managed by react-router-redux
-  form: any // Managed by redux-form
+  routing: RouterState, // Managed by react-router-redux
+  form: FormStateMap // Managed by redux-form
 }
 
 const rootReducer = combineReducers({
@@ -31,9 +29,8 @@ const rootReducer = combineReducers({
   timeout,
   polling,
   modelViewer,
-  // third-party modules expect their state to be at the top-level
   routing,
   form
-})
+} as any)
 
 export default rootReducer

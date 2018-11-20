@@ -1,18 +1,16 @@
-// @flow
-
 import keyBy from 'lodash/keyBy'
 import flatMap from 'lodash/flatMap'
 
-import type {Material, MaterialId, MultiModelQuote, ShippingId, Shipping, Offer} from '../type'
+import {Material, MaterialId, MultiModelQuote, ShippingId, Shipping, Offer} from '../type'
 
 function getSortedMultiModelOffers(
-  quotes: Array<MultiModelQuote>,
-  usedShippingIds: Array<ShippingId>,
-  shippings: Array<Shipping>
-): Array<Offer> {
+  quotes: MultiModelQuote[],
+  usedShippingIds: ShippingId[],
+  shippings: Shipping[]
+): Offer[] {
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
   const sortedQuotes = flatMap(
-    (quotes: any), // Because flatMap is broken in flow
+    quotes,
     multiModelQuote =>
       shippings
         .filter(shipping => shipping.vendorId === multiModelQuote.vendorId)
@@ -30,12 +28,12 @@ function getSortedMultiModelOffers(
 }
 
 export function getBestMultiModelOfferForMaterial(
-  quotes: Array<MultiModelQuote>,
-  usedShippingIds: Array<ShippingId>,
-  shippings: Array<Shipping>,
+  quotes: MultiModelQuote[],
+  usedShippingIds: ShippingId[],
+  shippings: Shipping[],
   material: Material
-): ?Offer {
-  const materialConfigs = {}
+): Offer {
+  const materialConfigs: {[materialConfigId: string]: boolean} = {}
   material.finishGroups.forEach(finishGroup => {
     finishGroup.materialConfigs.forEach(materialConfig => {
       materialConfigs[materialConfig.id] = true
@@ -53,11 +51,11 @@ export function getBestMultiModelOfferForMaterial(
 }
 
 export function getBestMultiModelOffersForMaterialConfig(
-  quotes: Array<MultiModelQuote>,
-  usedShippingIds: Array<ShippingId>,
-  shippings: Array<Shipping>,
+  quotes: MultiModelQuote[],
+  usedShippingIds: ShippingId[],
+  shippings: Shipping[],
   materialConfigId: MaterialId
-): Array<Offer> {
+): Offer[] {
   const multiModelQuotesForSelectedMaterialConfigId = quotes.filter(
     quote => quote.isPrintable && quote.materialConfigId === materialConfigId
   )

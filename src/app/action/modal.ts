@@ -8,8 +8,8 @@ import {
   ConfigurationId
 } from '../type'
 
-type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
-type CloseModalAction = Action<'MODAL.CLOSE', void>
+export type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
+export type CloseModalAction = Action<'MODAL.CLOSE', void>
 export type ModalAction = OpenModalAction | CloseModalAction
 
 const open = (config: ModalConfigOpened): OpenModalAction => ({

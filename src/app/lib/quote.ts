@@ -1,13 +1,12 @@
-// @flow
 import groupBy from 'lodash/groupBy'
 import compact from 'lodash/compact'
 
-import type {ModelConfigUploaded, Quote, MultiModelQuote} from '../type'
+import {ModelConfigUploaded, Quote, MultiModelQuote} from '../type'
 
 export function getMultiModelQuotes(
-  modelConfigs: Array<ModelConfigUploaded>,
-  quotes: Array<Quote>
-): Array<MultiModelQuote> {
+  modelConfigs: ModelConfigUploaded[],
+  quotes: Quote[]
+): MultiModelQuote[] {
   // Filter out quotes which are not relevant for given modelConfigs
   const filteredQuotes = quotes.filter(quote =>
     modelConfigs.find(

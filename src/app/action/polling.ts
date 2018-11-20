@@ -12,7 +12,7 @@ import {
 
 import config from '../../../config'
 
-type StartActionParams = {
+export type StartActionParams = {
   pollingFunction: PollingFunction,
   pollingArgs?: PollingArgs,
   onSuccessActionCreator: PollingOnSuccessActionCreator,
@@ -21,21 +21,21 @@ type StartActionParams = {
   retryInterval?: number,
   maxRetries?: number
 }
-type StartActionPayload = {
+export type StartActionPayload = {
   pollingId: PollingId,
   retryInterval: number,
   maxRetries: number
 } & StartActionParams
 
-type StartAction = Action<'POLLING.START', StartActionPayload>
-type HandleResult = Action<
+export type StartAction = Action<'POLLING.START', StartActionPayload>
+export type HandleResultAction = Action<
   'POLLING.HANDLE_RESULT',
   {pollingId: PollingId, pollingResult: PollingResult}
 >
-type HandleRetryAction = Action<'POLLING.HANDLE_RETRY', {pollingId: PollingId}>
-type CancelAction = Action<'POLLING.CANCEL', {pollingId: PollingId}>
+export type HandleRetryAction = Action<'POLLING.HANDLE_RETRY', {pollingId: PollingId}>
+export type CancelAction = Action<'POLLING.CANCEL', {pollingId: PollingId}>
 
-export type PollingAction = StartAction | HandleResult | HandleRetryAction | CancelAction
+export type PollingAction = StartAction | HandleResultAction | HandleRetryAction | CancelAction
 
 export const start = (params: StartActionParams): StartAction => {
   const payload: StartActionPayload = {
@@ -54,7 +54,7 @@ export const start = (params: StartActionParams): StartAction => {
   }
 }
 
-export const handleResult = (pollingId: PollingId, pollingResult: PollingResult): HandleResult => ({
+export const handleResult = (pollingId: PollingId, pollingResult: PollingResult): HandleResultAction => ({
   type: 'POLLING.HANDLE_RESULT',
   payload: {
     pollingId,

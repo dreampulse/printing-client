@@ -1,25 +1,24 @@
-// import type {AppState as _AppState} from './reducer'
 import {Actions} from './action'
 
-export type Action<Type, Payload> = { type: Type; payload: Payload };
+export type Action<Type, Payload> = { type: Type; payload: Payload }
 
-export type MaterialConfigId = string;
-export type FinishGroupId = string;
-export type MaterialGroupId = string;
-export type MaterialId = string;
-export type QuoteId = string;
-export type VendorId = string;
-export type ConfigId = string;
-export type ShippingId = string;
-export type ModelId = string;
-export type ModelSceneId = string;
-export type FileId = string;
-export type PriceId = string;
-export type CartId = string;
-export type ConfigurationId = string;
-export type OrderId = string;
-export type PaymentId = string;
-export type UserId = string;
+export type MaterialConfigId = string
+export type FinishGroupId = string
+export type MaterialGroupId = string
+export type MaterialId = string
+export type QuoteId = string
+export type VendorId = string
+export type ConfigId = string
+export type ShippingId = string
+export type ModelId = string
+export type ModelSceneId = string
+export type FileId = string
+export type PriceId = string
+export type CartId = string
+export type ConfigurationId = string
+export type OrderId = string
+export type PaymentId = string
+export type UserId = string
 
 // Material structure json-schema
 // https://github.com/all3dp/material-structure/blob/master/src/schema.js
@@ -27,7 +26,7 @@ export type UserId = string;
 export type Notification = {
   message: string;
   warning?: boolean;
-};
+}
 
 export type PrintingService = {
   [vendorId: string]: {
@@ -39,7 +38,7 @@ export type PrintingService = {
     productionTimeFast: number;
     productionTimeSlow: number;
   };
-};
+}
 
 export type MaterialConfig = {
   id: MaterialConfigId;
@@ -51,7 +50,7 @@ export type MaterialConfig = {
   finishGroupId: FinishGroupId;
   materialId: MaterialId;
   materialGroupId: MaterialGroupId;
-};
+}
 
 export type FinishGroup = {
   id: FinishGroupId;
@@ -84,8 +83,8 @@ export type FinishGroup = {
     uvResistant: boolean;
     recyclable: boolean;
   };
-  materialConfigs: Array<MaterialConfig>;
-};
+  materialConfigs: MaterialConfig[];
+}
 
 export type Material = {
   id: MaterialId;
@@ -94,14 +93,14 @@ export type Material = {
   descriptionShort: string;
   materialGroupId: MaterialGroupId;
   featuredImage: string;
-  finishGroups: Array<FinishGroup>;
-};
+  finishGroups: FinishGroup[];
+}
 
 export type MaterialGroup = {
   id: MaterialGroupId;
   name: string;
-  materials: Array<Material>;
-};
+  materials: Material[];
+}
 
 export type UploadingFile = {
   fileId: FileId;
@@ -110,12 +109,12 @@ export type UploadingFile = {
   progress: number;
   error: boolean;
   errorMessage?: string;
-};
+}
 
 export type BackendModel = {
   modelId: ModelId;
   fileName: string;
-  fileUnit: "mm" | "cm" | "in";
+  fileUnit: 'mm' | 'cm' | 'in';
   area?: number;
   volume?: number;
   dimensions?: {
@@ -125,7 +124,7 @@ export type BackendModel = {
   };
   thumbnailUrl: string;
   sceneId?: ModelSceneId;
-};
+}
 
 export type Quote = {
   quoteId: QuoteId;
@@ -137,7 +136,7 @@ export type Quote = {
   quantity: number;
   currency: string;
   isPrintable: boolean;
-};
+}
 
 export type MultiModelQuote = {
   vendorId: VendorId;
@@ -146,8 +145,8 @@ export type MultiModelQuote = {
   grossPrice: number;
   currency: string;
   isPrintable: boolean;
-  quotes: Array<Quote>;
-};
+  quotes: Quote[];
+}
 
 export type Shipping = {
   shippingId: ShippingId;
@@ -157,34 +156,34 @@ export type Shipping = {
   price: number;
   grossPrice: number;
   currency: string;
-};
+}
 
 export type Offer = {
   multiModelQuote: MultiModelQuote;
   shipping: Shipping;
   totalGrossPrice: number;
-};
+}
 
 export type ModelConfigUploading = {
-  type: "UPLOADING";
+  type: 'UPLOADING';
   fileId: FileId;
   id: ConfigId;
-};
+}
 
 export type ModelConfigUploaded = {
-  type: "UPLOADED";
+  type: 'UPLOADED';
   quantity: number;
   modelId: ModelId;
   id: ConfigId;
-  quoteId?: QuoteId;
-  shippingId?: ShippingId;
-};
+  quoteId: QuoteId | null;
+  shippingId: ShippingId | null;
+}
 
-export type ModelConfig = ModelConfigUploading | ModelConfigUploaded;
+export type ModelConfig = ModelConfigUploading | ModelConfigUploaded
 
 export type Cart = {
   cartId: CartId;
-  shippingIds: Array<ShippingId>;
+  shippingIds: ShippingId[];
   subTotalPrice: number;
   shippingTotal: number;
   vatPercentage: number;
@@ -192,33 +191,33 @@ export type Cart = {
   totalPrice: number;
   totalNetPrice: number;
   currency: string;
-};
+}
 
 export type Location = {
   city: string;
   zipCode: string;
   stateCode: string;
   countryCode: string;
-};
+}
 
 export type Address = Location & {
   firstName: string;
   lastName: string;
   address: string;
   addressLine2?: string;
-};
+}
 
 export type GoogleMapsPlace = {
   address_components?: Array<{
-    types: Array<string>;
+    types: string[];
     short_name: string;
     long_name: string;
   }>;
-};
+}
 
-export type Features = { [key: string]: boolean };
+export type Features = { [key: string]: boolean }
 
-export type UrlParams = { [key: string]: string };
+export type UrlParams = { [key: string]: string }
 
 export type UtmParams = {
   source: string;
@@ -226,7 +225,7 @@ export type UtmParams = {
   campaign: string;
   term: string;
   content: string;
-};
+}
 
 export type User = {
   userId?: UserId;
@@ -240,7 +239,7 @@ export type User = {
   billingAddress: Address;
   saveAddress?: boolean;
   liableForVat: boolean;
-};
+}
 
 export enum ModalContentType {
   PICK_LOCATION= 'PICK_LOCATION',
@@ -255,16 +254,16 @@ export enum ModalContentType {
   ERROR= 'ERROR'
 }
 
-export type ModalConfigClosed = null;
+export type ModalConfigClosed = null
 export type ModalConfigOpened = {
   isCloseable: boolean;
   contentType: ModalContentType;
   contentProps: any;
-};
-export type ModalConfig = ModalConfigOpened | ModalConfigClosed;
+}
+export type ModalConfig = ModalConfigOpened | ModalConfigClosed
 
-export type TimeoutId = string;
-export type TimeoutCallId = string;
+export type TimeoutId = string
+export type TimeoutCallId = string
 export type TimeoutOnEndActionCreator = () => Actions
 
 export enum PollingStatus {
@@ -272,13 +271,13 @@ export enum PollingStatus {
   POLLING_DONE = 'POLLING_DONE'
 }
 
-export type PollingId = string;
-export type PollingArgs = Array<any>;
+export type PollingId = string
+export type PollingArgs = any[]
 export type PollingResult = {
   status: PollingStatus;
   result: any;
-};
-export type PollingFunction = (...args: PollingArgs) => PollingResult | Promise<PollingResult>;
+}
+export type PollingFunction = (...args: PollingArgs) => PollingResult | Promise<PollingResult>
 export type PollingOnSuccessActionCreator = (result: any) => Actions
 export type PollingOnPartialResultActionCreator = (result: any) => Actions
 export type PollingOnFailActionCreator = (error: Error) => Actions
@@ -287,16 +286,15 @@ export type ModelOnProgressActionCreator = (progress: number) => Actions
 
 export type HttpUploadOptions = {
   url: string;
-  // body: {[string]: string | Blob},
-  body: Blob;
+  body: any;
   headers?: Headers;
   method?: string;
   onProgress?: (progress: number) => void;
-};
+}
 export type HttpJsonResponse = {
   json: any;
   http: Response;
-};
+}
 
 // export type AppAction = _AppAction
 // export type AppState = _AppState

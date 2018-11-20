@@ -1,15 +1,15 @@
 // Easing functions (source: https://gist.github.com/gre/1650294)
 
 // No easing, no acceleration
-export const easeLinear = t => t
+export const easeLinear = (t: number) => t
 // Acceleration until halfway, then deceleration
-export const easeInOutQuad = t => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t)
+export const easeInOutQuad = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t)
 
-export const tween = (duration, fn, easingFn = easeLinear) => {
+export const tween = (duration: number, fn: (t: number) => void, easingFn = easeLinear) => {
   let isRunning = true
-  let startTimestamp
+  let startTimestamp: number
 
-  const animationStep = timestamp => {
+  const animationStep = (timestamp: number) => {
     if (!isRunning) {
       return
     } // Early return, aborts animation
@@ -28,11 +28,11 @@ export const tween = (duration, fn, easingFn = easeLinear) => {
     fn(easingFn(progress))
 
     if (progress < 1) {
-      global.requestAnimationFrame(animationStep) // Request next animation frame
+      window.requestAnimationFrame(animationStep) // Request next animation frame
     }
   }
 
-  global.requestAnimationFrame(animationStep)
+  window.requestAnimationFrame(animationStep)
 
   return {
     isRunning() {
@@ -44,8 +44,14 @@ export const tween = (duration, fn, easingFn = easeLinear) => {
   }
 }
 
-export const tweenFromTo = (from, to, duration, fn, easingFn) => {
-  const fromToFn = progress => {
+export const tweenFromTo = (
+  from: number,
+  to: number,
+  duration: number,
+  fn: (t: number) => void,
+  easingFn: (t: number) => number
+) => {
+  const fromToFn = (progress: number) => {
     const delta = to - from
     fn(from + delta * progress)
   }

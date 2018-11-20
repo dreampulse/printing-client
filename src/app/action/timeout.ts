@@ -1,7 +1,7 @@
 import uniqueId from 'lodash/uniqueId'
 import {Action, TimeoutId, TimeoutCallId, TimeoutOnEndActionCreator} from '../type'
 
-type StartAction = Action<
+export type StartAction = Action<
   'TIMEOUT.START',
   {
     timeoutId: TimeoutId
@@ -10,8 +10,8 @@ type StartAction = Action<
     delay: number
   }
 >
-type CancelAction = Action<'TIMEOUT.CANCEL', {timeoutId: TimeoutId}>
-type HandleEndAction = Action<'TIMEOUT.HANDLE_END', {timeoutCallId: TimeoutCallId}>
+export type CancelAction = Action<'TIMEOUT.CANCEL', {timeoutId: TimeoutId}>
+export type HandleEndAction = Action<'TIMEOUT.HANDLE_END', {timeoutCallId: TimeoutCallId}>
 
 export type TimeoutAction = StartAction | CancelAction | HandleEndAction
 

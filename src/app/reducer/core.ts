@@ -1,4 +1,4 @@
-import {loop, Cmd} from 'redux-loop'
+import {loop, Cmd, LoopReducer, Loop} from 'redux-loop'
 import invariant from 'invariant'
 import isEqual from 'lodash/isEqual'
 import keyBy from 'lodash/keyBy'
@@ -26,13 +26,9 @@ import {PriceRequest} from '../lib/printing-engine'
 import {getValidCurrency} from '../lib/currency'
 import {
   MaterialGroup,
-  MaterialGroupId,
   Material,
-  MaterialId,
   FinishGroup,
-  FinishGroupId,
   MaterialConfig,
-  MaterialConfigId,
   Location,
   Features,
   UploadingFile,
@@ -40,9 +36,6 @@ import {
   Quote,
   ModelConfig,
   ConfigId,
-  FileId,
-  ModelId,
-  QuoteId,
   PollingId,
   Shipping,
   User,
@@ -50,7 +43,8 @@ import {
   PaymentId,
   UrlParams,
   UserId,
-  PollingStatus
+  PollingStatus,
+  ModelConfigUploaded
 } from '../type'
 
 import {Actions} from '../action'
@@ -90,6 +84,8 @@ export type CoreState = {
   orderNumber: string | null
 }
 
+type CoreReducer = CoreState | Loop<CoreState, Actions>
+
 const initialState: CoreState = {
   materialGroups: {},
   materials: {},
@@ -117,7 +113,10 @@ const initialState: CoreState = {
 
 const createPriceRequestSingleton = singletonPromise()
 
-const init = (state: CoreState, {payload: {featureFlags, urlParams}}: coreActions.InitAction) =>
+const init = (
+  state: CoreState,
+  {payload: {featureFlags, urlParams}}: coreActions.InitAction
+): CoreReducer =>
   loop(
     {
       ...state,
@@ -139,7 +138,10 @@ const init = (state: CoreState, {payload: {featureFlags, urlParams}}: coreAction
     ])
   )
 
-const fatalError = (state: CoreState, {payload: error}: coreActions.FatalErrorAction) => {
+const fatalError = (
+  state: CoreState,
+  {payload: error}: coreActions.FatalErrorAction
+): CoreReducer => {
   // Ignore promise cancelled errors (e.g. when price request got cancelled)
   if (error.name === 'PromiseCancelledError') {
     return state
@@ -147,9 +149,9 @@ const fatalError = (state: CoreState, {payload: error}: coreActions.FatalErrorAc
 
   return loop(
     state,
-    Cmd.list([
+    Cmd.list<Actions>([
       Cmd.action(modalActions.openFatalErrorModal(error)),
-      Cmd.run(() => {
+      Cmd.run<Actions>(() => {
         // This will re-throw the error
         throw error
       })
@@ -160,7 +162,7 @@ const fatalError = (state: CoreState, {payload: error}: coreActions.FatalErrorAc
 const updateMaterialGroups = (
   state: CoreState,
   action: coreActions.UpdateMaterialGroupsAction
-) => ({
+): CoreReducer => ({
   ...state,
   materialGroups: getMaterialGroupLookupTable(action.payload.materialGroups),
   materials: getMaterialLookupTable(action.payload.materialGroups),
@@ -168,7 +170,10 @@ const updateMaterialGroups = (
   materialConfigs: getMaterialConfigLookupTable(action.payload.materialGroups)
 })
 
-const updateLocation = (state: CoreState, action: coreActions.UpdateLocationAction) => {
+const updateLocation = (
+  state: CoreState,
+  action: coreActions.UpdateLocationAction
+): CoreReducer => {
   const currency = state.currency || getValidCurrency(action.payload.location.countryCode)
 
   const nextState = {
@@ -226,7 +231,7 @@ const updateLocation = (state: CoreState, action: coreActions.UpdateLocationActi
   )
 }
 
-const updateUnit = (state: CoreState, action: coreActions.UpdateUnitAction) => ({
+const updateUnit = (state: CoreState, action: coreActions.UpdateUnitAction): CoreReducer => ({
   ...state,
   unit: action.payload.unit
 })
@@ -234,12 +239,15 @@ const updateUnit = (state: CoreState, action: coreActions.UpdateUnitAction) => (
 const updateUseSameMaterial = (
   state: CoreState,
   action: coreActions.UpdateUseSameMaterialAction
-) => ({
+): CoreReducer => ({
   ...state,
   useSameMaterial: action.payload
 })
 
-const updateCurrency = (state: CoreState, action: coreActions.UpdateCurrencyAction) => {
+const updateCurrency = (
+  state: CoreState,
+  action: coreActions.UpdateCurrencyAction
+): CoreReducer => {
   // Do nothing if currency did not change
   if (state.currency === action.payload.currency) {
     return state
@@ -268,12 +276,15 @@ const updateCurrency = (state: CoreState, action: coreActions.UpdateCurrencyActi
   )
 }
 
-const updateShippings = (state: CoreState, action: coreActions.UpdateShippingsAction) => ({
+const updateShippings = (
+  state: CoreState,
+  action: coreActions.UpdateShippingsAction
+): CoreReducer => ({
   ...state,
   shippings: action.payload
 })
 
-const saveUser = (state: CoreState, action: coreActions.SaveUserAction) =>
+const saveUser = (state: CoreState, action: coreActions.SaveUserAction): CoreReducer =>
   loop(
     {
       ...state,
@@ -304,16 +315,16 @@ const saveUser = (state: CoreState, action: coreActions.SaveUserAction) =>
     )
   )
 
-const userReceived = (state: CoreState, action: coreActions.UserReceivedAction) => ({
+const userReceived = (state: CoreState, action: coreActions.UserReceivedAction): CoreReducer => ({
   ...state,
   user: {
-    ...state.user,
+    ...(state.user as User),
     userId: action.payload.userId,
     liableForVat: action.payload.liableForVat
   }
 })
 
-const uploadFile = (state: CoreState, {payload}: modelActions.UploadFileAction) => {
+const uploadFile = (state: CoreState, {payload}: modelActions.UploadFileAction): CoreReducer => {
   const fileId = payload.fileId
 
   const file = {
@@ -324,7 +335,7 @@ const uploadFile = (state: CoreState, {payload}: modelActions.UploadFileAction) 
     error: false
   }
 
-  return loop(
+  return loop<CoreState, Actions>(
     {
       ...state,
       uploadingFiles: {
@@ -354,13 +365,19 @@ const uploadFile = (state: CoreState, {payload}: modelActions.UploadFileAction) 
   )
 }
 
-const uploadFiles = (state: CoreState, {payload: {files, unit}}: modelActions.UploadFilesAction) =>
+const uploadFiles = (
+  state: CoreState,
+  {payload: {files, unit}}: modelActions.UploadFilesAction
+): CoreReducer =>
   loop(
     state,
     Cmd.list(files.map((file, index) => Cmd.action(modelActions.uploadFile(file, unit, index))))
   )
 
-const uploadProgress = (state: CoreState, {payload}: modelActions.UploadProgressAction) => {
+const uploadProgress = (
+  state: CoreState,
+  {payload}: modelActions.UploadProgressAction
+): CoreReducer => {
   const fileId = payload.fileId
 
   invariant(state.uploadingFiles[fileId], `Error in uploadProgress(): File ${fileId} is unknown`)
@@ -377,7 +394,10 @@ const uploadProgress = (state: CoreState, {payload}: modelActions.UploadProgress
   }
 }
 
-const uploadComplete = (state: CoreState, {payload}: modelActions.UploadCompleteAction) => {
+const uploadComplete = (
+  state: CoreState,
+  {payload}: modelActions.UploadCompleteAction
+): CoreReducer => {
   const fileId = payload.fileId
   const models = payload.models
   const [model, ...additionalModels] = models
@@ -394,21 +414,21 @@ const uploadComplete = (state: CoreState, {payload}: modelActions.UploadComplete
     'Length of additionalModels out of sync'
   )
 
-  const additionalModelConfigs = zip(additionalModels, payload.additionalConfigIds).map(
-    ([m, configId]) => ({
-      type: 'UPLOADED',
-      quantity: 1,
-      modelId: m && m.modelId,
-      id: configId,
-      quoteId: null,
-      shippingId: null
-    })
-  )
+  const additionalModelConfigs = zip(additionalModels, payload.additionalConfigIds).map<
+    ModelConfigUploaded
+  >(([m, configId]) => ({
+    type: 'UPLOADED',
+    quantity: 1,
+    modelId: (m && m.modelId) || '-1',
+    id: configId || '-1',
+    quoteId: null,
+    shippingId: null
+  }))
 
-  let selectedModelConfigs = [
+  let selectedModelConfigs: string[] = [
     ...state.selectedModelConfigs,
     modelConfig.id,
-    ...additionalModelConfigs.map(m => m.id)
+    ...additionalModelConfigs.map<string>(m => m.id)
   ]
 
   if (!state.useSameMaterial) {
@@ -424,14 +444,14 @@ const uploadComplete = (state: CoreState, {payload}: modelActions.UploadComplete
     modelConfigs: [
       ...state.modelConfigs.map(item =>
         item.type === 'UPLOADING' && item.fileId === fileId
-          ? {
+          ? ({
               type: 'UPLOADED',
               quantity: 1,
               modelId: model.modelId,
               id: item.id,
               quoteId: null,
               shippingId: null
-            }
+            } as ModelConfigUploaded)
           : item
       ),
       ...additionalModelConfigs
@@ -440,7 +460,7 @@ const uploadComplete = (state: CoreState, {payload}: modelActions.UploadComplete
   }
 }
 
-const uploadFail = (state: CoreState, {payload}: modelActions.UploadFailAction) => {
+const uploadFail = (state: CoreState, {payload}: modelActions.UploadFailAction): CoreReducer => {
   const fileId = payload.fileId
 
   invariant(state.uploadingFiles[fileId], `Error in uploadFail(): File ${fileId} is unknown`)
@@ -458,12 +478,15 @@ const uploadFail = (state: CoreState, {payload}: modelActions.UploadFailAction) 
   }
 }
 
-const deleteModelConfigs = (state: CoreState, {payload}: modelActions.DeleteModelConfigsAction) => {
+const deleteModelConfigs = (
+  state: CoreState,
+  {payload}: modelActions.DeleteModelConfigsAction
+): CoreReducer => {
   const modelConfigsToDelete = state.modelConfigs.filter(
     modelConfig => payload.ids.indexOf(modelConfig.id) > -1
   )
-  const isModelConfigInCart = modelConfigsToDelete.some(
-    modelConfig => Boolean(modelConfig.type === 'UPLOADED' && modelConfig.quoteId)
+  const isModelConfigInCart = modelConfigsToDelete.some(modelConfig =>
+    Boolean(modelConfig.type === 'UPLOADED' && modelConfig.quoteId)
   )
 
   invariant(
@@ -495,7 +518,10 @@ const updateSelectedModelConfigs = (
   selectedModelConfigs: payload.ids
 })
 
-const updateQuantities = (state: CoreState, {payload}: modelActions.UpdateQuantitiesAction) => {
+const updateQuantities = (
+  state: CoreState,
+  {payload}: modelActions.UpdateQuantitiesAction
+): CoreReducer => {
   invariant(payload.quantity > 0, `Quantity has to be bigger than zero!`)
 
   return {
@@ -515,7 +541,7 @@ const updateQuantities = (state: CoreState, {payload}: modelActions.UpdateQuanti
 const duplicateModelConfig = (
   state: CoreState,
   {payload: {id, nextId}}: modelActions.DuplicateModelConfigAction
-) => {
+): CoreReducer => {
   const modelConfig = state.modelConfigs.find(item => item.id === id) as ModelConfig
 
   invariant(modelConfig, `Error in duplicateModelConfig(): Model Config id ${id} is unknown`)
@@ -543,7 +569,7 @@ const duplicateModelConfig = (
 const receiveQuotes = (
   state: CoreState,
   {payload: {countryCode, currency, modelConfigs, refresh}}: quoteActions.ReceiveQuotesAction
-) => {
+): CoreReducer => {
   const priceRequest: PriceRequest = {
     refresh,
     countryCode,
@@ -576,7 +602,7 @@ const receiveQuotes = (
 const startPollingQuotes = (
   state: CoreState,
   {payload: {priceId}}: quoteActions.StartPollingQuotesAction
-) => {
+): CoreReducer => {
   const startPollingAction = pollingActions.start({
     pollingFunction: async () => {
       const quotesResponse = await printingEngine.getQuotes(priceId)
@@ -611,7 +637,7 @@ const startPollingQuotes = (
 const quotesReceived = (
   state: CoreState,
   {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceived
-) => ({
+): CoreReducer => ({
   ...state,
   quotes: {
     ...state.quotes,
@@ -662,7 +688,7 @@ const addToCart = (
     Cmd.action(cartActions.createCart())
   )
 
-const createCart = (state: CoreState) => {
+const createCart = (state: CoreState): CoreReducer => {
   const modelConfigs = state.modelConfigs.filter(
     modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
   )
@@ -701,12 +727,18 @@ const createCart = (state: CoreState) => {
   )
 }
 
-const cartReceived = (state: CoreState, {payload: {cart}}: cartActions.CartReceivedAction) => ({
+const cartReceived = (
+  state: CoreState,
+  {payload: {cart}}: cartActions.CartReceivedAction
+): CoreReducer => ({
   ...state,
   cart
 })
 
-const paid = (state: CoreState, {payload: {paymentId, orderNumber}}: orderActions.PaidAction) => ({
+const paid = (
+  state: CoreState,
+  {payload: {paymentId, orderNumber}}: orderActions.PaidAction
+): CoreReducer => ({
   ...state,
   paymentId,
   orderNumber
@@ -715,10 +747,10 @@ const paid = (state: CoreState, {payload: {paymentId, orderNumber}}: orderAction
 const executePaypalPayment = (
   state: CoreState,
   {payload}: orderActions.ExecutePaypalPaymentAction
-) =>
+): CoreReducer =>
   loop(
     state,
-    Cmd.run(printingEngine.executePaypalPayment, {
+    Cmd.run<Actions>(printingEngine.executePaypalPayment, {
       args: [state.paymentId, {payerId: payload.payerID}]
     })
   )
@@ -726,7 +758,7 @@ const executePaypalPayment = (
 const loadConfiguration = (
   state: CoreState,
   {payload: {id}}: configurationActions.LoadConfigurationAction
-) =>
+): CoreReducer =>
   loop(
     state,
     Cmd.run<Actions>(printingEngine.getConfiguration, {
@@ -739,15 +771,18 @@ const loadConfiguration = (
 const configurationReceived = (
   state: CoreState,
   {payload: {items}}: configurationActions.ConfigurationReceivedAction
-) => {
-  const modelConfigs = items.map(item => ({
-    id: item.id,
-    quoteId: null,
-    shippingId: null,
-    modelId: item.modelId,
-    quantity: item.quantity,
-    type: 'UPLOADED'
-  }))
+): CoreReducer => {
+  const modelConfigs = items.map(
+    item =>
+      ({
+        id: item.id,
+        quoteId: null,
+        shippingId: null,
+        modelId: item.modelId,
+        quantity: item.quantity,
+        type: 'UPLOADED'
+      } as ModelConfigUploaded)
+  )
 
   const backendModels: {[modelId: string]: BackendModel} = {}
   items.forEach(item => {
@@ -762,7 +797,7 @@ const configurationReceived = (
   }
 }
 
-const reset = (state: CoreState) => ({
+const reset = (state: CoreState): CoreReducer => ({
   ...state,
   ...omit(initialState, 'materialGroups', 'location', 'featureFlags', 'shippings', 'urlParams'),
   user: {
@@ -770,10 +805,7 @@ const reset = (state: CoreState) => ({
   }
 })
 
-export const reducer = (
-    state: CoreState = initialState,
-    action: Actions
-  ) => {
+export const reducer = (state: CoreState = initialState, action: Actions): CoreReducer => {
   switch (action.type) {
     case 'CORE.INIT':
       return init(state, action)

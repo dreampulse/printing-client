@@ -1,12 +1,10 @@
-// @flow
 import invariant from 'invariant'
 import compact from 'lodash/compact'
 import unzip from 'lodash/unzip'
 import sum from 'lodash/sum'
 import uniq from 'lodash/uniq'
 
-import type {
-  AppState,
+import {
   ModelConfig,
   UploadingFile,
   ConfigId,
@@ -14,10 +12,12 @@ import type {
   MaterialConfigId,
   FinishGroupId,
   MaterialId,
-  MaterialGroupId
+  MaterialGroupId,
+  MaterialConfig
 } from '../type'
+import {AppState} from '../reducer'
 
-export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile | BackendModel> =>
+export const selectModelsOfModelConfigs = (state: AppState): Array<UploadingFile| BackendModel> =>
   state.core.modelConfigs.map(modelConfig =>
     modelConfig.type === 'UPLOADED'
       ? state.core.backendModels[modelConfig.modelId]
@@ -49,14 +49,14 @@ export const selectCartCount = (state: AppState) =>
 export const selectUploadedModelConfigs = (state: AppState) =>
   state.core.modelConfigs.filter(modelConfig => modelConfig.type === 'UPLOADED')
 
-export const selectSelectedModelConfigs = (state: AppState): Array<ModelConfig> =>
+export const selectSelectedModelConfigs = (state: AppState): ModelConfig[] =>
   state.core.selectedModelConfigs.map(id => {
-    const item = state.core.modelConfigs.find(modelConfig => modelConfig.id === id)
+    const item = state.core.modelConfigs.find(modelConfig => modelConfig.id === id) as ModelConfig
     invariant(item, `ModelConfig for selectedModelConfig ${id} not found!`)
     return item
   })
 
-export const selectModelConfigsByIds = (state: AppState, configIds: Array<ConfigId>) =>
+export const selectModelConfigsByIds = (state: AppState, configIds: ConfigId[]) =>
   state.core.modelConfigs.filter(modelConfig => configIds.includes(modelConfig.id))
 
 export const selectCartShippings = (state: AppState) => {
@@ -72,12 +72,12 @@ export const selectCartShippings = (state: AppState) => {
 
 export const selectCommonMaterialPathOfModelConfigs = (
   state: AppState,
-  configIds: Array<ConfigId>
+  configIds: ConfigId[]
 ): {
-  materialConfigId: ?MaterialConfigId,
-  finishGroupId: ?FinishGroupId,
-  materialId: ?MaterialId,
-  materialGroupId: ?MaterialGroupId
+  materialConfigId: MaterialConfigId | null,
+  finishGroupId: FinishGroupId | null,
+  materialId: MaterialId | null,
+  materialGroupId: MaterialGroupId | null
 } => {
   const modelConfigs = selectModelConfigsByIds(state, configIds)
   const materialConfigs = compact(
@@ -90,7 +90,7 @@ export const selectCommonMaterialPathOfModelConfigs = (
     })
   )
 
-  const findCommonProperty = (arr, getProperty) => {
+  const findCommonProperty = (arr: MaterialConfig[], getProperty: (materialConfig: MaterialConfig) => string): any => {
     const commonProperty = arr.length > 0 ? getProperty(arr[0]) : null
     return arr.every(item => getProperty(item) === commonProperty) ? commonProperty : null
   }
@@ -110,14 +110,14 @@ export const selectCommonMaterialPathOfModelConfigs = (
 }
 
 export const selectConfiguredModelInformation = (state: AppState) =>
-  unzip([
+  unzip<any>([
     state.core.modelConfigs,
     selectModelsOfModelConfigs(state),
     selectShippingsOfModelConfigs(state),
     selectQuotesOfModelConfigs(state)
   ])
     .filter(([modelConfig]) => {
-      const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
+      const mc: ModelConfig = modelConfig
       return mc.type === 'UPLOADED' && mc.quoteId !== null
     })
     .map(([modelConfig, model, shipping, quote]: any) => {
@@ -155,7 +155,7 @@ export const selectQuotes = (state: AppState) => Object.values(state.core.quotes
 
 export const selectUsedShippingIdsAndFilter = (
   state: AppState,
-  excludeConfigIds: Array<ConfigId> = []
+  excludeConfigIds: ConfigId[] = []
 ) =>
   uniq(
     compact(

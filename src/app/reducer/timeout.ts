@@ -2,25 +2,29 @@
 
 import omit from 'lodash/omit'
 import findKey from 'lodash/findKey'
-import {loop, Cmd} from 'redux-loop'
-import timeout from 'timeout-as-promise'
-import type {AppAction, TimeoutId, TimeoutCallId, TimeoutOnEndActionCreator} from '../type'
-import * as timeoutAction from '../action/timeout'
+import {loop, Cmd, Loop} from 'redux-loop'
+// @ts-ignore
+import timeout from 'timeout-as-promise'  // TODO: fix later and remove dependency
+import {TimeoutCallId, TimeoutOnEndActionCreator} from '../type'
+import {Actions} from '../action'
+import * as timeoutActions from '../action/timeout'
 
 export type TimeoutState = {
   activeTimeouts: {
-    [id: TimeoutId]: {
+    [timeoutId: string]: {
       timeoutCallId: TimeoutCallId,
       onEndActionCreator: TimeoutOnEndActionCreator
     }
   }
 }
 
+type TimeoutReducer = TimeoutState | Loop<TimeoutState, Actions>
+
 const initialState: TimeoutState = {
   activeTimeouts: {}
 }
 
-const start = (state, action) => {
+const start = (state: TimeoutState, action: timeoutActions.StartAction): TimeoutReducer => {
   const {timeoutId, timeoutCallId, delay, onEndActionCreator} = action.payload
 
   return loop(
@@ -36,12 +40,12 @@ const start = (state, action) => {
     },
     Cmd.run(timeout, {
       args: [delay],
-      successActionCreator: () => timeoutAction.handleEnd(timeoutCallId)
+      successActionCreator: () => timeoutActions.handleEnd(timeoutCallId)
     })
   )
 }
 
-const cancel = (state, action) => {
+const cancel = (state: TimeoutState, action: timeoutActions.CancelAction): TimeoutReducer => {
   const {timeoutId} = action.payload
 
   return timeoutId in state.activeTimeouts
@@ -52,7 +56,7 @@ const cancel = (state, action) => {
     : state
 }
 
-const handleEnd = (state, action) => {
+const handleEnd = (state: TimeoutState, action: timeoutActions.HandleEndAction): TimeoutReducer => {
   const {timeoutCallId} = action.payload
   const timeoutId = findKey(state.activeTimeouts, t => t.timeoutCallId === timeoutCallId)
 
@@ -71,7 +75,7 @@ const handleEnd = (state, action) => {
   )
 }
 
-export const reducer = (state: TimeoutState = initialState, action: AppAction): TimeoutState => {
+export const reducer = (state: TimeoutState = initialState, action: Actions): TimeoutReducer => {
   switch (action.type) {
     case 'TIMEOUT.START':
       return start(state, action)

@@ -1,9 +1,8 @@
-// @flow
 import keyBy from 'lodash/keyBy'
 
-import type {ModelConfig, Quote, Shipping, ConfigId} from '../type'
+import {ModelConfig, Quote, Shipping, ConfigId} from '../type'
 
-export const resetModelConfigs = (modelConfigs: Array<ModelConfig>) =>
+export const resetModelConfigs = (modelConfigs: ModelConfig[]): ModelConfig[] =>
   modelConfigs.map(modelConfig => {
     if (modelConfig.type === 'UPLOADED') {
       return {
@@ -15,13 +14,13 @@ export const resetModelConfigs = (modelConfigs: Array<ModelConfig>) =>
     return modelConfig
   })
 
-export const hasModelConfigWithQuote = (modelConfigs: Array<ModelConfig>) =>
-  modelConfigs.some(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId)
+export const hasModelConfigWithQuote = (modelConfigs: ModelConfig[]) =>
+  modelConfigs.some(modelConfig => modelConfig.type === 'UPLOADED' && !!modelConfig.quoteId)
 
 export const setQuotesAndShippingInModelConfigs = (
-  modelConfigs: Array<ModelConfig>,
-  configIds: Array<ConfigId>,
-  quotes: Array<Quote>,
+  modelConfigs: ModelConfig[],
+  configIds: ConfigId[],
+  quotes: Quote[],
   shipping: Shipping
 ) => {
   const configIdMap = keyBy(configIds, id => id)

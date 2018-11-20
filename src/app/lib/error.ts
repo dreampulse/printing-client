@@ -1,5 +1,3 @@
-// @flow
-
 export type ErrorType =
   | 'HTTP_RESPONSE_UNEXPECTED_STATUS_ERROR'
   | 'HTTP_RESPONSE_BODY_PARSE_ERROR'
@@ -9,7 +7,7 @@ export type ErrorType =
 // TODO: Make this private. There should be a dedicated error class for every error type
 export class AppError extends Error {
   // TODO: This should just be ErrorType in the future
-  type: ErrorType | string
+  private type: ErrorType | string
   constructor(type: ErrorType | string, message: string) {
     super(`${message} (${type})`)
     this.type = type
@@ -17,7 +15,7 @@ export class AppError extends Error {
 }
 
 export class PaymentAbortedError extends AppError {
-  static TYPE: string = 'PAYMENT_ABORTED_ERROR'
+  public static TYPE: string = 'PAYMENT_ABORTED_ERROR'
 
   constructor() {
     super(PaymentAbortedError.TYPE, 'Payment aborted by user.')
@@ -25,9 +23,9 @@ export class PaymentAbortedError extends AppError {
 }
 
 export class HttpResponseUnexpectedStatusError extends AppError {
-  static TYPE: string = 'HTTP_RESPONSE_UNEXPECTED_STATUS_ERROR'
-  response: Response
-  bodyText: string | null
+  public static TYPE: string = 'HTTP_RESPONSE_UNEXPECTED_STATUS_ERROR'
+  private response: Response
+  private bodyText: string | null
   constructor(expectedStatus: string, response: Response, bodyText: string | null = null) {
     super(
       HttpResponseUnexpectedStatusError.TYPE,
@@ -41,9 +39,9 @@ export class HttpResponseUnexpectedStatusError extends AppError {
 }
 
 export class HttpResponseBodyParseError extends AppError {
-  static TYPE = 'HTTP_RESPONSE_BODY_PARSE_ERROR'
-  response: Response
-  bodyText: string | null
+  public static TYPE = 'HTTP_RESPONSE_BODY_PARSE_ERROR'
+  private response: Response
+  private bodyText: string | null
   constructor(cause: string, response: Response, bodyText: string | null = null) {
     super(HttpResponseBodyParseError.TYPE, `Cannot parse response from ${response.url}: ${cause}`)
     this.response = response
@@ -51,19 +49,20 @@ export class HttpResponseBodyParseError extends AppError {
   }
 }
 
-type HttpUploadErrorPhase = 'UPLOADING' | 'DOWNLOADING'
+export enum HttpUploadErrorPhase {
+  UPLOADING = 'UPLOADING',
+  DOWNLOADING = 'DOWNLOADING'
+}
 export class HttpUploadError extends AppError {
-  static TYPE = 'HTTP_UPLOAD_ERROR'
-  static PHASE_UPLOADING = 'UPLOADING'
-  static PHASE_DOWNLOADING = 'DOWNLOADING'
-  method: string
-  url: string
-  phase: HttpUploadErrorPhase
+  public static TYPE = 'HTTP_UPLOAD_ERROR'
+
+  private url: string
+  private phase: HttpUploadErrorPhase
   constructor(method: string, url: string, during: HttpUploadErrorPhase) {
     super(
       HttpUploadError.TYPE,
       `${method} ${url} failed ${
-        during === HttpUploadError.PHASE_UPLOADING
+        during === HttpUploadErrorPhase.UPLOADING
           ? 'during upload'
           : 'after upload while downloading the response'
       }.`

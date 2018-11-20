@@ -1,15 +1,15 @@
-// NO FLOW HERE BECAUSE FLOW DOESN'T IMPLEMENT LODASH keyBy, flatMap CORRECTLY
 import keyBy from 'lodash/keyBy'
 import flatMap from 'lodash/flatMap'
 import config from '../../../config'
+import {MaterialGroup} from '../type'
 
-export const getMaterialGroupLookupTable = materialGroups =>
+export const getMaterialGroupLookupTable = (materialGroups: MaterialGroup[]) =>
   keyBy(materialGroups, materialGroup => materialGroup.id)
 
-export const getMaterialLookupTable = materialGroups =>
+export const getMaterialLookupTable = (materialGroups: MaterialGroup[]) =>
   keyBy(flatMap(materialGroups, materialGroup => materialGroup.materials), item => item.id)
 
-export const getFinishGroupLookupTable = materialGroups =>
+export const getFinishGroupLookupTable = (materialGroups: MaterialGroup[]) =>
   keyBy(
     flatMap(materialGroups, materialGroup =>
       flatMap(materialGroup.materials, material => material.finishGroups)
@@ -17,7 +17,7 @@ export const getFinishGroupLookupTable = materialGroups =>
     item => item.id
   )
 
-export const getMaterialConfigLookupTable = materialGroups =>
+export const getMaterialConfigLookupTable = (materialGroups: MaterialGroup[]) =>
   keyBy(
     flatMap(materialGroups, materialGroup =>
       flatMap(materialGroup.materials, material =>
@@ -27,6 +27,6 @@ export const getMaterialConfigLookupTable = materialGroups =>
     item => item.id
   )
 
-export function getProviderName(vendorId) {
+export function getProviderName(vendorId: keyof typeof config.providerNames) {
   return config.providerNames[vendorId] || vendorId
 }

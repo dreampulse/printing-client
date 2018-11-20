@@ -1,8 +1,7 @@
-// @flow
-import type {ModelConfig} from '../type'
+import {ModelConfig} from '../type'
 
-export const getCommonQuantity = (selectedModelConfigs: Array<ModelConfig>): ?number => {
-  const result = selectedModelConfigs.reduce((quantity, modelConfig) => {
+export const getCommonQuantity = (selectedModelConfigs: ModelConfig[]) => {
+  const result = selectedModelConfigs.reduce<number | null>((quantity, modelConfig) => {
     if (modelConfig.type !== 'UPLOADED') {
       return quantity
     }

@@ -1,6 +1,4 @@
-// @flow
-
-import type {HttpJsonResponse, HttpUploadOptions} from '../type'
+import {HttpJsonResponse, HttpUploadOptions} from '../type'
 import {HttpResponseUnexpectedStatusError, HttpResponseBodyParseError} from './error'
 import * as http from '../service/http'
 
@@ -36,13 +34,13 @@ const processResponse = async (response: Response): Promise<HttpJsonResponse> =>
 
 export const fetch = async (
   url: string,
-  options?: {
-    headers?: {[string]: string},
-    method?: string,
+  options: {
+    headers?: {[header: string]: string}
+    method?: string
     body?: any
   } = {}
 ): Promise<HttpJsonResponse> => {
-  const fetchOptions: RequestOptions = {
+  const fetchOptions: RequestInit = {
     headers: new http.Headers(options.headers || {'Content-Type': 'application/json'}),
     method: options.method || 'GET'
   }

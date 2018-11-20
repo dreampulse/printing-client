@@ -1,16 +1,15 @@
-// Not using the "global" object here so that flow picks up the correct types.
-/* global fetch, Response, XMLHttpRequest, FormData */
 import 'whatwg-fetch'
 
-import {HttpUploadError} from '../lib/error'
+import {HttpUploadError, HttpUploadErrorPhase} from '../lib/error'
+import {HttpUploadOptions} from '../type'
 
 // If fetch is called on a different object, an illegal invocation error is thrown. Therefore we need to bind() it.
 const boundFetch = fetch.bind(null)
-const Headers = global.Headers
+const headersCopy = Headers
 
-export {Headers, boundFetch as fetch}
+export {headersCopy as Headers, boundFetch as fetch}
 
-const responseFromXhr = xhr =>
+const responseFromXhr = (xhr: XMLHttpRequest) =>
   new Response(xhr.responseText, {
     status: xhr.status,
     statusText: xhr.statusText,
@@ -25,16 +24,16 @@ const responseFromXhr = xhr =>
       }, new Headers())
   })
 
-export const upload = ({url, body, headers, method = 'POST', onProgress}) =>
+export const upload = ({url, body, headers, method = 'POST', onProgress}: HttpUploadOptions): Promise<Response> =>
   new Promise((resolve, reject) => {
     const urlAsString = url.toString()
     const methodUppercase = method.toUpperCase()
     const xhr = new XMLHttpRequest()
     const form = new FormData()
     const rejectWithUploadErrorWhileUploading = () =>
-      reject(new HttpUploadError(methodUppercase, urlAsString, HttpUploadError.PHASE_UPLOADING))
+      reject(new HttpUploadError(methodUppercase, urlAsString, HttpUploadErrorPhase.UPLOADING))
     const rejectWithUploadErrorWhileDownloading = () =>
-      reject(new HttpUploadError(methodUppercase, urlAsString, HttpUploadError.PHASE_DOWNLOADING))
+      reject(new HttpUploadError(methodUppercase, urlAsString, HttpUploadErrorPhase.DOWNLOADING))
 
     if (onProgress) {
       xhr.upload.addEventListener('progress', event => {
@@ -58,7 +57,7 @@ export const upload = ({url, body, headers, method = 'POST', onProgress}) =>
 
     xhr.open(method.toUpperCase(), urlAsString)
     Object.entries(body).forEach(([key, value]) => {
-      form.append(key, value)
+      form.append(key, value as any)
     })
     xhr.send(form)
   })

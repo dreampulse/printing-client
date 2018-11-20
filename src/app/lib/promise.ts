@@ -1,5 +1,3 @@
-// @flow
-
 export class PromiseCancelledError extends Error {
   constructor() {
     super('Promise cancelled.')
@@ -7,10 +5,10 @@ export class PromiseCancelledError extends Error {
   }
 }
 
-export const cancelablePromise = (promise: Promise<any>) => {
+export const cancelablePromise = <T>(promise: Promise<T>) => {
   let hasCanceled = false
 
-  const wrappedPromise: Promise<any> = new Promise((resolve, reject) => {
+  const wrappedPromise: Promise<T> = new Promise((resolve, reject) => {
     promise.then(
       val => (hasCanceled ? reject(new PromiseCancelledError()) : resolve(val)),
       error => (hasCanceled ? reject(new PromiseCancelledError()) : reject(error))
@@ -25,10 +23,10 @@ export const cancelablePromise = (promise: Promise<any>) => {
   }
 }
 
-export const singletonPromise = () => {
-  let storedPromise: {promise: Promise<any>, cancel: () => void}
+export const singletonPromise = <T>() => {
+  let storedPromise: {promise: Promise<T>, cancel: () => void}
 
-  return (promise: Promise<any>): Promise<any> => {
+  return (promise: Promise<T>): Promise<T> => {
     // Cancel old promise
     if (storedPromise) {
       storedPromise.cancel()

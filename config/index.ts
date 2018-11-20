@@ -1,5 +1,6 @@
 import developmentSettings from './development'
 import productionSettings from './production'
+import defaultConfig from './default'
 
 function chooseConfig() {
   if (process.env.NODE_ENV === 'production') {
@@ -8,4 +9,6 @@ function chooseConfig() {
   return developmentSettings
 }
 
-export default chooseConfig()
+const config: typeof defaultConfig = chooseConfig()
+
+export default config

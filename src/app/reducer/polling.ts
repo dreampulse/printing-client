@@ -1,42 +1,41 @@
-// @flow
-
 import omit from 'lodash/omit'
-import {loop, Cmd} from 'redux-loop'
+import {loop, Cmd, ActionCmd, Loop} from 'redux-loop'
 import invariant from 'invariant'
-import type {
-  AppAction,
+import {
   TimeoutId,
-  PollingId,
   PollingFunction,
   PollingArgs,
   PollingOnSuccessActionCreator,
   PollingOnFailActionCreator,
   PollingOnPartialResultActionCreator
 } from '../type'
-import * as pollingAction from '../action/polling'
-import * as timeoutAction from '../action/timeout'
+import {Actions} from '../action'
+import * as pollingActions from '../action/polling'
+import * as timeoutActions from '../action/timeout'
 
 export type PollingState = {
   activePollings: {
-    [id: PollingId]: {
-      pollingFunction: PollingFunction,
-      pollingArgs: PollingArgs,
-      onSuccessActionCreator: PollingOnSuccessActionCreator,
-      onFailActionCreator: PollingOnFailActionCreator,
-      onPartialResultActionCreator: PollingOnPartialResultActionCreator,
-      retryInterval: number,
-      remainingRetries: number,
-      timeoutId: TimeoutId | null,
+    [pollingId: string]: {
+      pollingFunction: PollingFunction
+      pollingArgs: PollingArgs
+      onSuccessActionCreator: PollingOnSuccessActionCreator
+      onFailActionCreator: PollingOnFailActionCreator
+      onPartialResultActionCreator: PollingOnPartialResultActionCreator
+      retryInterval: number
+      remainingRetries: number
+      timeoutId: TimeoutId | null
       currentState: 'POLLING' | 'WAITING_FOR_NEXT_RETRY'
     }
   }
 }
 
+type PollingReducer = PollingState | Loop<PollingState, Actions>
+
 const initialState: PollingState = {
   activePollings: {}
 }
 
-const startTry = (state, pollingId, activePolling) => {
+const startTry = (state: PollingState, pollingId: string, activePolling: any) => {
   const {pollingFunction, pollingArgs, onFailActionCreator} = activePolling
 
   return loop(
@@ -53,13 +52,18 @@ const startTry = (state, pollingId, activePolling) => {
     },
     Cmd.run(pollingFunction, {
       args: pollingArgs,
-      successActionCreator: pollingResult => pollingAction.handleResult(pollingId, pollingResult),
+      successActionCreator: pollingResult => pollingActions.handleResult(pollingId, pollingResult),
       failActionCreator: onFailActionCreator
     })
   )
 }
 
-const assertActivePollingInState = (handler, state, action, pollingState) => {
+const assertActivePollingInState = (
+  handler: string,
+  state: PollingState,
+  action: any,
+  pollingState: string
+) => {
   const {pollingId} = action.payload
   const activePolling = state.activePollings[pollingId]
 
@@ -72,7 +76,7 @@ const assertActivePollingInState = (handler, state, action, pollingState) => {
   )
 }
 
-const start = (state, action) => {
+const start = (state: PollingState, action: pollingActions.StartAction): PollingReducer => {
   const {
     pollingId,
     pollingFunction,
@@ -100,7 +104,10 @@ const start = (state, action) => {
   })
 }
 
-const handleSuccess = (state, action) => {
+const handleSuccess = (
+  state: PollingState,
+  action: pollingActions.HandleResultAction
+): PollingReducer => {
   const {
     pollingId,
     pollingResult: {result}
@@ -116,7 +123,10 @@ const handleSuccess = (state, action) => {
   )
 }
 
-const handleFailNoRemainingRetries = (state, action) => {
+const handleFailNoRemainingRetries = (
+  state: PollingState,
+  action: pollingActions.HandleResultAction
+): PollingReducer => {
   const {pollingId} = action.payload
 
   return {
@@ -125,23 +135,26 @@ const handleFailNoRemainingRetries = (state, action) => {
   }
 }
 
-const handleFailWithRemainingRetries = (state, action) => {
+const handleFailWithRemainingRetries = (
+  state: PollingState,
+  action: pollingActions.HandleResultAction
+): PollingReducer => {
   const {
     pollingId,
     pollingResult: {result}
   } = action.payload
   const activePolling = state.activePollings[pollingId]
   const {retryInterval} = activePolling
-  const onTimeoutEndActionCreator = () => pollingAction.handleRetry(pollingId)
-  const timeoutStartAction = timeoutAction.start(onTimeoutEndActionCreator, retryInterval)
+  const onTimeoutEndActionCreator = () => pollingActions.handleRetry(pollingId)
+  const timeoutStartAction = timeoutActions.start(onTimeoutEndActionCreator, retryInterval)
 
-  const cmds = [Cmd.action(timeoutStartAction)]
+  const cmds: Array<ActionCmd<Actions>> = [Cmd.action(timeoutStartAction)]
 
   if (activePolling.onPartialResultActionCreator) {
     cmds.push(Cmd.action(activePolling.onPartialResultActionCreator(result)))
   }
 
-  return loop(
+  return loop<PollingState, Actions>(
     {
       ...state,
       activePollings: {
@@ -157,7 +170,10 @@ const handleFailWithRemainingRetries = (state, action) => {
   )
 }
 
-const handleResult = (state, action) => {
+const handleResult = (
+  state: PollingState,
+  action: pollingActions.HandleResultAction
+): PollingReducer => {
   const {
     pollingId,
     pollingResult: {status}
@@ -179,7 +195,10 @@ const handleResult = (state, action) => {
   return handleSuccess(state, action)
 }
 
-const handleRetry = (state, action) => {
+const handleRetry = (
+  state: PollingState,
+  action: pollingActions.HandleRetryAction
+): PollingReducer => {
   assertActivePollingInState('retry', state, action, 'WAITING_FOR_NEXT_RETRY')
 
   const {pollingId} = action.payload
@@ -193,7 +212,7 @@ const handleRetry = (state, action) => {
   })
 }
 
-const cancel = (state, action) => {
+const cancel = (state: PollingState, action: pollingActions.CancelAction): PollingReducer => {
   const {pollingId} = action.payload
   const activePollings = state.activePollings
 
@@ -209,20 +228,20 @@ const cancel = (state, action) => {
 
   return activePolling.timeoutId === null
     ? newState
-    : loop(newState, Cmd.action(timeoutAction.cancel(activePolling.timeoutId)))
+    : loop(newState, Cmd.action(timeoutActions.cancel(activePolling.timeoutId)))
 }
 
-const reset = state =>
+const reset = (state: PollingState): PollingReducer =>
   loop(
     state,
     Cmd.list(
       Object.keys(state.activePollings).map(pollingId =>
-        Cmd.action(pollingAction.cancel(pollingId))
+        Cmd.action(pollingActions.cancel(pollingId))
       )
     )
   )
 
-export const reducer = (state: PollingState = initialState, action: AppAction): PollingState => {
+export const reducer = (state: PollingState = initialState, action: Actions): PollingReducer => {
   switch (action.type) {
     case 'POLLING.START':
       return start(state, action)

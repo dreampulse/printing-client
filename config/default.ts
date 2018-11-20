@@ -31,5 +31,6 @@ export default {
     trinckle: 'Trinckle',
     treatstock: 'Treatstock'
   },
-  localStorageAddressKey: 'address_v2'
+  localStorageAddressKey: 'address_v2',
+  printingEngineBaseUrl: 'http://localhost:8000'
 }
