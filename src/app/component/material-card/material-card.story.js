@@ -9,7 +9,6 @@ import SelectMenu from '../select-menu'
 import Info from '../info'
 import Headline from '../headline'
 import Paragraph from '../paragraph'
-import Link from '../link'
 
 import HandleValue from '../../../../stories/util/handle-value'
 import {selectMenuColorValues} from '../../../../stories/util/data'
@@ -130,9 +129,6 @@ storiesOf('Material Card', module)
   .add('unavailable', () => (
     <MaterialCard
       unavailable
-      unavailableLink={
-        <Link label="Click here to fix it!" href="#" onClick={action('link click')} />
-      }
       title="Polyamide"
       description="Best all-round material"
       price={price}
@@ -141,5 +137,6 @@ storiesOf('Material Card', module)
       onMoreClick={action('onMoreClick')}
       colorSelect={colorSelect}
       onSelectClick={action('onSelectClick')}
+      onUnavailableClick={action('onUnavailableClick')}
     />
   ))

@@ -132,6 +132,10 @@ const MaterialPartial = ({
 
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
+  const openModelRepairPage = () => {
+    window.open('https://all3dp.layr.co/fix', '_blank')
+  }
+
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
       const bestOffer = getBestMultiModelOfferForMaterial(
@@ -161,7 +165,6 @@ const MaterialPartial = ({
           loading={!bestOffer}
           selected={selectedMaterial && selectedMaterial.id === material.id}
           unavailable={!bestOffer && isPollingDone}
-          unavailableLink={<Link label="Click here to fix it!" href="#" />}
           onSelectClick={() => {
             selectMaterial(material.id)
             scrollTo('#section-finish')
@@ -169,6 +172,7 @@ const MaterialPartial = ({
           onMoreClick={() => {
             openMaterialModal(material.id)
           }}
+          onUnavailableClick={openModelRepairPage}
         />
       )
     }
@@ -321,6 +325,7 @@ const MaterialPartial = ({
           onMoreClick={() => {
             openFinishGroupModal(finishGroup.id)
           }}
+          onUnavailableClick={openModelRepairPage}
         />
       )
     }
