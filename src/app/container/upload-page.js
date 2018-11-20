@@ -73,18 +73,24 @@ const UploadPage = ({
     <React.Fragment>
       <Section>
         <Headline
-          label="Yeah do this!"
+          label="Make it Printable"
           modifiers={['l', 'light']}
-          classNames={['u-margin-bottom-xxl', 'u-align-center']}
+          classNames={['u-margin-bottom-l', 'u-align-center']}
         />
         <Grid>
           <Column md={0} lg={3} />
           <Column md={12} lg={6}>
             <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
-              Impossible! My favorite printing service is always the cheapest.
+              <strong>Create</strong>, <strong>repair</strong> or <strong>modify</strong> 3D models
             </RichText>
             <div className="u-align-center ">
-              <Button modifiers={['minor']} label="Please click me!" />
+              <Button
+                modifiers={['minor']}
+                label="Visit our Design Service"
+                onClick={() => {
+                  window.open('https://all3dp.layr.co/', '_blank')
+                }}
+              />
             </div>
           </Column>
           <Column md={0} lg={3} />
@@ -224,9 +230,10 @@ const UploadPage = ({
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
-      {hasModels && selectedModelConfigIds.length > 0 && (
-        <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
-      )}
+      {hasModels &&
+        selectedModelConfigIds.length > 0 && (
+          <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
+        )}
       {!hasModels && promoSection()}
     </AppLayout>
   )
@@ -235,12 +242,13 @@ const UploadPage = ({
 const mapStateToProps = (state: AppState) => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
   pollingProgress: selectQuotePollingProgress(state),
-  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
-    ([modelConfig]) => {
-      const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
-      return mc.type !== 'UPLOADED' || mc.quoteId === null
-    }
-  ),
+  modelsWithConfig: unzip([
+    state.core.modelConfigs,
+    selectModelsOfModelConfigs(state)
+  ]).filter(([modelConfig]) => {
+    const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
+    return mc.type !== 'UPLOADED' || mc.quoteId === null
+  }),
   cart: state.core.cart,
   cartCount: selectCartCount(state),
   featureFlags: state.core.featureFlags,
@@ -259,10 +267,7 @@ const mapDispatchToProps = {
 const enhance = compose(
   scrollToTop(),
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withProps(({modelsWithConfig, selectedModelConfigIds}) => {
     const numModelsUploading = modelsWithConfig.reduce(
       (sum, [modelConfig, model]) =>
