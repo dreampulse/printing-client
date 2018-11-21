@@ -57,7 +57,9 @@ export default class LocationField extends Component {
       this.setState({loading: true})
       geolocate()
         .then(position => {
-          const {coords: {latitude: lat, longitude: lng, accuracy}} = position
+          const {
+            coords: {latitude: lat, longitude: lng, accuracy}
+          } = position
           const coords = {lat, lng}
 
           // Bias the autocomplete object to the user's geographical location,
@@ -139,12 +141,11 @@ export default class LocationField extends Component {
           }}
           onChange={this.onInputChange}
         />
-        {supportsGeolocation &&
-          !loading && (
-            <button type="button" className="location-field__button" onClick={this.onLocationClick}>
-              <Icon source={locationIcon} />
-            </button>
-          )}
+        {supportsGeolocation && !loading && (
+          <button type="button" className="location-field__button" onClick={this.onLocationClick}>
+            <Icon source={locationIcon} />
+          </button>
+        )}
         {supportsGeolocation && loading && <LoadingIndicator />}
       </div>
     )

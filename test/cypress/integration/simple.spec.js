@@ -25,18 +25,15 @@ context('Simple application flow', () => {
   })
 
   it('selects material and provider', () => {
-    cy
-      .get('#section-material')
+    cy.get('#section-material')
       .contains('button', 'Select')
       .click()
 
-    cy
-      .get('#section-finish')
+    cy.get('#section-finish')
       .contains('button:not(:disabled)', 'Select')
       .click()
 
-    cy
-      .get('#section-provider')
+    cy.get('#section-provider')
       .contains('button', 'Checkout')
       .click()
   })

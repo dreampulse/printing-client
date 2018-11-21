@@ -83,7 +83,8 @@ storiesOf('Overlay', module)
         closePortal={action('onClose')}
       >
         <LabeledLoadingIndicator classNames={['u-margin-bottom']}>
-          Recalculating prices…<br />
+          Recalculating prices…
+          <br />
           This might take a few minutes
         </LabeledLoadingIndicator>
       </Overlay>

@@ -77,7 +77,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withState('unit', 'setUnit', props => props.globalUnit),
   withState('sameMaterials', 'setSameMaterials', props => (props.useSameMaterial ? 'yes' : 'no'))
 )(PickUnitModal)

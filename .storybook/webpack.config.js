@@ -1,24 +1,26 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
+// You can use this file to add your custom webpack plugins, loaders and anything you like.
+// This is just the basic way to add additional webpack configurations.
+// For more information refer the docs: https://storybook.js.org/configurations/custom-webpack-config
+
 const config = require('../webpack.config')
 
-const jsTestRegExpString = /\.js$/.toString()
+module.exports = (baseConfig, _env, _defaultConfig) => {
+  const jsxRegExpString = /\.jsx$/.toString()
 
-// Remove JS loader to use default provided by Storybook
-const rules = config.module.rules.filter(
-  rule => !rule.test || rule.test.toString() !== jsTestRegExpString
-)
+  const useStyleLoader = rule => {
+    const [_, ...rest] = rule.use
+    return {...rule, use: [{loader: 'style-loader'}, ...rest]}
+  }
 
-config.plugins = config.plugins.filter(
-  plugin =>
-    plugin instanceof HtmlWebpackPlugin === false &&
-    plugin instanceof webpack.optimize.UglifyJsPlugin === false
-)
+  baseConfig.module.rules = [
+    ...baseConfig.module.rules.filter(
+      rule => rule.test && rule.test.toString() !== jsxRegExpString
+    ),
+    // Avoid using MiniCssExtractPlugin in production build
+    ...config.module.rules.map(rule =>
+      rule.test && rule.test.toString() === /\.scss$/.toString() ? useStyleLoader(rule) : rule
+    )
+  ]
 
-module.exports = {
-  resolve: config.resolve,
-  module: {
-    rules
-  },
-  plugins: config.plugins
+  return baseConfig
 }

@@ -30,7 +30,10 @@ const mapDispatchToProps = {
 
 const enhance = compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   lifecycle({
     componentDidMount() {
       this.props

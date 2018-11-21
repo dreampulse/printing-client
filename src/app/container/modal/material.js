@@ -50,4 +50,7 @@ const mapDispatchToProps = {
   closeModal: modalActions.closeModal
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MaterialModal)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MaterialModal)

@@ -49,7 +49,10 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withProps(({configurationId}) => ({
     configurationUrl: `${global.location.origin}/configuration/${configurationId}`
   }))

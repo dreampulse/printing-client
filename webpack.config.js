@@ -1,16 +1,15 @@
 const childProcess = require('child_process')
-const compact = require('lodash/compact')
 const path = require('path')
 const webpack = require('webpack')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const HtmlPlugin = require('html-webpack-plugin')
-const CopyPlugin = require('copy-webpack-plugin')
 const autoprefixer = require('autoprefixer')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-const projectRoot = __dirname
-const env = process.env.WEBPACK_ENV || 'development'
+const env = process.env.NODE_ENV || 'development'
 const isProd = env === 'production'
-const isDev = isProd === false
+const isDev = !isProd
+
 const sentryReleaseVersion = isProd
   ? childProcess
       .execSync(path.resolve(__dirname, 'bin', 'get-sentry-release-version.sh'))
@@ -19,14 +18,16 @@ const sentryReleaseVersion = isProd
   : 'no-sentry-release'
 
 module.exports = {
-  bail: isProd,
+  mode: env,
+  bail: isProd, // Report first error instead of tolerating it
+  target: 'web',
   entry: [
-    'babel-polyfill',
-    'react-hot-loader/patch', // has no footprint in production environment
-    path.resolve(projectRoot, './src/app')
+    '@babel/polyfill',
+    'react-hot-loader/patch',
+    path.resolve(__dirname, './src/app/index.js')
   ],
   output: {
-    path: path.resolve(projectRoot, './dist'),
+    path: path.resolve(__dirname, './dist'),
     publicPath: '/', // All our ressources are placed under the '/'-route (we use aws s3)
     filename: '[name].app.[hash].js',
     // Using the webpack default 'webpack://' conflicts with third-party scripts that have been bundled with webpack
@@ -34,66 +35,55 @@ module.exports = {
     devtoolModuleFilenameTemplate: 'printing-engine-client/[resource-path]'
   },
   module: {
-    // Throw an error in production build if an export can be found
-    // See https://github.com/webpack/webpack/pull/4348
-    strictExportPresence: isProd,
     rules: [
       {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: 'babel-loader'
+      },
+      {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: {
-            loader: 'style-loader',
+        use: [
+          isProd
+            ? MiniCssExtractPlugin.loader
+            : {
+                loader: 'style-loader',
+                options: {
+                  sourceMap: isDev
+                }
+              },
+          {
+            loader: 'css-loader',
             options: {
-              sourceMap: true
+              sourceMap: isDev
             }
           },
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: true,
-                plugins: [autoprefixer({browsers: ['last 2 versions']})]
-              }
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: true
-              }
-            },
-            {
-              loader: 'import-glob'
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: isDev,
+              plugins: [autoprefixer({browsers: ['last 2 versions', 'ie >= 11']})]
             }
-          ]
-        })
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: isDev
+            }
+          },
+          {
+            loader: 'import-glob'
+          }
+        ]
       },
       {
         test: /\.(ttf|eot|woff2?)$/,
         use: 'file-loader'
       },
       {
-        test: /\.js$/,
-        exclude: /[/\\]node_modules[/\\]/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              // Speeds up the build by caching the babel-loader results under .cache/babel-loader
-              cacheDirectory: true
-            }
-          }
-        ]
-      },
-      {
         test: /\.svg$/,
-        issuer: /\.js$/, // Prevent usage of icon sprite outside of JS
-        include: [path.resolve(projectRoot, './src/asset/icon')],
+        issuer: /\.js$/, // Prevent usage of icon sprite outside of js
+        include: [path.resolve(__dirname, './src/asset/icon')],
         use: [
           {
             loader: 'svg-sprite-loader'
@@ -104,53 +94,54 @@ module.exports = {
         ]
       },
       {
+        // Inline images required from JS.
         test: /\.(jpe?g|png|gif|svg)$/,
-        include: [path.resolve(projectRoot, './src/asset/image')],
+        issuer: /\.js$/,
+        include: [path.resolve(__dirname, './src/asset/image')],
+        use: 'url-loader'
+      },
+      {
+        // File loader for CSS build with paths relative to the CSS file are working.
+        test: /\.(jpe?g|png|gif|svg)$/,
+        issuer: /\.scss$/,
+        include: [path.resolve(__dirname, './src/asset/image')],
         use: 'file-loader'
       }
     ]
   },
-  plugins: compact([
-    new ExtractTextPlugin({
-      filename: 'app.[hash].css',
-      disable: isDev
-    }),
+  resolve: {
+    extensions: ['.js', '.json']
+  },
+  plugins: [
+    ...(isProd
+      ? [
+          new MiniCssExtractPlugin({
+            filename: 'app.[hash].css',
+            chunkFilename: 'app.[id].css'
+          })
+        ]
+      : []),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(env),
         SENTRY_RELEASE_VERSION: JSON.stringify(sentryReleaseVersion)
       }
     }),
-    new HtmlPlugin({
-      template: path.join(projectRoot, './src/app/index.html'),
-      inject: true
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, './src/app/index.html')
     }),
-    new CopyPlugin([
+    new CopyWebpackPlugin([
       {
-        from: path.resolve(projectRoot, 'src', 'asset'),
-        to: path.resolve(projectRoot, 'dist', 'asset')
+        from: path.resolve(__dirname, './src/asset'),
+        to: path.resolve(__dirname, './dist/asset')
       }
-    ]),
-    isDev ? new webpack.NamedModulesPlugin() : new webpack.HashedModuleIdsPlugin(),
-    isProd && new webpack.optimize.ModuleConcatenationPlugin(),
-    isProd &&
-      new webpack.optimize.UglifyJsPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          ie8: false,
-          ecma: 6,
-          output: {
-            beautify: false
-          },
-          warnings: false
-        }
-      })
-  ]),
+    ])
+  ],
+  devtool: isDev ? 'eval-source-map' : 'source-map',
   devServer: {
-    contentBase: path.join(projectRoot, 'dist'),
+    contentBase: path.join(__dirname, 'dist'),
     inline: true,
     historyApiFallback: true,
     port: process.env.PORT || 3000
-  },
-  devtool: isDev ? 'eval-source-map' : 'source-map'
+  }
 }

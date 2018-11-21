@@ -44,4 +44,7 @@ const mapDispatchToProps = {
   closeModal: modalActions.closeModal
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConfirmCurrencyChangeModal)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ConfirmCurrencyChangeModal)

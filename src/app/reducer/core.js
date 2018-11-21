@@ -386,17 +386,16 @@ const uploadComplete = (state, {payload}) => {
     'Length of additionalModels out of sync'
   )
 
-  const additionalModelConfigs = zip(
-    additionalModels,
-    payload.additionalConfigIds
-  ).map(([m: BackendModel, configId: ConfigId]) => ({
-    type: 'UPLOADED',
-    quantity: 1,
-    modelId: m.modelId,
-    id: configId,
-    quoteId: null,
-    shippingId: null
-  }))
+  const additionalModelConfigs = zip(additionalModels, payload.additionalConfigIds).map(
+    ([m, configId]) => ({
+      type: 'UPLOADED',
+      quantity: 1,
+      modelId: m.modelId,
+      id: configId,
+      quoteId: null,
+      shippingId: null
+    })
+  )
 
   let selectedModelConfigs = [
     ...state.selectedModelConfigs,
@@ -415,18 +414,17 @@ const uploadComplete = (state, {payload}) => {
       ...keyBy(models, 'modelId')
     },
     modelConfigs: [
-      ...state.modelConfigs.map(
-        item =>
-          item.type === 'UPLOADING' && item.fileId === fileId
-            ? {
-                type: 'UPLOADED',
-                quantity: 1,
-                modelId: model.modelId,
-                id: item.id,
-                quoteId: null,
-                shippingId: null
-              }
-            : item
+      ...state.modelConfigs.map(item =>
+        item.type === 'UPLOADING' && item.fileId === fileId
+          ? {
+              type: 'UPLOADED',
+              quantity: 1,
+              modelId: model.modelId,
+              id: item.id,
+              quoteId: null,
+              shippingId: null
+            }
+          : item
       ),
       ...additionalModelConfigs
     ],

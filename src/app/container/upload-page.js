@@ -230,10 +230,9 @@ const UploadPage = ({
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
-      {hasModels &&
-        selectedModelConfigIds.length > 0 && (
-          <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
-        )}
+      {hasModels && selectedModelConfigIds.length > 0 && (
+        <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
+      )}
       {!hasModels && promoSection()}
     </AppLayout>
   )
@@ -242,13 +241,12 @@ const UploadPage = ({
 const mapStateToProps = (state: AppState) => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
   pollingProgress: selectQuotePollingProgress(state),
-  modelsWithConfig: unzip([
-    state.core.modelConfigs,
-    selectModelsOfModelConfigs(state)
-  ]).filter(([modelConfig]) => {
-    const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
-    return mc.type !== 'UPLOADED' || mc.quoteId === null
-  }),
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
+    ([modelConfig]) => {
+      const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
+      return mc.type !== 'UPLOADED' || mc.quoteId === null
+    }
+  ),
   cart: state.core.cart,
   cartCount: selectCartCount(state),
   featureFlags: state.core.featureFlags,
@@ -267,7 +265,10 @@ const mapDispatchToProps = {
 const enhance = compose(
   scrollToTop(),
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withProps(({modelsWithConfig, selectedModelConfigIds}) => {
     const numModelsUploading = modelsWithConfig.reduce(
       (sum, [modelConfig, model]) =>

@@ -27,7 +27,10 @@ export default (history, initialState = {}) => {
 
   if (global.devToolsExtension) {
     // Enable redux dev-tools
-    enhancer = compose(enhancer, global.devToolsExtension())
+    enhancer = compose(
+      enhancer,
+      global.devToolsExtension()
+    )
   }
 
   // This initialState is empty, because each reducer has its own initial state

@@ -28,13 +28,15 @@
     "no-unused-vars": ["error", {
       "args": "after-used",
       "argsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
       "vars": "all"
       }],
     "prettier/prettier": ["error", {
       "parser": "flow",
       "semi": false,
       "singleQuote": true,
-      "bracketSpacing": false
+      "bracketSpacing": false,
+      "printWidth": 100
     }],
     "flowtype/generic-spacing": 0
   },
