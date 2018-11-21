@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react'
 import {connect} from 'react-redux'
 
@@ -7,7 +5,6 @@ import config from '../../../config'
 import {formatLocation} from '../lib/formatter'
 import {convertPlaceToLocation} from '../lib/geolocation'
 import * as coreAction from '../action/core'
-import type {AppState} from '../reducer'
 
 import ConfigurationHeader from '../component/configuration-header'
 import LocationField from '../component/location-field'
@@ -40,7 +37,7 @@ const ConfigurationHeaderPartial = ({currency, location, updateLocation, updateC
     />
   )
 }
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = state => ({
   currency: state.core.currency,
   location: state.core.location
 })

@@ -1,5 +1,3 @@
-// @flow
-
 import React, {Fragment} from 'react'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'

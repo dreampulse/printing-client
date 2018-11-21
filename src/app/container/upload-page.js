@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
@@ -20,7 +19,6 @@ import {
 } from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
 import scrollTo from '../service/scroll-to'
-import type {AppState} from '../reducer'
 
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
@@ -204,12 +202,12 @@ const UploadPage = ({
   )
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
   pollingProgress: selectQuotePollingProgress(state),
   modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
     ([modelConfig]) => {
-      const mc = (modelConfig: any) // Flow bug with detecting correct branch in union type
+      const mc = modelConfig // Flow bug with detecting correct branch in union type
       return mc.type !== 'UPLOADED' || mc.quoteId === null
     }
   ),

@@ -1,10 +1,7 @@
-// @flow
-
 import React from 'react'
 import {connect} from 'react-redux'
 
 import * as modalActions from '../../action/modal'
-import type {AppState} from '../../reducer'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -27,7 +24,7 @@ const ModelViewerModal = ({closeModal, sceneId, modelName}) => {
   )
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = state => ({
   sceneId: state.modelViewer.sceneId
 })
 
