@@ -22,6 +22,7 @@ const MaterialCard = ({
   image,
   onMoreClick = () => {},
   onSelectClick,
+  onUnavailableClick,
   selectLabel = 'Select'
 }) => {
   const buttonModifiers = buildClassArray(['block', {selected}])
@@ -45,6 +46,8 @@ const MaterialCard = ({
   const unavailableFooter = (
     <footer className="material-card__footer">
       <div className="material-card__unavailable">Not printable</div>
+      <div className="material-card__body-empty" />
+      <Button modifiers={['minor']} label="Repair now" onClick={onUnavailableClick} />
     </footer>
   )
 
@@ -91,7 +94,8 @@ MaterialCard.propTypes = {
   onMoreClick: PropTypes.func,
   onSelectClick: PropTypes.func,
   image: PropTypes.string,
-  selectLabel: PropTypes.string
+  selectLabel: PropTypes.string,
+  onUnavailableClick: PropTypes.func
 }
 
 export default MaterialCard
