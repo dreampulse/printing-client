@@ -219,14 +219,7 @@ const UploadPage = ({
   )
 
   return (
-    <AppLayout
-      navBarContent={
-        selectedModelConfigIds.length > 0 && (
-          <ProviderProgressBar currentStep={numCheckedProviders} totalSteps={numTotalProviders} />
-        )
-      }
-      headerContent={<ConfigurationHeaderPartial />}
-    >
+    <AppLayout headerContent={<ConfigurationHeaderPartial />}>
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}

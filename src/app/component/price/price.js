@@ -6,7 +6,15 @@ import buildClassName from '../../lib/build-class-name'
 
 import LoadingIndicator from '../loading-indicator'
 
-const Price = ({classNames, modifiers, value, prefix, meta, loading = false}) => (
+const Price = ({
+  classNames,
+  modifiers,
+  value,
+  prefix,
+  meta,
+  loading = false,
+  globalLoading = null
+}) => (
   <div className={buildClassName('price', modifiers, classNames)}>
     {loading ? (
       <div className="price__loading">
@@ -17,6 +25,7 @@ const Price = ({classNames, modifiers, value, prefix, meta, loading = false}) =>
         {prefix ? <small className="price__prefix">{prefix}</small> : null}
         <div className="price__value">{value}</div>
         {meta ? <small className="price__meta">{meta}</small> : null}
+        {globalLoading && <span className="price__global-loading">{globalLoading}</span>}
       </div>
     )}
   </div>
@@ -27,7 +36,8 @@ Price.propTypes = {
   value: PropTypes.string,
   prefix: PropTypes.string,
   meta: PropTypes.string,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  enableGlobalLoading: PropTypes.node
 }
 
 export default Price

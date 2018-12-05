@@ -12,7 +12,7 @@ export default defaultsDeep(
         sandbox: 'AXOhxV6hHM2koGQdbXKcsalRyHtehlcGRDM82RIcb9u1LIIH2XskwgeN2ZeDuIY0qlVh9R8s8Zag9bgK'
       }
     },
-    googleMapsApiKey: 'AIzaSyBhZh8C1bG-jR_x6izJexGqNCyHhaPGeyo'
+    googleMapsApiKey: 'AIzaSyC_f-WiODvaWW-Hw5T9RZRSKkvLcy9WCGU'
   },
   defaultConfig
 )

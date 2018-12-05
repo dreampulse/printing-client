@@ -15,6 +15,12 @@
     }
   }
 
+  &__global-loading {
+    margin-left: $space-s;
+    font-size: $font-size-l;
+    line-height: $font-size-xl;
+  }
+
   &__price {
     display: flex;
     justify-content: flex-start;
