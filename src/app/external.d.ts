@@ -1,4 +1,6 @@
+/* tslint:disable */
 interface Window {
+  /* tslint:enable */
   ga: any
   Intercom: any
   StripeCheckout: any
@@ -7,7 +9,9 @@ interface Window {
 }
 
 declare module 'country-list' {
+  /* tslint:disable */
   interface CountryList {
+    /* tslint:enable */
     getCodes: () => string[]
     getName: (name: string) => string
   }
