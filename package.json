@@ -10,7 +10,7 @@
     "build:webpack": "WEBPACK_ENV=production webpack-cli",
     "build:styleguide": "npx build-storybook -o dist/styleguide",
     "start:dev": "PORT=3000 WEBPACK_ENV=development webpack-dev-server --hot",
-    "start:cypress": "PORT=3002 WEBPACK_ENV=cypress webpack-dev-server",
+    "start:cypress": "PORT=3002 WEBPACK_ENV=production webpack-dev-server",
     "start:storybook": "npx start-storybook -p 3001",
     "start": "babel-node bin/app-server",
     "test": "npm run test:unit && npm run test:lint",
