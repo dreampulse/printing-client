@@ -1,6 +1,4 @@
-// @flow
-
-const ga = global.ga
+const ga = window.ga
 
 export const track = (action: string): void => {
   if (ga) {

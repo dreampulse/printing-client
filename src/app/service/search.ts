@@ -1,12 +1,14 @@
 import Fuse from 'fuse.js'
 
-export const createMaterialSearch = materials => {
+import {Material} from '../type'
+
+export const createMaterialSearch = (materials: Material[]) => {
   // Get contained printing services
   const printingServices = Object.keys(
     materials[0].finishGroups[0].materialConfigs[0].printingService
   )
 
-  const fuse = new Fuse(materials, {
+  const fuse = new Fuse<any>(materials, {
     shouldSort: true,
     threshold: 0.6,
     location: 0,
@@ -30,6 +32,6 @@ export const createMaterialSearch = materials => {
   })
 
   return {
-    search: term => fuse.search(term)
+    search: (term: string) => fuse.search(term)
   }
 }

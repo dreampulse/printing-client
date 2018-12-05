@@ -1,21 +1,21 @@
-let googleMaps = null
-const defers = []
+let googleMaps: any = null
+const defers: any[] = []
 
-global.initMap = () => {
-  googleMaps = global.google.maps
+window.initMap = () => {
+  googleMaps = google.maps
   defers.forEach(resolve => resolve(googleMaps))
 }
 
-export function getGoogleMaps(googleMapsKey) {
+export function getGoogleMaps(googleMapsKey: string) {
   if (googleMaps) {
     return Promise.resolve(googleMaps)
   }
 
   if (defers.length === 0) {
-    const scriptNode = global.document.createElement('script')
+    const scriptNode = window.document.createElement('script')
     // Places library is needed for location autocomplete input field
     scriptNode.src = `//maps.googleapis.com/maps/api/js?key=${googleMapsKey}&libraries=places&callback=initMap`
-    global.document.body.insertBefore(scriptNode, global.document.body.firstChild)
+    document.body.insertBefore(scriptNode, document.body.firstChild)
   }
 
   return new Promise(resolve => {
@@ -23,8 +23,8 @@ export function getGoogleMaps(googleMapsKey) {
   })
 }
 
-export function geocode(_googleMaps, coords) {
-  const geocoder = new _googleMaps.Geocoder()
+export function geocode(googleMapsInstance: any, coords: google.maps.LatLng | google.maps.LatLngLiteral) {
+  const geocoder: google.maps.Geocoder = new googleMapsInstance.Geocoder()
 
   return new Promise((resolve, reject) => {
     geocoder.geocode({location: coords}, (results, status) => {

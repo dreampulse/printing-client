@@ -32,5 +32,6 @@ export default {
     treatstock: 'Treatstock'
   },
   localStorageAddressKey: 'address_v2',
-  printingEngineBaseUrl: 'http://localhost:8000'
+  printingEngineBaseUrl: 'http://localhost:8000',
+  stripePublicKey: 'pk_test_vgy9WdRy48FnhegkMYXMQXit'
 }

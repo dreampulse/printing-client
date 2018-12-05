@@ -1,5 +1,3 @@
-// @flow
-
 // Heads up: Do not store intercom as a variable here because intercom replaces the Intercom property on runtime.
 // It needs to be accessed via the global.Intercom reference.
 
@@ -9,16 +7,16 @@ const wellKnownIntercomMethodNames = ['boot', 'shutdown']
 // because ad-blockers replace the Intercom function with a stub function. Hence we check
 // for well-known method names. This is the best we can do.
 function isActualIntercomImpl() {
-  const intercomImpl = global.Intercom.toString()
+  const intercomImpl = window.Intercom.toString()
 
   return wellKnownIntercomMethodNames.every(methodName => intercomImpl.includes(methodName))
 }
 
-function exec(cmd): void {
+function exec(cmd: string): void {
   if (isActualIntercomImpl() === false) {
     throw new TypeError('Intercom function validation failed')
   }
-  global.Intercom(cmd)
+  window.Intercom(cmd)
 }
 
 export const openIntercom = (): void => {

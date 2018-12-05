@@ -1,10 +1,8 @@
-// @flow
-
 import config from '../../../config'
 
-export const createPollHandle = (onPollSuccess: Function) => {
-  const image = new global.Image()
-  let timeout = null
+export const createPollHandle = (onPollSuccess: () => void) => {
+  const image = new Image()
+  let timeout: number
 
   const startPoll = (src: string = image.src): void => {
     clearTimeout(timeout)

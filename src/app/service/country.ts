@@ -1,6 +1,8 @@
 import createCountryList from 'country-list'
 
-const usStates = {
+type StateMap = {[state: string]: string}
+
+const usStates: StateMap = {
   AL: 'Alabama',
   AK: 'Alaska',
   AS: 'American Samoa',
@@ -62,7 +64,7 @@ const usStates = {
   WY: 'Wyoming'
 }
 
-const auStates = {
+const auStates: StateMap = {
   NSW: 'New South Wales',
   VIC: 'Victoria',
   QLD: 'Queensland',
@@ -73,7 +75,7 @@ const auStates = {
   ACT: 'Australian Capital Territory'
 }
 
-const jpStates = {
+const jpStates: StateMap = {
   '10': 'Gunma',
   '11': 'Saitama',
   '12': 'Chiba',
@@ -123,7 +125,7 @@ const jpStates = {
   '06': 'Yamagata'
 }
 
-const caStates = {
+const caStates: StateMap = {
   AB: 'Alberta',
   BC: 'British Columbia',
   MB: 'Manitoba',
@@ -139,7 +141,7 @@ const caStates = {
   YT: 'Yukon'
 }
 
-const englishStates = {
+const englishStates: StateMap = {
   Bedfordshire: 'Bedfordshire',
   Berkshire: 'Berkshire',
   Buckinghamshire: 'Buckinghamshire',
@@ -195,7 +197,7 @@ const englishStates = {
   Yorkshire: 'Yorkshire'
 }
 
-const northIrelandStates = {
+const northIrelandStates: StateMap = {
   Antrim: 'Antrim',
   Ards: 'Ards',
   Armagh: 'Armagh',
@@ -225,7 +227,7 @@ const northIrelandStates = {
   Strabane: 'Strabane'
 }
 
-const scottishStates = {
+const scottishStates: StateMap = {
   'Aberdeen City': 'Aberdeen City',
   Aberdeenshire: 'Aberdeenshire',
   Angus: 'Angus',
@@ -255,7 +257,7 @@ const scottishStates = {
   'Western Isles': 'Western Isles'
 }
 
-const welshStates = {
+const welshStates: StateMap = {
   Anglesey: 'Anglesey',
   'Blaenau Gwent': 'Blaenau Gwent',
   Bridgend: 'Bridgend',
@@ -287,9 +289,9 @@ const unorderedUkStates = {
   ...welshStates
 }
 
-const ukStates = Object.keys(unorderedUkStates)
+const ukStates: StateMap = Object.keys(unorderedUkStates)
   .sort()
-  .reduce((allKeys, key) => {
+  .reduce<StateMap>((allKeys, key) => {
     allKeys[key] = unorderedUkStates[key]
     return allKeys
   }, {})
@@ -303,18 +305,18 @@ export function getCountriesMenu() {
   }))
 }
 
-export function getCountryName(code) {
+export function getCountryName(code: string) {
   return countryList.getName(code)
 }
 
-function getStateList(states) {
+function getStateList(states: StateMap) {
   return Object.keys(states).map(code => ({
     value: code,
     label: states[code]
   }))
 }
 
-export function getStateName(countryCode, stateCode) {
+export function getStateName(countryCode: string, stateCode: string) {
   switch (countryCode) {
     case 'US':
       return usStates[stateCode]
@@ -331,7 +333,7 @@ export function getStateName(countryCode, stateCode) {
   }
 }
 
-export function getStates(countryCode) {
+export function getStates(countryCode: string) {
   switch (countryCode) {
     case 'US':
       return getStateList(usStates)
