@@ -154,7 +154,7 @@ const MaterialPartial = ({
               : undefined
           }
           prefix="Total price"
-          globalLoading={<LoadingCheckmark modifiers={isPollingComplete ? ['done'] : []} />}
+          loadingCheckmark={<LoadingCheckmark modifiers={isPollingComplete ? ['done'] : []} />}
         />
       )
 
@@ -294,6 +294,7 @@ const MaterialPartial = ({
             bestOffer && formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
           }
           prefix="Total price"
+          loadingCheckmark={<LoadingCheckmark modifiers={isPollingComplete ? ['done'] : []} />}
         />
       )
       const colorSelect = (

@@ -13,7 +13,7 @@ const Price = ({
   prefix,
   meta,
   loading = false,
-  globalLoading = null
+  loadingCheckmark = null
 }) => (
   <div className={buildClassName('price', modifiers, classNames)}>
     {loading ? (
@@ -25,7 +25,7 @@ const Price = ({
         {prefix ? <small className="price__prefix">{prefix}</small> : null}
         <div className="price__value">{value}</div>
         {meta ? <small className="price__meta">{meta}</small> : null}
-        {globalLoading && <span className="price__global-loading">{globalLoading}</span>}
+        {loadingCheckmark}
       </div>
     )}
   </div>
@@ -37,7 +37,7 @@ Price.propTypes = {
   prefix: PropTypes.string,
   meta: PropTypes.string,
   loading: PropTypes.bool,
-  globalLoading: PropTypes.node
+  loadingCheckmark: PropTypes.node
 }
 
 export default Price
