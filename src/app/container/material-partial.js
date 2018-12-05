@@ -130,6 +130,10 @@ const MaterialPartial = ({
 
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
+  const openModelRepairPage = () => {
+    window.open('https://all3dp.layr.co/fix', '_blank')
+  }
+
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
       const bestOffer = getBestMultiModelOfferForMaterial(
@@ -166,6 +170,7 @@ const MaterialPartial = ({
           onMoreClick={() => {
             openMaterialModal(material.id)
           }}
+          onUnavailableClick={openModelRepairPage}
         />
       )
     }
@@ -318,6 +323,7 @@ const MaterialPartial = ({
           onMoreClick={() => {
             openFinishGroupModal(finishGroup.id)
           }}
+          onUnavailableClick={openModelRepairPage}
         />
       )
     }

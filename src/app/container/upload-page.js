@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 import compact from 'lodash/compact'
@@ -41,6 +41,9 @@ import ButtonBar from '../component/button-bar'
 import Notification from '../component/notification'
 import NumberField from '../component/number-field'
 import ProviderProgressBar from '../component/provider-progress-bar'
+import Grid from '../component/grid'
+import Column from '../component/column'
+import RichText from '../component/rich-text'
 
 const UploadPage = ({
   openPickUnitModal,
@@ -64,12 +67,42 @@ const UploadPage = ({
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
 
+  const promoSection = () => (
+    <Fragment>
+      <Section>
+        <Headline
+          label="Make it Printable"
+          modifiers={['l', 'light']}
+          classNames={['u-margin-bottom-l', 'u-align-center']}
+        />
+        <Grid>
+          <Column md={0} lg={3} />
+          <Column md={12} lg={6}>
+            <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
+              <strong>Create</strong>, <strong>repair</strong> or <strong>modify</strong> 3D models
+            </RichText>
+            <div className="u-align-center ">
+              <Button
+                modifiers={['minor']}
+                label="Visit our Design Service"
+                onClick={() => {
+                  window.open('https://all3dp.layr.co/', '_blank')
+                }}
+              />
+            </div>
+          </Column>
+          <Column md={0} lg={3} />
+        </Grid>
+      </Section>
+    </Fragment>
+  )
+
   const uploadSection = () => (
     <Section>
       <UploadArea
         label="Drag any 3D files here or"
         linkLabel="select files"
-        description="Supported file formats: STL, OBJ, WRL, SKP, DAE, 3DS, IGS, FBX, PLY, X3D, STP, PRT, …"
+        description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
         accept="*"
         onChange={openPickUnitModal}
         modifiers={compact([numModels === 0 && 'l'])}
@@ -198,6 +231,7 @@ const UploadPage = ({
       {hasModels && selectedModelConfigIds.length > 0 && (
         <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
       )}
+      {!hasModels && promoSection()}
     </AppLayout>
   )
 }

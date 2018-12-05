@@ -9,7 +9,7 @@ storiesOf('Upload Area', module)
     <UploadArea
       label="Drag any 3D files here or"
       linkLabel="select files"
-      description="Supported file formats: STL, OBJ, WRL, SKP, DAE, 3DS, IGS, FBX, PLY, X3D, STP, PRT, …"
+      description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
       accept="*"
       onChange={action('change')}
     />
@@ -18,7 +18,7 @@ storiesOf('Upload Area', module)
     <UploadArea
       label="Drag any 3D files here or"
       linkLabel="select files"
-      description="Supported file formats: STL, OBJ, WRL, SKP, DAE, 3DS, IGS, FBX, PLY, X3D, STP, PRT, …"
+      description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
       accept="*"
       onChange={action('change')}
       modifiers={['l']}
