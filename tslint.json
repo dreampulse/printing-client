@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {},
+  "rules": {
+    "quotemark": [true, "single"],
+    "semicolon": [true, "never"],
+    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "interface-over-type-literal": false,
+    "arrow-parens": false,
+    "curly": false,
+    "max-classes-per-file": false,
+    "object-literal-key-quotes": false
+  },
+  "rulesDirectory": []
+}

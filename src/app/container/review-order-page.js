@@ -1,5 +1,3 @@
-// @flow
-
 import React, {Fragment} from 'react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
@@ -65,7 +63,6 @@ const ReviewOrderPage = ({
   payWithPaypal,
   payWithStripe,
   payWithInvoice,
-  fatalError,
   success,
   liableForVat
 }) => {
@@ -229,6 +226,7 @@ const ReviewOrderPage = ({
           return payment
         } catch (error) {
           logging.captureException(error)
+          return null
         } finally {
           setPaymentInProgress(false)
         }

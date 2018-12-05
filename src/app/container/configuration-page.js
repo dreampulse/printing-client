@@ -1,5 +1,3 @@
-// @flow
-
 import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'

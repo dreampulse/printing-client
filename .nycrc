@@ -9,16 +9,15 @@
   "functions": 100,
   "lines": 100,
   "include": [
-    "src/**/*.js"
+    "src/**/*.js",
+    "src/**/*.ts"
   ],
   "exclude": [
     "src/**/*.spec.js",
     "src/app/*.js",
-    "src/app/service/*.js",
-    "src/app/action/*.js",
-    "src/app/reducer/*.js",
-    "src/app/action-next/*.js",
-    "src/app/reducer-next/*.js"
+    "src/app/service/*.ts",
+    "src/app/action/*.ts",
+    "src/app/reducer/*.ts"
   ],
   "reporter": [
     "text",
@@ -26,6 +25,7 @@
     "html"
   ],
   "extension": [
-    ".js"
+    ".js",
+    ".ts"
   ]
 }

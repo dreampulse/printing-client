@@ -22,5 +22,7 @@ module.exports = (baseConfig, _env, _defaultConfig) => {
     )
   ]
 
+  baseConfig.resolve.extensions = [...baseConfig.resolve.extensions, ...config.resolve.extensions]
+
   return baseConfig
 }

@@ -1,18 +1,6 @@
 {
   "printWidth": 100,
-  "overrides": [{
-    "files": "*.js",
-    "options": {
-      "parser": "flow",
-      "semi": false,
-      "singleQuote": true,
-      "bracketSpacing": false
-    }
-  }, {
-    "files": "*.scss",
-    "options": {
-      "parser": "scss",
-      "singleQuote": true
-    }
-  }]
+  "semi": false,
+  "singleQuote": true,
+  "bracketSpacing": false
 }

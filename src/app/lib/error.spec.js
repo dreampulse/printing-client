@@ -3,7 +3,8 @@ import {
   HttpResponseUnexpectedStatusError,
   HttpResponseBodyParseError,
   HttpUploadError,
-  PaymentAbortedError
+  PaymentAbortedError,
+  HttpUploadErrorPhase
 } from './error'
 
 describe('Error lib', () => {
@@ -89,7 +90,7 @@ describe('Error lib', () => {
         const error = new HttpUploadError(
           'POST',
           'http://example.com',
-          HttpUploadError.PHASE_UPLOADING
+          HttpUploadErrorPhase.UPLOADING
         )
         expect(error, 'to satisfy', {
           type: 'HTTP_UPLOAD_ERROR',
@@ -104,7 +105,7 @@ describe('Error lib', () => {
         const error = new HttpUploadError(
           'POST',
           'http://example.com',
-          HttpUploadError.PHASE_DOWNLOADING
+          HttpUploadErrorPhase.DOWNLOADING
         )
         expect(error, 'to satisfy', {
           type: 'HTTP_UPLOAD_ERROR',

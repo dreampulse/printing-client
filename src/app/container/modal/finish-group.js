@@ -1,11 +1,8 @@
-// @flow
-
 import React from 'react'
 import {connect} from 'react-redux'
 
 import getCloudinaryUrl from '../../lib/cloudinary'
 
-import type {AppState} from '../../reducer'
 import * as modalActions from '../../action/modal'
 
 import Button from '../../component/button'
@@ -95,7 +92,7 @@ const FinishGroupModal = ({finishGroup, closeModal}) => {
   )
 }
 
-const mapStateToProps = (state: AppState, ownProps) => ({
+const mapStateToProps = (state, ownProps) => ({
   finishGroup: state.core.finishGroups[ownProps.finishGroupId]
 })
 

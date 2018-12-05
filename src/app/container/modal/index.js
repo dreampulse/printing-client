@@ -4,7 +4,8 @@ import {Portal} from 'react-portal'
 import lifecycle from 'recompose/lifecycle'
 import compose from 'recompose/compose'
 
-import {CONTENT_TYPE, closeModal} from '../../action/modal'
+import {ModalContentType} from '../../type'
+import {closeModal} from '../../action/modal'
 import FatalErrorModal from './fatal-error'
 import ModelViewerModal from './model-viewer'
 import MaterialModal from './material'
@@ -17,16 +18,16 @@ import ShareConfigurationModal from './share-configuration'
 import ErrorModal from './error'
 
 const modals = {
-  [CONTENT_TYPE.FATAL_ERROR]: FatalErrorModal,
-  [CONTENT_TYPE.MODEL_VIEWER]: ModelViewerModal,
-  [CONTENT_TYPE.MATERIAL]: MaterialModal,
-  [CONTENT_TYPE.FINISH_GROUP]: FinishGroupModal,
-  [CONTENT_TYPE.PICK_LOCATION]: PickLocationModal,
-  [CONTENT_TYPE.PICK_UNIT]: PickUnitModal,
-  [CONTENT_TYPE.CONFIRM_LOCATION_CHANGE]: ConfirmLocationChangeModal,
-  [CONTENT_TYPE.CONFIRM_CURRENCY_CHANGE]: ConfirmCurrencyChangeModal,
-  [CONTENT_TYPE.SHARE_CONFIGURATION]: ShareConfigurationModal,
-  [CONTENT_TYPE.ERROR]: ErrorModal
+  [ModalContentType.FATAL_ERROR]: FatalErrorModal,
+  [ModalContentType.MODEL_VIEWER]: ModelViewerModal,
+  [ModalContentType.MATERIAL]: MaterialModal,
+  [ModalContentType.FINISH_GROUP]: FinishGroupModal,
+  [ModalContentType.PICK_LOCATION]: PickLocationModal,
+  [ModalContentType.PICK_UNIT]: PickUnitModal,
+  [ModalContentType.CONFIRM_LOCATION_CHANGE]: ConfirmLocationChangeModal,
+  [ModalContentType.CONFIRM_CURRENCY_CHANGE]: ConfirmCurrencyChangeModal,
+  [ModalContentType.SHARE_CONFIGURATION]: ShareConfigurationModal,
+  [ModalContentType.ERROR]: ErrorModal
 }
 
 const getContent = (contentType, contentProps, meta) => {

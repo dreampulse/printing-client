@@ -1,11 +1,8 @@
-// @flow
-
 import React, {Fragment} from 'react'
 import compose from 'recompose/compose'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
 
-import type {AppState} from '../reducer'
 import {selectCartCount} from '../lib/selector'
 import {openIntercom} from '../service/intercom'
 import * as navigationAction from '../action/navigation'
@@ -101,7 +98,7 @@ const CheckoutLayout = ({
   )
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = state => ({
   cartCount: selectCartCount(state)
 })
 

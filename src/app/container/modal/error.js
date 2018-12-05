@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react'
 import {connect} from 'react-redux'
 
@@ -12,7 +10,6 @@ import Column from '../../component/column'
 import Image from '../../component/image'
 
 import * as modalActions from '../../action/modal'
-import type {AppState} from '../../reducer'
 
 import errorImage from '../../../asset/image/error.svg'
 
@@ -34,7 +31,7 @@ const ErrorModal = ({error, closeModal}) => {
   )
 }
 
-const mapStateToProps = (_state: AppState) => ({})
+const mapStateToProps = _state => ({})
 
 const mapDispatchToProps = {
   closeModal: modalActions.closeModal

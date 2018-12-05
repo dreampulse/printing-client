@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import {connect} from 'react-redux'
 import compact from 'lodash/compact'
@@ -13,7 +12,6 @@ import Button from '../component/button'
 import NumberField from '../component/number-field'
 import Link from '../component/link'
 
-import type {AppState} from '../reducer'
 import * as coreAction from '../action/core'
 import * as modelAction from '../action/model'
 import * as modalAction from '../action/modal'
@@ -112,7 +110,7 @@ const ModelListPartial = ({
   )
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
   uploadedModelConfigs: selector.selectUploadedModelConfigs(state),
   commonQuantity: getCommonQuantity(selector.selectSelectedModelConfigs(state))
