@@ -1,0 +1,41 @@
+.loading-checkmark {
+  position: relative;
+
+  &__loading {
+    opacity: 1;
+    transition: opacity 0.2s linear;
+  }
+
+  &__check {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: $color-success;
+    opacity: 0;
+  }
+
+  @keyframes check-animation {
+    100% {
+      opacity: 0;
+    }
+    90% {
+      opacity: 1;
+    }
+    10% {
+      opacity: 1;
+    }
+    0% {
+      opacity: 0;
+    }
+  }
+
+  &--done {
+    .loading-checkmark__check {
+      animation: check-animation 2s linear forwards;
+    }
+
+    .loading-checkmark__loading {
+      opacity: 0;
+    }
+  }
+}

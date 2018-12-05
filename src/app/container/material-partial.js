@@ -66,6 +66,7 @@ import Button from '../component/button'
 import ProviderBox from '../component/provider-box'
 import Icon from '../component/icon'
 import ProviderBoxSection from '../component/provider-box-section'
+import LoadingCheckmark from '../component/loading-checkmark'
 
 // const HidableProviderList = withState('isHidden', 'hide', true)(props => (
 //   <ProviderList
@@ -106,8 +107,11 @@ const MaterialPartial = ({
   updateSelectedModelConfigs,
   modelConfigs,
   setProviderListHidden,
-  isProviderListHidden
+  isProviderListHidden,
+  pollingProgress
 }) => {
+  const isPollingComplete = pollingProgress.complete === pollingProgress.total
+
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
     shippings.some(shipping => shipping.vendorId === quote.vendorId)
@@ -150,6 +154,7 @@ const MaterialPartial = ({
               : undefined
           }
           prefix="Total price"
+          loadingCheckmark={<LoadingCheckmark modifiers={isPollingComplete ? ['done'] : []} />}
         />
       )
 
@@ -289,6 +294,7 @@ const MaterialPartial = ({
             bestOffer && formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
           }
           prefix="Total price"
+          loadingCheckmark={<LoadingCheckmark modifiers={isPollingComplete ? ['done'] : []} />}
         />
       )
       const colorSelect = (

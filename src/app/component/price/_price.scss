@@ -15,9 +15,19 @@
     }
   }
 
+  &__global-loading {
+    margin-left: $space-s;
+    font-size: $price-height;
+  }
+
   &__price {
     display: flex;
     justify-content: flex-start;
+
+    & > .loading-checkmark {
+      margin-left: $space-s;
+      font-size: $price-height;
+    }
   }
 
   &__value {
