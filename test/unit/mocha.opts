@@ -1,4 +1,4 @@
 --recursive
---require @babel/register
+--require ./test/unit/babel-register.js
 --require @babel/polyfill
 -r ./test/unit/setup.js

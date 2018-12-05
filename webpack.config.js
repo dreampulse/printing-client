@@ -37,7 +37,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /(\.jsx?|\.tsx?)$/,
         exclude: /node_modules/,
         use: 'babel-loader'
       },
@@ -110,7 +110,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.json']
+    extensions: ['.js', '.ts', '.tsx', '.json']
   },
   plugins: [
     ...(isProd

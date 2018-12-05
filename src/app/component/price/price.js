@@ -37,7 +37,7 @@ Price.propTypes = {
   prefix: PropTypes.string,
   meta: PropTypes.string,
   loading: PropTypes.bool,
-  enableGlobalLoading: PropTypes.node
+  globalLoading: PropTypes.node
 }
 
 export default Price

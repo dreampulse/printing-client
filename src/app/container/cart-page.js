@@ -1,16 +1,11 @@
-// @flow
-
 import React from 'react'
 import {connect} from 'react-redux'
-import type {Dispatch} from 'redux'
+
 import {bindActionCreators} from 'redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 
-import type {ConfigId} from '../type'
-import type {AppState} from '../reducer'
-import type {AppAction} from '../action'
 import {selectCartShippings, selectConfiguredModelInformation} from '../lib/selector'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
@@ -233,7 +228,7 @@ const CartPage = ({
   )
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = state => ({
   modelsWithConfig: selectConfiguredModelInformation(state),
   modelConfigs: state.core.modelConfigs,
   cartShippings: selectCartShippings(state),
@@ -242,16 +237,16 @@ const mapStateToProps = (state: AppState) => ({
   liableForVat: state.core.user && state.core.user.liableForVat
 })
 
-const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => ({
+const mapDispatchToProps = dispatch => ({
   goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
   goToAddress: bindActionCreators(navigationAction.goToAddress, dispatch),
   goToMaterial: bindActionCreators(navigationAction.goToMaterial, dispatch),
   magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
-  duplicateModelConfig: (id: ConfigId) => {
+  duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)
     // Flow is crap
-    return (dispatch(action): any).then(() => {
+    return dispatch(action).then(() => {
       dispatch(
         navigationAction.goToUpload({
           selectModelConfigIds: [action.payload.nextId]

@@ -1,11 +1,8 @@
-// @flow
-
 import React from 'react'
 import {connect} from 'react-redux'
 
 import getCloudinaryUrl from '../../lib/cloudinary'
 
-import type {AppState} from '../../reducer'
 import * as modalActions from '../../action/modal'
 
 import Button from '../../component/button'
@@ -42,7 +39,7 @@ const MaterialModal = ({material, closeModal}) => {
   )
 }
 
-const mapStateToProps = (state: AppState, ownProps) => ({
+const mapStateToProps = (state, ownProps) => ({
   material: state.core.materials[ownProps.materialId]
 })
 

@@ -2,17 +2,16 @@
   "parser": "babel-eslint",
   "extends": [
     "airbnb",
-    "prettier",
-    "plugin:flowtype/recommended"
+    "prettier"
   ],
   "plugins": [
-    "prettier",
-    "flowtype"
+    "prettier"
   ],
   "root": true,
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "import/prefer-default-export": 0,
+    "import/extensions": 0,
     "jsx-a11y/href-no-hash": 0,
     "jsx-a11y/no-static-element-interactions": 0,
     "jsx-a11y/anchor-has-content": 0,
@@ -32,13 +31,11 @@
       "vars": "all"
       }],
     "prettier/prettier": ["error", {
-      "parser": "flow",
       "semi": false,
       "singleQuote": true,
       "bracketSpacing": false,
       "printWidth": 100
-    }],
-    "flowtype/generic-spacing": 0
+    }]
   },
   "settings": {
     "import/resolver": "webpack"

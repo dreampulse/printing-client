@@ -1,4 +1,3 @@
-// @flow
 import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
@@ -6,7 +5,7 @@ import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 
 import * as navigationAction from '../action/navigation'
-import type {AppState} from '../reducer'
+
 import {
   selectModelConfigsByIds,
   selectQuotePollingProgress,
@@ -61,7 +60,7 @@ const EditMaterialPage = ({goToCart, pollingProgress, configIds, uploadedModelCo
   )
 }
 
-const mapStateToProps = (state: AppState, ownProps) => ({
+const mapStateToProps = (state, ownProps) => ({
   pollingProgress: selectQuotePollingProgress(state),
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
   currency: state.core.currency,

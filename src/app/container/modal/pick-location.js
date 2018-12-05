@@ -1,12 +1,8 @@
-// @flow
-
 import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import compact from 'lodash/compact'
-
-import type {Location} from '../../type'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -86,7 +82,7 @@ const PickLocationModal = ({
             value={location ? formatLocation(location) : ''}
             googleMapsApiKey={config.googleMapsApiKey}
             onChange={place => {
-              const nextLocation: Location = convertPlaceToLocation(place)
+              const nextLocation = convertPlaceToLocation(place)
               setLocation(nextLocation)
 
               if (isLocationValid(nextLocation) && !currency) {

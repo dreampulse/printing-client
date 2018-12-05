@@ -1,5 +1,3 @@
-// @flow
-
 import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
@@ -9,7 +7,6 @@ import cartIcon from '../../asset/icon/cart.svg'
 
 import {selectCartCount} from '../lib/selector'
 
-import type {AppState} from '../reducer'
 import {goToUpload, goToCart} from '../action/navigation'
 import Modal from './modal'
 import {openIntercom} from '../service/intercom'
@@ -83,7 +80,7 @@ const AppLayout = ({
   </App>
 )
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = state => ({
   cartCount: selectCartCount(state)
 })
 

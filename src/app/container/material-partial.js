@@ -1,5 +1,3 @@
-// @flow
-
 import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
@@ -18,7 +16,7 @@ import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
 import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
-import type {AppState} from '../reducer'
+
 import {getProviderName} from '../lib/material'
 import {
   getBestMultiModelOfferForMaterial,
@@ -564,7 +562,7 @@ const MaterialPartial = ({
   )
 }
 
-const mapStateToProps = (state: AppState, ownProps) => ({
+const mapStateToProps = (state, ownProps) => ({
   modelConfigs: state.core.modelConfigs,
   quotes: selectQuotes(state),
   materialGroups: state.core.materialGroups,
