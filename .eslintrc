@@ -2,12 +2,10 @@
   "parser": "babel-eslint",
   "extends": [
     "airbnb",
-    "prettier",
-    "plugin:flowtype/recommended"
+    "prettier"
   ],
   "plugins": [
-    "prettier",
-    "flowtype"
+    "prettier"
   ],
   "root": true,
   "rules": {
@@ -33,13 +31,11 @@
       "vars": "all"
       }],
     "prettier/prettier": ["error", {
-      "parser": "flow",
       "semi": false,
       "singleQuote": true,
       "bracketSpacing": false,
       "printWidth": 100
-    }],
-    "flowtype/generic-spacing": 0
+    }]
   },
   "settings": {
     "import/resolver": "webpack"
