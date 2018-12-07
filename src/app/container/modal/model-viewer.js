@@ -24,7 +24,9 @@ const ModelViewerModal = ({closeModal, sceneId, modelName}) => {
   )
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = state => ({
+  sceneId: state.modelViewer.sceneId
+})
 
 const mapDispatchToProps = {
   closeModal: modalActions.closeModal

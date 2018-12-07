@@ -10,13 +10,16 @@ import timeout from './timeout'
 import {TimeoutState} from './timeout'
 import polling from './polling'
 import {PollingState} from './polling'
+import modelViewer from './model-viewer'
+import {ModelViewerState} from './model-viewer'
 
 export type AppState = {
-  core: CoreState
-  modal: ModalState
-  timeout: TimeoutState
-  polling: PollingState
-  routing: RouterState // Managed by react-router-redux
+  core: CoreState,
+  modal: ModalState,
+  timeout: TimeoutState,
+  polling: PollingState,
+  modelViewer: ModelViewerState,
+  routing: RouterState, // Managed by react-router-redux
   form: FormStateMap // Managed by redux-form
 }
 
@@ -25,6 +28,7 @@ const rootReducer = combineReducers({
   modal,
   timeout,
   polling,
+  modelViewer,
   routing,
   form
 } as any)

@@ -33,6 +33,7 @@ import ModelItem from '../component/model-item'
 import SelectField from '../component/select-field'
 
 import * as navigationActions from '../action/navigation'
+import * as modelViewerActions from '../action/model-viewer'
 import * as orderActions from '../action/order'
 import * as coreActions from '../action/core'
 import * as modalActions from '../action/modal'
@@ -373,7 +374,7 @@ const mapDispatchToProps = {
   goToAddress: navigationActions.goToAddress,
   goToCart: navigationActions.goToCart,
   goToSuccess: navigationActions.goToSuccess,
-  openModelViewer: modalActions.openModelViewerModal,
+  openModelViewer: modelViewerActions.open,
   orderPaid: orderActions.paid,
   executePaypalPayment: orderActions.executePaypalPayment,
   fatalError: coreActions.fatalError,

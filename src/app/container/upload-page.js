@@ -12,12 +12,17 @@ import copyIcon from '../../asset/icon/copy.svg'
 import cartIcon from '../../asset/icon/cart.svg'
 
 import {formatDimensions, formatPrice} from '../lib/formatter'
-import {selectModelsOfModelConfigs, selectCartCount} from '../lib/selector'
+import {
+  selectModelsOfModelConfigs,
+  selectCartCount,
+  selectQuotePollingProgress
+} from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
 import scrollTo from '../service/scroll-to'
 
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
+import * as modelViewerAction from '../action/model-viewer'
 import * as modalAction from '../action/modal'
 
 import AppLayout from './app-layout'
@@ -35,6 +40,7 @@ import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import Notification from '../component/notification'
 import NumberField from '../component/number-field'
+import ProviderProgressBar from '../component/provider-progress-bar'
 import Grid from '../component/grid'
 import Column from '../component/column'
 import RichText from '../component/rich-text'
@@ -52,9 +58,12 @@ const UploadPage = ({
   location,
   featureFlags,
   selectedModelConfigIds,
+  pollingProgress,
   numModelsUploading,
   isUploadCompleted
 }) => {
+  const numCheckedProviders = pollingProgress.complete || 0
+  const numTotalProviders = pollingProgress.total || 0
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
 
@@ -77,7 +86,7 @@ const UploadPage = ({
                 modifiers={['minor']}
                 label="Visit our Design Service"
                 onClick={() => {
-                  global.open('https://all3dp.layr.co/', '_blank')
+                  window.open('https://all3dp.layr.co/', '_blank')
                 }}
               />
             </div>
@@ -232,6 +241,7 @@ const UploadPage = ({
 
 const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
+  pollingProgress: selectQuotePollingProgress(state),
   modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
     ([modelConfig]) => {
       const mc = modelConfig // Flow bug with detecting correct branch in union type
@@ -250,7 +260,7 @@ const mapDispatchToProps = {
   updateQuantities: modelAction.updateQuantities,
   duplicateModelConfig: modelAction.duplicateModelConfig,
   goToCart: navigationAction.goToCart,
-  openModelViewer: modalAction.openModelViewerModal
+  openModelViewer: modelViewerAction.open
 }
 
 const enhance = compose(
