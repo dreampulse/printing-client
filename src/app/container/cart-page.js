@@ -28,7 +28,7 @@ import Notification from '../component/notification'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
-import * as modelViewerAction from '../action/model-viewer'
+import * as modalAction from '../action/modal'
 
 import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
@@ -242,7 +242,7 @@ const mapDispatchToProps = dispatch => ({
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
   goToAddress: bindActionCreators(navigationAction.goToAddress, dispatch),
   goToMaterial: bindActionCreators(navigationAction.goToMaterial, dispatch),
-  magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
+  magnifyModel: bindActionCreators(modalAction.openModelViewerModal, dispatch),
   duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)
     // Flow is crap
