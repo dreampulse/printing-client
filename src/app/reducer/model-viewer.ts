@@ -29,10 +29,7 @@ const open = (
   const {model} = action.payload
   const startPollingAction = pollingActions.start({
     pollingFunction: async (modelId: ModelId) => {
-      // TODO: This is a Bug!! We need to deal with multiple models now!
-      // The [0] is just a fix for typescript...
-      const modelNext = (await printingEngine.getModel(modelId))[0]
-
+      const modelNext = await printingEngine.getModel(modelId)
       return typeof modelNext.sceneId === 'string'
         ? {status: PollingStatus.POLLING_DONE, result: modelNext.sceneId}
         : {status: PollingStatus.POLLING_CONTINUE, result: null}

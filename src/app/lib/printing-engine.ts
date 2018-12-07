@@ -26,7 +26,8 @@ import * as httpJson from './http-json'
 
 // printing-engine types
 
-type ModelResponse = BackendModel[]
+type ModelUploadResponse = BackendModel[]
+type ModelResponse = BackendModel
 type ShippingsResponse = Shipping[]
 
 export type PriceRequest = {
@@ -154,7 +155,7 @@ export const uploadModel = async (
   },
   dispatch: Dispatch<Actions>,
   onProgressActionCreator: ModelOnProgressActionCreator
-): Promise<ModelResponse> => {
+): Promise<ModelUploadResponse> => {
   const response = await httpJson.upload({
     method: 'POST',
     url: `${config.printingEngineBaseUrl}/v3/model`,
