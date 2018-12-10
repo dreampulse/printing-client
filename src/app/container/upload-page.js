@@ -207,8 +207,18 @@ const UploadPage = ({
     </Section>
   )
 
+  const permanentNotificationSection = () => (
+    <Section>
+      <Notification
+        message="Due to Christmas holidays, the production time for some materials will be longer than normally and we cannot guarantee that your order will make it before Christmas."
+        warning
+      />
+    </Section>
+  )
+
   return (
     <AppLayout headerContent={<ConfigurationHeaderPartial />}>
+      {permanentNotificationSection()}
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
