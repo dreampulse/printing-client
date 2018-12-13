@@ -23,11 +23,12 @@
   &__price {
     display: flex;
     justify-content: flex-start;
+  }
 
-    & > .loading-checkmark {
-      margin-left: $space-s;
-      font-size: $price-height;
-    }
+  &__loading-checkmark {
+    display: flex;
+    margin-left: $space-base;
+    justify-content: center;
   }
 
   &__value {
