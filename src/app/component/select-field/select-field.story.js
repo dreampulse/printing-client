@@ -61,3 +61,8 @@ storiesOf('Select Field', module)
       <SelectField placeholder="Placeholder" menu={menu} disabled />
     </HandleValue>
   ))
+  .add('error', () => (
+    <HandleValue>
+      <SelectField placeholder="Placeholder" menu={menu} modifiers={['error']} />
+    </HandleValue>
+  ))
