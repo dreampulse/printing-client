@@ -43,7 +43,7 @@ store
     // TODO: lets fade out the bootsplash, looks nicer
     if (bootsplash) {
       // Otherwise hot reloading breaks
-      bootsplash.remove()
+      bootsplash.parentNode.removeChild(bootsplash)
     }
   })
 
