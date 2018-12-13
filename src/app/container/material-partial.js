@@ -10,6 +10,7 @@ import withPropsOnChange from 'recompose/withPropsOnChange'
 import keyBy from 'lodash/keyBy'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
+import compact from 'lodash/compact'
 
 import * as navigationAction from '../action/navigation'
 import * as modalAction from '../action/modal'
@@ -111,6 +112,7 @@ const MaterialPartial = ({
   pollingProgress
 }) => {
   const isPollingComplete = pollingProgress.complete === pollingProgress.total
+  const hasMoreThanOneResult = pollingProgress.complete > 0
 
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
@@ -135,7 +137,7 @@ const MaterialPartial = ({
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
   const openModelRepairPage = () => {
-    window.open('https://all3dp.layr.co/fix', '_blank')
+    global.open('https://all3dp.layr.co/fix', '_blank')
   }
 
   const renderMaterialSection = () => {
@@ -154,7 +156,14 @@ const MaterialPartial = ({
               : undefined
           }
           prefix="Total price"
-          loadingCheckmark={<LoadingCheckmark modifiers={isPollingComplete ? ['done'] : []} />}
+          loadingCheckmark={
+            <LoadingCheckmark
+              modifiers={compact([
+                isPollingComplete && 'done',
+                hasMoreThanOneResult && 'hideWithDelay'
+              ])}
+            />
+          }
         />
       )
 
