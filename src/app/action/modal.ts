@@ -5,8 +5,7 @@ import {
   FinishGroupId,
   Location,
   ModalContentType,
-  ConfigurationId,
-  BackendModel
+  ConfigurationId
 } from '../type'
 
 export type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
@@ -36,13 +35,12 @@ export const openPickUnitModal = (files: FileList): OpenModalAction =>
     }
   })
 
-export const openModelViewerModal = (model: BackendModel): OpenModalAction =>
+export const openModelViewerModal = (modelName: string): OpenModalAction =>
   open({
     isCloseable: true,
     contentType: ModalContentType.MODEL_VIEWER,
     contentProps: {
-      modelName: model.fileName,
-      sceneId: model.sceneId
+      modelName
     }
   })
 

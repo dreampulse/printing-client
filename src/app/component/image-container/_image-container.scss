@@ -10,7 +10,7 @@
 .image-container {
   @include scut-ratio-box(4/3);
 
-  background: $color-gray-3;
+  background: $color-bg;
 
   &__image {
     position: absolute;

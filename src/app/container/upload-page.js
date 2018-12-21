@@ -18,6 +18,7 @@ import scrollTo from '../service/scroll-to'
 
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
+import * as modelViewerAction from '../action/model-viewer'
 import * as modalAction from '../action/modal'
 
 import AppLayout from './app-layout'
@@ -250,7 +251,7 @@ const mapDispatchToProps = {
   updateQuantities: modelAction.updateQuantities,
   duplicateModelConfig: modelAction.duplicateModelConfig,
   goToCart: navigationAction.goToCart,
-  openModelViewer: modalAction.openModelViewerModal
+  openModelViewer: modelViewerAction.open
 }
 
 const enhance = compose(
