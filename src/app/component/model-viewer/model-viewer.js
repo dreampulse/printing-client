@@ -11,7 +11,7 @@ const ModelViewer = ({classNames, modifiers = [], sceneId}) => (
       <iframe
         className="model-viewer__iframe"
         title={`Model viewer ${sceneId}`}
-        src={`https://clara.io/player/v2/${sceneId}`}
+        src={`https://www.3dvieweronline.com/members/Idee1d01930813d9f10858db96fd9d58b1/${sceneId}`}
       />
     ) : (
       <LoadingIndicator classNames={['model-viewer__loading-indicator']} modifiers={['invert']} />
