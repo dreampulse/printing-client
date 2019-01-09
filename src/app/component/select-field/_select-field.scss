@@ -87,7 +87,8 @@
     border-color: $color-primary;
   }
 
-  &--error {
+  &--error,
+  &--error:focus:not(:disabled) {
     border-color: $color-error;
     box-shadow: $box-shadow-error;
   }
