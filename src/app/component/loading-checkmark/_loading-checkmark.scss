@@ -29,6 +29,19 @@
     }
   }
 
+  @keyframes hide-animation {
+    100% {
+      opacity: 0;
+    }
+    // The hide duration is .2s (based on 30s total)
+    99.833% {
+      opacity: 1;
+    }
+    0% {
+      opacity: 1;
+    }
+  }
+
   &--done {
     .loading-checkmark__check {
       animation: check-animation 2s linear forwards;
@@ -37,5 +50,9 @@
     .loading-checkmark__loading {
       opacity: 0;
     }
+  }
+
+  &--hideWithDelay {
+    animation: hide-animation 30s linear forwards;
   }
 }
