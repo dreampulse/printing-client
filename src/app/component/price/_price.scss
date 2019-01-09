@@ -6,28 +6,31 @@
   margin-bottom: $space-base;
 
   &__loading {
+    display: flex;
     color: $color-minor;
     font-style: italic;
+    align-items: center;
 
     & > .loading-indicator {
-      font-size: $price-height;
-      margin-right: $space-s;
+      margin-right: $space-base;
+      margin-top: -2px; // fix vertical alignment
     }
   }
 
   &__global-loading {
     margin-left: $space-s;
-    font-size: $price-height;
   }
 
   &__price {
     display: flex;
     justify-content: flex-start;
+  }
 
-    & > .loading-checkmark {
-      margin-left: $space-s;
-      font-size: $price-height;
-    }
+  &__loading-checkmark {
+    display: flex;
+    margin-left: $space-base;
+    justify-content: center;
+    margin-top: -2px; // fix vertical alignment
   }
 
   &__value {

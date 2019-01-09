@@ -25,7 +25,7 @@ const Price = ({
         {prefix ? <small className="price__prefix">{prefix}</small> : null}
         <div className="price__value">{value}</div>
         {meta ? <small className="price__meta">{meta}</small> : null}
-        {loadingCheckmark}
+        {loadingCheckmark && <div className="price__loading-checkmark">{loadingCheckmark}</div>}
       </div>
     )}
   </div>
