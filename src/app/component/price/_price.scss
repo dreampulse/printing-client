@@ -6,18 +6,18 @@
   margin-bottom: $space-base;
 
   &__loading {
+    display: flex;
     color: $color-minor;
     font-style: italic;
+    align-items: center;
 
     & > .loading-indicator {
-      font-size: $price-height;
       margin-right: $space-s;
     }
   }
 
   &__global-loading {
     margin-left: $space-s;
-    font-size: $price-height;
   }
 
   &__price {
