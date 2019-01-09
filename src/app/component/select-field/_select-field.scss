@@ -77,7 +77,7 @@
   }
 
   &--disabled {
-    opacity: .5;
+    opacity: 0.5;
     cursor: not-allowed;
     box-shadow: none;
   }
@@ -85,5 +85,11 @@
   &:focus:not(:disabled) {
     box-shadow: $box-shadow-focus;
     border-color: $color-primary;
+  }
+
+  &--error,
+  &--error:focus:not(:disabled) {
+    border-color: $color-error;
+    box-shadow: $box-shadow-error;
   }
 }
