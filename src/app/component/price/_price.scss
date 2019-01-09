@@ -12,7 +12,8 @@
     align-items: center;
 
     & > .loading-indicator {
-      margin-right: $space-s;
+      margin-right: $space-base;
+      margin-top: -2px; // fix vertical alignment
     }
   }
 
@@ -29,6 +30,7 @@
     display: flex;
     margin-left: $space-base;
     justify-content: center;
+    margin-top: -2px; // fix vertical alignment
   }
 
   &__value {
