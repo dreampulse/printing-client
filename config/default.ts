@@ -23,7 +23,7 @@ export default {
   ],
   defaultCurrency: 'USD',
   providerNames: {
-    ff3dm: 'FF3DM',
+    facfox: 'FacFox',
     imaterialise: 'i.Materialise',
     jawstec: 'JawsTec',
     sculpteo: 'Sculpteo',

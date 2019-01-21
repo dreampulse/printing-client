@@ -12,7 +12,7 @@ storiesOf('Provider Teaser', module)
       <ProviderImage slug="sculpteo" />
       <ProviderImage slug="trinckle" />
       <ProviderImage slug="treatstock" />
-      <ProviderImage slug="ff3dm" />
+      <ProviderImage slug="facfox" />
       <ProviderImage slug="jawstec" />
     </ProviderTeaser>
   ))
@@ -23,7 +23,7 @@ storiesOf('Provider Teaser', module)
       <ProviderImage slug="sculpteo" />
       <ProviderImage slug="trinckle" />
       <ProviderImage slug="treatstock" />
-      <ProviderImage slug="ff3dm" />
+      <ProviderImage slug="facfox" />
       <ProviderImage slug="jawstec" />
     </ProviderTeaser>
   ))
