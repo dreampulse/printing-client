@@ -46,6 +46,10 @@
     @include scut-truncate;
     font-size: $font-size-l;
     line-height: $line-height-s;
+
+    & > .info {
+      margin-left: $space-s;
+    }
   }
 
   &__price-column {

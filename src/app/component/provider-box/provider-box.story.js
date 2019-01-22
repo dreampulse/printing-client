@@ -29,9 +29,9 @@ storiesOf('ProviderBox', module).add('default', () => (
     priceColumn={
       <DescriptionList>
         <dt>Production:</dt>
-        <dd>8-10 days</dd>
+        <dd>$345.23</dd>
         <dt>Shipping:</dt>
-        <dd>2 days</dd>
+        <dd>$5.00</dd>
       </DescriptionList>
     }
     materialColumn={
