@@ -6,7 +6,7 @@ import Footer from '../component/footer'
 import Link from '../component/link'
 
 const FooterPartial = () => (
-  <Footer copyline="© 2018 All3DP">
+  <Footer copyline="© 2019 All3DP">
     <Link
       label="Contact Us"
       href="#"
