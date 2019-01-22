@@ -4,6 +4,9 @@ import React from 'react'
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
+import Info from '../info'
+import Paragraph from '../paragraph'
+
 const ProviderBox = ({
   classNames,
   modifiers = [],
@@ -25,7 +28,15 @@ const ProviderBox = ({
       {actionButton}
     </div>
     <div className="provider-box__days-column">
-      <div className="provider-box__column-head">{day}</div>
+      <div className="provider-box__column-head">
+        {day}
+        <Info modifiers={['minor']}>
+          <Paragraph>
+            Production time is an estimate based on similar orders. Actual production time may vary
+            due to model analysis, reprints, and quality control.
+          </Paragraph>
+        </Info>
+      </div>
       {daysColumn}
     </div>
     <div className="provider-box__price-column">

@@ -54,7 +54,7 @@ const configurationHeader = () => (
 )
 
 const footer = () => (
-  <Footer copyline="© 2018 All3DP">
+  <Footer copyline="© 2019 All3DP">
     <Link label="Terms and conditions" href="#" />
     <Link label="Imprint" href="#" />
   </Footer>
