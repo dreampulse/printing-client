@@ -39,8 +39,7 @@ ProviderItem.propTypes = {
   time: PropTypes.node.isRequired,
   priceAnnotation: PropTypes.node.isRequired,
   price: PropTypes.node.isRequired,
-  action: PropTypes.node.isRequired,
-  icons: PropTypes.node
+  action: PropTypes.node.isRequired
 }
 
 export default ProviderItem
