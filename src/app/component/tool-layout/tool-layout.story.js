@@ -197,7 +197,15 @@ const lorem = `
 `
 
 storiesOf('ToolLayout', module).add('default', () => (
-  <ToolLayout header={navBar()} sidebar={lorem}>
+  <ToolLayout
+    header={navBar()}
+    sidebar={lorem}
+    footer={
+      <div style={{background: 'red', height: '50px', position: 'relative'}}>
+        <div style={{height: '200px'}}>Foobar</div>
+      </div>
+    }
+  >
     {lorem}
   </ToolLayout>
 ))

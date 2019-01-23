@@ -8,7 +8,8 @@
   min-height: 100vh;
 
   &__header {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: z($stacking, header);
     margin-bottom: $space-xxxl;
   }
