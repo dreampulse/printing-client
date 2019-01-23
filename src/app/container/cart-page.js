@@ -28,6 +28,7 @@ import Notification from '../component/notification'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
+import * as modalAction from '../action/modal'
 import * as modelViewerAction from '../action/model-viewer'
 
 import AppLayout from './app-layout'
@@ -42,7 +43,7 @@ const CartPage = ({
   modelsWithConfig,
   modelConfigs,
   goToUpload,
-  goToAddress,
+  goToReviewOrder,
   duplicateModelConfig,
   deleteModelConfigs,
   cart,
@@ -158,7 +159,7 @@ const CartPage = ({
         vat={liableForVat && formatPrice(cart.vatPrice, cart.currency)}
         total={formatPrice(liableForVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
       >
-        <Button modifiers={['block']} label="Checkout" onClick={() => goToAddress()} />
+        <Button modifiers={['block']} label="Checkout" onClick={() => goToReviewOrder()} />
       </PaymentSection>
     )
   }
@@ -238,9 +239,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  goToReviewOrder: bindActionCreators(navigationAction.goToReviewOrder, dispatch),
   goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
-  goToAddress: bindActionCreators(navigationAction.goToAddress, dispatch),
   goToMaterial: bindActionCreators(navigationAction.goToMaterial, dispatch),
   magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
   duplicateModelConfig: id => {

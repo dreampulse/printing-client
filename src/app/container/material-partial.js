@@ -12,11 +12,11 @@ import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import compact from 'lodash/compact'
 
-import * as navigationAction from '../action/navigation'
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
 import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
+import * as navigationAction from '../action/navigation'
 
 import {getProviderName} from '../lib/material'
 import {
@@ -96,7 +96,7 @@ const MaterialPartial = ({
   openMaterialModal,
   openFinishGroupModal,
   addToCart,
-  goToAddress,
+  goToReviewOrder,
   quotes,
   selectedModelConfigs,
   shippings,
@@ -415,7 +415,7 @@ const MaterialPartial = ({
             )
             scrollTo('#root')
           } else {
-            goToAddress()
+            goToReviewOrder()
           }
         })
     }
@@ -592,7 +592,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-  goToAddress: navigationAction.goToAddress,
+  goToReviewOrder: navigationAction.goToReviewOrder,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,

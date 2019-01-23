@@ -48,7 +48,7 @@ import {PaymentAbortedError} from '../lib/error'
 
 const ReviewOrderPage = ({
   user,
-  goToAddress,
+  openAddressFormModal,
   goToCart,
   orderPaid,
   cart,
@@ -85,79 +85,83 @@ const ReviewOrderPage = ({
             label={
               <Fragment key="label">
                 Shipping Address{' '}
-                <EditLink label="edit" onClick={() => goToAddress('shipping-address')} />
+                <EditLink label="edit" onClick={() => openAddressFormModal('shipping-address')} />
               </Fragment>
             }
           />
-          <Paragraph modifiers={['l']}>
-            {user.companyName ? (
-              <span>
-                {user.companyName}
-                <br />
-              </span>
-            ) : null}
-            {user.vatId ? (
-              <span>
-                {user.vatId}
-                <br />
-              </span>
-            ) : null}
-            {user.shippingAddress.firstName} {user.shippingAddress.lastName}
-            <br />
-            {user.shippingAddress.address}
-            <br />
-            {user.shippingAddress.addressLine2}
-            <br />
-            {user.shippingAddress.zipCode} {user.shippingAddress.city}
-            <br />
-            {shippingStateName && (
-              <span>
-                {shippingStateName}
-                <br />
-              </span>
-            )}
-            {getCountryName(user.shippingAddress.countryCode)}
-          </Paragraph>
+          {user && (
+            <Paragraph modifiers={['l']}>
+              {user.companyName ? (
+                <span>
+                  {user.companyName}
+                  <br />
+                </span>
+              ) : null}
+              {user.vatId ? (
+                <span>
+                  {user.vatId}
+                  <br />
+                </span>
+              ) : null}
+              {user.shippingAddress.firstName} {user.shippingAddress.lastName}
+              <br />
+              {user.shippingAddress.address}
+              <br />
+              {user.shippingAddress.addressLine2}
+              <br />
+              {user.shippingAddress.zipCode} {user.shippingAddress.city}
+              <br />
+              {shippingStateName && (
+                <span>
+                  {shippingStateName}
+                  <br />
+                </span>
+              )}
+              {getCountryName(user.shippingAddress.countryCode)}
+            </Paragraph>
+          )}
         </Column>
         <Column md={6}>
           <Headline modifiers={['minor', 'l']} label="Billing Address" />
-          <Paragraph modifiers={['l']}>
-            {user.companyName ? (
-              <span>
-                {user.companyName}
-                <br />
-              </span>
-            ) : null}
-            {user.vatId ? (
-              <span>
-                {user.vatId}
-                <br />
-              </span>
-            ) : null}
-            {user.billingAddress.firstName || user.shippingAddress.firstName}{' '}
-            {user.billingAddress.lastName || user.shippingAddress.lastName}
-            <br />
-            {user.billingAddress.address || user.shippingAddress.address}
-            <br />
-            {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}
-            <br />
-            {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
-            {user.billingAddress.city || user.shippingAddress.city}
-            <br />
-            {billingStateName && (
-              <span>
-                {billingStateName}
-                <br />
-              </span>
-            )}
-            {user.billingAddress.countryCode
-              ? getCountryName(user.billingAddress.countryCode)
-              : getCountryName(user.shippingAddress.countryCode)}
-            <br />
-            {user.useDifferentBillingAddress && (
-              <EditLink label="edit" onClick={() => goToAddress('billing-address')} />
-            )}
-          </Paragraph>
+          {user && (
+            <Paragraph modifiers={['l']}>
+              {user.companyName ? (
+                <span>
+                  {user.companyName}
+                  <br />
+                </span>
+              ) : null}
+              {user.vatId ? (
+                <span>
+                  {user.vatId}
+                  <br />
+                </span>
+              ) : null}
+              {user.billingAddress.firstName || user.shippingAddress.firstName}{' '}
+              {user.billingAddress.lastName || user.shippingAddress.lastName}
+              <br />
+              {user.billingAddress.address || user.shippingAddress.address}
+              <br />
+              {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}
+              <br />
+              {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
+              {user.billingAddress.city || user.shippingAddress.city}
+              <br />
+              {billingStateName && (
+                <span>
+                  {billingStateName}
+                  <br />
+                </span>
+              )}
+              {user.billingAddress.countryCode
+                ? getCountryName(user.billingAddress.countryCode)
+                : getCountryName(user.shippingAddress.countryCode)}
+              <br />
+              {user.useDifferentBillingAddress && (
+                <EditLink label="edit" onClick={() => openAddressFormModal('billing-address')} />
+              )}
+            </Paragraph>
+          )}
         </Column>
       </Grid>
     </Section>
@@ -371,7 +375,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  goToAddress: navigationActions.goToAddress,
+  openAddressFormModal: modalActions.openAddressFormModal,
   goToCart: navigationActions.goToCart,
   goToSuccess: navigationActions.goToSuccess,
   openModelViewer: modelViewerActions.open,

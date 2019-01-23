@@ -6,6 +6,7 @@ import {Route} from 'react-router'
 import {selectCartCount} from '../lib/selector'
 import {openIntercom} from '../service/intercom'
 import * as navigationAction from '../action/navigation'
+import * as modalAction from '../action/modal'
 
 import helpIcon from '../../asset/icon/help.svg'
 import cartIcon from '../../asset/icon/cart.svg'
@@ -16,35 +17,12 @@ import Modal from './modal'
 import App from '../component/app'
 import Container from '../component/container'
 import NavBar from '../component/nav-bar'
-import ProcessStepBar from '../component/process-step-bar'
-import ProcessStep from '../component/process-step'
 import IconLink from '../component/icon-link'
 import Button from '../component/button'
 import CloseButton from '../component/close-button'
 import Headline from '../component/headline'
 
-const CheckoutLayout = ({
-  children,
-  currentStep,
-  goToAddress,
-  goToUpload,
-  goToCart,
-  cartCount,
-  title
-}) => {
-  const processStepBar = (
-    <ProcessStepBar currentStep={currentStep}>
-      <ProcessStep
-        label="Address"
-        onClick={event => {
-          event.preventDefault()
-          goToAddress()
-        }}
-      />
-      <ProcessStep label="Review" />
-      <ProcessStep label="Pay" />
-    </ProcessStepBar>
-  )
+const CheckoutLayout = ({children, goToUpload, goToCart, cartCount, title}) => {
   const header = (
     <NavBar
       leftContent={
@@ -55,7 +33,6 @@ const CheckoutLayout = ({
       }
       rightContent={
         <Fragment>
-          {currentStep >= 0 && processStepBar}
           <Route path="/" exact>
             {({match}) =>
               !match ? (
@@ -105,7 +82,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   goToUpload: navigationAction.goToUpload,
   goToCart: navigationAction.goToCart,
-  goToAddress: navigationAction.goToAddress
+  openAddressFormModal: modalAction.openAddressFormModal
 }
 
 const enhance = compose(

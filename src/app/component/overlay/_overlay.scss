@@ -22,7 +22,7 @@
 
   &__modal {
     width: $modal-default-width;
-    max-height: 100%;
+    max-height: 95%;
     background-color: $color-bg;
     padding: $space-xl;
     overflow: auto;
@@ -31,6 +31,7 @@
   &__headline {
     position: relative;
     padding-right: $close-button-size + $space-xl;
+    color: $color-minor;
 
     & > .headline {
       margin-bottom: 0;
@@ -45,7 +46,6 @@
 
   &__header {
     padding-bottom: $space-base;
-    border-bottom: 1px solid $color-border;
   }
 
   &__content {
@@ -56,7 +56,7 @@
 
   &__footer {
     padding-top: $space-l;
-    border-top: 1px solid $color-border;
+    // border-top: 1px solid $color-border;
     display: flex;
     justify-content: flex-end;
 
