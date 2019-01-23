@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 const ConfigurationHeader = ({classNames, location, currency, text}) => (
-  <div className={buildClassName('ConfigurationHeader', {}, classNames)}>
+  <div className={cn('ConfigurationHeader', {}, classNames)}>
     <div className="ConfigurationHeader__wrapper">
       <div className="ConfigurationHeader__location">{location}</div>
       <div className="ConfigurationHeader__currency">{currency}</div>

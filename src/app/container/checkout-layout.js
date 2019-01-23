@@ -43,7 +43,6 @@ const CheckoutLayout = ({children, goToUpload, goToCart, cartCount, title}) => {
             }
           </Route>
           <IconLink
-            modifiers={['minor']}
             icon={cartIcon}
             disabled={cartCount < 1}
             cartCount={cartCount}
@@ -53,7 +52,6 @@ const CheckoutLayout = ({children, goToUpload, goToCart, cartCount, title}) => {
             }}
           />
           <IconLink
-            modifiers={['minor']}
             icon={helpIcon}
             onClick={event => {
               event.preventDefault()

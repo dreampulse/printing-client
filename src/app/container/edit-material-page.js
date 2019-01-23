@@ -19,6 +19,7 @@ import Container from '../component/container'
 import NavBar from '../component/nav-bar'
 import CloseButton from '../component/close-button'
 import Headline from '../component/headline'
+import Section from '../component/section'
 
 const EditMaterialPage = ({goToCart, configIds, uploadedModelConfigs}) => {
   const title = `Edit material (${configIds.length} of ${uploadedModelConfigs.length} items)`
@@ -37,11 +38,15 @@ const EditMaterialPage = ({goToCart, configIds, uploadedModelConfigs}) => {
               <Headline modifiers={['l', 'invert']} label={title} />
             </>
           }
-        />,
-        <ConfigurationHeaderPartial key="configuration-header" />
+        />
       ]}
       footer={<FooterPartial />}
     >
+      <Section>
+        <Container>
+          <ConfigurationHeaderPartial key="configuration-header" />
+        </Container>
+      </Section>
       <Container>
         <MaterialPartial configIds={configIds} />
       </Container>

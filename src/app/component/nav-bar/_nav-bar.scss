@@ -4,13 +4,10 @@
   font-size: $font-size-l;
   border-bottom: solid 1px $color-border-minor;
   padding: 0 $space-xl;
-
-  &__main {
-    display: flex;
-    flex-direction: row;
-    height: $nav-bar-content-height + 2 * $space-l;
-    align-items: center;
-  }
+  display: flex;
+  flex-direction: row;
+  height: $nav-bar-content-height + 2 * $space-l;
+  align-items: center;
 
   &__left {
     display: flex;
