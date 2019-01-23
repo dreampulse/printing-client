@@ -4,16 +4,12 @@ import React from 'react'
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
-import Container from '../container'
-
 const NavBar = ({classNames, modifiers, leftContent, rightContent}) => (
   <header className={buildClassName('nav-bar', modifiers, classNames)}>
-    <Container>
-      <div className="nav-bar__main">
-        <div className="nav-bar__left">{leftContent}</div>
-        {rightContent && <div className="nav-bar__right">{rightContent}</div>}
-      </div>
-    </Container>
+    <div className="nav-bar__main">
+      <div className="nav-bar__left">{leftContent}</div>
+      {rightContent && <div className="nav-bar__right">{rightContent}</div>}
+    </div>
   </header>
 )
 

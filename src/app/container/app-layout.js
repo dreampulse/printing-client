@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
 
@@ -31,26 +31,25 @@ const AppLayout = ({
 }) => (
   <App
     header={
-      <Fragment>
+      <>
         <NavBar
           key="navbar"
           leftContent={<Logo onClick={() => onHomeClick()} />}
           rightContent={
-            <Fragment>
+            <>
               {navBarContent}
               <Route path="/" exact>
                 {({match}) =>
-                  !match ? (
+                  !match && (
                     <Button
                       label="Upload"
                       onClick={() => onUploadClick()}
-                      modifiers={['invert', 'compact']}
+                      modifiers={['minor', 'compact']}
                     />
-                  ) : null
+                  )
                 }
               </Route>
               <IconLink
-                modifiers={['invert']}
                 icon={cartIcon}
                 disabled={cartCount < 1}
                 cartCount={cartCount}
@@ -60,18 +59,17 @@ const AppLayout = ({
                 }}
               />
               <IconLink
-                modifiers={['invert']}
                 icon={helpIcon}
                 onClick={event => {
                   event.preventDefault()
                   openIntercom()
                 }}
               />
-            </Fragment>
+            </>
           }
         />
         {headerContent}
-      </Fragment>
+      </>
     }
     footer={<FooterPartial />}
   >

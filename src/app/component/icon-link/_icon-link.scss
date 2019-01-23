@@ -13,7 +13,7 @@
 
   &__cart-count {
     position: absolute;
-    color: $color-yellow;
+    color: $color-invert-text;
     top: 0.8em;
     left: 0.3em;
     right: 0;
@@ -36,22 +36,5 @@
     .icon-link__cart-count {
       display: none;
     }
-  }
-
-  &--invert {
-    color: $color-invert-text;
-
-    &:hover:not([aria-disabled="true"]),
-    &:focus:not([aria-disabled="true"]) {
-      color: $color-invert-text;
-    }
-
-    &[aria-disabled="true"] {
-      color: $color-invert-disabled;
-    }
-  }
-
-  &--l {
-    font-size: $font-size-xxxl;
   }
 }

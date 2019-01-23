@@ -1,12 +1,12 @@
 .nav-bar {
-  background: $color-invert-bg;
-  color: $color-invert-text;
+  background: $color-bg;
+  color: $color-primary;
   font-size: $font-size-l;
-
-  padding: $space-l 0;
+  border-bottom: solid 1px $color-border-minor;
+  padding: $space-l;
 
   @include respond-to(medium) {
-    padding: 0;
+    padding: 0 $space-l;
   }
 
   &__main {
@@ -30,6 +30,7 @@
       margin-left: $space-l;
     }
 
+    // TODO: remove when design change is completed
     & > .headline {
       margin-bottom: 0;
     }
@@ -52,14 +53,6 @@
     @include respond-to(medium) {
       margin-top: 0;
       justify-content: flex-end;
-
-      & > .provider-progress-bar {
-        width: 300px; // Design decision
-      }
-
-      & > .process-step-bar {
-        width: 550px; // Design decision
-      }
     }
   }
 }

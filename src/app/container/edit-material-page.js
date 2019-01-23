@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
@@ -6,11 +6,7 @@ import lifecycle from 'recompose/lifecycle'
 
 import * as navigationAction from '../action/navigation'
 
-import {
-  selectModelConfigsByIds,
-  selectQuotePollingProgress,
-  selectUploadedModelConfigs
-} from '../lib/selector'
+import {selectModelConfigsByIds, selectUploadedModelConfigs} from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
 
 import FooterPartial from './footer-partial'
@@ -21,14 +17,11 @@ import Modal from './modal'
 import App from '../component/app'
 import Container from '../component/container'
 import NavBar from '../component/nav-bar'
-import ProviderProgressBar from '../component/provider-progress-bar'
 import CloseButton from '../component/close-button'
 import Headline from '../component/headline'
 
-const EditMaterialPage = ({goToCart, pollingProgress, configIds, uploadedModelConfigs}) => {
+const EditMaterialPage = ({goToCart, configIds, uploadedModelConfigs}) => {
   const title = `Edit material (${configIds.length} of ${uploadedModelConfigs.length} items)`
-  const numCheckedProviders = pollingProgress.complete || 0
-  const numTotalProviders = pollingProgress.total || 0
 
   return (
     <App
@@ -36,16 +29,13 @@ const EditMaterialPage = ({goToCart, pollingProgress, configIds, uploadedModelCo
         <NavBar
           key="header-bar"
           leftContent={
-            <Fragment>
+            <>
               <CloseButton
-                modifiers={['invert', 'l']}
+                modifiers={['l']}
                 onClick={() => goToCart({selectModelConfigIds: configIds})}
               />
               <Headline modifiers={['l', 'invert']} label={title} />
-            </Fragment>
-          }
-          rightContent={
-            <ProviderProgressBar currentStep={numCheckedProviders} totalSteps={numTotalProviders} />
+            </>
           }
         />,
         <ConfigurationHeaderPartial key="configuration-header" />
@@ -61,7 +51,6 @@ const EditMaterialPage = ({goToCart, pollingProgress, configIds, uploadedModelCo
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  pollingProgress: selectQuotePollingProgress(state),
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
   currency: state.core.currency,
   location: state.core.location,
