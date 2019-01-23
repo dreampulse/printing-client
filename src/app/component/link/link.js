@@ -1,18 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
-const Link = ({classNames, modifiers, label, href = '#', icon, onClick = () => {}, ...rest}) => (
-  <a
-    className={buildClassName('link', modifiers, classNames)}
-    href={href}
-    onClick={onClick}
-    {...rest}
-  >
+const Link = ({classNames, label, href = '#', icon, onClick = () => {}, ...rest}) => (
+  <a className={cn('Link', {}, classNames)} href={href} onClick={onClick} {...rest}>
     {icon && <Icon source={icon} />}
     {label}
   </a>

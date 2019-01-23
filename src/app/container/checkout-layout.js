@@ -10,7 +10,6 @@ import * as navigationAction from '../action/navigation'
 import helpIcon from '../../asset/icon/help.svg'
 import cartIcon from '../../asset/icon/cart.svg'
 
-import FooterPartial from './footer-partial'
 import Modal from './modal'
 
 import App from '../component/app'
@@ -67,7 +66,7 @@ const CheckoutLayout = ({children, goToUpload, goToCart, cartCount, title}) => {
   )
 
   return (
-    <App header={header} footer={<FooterPartial />}>
+    <App header={header}>
       <Modal />
       <Container>{children}</Container>
     </App>
