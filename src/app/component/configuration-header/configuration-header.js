@@ -4,17 +4,13 @@ import React from 'react'
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
-import Container from '../container'
-
-const ConfigurationHeader = ({classNames, modifiers, location, currency, text}) => (
-  <div className={buildClassName('configuration-header', modifiers, classNames)}>
-    <Container>
-      <div className="configuration-header__wrapper">
-        <div className="configuration-header__location">{location}</div>
-        <div className="configuration-header__currency">{currency}</div>
-        <div className="configuration-header__text">{text}</div>
-      </div>
-    </Container>
+const ConfigurationHeader = ({classNames, location, currency, text}) => (
+  <div className={buildClassName('ConfigurationHeader', {}, classNames)}>
+    <div className="ConfigurationHeader__wrapper">
+      <div className="ConfigurationHeader__location">{location}</div>
+      <div className="ConfigurationHeader__currency">{currency}</div>
+      <div className="ConfigurationHeader__text">{text}</div>
+    </div>
   </div>
 )
 

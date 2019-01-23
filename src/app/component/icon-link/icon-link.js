@@ -8,7 +8,6 @@ import Icon from '../icon'
 
 const IconLink = ({
   classNames,
-  modifiers = [],
   icon,
   disabled = false,
   href = '#',
@@ -16,13 +15,13 @@ const IconLink = ({
   cartCount = 0
 }) => (
   <a
-    className={buildClassName('icon-link', modifiers, classNames)}
+    className={buildClassName('IconLink', {}, classNames)}
     aria-disabled={disabled}
     onClick={onClick}
     href={href}
   >
     <Icon source={icon} />
-    {cartCount > 0 && <span className="icon-link__cart-count">{cartCount}</span>}
+    {cartCount > 0 && <span className="IconLink__cartCount">{cartCount}</span>}
   </a>
 )
 

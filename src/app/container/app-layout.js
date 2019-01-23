@@ -22,7 +22,6 @@ const AppLayout = ({
   children,
   footer,
   navBarContent,
-  headerContent,
   cartCount,
   onHomeClick,
   onUploadClick,
@@ -67,7 +66,6 @@ const AppLayout = ({
             </>
           }
         />
-        {headerContent}
       </>
     }
     footer={footer}
