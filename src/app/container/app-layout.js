@@ -11,8 +11,6 @@ import {goToUpload, goToCart} from '../action/navigation'
 import Modal from './modal'
 import {openIntercom} from '../service/intercom'
 
-import FooterPartial from './footer-partial'
-
 import App from '../component/app'
 import Container from '../component/container'
 import NavBar from '../component/nav-bar'
@@ -22,6 +20,7 @@ import Logo from '../component/logo'
 
 const AppLayout = ({
   children,
+  footer,
   navBarContent,
   headerContent,
   cartCount,
@@ -73,7 +72,7 @@ const AppLayout = ({
         {headerContent}
       </Fragment>
     }
-    footer={<FooterPartial />}
+    footer={footer}
   >
     <Container>{children}</Container>
     <Modal />
