@@ -1,0 +1,20 @@
+.ToolLayout {
+  $stacking: footer, main, header;
+
+  position: relative;
+  z-index: z($global-stacking, app);
+  display: grid;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &__header {
+  }
+
+  &__main {
+    padding: $space-l;
+  }
+
+  &__sidebar {
+    padding: $space-l;
+  }
+}

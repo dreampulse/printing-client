@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import {storiesOf} from '@storybook/react'
 
-import App from '.'
+import PageLayout from '.'
 import StickyContainer from '../sticky-container'
 import Container from '../container'
 import NavBar from '../nav-bar'
@@ -60,8 +60,8 @@ const footer = () => (
   </Footer>
 )
 
-storiesOf('App', module).add('default', () => (
-  <App
+storiesOf('PageLayout', module).add('default', () => (
+  <PageLayout
     header={[
       navBar(),
       <StickyContainer key="configHeader">{configurationHeader()}</StickyContainer>
@@ -245,5 +245,5 @@ storiesOf('App', module).add('default', () => (
       fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
       officia deserunt mollit anim id est laborum.
     </Container>
-  </App>
+  </PageLayout>
 ))

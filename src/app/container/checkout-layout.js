@@ -10,10 +10,9 @@ import * as navigationAction from '../action/navigation'
 import helpIcon from '../../asset/icon/help.svg'
 import cartIcon from '../../asset/icon/cart.svg'
 
-import FooterPartial from './footer-partial'
 import Modal from './modal'
 
-import App from '../component/app'
+import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 import NavBar from '../component/nav-bar'
 import ProcessStepBar from '../component/process-step-bar'
@@ -91,10 +90,10 @@ const CheckoutLayout = ({
   )
 
   return (
-    <App header={header}>
-      <Modal />
+    <PageLayout header={header}>
       <Container>{children}</Container>
-    </App>
+      <Modal />
+    </PageLayout>
   )
 }
 
