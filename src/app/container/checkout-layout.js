@@ -91,7 +91,7 @@ const CheckoutLayout = ({
   )
 
   return (
-    <App header={header} footer={<FooterPartial />}>
+    <App header={header}>
       <Modal />
       <Container>{children}</Container>
     </App>

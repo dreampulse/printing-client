@@ -25,6 +25,7 @@ import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
 import MaterialPartial from './material-partial'
 import ConfigurationHeaderPartial from './configuration-header-partial'
+import FooterPartial from './footer-partial'
 
 import Section from '../component/section'
 import Headline from '../component/headline'
@@ -209,7 +210,7 @@ const UploadPage = ({
   )
 
   return (
-    <AppLayout headerContent={<ConfigurationHeaderPartial />}>
+    <AppLayout headerContent={<ConfigurationHeaderPartial />} footer={<FooterPartial />}>
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
