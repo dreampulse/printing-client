@@ -32,10 +32,10 @@ const EditMaterialPage = ({goToCart, configIds, uploadedModelConfigs}) => {
           leftContent={
             <>
               <CloseButton
-                modifiers={['l']}
+                modifiers={['l', 'minor']}
                 onClick={() => goToCart({selectModelConfigIds: configIds})}
               />
-              <Headline modifiers={['l', 'invert']} label={title} />
+              <Headline modifiers={['l', 'minor']} label={title} />
             </>
           }
         />
