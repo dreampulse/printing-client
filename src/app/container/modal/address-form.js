@@ -155,6 +155,7 @@ const AddressFormModal = ({
   const headline = <Headline label="Shipping Address" modifiers={['l', 'minor']} />
   const buttons = [
     <Button
+      key="cancel_button"
       label="Cancel"
       modifiers={['text']}
       onClick={() => {
@@ -162,6 +163,7 @@ const AddressFormModal = ({
       }}
     />,
     <Button
+      key="confirm_button"
       label="Confirm"
       disabled={isSubmitting}
       onClick={() => {
@@ -213,7 +215,6 @@ const AddressFormModal = ({
           />
           <Field
             validate={required}
-            normalize={formatTelephoneNumber}
             component={renderFormikField(InputField)}
             label="Phone number"
             name="phoneNumber"
@@ -376,7 +377,12 @@ const enhance = compose(
         values.billingAddress = values.shippingAddress
       }
 
-      props.saveUser(values).then(() => {
+      const normalizedValues = {
+        ...values,
+        phoneNumber: formatTelephoneNumber(values.phoneNumber)
+      }
+
+      props.saveUser(normalizedValues).then(() => {
         props.closeModal()
       })
     },
