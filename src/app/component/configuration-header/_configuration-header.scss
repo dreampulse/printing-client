@@ -1,8 +1,7 @@
-.configuration-header {
+.ConfigurationHeader {
   $currency-width: 120px;
 
   background: $color-bg;
-  border-bottom: 1px solid $color-border;
   padding: $space-l 0;
 
   &__wrapper {

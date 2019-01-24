@@ -1,19 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
-import Container from '../container'
-
-const NavBar = ({classNames, modifiers, leftContent, rightContent}) => (
-  <header className={buildClassName('nav-bar', modifiers, classNames)}>
-    <Container>
-      <div className="nav-bar__main">
-        <div className="nav-bar__left">{leftContent}</div>
-        {rightContent && <div className="nav-bar__right">{rightContent}</div>}
-      </div>
-    </Container>
+const NavBar = ({classNames, leftContent, rightContent}) => (
+  <header className={cn('NavBar', {}, classNames)}>
+    <div className="NavBar__left">{leftContent}</div>
+    {rightContent && <div className="NavBar__right">{rightContent}</div>}
   </header>
 )
 
