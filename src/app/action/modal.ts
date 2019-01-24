@@ -103,11 +103,13 @@ export const openErrorModal = (error: Error): OpenModalAction =>
     }
   })
 
-export const openAddressFormModal = (): OpenModalAction =>
+export const openAddressFormModal = (scrollTo?: string): OpenModalAction =>
   open({
     isCloseable: true,
     contentType: ModalContentType.ADDRESS_FORM,
-    contentProps: {}
+    contentProps: {
+      scrollTo
+    }
   })
 
 export const closeModal = (): CloseModalAction => ({

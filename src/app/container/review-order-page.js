@@ -80,87 +80,106 @@ const ReviewOrderPage = ({
     <Section>
       <Grid>
         <Column md={6}>
-          <Headline
-            modifiers={['minor', 'l']}
-            label={
-              <Fragment key="label">
-                Shipping Address{' '}
-                <EditLink label="edit" onClick={() => openAddressFormModal('shipping-address')} />
-              </Fragment>
-            }
-          />
+          {!user && (
+            <>
+              <Headline modifiers={['l', 'minor']} label="Shipping Address" />
+              <Button label="Add Address" onClick={() => openAddressFormModal()} />
+            </>
+          )}
           {user && (
-            <Paragraph modifiers={['l']}>
-              {user.companyName ? (
-                <span>
-                  {user.companyName}
-                  <br />
-                </span>
-              ) : null}
-              {user.vatId ? (
-                <span>
-                  {user.vatId}
-                  <br />
-                </span>
-              ) : null}
-              {user.shippingAddress.firstName} {user.shippingAddress.lastName}
-              <br />
-              {user.shippingAddress.address}
-              <br />
-              {user.shippingAddress.addressLine2}
-              <br />
-              {user.shippingAddress.zipCode} {user.shippingAddress.city}
-              <br />
-              {shippingStateName && (
-                <span>
-                  {shippingStateName}
-                  <br />
-                </span>
-              )}
-              {getCountryName(user.shippingAddress.countryCode)}
-            </Paragraph>
+            <>
+              <Headline
+                modifiers={['minor', 'l']}
+                label={
+                  <Fragment key="label">
+                    Shipping Address{' '}
+                    <EditLink label="edit" onClick={() => openAddressFormModal()} />
+                  </Fragment>
+                }
+              />
+              <Paragraph modifiers={['l']}>
+                {user.companyName ? (
+                  <span>
+                    {user.companyName}
+                    <br />
+                  </span>
+                ) : null}
+                {user.vatId ? (
+                  <span>
+                    {user.vatId}
+                    <br />
+                  </span>
+                ) : null}
+                {user.shippingAddress.firstName} {user.shippingAddress.lastName}
+                <br />
+                {user.shippingAddress.address}
+                <br />
+                {user.shippingAddress.addressLine2}
+                <br />
+                {user.shippingAddress.zipCode} {user.shippingAddress.city}
+                <br />
+                {shippingStateName && (
+                  <span>
+                    {shippingStateName}
+                    <br />
+                  </span>
+                )}
+                {getCountryName(user.shippingAddress.countryCode)}
+              </Paragraph>
+            </>
           )}
         </Column>
         <Column md={6}>
-          <Headline modifiers={['minor', 'l']} label="Billing Address" />
           {user && (
-            <Paragraph modifiers={['l']}>
-              {user.companyName ? (
-                <span>
-                  {user.companyName}
-                  <br />
-                </span>
-              ) : null}
-              {user.vatId ? (
-                <span>
-                  {user.vatId}
-                  <br />
-                </span>
-              ) : null}
-              {user.billingAddress.firstName || user.shippingAddress.firstName}{' '}
-              {user.billingAddress.lastName || user.shippingAddress.lastName}
-              <br />
-              {user.billingAddress.address || user.shippingAddress.address}
-              <br />
-              {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}
-              <br />
-              {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
-              {user.billingAddress.city || user.shippingAddress.city}
-              <br />
-              {billingStateName && (
-                <span>
-                  {billingStateName}
-                  <br />
-                </span>
-              )}
-              {user.billingAddress.countryCode
-                ? getCountryName(user.billingAddress.countryCode)
-                : getCountryName(user.shippingAddress.countryCode)}
-              <br />
-              {user.useDifferentBillingAddress && (
-                <EditLink label="edit" onClick={() => openAddressFormModal('billing-address')} />
-              )}
-            </Paragraph>
+            <>
+              <Headline
+                modifiers={['minor', 'l']}
+                label={
+                  <>
+                    Billing Address{' '}
+                    {user.useDifferentBillingAddress && (
+                      <EditLink
+                        label="edit"
+                        onClick={() => openAddressFormModal('billing-address')}
+                      />
+                    )}
+                  </>
+                }
+              />
+              <Paragraph modifiers={['l']}>
+                {user.companyName ? (
+                  <span>
+                    {user.companyName}
+                    <br />
+                  </span>
+                ) : null}
+                {user.vatId ? (
+                  <span>
+                    {user.vatId}
+                    <br />
+                  </span>
+                ) : null}
+                {user.billingAddress.firstName || user.shippingAddress.firstName}{' '}
+                {user.billingAddress.lastName || user.shippingAddress.lastName}
+                <br />
+                {user.billingAddress.address || user.shippingAddress.address}
+                <br />
+                {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}
+                <br />
+                {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
+                {user.billingAddress.city || user.shippingAddress.city}
+                <br />
+                {billingStateName && (
+                  <span>
+                    {billingStateName}
+                    <br />
+                  </span>
+                )}
+                {user.billingAddress.countryCode
+                  ? getCountryName(user.billingAddress.countryCode)
+                  : getCountryName(user.shippingAddress.countryCode)}
+              </Paragraph>
+            </>
           )}
         </Column>
       </Grid>
@@ -171,7 +190,7 @@ const ReviewOrderPage = ({
     <Button
       key="payment-stripe"
       modifiers={['block']}
-      disabled={paymentInProgress}
+      disabled={paymentInProgress || !user}
       icon={creditCardIcon}
       label="Credit card"
       onClick={async () => {
@@ -197,7 +216,7 @@ const ReviewOrderPage = ({
       <Button
         key="payment-invoice"
         modifiers={['block']}
-        disabled={paymentInProgress}
+        disabled={paymentInProgress || !user}
         label="Pay with Invoice"
         onClick={async () => {
           try {
@@ -216,7 +235,7 @@ const ReviewOrderPage = ({
     ),
     <PaypalButton
       key="payment-paypal"
-      disabled={paymentInProgress}
+      disabled={paymentInProgress || !user}
       onClick={async () => {
         setPaymentInProgress(true)
         const {paymentToken, orderNumber, paymentId} = await payWithPaypal()

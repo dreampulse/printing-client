@@ -14,6 +14,7 @@ import {renderFormikField} from '../util/form'
 import {formatTelephoneNumber} from '../../lib/formatter'
 import {getCountriesMenu, getStateName, getStates, getCountryName} from '../../service/country'
 import {required, email} from '../../lib/validator'
+import scrollTo from '../../service/scroll-to'
 
 import Button from '../../component/button'
 import Overlay from '../../component/overlay'
@@ -76,9 +77,9 @@ const AddressFormModal = ({
   )
 
   const billingAddressSection = (
-    <>
+    <div id="billing-address">
       <FormRow>
-        <Headline modifiers={['xs']} label="Billing address" classNames={['u-no-margin-bottom']} />
+        <Headline modifiers={['l', 'minor']} label="Billing Address" />
       </FormRow>
 
       <FormRow modifiers={['half-half']}>
@@ -148,10 +149,10 @@ const AddressFormModal = ({
           name="billingAddress.countryCode"
         />
       </FormRow>
-    </>
+    </div>
   )
 
-  const headline = <Headline label="Shipping Address" modifiers={['l']} />
+  const headline = <Headline label="Shipping Address" modifiers={['l', 'minor']} />
   const buttons = [
     <Button
       label="Cancel"
@@ -391,6 +392,11 @@ const enhance = compose(
               'We had to remove all model configurations due to an address or currency change. Please reconfigure all uploaded models.'
           }
         })
+      }
+    },
+    componentDidMount() {
+      if (this.props.scrollTo === 'billing-address') {
+        scrollTo('#billing-address', global.document.querySelector('.overlay__modal'))
       }
     }
   })
