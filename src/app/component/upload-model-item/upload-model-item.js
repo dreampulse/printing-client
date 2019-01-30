@@ -27,6 +27,7 @@ const UploadModelItem = ({
   <div className={cn('UploadModelItem', {selected}, classNames)}>
     <div className="UploadModelItem__aside">
       <ImageContainer
+        modifiers={['ratio-1-1']}
         source={imageSource}
         fallbackSource={fallbackSource}
         alt={`Preview image of ${title}`}
@@ -35,7 +36,7 @@ const UploadModelItem = ({
     </div>
     <div className="UploadModelItem__content">
       <strong className="UploadModelItem__title">
-        <FileName>{title}</FileName>
+        <FileName fileName={title} />
       </strong>
       {/* \u00A0 = &nbsp to keep space for subline even if empty. */}
       <div className="UploadModelItem__subline">{subline || '\u00A0'}</div>

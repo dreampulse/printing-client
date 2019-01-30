@@ -20,7 +20,7 @@ storiesOf('UploadModelItem', module)
     <UploadModelItem
       id="some-id"
       imageSource="http://placehold.it/180x180"
-      title="model_item_title.stl"
+      title="model_item_title_can_be_long_and_gets_truncated.stl"
       subline="42 x 42 x 42 mm"
       buttonsLeft={buttonBar()}
       buttonsRight={buttonBar()}
@@ -30,7 +30,7 @@ storiesOf('UploadModelItem', module)
     <UploadModelItem
       id="some-id"
       imageSource="http://placehold.it/180x180"
-      title="model_item_title.stl"
+      title="model_item_title_can_be_long_and_gets_truncated.stl"
       buttonsLeft={buttonBar()}
       buttonsRight={buttonBar()}
     />
@@ -41,7 +41,8 @@ storiesOf('UploadModelItem', module)
       <UploadModelItem
         id="some-id"
         imageSource="http://placehold.it/180x180"
-        title="model_item_title.stl"
+        title="model_item_title_can_be_long_and_gets_truncated.stl"
+        subline="42 x 42 x 42 mm"
         buttonsLeft={buttonBar()}
         buttonsRight={buttonBar()}
         selected={store.state.selected}

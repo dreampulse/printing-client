@@ -26,11 +26,10 @@
   &__content {
     flex-grow: 1;
     padding: $space-base;
+    overflow: hidden; // Necessary to enable truncation in children
   }
 
   &__title {
-    @include scut-truncate;
-
     display: block;
     color: $color-text;
     font-weight: $font-weight-regular;
