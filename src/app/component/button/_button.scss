@@ -1,4 +1,6 @@
 .Button {
+  $icon-only-size: 24px;
+
   display: inline-block;
   height: $field-height;
   padding: 0 1em;
@@ -97,8 +99,8 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    height: $tiny-field-height;
-    width: $tiny-field-height;
+    height: $icon-only-size;
+    width: $icon-only-size;
     background: transparent;
     color: $color-primary;
     box-shadow: none;
