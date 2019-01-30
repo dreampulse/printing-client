@@ -25,13 +25,13 @@ $color-gray-1: #666666;
 $color-gray-2: #999999;
 $color-gray-3: #cccccc;
 $color-gray-4: #e0e0e0;
-$color-gray-5: #f0f0f0;
+$color-gray-5: #f3f3f3;
 
 $color-blue-dark: #122732;
 $color-blue: #0078e2;
 $color-blue-light: #3692e2;
-$color-blue-lighter: #AAD7FD;
-$color-blue-very-light: #E9F5FF;
+$color-blue-lighter: #aad7fd;
+$color-blue-very-light: #e9f5ff;
 $color-yellow: #f6a623;
 $color-yellow-light: #fbb94e;
 $color-red: #ca0f0f;
@@ -49,6 +49,7 @@ $color-primary: $color-blue;
 $color-primary-active: $color-blue-light;
 $color-minor: $color-gray-2;
 $color-minor-highlighted: $color-gray-1;
+$color-bg-minor: $color-gray-5;
 $color-border: $color-gray-2;
 $color-border-minor: $color-gray-4;
 $color-warning: $color-yellow;
@@ -65,9 +66,8 @@ $color-tooltip-bg: rgba(0, 0, 0, 0.89);
 $color-tooltip-text: $color-white;
 $color-invert-bg: $color-blue;
 $color-invert-text: $color-white;
-$color-invert-disabled: #82BCEE;
+$color-invert-disabled: #82bcee;
 $color-cheapest-provider-bg: $color-green-light;
-
 
 // Layout & Grid
 // ---------------------------------------------------
@@ -93,10 +93,10 @@ $screen-md-max: 959px;
 $screen-lg-min: 960px;
 
 $mediaqueries: (
-  small-only: "(max-width: #{$screen-sm-max})",
-  medium: "(min-width: #{$screen-md-min})",
-  medium-only: "(min-width: #{$screen-md-min}) and (max-width: #{$screen-md-max})",
-  large: "(min-width: #{$screen-lg-min})",
+  small-only: '(max-width: #{$screen-sm-max})',
+  medium: '(min-width: #{$screen-md-min})',
+  medium-only: '(min-width: #{$screen-md-min}) and (max-width: #{$screen-md-max})',
+  large: '(min-width: #{$screen-lg-min})'
 );
 
 // Misc
@@ -118,8 +118,8 @@ $box-shadow-active: 1px 1px 6px 0 rgba(0, 0, 0, 0.4);
 $box-shadow-focus: 0px 0px 4px 0 rgba($color-primary, 0.5);
 $box-shadow-error: 0px 0px 4px 0 rgba($color-error, 0.5);
 
-$transition-duration: .4s;
-$transition-duration-fast: .15s;
+$transition-duration: 0.4s;
+$transition-duration-fast: 0.15s;
 
 $global-stacking: app, tooltip, overlay, select-menu;
 

@@ -12,7 +12,7 @@ import cartIcon from '../../asset/icon/cart.svg'
 
 import Modal from './modal'
 
-import App from '../component/app'
+import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 import NavBar from '../component/nav-bar'
 import IconLink from '../component/icon-link'
@@ -64,10 +64,10 @@ const CheckoutLayout = ({children, goToUpload, goToCart, cartCount, title}) => {
   )
 
   return (
-    <App header={header}>
-      <Modal />
+    <PageLayout header={header}>
       <Container>{children}</Container>
-    </App>
+      <Modal />
+    </PageLayout>
   )
 }
 
