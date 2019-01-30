@@ -164,7 +164,7 @@ const AddressFormModal = ({
     <Button
       key="cancel_button"
       label="Cancel"
-      modifiers={['text']}
+      text
       onClick={() => {
         closeModal()
       }}

@@ -40,8 +40,8 @@ import NavBar from '../component/nav-bar'
 import PaypalButton from '../component/paypal-button'
 import Logo from '../component/logo'
 import IconLink from '../component/icon-link'
-import App from '../component/app'
 import Container from '../component/container'
+import PageLayout from '../component/page-layout'
 
 import Modal from './modal'
 
@@ -59,7 +59,6 @@ import {guard} from './util/guard'
 import {scrollToTop} from './util/scroll-to-top'
 
 import {PaymentAbortedError} from '../lib/error'
-import {all} from 'bluebird';
 
 const ReviewOrderPage = ({
   user,
@@ -370,7 +369,7 @@ const ReviewOrderPage = ({
   )
 
   return (
-    <App header={renderHeader()}>
+    <PageLayout header={renderHeader()}>
       <Modal />
       <Container>
         <PageHeader label="Review Order" />
@@ -431,7 +430,7 @@ const ReviewOrderPage = ({
           </CheckoutModelList>
         </SidebarLayout>
       </Container>
-    </App>
+    </PageLayout>
   )
 }
 
