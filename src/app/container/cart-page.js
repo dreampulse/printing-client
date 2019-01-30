@@ -28,7 +28,6 @@ import Notification from '../component/notification'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
-import * as modalAction from '../action/modal'
 import * as modelViewerAction from '../action/model-viewer'
 
 import AppLayout from './app-layout'
@@ -156,7 +155,7 @@ const CartPage = ({
           label: getProviderName(shipping.vendorId),
           price: formatPrice(shipping.price, shipping.currency)
         }))}
-        vat={liableForVat && formatPrice(cart.vatPrice, cart.currency)}
+        vat={liableForVat ? formatPrice(cart.vatPrice, cart.currency) : ''}
         total={formatPrice(liableForVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
       >
         <Button modifiers={['block']} label="Checkout" onClick={() => goToReviewOrder()} />

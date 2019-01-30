@@ -96,7 +96,7 @@ const MaterialPartial = ({
   openMaterialModal,
   openFinishGroupModal,
   addToCart,
-  goToReviewOrder,
+  goToCart,
   quotes,
   selectedModelConfigs,
   shippings,
@@ -415,7 +415,7 @@ const MaterialPartial = ({
             )
             scrollTo('#root')
           } else {
-            goToReviewOrder()
+            goToCart()
           }
         })
     }
@@ -592,13 +592,13 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-  goToReviewOrder: navigationAction.goToReviewOrder,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,
   stopReceivingQuotes: quoteAction.stopReceivingQuotes,
   addToCart: cartAction.addToCart,
-  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
+  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
+  goToCart: navigationAction.goToCart
 }
 
 export default compose(

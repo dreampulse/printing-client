@@ -5,10 +5,11 @@ import {connect} from 'react-redux'
 import {withFormik, Field, Form} from 'formik'
 import omit from 'lodash/omit'
 
-import * as modalAction from '../../action/modal'
+import * as modalActions from '../../action/modal'
+import * as coreActions from '../../action/core'
+import * as navigationActions from '../../action/navigation'
+
 import * as localStorage from '../../service/local-storage'
-import * as coreAction from '../../action/core'
-import * as navigationAction from '../../action/navigation'
 import config from '../../../../config'
 import {renderFormikField} from '../util/form'
 import {formatTelephoneNumber} from '../../lib/formatter'
@@ -23,26 +24,30 @@ import FormRow from '../../component/form-row'
 import InputField from '../../component/input-field'
 import LabeledCheckbox from '../../component/labeled-checkbox'
 import SelectField from '../../component/select-field'
-import StaticField from '../../component/static-field'
 import SelectMenu from '../../component/select-menu'
+import Notification from '../../component/notification'
+
+const isSameCountry = (location, address) => location.countryCode === address.countryCode
 
 const AddressFormModal = ({
   closeModal,
   values,
   isSubmitting,
   handleSubmit,
-  openPickLocationModal,
-  setFieldValue
+  isValid,
+  userLocation
 }) => {
-  const CountrySelect = ({onChange, value, ...props}) => {
-    const changeCountry = val => onChange(val.value)
+  const CountrySelect = ({onChange, value, name, ...props}) => {
+    const changeCountry = val => onChange(val.value, name)
     const val = !value || value === '' ? undefined : {value, label: getCountryName(value)}
     const countryMenu = <SelectMenu values={getCountriesMenu()} />
-    return <SelectField menu={countryMenu} value={val} onChange={changeCountry} {...props} />
+    return (
+      <SelectField menu={countryMenu} value={val} onChange={changeCountry} name={name} {...props} />
+    )
   }
 
-  const StateSelect = ({onChange, countryCode, value, ...props}) => {
-    const changeState = val => onChange(val.value)
+  const StateSelect = ({onChange, countryCode, value, name, ...props}) => {
+    const changeState = val => onChange(val.value, name)
     const states = getStates(countryCode)
     const stateMenu = <SelectMenu values={states || []} />
     const isDisabled = !states
@@ -51,6 +56,7 @@ const AddressFormModal = ({
 
     return (
       <SelectField
+        name={name}
         menu={stateMenu}
         value={actualValue}
         onChange={changeState}
@@ -78,10 +84,11 @@ const AddressFormModal = ({
 
   const billingAddressSection = (
     <div id="billing-address">
-      <FormRow>
-        <Headline modifiers={['l', 'minor']} label="Billing Address" />
-      </FormRow>
-
+      <Headline
+        modifiers={['l']}
+        classNames={['u-margin-bottom-xl', 'u-margin-top-xl']}
+        label="Billing Address"
+      />
       <FormRow modifiers={['half-half']}>
         <Field
           validate={required}
@@ -152,7 +159,7 @@ const AddressFormModal = ({
     </div>
   )
 
-  const headline = <Headline label="Shipping Address" modifiers={['l', 'minor']} />
+  const headline = <Headline label="Shipping Address" modifiers={['l']} />
   const buttons = [
     <Button
       key="cancel_button"
@@ -164,8 +171,12 @@ const AddressFormModal = ({
     />,
     <Button
       key="confirm_button"
-      label="Confirm"
-      disabled={isSubmitting}
+      label={
+        isSameCountry(userLocation, values.shippingAddress)
+          ? 'Confirm'
+          : 'Confirm and change country'
+      }
+      disabled={isSubmitting || !isValid}
       onClick={() => {
         handleSubmit()
       }}
@@ -180,136 +191,135 @@ const AddressFormModal = ({
       closePortal={() => closeModal()}
     >
       <Form>
-        <FormRow>
-          <Headline
-            modifiers={['xs']}
-            label="Personal information"
-            classNames={['u-no-margin-bottom']}
-          />
-        </FormRow>
+        <div id="shipping-address">
+          <FormRow>
+            <Headline
+              modifiers={['xs']}
+              label="Personal information"
+              classNames={['u-no-margin-bottom']}
+            />
+          </FormRow>
 
-        <FormRow modifiers={['half-half']}>
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="First name"
-            name="shippingAddress.firstName"
-            maxLength="20"
-          />
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="Last name"
-            name="shippingAddress.lastName"
-            maxLength="20"
-          />
-        </FormRow>
+          <FormRow modifiers={['half-half']}>
+            <Field
+              validate={required}
+              component={renderFormikField(InputField)}
+              label="First name"
+              name="shippingAddress.firstName"
+              maxLength="20"
+            />
+            <Field
+              validate={required}
+              component={renderFormikField(InputField)}
+              label="Last name"
+              name="shippingAddress.lastName"
+              maxLength="20"
+            />
+          </FormRow>
 
-        <FormRow modifiers={['half-half']}>
-          <Field
-            validate={email}
-            component={renderFormikField(InputField)}
-            label="Email address"
-            name="emailAddress"
-            type="email"
-          />
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="Phone number"
-            name="phoneNumber"
-            type="tel"
-          />
-        </FormRow>
+          <FormRow modifiers={['half-half']}>
+            <Field
+              validate={email}
+              component={renderFormikField(InputField)}
+              label="Email address"
+              name="emailAddress"
+              type="email"
+            />
+            <Field
+              validate={required}
+              component={renderFormikField(InputField)}
+              label="Phone number"
+              name="phoneNumber"
+              type="tel"
+            />
+          </FormRow>
 
-        <FormRow>
-          <Field
-            name="isCompany"
-            component={renderFormikField(LabeledCheckbox)}
-            label="I am ordering on behalf of a company"
-            onChangeValue={value => {
-              if (!value) {
-                setFieldValue('companyName')
-                setFieldValue('vatId')
-              }
-            }}
-          />
-        </FormRow>
+          <FormRow>
+            <Field
+              name="isCompany"
+              component={renderFormikField(LabeledCheckbox)}
+              label="I am ordering on behalf of a company"
+            />
+          </FormRow>
 
-        {values.isCompany && renderCompanySection()}
+          {values.isCompany && renderCompanySection()}
 
-        <FormRow>
-          <Headline
-            modifiers={['xs']}
-            label="Shipping address"
-            classNames={['u-no-margin-bottom']}
-          />
-        </FormRow>
+          <FormRow>
+            <Headline
+              modifiers={['xs']}
+              label="Shipping address"
+              classNames={['u-no-margin-bottom']}
+            />
+          </FormRow>
 
-        <FormRow>
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="Address"
-            name="shippingAddress.address"
-            maxLength="35"
-          />
-        </FormRow>
+          <FormRow>
+            <Field
+              validate={required}
+              component={renderFormikField(InputField)}
+              label="Address"
+              name="shippingAddress.address"
+              maxLength="35"
+            />
+          </FormRow>
 
-        <FormRow>
-          <Field
-            component={renderFormikField(InputField)}
-            label="Address line 2"
-            name="shippingAddress.addressLine2"
-            maxLength="35"
-          />
-        </FormRow>
+          <FormRow>
+            <Field
+              component={renderFormikField(InputField)}
+              label="Address line 2"
+              name="shippingAddress.addressLine2"
+              maxLength="35"
+            />
+          </FormRow>
 
-        <FormRow modifiers={['half-half']}>
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="City"
-            name="shippingAddress.city"
-          />
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="Zip code"
-            name="shippingAddress.zipCode"
-          />
-        </FormRow>
+          <FormRow modifiers={['half-half']}>
+            <Field
+              validate={required}
+              component={renderFormikField(InputField)}
+              label="City"
+              name="shippingAddress.city"
+            />
+            <Field
+              validate={required}
+              component={renderFormikField(InputField)}
+              label="Zip code"
+              name="shippingAddress.zipCode"
+            />
+          </FormRow>
 
-        <FormRow modifiers={['half-half']}>
-          <Field
-            validate={getStates(values.shippingAddress.countryCode) ? required : undefined}
-            component={renderFormikField(StateSelect)}
-            placeholder="State"
-            name="shippingAddress.stateCode"
-            type="select"
-            countryCode={values.shippingAddress.countryCode}
-          />
-          <StaticField
-            value={getCountryName(values.shippingAddress.countryCode || 'de')}
-            changeLinkLabel="Change…"
-            onChangeLinkClick={() => openPickLocationModal({confirmation: true})}
-          />
-        </FormRow>
+          <FormRow modifiers={['half-half']}>
+            <Field
+              validate={getStates(values.shippingAddress.countryCode) ? required : undefined}
+              component={renderFormikField(StateSelect)}
+              placeholder="State"
+              name="shippingAddress.stateCode"
+              type="select"
+              countryCode={values.shippingAddress.countryCode}
+            />
+            <Field
+              validate={required}
+              component={renderFormikField(CountrySelect)}
+              placeholder="Country"
+              name="shippingAddress.countryCode"
+            />
+          </FormRow>
 
-        <FormRow>
-          <Field
-            name="useDifferentBillingAddress"
-            onChangeValue={value => {
-              if (value) {
-                setFieldValue('billingAddress', values.shippingAddress)
-              } else {
-                setFieldValue('billingAddress', {})
-              }
-            }}
-            component={renderFormikField(LabeledCheckbox)}
-            label="Use different billing address"
-          />
-        </FormRow>
+          {!isSameCountry(userLocation, values.shippingAddress) && (
+            <FormRow>
+              <Notification
+                message="By changing the country you have to choose the materials for all models in your cart again."
+                warning
+              />
+            </FormRow>
+          )}
+
+          <FormRow>
+            <Field
+              name="useDifferentBillingAddress"
+              component={renderFormikField(LabeledCheckbox)}
+              label="Use different billing address"
+            />
+          </FormRow>
+        </div>
 
         {values.useDifferentBillingAddress && billingAddressSection}
 
@@ -331,10 +341,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  closeModal: modalAction.closeModal,
-  openPickLocationModal: modalAction.openPickLocationModal,
-  saveUser: coreAction.saveUser,
-  goToUpload: navigationAction.goToUpload
+  closeModal: modalActions.closeModal,
+  openPickLocationModal: modalActions.openPickLocationModal,
+  saveUser: coreActions.saveUser,
+  goToUpload: navigationActions.goToUpload,
+  onUpdateLocation: coreActions.updateLocation
 }
 
 const enhance = compose(
@@ -361,7 +372,8 @@ const enhance = compose(
           saveAddress: true,
           shippingAddress: {
             ...props.userLocation
-          }
+          },
+          billingAddress: {}
         }
       }
       return (props.user && omit(props.user, 'userId')) || initialUser
@@ -382,14 +394,43 @@ const enhance = compose(
         phoneNumber: formatTelephoneNumber(values.phoneNumber)
       }
 
-      props.saveUser(normalizedValues).then(() => {
+      if (!isSameCountry(props.userLocation, values.shippingAddress)) {
+        props.onUpdateLocation(
+          {
+            city: '',
+            zipCode: '',
+            stateCode: values.shippingAddress.stateCode,
+            countryCode: values.shippingAddress.countryCode
+          },
+          true
+        )
         props.closeModal()
-      })
+      } else {
+        props.saveUser(normalizedValues).then(() => {
+          props.closeModal()
+        })
+      }
     },
     displayName: 'AddressForm'
   }),
   lifecycle({
     componentDidUpdate(prevProps) {
+      if (
+        prevProps.values.useDifferentBillingAddress !== this.props.values.useDifferentBillingAddress
+      ) {
+        this.props.setFieldValue(
+          'billingAddress',
+          this.props.values.useDifferentBillingAddress === false
+            ? {}
+            : this.props.values.shippingAddress
+        )
+      }
+
+      if (prevProps.values.isCompany !== this.props.values.isCompany) {
+        this.props.setFieldValue('companyName')
+        this.props.setFieldValue('vatId')
+      }
+
       if (this.props.cart !== prevProps.cart) {
         this.props.goToUpload({
           notification: {

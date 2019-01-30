@@ -18,18 +18,12 @@ import Container from '../component/container'
 import NavBar from '../component/nav-bar'
 import IconLink from '../component/icon-link'
 import Button from '../component/button'
-import CloseButton from '../component/close-button'
-import Headline from '../component/headline'
+import Logo from '../component/logo'
 
-const CheckoutLayout = ({children, goToUpload, goToCart, cartCount, title}) => {
+const CheckoutLayout = ({children, goToUpload, goToCart, cartCount}) => {
   const header = (
     <NavBar
-      leftContent={
-        <>
-          <CloseButton modifiers={['minor', 'l']} onClick={() => goToCart()} />
-          <Headline modifiers={['l', 'minor']} label={title} />
-        </>
-      }
+      leftContent={<Logo onClick={() => goToUpload()} />}
       rightContent={
         <>
           <Route path="/" exact>

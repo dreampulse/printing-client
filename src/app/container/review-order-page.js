@@ -267,7 +267,7 @@ const ReviewOrderPage = ({
           label: getProviderName(shipping.vendorId),
           price: formatPrice(shipping.price, shipping.currency)
         }))}
-        vat={liableForVat && formatPrice(cart.vatPrice, cart.currency)}
+        vat={liableForVat ? formatPrice(cart.vatPrice, cart.currency) : ''}
         total={formatPrice(liableForVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
         childrenLabel="Pay with:"
       >
