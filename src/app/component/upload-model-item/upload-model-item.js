@@ -8,6 +8,7 @@ import cn from '../../lib/class-names'
 
 import ImageContainer from '../image-container'
 import CheckboxField from '../checkbox-field'
+import FileName from '../file-name'
 
 // Preload fallbackSource as early as possible
 const preloadImage = new global.Image()
@@ -33,7 +34,9 @@ const UploadModelItem = ({
       {onSelect && <CheckboxField checked={selected} onChange={onSelect} />}
     </div>
     <div className="UploadModelItem__content">
-      <strong className="UploadModelItem__title">{title}</strong>
+      <strong className="UploadModelItem__title">
+        <FileName>{title}</FileName>
+      </strong>
       {/* \u00A0 = &nbsp to keep space for subline even if empty. */}
       <div className="UploadModelItem__subline">{subline || '\u00A0'}</div>
       <div className="UploadModelItem__buttons">
