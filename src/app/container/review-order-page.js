@@ -5,6 +5,7 @@ import withHandlers from 'recompose/withHandlers'
 import withProps from 'recompose/withProps'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
+import {Route} from 'react-router'
 
 import * as printingEngine from '../lib/printing-engine'
 import * as stripe from '../service/stripe'
@@ -14,7 +15,11 @@ import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
-import {selectCartShippings, selectConfiguredModelInformation} from '../lib/selector'
+import {
+  selectCartShippings,
+  selectConfiguredModelInformation,
+  selectCartCount
+} from '../lib/selector'
 import getCloudinaryUrl from '../lib/cloudinary'
 
 import PageHeader from '../component/page-header'
@@ -31,6 +36,14 @@ import PaymentSection from '../component/payment-section'
 import CheckoutModelList from '../component/checkout-model-list'
 import ModelItem from '../component/model-item'
 import SelectField from '../component/select-field'
+import NavBar from '../component/nav-bar'
+import PaypalButton from '../component/paypal-button'
+import Logo from '../component/logo'
+import IconLink from '../component/icon-link'
+import App from '../component/app'
+import Container from '../component/container'
+
+import Modal from './modal'
 
 import * as navigationActions from '../action/navigation'
 import * as modelViewerActions from '../action/model-viewer'
@@ -39,11 +52,12 @@ import * as coreActions from '../action/core'
 import * as modalActions from '../action/modal'
 
 import creditCardIcon from '../../asset/icon/credit-card.svg'
+import helpIcon from '../../asset/icon/help.svg'
+import cartIcon from '../../asset/icon/cart.svg'
 
 import {guard} from './util/guard'
 import {scrollToTop} from './util/scroll-to-top'
-import CheckoutLayout from './checkout-layout'
-import PaypalButton from '../component/paypal-button'
+
 import {PaymentAbortedError} from '../lib/error'
 
 const ReviewOrderPage = ({
@@ -64,7 +78,9 @@ const ReviewOrderPage = ({
   payWithStripe,
   payWithInvoice,
   success,
-  liableForVat
+  liableForVat,
+  cartCount,
+  goToUpload
 }) => {
   const shippingStateName =
     user && getStateName(user.shippingAddress.countryCode, user.shippingAddress.stateCode)
@@ -75,6 +91,43 @@ const ReviewOrderPage = ({
       user.billingAddress.stateCode &&
       getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode)) ||
     shippingStateName
+
+  const renderHeader = () => (
+    <NavBar
+      leftContent={<Logo onClick={() => goToUpload()} />}
+      rightContent={
+        <>
+          <Route path="/" exact>
+            {({match}) =>
+              !match && (
+                <Button
+                  label="Upload"
+                  onClick={() => goToUpload()}
+                  modifiers={['minor', 'compact']}
+                />
+              )
+            }
+          </Route>
+          <IconLink
+            icon={cartIcon}
+            disabled={cartCount < 1}
+            cartCount={cartCount}
+            onClick={event => {
+              event.preventDefault()
+              goToCart()
+            }}
+          />
+          <IconLink
+            icon={helpIcon}
+            onClick={event => {
+              event.preventDefault()
+              openIntercom()
+            }}
+          />
+        </>
+      }
+    />
+  )
 
   const renderAddressSection = () => (
     <Section>
@@ -316,65 +369,68 @@ const ReviewOrderPage = ({
   )
 
   return (
-    <CheckoutLayout title="Checkout" currentStep={1}>
-      <PageHeader label="Review Order" />
-      <SidebarLayout sidebar={renderPaymentSection()}>
-        {renderAddressSection()}
-        <Headline
-          tag="strong"
-          modifiers={['minor', 'l', 'inline']}
-          label={
-            <Fragment key="label">
-              Your Order <EditLink label="edit" onClick={() => goToCart()} />
-            </Fragment>
-          }
-        />
-        <CheckoutModelList>
-          {modelsWithConfig.map(
-            ({
-              modelConfig,
-              model,
-              shipping,
-              quote,
-              materialName,
-              materialConfigId,
-              finishGroupName,
-              colorCode,
-              color,
-              colorImage
-            }) => (
-              <ModelItem
-                modifiers={['read-only']}
-                key={modelConfig.id}
-                id={modelConfig.id}
-                imageSource={model.thumbnailUrl}
-                title={model.fileName}
-                subline={formatDimensions(model.dimensions, model.fileUnit)}
-                quantity={modelConfig.quantity}
-                price={formatPrice(quote.price, quote.currency)}
-                deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
-                shippingMethod={shipping.name}
-                providerId={shipping.vendorId}
-                materialName={materialName}
-                onMagnify={() => openModelViewer(model)}
-                color={
-                  <SelectField
-                    modifiers={['compact']}
-                    value={{
-                      value: materialConfigId,
-                      colorValue: colorCode,
-                      label: `${color}, ${finishGroupName}`,
-                      colorImage:
-                        colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
-                    }}
-                  />
-                }
-              />
-            )
-          )}
-        </CheckoutModelList>
-      </SidebarLayout>
-    </CheckoutLayout>
+    <App header={renderHeader()}>
+      <Modal />
+      <Container>
+        <PageHeader label="Review Order" />
+        <SidebarLayout sidebar={renderPaymentSection()}>
+          {renderAddressSection()}
+          <Headline
+            tag="strong"
+            modifiers={['minor', 'l', 'inline']}
+            label={
+              <Fragment key="label">
+                Your Order <EditLink label="edit" onClick={() => goToCart()} />
+              </Fragment>
+            }
+          />
+          <CheckoutModelList>
+            {modelsWithConfig.map(
+              ({
+                modelConfig,
+                model,
+                shipping,
+                quote,
+                materialName,
+                materialConfigId,
+                finishGroupName,
+                colorCode,
+                color,
+                colorImage
+              }) => (
+                <ModelItem
+                  modifiers={['read-only']}
+                  key={modelConfig.id}
+                  id={modelConfig.id}
+                  imageSource={model.thumbnailUrl}
+                  title={model.fileName}
+                  subline={formatDimensions(model.dimensions, model.fileUnit)}
+                  quantity={modelConfig.quantity}
+                  price={formatPrice(quote.price, quote.currency)}
+                  deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
+                  shippingMethod={shipping.name}
+                  providerId={shipping.vendorId}
+                  materialName={materialName}
+                  onMagnify={() => openModelViewer(model)}
+                  color={
+                    <SelectField
+                      modifiers={['compact']}
+                      value={{
+                        value: materialConfigId,
+                        colorValue: colorCode,
+                        label: `${color}, ${finishGroupName}`,
+                        colorImage:
+                          colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
+                      }}
+                    />
+                  }
+                />
+              )
+            )}
+          </CheckoutModelList>
+        </SidebarLayout>
+      </Container>
+    </App>
   )
 }
 
@@ -388,7 +444,8 @@ const mapStateToProps = state => ({
   cartShippings: selectCartShippings(state),
   featureFlags: state.core.featureFlags,
   urlParams: state.core.urlParams,
-  liableForVat: state.core.user && state.core.user.liableForVat
+  liableForVat: state.core.user && state.core.user.liableForVat,
+  cartCount: selectCartCount(state)
 })
 
 const mapDispatchToProps = {
@@ -399,7 +456,8 @@ const mapDispatchToProps = {
   orderPaid: orderActions.paid,
   executePaypalPayment: orderActions.executePaypalPayment,
   fatalError: coreActions.fatalError,
-  openErrorModal: modalActions.openErrorModal
+  openErrorModal: modalActions.openErrorModal,
+  goToUpload: navigationActions.goToUpload
 }
 
 const enhance = compose(
