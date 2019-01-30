@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, {cloneElement} from 'react'
 
 import propTypes from '../../lib/prop-types'
-import buildClassName, {buildClassArray} from '../../lib/build-class-name'
+import buildClassName from '../../lib/build-class-name'
 
 import Button from '../button'
 import Headline from '../headline'
@@ -25,7 +25,6 @@ const MaterialCard = ({
   onUnavailableClick,
   selectLabel = 'Select'
 }) => {
-  const buttonModifiers = buildClassArray(['block', {selected}])
   const selectButtonLabel = selected ? 'Selected' : selectLabel
   modifiers.push({
     unavailable
@@ -35,7 +34,8 @@ const MaterialCard = ({
       {price ? cloneElement(price, {loading}) : null}
       {colorSelect ? <div className="material-card__color">{colorSelect}</div> : null}
       <Button
-        modifiers={buttonModifiers}
+        block
+        selected={selected}
         disabled={!onSelectClick}
         onClick={onSelectClick}
         label={selectButtonLabel}
@@ -47,7 +47,7 @@ const MaterialCard = ({
     <footer className="material-card__footer">
       <div className="material-card__unavailable">Not printable</div>
       <div className="material-card__body-empty" />
-      <Button modifiers={['minor']} label="Repair now" onClick={onUnavailableClick} />
+      <Button minor label="Repair now" onClick={onUnavailableClick} />
     </footer>
   )
 

@@ -10,8 +10,8 @@ import placeholderIcon from '../../../asset/icon/placeholder.svg'
 
 const buttonBar = () => (
   <ButtonBar>
-    <Button icon={placeholderIcon} modifiers={['tiny', 'icon-only', 'minor']} />
-    <Button icon={placeholderIcon} modifiers={['tiny', 'icon-only', 'minor']} />
+    <Button icon={placeholderIcon} iconOnly />
+    <Button icon={placeholderIcon} iconOnly />
   </ButtonBar>
 )
 

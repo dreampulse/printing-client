@@ -33,13 +33,7 @@ const CheckoutLayout = ({children, goToUpload, goToCart, cartCount, title}) => {
         <>
           <Route path="/" exact>
             {({match}) =>
-              !match && (
-                <Button
-                  label="Upload"
-                  onClick={() => goToUpload()}
-                  modifiers={['minor', 'compact']}
-                />
-              )
+              !match && <Button label="Upload" onClick={() => goToUpload()} minor compact />
             }
           </Route>
           <IconLink

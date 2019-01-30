@@ -15,8 +15,8 @@ import HandleValue from '../../../../stories/util/handle-value'
 
 const primaryActions = () => <Button label="Choose Material…" />
 const secondaryActions = () => [
-  <NumberField key="quantity" />,
-  <Button modifiers={['minor']} icon={deleteIcon} key="delete" />
+  <NumberField key="quantity" value={42} />,
+  <Button icon={deleteIcon} key="delete" />
 ]
 
 storiesOf('Model List', module).add('default', () => (

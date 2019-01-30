@@ -15,7 +15,7 @@ const ConfirmCurrencyChangeModal = ({currency, updateCurrency, closeModal}) => {
     <Button label="Cancel" onClick={() => closeModal()} />,
     <Button
       label="Confirm"
-      modifiers={['text']}
+      text
       onClick={() => {
         updateCurrency(currency, true)
         closeModal()

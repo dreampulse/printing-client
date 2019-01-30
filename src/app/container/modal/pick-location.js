@@ -43,17 +43,12 @@ const PickLocationModal = ({
 
   const buttons = [
     meta.isCloseable && (
-      <Button
-        key="close"
-        label="Cancel"
-        modifiers={compact([!confirmation && 'text'])}
-        onClick={() => closeModal()}
-      />
+      <Button key="close" label="Cancel" text={!confirmation} onClick={() => closeModal()} />
     ),
     <Button
       label="OK"
       key="ok"
-      modifiers={compact([confirmation && 'text'])}
+      text={confirmation}
       disabled={!isLocationValid(location) || !currency}
       onClick={() => {
         onUpdateLocation(location, true)

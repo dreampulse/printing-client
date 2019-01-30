@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
@@ -13,14 +11,10 @@ import minusIcon from '../../../asset/icon/minus.svg'
 
 const NumberField = ({
   classNames,
-  modifiers = [],
   value = null,
   onChange = () => {},
   lowerLimit = 1,
-  upperLimit = 999,
-  disabled = false,
-  hasFocus,
-  setFocus
+  upperLimit = 99
 }) => {
   const handleLessClick = event => {
     event.preventDefault()
@@ -53,42 +47,28 @@ const NumberField = ({
 
   const hasLowerLimit = value === lowerLimit
   const hasUpperLimit = value === upperLimit
-  const finalModifiers = [
-    ...modifiers,
-    {
-      focus: hasFocus,
-      disabled
-    }
-  ]
 
   return (
-    <div className={buildClassName('number-field', finalModifiers, classNames)}>
+    <div className={cn('NumberField', {}, classNames)}>
       <button
         type="button"
-        className="number-field__less"
+        className="NumberField__less"
         onClick={handleLessClick}
-        disabled={disabled || hasLowerLimit}
+        disabled={hasLowerLimit}
       >
         <Icon source={minusIcon} />
       </button>
       <input
         type="number"
-        className="number-field__value"
+        className="NumberField__value"
         value={typeof value === 'number' ? value : ''}
         onChange={handleInputChange}
-        onFocus={() => {
-          setFocus(true)
-        }}
-        onBlur={() => {
-          setFocus(false)
-        }}
-        disabled={disabled}
       />
       <button
         type="button"
-        className="number-field__more"
+        className="NumberField__more"
         onClick={handleMoreClick}
-        disabled={disabled || hasUpperLimit}
+        disabled={hasUpperLimit}
       >
         <Icon source={plusIcon} />
       </button>
@@ -105,4 +85,4 @@ NumberField.propTypes = {
   disabled: PropTypes.bool
 }
 
-export default compose(withState('hasFocus', 'setFocus', false))(NumberField)
+export default NumberField
