@@ -111,8 +111,8 @@ const UploadPage = ({
           onChange={quantity => updateQuantities([modelConfig.id], quantity)}
         />
       )}
-      <Button tiny minor icon={copyIcon} onClick={() => duplicateModelConfig(modelConfig.id)} />
-      <Button icon={deleteIcon} tiny minor onClick={() => deleteModelConfigs([modelConfig.id])} />
+      <Button icon={copyIcon} onClick={() => duplicateModelConfig(modelConfig.id)} />
+      <Button icon={deleteIcon} onClick={() => deleteModelConfigs([modelConfig.id])} />
     </ButtonBar>
   )
 
@@ -175,14 +175,7 @@ const UploadPage = ({
   const cartNotification = () => (
     <Notification
       message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
-      button={
-        <Button
-          label="Cart"
-          icon={cartIcon}
-          onClick={() => goToCart()}
-          modifiers={['compact', 'minor']}
-        />
-      }
+      button={<Button label="Cart" icon={cartIcon} onClick={() => goToCart()} />}
     >
       Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
       <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>

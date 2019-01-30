@@ -81,8 +81,6 @@ const ModelListPartial = ({
       ),
       <Button
         disabled={disabled}
-        tiny
-        minor
         icon={deleteIcon}
         key="delete"
         onClick={() => deleteModelConfigs(selectedModelConfigIds)}
@@ -90,8 +88,6 @@ const ModelListPartial = ({
       enableShare && (
         <Button
           disabled={disabled}
-          tiny
-          minor
           label="Share configuration"
           onClick={() => createConfiguration(selectedModelConfigIds)}
         />

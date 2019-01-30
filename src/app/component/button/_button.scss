@@ -10,8 +10,7 @@
   text-align: center;
   box-shadow: $box-shadow-base;
   outline: 0;
-  transition:
-    background-color $transition-duration-fast ease-in-out,
+  transition: background-color $transition-duration-fast ease-in-out,
     color $transition-duration-fast ease-in-out;
   vertical-align: middle;
 
@@ -21,7 +20,7 @@
     top: -0.08em; // Optimize vertical center
 
     & + * {
-      margin-left: .5em;
+      margin-left: 0.5em;
     }
   }
 
@@ -90,36 +89,35 @@
     height: $tiny-field-height;
     line-height: $tiny-field-height;
     font-size: $font-size-base;
-    padding: 0 1em;
   }
 
   &--iconOnly {
-    padding: 0 0.5em;
+    padding: 0;
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    height: $tiny-field-height;
+    width: $tiny-field-height;
+    background: transparent;
+    color: $color-primary;
+    box-shadow: none;
+
+    &:hover:not([disabled]),
+    &:focus:not([disabled]),
+    &:active:not([disabled]) {
+      background-color: inherit;
+      color: $color-primary-active;
+      box-shadow: none;
+    }
+
+    &[disabled] {
+      background-color: inherit;
+    }
 
     & > .icon {
       top: initial;
       font-size: 1em;
       margin: 0;
-    }
-  }
-
-  &--invert {
-    color: $color-primary;
-    background: $color-bg;
-
-    &:hover:not([disabled]),
-    &:focus:not([disabled]) {
-      color: $color-primary;
-      background: $color-bg;
-    }
-
-    &:active:not([disabled]) {
-      color: $color-primary;
-      background: $color-bg;
-      box-shadow: $box-shadow-active;
     }
   }
 
