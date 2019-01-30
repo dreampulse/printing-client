@@ -3,9 +3,9 @@ import {storiesOf} from '@storybook/react'
 import range from 'lodash/range'
 
 import ModelList from '.'
-import UploadModelItem from '../upload-model-item'
-import UploadModelItemError from '../upload-model-item-error'
-import UploadModelItemLoad from '../upload-model-item-load'
+import DeprecatedUploadModelItem from '../deprecated-upload-model-item'
+import DeprecatedUploadModelItemError from '../deprecated-upload-model-item-error'
+import DeprecatedUploadModelItemLoad from '../deprecated-upload-model-item-load'
 import Button from '../button'
 import NumberField from '../number-field'
 
@@ -23,7 +23,7 @@ storiesOf('Model List', module).add('default', () => (
   <HandleValue initialValue={[]} valueName="checkedIds" onChangeName="onChangeCheckedIds">
     <ModelList primaryActions={primaryActions()} secondaryActions={secondaryActions()}>
       {range(0, 5).map(index => (
-        <UploadModelItem
+        <DeprecatedUploadModelItem
           key={index}
           id={String(index)}
           imageSource="http://placehold.it/130x98"
@@ -31,8 +31,12 @@ storiesOf('Model List', module).add('default', () => (
           subline="42 x 42 x 42 mm"
         />
       ))}
-      <UploadModelItemError title="Upload failed" subline="This is why" />
-      <UploadModelItemLoad status={0.4} title="Uploading" subline="model_item_title.stl" />
+      <DeprecatedUploadModelItemError title="Upload failed" subline="This is why" />
+      <DeprecatedUploadModelItemLoad
+        status={0.4}
+        title="Uploading"
+        subline="model_item_title.stl"
+      />
     </ModelList>
   </HandleValue>
 ))

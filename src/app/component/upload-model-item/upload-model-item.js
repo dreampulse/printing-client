@@ -3,11 +3,11 @@ import React from 'react'
 
 import fallbackSource from '../../../asset/image/model-thumbnail-fallback.png'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
-import MagnifyableItem from '../magnifyable-item'
 import ImageContainer from '../image-container'
+import CheckboxField from '../checkbox-field'
 
 // Preload fallbackSource as early as possible
 const preloadImage = new global.Image()
@@ -15,28 +15,32 @@ preloadImage.src = fallbackSource
 
 const UploadModelItem = ({
   classNames,
-  modifiers = [],
   imageSource,
   title,
   subline,
-  quantity,
-  buttonBar,
-  onMagnify = Function.prototype
+  buttonsLeft,
+  buttonsRight,
+  selected = false,
+  onSelect
 }) => (
-  <div className={buildClassName('upload-model-item', modifiers, classNames)}>
-    <MagnifyableItem ariaLabel={`Load ${title} in interactive model viewer`} onClick={onMagnify}>
+  <div className={cn('UploadModelItem', {selected}, classNames)}>
+    <div className="UploadModelItem__aside">
       <ImageContainer
         source={imageSource}
         fallbackSource={fallbackSource}
         alt={`Preview image of ${title}`}
       />
-    </MagnifyableItem>
-    <div className="upload-model-item__content">
-      {Boolean(title) && <strong className="upload-model-item__title">{title}</strong>}
-      {Boolean(subline) && <div className="upload-model-item__subline">{subline}</div>}
-      {Boolean(quantity) && <div className="upload-model-item__quantity">Qty: {quantity}</div>}
+      {onSelect && <CheckboxField checked={selected} onChange={onSelect} />}
     </div>
-    {buttonBar && <div className="upload-model-item__buttons">{buttonBar}</div>}
+    <div className="UploadModelItem__content">
+      <strong className="UploadModelItem__title">{title}</strong>
+      {/* \u00A0 = &nbsp to keep space for subline even if empty. */}
+      <div className="UploadModelItem__subline">{subline || '\u00A0'}</div>
+      <div className="UploadModelItem__buttons">
+        <div className="UploadModelItem__buttonsLeft">{buttonsLeft || '\u00A0'}</div>
+        <div className="UploadModelItem__buttonsRight">{buttonsRight || '\u00A0'}</div>
+      </div>
+    </div>
   </div>
 )
 
@@ -44,11 +48,12 @@ UploadModelItem.propTypes = {
   ...propTypes.component,
   id: PropTypes.string.isRequired, // Necessary for ModelList
   imageSource: PropTypes.string.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
   subline: PropTypes.string,
-  quantity: PropTypes.number,
-  buttonBar: PropTypes.node,
-  onMagnify: PropTypes.func
+  buttonsLeft: PropTypes.node,
+  buttonsRight: PropTypes.node,
+  selected: PropTypes.bool,
+  onSelect: PropTypes.func
 }
 
 export default UploadModelItem

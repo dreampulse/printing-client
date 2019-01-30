@@ -1,18 +1,14 @@
-.upload-model-item-error {
+.deprecated-upload-model-item {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   padding: $space-base $space-xl $space-base $model-item-space-left;
   height: $upload-model-item-height;
   border-top: 1px solid $color-bg;
   border-bottom: 1px solid $color-bg;
-  background: $color-red-light;
+  background: $color-bg;
 
-  &__image {
-    @include scut-ratio-box(4 / 3);
-    background-image: url('../asset/image/error.svg');
-    background-position: center center;
-    background-size: cover;
+  & > .magnifyable-item {
     flex-shrink: 0;
     width: $upload-model-item-image-width;
     margin-right: $space-l;
@@ -21,25 +17,30 @@
   &__content {
     flex-grow: 1;
     font-size: $font-size-l;
-    margin-right: $space-l;
-    overflow: hidden; // Without this truncate will not work.
   }
 
   &__title {
     @include scut-truncate;
+
     display: block;
-    color: $color-error;
+    color: $color-text;
     font-weight: $font-weight-bold;
   }
 
   &__subline {
     @include scut-truncate;
-    display: block;
-    color: $color-gray-1;
+
+    color: $color-minor;
   }
 
-  &__delete {
-    color: $color-error;
-    outline: 0;
+  &__buttons {
+    position: absolute;
+    right: $space-xl;
+    bottom: $space-base;
+    transition: opacity $transition-duration ease;
+
+    & > :last-child {
+      margin-bottom: 0;
+    }
   }
 }

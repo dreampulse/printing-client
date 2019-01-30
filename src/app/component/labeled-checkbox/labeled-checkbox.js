@@ -15,12 +15,11 @@ const LabeledCheckbox = ({
   name = ''
 }) => {
   const id = uniqueId('uid-')
-  const inputModifiers = buildClassArray({error: modifiers.indexOf('error') > -1})
   return (
     <div className={buildClassName('labeled-checkbox', modifiers, classNames)}>
       <CheckboxField
         name={name}
-        modifiers={inputModifiers}
+        error={modifiers.indexOf('error') > -1}
         id={id}
         checked={checked}
         onChange={onChange}

@@ -2,11 +2,11 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import UploadModelItemLoad from '.'
+import DeprecatedUploadModelItemLoad from '.'
 
-storiesOf('Upload Model Item Load', module)
+storiesOf('Deprecated Upload Model Item Load', module)
   .add('default', () => (
-    <UploadModelItemLoad
+    <DeprecatedUploadModelItemLoad
       status={0.7}
       title="Uploading"
       subline="model_item_title.stl"
@@ -14,7 +14,7 @@ storiesOf('Upload Model Item Load', module)
     />
   ))
   .add('no status', () => (
-    <UploadModelItemLoad
+    <DeprecatedUploadModelItemLoad
       title="Processing"
       subline="model_item_title.stl"
       onDelete={action('discard')}

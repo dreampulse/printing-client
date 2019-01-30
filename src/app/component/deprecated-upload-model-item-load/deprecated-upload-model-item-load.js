@@ -10,7 +10,7 @@ import Progress from '../progress'
 
 import deleteIcon from '../../../asset/icon/delete.svg'
 
-const UploadModelItemLoad = ({
+const DeprecatedUploadModelItemLoad = ({
   classNames,
   modifiers,
   title,
@@ -27,25 +27,31 @@ const UploadModelItemLoad = ({
   const loadTitle = title + (status === undefined ? '…' : ` (${percentage}%)`)
 
   return (
-    <div className={buildClassName('upload-model-item-load', modifiers, classNames)}>
+    <div className={buildClassName('deprecated-upload-model-item-load', modifiers, classNames)}>
       {status !== undefined && <Progress value={percentage} />}
-      <div className="upload-model-item-load__content">
+      <div className="deprecated-upload-model-item-load__content">
         {Boolean(title) && (
-          <strong className="upload-model-item-load__title">
+          <strong className="deprecated-upload-model-item-load__title">
             {status === undefined && <LoadingIndicator />}
             {loadTitle}
           </strong>
         )}
-        {Boolean(subline) && <span className="upload-model-item-load__subline">{subline}</span>}
+        {Boolean(subline) && (
+          <span className="deprecated-upload-model-item-load__subline">{subline}</span>
+        )}
       </div>
-      <button type="button" className="upload-model-item-load__delete" onClick={handleDeleteClick}>
+      <button
+        type="button"
+        className="deprecated-upload-model-item-load__delete"
+        onClick={handleDeleteClick}
+      >
         <Icon source={deleteIcon} title="Delete" />
       </button>
     </div>
   )
 }
 
-UploadModelItemLoad.propTypes = {
+DeprecatedUploadModelItemLoad.propTypes = {
   ...propTypes.component,
   title: PropTypes.string,
   subline: PropTypes.string,
@@ -53,4 +59,4 @@ UploadModelItemLoad.propTypes = {
   status: PropTypes.number
 }
 
-export default UploadModelItemLoad
+export default DeprecatedUploadModelItemLoad

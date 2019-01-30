@@ -30,9 +30,9 @@ import FooterPartial from './footer-partial'
 import Section from '../component/section'
 import Headline from '../component/headline'
 import UploadArea from '../component/upload-area'
-import UploadModelItemError from '../component/upload-model-item-error'
-import UploadModelItemLoad from '../component/upload-model-item-load'
-import UploadModelItem from '../component/upload-model-item'
+import DeprecatedUploadModelItemError from '../component/deprecated-upload-model-item-error'
+import DeprecatedUploadModelItemLoad from '../component/deprecated-upload-model-item-load'
+import DeprecatedUploadModelItem from '../component/deprecated-upload-model-item'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import Notification from '../component/notification'
@@ -141,7 +141,7 @@ const UploadPage = ({
           if (modelConfig.type === 'UPLOADING') {
             if (model.error) {
               return (
-                <UploadModelItemError
+                <DeprecatedUploadModelItemError
                   key={modelConfig.id}
                   title="Upload failed"
                   subline={model.errorMessage}
@@ -150,7 +150,7 @@ const UploadPage = ({
               )
             }
             return (
-              <UploadModelItemLoad
+              <DeprecatedUploadModelItemLoad
                 key={modelConfig.id}
                 status={model.progress}
                 title="Uploading"
@@ -161,7 +161,7 @@ const UploadPage = ({
           }
           if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
             return (
-              <UploadModelItem
+              <DeprecatedUploadModelItem
                 key={modelConfig.id}
                 id={modelConfig.id}
                 imageSource={model.thumbnailUrl}

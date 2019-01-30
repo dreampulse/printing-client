@@ -1,6 +1,6 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
-import {action} from '@storybook/addon-actions'
+import {withState} from '@dump247/storybook-state'
 
 import UploadModelItem from '.'
 import Button from '../button'
@@ -10,30 +10,20 @@ import placeholderIcon from '../../../asset/icon/placeholder.svg'
 
 const buttonBar = () => (
   <ButtonBar>
-    <Button label="Button" modifiers={['tiny', 'minor']} onClick={action('click')} />
-    <Button
-      icon={placeholderIcon}
-      modifiers={['tiny', 'icon-only', 'minor']}
-      onClick={action('click')}
-    />
-    <Button
-      icon={placeholderIcon}
-      modifiers={['tiny', 'icon-only', 'minor']}
-      onClick={action('click')}
-    />
+    <Button icon={placeholderIcon} modifiers={['tiny', 'icon-only', 'minor']} />
+    <Button icon={placeholderIcon} modifiers={['tiny', 'icon-only', 'minor']} />
   </ButtonBar>
 )
 
-storiesOf('Upload Model Item', module)
+storiesOf('UploadModelItem', module)
   .add('default', () => (
     <UploadModelItem
       id="some-id"
       imageSource="http://placehold.it/180x180"
       title="model_item_title.stl"
       subline="42 x 42 x 42 mm"
-      quantity={1}
-      buttonBar={buttonBar()}
-      onMagnify={action('magnify')}
+      buttonsLeft={buttonBar()}
+      buttonsRight={buttonBar()}
     />
   ))
   .add('no subline', () => (
@@ -41,8 +31,21 @@ storiesOf('Upload Model Item', module)
       id="some-id"
       imageSource="http://placehold.it/180x180"
       title="model_item_title.stl"
-      quantity={1}
-      buttonBar={buttonBar()}
-      onMagnify={action('magnify')}
+      buttonsLeft={buttonBar()}
+      buttonsRight={buttonBar()}
     />
   ))
+  .add(
+    'selected',
+    withState({selected: true}, store => (
+      <UploadModelItem
+        id="some-id"
+        imageSource="http://placehold.it/180x180"
+        title="model_item_title.stl"
+        buttonsLeft={buttonBar()}
+        buttonsRight={buttonBar()}
+        selected={store.state.selected}
+        onSelect={() => store.set({selected: !store.state.selected})}
+      />
+    ))
+  )
