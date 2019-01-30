@@ -9,7 +9,7 @@ import Logo from '../logo'
 import helpIcon from '../../../asset/icon/help.svg'
 import cartIcon from '../../../asset/icon/cart.svg'
 
-storiesOf('Nav Bar', module).add('default', () => (
+storiesOf('NavBar', module).add('default', () => (
   <NavBar
     leftContent={<Logo />}
     rightContent={
