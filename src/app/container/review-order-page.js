@@ -137,12 +137,10 @@ const ReviewOrderPage = ({
                 label={
                   <>
                     Billing Address{' '}
-                    {user.useDifferentBillingAddress && (
-                      <EditLink
-                        label="edit"
-                        onClick={() => openAddressFormModal('billing-address')}
-                      />
-                    )}
+                    <EditLink
+                      label="edit"
+                      onClick={() => openAddressFormModal('billing-address')}
+                    />
                   </>
                 }
               />

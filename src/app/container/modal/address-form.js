@@ -363,12 +363,14 @@ const enhance = compose(
           shippingAddress: {
             ...userFromLocalStorage.shippingAddress,
             ...props.userLocation
-          }
+          },
+          useDifferentBillingAddress:
+            !userFromLocalStorage.useDifferentBillingAddress && props.scrollTo === 'billing-address'
         }
       } else {
         initialUser = {
           isCompany: false,
-          useDifferentBillingAddress: false,
+          useDifferentBillingAddress: props.scrollTo === 'billing-address',
           saveAddress: true,
           shippingAddress: {
             ...props.userLocation
@@ -376,7 +378,11 @@ const enhance = compose(
           billingAddress: {}
         }
       }
-      return (props.user && omit(props.user, 'userId')) || initialUser
+      return {
+        ...((props.user && omit(props.user, 'userId')) || initialUser),
+        useDifferentBillingAddress:
+          props.scrollTo === 'billing-address' || props.user.useDifferentBillingAddress
+      }
     },
     handleSubmit: (values, {props}) => {
       if (values.saveAddress) {
