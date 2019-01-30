@@ -7,7 +7,7 @@ import cn from '../../lib/class-names'
 import Icon from '../icon'
 
 const Link = ({classNames, label, href = '#', icon, onClick = () => {}, ...rest}) => (
-  <a className={cn('link', {}, classNames)} href={href} onClick={onClick} {...rest}>
+  <a className={cn('Link', {}, classNames)} href={href} onClick={onClick} {...rest}>
     {icon && <Icon source={icon} />}
     {label}
   </a>

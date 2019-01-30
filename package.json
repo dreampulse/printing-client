@@ -16,7 +16,7 @@
     "test": "npm run test:coverage && npm run test:lint",
     "test:coverage": "NODE_ENV=test BABEL_ENV=coverage nyc mocha --opts test/unit/mocha.opts ./src/**/*.spec.js",
     "test:lint": "npm run test:eslint && npm run test:tslint",
-    "test:eslint": "eslint --ignore-pattern src/app/container src test bin stories .storybook ./*.js",
+    "test:eslint": "eslint src test bin stories .storybook ./*.js",
     "test:dev": "NODE_ENV=test mocha --opts test/unit/mocha.opts ./src/**/*.spec.js",
     "test:dev:watch": "NODE_ENV=test mocha --opts test/unit/mocha.opts ./src/**/*.spec.js --watch",
     "test:cypress:run": "cypress run --record --key 29366e1c-0b4c-461a-a399-c99c42de27d2",

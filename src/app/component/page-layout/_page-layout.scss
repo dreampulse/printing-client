@@ -11,14 +11,14 @@
     position: sticky;
     top: 0;
     z-index: z($stacking, header);
-    margin-bottom: $space-xxxl;
+    margin-bottom: $space-xl;
   }
 
   &__main {
     flex: 1;
     position: relative;
     z-index: z($stacking, main);
-    margin-bottom: $space-xxxl;
+    margin-bottom: $space-xl;
   }
 
   &__footer {

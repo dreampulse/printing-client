@@ -210,7 +210,10 @@ const UploadPage = ({
   )
 
   return (
-    <AppLayout headerContent={<ConfigurationHeaderPartial />} footer={<FooterPartial />}>
+    <AppLayout footer={<FooterPartial />}>
+      <Section>
+        <ConfigurationHeaderPartial />
+      </Section>
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}

@@ -1,55 +1,29 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {storiesOf} from '@storybook/react'
 
 import PageLayout from '.'
-import StickyContainer from '../sticky-container'
 import Container from '../container'
 import NavBar from '../nav-bar'
 import Footer from '../footer'
 import Link from '../link'
-import ConfigurationHeader from '../configuration-header'
-import LocationField from '../location-field'
 import Button from '../button'
 import IconLink from '../icon-link'
-import SelectField from '../select-field'
-import SelectMenu from '../select-menu'
 import Logo from '../logo'
-import ProviderProgressBar from '../provider-progress-bar'
 
 import helpIcon from '../../../asset/icon/help.svg'
 import cartIcon from '../../../asset/icon/cart.svg'
-
-import HandleValue from '../../../../stories/util/handle-value'
-import {googleMapsApiKey, currencies} from '../../../../stories/util/data'
 
 const navBar = () => (
   <NavBar
     key="navbar"
     leftContent={<Logo />}
     rightContent={
-      <Fragment>
-        <ProviderProgressBar currentStep={2} totalSteps={6} />
-        <Button modifiers={['invert', 'compact']} label="Upload" />
-        <IconLink modifiers={['invert']} icon={cartIcon} cartCount={99} />
-        <IconLink modifiers={['invert']} icon={helpIcon} />
-      </Fragment>
+      <>
+        <Button modifiers={['minor', 'compact']} label="Some Button" />
+        <IconLink icon={cartIcon} cartCount={99} />
+        <IconLink icon={helpIcon} />
+      </>
     }
-  />
-)
-
-const configurationHeader = () => (
-  <ConfigurationHeader
-    location={
-      <HandleValue>
-        <LocationField googleMapsApiKey={googleMapsApiKey} />
-      </HandleValue>
-    }
-    currency={
-      <HandleValue initialValue={{value: 'USD', label: 'USD'}}>
-        <SelectField menu={<SelectMenu values={currencies} />} />
-      </HandleValue>
-    }
-    text="Some text"
   />
 )
 
@@ -61,13 +35,7 @@ const footer = () => (
 )
 
 storiesOf('PageLayout', module).add('default', () => (
-  <PageLayout
-    header={[
-      navBar(),
-      <StickyContainer key="configHeader">{configurationHeader()}</StickyContainer>
-    ]}
-    footer={footer()}
-  >
+  <PageLayout header={navBar()} footer={footer()}>
     <Container>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
       labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
