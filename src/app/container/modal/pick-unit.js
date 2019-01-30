@@ -27,7 +27,7 @@ const PickUnitModal = ({
 }) => {
   const headline = <Headline label="Pick file unit" modifiers={['l']} />
   const buttons = [
-    <Button label="Cancel" modifiers={['text']} onClick={() => closeModal()} />,
+    <Button label="Cancel" text onClick={() => closeModal()} />,
     <Button
       label="Upload"
       onClick={() => {

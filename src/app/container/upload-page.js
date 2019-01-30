@@ -27,9 +27,9 @@ import FooterPartial from './footer-partial'
 import Section from '../component/section'
 import Headline from '../component/headline'
 import UploadArea from '../component/upload-area'
-import UploadModelItemError from '../component/upload-model-item-error'
-import UploadModelItemLoad from '../component/upload-model-item-load'
-import UploadModelItem from '../component/upload-model-item'
+import DeprecatedUploadModelItemError from '../component/deprecated-upload-model-item-error'
+import DeprecatedUploadModelItemLoad from '../component/deprecated-upload-model-item-load'
+import DeprecatedUploadModelItem from '../component/deprecated-upload-model-item'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import Notification from '../component/notification'
@@ -73,7 +73,7 @@ const UploadPage = ({
           </RichText>
           <div className="u-align-center ">
             <Button
-              modifiers={['minor']}
+              minor
               label="Visit our Design Service"
               onClick={() => {
                 global.open('https://all3dp.layr.co/', '_blank')
@@ -101,21 +101,14 @@ const UploadPage = ({
 
   const buttonBar = modelConfig => (
     <ButtonBar>
-      <NumberField
-        modifiers={['tiny']}
-        value={modelConfig.quantity}
-        onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-      />
-      <Button
-        icon={copyIcon}
-        modifiers={['tiny', 'icon-only', 'minor']}
-        onClick={() => duplicateModelConfig(modelConfig.id)}
-      />
-      <Button
-        icon={deleteIcon}
-        modifiers={['tiny', 'icon-only', 'minor']}
-        onClick={() => deleteModelConfigs([modelConfig.id])}
-      />
+      {modelConfig.quantity && (
+        <NumberField
+          value={modelConfig.quantity}
+          onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+        />
+      )}
+      <Button icon={copyIcon} iconOnly onClick={() => duplicateModelConfig(modelConfig.id)} />
+      <Button icon={deleteIcon} iconOnly onClick={() => deleteModelConfigs([modelConfig.id])} />
     </ButtonBar>
   )
 
@@ -137,7 +130,7 @@ const UploadPage = ({
           if (modelConfig.type === 'UPLOADING') {
             if (model.error) {
               return (
-                <UploadModelItemError
+                <DeprecatedUploadModelItemError
                   key={modelConfig.id}
                   title="Upload failed"
                   subline={model.errorMessage}
@@ -146,7 +139,7 @@ const UploadPage = ({
               )
             }
             return (
-              <UploadModelItemLoad
+              <DeprecatedUploadModelItemLoad
                 key={modelConfig.id}
                 status={model.progress}
                 title="Uploading"
@@ -157,7 +150,7 @@ const UploadPage = ({
           }
           if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
             return (
-              <UploadModelItem
+              <DeprecatedUploadModelItem
                 key={modelConfig.id}
                 id={modelConfig.id}
                 imageSource={model.thumbnailUrl}
@@ -178,14 +171,7 @@ const UploadPage = ({
   const cartNotification = () => (
     <Notification
       message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
-      button={
-        <Button
-          label="Cart"
-          icon={cartIcon}
-          onClick={() => goToCart()}
-          modifiers={['compact', 'minor']}
-        />
-      }
+      button={<Button label="Cart" icon={cartIcon} onClick={() => goToCart()} />}
     >
       Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
       <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>

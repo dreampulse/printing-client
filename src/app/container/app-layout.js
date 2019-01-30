@@ -36,13 +36,7 @@ const AppLayout = ({
             {navBarContent}
             <Route path="/" exact>
               {({match}) =>
-                !match && (
-                  <Button
-                    label="Upload"
-                    onClick={() => onUploadClick()}
-                    modifiers={['minor', 'compact']}
-                  />
-                )
+                !match && <Button label="Upload" onClick={() => onUploadClick()} minor compact />
               }
             </Route>
             <IconLink

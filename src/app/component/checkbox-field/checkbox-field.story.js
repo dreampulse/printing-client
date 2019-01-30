@@ -4,7 +4,7 @@ import {storiesOf} from '@storybook/react'
 import CheckboxField from '.'
 import HandleValue from '../../../../stories/util/handle-value'
 
-storiesOf('Checkbox Field', module)
+storiesOf('CheckboxField', module)
   .add('default', () => (
     <HandleValue valueName="checked">
       <CheckboxField />
@@ -17,6 +17,6 @@ storiesOf('Checkbox Field', module)
   ))
   .add('error', () => (
     <HandleValue valueName="checked">
-      <CheckboxField modifiers={['error']} />
+      <CheckboxField error />
     </HandleValue>
   ))

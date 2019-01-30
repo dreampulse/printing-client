@@ -59,7 +59,8 @@ const CartPage = ({
     <ButtonBar>
       <Button
         label="Edit material …"
-        modifiers={['tiny', 'minor']}
+        tiny
+        minor
         onClick={() => goToEditMaterial([modelConfig.id])}
       />
       {/*
@@ -67,25 +68,17 @@ const CartPage = ({
       <Button
         icon={minusIcon}
         disabled={modelConfig.quantity === 1}
-        modifiers={['tiny', 'icon-only', 'minor']}
+        iconOnly
         onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity - 1)}
       />
       <Button
         icon={plusIcon}
-        modifiers={['tiny', 'icon-only', 'minor']}
+        iconOnly
         onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity + 1)}
       />
       */}
-      <Button
-        icon={copyIcon}
-        modifiers={['tiny', 'icon-only', 'minor']}
-        onClick={() => duplicateModelConfig(modelConfig.id)}
-      />
-      <Button
-        icon={deleteIcon}
-        modifiers={['tiny', 'icon-only', 'minor']}
-        onClick={() => deleteModelConfigs([modelConfig.id])}
-      />
+      <Button icon={copyIcon} iconOnly onClick={() => duplicateModelConfig(modelConfig.id)} />
+      <Button icon={deleteIcon} iconOnly onClick={() => deleteModelConfigs([modelConfig.id])} />
     </ButtonBar>
   )
 
@@ -158,7 +151,7 @@ const CartPage = ({
         vat={liableForVat && formatPrice(cart.vatPrice, cart.currency)}
         total={formatPrice(liableForVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
       >
-        <Button modifiers={['block']} label="Checkout" onClick={() => goToAddress()} />
+        <Button block label="Checkout" onClick={() => goToAddress()} />
       </PaymentSection>
     )
   }
@@ -182,7 +175,8 @@ const CartPage = ({
                 .map(modelConfig => modelConfig.id)
             })
           }
-          modifiers={['compact', 'minor']}
+          compact
+          minor
         />
       }
     />

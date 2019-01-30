@@ -541,12 +541,7 @@ const MaterialPartial = ({
                 }
                 price={isCheapestOffer ? <strong>{totalPrice}</strong> : totalPrice}
                 action={
-                  <Button
-                    modifiers={['minor']}
-                    icon={checkoutIcon}
-                    label={addToCartLabel}
-                    onClick={handleAddToCart}
-                  />
+                  <Button icon={checkoutIcon} label={addToCartLabel} onClick={handleAddToCart} />
                 }
               />
             )

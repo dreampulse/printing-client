@@ -38,7 +38,7 @@ const ImaterialiseProviderItem = () => (
       </DescriptionList>
     }
     price={<strong>$350.23</strong>}
-    action={<Button modifiers={['minor']} icon={checkoutIcon} label="Add to Basket" />}
+    action={<Button minor icon={checkoutIcon} label="Add to Basket" />}
   />
 )
 
@@ -71,7 +71,7 @@ const ShapewaysProviderItem = () => (
       </DescriptionList>
     }
     price="$350.23"
-    action={<Button modifiers={['minor']} icon={checkoutIcon} label="Add to Basket" />}
+    action={<Button minor icon={checkoutIcon} label="Add to Basket" />}
   />
 )
 

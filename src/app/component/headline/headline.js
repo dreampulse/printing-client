@@ -16,7 +16,10 @@ const Headline = ({modifiers = [], classNames, label, tag = 'h1', icon}) => {
     {
       className: buildClassName('headline', modifiers, classNames)
     },
-    [finalIcon ? <Icon key="icon" source={finalIcon} /> : null, label]
+    <>
+      {finalIcon ? <Icon key="icon" source={finalIcon} /> : null}
+      {label}
+    </>
   )
 }
 
