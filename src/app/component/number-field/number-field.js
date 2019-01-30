@@ -14,7 +14,7 @@ const NumberField = ({
   value = null,
   onChange = () => {},
   lowerLimit = 1,
-  upperLimit = 99,
+  upperLimit = 999,
   name = ''
 }) => {
   const handleLessClick = event => {
