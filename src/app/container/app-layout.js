@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
 
@@ -11,8 +11,6 @@ import {goToUpload, goToCart} from '../action/navigation'
 import Modal from './modal'
 import {openIntercom} from '../service/intercom'
 
-import FooterPartial from './footer-partial'
-
 import App from '../component/app'
 import Container from '../component/container'
 import NavBar from '../component/nav-bar'
@@ -22,8 +20,8 @@ import Logo from '../component/logo'
 
 const AppLayout = ({
   children,
+  footer,
   navBarContent,
-  headerContent,
   cartCount,
   onHomeClick,
   onUploadClick,
@@ -31,26 +29,25 @@ const AppLayout = ({
 }) => (
   <App
     header={
-      <Fragment>
+      <>
         <NavBar
           key="navbar"
           leftContent={<Logo onClick={() => onHomeClick()} />}
           rightContent={
-            <Fragment>
+            <>
               {navBarContent}
               <Route path="/" exact>
                 {({match}) =>
-                  !match ? (
+                  !match && (
                     <Button
                       label="Upload"
                       onClick={() => onUploadClick()}
-                      modifiers={['invert', 'compact']}
+                      modifiers={['minor', 'compact']}
                     />
-                  ) : null
+                  )
                 }
               </Route>
               <IconLink
-                modifiers={['invert']}
                 icon={cartIcon}
                 disabled={cartCount < 1}
                 cartCount={cartCount}
@@ -60,20 +57,18 @@ const AppLayout = ({
                 }}
               />
               <IconLink
-                modifiers={['invert']}
                 icon={helpIcon}
                 onClick={event => {
                   event.preventDefault()
                   openIntercom()
                 }}
               />
-            </Fragment>
+            </>
           }
         />
-        {headerContent}
-      </Fragment>
+      </>
     }
-    footer={<FooterPartial />}
+    footer={footer}
   >
     <Container>{children}</Container>
     <Modal />

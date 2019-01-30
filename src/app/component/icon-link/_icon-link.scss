@@ -1,4 +1,4 @@
-.icon-link {
+.IconLink {
   $shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
 
   position: relative;
@@ -11,9 +11,9 @@
   vertical-align: middle;
   transition: color $transition-duration-fast ease-in-out;
 
-  &__cart-count {
+  &__cartCount {
     position: absolute;
-    color: $color-yellow;
+    color: $color-invert-text;
     top: 0.8em;
     left: 0.3em;
     right: 0;
@@ -33,25 +33,8 @@
     filter: none;
     pointer-events: none;
 
-    .icon-link__cart-count {
+    .IconLink__cartCount {
       display: none;
     }
-  }
-
-  &--invert {
-    color: $color-invert-text;
-
-    &:hover:not([aria-disabled="true"]),
-    &:focus:not([aria-disabled="true"]) {
-      color: $color-invert-text;
-    }
-
-    &[aria-disabled="true"] {
-      color: $color-invert-disabled;
-    }
-  }
-
-  &--l {
-    font-size: $font-size-xxxl;
   }
 }

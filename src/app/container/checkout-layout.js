@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import compose from 'recompose/compose'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
@@ -11,7 +11,6 @@ import * as modalAction from '../action/modal'
 import helpIcon from '../../asset/icon/help.svg'
 import cartIcon from '../../asset/icon/cart.svg'
 
-import FooterPartial from './footer-partial'
 import Modal from './modal'
 
 import App from '../component/app'
@@ -26,26 +25,25 @@ const CheckoutLayout = ({children, goToUpload, goToCart, cartCount, title}) => {
   const header = (
     <NavBar
       leftContent={
-        <Fragment>
-          <CloseButton modifiers={['invert', 'l']} onClick={() => goToCart()} />
-          <Headline modifiers={['l', 'invert']} label={title} />
-        </Fragment>
+        <>
+          <CloseButton modifiers={['minor', 'l']} onClick={() => goToCart()} />
+          <Headline modifiers={['l', 'minor']} label={title} />
+        </>
       }
       rightContent={
-        <Fragment>
+        <>
           <Route path="/" exact>
             {({match}) =>
-              !match ? (
+              !match && (
                 <Button
                   label="Upload"
                   onClick={() => goToUpload()}
-                  modifiers={['invert', 'compact']}
+                  modifiers={['minor', 'compact']}
                 />
-              ) : null
+              )
             }
           </Route>
           <IconLink
-            modifiers={['invert']}
             icon={cartIcon}
             disabled={cartCount < 1}
             cartCount={cartCount}
@@ -55,20 +53,19 @@ const CheckoutLayout = ({children, goToUpload, goToCart, cartCount, title}) => {
             }}
           />
           <IconLink
-            modifiers={['invert']}
             icon={helpIcon}
             onClick={event => {
               event.preventDefault()
               openIntercom()
             }}
           />
-        </Fragment>
+        </>
       }
     />
   )
 
   return (
-    <App header={header} footer={<FooterPartial />}>
+    <App header={header}>
       <Modal />
       <Container>{children}</Container>
     </App>

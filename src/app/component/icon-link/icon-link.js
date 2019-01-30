@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
 const IconLink = ({
   classNames,
-  modifiers = [],
   icon,
   disabled = false,
   href = '#',
@@ -16,13 +15,13 @@ const IconLink = ({
   cartCount = 0
 }) => (
   <a
-    className={buildClassName('icon-link', modifiers, classNames)}
+    className={cn('IconLink', {}, classNames)}
     aria-disabled={disabled}
     onClick={onClick}
     href={href}
   >
     <Icon source={icon} />
-    {cartCount > 0 && <span className="icon-link__cart-count">{cartCount}</span>}
+    {cartCount > 0 && <span className="IconLink__cartCount">{cartCount}</span>}
   </a>
 )
 
