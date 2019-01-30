@@ -41,7 +41,7 @@ const MaterialPage = ({goToCart, goToUpload, cartCount, configIds, uploadedModel
       </Section>
       <Section>
         <Headline
-          modifiers={['xs']}
+          modifiers={['s']}
           label={`Your selection (${configIds.length}/${uploadedModelConfigs.length} files)`}
         />
       </Section>

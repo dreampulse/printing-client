@@ -40,7 +40,10 @@ const EditMaterialPage = ({goToCart, goToUpload, configIds, cartCount}) => {
         />
       </Section>
       <Section>
-        <Headline modifiers={['xs']} label="Your selection" />
+        <Headline
+          modifiers={['s']}
+          label={`Your selection (${configIds.length} ${configIds.length > 1 ? 'files' : 'file'})`}
+        />
       </Section>
     </>
   )

@@ -194,7 +194,7 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        <Headline label="1. Select Material" modifiers={['xl']} />
+        <Headline label="1. Select Material" modifiers={['s']} />
         <Grid>
           <Column lg={8} classNames={['u-margin-bottom']}>
             <RadioButtonGroup
@@ -343,7 +343,7 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        <Headline label="2. Select Finish" modifiers={['xl']} />
+        <Headline label="2. Select Finish" modifiers={['s']} />
         {selectedMaterial.finishGroups.length > 0 && (
           <MaterialSlider>
             {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
@@ -479,7 +479,7 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        <Headline label="3. Select Offer" modifiers={['xl']} />
+        <Headline label="3. Select Offer" modifiers={['s']} />
         <ProviderBoxSection>
           {renderPromotedOffer({offer: cheapestOffer, cheapest: true})}
           {renderPromotedOffer({offer: fastestOffer, cheapest: false})}
@@ -556,12 +556,22 @@ const MaterialPartial = ({
     )
   }
 
+  if (selectedModelConfigs.length === 0) {
+    return (
+      <>
+        <Headline label="Select a file to start customizing" modifiers={['xl']} />
+        {/* TODO: still show headlines for steps 1. 2. 3. here but disabled and without the content */}
+      </>
+    )
+  }
+
   return (
-    <Fragment>
+    <>
+      <Headline label="Customize your selection" modifiers={['xl']} />
       <div id="section-material">{renderMaterialSection()}</div>
       <div id="section-finish">{finishSectionEnabled && renderFinishSection()}</div>
       <div id="section-provider">{providerSectionEnabled && renderProviderSection()}</div>
-    </Fragment>
+    </>
   )
 }
 
