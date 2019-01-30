@@ -23,7 +23,7 @@ const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation,
     />,
     <Button
       label="Confirm"
-      modifiers={['text']}
+      text
       onClick={() => {
         updateLocation(location, true)
         closeModal()

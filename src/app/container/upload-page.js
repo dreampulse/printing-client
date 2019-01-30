@@ -76,7 +76,7 @@ const UploadPage = ({
             </RichText>
             <div className="u-align-center ">
               <Button
-                modifiers={['minor']}
+                minor
                 label="Visit our Design Service"
                 onClick={() => {
                   global.open('https://all3dp.layr.co/', '_blank')
@@ -105,21 +105,14 @@ const UploadPage = ({
 
   const buttonBar = modelConfig => (
     <ButtonBar>
-      <NumberField
-        modifiers={['tiny']}
-        value={modelConfig.quantity}
-        onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-      />
-      <Button
-        icon={copyIcon}
-        modifiers={['tiny', 'icon-only', 'minor']}
-        onClick={() => duplicateModelConfig(modelConfig.id)}
-      />
-      <Button
-        icon={deleteIcon}
-        modifiers={['tiny', 'icon-only', 'minor']}
-        onClick={() => deleteModelConfigs([modelConfig.id])}
-      />
+      {modelConfig.quantity && (
+        <NumberField
+          value={modelConfig.quantity}
+          onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+        />
+      )}
+      <Button icon={copyIcon} iconOnly onClick={() => duplicateModelConfig(modelConfig.id)} />
+      <Button icon={deleteIcon} iconOnly onClick={() => deleteModelConfigs([modelConfig.id])} />
     </ButtonBar>
   )
 
@@ -182,14 +175,7 @@ const UploadPage = ({
   const cartNotification = () => (
     <Notification
       message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
-      button={
-        <Button
-          label="Cart"
-          icon={cartIcon}
-          onClick={() => goToCart()}
-          modifiers={['compact', 'minor']}
-        />
-      }
+      button={<Button label="Cart" icon={cartIcon} onClick={() => goToCart()} />}
     >
       Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
       <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>

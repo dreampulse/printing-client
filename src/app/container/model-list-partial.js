@@ -42,7 +42,8 @@ const ModelListPartial = ({
     if (editMode) {
       return (
         <Button
-          modifiers={['tiny', 'minor']}
+          tiny
+          minor
           disabled={disabled}
           label={`Edit Material${
             numberOfSelectedItems > 0 ? ` (${numberOfSelectedItems} of ${numberOfItems})` : ''
@@ -71,18 +72,16 @@ const ModelListPartial = ({
 
   const renderSecondaryActions = () =>
     compact([
-      !editMode && (
+      !editMode && commonQuantity && (
         <NumberField
-          disabled={disabled || commonQuantity === null}
           key="quantity"
-          modifiers={['tiny']}
           value={commonQuantity}
           onChange={quantity => updateQuantities(selectedModelConfigIds, quantity)}
         />
       ),
       <Button
         disabled={disabled}
-        modifiers={['tiny', 'minor', 'icon-only']}
+        iconOnly
         icon={deleteIcon}
         key="delete"
         onClick={() => deleteModelConfigs(selectedModelConfigIds)}
@@ -90,7 +89,6 @@ const ModelListPartial = ({
       enableShare && (
         <Button
           disabled={disabled}
-          modifiers={['tiny', 'minor']}
           label="Share configuration"
           onClick={() => createConfiguration(selectedModelConfigIds)}
         />
