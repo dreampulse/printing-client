@@ -196,16 +196,14 @@ const lorem = `
   deserunt mollit anim id est laborum.
 `
 
-storiesOf('ToolLayout', module).add('default', () => (
-  <ToolLayout
-    header={navBar()}
-    sidebar={lorem}
-    footer={
-      <div style={{background: 'red', height: '50px', position: 'relative'}}>
-        <div style={{height: '200px'}}>Foobar</div>
-      </div>
-    }
-  >
-    {lorem}
-  </ToolLayout>
-))
+storiesOf('ToolLayout', module)
+  .add('default', () => (
+    <ToolLayout header={navBar()} sidebar={lorem}>
+      {lorem}
+    </ToolLayout>
+  ))
+  .add('fullMain', () => (
+    <ToolLayout header={navBar()} sidebar={lorem} fullMain>
+      {lorem}
+    </ToolLayout>
+  ))
