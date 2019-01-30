@@ -2,7 +2,6 @@
   $currency-width: 120px;
 
   background: $color-bg;
-  padding: $space-l 0;
 
   &__wrapper {
     display: grid;
@@ -10,13 +9,13 @@
     grid-row-gap: $space-base;
 
     grid-template:
-      "location currency" auto
-      "text text" auto
+      'location currency' auto
+      'text text' auto
       / 1fr $currency-width;
 
     @include respond-to(medium) {
       grid-template:
-        "location currency text" auto
+        'location currency text' auto
         / 1fr $currency-width auto;
     }
   }

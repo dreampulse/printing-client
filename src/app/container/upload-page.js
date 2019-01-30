@@ -1,11 +1,10 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 import compact from 'lodash/compact'
 import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
-import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
@@ -14,7 +13,6 @@ import cartIcon from '../../asset/icon/cart.svg'
 import {formatDimensions, formatPrice} from '../lib/formatter'
 import {selectModelsOfModelConfigs, selectCartCount} from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
-import scrollTo from '../service/scroll-to'
 
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
@@ -23,7 +21,6 @@ import * as modalAction from '../action/modal'
 
 import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
-import MaterialPartial from './material-partial'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import FooterPartial from './footer-partial'
 
@@ -48,6 +45,7 @@ const UploadPage = ({
   duplicateModelConfig,
   modelsWithConfig,
   goToCart,
+  goToMaterial,
   openModelViewer,
   cart,
   cartCount,
@@ -61,33 +59,31 @@ const UploadPage = ({
   const hasModels = numModels > 0
 
   const promoSection = () => (
-    <Fragment>
-      <Section>
-        <Headline
-          label="Make it Printable"
-          modifiers={['l', 'light']}
-          classNames={['u-margin-bottom-l', 'u-align-center']}
-        />
-        <Grid>
-          <Column md={0} lg={3} />
-          <Column md={12} lg={6}>
-            <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
-              <strong>Create</strong>, <strong>repair</strong> or <strong>modify</strong> 3D models
-            </RichText>
-            <div className="u-align-center ">
-              <Button
-                modifiers={['minor']}
-                label="Visit our Design Service"
-                onClick={() => {
-                  global.open('https://all3dp.layr.co/', '_blank')
-                }}
-              />
-            </div>
-          </Column>
-          <Column md={0} lg={3} />
-        </Grid>
-      </Section>
-    </Fragment>
+    <Section>
+      <Headline
+        label="Make it Printable"
+        modifiers={['l', 'light']}
+        classNames={['u-margin-bottom-l', 'u-align-center']}
+      />
+      <Grid>
+        <Column md={0} lg={3} />
+        <Column md={12} lg={6}>
+          <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
+            <strong>Create</strong>, <strong>repair</strong> or <strong>modify</strong> 3D models
+          </RichText>
+          <div className="u-align-center ">
+            <Button
+              modifiers={['minor']}
+              label="Visit our Design Service"
+              onClick={() => {
+                global.open('https://all3dp.layr.co/', '_blank')
+              }}
+            />
+          </div>
+        </Column>
+        <Column md={0} lg={3} />
+      </Grid>
+    </Section>
   )
 
   const uploadSection = () => (
@@ -135,7 +131,7 @@ const UploadPage = ({
       />
       <ModelListPartial
         enableShare={featureFlags.share}
-        onPrimaryActionClick={() => scrollTo('#section-material')}
+        onPrimaryActionClick={() => goToMaterial(selectedModelConfigIds)}
       >
         {modelsWithConfig.map(([modelConfig, model]) => {
           if (modelConfig.type === 'UPLOADING') {
@@ -218,7 +214,12 @@ const UploadPage = ({
       {uploadSection()}
       {hasModels && modelListSection()}
       {hasModels && selectedModelConfigIds.length > 0 && (
-        <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
+        <Section classNames={['u-align-center']}>
+          <Button
+            label={`Customize (${selectedModelConfigIds.length}/${numModels})`}
+            onClick={() => goToMaterial(selectedModelConfigIds)}
+          />
+        </Section>
       )}
       {!hasModels && promoSection()}
     </AppLayout>
@@ -245,6 +246,7 @@ const mapDispatchToProps = {
   updateQuantities: modelAction.updateQuantities,
   duplicateModelConfig: modelAction.duplicateModelConfig,
   goToCart: navigationAction.goToCart,
+  goToMaterial: navigationAction.goToMaterial,
   openModelViewer: modelViewerAction.open
 }
 
@@ -277,17 +279,6 @@ const enhance = compose(
       numModelsUploading,
       isUploadCompleted,
       selectedModelConfigIds: updatedSelectedModelConfigIds
-    }
-  }),
-  lifecycle({
-    componentDidUpdate(prevProps) {
-      if (
-        this.props.isUploadCompleted &&
-        !prevProps.isUploadCompleted &&
-        this.props.useSameMaterial
-      ) {
-        scrollTo('#section-material')
-      }
     }
   })
 )

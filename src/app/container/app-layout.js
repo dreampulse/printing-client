@@ -29,43 +29,41 @@ const AppLayout = ({
 }) => (
   <PageLayout
     header={
-      <>
-        <NavBar
-          leftContent={<Logo onClick={() => onHomeClick()} />}
-          rightContent={
-            <>
-              {navBarContent}
-              <Route path="/" exact>
-                {({match}) =>
-                  !match && (
-                    <Button
-                      label="Upload"
-                      onClick={() => onUploadClick()}
-                      modifiers={['minor', 'compact']}
-                    />
-                  )
-                }
-              </Route>
-              <IconLink
-                icon={cartIcon}
-                disabled={cartCount < 1}
-                cartCount={cartCount}
-                onClick={event => {
-                  event.preventDefault()
-                  onCartClick()
-                }}
-              />
-              <IconLink
-                icon={helpIcon}
-                onClick={event => {
-                  event.preventDefault()
-                  openIntercom()
-                }}
-              />
-            </>
-          }
-        />
-      </>
+      <NavBar
+        leftContent={<Logo onClick={() => onHomeClick()} />}
+        rightContent={
+          <>
+            {navBarContent}
+            <Route path="/" exact>
+              {({match}) =>
+                !match && (
+                  <Button
+                    label="Upload"
+                    onClick={() => onUploadClick()}
+                    modifiers={['minor', 'compact']}
+                  />
+                )
+              }
+            </Route>
+            <IconLink
+              icon={cartIcon}
+              disabled={cartCount < 1}
+              cartCount={cartCount}
+              onClick={event => {
+                event.preventDefault()
+                onCartClick()
+              }}
+            />
+            <IconLink
+              icon={helpIcon}
+              onClick={event => {
+                event.preventDefault()
+                openIntercom()
+              }}
+            />
+          </>
+        }
+      />
     }
     footer={footer}
   >
