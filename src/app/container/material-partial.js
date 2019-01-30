@@ -16,7 +16,6 @@ import * as navigationAction from '../action/navigation'
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
 import * as cartAction from '../action/cart'
-import * as modelAction from '../action/model'
 
 import {getProviderName} from '../lib/material'
 import {
