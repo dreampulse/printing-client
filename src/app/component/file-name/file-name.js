@@ -5,10 +5,10 @@ import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
 
 const FileName = ({classNames, name, extension}) => (
-  <div className={cn('FileName', {}, classNames)}>
-    <div className="FileName__name">{name}</div>
-    <div>.{extension}</div>
-  </div>
+  <span className={cn('FileName', {}, classNames)}>
+    <span className="FileName__name">{name}</span>
+    <span>.{extension}</span>
+  </span>
 )
 
 FileName.propTypes = {
