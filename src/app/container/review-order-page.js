@@ -59,6 +59,7 @@ import {guard} from './util/guard'
 import {scrollToTop} from './util/scroll-to-top'
 
 import {PaymentAbortedError} from '../lib/error'
+import {all} from 'bluebird';
 
 const ReviewOrderPage = ({
   user,
@@ -240,7 +241,7 @@ const ReviewOrderPage = ({
   const paymentButtons = compact([
     <Button
       key="payment-stripe"
-      modifiers={['block']}
+      block
       disabled={paymentInProgress || !user}
       icon={creditCardIcon}
       label="Credit card"
@@ -266,7 +267,7 @@ const ReviewOrderPage = ({
     featureFlags.invoice && (
       <Button
         key="payment-invoice"
-        modifiers={['block']}
+        block
         disabled={paymentInProgress || !user}
         label="Pay with Invoice"
         onClick={async () => {

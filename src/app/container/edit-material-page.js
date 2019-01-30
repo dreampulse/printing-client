@@ -14,7 +14,7 @@ import ConfigurationHeaderPartial from './configuration-header-partial'
 import MaterialPartial from './material-partial'
 import Modal from './modal'
 
-import App from '../component/app'
+import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 import NavBar from '../component/nav-bar'
 import CloseButton from '../component/close-button'
@@ -25,7 +25,7 @@ const EditMaterialPage = ({goToCart, configIds, uploadedModelConfigs}) => {
   const title = `Edit material (${configIds.length} of ${uploadedModelConfigs.length} items)`
 
   return (
-    <App
+    <PageLayout
       header={[
         <NavBar
           key="header-bar"
@@ -51,7 +51,7 @@ const EditMaterialPage = ({goToCart, configIds, uploadedModelConfigs}) => {
         <MaterialPartial configIds={configIds} />
       </Container>
       <Modal />
-    </App>
+    </PageLayout>
   )
 }
 

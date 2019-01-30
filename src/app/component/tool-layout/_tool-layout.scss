@@ -1,0 +1,35 @@
+.ToolLayout {
+  $sidebar-width: 310px;
+
+  position: relative;
+  z-index: z($global-stacking, app);
+  display: grid;
+  grid-template-areas:
+    'header header'
+    'aside main';
+  grid-template-rows: auto 1fr;
+  grid-template-columns: $sidebar-width 1fr;
+  height: 100vh;
+  overflow: hidden;
+
+  &__header {
+    grid-area: header;
+  }
+
+  &__main {
+    grid-area: main;
+    padding: $space-xl;
+    overflow-y: auto;
+  }
+
+  &__aside {
+    grid-area: aside;
+    padding: $space-xl;
+    background: $color-bg-minor;
+    overflow-y: auto;
+  }
+
+  &--fullMain .ToolLayout__main {
+    padding: 0;
+  }
+}

@@ -9,12 +9,12 @@ import Logo from '../logo'
 import helpIcon from '../../../asset/icon/help.svg'
 import cartIcon from '../../../asset/icon/cart.svg'
 
-storiesOf('Nav Bar', module).add('default', () => (
+storiesOf('NavBar', module).add('default', () => (
   <NavBar
     leftContent={<Logo />}
     rightContent={
       <>
-        <Button modifiers={['minor', 'compact']} label="Some Button" />
+        <Button minor compact label="Some Button" />
         <IconLink icon={cartIcon} cartCount={99} />
         <IconLink icon={helpIcon} />
       </>

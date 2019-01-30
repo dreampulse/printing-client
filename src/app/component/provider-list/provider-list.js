@@ -35,7 +35,7 @@ const ProviderList = ({classNames, modifiers = [], children, onShowOffers = noop
       </tbody>
     </table>
     <div className="provider-list__gradient">
-      <Button label="See all offers" modifiers={['minor']} onClick={onShowOffers} />
+      <Button label="See all offers" minor onClick={onShowOffers} />
     </div>
   </div>
 )

@@ -11,7 +11,7 @@ import {goToUpload, goToCart} from '../action/navigation'
 import Modal from './modal'
 import {openIntercom} from '../service/intercom'
 
-import App from '../component/app'
+import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 import NavBar from '../component/nav-bar'
 import IconLink from '../component/icon-link'
@@ -27,24 +27,17 @@ const AppLayout = ({
   onUploadClick,
   onCartClick
 }) => (
-  <App
+  <PageLayout
     header={
       <>
         <NavBar
-          key="navbar"
           leftContent={<Logo onClick={() => onHomeClick()} />}
           rightContent={
             <>
               {navBarContent}
               <Route path="/" exact>
                 {({match}) =>
-                  !match && (
-                    <Button
-                      label="Upload"
-                      onClick={() => onUploadClick()}
-                      modifiers={['minor', 'compact']}
-                    />
-                  )
+                  !match && <Button label="Upload" onClick={() => onUploadClick()} minor compact />
                 }
               </Route>
               <IconLink
@@ -72,7 +65,7 @@ const AppLayout = ({
   >
     <Container>{children}</Container>
     <Modal />
-  </App>
+  </PageLayout>
 )
 
 const mapStateToProps = state => ({

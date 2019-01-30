@@ -69,14 +69,6 @@ import Icon from '../component/icon'
 import ProviderBoxSection from '../component/provider-box-section'
 import LoadingCheckmark from '../component/loading-checkmark'
 
-// const HidableProviderList = withState('isHidden', 'hide', true)(props => (
-//   <ProviderList
-//     modifiers={props.isHidden ? ['hidden', ...props.modifiers] : props.modifiers}
-//     onShowOffers={() => props.hide(false)}
-//     {...props}
-//   />
-// ))
-
 const MaterialPartial = ({
   selectMaterialConfigForFinishGroup,
   selectedMaterialConfigs,
@@ -548,12 +540,7 @@ const MaterialPartial = ({
                 }
                 price={isCheapestOffer ? <strong>{totalPrice}</strong> : totalPrice}
                 action={
-                  <Button
-                    modifiers={['minor']}
-                    icon={checkoutIcon}
-                    label={addToCartLabel}
-                    onClick={handleAddToCart}
-                  />
+                  <Button icon={checkoutIcon} label={addToCartLabel} onClick={handleAddToCart} />
                 }
               />
             )
