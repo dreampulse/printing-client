@@ -382,7 +382,8 @@ const enhance = compose(
         ...((props.user && omit(props.user, 'userId')) || initialUser),
         useDifferentBillingAddress:
           props.scrollTo === 'billing-address' ||
-          (props.user && props.user.useDifferentBillingAddress)
+          (props.user && props.user.useDifferentBillingAddress === true) ||
+          initialUser.useDifferentBillingAddress
       }
     },
     handleSubmit: (values, {props}) => {
@@ -418,6 +419,7 @@ const enhance = compose(
         })
       }
     },
+    isInitialValid: true,
     displayName: 'AddressForm'
   }),
   lifecycle({
