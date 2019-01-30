@@ -105,11 +105,12 @@ const UploadPage = ({
 
   const buttonBar = modelConfig => (
     <ButtonBar>
-      <NumberField
-        modifiers={['tiny']}
-        value={modelConfig.quantity}
-        onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-      />
+      {modelConfig.quantity && (
+        <NumberField
+          value={modelConfig.quantity}
+          onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+        />
+      )}
       <Button
         icon={copyIcon}
         modifiers={['tiny', 'icon-only', 'minor']}

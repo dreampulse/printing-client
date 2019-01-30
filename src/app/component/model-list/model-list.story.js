@@ -15,7 +15,7 @@ import HandleValue from '../../../../stories/util/handle-value'
 
 const primaryActions = () => <Button label="Choose Material…" />
 const secondaryActions = () => [
-  <NumberField key="quantity" />,
+  <NumberField key="quantity" value={42} />,
   <Button modifiers={['minor']} icon={deleteIcon} key="delete" />
 ]
 

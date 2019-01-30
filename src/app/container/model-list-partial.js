@@ -71,11 +71,9 @@ const ModelListPartial = ({
 
   const renderSecondaryActions = () =>
     compact([
-      !editMode && (
+      !editMode && commonQuantity && (
         <NumberField
-          disabled={disabled || commonQuantity === null}
           key="quantity"
-          modifiers={['tiny']}
           value={commonQuantity}
           onChange={quantity => updateQuantities(selectedModelConfigIds, quantity)}
         />
