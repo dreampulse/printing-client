@@ -1,0 +1,7 @@
+.FileName {
+  display: flex;
+
+  &__name {
+    @include scut-truncate;
+  }
+}
