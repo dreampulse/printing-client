@@ -3,14 +3,18 @@ import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
+import unzip from 'lodash/unzip'
 
 import * as navigationAction from '../action/navigation'
+import * as modelViewerAction from '../action/model-viewer'
 
 import backIcon from '../../asset/icon/back.svg'
 import cartIcon from '../../asset/icon/cart.svg'
 import helpIcon from '../../asset/icon/help.svg'
+import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
-import {selectModelConfigsByIds, selectCartCount} from '../lib/selector'
+import {formatDimensions} from '../lib/formatter'
+import {selectCartCount, selectModelsOfModelConfigs} from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
 import {openIntercom} from '../service/intercom'
 
@@ -24,8 +28,18 @@ import ToolLayout from '../component/tool-layout'
 import Logo from '../component/logo'
 import IconLink from '../component/icon-link'
 import Link from '../component/link'
+import Button from '../component/button'
+import ButtonBar from '../component/button-bar'
+import UploadModelItem from '../component/upload-model-item'
 
-const EditMaterialPage = ({goToCart, goToUpload, configIds, cartCount}) => {
+const EditMaterialPage = ({
+  goToCart,
+  goToUpload,
+  modelsWithConfig,
+  configIds,
+  cartCount,
+  openModelViewer
+}) => {
   const sidebar = () => (
     <>
       <Section>
@@ -39,11 +53,28 @@ const EditMaterialPage = ({goToCart, goToUpload, configIds, cartCount}) => {
           }}
         />
       </Section>
-      <Section>
+      <Section classNames={['u-no-margin']}>
         <Headline
           modifiers={['s']}
-          label={`Your selection (${configIds.length} ${configIds.length > 1 ? 'files' : 'file'})`}
+          label={`Your selection (${modelsWithConfig.length} ${
+            modelsWithConfig.length > 1 ? 'files' : 'file'
+          })`}
         />
+        {modelsWithConfig.map(([modelConfig, model]) => (
+          <UploadModelItem
+            classNames={['u-margin-bottom']}
+            key={modelConfig.id}
+            imageSource={model.thumbnailUrl}
+            title={model.fileName}
+            subline={formatDimensions(model.dimensions, model.fileUnit)}
+            buttonsRight={
+              <ButtonBar>
+                <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
+              </ButtonBar>
+            }
+            onMagnify={() => openModelViewer(model)}
+          />
+        ))}
       </Section>
     </>
   )
@@ -84,7 +115,10 @@ const EditMaterialPage = ({goToCart, goToUpload, configIds, cartCount}) => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
+    ([modelConfig]) =>
+      modelConfig.type !== 'UPLOADED' || ownProps.configIds.includes(modelConfig.id)
+  ),
   currency: state.core.currency,
   location: state.core.location,
   cartCount: selectCartCount(state)
@@ -92,7 +126,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   goToUpload: navigationAction.goToUpload,
-  goToCart: navigationAction.goToCart
+  goToCart: navigationAction.goToCart,
+  openModelViewer: modelViewerAction.open
 }
 
 export default compose(
@@ -106,7 +141,7 @@ export default compose(
   ),
   lifecycle({
     componentWillMount() {
-      if (this.props.selectedModelConfigs.length === 0) {
+      if (this.props.modelsWithConfig.length === 0) {
         this.props.goToUpload()
       }
     }

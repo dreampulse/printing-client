@@ -215,10 +215,7 @@ const UploadPage = ({
 const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
   modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
-    ([modelConfig]) => {
-      const mc = modelConfig // Flow bug with detecting correct branch in union type
-      return mc.type !== 'UPLOADED' || mc.quoteId === null
-    }
+    ([modelConfig]) => modelConfig.type !== 'UPLOADED' || modelConfig.quoteId === null
   ),
   cart: state.core.cart,
   cartCount: selectCartCount(state),
