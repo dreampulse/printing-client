@@ -16,8 +16,8 @@ storiesOf('Payment Section', module)
       total="$345.00"
       childrenLabel="Pay with:"
     >
-      <Button modifiers={['block']} icon={creditCardIcon} label="Pay by credit card" />
-      <Button modifiers={['block']} icon={paypalIcon} label="Pay with Paypal" />
+      <Button block icon={creditCardIcon} label="Pay by credit card" />
+      <Button block icon={paypalIcon} label="Pay with Paypal" />
     </PaymentSection>
   ))
   .add('multiple shippings', () => (
@@ -31,7 +31,7 @@ storiesOf('Payment Section', module)
       total="$345.00"
       childrenLabel="Pay with:"
     >
-      <Button modifiers={['block']} icon={creditCardIcon} label="Pay by credit card" />
-      <Button modifiers={['block']} icon={paypalIcon} label="Pay with Paypal" />
+      <Button block icon={creditCardIcon} label="Pay by credit card" />
+      <Button block icon={paypalIcon} label="Pay with Paypal" />
     </PaymentSection>
   ))

@@ -42,7 +42,8 @@ const ModelListPartial = ({
     if (editMode) {
       return (
         <Button
-          modifiers={['tiny', 'minor']}
+          tiny
+          minor
           disabled={disabled}
           label={`Edit Material${
             numberOfSelectedItems > 0 ? ` (${numberOfSelectedItems} of ${numberOfItems})` : ''
@@ -80,7 +81,8 @@ const ModelListPartial = ({
       ),
       <Button
         disabled={disabled}
-        modifiers={['tiny', 'minor', 'icon-only']}
+        tiny
+        minor
         icon={deleteIcon}
         key="delete"
         onClick={() => deleteModelConfigs(selectedModelConfigIds)}
@@ -88,7 +90,8 @@ const ModelListPartial = ({
       enableShare && (
         <Button
           disabled={disabled}
-          modifiers={['tiny', 'minor']}
+          tiny
+          minor
           label="Share configuration"
           onClick={() => createConfiguration(selectedModelConfigIds)}
         />

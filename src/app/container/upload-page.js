@@ -76,7 +76,7 @@ const UploadPage = ({
             </RichText>
             <div className="u-align-center ">
               <Button
-                modifiers={['minor']}
+                minor
                 label="Visit our Design Service"
                 onClick={() => {
                   global.open('https://all3dp.layr.co/', '_blank')
@@ -111,16 +111,8 @@ const UploadPage = ({
           onChange={quantity => updateQuantities([modelConfig.id], quantity)}
         />
       )}
-      <Button
-        icon={copyIcon}
-        modifiers={['tiny', 'icon-only', 'minor']}
-        onClick={() => duplicateModelConfig(modelConfig.id)}
-      />
-      <Button
-        icon={deleteIcon}
-        modifiers={['tiny', 'icon-only', 'minor']}
-        onClick={() => deleteModelConfigs([modelConfig.id])}
-      />
+      <Button tiny minor icon={copyIcon} onClick={() => duplicateModelConfig(modelConfig.id)} />
+      <Button icon={deleteIcon} tiny minor onClick={() => deleteModelConfigs([modelConfig.id])} />
     </ButtonBar>
   )
 

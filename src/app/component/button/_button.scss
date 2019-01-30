@@ -1,4 +1,4 @@
-.button {
+.Button {
   display: inline-block;
   height: $field-height;
   padding: 0 1em;
@@ -93,8 +93,8 @@
     padding: 0 1em;
   }
 
-  &--icon-only {
-    padding: 0.5em;
+  &--iconOnly {
+    padding: 0 0.5em;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -138,15 +138,6 @@
 
     &[disabled] {
       border-color: $color-gray-5;
-    }
-  }
-
-  &--warning {
-    background: $color-warning;
-
-    &:hover:not([disabled]),
-    &:focus:not([disabled]) {
-      background: $color-warning-active;
     }
   }
 }

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
@@ -10,24 +10,33 @@ import selectedIcon from '../../../asset/icon/selected.svg'
 
 const Button = ({
   classNames,
-  modifiers = [],
   label,
   icon,
   type = 'button',
   disabled = false,
+  minor = false,
+  tiny = false,
+  compact = false,
+  text = false,
+  block = false,
+  selected = false,
   onClick = () => {}
 }) => {
-  const finalIcon = modifiers.indexOf('selected') >= 0 ? selectedIcon : icon
+  const finalIcon = selected ? selectedIcon : icon
 
   return (
     <button
-      className={buildClassName('button', modifiers, classNames)}
+      className={cn(
+        'Button',
+        {minor, tiny, compact, text, block, selected, iconOnly: !label},
+        classNames
+      )}
       type={type}
       disabled={disabled}
       onClick={onClick}
     >
-      {Boolean(finalIcon) && <Icon source={finalIcon} />}
-      {label && <span className="button__label">{label}</span>}
+      {finalIcon && <Icon source={finalIcon} />}
+      {label && <span className="Button__label">{label}</span>}
     </button>
   )
 }
@@ -40,7 +49,12 @@ Button.propTypes = {
   }),
   type: PropTypes.string,
   disabled: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  minor: PropTypes.bool,
+  tiny: PropTypes.bool,
+  compact: PropTypes.bool,
+  text: PropTypes.bool,
+  block: PropTypes.bool
 }
 
 export default Button

@@ -28,7 +28,7 @@ import HandleValue from '../../../../stories/util/handle-value'
 
 const headline = <Headline label="Warning Headline" modifiers={['l']} />
 const headlineOther = <Headline label="Overlay Headline" modifiers={['l']} />
-const buttons = [<Button label="Cancel" modifiers={['text']} />, <Button label="OK" />]
+const buttons = [<Button label="Cancel" text />, <Button label="OK" />]
 
 storiesOf('Overlay', module)
   .add('default', () => (
@@ -73,7 +73,7 @@ storiesOf('Overlay', module)
       <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
     )
     const fetchingNewPricesButtons = [
-      <Button label="Cancel" modifiers={['text']} />,
+      <Button label="Cancel" text />,
       <Button label="OK" disabled />
     ]
     return (

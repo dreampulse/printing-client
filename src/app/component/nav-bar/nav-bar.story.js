@@ -14,7 +14,7 @@ storiesOf('Nav Bar', module).add('default', () => (
     leftContent={<Logo />}
     rightContent={
       <>
-        <Button modifiers={['minor', 'compact']} label="Some Button" />
+        <Button minor compact label="Some Button" />
         <IconLink icon={cartIcon} cartCount={99} />
         <IconLink icon={helpIcon} />
       </>

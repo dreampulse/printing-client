@@ -166,7 +166,7 @@ const ReviewOrderPage = ({
   const paymentButtons = compact([
     <Button
       key="payment-stripe"
-      modifiers={['block']}
+      block
       disabled={paymentInProgress}
       icon={creditCardIcon}
       label="Credit card"
@@ -192,7 +192,7 @@ const ReviewOrderPage = ({
     featureFlags.invoice && (
       <Button
         key="payment-invoice"
-        modifiers={['block']}
+        block
         disabled={paymentInProgress}
         label="Pay with Invoice"
         onClick={async () => {
