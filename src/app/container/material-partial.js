@@ -88,7 +88,8 @@ const MaterialPartial = ({
   openMaterialModal,
   openFinishGroupModal,
   addToCart,
-  goToAddress,
+  goToCart,
+  goToUpload,
   quotes,
   selectedModelConfigs,
   shippings,
@@ -96,8 +97,7 @@ const MaterialPartial = ({
   configIds,
   uploadedModelConfigs,
   usedShippingIds,
-  isUploadPage,
-  updateSelectedModelConfigs,
+  isEditMode,
   modelConfigs,
   setProviderListHidden,
   isProviderListHidden,
@@ -391,12 +391,12 @@ const MaterialPartial = ({
         : formatPrice(shipping.grossPrice, shipping.currency),
       totalPrice: formatPrice(totalGrossPrice, multiModelQuote.currency),
       finishImageUrl: getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill']),
-      addToCartLabel: hasItemsOnUploadPage ? 'Add to cart' : 'Checkout',
+      addToCartLabel: isEditMode ? 'Select offer' : 'Add to cart',
       handleAddToCart: () =>
         addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
-          if (isUploadPage && hasItemsOnUploadPage) {
-            updateSelectedModelConfigs(
-              modelConfigs
+          if (!isEditMode && hasItemsOnUploadPage) {
+            goToUpload({
+              selectModelConfigIds: modelConfigs
                 .filter(
                   modelConfig =>
                     modelConfig.type === 'UPLOADED' &&
@@ -404,10 +404,12 @@ const MaterialPartial = ({
                     !configIds.includes(modelConfig.id)
                 )
                 .map(modelConfig => modelConfig.id)
-            )
-            scrollTo('#root')
+            })
           } else {
-            goToAddress()
+            goToCart({
+              numAddedItems: isEditMode ? 0 : configIds.length,
+              selectModelConfigIds: configIds
+            })
           }
         })
     }
@@ -584,13 +586,13 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-  goToAddress: navigationAction.goToAddress,
+  goToCart: navigationAction.goToCart,
+  goToUpload: navigationAction.goToUpload,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,
   stopReceivingQuotes: quoteAction.stopReceivingQuotes,
-  addToCart: cartAction.addToCart,
-  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
+  addToCart: cartAction.addToCart
 }
 
 export default compose(

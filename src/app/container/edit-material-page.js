@@ -6,52 +6,77 @@ import lifecycle from 'recompose/lifecycle'
 
 import * as navigationAction from '../action/navigation'
 
-import {selectModelConfigsByIds, selectUploadedModelConfigs} from '../lib/selector'
-import {scrollToTop} from './util/scroll-to-top'
+import backIcon from '../../asset/icon/back.svg'
+import cartIcon from '../../asset/icon/cart.svg'
+import helpIcon from '../../asset/icon/help.svg'
 
-import FooterPartial from './footer-partial'
-import ConfigurationHeaderPartial from './configuration-header-partial'
+import {selectModelConfigsByIds, selectCartCount} from '../lib/selector'
+import {scrollToTop} from './util/scroll-to-top'
+import {openIntercom} from '../service/intercom'
+
 import MaterialPartial from './material-partial'
 import Modal from './modal'
 
-import PageLayout from '../component/page-layout'
-import Container from '../component/container'
 import NavBar from '../component/nav-bar'
-import CloseButton from '../component/close-button'
 import Headline from '../component/headline'
 import Section from '../component/section'
+import ToolLayout from '../component/tool-layout'
+import Logo from '../component/logo'
+import IconLink from '../component/icon-link'
+import Link from '../component/link'
 
-const EditMaterialPage = ({goToCart, configIds, uploadedModelConfigs}) => {
-  const title = `Edit material (${configIds.length} of ${uploadedModelConfigs.length} items)`
+const EditMaterialPage = ({goToCart, goToUpload, configIds, cartCount}) => {
+  const sidebar = () => (
+    <>
+      <Section>
+        <Link
+          label="Back to cart"
+          href="#"
+          icon={backIcon}
+          onClick={event => {
+            event.preventDefault()
+            goToCart()
+          }}
+        />
+      </Section>
+      <Section>
+        <Headline modifiers={['xs']} label="Your selection" />
+      </Section>
+    </>
+  )
 
   return (
-    <PageLayout
-      header={[
+    <ToolLayout
+      header={
         <NavBar
-          key="header-bar"
-          leftContent={
+          leftContent={<Logo onClick={() => goToUpload()} />}
+          rightContent={
             <>
-              <CloseButton
-                modifiers={['l', 'minor']}
-                onClick={() => goToCart({selectModelConfigIds: configIds})}
+              <IconLink
+                icon={cartIcon}
+                disabled={cartCount < 1}
+                cartCount={cartCount}
+                onClick={event => {
+                  event.preventDefault()
+                  goToCart()
+                }}
               />
-              <Headline modifiers={['l', 'minor']} label={title} />
+              <IconLink
+                icon={helpIcon}
+                onClick={event => {
+                  event.preventDefault()
+                  openIntercom()
+                }}
+              />
             </>
           }
         />
-      ]}
-      footer={<FooterPartial />}
+      }
+      sidebar={sidebar()}
     >
-      <Section>
-        <Container>
-          <ConfigurationHeaderPartial key="configuration-header" />
-        </Container>
-      </Section>
-      <Container>
-        <MaterialPartial configIds={configIds} />
-      </Container>
+      <MaterialPartial isEditMode configIds={configIds} />
       <Modal />
-    </PageLayout>
+    </ToolLayout>
   )
 }
 
@@ -59,7 +84,7 @@ const mapStateToProps = (state, ownProps) => ({
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
   currency: state.core.currency,
   location: state.core.location,
-  uploadedModelConfigs: selectUploadedModelConfigs(state)
+  cartCount: selectCartCount(state)
 })
 
 const mapDispatchToProps = {

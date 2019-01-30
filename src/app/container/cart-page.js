@@ -48,7 +48,7 @@ const CartPage = ({
   cart,
   cartShippings,
   magnifyModel,
-  goToMaterial,
+  goToEditMaterial,
   numAddedItems,
   liableForVat
 }) => {
@@ -60,7 +60,7 @@ const CartPage = ({
       <Button
         label="Edit material …"
         modifiers={['tiny', 'minor']}
-        onClick={() => goToMaterial([modelConfig.id])}
+        onClick={() => goToEditMaterial([modelConfig.id])}
       />
       {/*
       TODO: Quantity change in card is hard to solve because we have to do another price request and match old to new quotes afterwards, which makes all of this async
@@ -91,7 +91,7 @@ const CartPage = ({
 
   const modelListSection = () => (
     <Section>
-      <ModelListPartial editMode onPrimaryActionClick={goToMaterial}>
+      <ModelListPartial editMode onPrimaryActionClick={goToEditMaterial}>
         {modelsWithConfig.map(
           ({
             modelConfig,
@@ -241,7 +241,7 @@ const mapDispatchToProps = dispatch => ({
   goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
   goToAddress: bindActionCreators(navigationAction.goToAddress, dispatch),
-  goToMaterial: bindActionCreators(navigationAction.goToMaterial, dispatch),
+  goToEditMaterial: bindActionCreators(navigationAction.goToEditMaterial, dispatch),
   magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
   duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)
