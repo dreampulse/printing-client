@@ -381,7 +381,8 @@ const enhance = compose(
       return {
         ...((props.user && omit(props.user, 'userId')) || initialUser),
         useDifferentBillingAddress:
-          props.scrollTo === 'billing-address' || props.user.useDifferentBillingAddress
+          props.scrollTo === 'billing-address' ||
+          (props.user && props.user.useDifferentBillingAddress)
       }
     },
     handleSubmit: (values, {props}) => {
