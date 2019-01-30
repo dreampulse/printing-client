@@ -81,6 +81,7 @@ const ModelListPartial = ({
       ),
       <Button
         disabled={disabled}
+        iconOnly
         icon={deleteIcon}
         key="delete"
         onClick={() => deleteModelConfigs(selectedModelConfigIds)}

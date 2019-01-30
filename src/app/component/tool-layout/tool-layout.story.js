@@ -18,7 +18,7 @@ const navBar = () => (
     rightContent={
       <>
         <ProviderProgressBar currentStep={2} totalSteps={6} />
-        <Button modifiers={['invert', 'compact']} label="Upload" />
+        <Button compact label="Upload" />
         <IconLink modifiers={['invert']} icon={cartIcon} cartCount={99} />
         <IconLink modifiers={['invert']} icon={helpIcon} />
       </>

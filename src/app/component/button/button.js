@@ -20,17 +20,14 @@ const Button = ({
   text = false,
   block = false,
   selected = false,
+  iconOnly = false,
   onClick = () => {}
 }) => {
   const finalIcon = selected ? selectedIcon : icon
 
   return (
     <button
-      className={cn(
-        'Button',
-        {minor, tiny, compact, text, block, selected, iconOnly: !label},
-        classNames
-      )}
+      className={cn('Button', {minor, tiny, compact, text, block, selected, iconOnly}, classNames)}
       type={type}
       disabled={disabled}
       onClick={onClick}
@@ -54,7 +51,8 @@ Button.propTypes = {
   tiny: PropTypes.bool,
   compact: PropTypes.bool,
   text: PropTypes.bool,
-  block: PropTypes.bool
+  block: PropTypes.bool,
+  iconOnly: PropTypes.bool
 }
 
 export default Button

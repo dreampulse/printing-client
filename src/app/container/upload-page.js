@@ -111,8 +111,8 @@ const UploadPage = ({
           onChange={quantity => updateQuantities([modelConfig.id], quantity)}
         />
       )}
-      <Button icon={copyIcon} onClick={() => duplicateModelConfig(modelConfig.id)} />
-      <Button icon={deleteIcon} onClick={() => deleteModelConfigs([modelConfig.id])} />
+      <Button icon={copyIcon} iconOnly onClick={() => duplicateModelConfig(modelConfig.id)} />
+      <Button icon={deleteIcon} iconOnly onClick={() => deleteModelConfigs([modelConfig.id])} />
     </ButtonBar>
   )
 

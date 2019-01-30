@@ -63,15 +63,17 @@ const CartPage = ({
       <Button
         icon={minusIcon}
         disabled={modelConfig.quantity === 1}
+        iconOnly
         onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity - 1)}
       />
       <Button
         icon={plusIcon}
+        iconOnly
         onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity + 1)}
       />
       */}
-      <Button icon={copyIcon} onClick={() => duplicateModelConfig(modelConfig.id)} />
-      <Button icon={deleteIcon} onClick={() => deleteModelConfigs([modelConfig.id])} />
+      <Button icon={copyIcon} iconOnly onClick={() => duplicateModelConfig(modelConfig.id)} />
+      <Button icon={deleteIcon} iconOnly onClick={() => deleteModelConfigs([modelConfig.id])} />
     </ButtonBar>
   )
 

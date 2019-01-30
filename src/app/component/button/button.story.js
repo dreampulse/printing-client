@@ -7,24 +7,24 @@ import Button from '.'
 import placeholderIcon from '../../../asset/icon/placeholder.svg'
 
 storiesOf('Button', module)
-  .add('default', () => <Button label="Default Button" onClick={action('click')} />)
-  .add('disabled', () => <Button label="Disabled Button" disabled onClick={action('click')} />)
+  .add('default', () => <Button label="Default Button" onClick={action('onClick')} />)
+  .add('disabled', () => <Button label="Disabled Button" disabled onClick={action('onClick')} />)
   .add('with icon', () => (
-    <Button label="Button with Icon" icon={placeholderIcon} onClick={action('click')} />
+    <Button label="Button with Icon" icon={placeholderIcon} onClick={action('onClick')} />
   ))
-  .add('text', () => <Button label="Text Button" text onClick={action('click')} />)
-  .add('block', () => <Button label="Block Button" block onClick={action('click')} />)
-  .add('compact', () => <Button label="Compact Button" compact onClick={action('click')} />)
-  .add('tiny', () => <Button label="Tiny Button" tiny onClick={action('click')} />)
-  .add('minor', () => <Button label="Minor Button" minor onClick={action('click')} />)
-  .add('selected', () => <Button label="Selected Button" selected onClick={action('click')} />)
+  .add('text', () => <Button label="Text Button" text onClick={action('onClick')} />)
+  .add('block', () => <Button label="Block Button" block onClick={action('onClick')} />)
+  .add('compact', () => <Button label="Compact Button" compact onClick={action('onClick')} />)
+  .add('tiny', () => <Button label="Tiny Button" tiny onClick={action('onClick')} />)
+  .add('minor', () => <Button label="Minor Button" minor onClick={action('onClick')} />)
+  .add('selected', () => <Button label="Selected Button" selected onClick={action('onClick')} />)
   .add('minor & disabled', () => (
-    <Button label="Disabled Minor Button" disabled minor onClick={action('click')} />
+    <Button label="Disabled Minor Button" disabled minor onClick={action('onClick')} />
   ))
   .add('minor & tiny', () => (
-    <Button label="Tiny Minor Button" minor tiny onClick={action('click')} />
+    <Button label="Tiny Minor Button" minor tiny onClick={action('onClick')} />
   ))
-  .add('icon-only', () => <Button icon={placeholderIcon} onClick={action('click')} />)
-  .add('icon-only & disabled', () => (
-    <Button icon={placeholderIcon} disabled onClick={action('click')} />
+  .add('iconOnly', () => <Button icon={placeholderIcon} iconOnly onClick={action('onClick')} />)
+  .add('iconOnly & disabled', () => (
+    <Button icon={placeholderIcon} disabled iconOnly onClick={action('onClick')} />
   ))
