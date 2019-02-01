@@ -42,7 +42,7 @@ const CartPage = ({
   modelsWithConfig,
   modelConfigs,
   goToUpload,
-  goToAddress,
+  goToReviewOrder,
   duplicateModelConfig,
   deleteModelConfigs,
   cart,
@@ -135,6 +135,8 @@ const CartPage = ({
       )
     }
 
+    const showVat = cart.vatPrice > 0 && liableForVat !== false
+
     return (
       <PaymentSection
         classNames={['u-margin-bottom']}
@@ -143,10 +145,10 @@ const CartPage = ({
           label: getProviderName(shipping.vendorId),
           price: formatPrice(shipping.price, shipping.currency)
         }))}
-        vat={liableForVat && formatPrice(cart.vatPrice, cart.currency)}
-        total={formatPrice(liableForVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
+        vat={showVat ? formatPrice(cart.vatPrice, cart.currency) : ''}
+        total={formatPrice(showVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
       >
-        <Button block label="Checkout" onClick={() => goToAddress()} />
+        <Button block label="Checkout" onClick={() => goToReviewOrder()} />
       </PaymentSection>
     )
   }
@@ -227,9 +229,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  goToReviewOrder: bindActionCreators(navigationAction.goToReviewOrder, dispatch),
   goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
-  goToAddress: bindActionCreators(navigationAction.goToAddress, dispatch),
   goToMaterial: bindActionCreators(navigationAction.goToMaterial, dispatch),
   magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
   duplicateModelConfig: id => {

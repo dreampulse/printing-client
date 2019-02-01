@@ -23,7 +23,7 @@ const LabeledCheckbox = ({
         modifiers={inputModifiers}
         id={id}
         checked={checked}
-        onChange={onChange}
+        onChange={e => onChange(!checked, name, e)}
       />
       <label htmlFor={id} className="labeled-checkbox__label">
         {label}

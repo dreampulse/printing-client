@@ -29,4 +29,8 @@
   &__column {
     margin-bottom: $space-base;
   }
+
+  &:last-child {
+    margin-bottom: -1 * $space-base;
+  }
 }

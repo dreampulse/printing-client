@@ -23,7 +23,7 @@ const SearchField = ({
   const finalModifiers = [...modifiers, {disabled}]
   const hasValue = value && value.length > 0
   const handleChange = event => {
-    onChange(event.target.value)
+    onChange(event.target.value, name, event)
   }
 
   return (

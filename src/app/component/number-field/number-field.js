@@ -14,14 +14,15 @@ const NumberField = ({
   value = null,
   onChange = () => {},
   lowerLimit = 1,
-  upperLimit = 999
+  upperLimit = 999,
+  name = ''
 }) => {
   const handleLessClick = event => {
     event.preventDefault()
 
     const nextValue = value - 1
     if (nextValue >= lowerLimit) {
-      onChange(nextValue)
+      onChange(nextValue, name, event)
     }
   }
 
@@ -30,18 +31,18 @@ const NumberField = ({
 
     const nextValue = value + 1
     if (nextValue <= upperLimit) {
-      onChange(nextValue)
+      onChange(nextValue, name, event)
     }
   }
 
   const handleInputChange = event => {
     const nextValue = parseInt(event.target.value, 10) || value
     if (nextValue < lowerLimit) {
-      onChange(lowerLimit)
+      onChange(lowerLimit, name, event)
     } else if (nextValue > upperLimit) {
-      onChange(upperLimit)
+      onChange(upperLimit, name, event)
     } else {
-      onChange(nextValue)
+      onChange(nextValue, name, event)
     }
   }
 
@@ -82,7 +83,8 @@ NumberField.propTypes = {
   onChange: PropTypes.func,
   lowerLimit: PropTypes.number,
   upperLimit: PropTypes.number,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  name: PropTypes.string
 }
 
 export default NumberField
