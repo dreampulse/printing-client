@@ -364,6 +364,9 @@ const enhance = compose(
             ...userFromLocalStorage.shippingAddress,
             ...props.userLocation
           },
+          billingAddress: {
+            ...userFromLocalStorage.billingAddress
+          },
           useDifferentBillingAddress:
             !userFromLocalStorage.useDifferentBillingAddress && props.scrollTo === 'billing-address'
         }
@@ -387,14 +390,14 @@ const enhance = compose(
       }
     },
     handleSubmit: (values, {props}) => {
+      if (values.useDifferentBillingAddress === false) {
+        values.billingAddress = values.shippingAddress
+      }
+
       if (values.saveAddress) {
         localStorage.setItem(config.localStorageAddressKey, omit(values, 'userId'))
       } else {
         localStorage.removeItem(config.localStorageAddressKey)
-      }
-
-      if (values.useDifferentBillingAddress === false) {
-        values.billingAddress = values.shippingAddress
       }
 
       const normalizedValues = {
