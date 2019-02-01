@@ -92,6 +92,8 @@ const ReviewOrderPage = ({
       getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode)) ||
     shippingStateName
 
+  const showVat = cart.vatPrice > 0 && liableForVat !== false
+
   const renderHeader = () => (
     <NavBar
       leftContent={<Logo onClick={() => goToUpload()} />}
@@ -318,8 +320,8 @@ const ReviewOrderPage = ({
           label: getProviderName(shipping.vendorId),
           price: formatPrice(shipping.price, shipping.currency)
         }))}
-        vat={liableForVat ? formatPrice(cart.vatPrice, cart.currency) : ''}
-        total={formatPrice(liableForVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
+        vat={showVat ? formatPrice(cart.vatPrice, cart.currency) : ''}
+        total={formatPrice(showVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
         childrenLabel="Pay with:"
       >
         {paymentButtons}
