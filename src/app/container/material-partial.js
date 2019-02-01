@@ -101,7 +101,8 @@ const MaterialPartial = ({
   modelConfigs,
   setProviderListHidden,
   isProviderListHidden,
-  pollingProgress
+  pollingProgress,
+  goToReviewOrder
 }) => {
   const isPollingComplete = pollingProgress.complete === pollingProgress.total
   const hasMoreThanOneResult = pollingProgress.complete > 0
@@ -406,6 +407,8 @@ const MaterialPartial = ({
                 .map(modelConfig => modelConfig.id)
             )
             scrollTo('#root')
+          } else if (isUploadPage && !hasItemsOnUploadPage && modelConfigs.length === 1) {
+            goToReviewOrder()
           } else {
             goToCart()
           }
@@ -585,7 +588,8 @@ const mapDispatchToProps = {
   stopReceivingQuotes: quoteAction.stopReceivingQuotes,
   addToCart: cartAction.addToCart,
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
-  goToCart: navigationAction.goToCart
+  goToCart: navigationAction.goToCart,
+  goToReviewOrder: navigationAction.goToReviewOrder
 }
 
 export default compose(

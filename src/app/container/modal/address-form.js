@@ -436,8 +436,8 @@ const enhance = compose(
       }
 
       if (prevProps.values.isCompany !== this.props.values.isCompany) {
-        this.props.setFieldValue('companyName')
-        this.props.setFieldValue('vatId')
+        this.props.setFieldValue('companyName', '')
+        this.props.setFieldValue('vatId', '')
       }
 
       if (this.props.cart !== prevProps.cart) {
