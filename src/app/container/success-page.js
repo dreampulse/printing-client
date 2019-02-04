@@ -26,13 +26,13 @@ const SuccessPage = ({location}) => {
   }
   return (
     <AppLayout>
-      <PageHeader label="Thank you for your order with All3DP!" />
+      <PageHeader label="Thank you for ordering with Craftcloud by All3DP!" />
       <Section modifiers={['highlight']}>
         <Headline
           label={
             location.state.orderNumber
               ? `Order number: ${location.state.orderNumber}`
-              : 'Thank you for ordering at All3DP!'
+              : 'Thank you for ordering with Craftcloud by All3DP!'
           }
         />
         <Paragraph modifiers={['l']}>
