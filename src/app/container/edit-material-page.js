@@ -19,6 +19,7 @@ import {scrollToTop} from './util/scroll-to-top'
 import {openIntercom} from '../service/intercom'
 
 import MaterialPartial from './material-partial'
+import LocationInfoPartial from './location-info-partial'
 import Modal from './modal'
 
 import NavBar from '../component/nav-bar'
@@ -31,6 +32,8 @@ import Link from '../component/link'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import UploadModelItem from '../component/upload-model-item'
+
+const SCROLL_CONTAINER_ID = 'main-container'
 
 const EditMaterialPage = ({
   goToCart,
@@ -83,6 +86,7 @@ const EditMaterialPage = ({
 
   return (
     <ToolLayout
+      scrollContainerId={SCROLL_CONTAINER_ID}
       header={
         <NavBar
           leftContent={<Logo onClick={() => goToUpload()} />}
@@ -110,7 +114,10 @@ const EditMaterialPage = ({
       }
       sidebar={sidebar()}
     >
-      <MaterialPartial isEditMode configIds={configIds} />
+      <Section>
+        <LocationInfoPartial />
+      </Section>
+      <MaterialPartial isEditMode configIds={configIds} scrollContainerId={SCROLL_CONTAINER_ID} />
       <Modal />
     </ToolLayout>
   )

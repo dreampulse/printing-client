@@ -27,6 +27,7 @@ import {
 import {openIntercom} from '../service/intercom'
 
 import MaterialPartial from './material-partial'
+import LocationInfoPartial from './location-info-partial'
 import Modal from './modal'
 
 import ToolLayout from '../component/tool-layout'
@@ -144,6 +145,9 @@ const MaterialPage = ({
       }
       sidebar={sidebar()}
     >
+      <Section>
+        <LocationInfoPartial />
+      </Section>
       <MaterialPartial configIds={selectedModelConfigIds} scrollContainerId={SCROLL_CONTAINER_ID} />
       <Modal />
     </ToolLayout>
