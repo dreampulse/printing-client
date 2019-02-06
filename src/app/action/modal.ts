@@ -17,7 +17,7 @@ const open = (config: ModalConfigOpened): OpenModalAction => ({
   payload: config
 })
 
-export const openPickLocationModal = ({isCloseable = true}): OpenModalAction =>
+export const openPickLocationModal = ({isCloseable = true} = {}): OpenModalAction =>
   open({
     isCloseable,
     contentType: ModalContentType.PICK_LOCATION,
