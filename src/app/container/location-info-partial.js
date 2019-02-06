@@ -6,6 +6,7 @@ import {formatLocation} from '../lib/formatter'
 import * as modalActions from '../action/modal'
 
 import Link from '../component/link'
+import Paragraph from '../component/paragraph'
 
 const LocationInfoPartial = ({currency, location, openPickLocationModal}) => {
   const currencies = config.currencies
@@ -16,13 +17,13 @@ const LocationInfoPartial = ({currency, location, openPickLocationModal}) => {
     : 'Select location'
 
   return (
-    <div className={['u-align-right'].join(' ')}>
+    <Paragraph classNames={['u-align-right']}>
       Your printing and shipping prices depend on your location.{' '}
       <Link
         onClick={() => openPickLocationModal({isCloseable: true})}
         label={locationNameAndCurrency}
       />
-    </div>
+    </Paragraph>
   )
 }
 const mapStateToProps = state => ({
