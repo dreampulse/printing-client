@@ -67,6 +67,7 @@ const EditMaterialPage = ({
             imageSource={model.thumbnailUrl}
             title={model.fileName}
             subline={formatDimensions(model.dimensions, model.fileUnit)}
+            buttonsLeft={`Qty: ${modelConfig.quantity}`}
             buttonsRight={
               <ButtonBar>
                 <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />

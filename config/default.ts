@@ -7,7 +7,6 @@ export default {
   cloudinaryUrl: '//res.cloudinary.com/all3dp/image/upload',
   cloudinaryDefaultParams: ['q_90', 'f_auto'],
   scrollToOffset: 100, // Height of sticky header in pixels plus spacing
-  debouncePriceRequestWait: 1000,
   stripeCheckoutImage: 'asset/image/checkout-logo.png',
   stripeDescription: '3D Printing Service',
   stripeName: 'All3DP',

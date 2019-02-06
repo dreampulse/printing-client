@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withStateHandlers from 'recompose/withStateHandlers'
@@ -11,6 +11,7 @@ import keyBy from 'lodash/keyBy'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import compact from 'lodash/compact'
+import debounce from 'lodash/debounce'
 
 import * as navigationAction from '../action/navigation'
 import * as modalAction from '../action/modal'
@@ -658,27 +659,28 @@ export default compose(
   withPropsOnChange(['materialFilter', 'materialSearch'], ({materialFilter, materialSearch}) => ({
     filteredMaterials: materialFilter.length > 0 ? materialSearch.search(materialFilter) : undefined
   })),
-  withHandlers({
-    receiveQuotes: props => () => {
-      const modelConfigs = props.selectedModelConfigs
-      const {refresh} = props.featureFlags
-      const currency = props.currency
-      const {countryCode} = props.location
-
-      props.receiveQuotes({
-        modelConfigs,
-        countryCode,
-        currency,
-        refresh
-      })
-    }
-  }),
+  withPropsOnChange(
+    () => false, // Should never reinitialize the debounce function
+    ({receiveQuotes}) => ({
+      debouncedReceiveQuotes: debounce(receiveQuotes, 1000)
+    })
+  ),
   withState('isProviderListHidden', 'setProviderListHidden', true),
   lifecycle({
     componentWillMount() {
       // It is possible that we do not have a location yet!
       if (this.props.selectedModelConfigs.length > 0 && this.props.location) {
-        this.props.receiveQuotes()
+        const modelConfigs = this.props.selectedModelConfigs
+        const {refresh} = this.props.featureFlags
+        const currency = this.props.currency
+        const {countryCode} = this.props.location
+
+        this.props.receiveQuotes({
+          modelConfigs,
+          countryCode,
+          currency,
+          refresh
+        })
       }
     },
     componentDidUpdate(prevProps) {
@@ -694,10 +696,21 @@ export default compose(
           get(this.props.location, 'countryCode') !== get(prevProps.location, 'countryCode') ||
           !isEqual(this.props.selectedModelConfigs, prevProps.selectedModelConfigs))
       ) {
-        this.props.receiveQuotes()
+        const modelConfigs = this.props.selectedModelConfigs
+        const {refresh} = this.props.featureFlags
+        const currency = this.props.currency
+        const {countryCode} = this.props.location
+
+        this.props.debouncedReceiveQuotes({
+          modelConfigs,
+          countryCode,
+          currency,
+          refresh
+        })
       }
     },
     componentWillUnmount() {
+      this.props.debouncedReceiveQuotes.cancel()
       this.props.stopReceivingQuotes()
     }
   })

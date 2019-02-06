@@ -1,5 +1,5 @@
 .Button {
-  $icon-only-size: 24px;
+  $icon-only-size: 22px;
 
   display: inline-block;
   height: $field-height;
@@ -104,6 +104,7 @@
     background: transparent;
     color: $color-primary;
     box-shadow: none;
+    font-size: 18px; // TODO: we should refactor $font-size-l to 18px
 
     &:hover:not([disabled]),
     &:focus:not([disabled]),
