@@ -1,9 +1,9 @@
 .NumberField {
-  $tiny-field-width: 70px;
-  $button-width: $tiny-field-height;
+  $width: 75px;
+  $button-width: 24px;
 
   height: $tiny-field-height;
-  width: $tiny-field-width;
+  width: $width;
   position: relative;
   display: inline-block;
   padding: 0 $button-width;

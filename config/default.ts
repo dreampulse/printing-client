@@ -10,7 +10,7 @@ export default {
   debouncePriceRequestWait: 1000,
   stripeCheckoutImage: 'asset/image/checkout-logo.png',
   stripeDescription: '3D Printing Service',
-  stripeName: 'All3DP',
+  stripeName: 'Craftcloud by All3DP',
   ravenUrl: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
   ravenRelease: process.env.SENTRY_RELEASE_VERSION,
   countryCookie: 'country',

@@ -4,14 +4,14 @@
   flex-direction: row;
   align-items: flex-start;
   padding: $space-base $space-xl $space-base $model-item-space-left;
-  height: $upload-model-item-image-width + 2 * $space-base;
+  height: $model-item-image-width + 2 * $space-base;
   border-top: 1px solid $color-bg;
   border-bottom: 1px solid $color-bg;
   background: $color-bg;
 
   & > .magnifyable-item {
     flex-shrink: 0;
-    width: $upload-model-item-image-width;
+    width: $model-item-image-width;
     margin-right: $space-l;
   }
 

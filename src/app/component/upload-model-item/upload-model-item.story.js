@@ -18,7 +18,6 @@ const buttonBar = () => (
 storiesOf('UploadModelItem', module)
   .add('default', () => (
     <UploadModelItem
-      id="some-id"
       imageSource="http://placehold.it/180x180"
       title="model_item_title_can_be_long_and_gets_truncated.stl"
       subline="42 x 42 x 42 mm"
@@ -28,7 +27,6 @@ storiesOf('UploadModelItem', module)
   ))
   .add('no subline', () => (
     <UploadModelItem
-      id="some-id"
       imageSource="http://placehold.it/180x180"
       title="model_item_title_can_be_long_and_gets_truncated.stl"
       buttonsLeft={buttonBar()}
@@ -39,7 +37,6 @@ storiesOf('UploadModelItem', module)
     'selected',
     withState({selected: true}, store => (
       <UploadModelItem
-        id="some-id"
         imageSource="http://placehold.it/180x180"
         title="model_item_title_can_be_long_and_gets_truncated.stl"
         subline="42 x 42 x 42 mm"
@@ -50,3 +47,13 @@ storiesOf('UploadModelItem', module)
       />
     ))
   )
+  .add('s', () => (
+    <UploadModelItem
+      s
+      imageSource="http://placehold.it/180x180"
+      title="model_item_title_can_be_long_and_gets_truncated.stl"
+      subline="42 x 42 x 42 mm"
+      buttonsLeft={buttonBar()}
+      buttonsRight={buttonBar()}
+    />
+  ))

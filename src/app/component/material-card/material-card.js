@@ -47,7 +47,7 @@ const MaterialCard = ({
     <footer className="material-card__footer">
       <div className="material-card__unavailable">Not printable</div>
       <div className="material-card__body-empty" />
-      <Button minor label="Repair now" onClick={onUnavailableClick} />
+      <Button minor label="Contact Us" onClick={onUnavailableClick} />
     </footer>
   )
 

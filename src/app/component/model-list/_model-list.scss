@@ -7,7 +7,7 @@
     position: sticky;
     top: 0;
     // To let header disappear before last model item
-    margin-bottom: $upload-model-item-height;
+    margin-bottom: $model-item-height;
     display: flex;
     flex-direction: row;
     padding: $space-l 0;
@@ -18,7 +18,7 @@
 
     & + .model-list__items {
       // To pull items back to top (due to position sticky)
-      margin-top: -1 * $upload-model-item-height;
+      margin-top: -1 * $model-item-height;
     }
   }
 

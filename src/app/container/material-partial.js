@@ -12,11 +12,11 @@ import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import compact from 'lodash/compact'
 
-import * as navigationAction from '../action/navigation'
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
 import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
+import * as navigationAction from '../action/navigation'
 
 import {getProviderName} from '../lib/material'
 import {
@@ -88,7 +88,7 @@ const MaterialPartial = ({
   openMaterialModal,
   openFinishGroupModal,
   addToCart,
-  goToAddress,
+  goToCart,
   quotes,
   selectedModelConfigs,
   shippings,
@@ -101,7 +101,8 @@ const MaterialPartial = ({
   modelConfigs,
   setProviderListHidden,
   isProviderListHidden,
-  pollingProgress
+  pollingProgress,
+  goToReviewOrder
 }) => {
   const isPollingComplete = pollingProgress.complete === pollingProgress.total
   const hasMoreThanOneResult = pollingProgress.complete > 0
@@ -127,10 +128,6 @@ const MaterialPartial = ({
   )
 
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
-
-  const openModelRepairPage = () => {
-    global.open('https://all3dp.layr.co/fix', '_blank')
-  }
 
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
@@ -176,7 +173,7 @@ const MaterialPartial = ({
           onMoreClick={() => {
             openMaterialModal(material.id)
           }}
-          onUnavailableClick={openModelRepairPage}
+          onUnavailableClick={() => openIntercom()}
         />
       )
     }
@@ -330,7 +327,7 @@ const MaterialPartial = ({
           onMoreClick={() => {
             openFinishGroupModal(finishGroup.id)
           }}
-          onUnavailableClick={openModelRepairPage}
+          onUnavailableClick={() => openIntercom()}
         />
       )
     }
@@ -406,8 +403,10 @@ const MaterialPartial = ({
                 .map(modelConfig => modelConfig.id)
             )
             scrollTo('#root')
+          } else if (isUploadPage && !hasItemsOnUploadPage && modelConfigs.length === 1) {
+            goToReviewOrder()
           } else {
-            goToAddress()
+            goToCart()
           }
         })
     }
@@ -579,13 +578,14 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-  goToAddress: navigationAction.goToAddress,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,
   stopReceivingQuotes: quoteAction.stopReceivingQuotes,
   addToCart: cartAction.addToCart,
-  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
+  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
+  goToCart: navigationAction.goToCart,
+  goToReviewOrder: navigationAction.goToReviewOrder
 }
 
 export default compose(
