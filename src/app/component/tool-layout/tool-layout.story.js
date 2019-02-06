@@ -198,12 +198,12 @@ const lorem = `
 
 storiesOf('ToolLayout', module)
   .add('default', () => (
-    <ToolLayout header={navBar()} sidebar={lorem}>
+    <ToolLayout header={navBar()} sidebar={lorem} scrollContainerId="main-container">
       {lorem}
     </ToolLayout>
   ))
   .add('fullMain', () => (
-    <ToolLayout header={navBar()} sidebar={lorem} fullMain>
+    <ToolLayout header={navBar()} sidebar={lorem} fullMain scrollContainerId="main-container">
       {lorem}
     </ToolLayout>
   ))

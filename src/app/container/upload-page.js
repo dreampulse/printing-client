@@ -55,8 +55,7 @@ const UploadPage = ({
   featureFlags,
   selectedModelConfigIds,
   numModelsUploading,
-  isUploadCompleted,
-  hasQuotes
+  isUploadCompleted
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -190,7 +189,13 @@ const UploadPage = ({
 
   return (
     <AppLayout footer={<FooterPartial />}>
-      {hasQuotes ? <LocationInfoPartial /> : <ConfigurationHeaderPartial />}
+      {cart ? (
+        <LocationInfoPartial />
+      ) : (
+        <Section>
+          <ConfigurationHeaderPartial />
+        </Section>
+      )}
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
@@ -215,8 +220,7 @@ const mapStateToProps = state => ({
   cart: state.core.cart,
   cartCount: selectCartCount(state),
   featureFlags: state.core.featureFlags,
-  useSameMaterial: state.core.useSameMaterial,
-  hasQuotes: !!state.core.modelConfigs.find(modelConfig => modelConfig.quoteId)
+  useSameMaterial: state.core.useSameMaterial
 })
 
 const mapDispatchToProps = {
