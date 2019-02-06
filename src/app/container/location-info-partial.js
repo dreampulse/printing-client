@@ -16,10 +16,10 @@ const ConfigurationHeaderPartial = ({currency, location, openPickLocationModal})
     : 'Select location'
 
   return (
-    <div className={['u-margin-top-l', 'u-margin-bottom-l', 'u-align-right'].join(' ')}>
+    <div className={['u-align-right'].join(' ')}>
       Your printing and shipping prices depend on your location.{' '}
       <Link
-        onClick={() => openPickLocationModal({confirmation: true})}
+        onClick={() => openPickLocationModal({isCloseable: true})}
         label={locationNameAndCurrency}
       />
     </div>

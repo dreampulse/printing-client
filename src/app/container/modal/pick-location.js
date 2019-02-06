@@ -32,7 +32,7 @@ const PickLocationModal = ({
   onUpdateCurrency,
   closeModal,
   meta,
-  confirmation
+  hasQuotes
 }) => {
   const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
@@ -43,12 +43,12 @@ const PickLocationModal = ({
 
   const buttons = [
     meta.isCloseable && (
-      <Button key="close" label="Cancel" text={!confirmation} onClick={() => closeModal()} />
+      <Button key="close" label="Cancel" text={!hasQuotes} onClick={() => closeModal()} />
     ),
     <Button
       label="OK"
       key="ok"
-      text={confirmation}
+      text={hasQuotes}
       disabled={!isLocationValid(location) || !currency}
       onClick={() => {
         onUpdateLocation(location, true)
@@ -60,12 +60,12 @@ const PickLocationModal = ({
 
   return (
     <Overlay
-      headline={confirmation ? headlineWarning : headline}
+      headline={hasQuotes ? headlineWarning : headline}
       buttons={compact(buttons)}
       closeable={meta.isCloseable}
-      closePortal={() => closeModal()}
+      closePortal={() => meta.isCloseable && closeModal()}
     >
-      {confirmation ? (
+      {hasQuotes ? (
         <Paragraph>
           If you change your country or currency you have to reconfigure all models.
         </Paragraph>
@@ -102,7 +102,8 @@ const PickLocationModal = ({
 
 const mapStateToProps = state => ({
   globalLocation: state.core.location,
-  globalCurrency: state.core.currency
+  globalCurrency: state.core.currency,
+  hasQuotes: !!state.core.modelConfigs.find(modelConfig => modelConfig.quoteId)
 })
 
 const mapDispatchToProps = {

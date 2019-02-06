@@ -342,7 +342,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   closeModal: modalActions.closeModal,
-  openPickLocationModal: modalActions.openPickLocationModal,
   saveUser: coreActions.saveUser,
   goToUpload: navigationActions.goToUpload,
   onUpdateLocation: coreActions.updateLocation
