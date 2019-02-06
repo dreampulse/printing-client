@@ -62,6 +62,7 @@ const EditMaterialPage = ({
         />
         {modelsWithConfig.map(([modelConfig, model]) => (
           <UploadModelItem
+            s
             classNames={['u-margin-bottom']}
             key={modelConfig.id}
             imageSource={model.thumbnailUrl}

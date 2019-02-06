@@ -104,6 +104,8 @@ const ReviewOrderPage = ({
               !match && (
                 <Button
                   label="Upload"
+                  minor
+                  compact
                   onClick={() => goToUpload()}
                   modifiers={['minor', 'compact']}
                 />
@@ -312,7 +314,7 @@ const ReviewOrderPage = ({
   ])
 
   const renderPaymentSection = () => (
-    <Fragment>
+    <>
       <PaymentSection
         classNames={['u-margin-bottom']}
         subtotal={formatPrice(cart.subTotalPrice, cart.currency)}
@@ -367,7 +369,7 @@ const ReviewOrderPage = ({
           href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
         />
       </Paragraph>
-    </Fragment>
+    </>
   )
 
   return (
