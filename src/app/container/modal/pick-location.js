@@ -63,6 +63,7 @@ const PickLocationModal = ({
       headline={confirmation ? headlineWarning : headline}
       buttons={compact(buttons)}
       closeable={meta.isCloseable}
+      closePortal={() => closeModal()}
     >
       {confirmation ? (
         <Paragraph>
