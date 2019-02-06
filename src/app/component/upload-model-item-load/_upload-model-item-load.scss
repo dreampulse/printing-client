@@ -1,0 +1,51 @@
+.UploadModelItemLoad {
+  $stacking: progress, button, subtitle, title;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: $upload-model-item-height;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-base;
+
+  &__title {
+    z-index: z($stacking, title);
+    position: relative;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-l;
+    color: $color-text-label;
+
+    & > .loading-indicator {
+      vertical-align: -17.5%;
+      margin-right: $space-base;
+    }
+  }
+
+  &__subline {
+    z-index: z($stacking, subtitle);
+    position: relative;
+    color: $color-text;
+  }
+
+  &__button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: $space-l;
+    outline: 0;
+    z-index: z($stacking, button);
+    color: $color-primary;
+  }
+
+  &__progress {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    color: $color-blue-very-light;
+    z-index: z($stacking, progress);
+  }
+}
