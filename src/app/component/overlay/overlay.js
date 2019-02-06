@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, {Component, cloneElement} from 'react'
+import noop from 'lodash/noop'
 
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
@@ -13,12 +14,14 @@ class Overlay extends Component {
     closeable: PropTypes.bool,
     children: PropTypes.node,
     headline: PropTypes.node.isRequired,
-    buttons: PropTypes.arrayOf(PropTypes.node)
+    buttons: PropTypes.arrayOf(PropTypes.node),
+    noCloseOnClickOutside: PropTypes.bool
   }
 
   static defaultProps = {
     closePortal: () => {},
-    closeable: true
+    closeable: true,
+    noCloseOnClickOutside: false
   }
 
   componentDidMount() {
@@ -32,7 +35,10 @@ class Overlay extends Component {
   render() {
     return (
       <section className={buildClassName('overlay', this.props.modifiers, this.props.classNames)}>
-        <div className="overlay__mask" onClick={this.props.closePortal}>
+        <div
+          className="overlay__mask"
+          onClick={!this.props.noCloseOnClickOutside ? this.props.closePortal : noop}
+        >
           <div className="overlay__modal" onClick={e => e.stopPropagation()}>
             <header className="overlay__header">
               <div className="overlay__headline">

@@ -189,6 +189,7 @@ const AddressFormModal = ({
       headline={headline}
       buttons={buttons}
       closePortal={() => closeModal()}
+      noCloseOnClickOutside
     >
       <Form>
         <div id="shipping-address">

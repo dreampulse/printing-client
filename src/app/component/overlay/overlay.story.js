@@ -36,6 +36,16 @@ storiesOf('Overlay', module)
       <div>Overlay content</div>
     </Overlay>
   ))
+  .add('noCloseOnClickOutside', () => (
+    <Overlay
+      headline={headline}
+      buttons={buttons}
+      closePortal={action('onClose')}
+      noCloseOnClickOutside
+    >
+      <div>Overlay content</div>
+    </Overlay>
+  ))
   .add('large', () => (
     <Overlay
       modifiers={['l']}
