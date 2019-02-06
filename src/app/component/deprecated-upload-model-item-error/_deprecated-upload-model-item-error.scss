@@ -3,7 +3,7 @@
   flex-direction: row;
   align-items: center;
   padding: $space-base $space-xl $space-base $model-item-space-left;
-  height: $upload-model-item-height;
+  height: $model-item-height;
   border-top: 1px solid $color-bg;
   border-bottom: 1px solid $color-bg;
   background: $color-red-light;
@@ -14,7 +14,7 @@
     background-position: center center;
     background-size: cover;
     flex-shrink: 0;
-    width: $upload-model-item-image-width;
+    width: $model-item-image-width;
     margin-right: $space-l;
   }
 

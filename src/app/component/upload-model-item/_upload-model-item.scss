@@ -4,7 +4,7 @@
   background: $color-bg;
   position: relative;
   display: flex;
-  align-items: stretch;
+  height: $upload-model-item-height;
 
   &__aside {
     position: relative;
@@ -12,9 +12,8 @@
     flex-direction: column;
     justify-content: flex-end;
     background: $color-bg-minor;
-    min-width: 65px; // Design decision
-    max-width: 100px; // Design decision
-    width: 20%;
+    width: $upload-model-item-height;
+    flex-shrink: 0;
 
     & > .CheckboxField {
       position: absolute;
@@ -24,8 +23,10 @@
   }
 
   &__content {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
-    padding: $space-base;
+    padding: $space-l;
     overflow: hidden; // Necessary to enable truncation in children
   }
 
@@ -46,7 +47,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: $space-base;
+    margin-top: auto;
   }
 
   &__buttonsLeft,
@@ -67,5 +68,19 @@
     pointer-events: none;
     border: 1px solid $color-primary;
     border-radius: $border-radius;
+  }
+
+  &--s {
+    height: $upload-model-item-height-s;
+
+    .UploadModelItem__aside {
+      min-width: 65px; // Design decision
+      max-width: 100px; // Design decision
+      width: 20%;
+    }
+
+    .UploadModelItem__content {
+      padding: $space-base;
+    }
   }
 }
