@@ -3,6 +3,8 @@
   flex-direction: column;
 
   &__header {
+    position: sticky;
+    top: 0;
     flex-shrink: 0;
   }
 

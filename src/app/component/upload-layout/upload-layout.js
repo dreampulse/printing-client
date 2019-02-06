@@ -11,7 +11,7 @@ const UploadLayout = ({classNames, children, header, stickyFooter, footer}) => (
       <div className="UploadLayout__content">{children}</div>
       <div className="UploadLayout__stickyFooter">{stickyFooter}</div>
     </main>
-    <aside className="UploadLayout__footer">{footer}</aside>
+    {footer}
   </div>
 )
 
