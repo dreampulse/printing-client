@@ -1,6 +1,6 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
-import {action} from '@storybook/addon-actions'
+import {withState} from '@dump247/storybook-state'
 
 import UploadModelItem from '.'
 import Button from '../button'
@@ -10,31 +10,50 @@ import placeholderIcon from '../../../asset/icon/placeholder.svg'
 
 const buttonBar = () => (
   <ButtonBar>
-    <Button label="Button" tiny minor onClick={action('click')} />
-    <Button icon={placeholderIcon} iconOnly onClick={action('click')} />
-    <Button icon={placeholderIcon} iconOnly onClick={action('click')} />
+    <Button icon={placeholderIcon} iconOnly />
+    <Button icon={placeholderIcon} iconOnly />
   </ButtonBar>
 )
 
-storiesOf('Upload Model Item', module)
+storiesOf('UploadModelItem', module)
   .add('default', () => (
     <UploadModelItem
-      id="some-id"
       imageSource="http://placehold.it/180x180"
-      title="model_item_title.stl"
+      title="model_item_title_can_be_long_and_gets_truncated.stl"
       subline="42 x 42 x 42 mm"
-      quantity={1}
-      buttonBar={buttonBar()}
-      onMagnify={action('magnify')}
+      buttonsLeft={buttonBar()}
+      buttonsRight={buttonBar()}
     />
   ))
   .add('no subline', () => (
     <UploadModelItem
-      id="some-id"
       imageSource="http://placehold.it/180x180"
-      title="model_item_title.stl"
-      quantity={1}
-      buttonBar={buttonBar()}
-      onMagnify={action('magnify')}
+      title="model_item_title_can_be_long_and_gets_truncated.stl"
+      buttonsLeft={buttonBar()}
+      buttonsRight={buttonBar()}
+    />
+  ))
+  .add(
+    'selected',
+    withState({selected: true}, store => (
+      <UploadModelItem
+        imageSource="http://placehold.it/180x180"
+        title="model_item_title_can_be_long_and_gets_truncated.stl"
+        subline="42 x 42 x 42 mm"
+        buttonsLeft={buttonBar()}
+        buttonsRight={buttonBar()}
+        selected={store.state.selected}
+        onSelect={() => store.set({selected: !store.state.selected})}
+      />
+    ))
+  )
+  .add('s', () => (
+    <UploadModelItem
+      s
+      imageSource="http://placehold.it/180x180"
+      title="model_item_title_can_be_long_and_gets_truncated.stl"
+      subline="42 x 42 x 42 mm"
+      buttonsLeft={buttonBar()}
+      buttonsRight={buttonBar()}
     />
   ))
