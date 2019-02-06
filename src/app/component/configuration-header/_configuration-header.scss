@@ -1,8 +1,6 @@
 .ConfigurationHeader {
   $currency-width: 120px;
 
-  background: $color-bg;
-
   &__wrapper {
     display: grid;
     grid-column-gap: $space-base;
