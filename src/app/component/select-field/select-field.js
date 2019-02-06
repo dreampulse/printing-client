@@ -21,7 +21,8 @@ export default class SelectField extends Component {
     }),
     onChange: PropTypes.func,
     menu: PropTypes.node, // When not provided select field will be in constant mode
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    name: PropTypes.string
   }
 
   state = {
@@ -58,7 +59,7 @@ export default class SelectField extends Component {
   getLabel = ({value, label}) => label || value
 
   handleMenuClick = value => {
-    this.props.onChange(value)
+    this.props.onChange(value, this.props.name)
   }
 
   render() {
@@ -109,9 +110,9 @@ export default class SelectField extends Component {
                 style={menuStyle}
               >
                 {cloneElement(menu, {
-                  onClick: v => {
+                  onClick: (v, event) => {
                     closePortal()
-                    this.handleMenuClick(v)
+                    this.handleMenuClick(v, event)
                   },
                   selectedValue: value ? value.value : undefined
                 })}

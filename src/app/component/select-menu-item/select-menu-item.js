@@ -20,7 +20,7 @@ const SelectMenuItem = ({
 }) => {
   const handleClick = event => {
     event.preventDefault()
-    onClick(value)
+    onClick(value, event)
   }
 
   const finalModifier = [...modifiers, {selected}]

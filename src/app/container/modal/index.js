@@ -8,6 +8,7 @@ import {ModalContentType} from '../../type'
 import {closeModal} from '../../action/modal'
 import FatalErrorModal from './fatal-error'
 import ModelViewerModal from './model-viewer'
+import AddressFormModal from './address-form'
 import MaterialModal from './material'
 import FinishGroupModal from './finish-group'
 import PickLocationModal from './pick-location'
@@ -27,7 +28,8 @@ const modals = {
   [ModalContentType.CONFIRM_LOCATION_CHANGE]: ConfirmLocationChangeModal,
   [ModalContentType.CONFIRM_CURRENCY_CHANGE]: ConfirmCurrencyChangeModal,
   [ModalContentType.SHARE_CONFIGURATION]: ShareConfigurationModal,
-  [ModalContentType.ERROR]: ErrorModal
+  [ModalContentType.ERROR]: ErrorModal,
+  [ModalContentType.ADDRESS_FORM]: AddressFormModal
 }
 
 const getContent = (contentType, contentProps, meta) => {

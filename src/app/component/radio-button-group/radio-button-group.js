@@ -15,7 +15,7 @@ const RadioButtonGroup = ({
   onChange = () => {}
 }) => {
   const onClick = event => {
-    onChange(event.target.value)
+    onChange(event.target.value, name, event)
   }
   const groupName = name || uniqueId('button-group-')
   const buttons = React.Children.map(children, child =>

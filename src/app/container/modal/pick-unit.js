@@ -42,7 +42,7 @@ const PickUnitModal = ({
   return (
     <Overlay headline={headline} buttons={buttons} closeable={false}>
       <Paragraph>In which unit are the chosen files?</Paragraph>
-      <RadioButtonGroup name="unit" value={unit} onChange={setUnit}>
+      <RadioButtonGroup name="unit" value={unit} onChange={value => setUnit(value)}>
         <RadioButton value="mm" />
         <RadioButton value="cm" />
         <RadioButton value="in" />
@@ -52,7 +52,11 @@ const PickUnitModal = ({
           <Paragraph classNames={['u-margin-top-l']}>
             Do you want to use the same material for all files?
           </Paragraph>
-          <RadioButtonGroup name="sameMaterials" value={sameMaterials} onChange={setSameMaterials}>
+          <RadioButtonGroup
+            name="sameMaterials"
+            value={sameMaterials}
+            onChange={value => setSameMaterials(value)}
+          >
             <RadioButton value="yes" />
             <RadioButton value="no" />
           </RadioButtonGroup>

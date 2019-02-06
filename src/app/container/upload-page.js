@@ -13,6 +13,7 @@ import cartIcon from '../../asset/icon/cart.svg'
 import {formatDimensions, formatPrice} from '../lib/formatter'
 import {selectModelsOfModelConfigs, selectCartCount} from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
+import {openIntercom} from '../service/intercom'
 
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
@@ -61,7 +62,7 @@ const UploadPage = ({
   const promoSection = () => (
     <Section>
       <Headline
-        label="Make it Printable"
+        label="Need a Quote?"
         modifiers={['l', 'light']}
         classNames={['u-margin-bottom-l', 'u-align-center']}
       />
@@ -69,16 +70,10 @@ const UploadPage = ({
         <Column md={0} lg={3} />
         <Column md={12} lg={6}>
           <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
-            <strong>Create</strong>, <strong>repair</strong> or <strong>modify</strong> 3D models
+            Large quantities, recurring orders or special requirements
           </RichText>
           <div className="u-align-center ">
-            <Button
-              minor
-              label="Visit our Design Service"
-              onClick={() => {
-                global.open('https://all3dp.layr.co/', '_blank')
-              }}
-            />
+            <Button minor label="Contact Us" onClick={() => openIntercom()} />
           </div>
         </Column>
         <Column md={0} lg={3} />

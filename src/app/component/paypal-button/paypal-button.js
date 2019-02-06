@@ -31,7 +31,10 @@ class PaypalButton extends Component {
   render() {
     return (
       <div
-        style={{pointerEvents: this.props.disabled ? 'none' : 'auto'}}
+        style={{
+          pointerEvents: this.props.disabled ? 'none' : 'auto',
+          opacity: this.props.disabled ? 0.5 : 1
+        }}
         ref={el => {
           this.paypalButton = el
         }}
