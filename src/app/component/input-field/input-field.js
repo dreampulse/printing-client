@@ -29,7 +29,7 @@ export default class InputField extends Component {
   }
 
   render() {
-    const {id, modifiers, classNames, ...inputFieldProps} = this.props
+    const {id, modifiers, classNames, onChange, name, ...inputFieldProps} = this.props
 
     const inputId = id || uniqueId('uid-')
     const finalModifiers = [
@@ -39,7 +39,13 @@ export default class InputField extends Component {
     ]
     return (
       <div className={buildClassName('input-field', finalModifiers, classNames)}>
-        <input id={inputId} className="input-field__input" {...inputFieldProps} />
+        <input
+          name={name}
+          id={inputId}
+          className="input-field__input"
+          onChange={e => onChange(e.target.value, name, e)}
+          {...inputFieldProps}
+        />
         <label htmlFor={inputId} className="input-field__label">
           {this.props.label}
         </label>

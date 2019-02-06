@@ -1,6 +1,5 @@
 import {combineReducers} from 'redux-loop'
 import {routerReducer as routing, RouterState} from 'react-router-redux'
-import {reducer as form, FormStateMap} from 'redux-form'
 
 import core from './core'
 import {CoreState} from './core'
@@ -20,7 +19,6 @@ export type AppState = {
   polling: PollingState
   modelViewer: ModelViewerState
   routing: RouterState // Managed by react-router-redux
-  form: FormStateMap // Managed by redux-form
 }
 
 const rootReducer = combineReducers({
@@ -29,8 +27,7 @@ const rootReducer = combineReducers({
   timeout,
   polling,
   modelViewer,
-  routing,
-  form
+  routing
 } as any)
 
 export default rootReducer

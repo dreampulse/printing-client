@@ -23,7 +23,7 @@ const CheckboxField = ({
       id={id}
       className="CheckboxField__input"
       type="checkbox"
-      onChange={onChange}
+      onChange={event => onChange(!checked, name, event)}
     />
     <div className="CheckboxField__checkedIcon">
       <Icon source={checkIcon} />
