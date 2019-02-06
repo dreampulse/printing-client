@@ -15,7 +15,8 @@ class Overlay extends Component {
     children: PropTypes.node,
     headline: PropTypes.node.isRequired,
     buttons: PropTypes.arrayOf(PropTypes.node),
-    noCloseOnClickOutside: PropTypes.bool
+    noCloseOnClickOutside: PropTypes.bool,
+    scrollContainerId: PropTypes.string
   }
 
   static defaultProps = {
@@ -39,7 +40,11 @@ class Overlay extends Component {
           className="overlay__mask"
           onClick={!this.props.noCloseOnClickOutside ? this.props.closePortal : noop}
         >
-          <div className="overlay__modal" onClick={e => e.stopPropagation()}>
+          <div
+            id={this.props.scrollContainerId}
+            className="overlay__modal"
+            onClick={e => e.stopPropagation()}
+          >
             <header className="overlay__header">
               <div className="overlay__headline">
                 {this.props.headline}
