@@ -7,7 +7,7 @@ import * as modalActions from '../action/modal'
 
 import Link from '../component/link'
 
-const ConfigurationHeaderPartial = ({currency, location, openPickLocationModal}) => {
+const LocationInfoPartial = ({currency, location, openPickLocationModal}) => {
   const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
 
@@ -37,4 +37,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ConfigurationHeaderPartial)
+)(LocationInfoPartial)
