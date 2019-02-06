@@ -1,0 +1,29 @@
+.UploadModelItemError {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: $upload-model-item-height;
+  background-color: $color-red-light;
+  color: $color-error;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-base;
+
+  &__title {
+    font-weight: $font-weight-bold;
+    font-size: $font-size-l;
+  }
+
+  &__subline {
+    color: $color-text;
+  }
+
+  &__button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: $space-l;
+    outline: 0;
+  }
+}
