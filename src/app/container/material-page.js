@@ -28,7 +28,6 @@ import {openIntercom} from '../service/intercom'
 
 import MaterialPartial from './material-partial'
 import LocationInfoPartial from './location-info-partial'
-import Modal from './modal'
 
 import ToolLayout from '../component/tool-layout'
 import NavBar from '../component/nav-bar'
@@ -149,7 +148,6 @@ const MaterialPage = ({
         <LocationInfoPartial />
       </Section>
       <MaterialPartial configIds={selectedModelConfigIds} scrollContainerId={SCROLL_CONTAINER_ID} />
-      <Modal />
     </ToolLayout>
   )
 }
