@@ -26,6 +26,7 @@ import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
 import MaterialPartial from './material-partial'
 import ConfigurationHeaderPartial from './configuration-header-partial'
+import LocationInfoPartial from './location-info-partial'
 import FooterPartial from './footer-partial'
 
 import Section from '../component/section'
@@ -56,7 +57,8 @@ const UploadPage = ({
   featureFlags,
   selectedModelConfigIds,
   numModelsUploading,
-  isUploadCompleted
+  isUploadCompleted,
+  hasQuotes
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -192,9 +194,7 @@ const UploadPage = ({
 
   return (
     <AppLayout footer={<FooterPartial />}>
-      <Section>
-        <ConfigurationHeaderPartial />
-      </Section>
+      {hasQuotes ? <LocationInfoPartial /> : <ConfigurationHeaderPartial />}
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}
@@ -217,7 +217,8 @@ const mapStateToProps = state => ({
   cart: state.core.cart,
   cartCount: selectCartCount(state),
   featureFlags: state.core.featureFlags,
-  useSameMaterial: state.core.useSameMaterial
+  useSameMaterial: state.core.useSameMaterial,
+  hasQuotes: !!state.core.modelConfigs.find(modelConfig => modelConfig.quoteId)
 })
 
 const mapDispatchToProps = {
