@@ -6,7 +6,6 @@ export default {
   imagePollingInterval: 1500,
   cloudinaryUrl: '//res.cloudinary.com/all3dp/image/upload',
   cloudinaryDefaultParams: ['q_90', 'f_auto'],
-  scrollToOffset: 100, // Height of sticky header in pixels plus spacing
   stripeCheckoutImage: 'asset/image/checkout-logo.png',
   stripeDescription: '3D Printing Service',
   stripeName: 'Craftcloud by All3DP',

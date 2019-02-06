@@ -89,7 +89,6 @@ const MaterialPartial = ({
   openFinishGroupModal,
   addToCart,
   goToCart,
-  goToUpload,
   quotes,
   selectedModelConfigs,
   shippings,
@@ -102,7 +101,10 @@ const MaterialPartial = ({
   setProviderListHidden,
   isProviderListHidden,
   pollingProgress,
-  goToReviewOrder
+  goToReviewOrder,
+  updateSelectedModelConfigs,
+  resetConfigurationState,
+  scrollContainerId
 }) => {
   const isPollingComplete = pollingProgress.complete === pollingProgress.total
   const hasMoreThanOneResult = pollingProgress.complete > 0
@@ -168,7 +170,7 @@ const MaterialPartial = ({
           unavailable={!bestOffer && isPollingDone}
           onSelectClick={() => {
             selectMaterial(material.id)
-            scrollTo('#section-finish')
+            scrollTo('#section-finish', `#${scrollContainerId}`)
           }}
           onMoreClick={() => {
             openMaterialModal(material.id)
@@ -320,7 +322,7 @@ const MaterialPartial = ({
             (selectedColor &&
               (() => {
                 selectMaterialConfig(selectedColor && selectedColor.value)
-                scrollTo('#section-provider')
+                scrollTo('#section-provider', `#${scrollContainerId}`)
               })) ||
             null
           }
@@ -391,9 +393,13 @@ const MaterialPartial = ({
       addToCartLabel: isEditMode ? 'Select offer' : 'Add to cart',
       handleAddToCart: () =>
         addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
+          // If there are still models to configure stay on material page
           if (!isEditMode && hasItemsOnUploadPage) {
-            goToUpload({
-              selectModelConfigIds: modelConfigs
+            // Since we stay on the same page, we have to reset the state.
+            resetConfigurationState()
+
+            updateSelectedModelConfigs(
+              modelConfigs
                 .filter(
                   modelConfig =>
                     modelConfig.type === 'UPLOADED' &&
@@ -401,7 +407,9 @@ const MaterialPartial = ({
                     !configIds.includes(modelConfig.id)
                 )
                 .map(modelConfig => modelConfig.id)
-            })
+            )
+
+            global.document.querySelector(`#${scrollContainerId}`).scrollTo(0, 0)
             // Go to review order page if user has configured all uploaded models at once.
           } else if (
             !isEditMode &&
@@ -596,7 +604,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
-  goToUpload: navigationAction.goToUpload,
   goToReviewOrder: navigationAction.goToReviewOrder,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
@@ -652,7 +659,13 @@ export default compose(
           [finishGroupId]: materialConfigId
         }
       }),
-      setMaterialFilter: () => materialFilter => ({materialFilter})
+      setMaterialFilter: () => materialFilter => ({materialFilter}),
+      resetConfigurationState: () => () => ({
+        selectedMaterialGroupId: null,
+        selectedMaterialId: null,
+        selectedMaterialConfigId: null,
+        selectedMaterialConfigs: {}
+      })
     }
   ),
   withProps(({materialGroups, materials, selectedMaterialGroupId, selectedMaterialId}) => ({
@@ -693,7 +706,7 @@ export default compose(
       // Refresh quotes if...
       // - countryCode changed
       // - currency changed
-      // - configIds changed
+      // - selectedModelConfigs changed
       // - quantities changed
       // - we had no location before
       if (

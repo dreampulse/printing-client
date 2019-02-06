@@ -23,6 +23,7 @@ import * as modalAction from '../action/modal'
 import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
 import ConfigurationHeaderPartial from './configuration-header-partial'
+import LocationInfoPartial from './location-info-partial'
 import FooterPartial from './footer-partial'
 
 import Section from '../component/section'
@@ -188,9 +189,13 @@ const UploadPage = ({
 
   return (
     <AppLayout footer={<FooterPartial />}>
-      <Section>
-        <ConfigurationHeaderPartial />
-      </Section>
+      {cart ? (
+        <LocationInfoPartial />
+      ) : (
+        <Section>
+          <ConfigurationHeaderPartial />
+        </Section>
+      )}
       {(cart || (location.state && location.state.notification)) && notificationSection()}
       {uploadSection()}
       {hasModels && modelListSection()}

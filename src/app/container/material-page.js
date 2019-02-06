@@ -24,7 +24,6 @@ import {
   selectCartCount,
   selectModelsOfModelConfigs
 } from '../lib/selector'
-import {scrollToTop} from './util/scroll-to-top'
 import {openIntercom} from '../service/intercom'
 
 import MaterialPartial from './material-partial'
@@ -41,6 +40,8 @@ import UploadModelItem from '../component/upload-model-item'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import NumberField from '../component/number-field'
+
+const SCROLL_CONTAINER_ID = 'main-container'
 
 const MaterialPage = ({
   goToCart,
@@ -115,6 +116,7 @@ const MaterialPage = ({
 
   return (
     <ToolLayout
+      scrollContainerId={SCROLL_CONTAINER_ID}
       header={
         <NavBar
           leftContent={<Logo onClick={() => goToUpload()} />}
@@ -142,7 +144,7 @@ const MaterialPage = ({
       }
       sidebar={sidebar()}
     >
-      <MaterialPartial configIds={selectedModelConfigIds} />
+      <MaterialPartial configIds={selectedModelConfigIds} scrollContainerId={SCROLL_CONTAINER_ID} />
       <Modal />
     </ToolLayout>
   )
@@ -171,7 +173,6 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  scrollToTop(),
   withProps(({location}) => ({
     configIds: (location.state && location.state.configIds) || []
   })),
