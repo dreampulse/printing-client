@@ -3,7 +3,6 @@
 
   position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
   flex-direction: column;
   height: $upload-model-item-height-s;
@@ -11,11 +10,13 @@
   box-shadow: $box-shadow-base;
 
   &__title {
+    @include scut-truncate();
     z-index: z($stacking, title);
     position: relative;
     font-weight: $font-weight-bold;
     font-size: $font-size-l;
     color: $color-text-label;
+    text-align: center;
 
     & > .loading-indicator {
       vertical-align: -17.5%;
@@ -24,9 +25,11 @@
   }
 
   &__subline {
+    @include scut-truncate();
     z-index: z($stacking, subtitle);
     position: relative;
     color: $color-text;
+    text-align: center;
   }
 
   &__button {

@@ -1,7 +1,6 @@
 .UploadModelItemError {
   position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
   flex-direction: column;
   height: $upload-model-item-height-s;
@@ -11,12 +10,16 @@
   box-shadow: $box-shadow-base;
 
   &__title {
+    @include scut-truncate();
     font-weight: $font-weight-bold;
     font-size: $font-size-l;
+    text-align: center;
   }
 
   &__subline {
+    @include scut-truncate();
     color: $color-text;
+    text-align: center;
   }
 
   &__button {
