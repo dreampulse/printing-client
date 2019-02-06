@@ -8,7 +8,6 @@ import IconLink from '../icon-link'
 import Logo from '../logo'
 import Footer from '../footer'
 import Link from '../link'
-import ProviderProgressBar from '../provider-progress-bar'
 
 import helpIcon from '../../../asset/icon/help.svg'
 import cartIcon from '../../../asset/icon/cart.svg'
