@@ -21,7 +21,6 @@ context('Simple application flow', () => {
 
     cy.get('.upload-area').trigger('drop', dropEvent)
     cy.contains('button', 'Upload').click()
-    cy.contains('.model-list', 'test-model.stl')
   })
 
   it('selects material and provider', () => {
