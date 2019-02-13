@@ -66,7 +66,8 @@
     line-height: $button-size;
   }
 
-  &--error {
+  &--error,
+  &--locationError {
     .location-field__input,
     .location-field__input:focus {
       border-color: $color-error;

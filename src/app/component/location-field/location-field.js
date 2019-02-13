@@ -30,7 +30,8 @@ export default class LocationField extends Component {
 
   state = {
     autocompleteReady: null,
-    loading: false
+    loading: false,
+    locationError: false
   }
 
   componentDidMount() {
@@ -113,7 +114,13 @@ export default class LocationField extends Component {
     })
     this.autocomplete.addListener('place_changed', () => {
       const place = this.autocomplete.getPlace()
-      this.setState({value: place.formatted_address})
+
+      if (!place.formatted_address) {
+        this.setState({locationError: true})
+        return
+      }
+
+      this.setState({value: place.formatted_address, locationError: false})
       this.props.onChange(place)
     })
     this.setState({autocompleteReady: true})
@@ -121,10 +128,10 @@ export default class LocationField extends Component {
 
   render() {
     const {modifiers, classNames, name, placeholder} = this.props
-    const {loading} = this.state
+    const {loading, locationError} = this.state
 
     const disabled = !this.state.autocompleteReady || this.props.disabled
-    const finalModifiers = [...modifiers, {disabled}]
+    const finalModifiers = [...modifiers, {disabled}, {locationError}]
     const supportsGeolocation = 'geolocation' in global.navigator
 
     return (
