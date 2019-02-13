@@ -7,6 +7,7 @@ import unzip from 'lodash/unzip'
 
 import * as navigationAction from '../action/navigation'
 import * as modelViewerAction from '../action/model-viewer'
+import * as modelAction from '../action/model'
 
 import backIcon from '../../asset/icon/back.svg'
 import cartIcon from '../../asset/icon/cart.svg'
@@ -31,6 +32,7 @@ import Link from '../component/link'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import UploadModelItem from '../component/upload-model-item'
+import NumberField from '../component/number-field'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
@@ -40,7 +42,8 @@ const EditMaterialPage = ({
   modelsWithConfig,
   configIds,
   cartCount,
-  openModelViewer
+  openModelViewer,
+  updateQuantities
 }) => {
   const sidebar = () => (
     <>
@@ -70,7 +73,12 @@ const EditMaterialPage = ({
             imageSource={model.thumbnailUrl}
             title={model.fileName}
             subline={formatDimensions(model.dimensions, model.fileUnit)}
-            buttonsLeft={`Qty: ${modelConfig.quantity}`}
+            buttonsLeft={
+              <NumberField
+                value={modelConfig.quantity}
+                onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+              />
+            }
             buttonsRight={
               <ButtonBar>
                 <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
@@ -133,7 +141,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   goToUpload: navigationAction.goToUpload,
   goToCart: navigationAction.goToCart,
-  openModelViewer: modelViewerAction.open
+  openModelViewer: modelViewerAction.open,
+  updateQuantities: modelAction.updateQuantities
 }
 
 export default compose(

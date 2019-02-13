@@ -56,7 +56,8 @@ const CartPage = ({
   numAddedItems,
   liableForVat,
   updateQuantities,
-  hasOnlyValidModelConfigsWithQuote
+  hasOnlyValidModelConfigsWithQuote,
+  isCartUpToDate
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -97,7 +98,10 @@ const CartPage = ({
               title={model.fileName}
               subline={formatDimensions(model.dimensions, model.fileUnit)}
               buttonBar={buttonBar(modelConfig)}
-              price={formatPrice(quote.price, quote.currency)}
+              price={formatPrice(
+                quote.quantity === modelConfig.quantity ? quote.price : null,
+                quote.currency
+              )}
               deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
               shippingMethod={shipping.name}
               providerId={shipping.vendorId}
@@ -123,7 +127,7 @@ const CartPage = ({
   )
 
   const paymentSection = () => {
-    if (!cart || !hasOnlyValidModelConfigsWithQuote) {
+    if (!cart) {
       return (
         <div className="u-align-center">
           <LoadingIndicator />
@@ -131,20 +135,22 @@ const CartPage = ({
       )
     }
 
+    const showCart = isCartUpToDate && hasOnlyValidModelConfigsWithQuote
     const showVat = cart.vatPrice > 0 && liableForVat !== false
+    const totalPrice = showVat ? cart.totalPrice : cart.totalNetPrice
 
     return (
       <PaymentSection
         classNames={['u-margin-bottom']}
-        subtotal={formatPrice(cart.subTotalPrice, cart.currency)}
+        subtotal={formatPrice(showCart ? cart.subTotalPrice : null, cart.currency)}
         shippings={cartShippings.map(shipping => ({
           label: getProviderName(shipping.vendorId),
-          price: formatPrice(shipping.price, shipping.currency)
+          price: formatPrice(showCart ? shipping.price : null, shipping.currency)
         }))}
-        vat={showVat ? formatPrice(cart.vatPrice, cart.currency) : ''}
-        total={formatPrice(showVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
+        vat={showVat ? formatPrice(showCart ? cart.vatPrice : null, cart.currency) : ''}
+        total={showCart ? formatPrice(totalPrice, cart.currency) : <LoadingIndicator />}
       >
-        <Button block label="Checkout" onClick={() => goToReviewOrder()} />
+        <Button block label="Checkout" onClick={() => goToReviewOrder()} disabled={!showCart} />
       </PaymentSection>
     )
   }
@@ -228,7 +234,9 @@ const mapStateToProps = state => ({
   cart: state.core.cart,
   liableForVat: state.core.user && state.core.user.liableForVat,
   featureFlags: state.core.featureFlags,
-  hasOnlyValidModelConfigsWithQuote: selector.hasOnlyValidModelConfigsWithQuote(state)
+  hasOnlyValidModelConfigsWithQuote: selector.hasOnlyValidModelConfigsWithQuote(state),
+  isQuotePollingDone: selector.isQuotePollingDone(state),
+  isCartUpToDate: selector.isCartUpToDate(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -267,16 +275,29 @@ export default compose(
       if (this.props.modelsWithConfig.length === 0) {
         this.props.goToUpload()
       }
+
+      // Refresh quotes if cart is invalid
+      if (!this.props.hasOnlyValidModelConfigsWithQuote) {
+        const modelConfigs = this.props.modelConfigs
+        const {refresh} = this.props.featureFlags
+        const currency = this.props.currency
+        const {countryCode} = this.props.location
+
+        this.props.receiveQuotes({
+          modelConfigs,
+          countryCode,
+          currency,
+          refresh
+        })
+      }
     },
     componentDidUpdate(prevProps) {
       if (prevProps.modelsWithConfig.length > 0 && this.props.modelsWithConfig.length === 0) {
         this.props.goToUpload()
       }
 
-      // Refresh quotes if...
-      // - quantities changed
-      if (!isEqual(this.props.modelConfigs, prevProps.modelConfigs)) {
-        console.log('price request')
+      // Refresh quotes if cart got invalid
+      if (!this.props.hasOnlyValidModelConfigsWithQuote && this.props.isQuotePollingDone) {
         const modelConfigs = this.props.modelConfigs
         const {refresh} = this.props.featureFlags
         const currency = this.props.currency

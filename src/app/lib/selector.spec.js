@@ -13,7 +13,8 @@ import {
   selectQuotePollingProgress,
   selectQuotes,
   selectUsedShippingIdsAndFilter,
-  hasOnlyValidModelConfigsWithQuote
+  hasOnlyValidModelConfigsWithQuote,
+  isCartUpToDate
 } from './selector'
 
 describe('selectModelsOfModelConfigs()', () => {
@@ -1069,5 +1070,87 @@ describe('hasOnlyValidModelConfigsWithQuote()', () => {
     }
 
     expect(hasOnlyValidModelConfigsWithQuote(state), 'to be', false)
+  })
+})
+
+describe('isCartUpToDate()', () => {
+  it('returns false if there is no cart', () => {
+    const state = {
+      core: {
+        modelConfigs: [],
+        cart: null
+      }
+    }
+
+    expect(isCartUpToDate(state), 'to be', false)
+  })
+
+  it('returns false if cart has other quote ids than model configs', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'material-config-1',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          }
+        ],
+        cart: {
+          quoteIds: ['quote-2']
+        }
+      }
+    }
+
+    expect(isCartUpToDate(state), 'to be', false)
+  })
+
+  it('returns true if cart has same quote ids than model configs', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'material-config-1',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          }
+        ],
+        cart: {
+          quoteIds: ['quote-1']
+        }
+      }
+    }
+
+    expect(isCartUpToDate(state), 'to be', false)
+  })
+
+  it('returns true if cart has same quote ids than uploaded model configs', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'material-config-1',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADING'
+          }
+        ],
+        cart: {
+          quoteIds: ['quote-1']
+        }
+      }
+    }
+
+    expect(isCartUpToDate(state), 'to be', false)
   })
 })

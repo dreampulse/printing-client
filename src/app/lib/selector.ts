@@ -3,6 +3,7 @@ import compact from 'lodash/compact'
 import unzip from 'lodash/unzip'
 import sum from 'lodash/sum'
 import uniq from 'lodash/uniq'
+import isEqual from 'lodash/isEqual'
 
 import {
   ModelConfig,
@@ -175,3 +176,13 @@ export const hasOnlyValidModelConfigsWithQuote = (state: AppState) =>
   unzip<any>([state.core.modelConfigs, selectQuotesOfModelConfigs(state)])
     .filter(([modelConfig, quote]) => modelConfig.type === 'UPLOADED' && quote)
     .every(([modelConfig, quote]) => modelConfig.quantity === quote.quantity)
+
+export const isCartUpToDate = (state: AppState) => {
+  const quoteIds = compact(
+    state.core.modelConfigs.map(
+      modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId
+    )
+  )
+
+  return !!state.core.cart && isEqual(state.core.cart.quoteIds, quoteIds)
+}
