@@ -24,3 +24,13 @@ storiesOf('Upload Area', module)
       modifiers={['l']}
     />
   ))
+  .add('s', () => (
+    <UploadArea
+      label="Drag any 3D files here or"
+      linkLabel="select files"
+      description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+      accept="*"
+      onChange={action('change')}
+      modifiers={['s']}
+    />
+  ))

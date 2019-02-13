@@ -87,7 +87,9 @@ export default class UploadArea extends Component {
         htmlFor={inputId}
       >
         <Icon source={uploadIcon} />
-        {label} <span className="upload-area__link">{linkLabel}</span>
+        <div className="upload-area__label">
+          {label} <span className="upload-area__link">{linkLabel}</span>
+        </div>
         <div className="upload-area__description">{description}</div>
         <input
           id={inputId}

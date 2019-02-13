@@ -1,0 +1,23 @@
+.ModelUploadList {
+  &__items {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: $space-xl;
+  }
+
+  &__item {
+    height: $upload-model-item-height;
+    min-width: 0;
+  }
+
+  &__uploadArea {
+    grid-column: 1 / span 2;
+  }
+
+  &--hasModels {
+    max-width: 750px; // Design decision
+    margin: 0 auto;
+  }
+}
