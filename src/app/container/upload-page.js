@@ -5,6 +5,8 @@ import compact from 'lodash/compact'
 import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
+import withHandlers from 'recompose/withHandlers'
+import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
@@ -58,7 +60,9 @@ const UploadPage = ({
   featureFlags,
   selectedModelConfigIds,
   numModelsUploading,
-  isUploadCompleted
+  isUploadCompleted,
+  toggleId,
+  toggleAll
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -186,8 +190,8 @@ const UploadPage = ({
                   />
                 </ButtonBar>
               }
-              selected
-              onSelect={() => modelConfig.id}
+              selected={selectedModelConfigIds.includes(modelConfig.id)}
+              onSelect={() => toggleId(modelConfig.id)}
               buttonsLeft={
                 modelConfig.quantity && (
                   <NumberField
@@ -210,11 +214,24 @@ const UploadPage = ({
       header={<NavBarPartial />}
       hasModels={hasModels}
       stickyFooter={
-        <Button
-          disabled={!selectedModelConfigIds.length > 0}
-          label={`Customize (${selectedModelConfigIds.length}/${numModels})`}
-          onClick={() => goToMaterial(selectedModelConfigIds)}
-        />
+        <>
+          {modelsWithConfig.length > 1 && (
+            <Button
+              text
+              label={
+                selectedModelConfigIds.length === modelsWithConfig.length
+                  ? 'Deselect all files'
+                  : 'Select all files'
+              }
+              onClick={() => toggleAll()}
+            />
+          )}
+          <Button
+            disabled={!selectedModelConfigIds.length > 0}
+            label={`Customize (${selectedModelConfigIds.length}/${numModels})`}
+            onClick={() => goToMaterial(selectedModelConfigIds)}
+          />
+        </>
       }
     >
       <Container>
@@ -258,7 +275,8 @@ const mapDispatchToProps = {
   duplicateModelConfig: modelAction.duplicateModelConfig,
   goToCart: navigationAction.goToCart,
   goToMaterial: navigationAction.goToMaterial,
-  openModelViewer: modelViewerAction.open
+  openModelViewer: modelViewerAction.open,
+  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
 }
 
 const enhance = compose(
@@ -290,6 +308,22 @@ const enhance = compose(
       numModelsUploading,
       isUploadCompleted,
       selectedModelConfigIds: updatedSelectedModelConfigIds
+    }
+  }),
+  withHandlers({
+    toggleId: ({updateSelectedModelConfigs, selectedModelConfigIds}) => id => {
+      if (selectedModelConfigIds.includes(id)) {
+        updateSelectedModelConfigs(selectedModelConfigIds.filter(item => item !== id))
+      } else {
+        updateSelectedModelConfigs([...selectedModelConfigIds, id])
+      }
+    },
+    toggleAll: ({updateSelectedModelConfigs, modelsWithConfig, selectedModelConfigIds}) => () => {
+      if (modelsWithConfig.length === selectedModelConfigIds.length) {
+        updateSelectedModelConfigs([])
+      } else {
+        updateSelectedModelConfigs(modelsWithConfig.map(([modelConfig]) => modelConfig.id))
+      }
     }
   })
 )
