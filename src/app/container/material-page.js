@@ -106,7 +106,6 @@ const MaterialPage = ({
                 />
               </ButtonBar>
             }
-            onMagnify={() => openModelViewer(model)}
             selected={selectedModelConfigIds.includes(modelConfig.id)}
             onSelect={() => toggleId(modelConfig.id)}
           />
