@@ -61,7 +61,6 @@ const NumberField = ({
       </button>
       <input
         type="number"
-        autoComplete="new-password"
         className="NumberField__value"
         value={typeof value === 'number' ? value : ''}
         onChange={handleInputChange}
