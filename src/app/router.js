@@ -10,17 +10,22 @@ import ReviewOrderPage from './container/review-order-page'
 import SuccessPage from './container/success-page'
 import ConfigurationPage from './container/configuration-page'
 
+import Modal from './container/modal'
+
 /* eslint-disable react/prop-types */
 export default ({history}) => (
-  <ConnectedRouter history={history}>
-    <Switch>
-      <Route component={UploadPage} path="/" exact />
-      <Route component={MaterialPage} path="/material" exact />
-      <Route component={EditMaterialPage} path="/material/edit" exact />
-      <Route component={CartPage} path="/cart" exact />
-      <Route component={ReviewOrderPage} path="/review-order" exact />
-      <Route component={SuccessPage} path="/success" exact />
-      <Route component={ConfigurationPage} path="/configuration/:id" exact />
-    </Switch>
-  </ConnectedRouter>
+  <>
+    <ConnectedRouter history={history}>
+      <Switch>
+        <Route component={UploadPage} path="/" exact />
+        <Route component={MaterialPage} path="/material" exact />
+        <Route component={EditMaterialPage} path="/material/edit" exact />
+        <Route component={CartPage} path="/cart" exact />
+        <Route component={ReviewOrderPage} path="/review-order" exact />
+        <Route component={SuccessPage} path="/success" exact />
+        <Route component={ConfigurationPage} path="/configuration/:id" exact />
+      </Switch>
+    </ConnectedRouter>
+    <Modal />
+  </>
 )

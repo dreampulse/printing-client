@@ -6,7 +6,6 @@ import NavBar from '../nav-bar'
 import Button from '../button'
 import IconLink from '../icon-link'
 import Logo from '../logo'
-import ProviderProgressBar from '../provider-progress-bar'
 
 import helpIcon from '../../../asset/icon/help.svg'
 import cartIcon from '../../../asset/icon/cart.svg'
@@ -17,8 +16,7 @@ const navBar = () => (
     leftContent={<Logo />}
     rightContent={
       <>
-        <ProviderProgressBar currentStep={2} totalSteps={6} />
-        <Button compact label="Upload" />
+        <Button minor compact label="Upload" />
         <IconLink modifiers={['invert']} icon={cartIcon} cartCount={99} />
         <IconLink modifiers={['invert']} icon={helpIcon} />
       </>

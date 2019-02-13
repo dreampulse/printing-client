@@ -20,11 +20,11 @@ import * as navigationAction from '../action/navigation'
 import * as modelViewerAction from '../action/model-viewer'
 import * as modalAction from '../action/modal'
 
-import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import LocationInfoPartial from './location-info-partial'
 import FooterPartial from './footer-partial'
+import NavBarPartial from './nav-bar-partial'
 
 import Section from '../component/section'
 import Headline from '../component/headline'
@@ -39,6 +39,8 @@ import NumberField from '../component/number-field'
 import Grid from '../component/grid'
 import Column from '../component/column'
 import RichText from '../component/rich-text'
+import UploadLayout from '../component/upload-layout'
+import Container from '../component/container'
 
 const UploadPage = ({
   openPickUnitModal,
@@ -188,27 +190,32 @@ const UploadPage = ({
   )
 
   return (
-    <AppLayout footer={<FooterPartial />}>
-      {cart ? (
-        <LocationInfoPartial />
-      ) : (
-        <Section>
-          <ConfigurationHeaderPartial />
-        </Section>
-      )}
-      {(cart || (location.state && location.state.notification)) && notificationSection()}
-      {uploadSection()}
-      {hasModels && modelListSection()}
-      {hasModels && selectedModelConfigIds.length > 0 && (
-        <Section classNames={['u-align-center']}>
-          <Button
-            label={`Customize (${selectedModelConfigIds.length}/${numModels})`}
-            onClick={() => goToMaterial(selectedModelConfigIds)}
-          />
-        </Section>
-      )}
-      {!hasModels && promoSection()}
-    </AppLayout>
+    <UploadLayout
+      footer={<FooterPartial />}
+      header={<NavBarPartial />}
+      hasModels={hasModels}
+      stickyFooter={
+        <Button
+          disabled={!selectedModelConfigIds.length > 0}
+          label={`Customize (${selectedModelConfigIds.length}/${numModels})`}
+          onClick={() => goToMaterial(selectedModelConfigIds)}
+        />
+      }
+    >
+      <Container>
+        {cart ? (
+          <LocationInfoPartial />
+        ) : (
+          <Section>
+            <ConfigurationHeaderPartial />
+          </Section>
+        )}
+        {(cart || (location.state && location.state.notification)) && notificationSection()}
+        {uploadSection()}
+        {hasModels && modelListSection()}
+        {!hasModels && promoSection()}
+      </Container>
+    </UploadLayout>
   )
 }
 

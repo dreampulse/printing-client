@@ -20,7 +20,6 @@ import {openIntercom} from '../service/intercom'
 
 import MaterialPartial from './material-partial'
 import LocationInfoPartial from './location-info-partial'
-import Modal from './modal'
 
 import NavBar from '../component/nav-bar'
 import Headline from '../component/headline'
@@ -77,7 +76,6 @@ const EditMaterialPage = ({
                 <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
               </ButtonBar>
             }
-            onMagnify={() => openModelViewer(model)}
           />
         ))}
       </Section>
@@ -118,7 +116,6 @@ const EditMaterialPage = ({
         <LocationInfoPartial />
       </Section>
       <MaterialPartial isEditMode configIds={configIds} scrollContainerId={SCROLL_CONTAINER_ID} />
-      <Modal />
     </ToolLayout>
   )
 }
