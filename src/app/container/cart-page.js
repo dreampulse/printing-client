@@ -10,7 +10,6 @@ import {selectCartShippings, selectConfiguredModelInformation} from '../lib/sele
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
-import {guard} from './util/guard'
 import {scrollToTop} from './util/scroll-to-top'
 
 import Link from '../component/link'
@@ -27,6 +26,7 @@ import LoadingIndicator from '../component/loading-indicator'
 import Notification from '../component/notification'
 import PageLayout from '../component/page-layout'
 import Container from '../component/container'
+import NumberField from '../component/number-field'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
@@ -36,9 +36,8 @@ import ModelListPartial from './model-list-partial'
 import NavBarPartial from './nav-bar-partial'
 
 import deleteIcon from '../../asset/icon/delete.svg'
-// import plusIcon from '../../asset/icon/plus.svg'
-// import minusIcon from '../../asset/icon/minus.svg'
 import copyIcon from '../../asset/icon/copy.svg'
+import editIcon from '../../asset/icon/edit.svg'
 
 const CartPage = ({
   modelsWithConfig,
@@ -49,36 +48,22 @@ const CartPage = ({
   deleteModelConfigs,
   cart,
   cartShippings,
-  magnifyModel,
+  openModelViewer,
   goToEditMaterial,
   numAddedItems,
-  liableForVat
+  liableForVat,
+  updateQuantities
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
 
   const buttonBar = modelConfig => (
     <ButtonBar>
-      <Button
-        label="Edit material …"
-        tiny
-        minor
-        onClick={() => goToEditMaterial([modelConfig.id])}
+      <NumberField
+        value={modelConfig.quantity}
+        onChange={quantity => updateQuantities([modelConfig.id], quantity)}
       />
-      {/*
-      TODO: Quantity change in card is hard to solve because we have to do another price request and match old to new quotes afterwards, which makes all of this async
-      <Button
-        icon={minusIcon}
-        disabled={modelConfig.quantity === 1}
-        iconOnly
-        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity - 1)}
-      />
-      <Button
-        icon={plusIcon}
-        iconOnly
-        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity + 1)}
-      />
-      */}
+      <Button icon={editIcon} iconOnly onClick={() => goToEditMaterial([modelConfig.id])} />
       <Button icon={copyIcon} iconOnly onClick={() => duplicateModelConfig(modelConfig.id)} />
       <Button icon={deleteIcon} iconOnly onClick={() => deleteModelConfigs([modelConfig.id])} />
     </ButtonBar>
@@ -125,7 +110,7 @@ const CartPage = ({
                   }}
                 />
               }
-              onMagnify={() => magnifyModel(model)}
+              onMagnify={() => openModelViewer(model)}
             />
           )
         )}
@@ -244,23 +229,18 @@ const mapDispatchToProps = dispatch => ({
   goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
   goToEditMaterial: bindActionCreators(navigationAction.goToEditMaterial, dispatch),
-  magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
+  openModelViewer: bindActionCreators(modelViewerAction.open, dispatch),
+  updateQuantities: bindActionCreators(modelAction.updateQuantities, dispatch),
   duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)
-    // Flow is crap
     return dispatch(action).then(() => {
-      dispatch(
-        navigationAction.goToUpload({
-          selectModelConfigIds: [action.payload.nextId]
-        })
-      )
+      dispatch(navigationAction.goToMaterial([action.payload.nextId]))
     })
   }
 })
 
 export default compose(
   scrollToTop(),
-  guard(state => state.core.cart),
   connect(
     mapStateToProps,
     mapDispatchToProps
@@ -269,8 +249,13 @@ export default compose(
     numAddedItems: (location.state || {}).numAddedItems || 0
   })),
   lifecycle({
+    componentWillMount() {
+      if (this.props.modelsWithConfig.length === 0) {
+        this.props.goToUpload()
+      }
+    },
     componentDidUpdate(prevProps) {
-      if (prevProps.modelsWithConfig.length > 0 && this.props.modelsWithConfig === 0) {
+      if (prevProps.modelsWithConfig.length > 0 && this.props.modelsWithConfig.length === 0) {
         this.props.goToUpload()
       }
     }
