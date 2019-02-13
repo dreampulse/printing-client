@@ -6,7 +6,6 @@ import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import withHandlers from 'recompose/withHandlers'
-import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
@@ -14,7 +13,8 @@ import cartIcon from '../../asset/icon/cart.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
 import {formatDimensions, formatPrice} from '../lib/formatter'
-import {selectModelsOfModelConfigs, selectCartCount} from '../lib/selector'
+import * as printingEngine from '../lib/printing-engine'
+import * as selector from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
 import {openIntercom} from '../service/intercom'
 
@@ -62,7 +62,8 @@ const UploadPage = ({
   numModelsUploading,
   isUploadCompleted,
   toggleId,
-  toggleAll
+  toggleAll,
+  createConfiguration
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -215,6 +216,13 @@ const UploadPage = ({
       hasModels={hasModels}
       stickyFooter={
         <>
+          {featureFlags.share && (
+            <Button
+              disabled={selectedModelConfigIds.length === 0}
+              label="Share configuration"
+              onClick={() => createConfiguration(selectedModelConfigIds)}
+            />
+          )}
           {modelsWithConfig.length > 1 && (
             <Button
               text
@@ -259,13 +267,15 @@ const UploadPage = ({
 
 const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
-  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
-    ([modelConfig]) => modelConfig.type !== 'UPLOADED' || modelConfig.quoteId === null
-  ),
+  modelsWithConfig: unzip([
+    state.core.modelConfigs,
+    selector.selectModelsOfModelConfigs(state)
+  ]).filter(([modelConfig]) => modelConfig.type !== 'UPLOADED' || modelConfig.quoteId === null),
   cart: state.core.cart,
-  cartCount: selectCartCount(state),
+  cartCount: selector.selectCartCount(state),
   featureFlags: state.core.featureFlags,
-  useSameMaterial: state.core.useSameMaterial
+  useSameMaterial: state.core.useSameMaterial,
+  uploadedModelConfigs: selector.selectUploadedModelConfigs(state)
 })
 
 const mapDispatchToProps = {
@@ -276,7 +286,8 @@ const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
   goToMaterial: navigationAction.goToMaterial,
   openModelViewer: modelViewerAction.open,
-  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
+  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
+  openShareConfigurationModal: modalAction.openShareConfigurationModal
 }
 
 const enhance = compose(
@@ -324,6 +335,31 @@ const enhance = compose(
       } else {
         updateSelectedModelConfigs(modelsWithConfig.map(([modelConfig]) => modelConfig.id))
       }
+    },
+    createConfiguration: ({
+      uploadedModelConfigs,
+      fatalError,
+      openShareConfigurationModal
+    }) => configIds => {
+      const items = compact(
+        configIds.map(configId => {
+          const modelConfig = uploadedModelConfigs.find(mc => mc.id === configId)
+          if (!modelConfig) {
+            return null
+          }
+          return {
+            modelId: modelConfig.modelId,
+            quantity: modelConfig.quantity
+          }
+        })
+      )
+
+      printingEngine
+        .createConfiguration({items})
+        .then(({configurationId}) => {
+          openShareConfigurationModal(configurationId)
+        })
+        .catch(fatalError)
     }
   })
 )
