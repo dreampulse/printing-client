@@ -1,0 +1,68 @@
+.ColorCard {
+  $card-width: 200px;
+
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-base;
+  padding: $space-base;
+  width: $card-width;
+
+  &__firstRow,
+  &__secondRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__firstRow {
+    border-bottom: solid 1px $color-border-minor;
+    padding-bottom: $space-base;
+  }
+
+  &__secondRow {
+    padding-top: $space-base;
+  }
+
+  &__colorTrait {
+    margin-right: $space-base;
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: $font-weight-bold;
+  }
+
+  &__price {
+    flex-grow: 1;
+  }
+
+  // position: relative;
+  // display: flex;
+  // justify-content: center;
+  // flex-direction: column;
+  // height: $upload-model-item-height-s;
+  // background-color: $color-red-light;
+  // color: $color-error;
+  // border-radius: $border-radius;
+  // box-shadow: $box-shadow-base;
+
+  // &__title {
+  //   @include scut-truncate();
+  //   font-weight: $font-weight-bold;
+  //   font-size: $font-size-l;
+  //   text-align: center;
+  // }
+
+  // &__subline {
+  //   @include scut-truncate();
+  //   color: $color-text;
+  //   text-align: center;
+  // }
+
+  // &__button {
+  //   position: absolute;
+  //   bottom: 0;
+  //   right: 0;
+  //   padding: $space-l;
+  //   outline: 0;
+  // }
+}

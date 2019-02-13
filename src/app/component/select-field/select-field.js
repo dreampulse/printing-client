@@ -7,9 +7,10 @@ import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
 import Icon from '../icon'
-import ColorSquare from '../color-square'
 
 import arrowIcon from '../../../asset/icon/arrow-down.svg'
+
+// TODO: update to new style
 
 export default class SelectField extends Component {
   static propTypes = {
@@ -82,9 +83,6 @@ export default class SelectField extends Component {
         onClick={portal.isOpen ? portal.closePortal : portal.openPortal}
         disabled={!menu || this.props.disabled}
       >
-        {Boolean(value) && (value.colorValue || value.colorImage) && (
-          <ColorSquare color={value.colorValue} image={value.colorImage} />
-        )}
         <span className="select-field__value">{value ? this.getLabel(value) : placeholder}</span>
         <Icon source={arrowIcon} />
       </button>

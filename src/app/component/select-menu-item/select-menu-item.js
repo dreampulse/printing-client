@@ -5,11 +5,12 @@ import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
 import Icon from '../icon'
-import ColorSquare from '../color-square'
 
 import selectedIcon from '../../../asset/icon/selected.svg'
 
 const getLabel = ({value, label}) => label || value
+
+// TODO: update component to the new style
 
 const SelectMenuItem = ({
   classNames,
@@ -32,9 +33,6 @@ const SelectMenuItem = ({
       onClick={handleClick}
     >
       {selected && <Icon source={selectedIcon} />}
-      {(value.colorValue || value.colorImage) && (
-        <ColorSquare color={value.colorValue} image={value.colorImage} />
-      )}
       <span className="select-menu-item__label">{getLabel(value)}</span>
       {value.price && <small className="select-menu-item__price">{value.price}</small>}
     </button>
@@ -46,8 +44,6 @@ SelectMenuItem.propTypes = {
   value: PropTypes.shape({
     value: PropTypes.any.isRequired,
     label: PropTypes.string, // When not provided value will be shown
-    colorValue: propTypes.string, // Optional color square
-    colorImage: PropTypes.string, // Optional color image URL
     price: PropTypes.string
   }).isRequired,
   selected: PropTypes.bool,
