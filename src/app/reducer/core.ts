@@ -132,7 +132,7 @@ const init = (
       }),
       Cmd.run<Actions>(getLocationFromCookie, {
         successActionCreator: coreActions.updateLocation,
-        failActionCreator: () => modalActions.openPickLocationModal({confirmation: false}),
+        failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
         args: []
       })
     ])
@@ -193,7 +193,7 @@ const updateLocation = (
         ...state,
         location: null
       },
-      Cmd.action(modalActions.openPickLocationModal({confirmation: false}))
+      Cmd.action(modalActions.openPickLocationModal({isCloseable: false}))
     )
   }
 

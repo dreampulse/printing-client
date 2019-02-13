@@ -24,10 +24,10 @@ import {
   selectCartCount,
   selectModelsOfModelConfigs
 } from '../lib/selector'
-import {scrollToTop} from './util/scroll-to-top'
 import {openIntercom} from '../service/intercom'
 
 import MaterialPartial from './material-partial'
+import LocationInfoPartial from './location-info-partial'
 import Modal from './modal'
 
 import ToolLayout from '../component/tool-layout'
@@ -41,6 +41,8 @@ import UploadModelItem from '../component/upload-model-item'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import NumberField from '../component/number-field'
+
+const SCROLL_CONTAINER_ID = 'main-container'
 
 const MaterialPage = ({
   goToCart,
@@ -115,6 +117,7 @@ const MaterialPage = ({
 
   return (
     <ToolLayout
+      scrollContainerId={SCROLL_CONTAINER_ID}
       header={
         <NavBar
           leftContent={<Logo onClick={() => goToUpload()} />}
@@ -142,7 +145,10 @@ const MaterialPage = ({
       }
       sidebar={sidebar()}
     >
-      <MaterialPartial configIds={selectedModelConfigIds} />
+      <Section>
+        <LocationInfoPartial />
+      </Section>
+      <MaterialPartial configIds={selectedModelConfigIds} scrollContainerId={SCROLL_CONTAINER_ID} />
       <Modal />
     </ToolLayout>
   )
@@ -171,7 +177,6 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  scrollToTop(),
   withProps(({location}) => ({
     configIds: (location.state && location.state.configIds) || []
   })),
@@ -197,14 +202,14 @@ export default compose(
   }),
   lifecycle({
     componentWillMount() {
-      const {configIds} = this.props
-      const allModelConfigIds = this.props.uploadedModelConfigs.map(modelConfig => modelConfig.id)
+      const {configIds, uploadedModelConfigs, updateSelectedModelConfigs, goToUpload} = this.props
+      const allModelConfigIds = uploadedModelConfigs.map(modelConfig => modelConfig.id)
       const filteredModelConfigIds = intersection(allModelConfigIds, configIds)
 
       if (filteredModelConfigIds.length > 0) {
-        this.props.updateSelectedModelConfigs(filteredModelConfigIds)
+        updateSelectedModelConfigs(filteredModelConfigIds)
       } else {
-        this.props.goToUpload()
+        goToUpload()
       }
     },
     componentDidUpdate() {
