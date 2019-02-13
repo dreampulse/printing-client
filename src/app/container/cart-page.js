@@ -25,13 +25,15 @@ import ModelItem from '../component/model-item'
 import ButtonBar from '../component/button-bar'
 import LoadingIndicator from '../component/loading-indicator'
 import Notification from '../component/notification'
+import PageLayout from '../component/page-layout'
+import Container from '../component/container'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
 import * as modelViewerAction from '../action/model-viewer'
 
-import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
+import NavBarPartial from './nav-bar-partial'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 // import plusIcon from '../../asset/icon/plus.svg'
@@ -197,30 +199,34 @@ const CartPage = ({
   const hasItemsOnUploadPage = modelConfigs.length > modelsWithConfig.length
 
   return (
-    <AppLayout>
-      {(hasAddedItems || hasItemsOnUploadPage) && (
-        <Section>
-          {hasAddedItems && addedNotificationSection()}
-          {hasItemsOnUploadPage && warningNotificationSection()}
-        </Section>
-      )}
-      <Headline label="Your Cart" modifiers={['xl']} />
-      {hasModels && <SidebarLayout sidebar={paymentSection()}>{modelListSection()}</SidebarLayout>}
-      {!hasModels && (
-        <Paragraph modifiers={['l']}>
-          Your cart is currently empty. Start by{' '}
-          <Link
-            href="/"
-            onClick={event => {
-              event.preventDefault()
-              goToUpload()
-            }}
-            label="uploading your 3D model"
-          />{' '}
-          for printing.
-        </Paragraph>
-      )}
-    </AppLayout>
+    <PageLayout header={<NavBarPartial />}>
+      <Container>
+        {(hasAddedItems || hasItemsOnUploadPage) && (
+          <Section>
+            {hasAddedItems && addedNotificationSection()}
+            {hasItemsOnUploadPage && warningNotificationSection()}
+          </Section>
+        )}
+        <Headline label="Your Cart" modifiers={['xl']} />
+        {hasModels && (
+          <SidebarLayout sidebar={paymentSection()}>{modelListSection()}</SidebarLayout>
+        )}
+        {!hasModels && (
+          <Paragraph modifiers={['l']}>
+            Your cart is currently empty. Start by{' '}
+            <Link
+              href="/"
+              onClick={event => {
+                event.preventDefault()
+                goToUpload()
+              }}
+              label="uploading your 3D model"
+            />{' '}
+            for printing.
+          </Paragraph>
+        )}
+      </Container>
+    </PageLayout>
   )
 }
 
