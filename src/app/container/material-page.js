@@ -40,6 +40,7 @@ import UploadModelItem from '../component/upload-model-item'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import NumberField from '../component/number-field'
+import Paragraph from '../component/paragraph'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
@@ -52,6 +53,7 @@ const MaterialPage = ({
   modelsWithConfig,
   selectedModelConfigIds,
   toggleId,
+  toggleAll,
   duplicateModelConfig,
   updateQuantities,
   deleteModelConfigs
@@ -76,6 +78,19 @@ const MaterialPage = ({
             uploadedModelConfigs.length
           } files)`}
         />
+        <Paragraph>
+          <Link
+            onClick={event => {
+              event.preventDefault()
+              toggleAll()
+            }}
+            label={
+              modelsWithConfig.length === selectedModelConfigIds.length
+                ? 'Deselect all files'
+                : 'Select all files'
+            }
+          />
+        </Paragraph>
         {modelsWithConfig.map(([modelConfig, model]) => (
           <UploadModelItem
             s
