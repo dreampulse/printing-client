@@ -40,6 +40,7 @@ export default class InputField extends Component {
     return (
       <div className={buildClassName('input-field', finalModifiers, classNames)}>
         <input
+          autoComplete="new-password"
           name={name}
           id={inputId}
           className="input-field__input"
