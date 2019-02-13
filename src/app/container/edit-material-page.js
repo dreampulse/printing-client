@@ -76,7 +76,6 @@ const EditMaterialPage = ({
                 <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
               </ButtonBar>
             }
-            onMagnify={() => openModelViewer(model)}
           />
         ))}
       </Section>

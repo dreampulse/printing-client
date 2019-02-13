@@ -105,7 +105,6 @@ const MaterialPage = ({
                 />
               </ButtonBar>
             }
-            onMagnify={() => openModelViewer(model)}
             selected={selectedModelConfigIds.includes(modelConfig.id)}
             onSelect={() => toggleId(modelConfig.id)}
           />
@@ -200,14 +199,14 @@ export default compose(
   }),
   lifecycle({
     componentWillMount() {
-      const {configIds} = this.props
-      const allModelConfigIds = this.props.uploadedModelConfigs.map(modelConfig => modelConfig.id)
+      const {configIds, uploadedModelConfigs, updateSelectedModelConfigs, goToUpload} = this.props
+      const allModelConfigIds = uploadedModelConfigs.map(modelConfig => modelConfig.id)
       const filteredModelConfigIds = intersection(allModelConfigIds, configIds)
 
       if (filteredModelConfigIds.length > 0) {
-        this.props.updateSelectedModelConfigs(filteredModelConfigIds)
+        updateSelectedModelConfigs(filteredModelConfigIds)
       } else {
-        this.props.goToUpload()
+        goToUpload()
       }
     },
     componentDidUpdate() {
