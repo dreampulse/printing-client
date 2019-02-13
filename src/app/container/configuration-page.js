@@ -8,14 +8,11 @@ import {replace} from 'react-router-redux'
 import * as configurationAction from '../action/configuration'
 import * as navigationAction from '../action/navigation'
 
-import Modal from './modal'
-
 import LoadingContainer from '../component/loading-container'
 
 const ConfigurationPage = () => (
   <Fragment>
     <LoadingContainer />
-    <Modal />
   </Fragment>
 )
 
