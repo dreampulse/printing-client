@@ -25,13 +25,15 @@ import ModelItem from '../component/model-item'
 import ButtonBar from '../component/button-bar'
 import LoadingIndicator from '../component/loading-indicator'
 import Notification from '../component/notification'
+import PageLayout from '../component/page-layout'
+import Container from '../component/container'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
 import * as modelViewerAction from '../action/model-viewer'
 
-import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
+import NavBarPartial from './nav-bar-partial'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 // import plusIcon from '../../asset/icon/plus.svg'
@@ -48,7 +50,7 @@ const CartPage = ({
   cart,
   cartShippings,
   magnifyModel,
-  goToMaterial,
+  goToEditMaterial,
   numAddedItems,
   liableForVat
 }) => {
@@ -57,7 +59,12 @@ const CartPage = ({
 
   const buttonBar = modelConfig => (
     <ButtonBar>
-      <Button label="Edit material …" tiny minor onClick={() => goToMaterial([modelConfig.id])} />
+      <Button
+        label="Edit material …"
+        tiny
+        minor
+        onClick={() => goToEditMaterial([modelConfig.id])}
+      />
       {/*
       TODO: Quantity change in card is hard to solve because we have to do another price request and match old to new quotes afterwards, which makes all of this async
       <Button
@@ -79,7 +86,7 @@ const CartPage = ({
 
   const modelListSection = () => (
     <Section>
-      <ModelListPartial editMode onPrimaryActionClick={goToMaterial}>
+      <ModelListPartial editMode onPrimaryActionClick={goToEditMaterial}>
         {modelsWithConfig.map(
           ({
             modelConfig,
@@ -192,30 +199,34 @@ const CartPage = ({
   const hasItemsOnUploadPage = modelConfigs.length > modelsWithConfig.length
 
   return (
-    <AppLayout>
-      {(hasAddedItems || hasItemsOnUploadPage) && (
-        <Section>
-          {hasAddedItems && addedNotificationSection()}
-          {hasItemsOnUploadPage && warningNotificationSection()}
-        </Section>
-      )}
-      <Headline label="Your Cart" modifiers={['xl']} />
-      {hasModels && <SidebarLayout sidebar={paymentSection()}>{modelListSection()}</SidebarLayout>}
-      {!hasModels && (
-        <Paragraph modifiers={['l']}>
-          Your cart is currently empty. Start by{' '}
-          <Link
-            href="/"
-            onClick={event => {
-              event.preventDefault()
-              goToUpload()
-            }}
-            label="uploading your 3D model"
-          />{' '}
-          for printing.
-        </Paragraph>
-      )}
-    </AppLayout>
+    <PageLayout header={<NavBarPartial />}>
+      <Container>
+        {(hasAddedItems || hasItemsOnUploadPage) && (
+          <Section>
+            {hasAddedItems && addedNotificationSection()}
+            {hasItemsOnUploadPage && warningNotificationSection()}
+          </Section>
+        )}
+        <Headline label="Your Cart" modifiers={['xl']} />
+        {hasModels && (
+          <SidebarLayout sidebar={paymentSection()}>{modelListSection()}</SidebarLayout>
+        )}
+        {!hasModels && (
+          <Paragraph modifiers={['l']}>
+            Your cart is currently empty. Start by{' '}
+            <Link
+              href="/"
+              onClick={event => {
+                event.preventDefault()
+                goToUpload()
+              }}
+              label="uploading your 3D model"
+            />{' '}
+            for printing.
+          </Paragraph>
+        )}
+      </Container>
+    </PageLayout>
   )
 }
 
@@ -232,7 +243,7 @@ const mapDispatchToProps = dispatch => ({
   goToReviewOrder: bindActionCreators(navigationAction.goToReviewOrder, dispatch),
   goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
-  goToMaterial: bindActionCreators(navigationAction.goToMaterial, dispatch),
+  goToEditMaterial: bindActionCreators(navigationAction.goToEditMaterial, dispatch),
   magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
   duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)

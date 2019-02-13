@@ -1,11 +1,10 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 import compact from 'lodash/compact'
 import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
-import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
@@ -14,7 +13,6 @@ import cartIcon from '../../asset/icon/cart.svg'
 import {formatDimensions, formatPrice} from '../lib/formatter'
 import {selectModelsOfModelConfigs, selectCartCount} from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
-import scrollTo from '../service/scroll-to'
 import {openIntercom} from '../service/intercom'
 
 import * as modelAction from '../action/model'
@@ -22,12 +20,11 @@ import * as navigationAction from '../action/navigation'
 import * as modelViewerAction from '../action/model-viewer'
 import * as modalAction from '../action/modal'
 
-import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
-import MaterialPartial from './material-partial'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import LocationInfoPartial from './location-info-partial'
 import FooterPartial from './footer-partial'
+import NavBarPartial from './nav-bar-partial'
 
 import Section from '../component/section'
 import Headline from '../component/headline'
@@ -42,6 +39,8 @@ import NumberField from '../component/number-field'
 import Grid from '../component/grid'
 import Column from '../component/column'
 import RichText from '../component/rich-text'
+import UploadLayout from '../component/upload-layout'
+import Container from '../component/container'
 
 const UploadPage = ({
   openPickUnitModal,
@@ -50,6 +49,7 @@ const UploadPage = ({
   duplicateModelConfig,
   modelsWithConfig,
   goToCart,
+  goToMaterial,
   openModelViewer,
   cart,
   cartCount,
@@ -57,34 +57,31 @@ const UploadPage = ({
   featureFlags,
   selectedModelConfigIds,
   numModelsUploading,
-  isUploadCompleted,
-  hasQuotes
+  isUploadCompleted
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
 
   const promoSection = () => (
-    <Fragment>
-      <Section>
-        <Headline
-          label="Need a Quote?"
-          modifiers={['l', 'light']}
-          classNames={['u-margin-bottom-l', 'u-align-center']}
-        />
-        <Grid>
-          <Column md={0} lg={3} />
-          <Column md={12} lg={6}>
-            <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
-              Large quantities, recurring orders or special requirements
-            </RichText>
-            <div className="u-align-center ">
-              <Button minor label="Contact Us" onClick={() => openIntercom()} />
-            </div>
-          </Column>
-          <Column md={0} lg={3} />
-        </Grid>
-      </Section>
-    </Fragment>
+    <Section>
+      <Headline
+        label="Need a Quote?"
+        modifiers={['l', 'light']}
+        classNames={['u-margin-bottom-l', 'u-align-center']}
+      />
+      <Grid>
+        <Column md={0} lg={3} />
+        <Column md={12} lg={6}>
+          <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
+            Large quantities, recurring orders or special requirements
+          </RichText>
+          <div className="u-align-center ">
+            <Button minor label="Contact Us" onClick={() => openIntercom()} />
+          </div>
+        </Column>
+        <Column md={0} lg={3} />
+      </Grid>
+    </Section>
   )
 
   const uploadSection = () => (
@@ -125,7 +122,7 @@ const UploadPage = ({
       />
       <ModelListPartial
         enableShare={featureFlags.share}
-        onPrimaryActionClick={() => scrollTo('#section-material')}
+        onPrimaryActionClick={() => goToMaterial(selectedModelConfigIds)}
       >
         {modelsWithConfig.map(([modelConfig, model]) => {
           if (modelConfig.type === 'UPLOADING') {
@@ -193,32 +190,44 @@ const UploadPage = ({
   )
 
   return (
-    <AppLayout footer={<FooterPartial />}>
-      {hasQuotes ? <LocationInfoPartial /> : <ConfigurationHeaderPartial />}
-      {(cart || (location.state && location.state.notification)) && notificationSection()}
-      {uploadSection()}
-      {hasModels && modelListSection()}
-      {hasModels && selectedModelConfigIds.length > 0 && (
-        <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
-      )}
-      {!hasModels && promoSection()}
-    </AppLayout>
+    <UploadLayout
+      footer={<FooterPartial />}
+      header={<NavBarPartial />}
+      hasModels={hasModels}
+      stickyFooter={
+        <Button
+          disabled={!selectedModelConfigIds.length > 0}
+          label={`Customize (${selectedModelConfigIds.length}/${numModels})`}
+          onClick={() => goToMaterial(selectedModelConfigIds)}
+        />
+      }
+    >
+      <Container>
+        {cart ? (
+          <LocationInfoPartial />
+        ) : (
+          <Section>
+            <ConfigurationHeaderPartial />
+          </Section>
+        )}
+        {(cart || (location.state && location.state.notification)) && notificationSection()}
+        {uploadSection()}
+        {hasModels && modelListSection()}
+        {!hasModels && promoSection()}
+      </Container>
+    </UploadLayout>
   )
 }
 
 const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
   modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
-    ([modelConfig]) => {
-      const mc = modelConfig // Flow bug with detecting correct branch in union type
-      return mc.type !== 'UPLOADED' || mc.quoteId === null
-    }
+    ([modelConfig]) => modelConfig.type !== 'UPLOADED' || modelConfig.quoteId === null
   ),
   cart: state.core.cart,
   cartCount: selectCartCount(state),
   featureFlags: state.core.featureFlags,
-  useSameMaterial: state.core.useSameMaterial,
-  hasQuotes: !!state.core.modelConfigs.find(modelConfig => modelConfig.quoteId)
+  useSameMaterial: state.core.useSameMaterial
 })
 
 const mapDispatchToProps = {
@@ -227,6 +236,7 @@ const mapDispatchToProps = {
   updateQuantities: modelAction.updateQuantities,
   duplicateModelConfig: modelAction.duplicateModelConfig,
   goToCart: navigationAction.goToCart,
+  goToMaterial: navigationAction.goToMaterial,
   openModelViewer: modelViewerAction.open
 }
 
@@ -259,17 +269,6 @@ const enhance = compose(
       numModelsUploading,
       isUploadCompleted,
       selectedModelConfigIds: updatedSelectedModelConfigIds
-    }
-  }),
-  lifecycle({
-    componentDidUpdate(prevProps) {
-      if (
-        this.props.isUploadCompleted &&
-        !prevProps.isUploadCompleted &&
-        this.props.useSameMaterial
-      ) {
-        scrollTo('#section-material')
-      }
     }
   })
 )

@@ -3,68 +3,137 @@ import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
+import unzip from 'lodash/unzip'
 
 import * as navigationAction from '../action/navigation'
+import * as modelViewerAction from '../action/model-viewer'
 
-import {selectModelConfigsByIds, selectUploadedModelConfigs} from '../lib/selector'
+import backIcon from '../../asset/icon/back.svg'
+import cartIcon from '../../asset/icon/cart.svg'
+import helpIcon from '../../asset/icon/help.svg'
+import zoomInIcon from '../../asset/icon/zoom-in.svg'
+
+import {formatDimensions} from '../lib/formatter'
+import {selectCartCount, selectModelsOfModelConfigs} from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
+import {openIntercom} from '../service/intercom'
 
-import FooterPartial from './footer-partial'
-import ConfigurationHeaderPartial from './configuration-header-partial'
 import MaterialPartial from './material-partial'
-import Modal from './modal'
+import LocationInfoPartial from './location-info-partial'
 
-import PageLayout from '../component/page-layout'
-import Container from '../component/container'
 import NavBar from '../component/nav-bar'
-import CloseButton from '../component/close-button'
 import Headline from '../component/headline'
 import Section from '../component/section'
+import ToolLayout from '../component/tool-layout'
+import Logo from '../component/logo'
+import IconLink from '../component/icon-link'
+import Link from '../component/link'
+import Button from '../component/button'
+import ButtonBar from '../component/button-bar'
+import UploadModelItem from '../component/upload-model-item'
 
-const EditMaterialPage = ({goToCart, configIds, uploadedModelConfigs}) => {
-  const title = `Edit material (${configIds.length} of ${uploadedModelConfigs.length} items)`
+const SCROLL_CONTAINER_ID = 'main-container'
+
+const EditMaterialPage = ({
+  goToCart,
+  goToUpload,
+  modelsWithConfig,
+  configIds,
+  cartCount,
+  openModelViewer
+}) => {
+  const sidebar = () => (
+    <>
+      <Section>
+        <Link
+          label="Back to cart"
+          href="#"
+          icon={backIcon}
+          onClick={event => {
+            event.preventDefault()
+            goToCart()
+          }}
+        />
+      </Section>
+      <Section classNames={['u-no-margin']}>
+        <Headline
+          modifiers={['s']}
+          label={`Your selection (${modelsWithConfig.length} ${
+            modelsWithConfig.length > 1 ? 'files' : 'file'
+          })`}
+        />
+        {modelsWithConfig.map(([modelConfig, model]) => (
+          <UploadModelItem
+            s
+            classNames={['u-margin-bottom']}
+            key={modelConfig.id}
+            imageSource={model.thumbnailUrl}
+            title={model.fileName}
+            subline={formatDimensions(model.dimensions, model.fileUnit)}
+            buttonsLeft={`Qty: ${modelConfig.quantity}`}
+            buttonsRight={
+              <ButtonBar>
+                <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
+              </ButtonBar>
+            }
+          />
+        ))}
+      </Section>
+    </>
+  )
 
   return (
-    <PageLayout
-      header={[
+    <ToolLayout
+      scrollContainerId={SCROLL_CONTAINER_ID}
+      header={
         <NavBar
-          key="header-bar"
-          leftContent={
+          leftContent={<Logo onClick={() => goToUpload()} />}
+          rightContent={
             <>
-              <CloseButton
-                modifiers={['l', 'minor']}
-                onClick={() => goToCart({selectModelConfigIds: configIds})}
+              <IconLink
+                icon={cartIcon}
+                disabled={cartCount < 1}
+                cartCount={cartCount}
+                onClick={event => {
+                  event.preventDefault()
+                  goToCart()
+                }}
               />
-              <Headline modifiers={['l', 'minor']} label={title} />
+              <IconLink
+                icon={helpIcon}
+                onClick={event => {
+                  event.preventDefault()
+                  openIntercom()
+                }}
+              />
             </>
           }
         />
-      ]}
-      footer={<FooterPartial />}
+      }
+      sidebar={sidebar()}
     >
       <Section>
-        <Container>
-          <ConfigurationHeaderPartial key="configuration-header" />
-        </Container>
+        <LocationInfoPartial />
       </Section>
-      <Container>
-        <MaterialPartial configIds={configIds} />
-      </Container>
-      <Modal />
-    </PageLayout>
+      <MaterialPartial isEditMode configIds={configIds} scrollContainerId={SCROLL_CONTAINER_ID} />
+    </ToolLayout>
   )
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
+    ([modelConfig]) =>
+      modelConfig.type !== 'UPLOADED' || ownProps.configIds.includes(modelConfig.id)
+  ),
   currency: state.core.currency,
   location: state.core.location,
-  uploadedModelConfigs: selectUploadedModelConfigs(state)
+  cartCount: selectCartCount(state)
 })
 
 const mapDispatchToProps = {
   goToUpload: navigationAction.goToUpload,
-  goToCart: navigationAction.goToCart
+  goToCart: navigationAction.goToCart,
+  openModelViewer: modelViewerAction.open
 }
 
 export default compose(
@@ -78,7 +147,7 @@ export default compose(
   ),
   lifecycle({
     componentWillMount() {
-      if (this.props.selectedModelConfigs.length === 0) {
+      if (this.props.modelsWithConfig.length === 0) {
         this.props.goToUpload()
       }
     }
