@@ -6,6 +6,8 @@ import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import withHandlers from 'recompose/withHandlers'
+import intersection from 'lodash/intersection'
+import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
@@ -59,8 +61,6 @@ const UploadPage = ({
   location,
   featureFlags,
   selectedModelConfigIds,
-  numModelsUploading,
-  isUploadCompleted,
   toggleId,
   toggleAll,
   createConfiguration
@@ -258,7 +258,7 @@ const UploadPage = ({
             label="Which files do you want to customize first?"
           />
         )}
-        {modelList()}
+        <Section>{modelList()}</Section>
         {!hasModels && promoSection()}
       </Container>
     </UploadLayout>
@@ -360,6 +360,15 @@ const enhance = compose(
           openShareConfigurationModal(configurationId)
         })
         .catch(fatalError)
+    }
+  }),
+  lifecycle({
+    componentDidMount() {
+      const {location} = this.props
+      const allModelConfigIds = this.props.uploadedModelConfigs.map(modelConfig => modelConfig.id)
+      const selectModelConfigIds = (location.state && location.state.selectModelConfigIds) || []
+      const filteredModelConfigIds = intersection(allModelConfigIds, selectModelConfigIds)
+      this.props.updateSelectedModelConfigs(filteredModelConfigIds)
     }
   })
 )

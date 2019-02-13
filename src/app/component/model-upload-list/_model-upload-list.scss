@@ -5,6 +5,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: $space-xl;
+    margin: 0;
   }
 
   &__item {
