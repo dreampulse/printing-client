@@ -1,12 +1,14 @@
 import React from 'react'
-import {connect} from 'react-redux'
-
 import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import isEqual from 'lodash/isEqual'
+import debounce from 'lodash/debounce'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
+import withPropsOnChange from 'recompose/withPropsOnChange'
 
-import {selectCartShippings, selectConfiguredModelInformation} from '../lib/selector'
+import * as selector from '../lib/selector'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
@@ -31,6 +33,7 @@ import NumberField from '../component/number-field'
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
 import * as modelViewerAction from '../action/model-viewer'
+import * as quoteAction from '../action/quote'
 
 import ModelListPartial from './model-list-partial'
 import NavBarPartial from './nav-bar-partial'
@@ -52,7 +55,8 @@ const CartPage = ({
   goToEditMaterial,
   numAddedItems,
   liableForVat,
-  updateQuantities
+  updateQuantities,
+  hasOnlyValidModelConfigsWithQuote
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
@@ -119,7 +123,7 @@ const CartPage = ({
   )
 
   const paymentSection = () => {
-    if (!cart) {
+    if (!cart || !hasOnlyValidModelConfigsWithQuote) {
       return (
         <div className="u-align-center">
           <LoadingIndicator />
@@ -216,12 +220,15 @@ const CartPage = ({
 }
 
 const mapStateToProps = state => ({
-  modelsWithConfig: selectConfiguredModelInformation(state),
+  modelsWithConfig: selector.selectConfiguredModelInformation(state),
   modelConfigs: state.core.modelConfigs,
-  cartShippings: selectCartShippings(state),
+  cartShippings: selector.selectCartShippings(state),
   currency: state.core.currency,
+  location: state.core.location,
   cart: state.core.cart,
-  liableForVat: state.core.user && state.core.user.liableForVat
+  liableForVat: state.core.user && state.core.user.liableForVat,
+  featureFlags: state.core.featureFlags,
+  hasOnlyValidModelConfigsWithQuote: selector.hasOnlyValidModelConfigsWithQuote(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -231,6 +238,7 @@ const mapDispatchToProps = dispatch => ({
   goToEditMaterial: bindActionCreators(navigationAction.goToEditMaterial, dispatch),
   openModelViewer: bindActionCreators(modelViewerAction.open, dispatch),
   updateQuantities: bindActionCreators(modelAction.updateQuantities, dispatch),
+  receiveQuotes: bindActionCreators(quoteAction.receiveQuotes, dispatch),
   duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)
     return dispatch(action).then(() => {
@@ -248,6 +256,12 @@ export default compose(
   withProps(({location}) => ({
     numAddedItems: (location.state || {}).numAddedItems || 0
   })),
+  withPropsOnChange(
+    () => false, // Should never reinitialize the debounce function
+    ({receiveQuotes}) => ({
+      debouncedReceiveQuotes: debounce(receiveQuotes, 1000)
+    })
+  ),
   lifecycle({
     componentWillMount() {
       if (this.props.modelsWithConfig.length === 0) {
@@ -257,6 +271,23 @@ export default compose(
     componentDidUpdate(prevProps) {
       if (prevProps.modelsWithConfig.length > 0 && this.props.modelsWithConfig.length === 0) {
         this.props.goToUpload()
+      }
+
+      // Refresh quotes if...
+      // - quantities changed
+      if (!isEqual(this.props.modelConfigs, prevProps.modelConfigs)) {
+        console.log('price request')
+        const modelConfigs = this.props.modelConfigs
+        const {refresh} = this.props.featureFlags
+        const currency = this.props.currency
+        const {countryCode} = this.props.location
+
+        this.props.debouncedReceiveQuotes({
+          modelConfigs,
+          countryCode,
+          currency,
+          refresh
+        })
       }
     }
   })

@@ -12,7 +12,8 @@ import {
   isQuotePollingDone,
   selectQuotePollingProgress,
   selectQuotes,
-  selectUsedShippingIdsAndFilter
+  selectUsedShippingIdsAndFilter,
+  hasOnlyValidModelConfigsWithQuote
 } from './selector'
 
 describe('selectModelsOfModelConfigs()', () => {
@@ -940,5 +941,133 @@ describe('selectUsedShippingIdsAndFilter()', () => {
     }
 
     expect(selectUsedShippingIdsAndFilter(state, ['config-2']), 'to equal', ['shipping-1'])
+  })
+})
+
+describe('hasOnlyValidModelConfigsWithQuote()', () => {
+  it('returns true if there are no model configs', () => {
+    const state = {
+      core: {
+        modelConfigs: [],
+        quotes: {}
+      }
+    }
+
+    expect(hasOnlyValidModelConfigsWithQuote(state), 'to be', true)
+  })
+
+  it('returns true if there are no model configs with quotes', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'some-config-id',
+            quoteId: null,
+            shippingId: null
+          }
+        ],
+        quotes: {}
+      }
+    }
+
+    expect(hasOnlyValidModelConfigsWithQuote(state), 'to be', true)
+  })
+
+  it('returns true if there are no uploaded model configs', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'some-config-id'
+          }
+        ],
+        quotes: {}
+      }
+    }
+
+    expect(hasOnlyValidModelConfigsWithQuote(state), 'to be', true)
+  })
+
+  it('returns true if all model configs with quotes have same quantity as in quote', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'material-config-1',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          }
+        ],
+        quotes: {
+          'quote-1': {
+            materialConfigId: 'material-config-1',
+            vendorId: 'vendor-id-1',
+            quantity: 1
+          }
+        },
+        shippings: [
+          {
+            shippingId: 'shipping-1'
+          }
+        ]
+      }
+    }
+
+    expect(hasOnlyValidModelConfigsWithQuote(state), 'to be', true)
+  })
+
+  it('returns false if at least one model config with quotes does not havae the same quantity as in the quote', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'material-config-1',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 2,
+            modelId: 'some-model-id',
+            id: 'material-config-2',
+            quoteId: 'quote-2',
+            shippingId: 'shipping-2'
+          }
+        ],
+        quotes: {
+          'quote-1': {
+            materialConfigId: 'material-config-1',
+            vendorId: 'vendor-id-1',
+            quantity: 2
+          },
+          'quote-2': {
+            materialConfigId: 'material-config-2',
+            vendorId: 'vendor-id-2',
+            quantity: 2
+          }
+        },
+        shippings: [
+          {
+            shippingId: 'shipping-1'
+          },
+          {
+            shippingId: 'shipping-1'
+          }
+        ]
+      }
+    }
+
+    expect(hasOnlyValidModelConfigsWithQuote(state), 'to be', false)
   })
 })
