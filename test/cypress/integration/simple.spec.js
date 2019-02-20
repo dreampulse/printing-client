@@ -15,7 +15,7 @@ context('Simple application flow', () => {
 
     cy.fixture('test-model.stl', 'base64').then(model =>
       Cypress.Blob.base64StringToBlob(model, 'application/vnd.ms-pki.stl').then(blob => {
-        dropEvent.dataTransfer.files.push(blob)
+        dropEvent.dataTransfer.files.push(new File([blob], 'test-model.stl', {type: ''}))
       })
     )
 
