@@ -25,7 +25,7 @@ context('Simple application flow', () => {
   })
 
   it('selects material and provider', () => {
-    cy.contains('button', 'Customize').click()
+    cy.contains('button', 'Select Material').click()
 
     cy.get('#section-material')
       .contains('button', 'Select')
