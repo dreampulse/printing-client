@@ -12,7 +12,8 @@ import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
 import {
   resetModelConfigs,
   hasModelConfigWithQuote,
-  setQuotesAndShippingInModelConfigs
+  setQuotesAndShippingInModelConfigs,
+  updateQuotesInModelConfigs
 } from '../lib/model'
 import {
   getMaterialGroupLookupTable,
@@ -638,32 +639,7 @@ const quotesReceived = (
   {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceived
 ): CoreReducer => {
   const quoteMap = keyBy(quotes, 'quoteId')
-
-  // TODO: put this into a lib and test it!
-
-  // Update quoteIds if quantities changed in configured modelConfigs.
-  // This happens when quantites are changed on cart or edit material page.
-  const modelConfigs = state.modelConfigs.map(modelConfig => {
-    if (modelConfig.type === 'UPLOADED' && modelConfig.quoteId) {
-      const prevQuote = state.quotes[modelConfig.quoteId]
-      const quote = quotes.find(
-        q =>
-          q.quantity === modelConfig.quantity &&
-          q.materialConfigId === prevQuote.materialConfigId &&
-          q.modelId === prevQuote.modelId &&
-          q.vendorId === prevQuote.vendorId
-      )
-
-      if (quote) {
-        return {
-          ...modelConfig,
-          quoteId: quote.quoteId
-        }
-      }
-    }
-
-    return modelConfig
-  })
+  const modelConfigs = updateQuotesInModelConfigs(state.modelConfigs, quotes, state.quotes)
 
   const nextState = {
     ...state,

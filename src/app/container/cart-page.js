@@ -1,7 +1,6 @@
 import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import isEqual from 'lodash/isEqual'
 import debounce from 'lodash/debounce'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'

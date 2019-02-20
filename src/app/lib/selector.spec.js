@@ -1126,7 +1126,7 @@ describe('isCartUpToDate()', () => {
       }
     }
 
-    expect(isCartUpToDate(state), 'to be', false)
+    expect(isCartUpToDate(state), 'to be', true)
   })
 
   it('returns true if cart has same quote ids than uploaded model configs', () => {
@@ -1151,6 +1151,6 @@ describe('isCartUpToDate()', () => {
       }
     }
 
-    expect(isCartUpToDate(state), 'to be', false)
+    expect(isCartUpToDate(state), 'to be', true)
   })
 })
