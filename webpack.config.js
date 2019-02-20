@@ -132,8 +132,13 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
+        from: path.resolve(__dirname, './src/asset/robots.txt'),
+        to: path.resolve(__dirname, './dist')
+      },
+      {
         from: path.resolve(__dirname, './src/asset'),
-        to: path.resolve(__dirname, './dist/asset')
+        to: path.resolve(__dirname, './dist/asset'),
+        ignore: 'robots.txt'
       }
     ])
   ],
