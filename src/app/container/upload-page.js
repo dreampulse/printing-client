@@ -243,7 +243,7 @@ const UploadPage = ({
       }
     >
       <Container>
-        {hasModels ? (
+        {cart ? (
           <LocationInfoPartial />
         ) : (
           <Section>
