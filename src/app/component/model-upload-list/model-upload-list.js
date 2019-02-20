@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
-const ModelUploadList = ({classNames, modifiers, children, uploadArea}) => (
-  <div className={buildClassName('ModelUploadList', [modifiers], classNames)}>
+const ModelUploadList = ({classNames, children, uploadArea}) => (
+  <div className={cn('ModelUploadList', {}, classNames)}>
     <ul className="ModelUploadList__items">
       <li className="ModelUploadList__uploadArea">{uploadArea}</li>
       {React.Children.map(children, (child, index) => (
