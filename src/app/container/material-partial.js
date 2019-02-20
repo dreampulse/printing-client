@@ -448,7 +448,6 @@ const MaterialPartial = ({
       <ProviderBox
         icon={<Icon source={cheapest ? cheapestIcon : fastestIcon} />}
         headline={cheapest ? `Best Price: ${totalPrice}` : `Fastest: ${time}`}
-        onClick={handleAddToCart}
         actionButton={
           <Button icon={checkoutIcon} label={addToCartLabel} onClick={handleAddToCart} />
         }
