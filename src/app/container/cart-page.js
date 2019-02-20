@@ -12,6 +12,7 @@ import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatte
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {scrollToTop} from './util/scroll-to-top'
+import {guard} from './util/guard'
 
 import Link from '../component/link'
 import SidebarLayout from '../component/sidebar-layout'
@@ -260,6 +261,7 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
+  guard(props => props.modelsWithConfig.length > 0),
   withProps(({location}) => ({
     numAddedItems: (location.state || {}).numAddedItems || 0
   })),
@@ -271,10 +273,6 @@ export default compose(
   ),
   lifecycle({
     componentWillMount() {
-      if (this.props.modelsWithConfig.length === 0) {
-        this.props.goToUpload()
-      }
-
       // Refresh quotes if cart is invalid
       if (!this.props.hasOnlyValidModelConfigsWithQuote) {
         const modelConfigs = this.props.modelConfigs

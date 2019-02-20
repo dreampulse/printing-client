@@ -2,7 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
-import lifecycle from 'recompose/lifecycle'
 import unzip from 'lodash/unzip'
 
 import * as navigationAction from '../action/navigation'
@@ -18,6 +17,7 @@ import {formatDimensions} from '../lib/formatter'
 import {selectCartCount, selectModelsOfModelConfigs} from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
 import {openIntercom} from '../service/intercom'
+import {guard} from './util/guard'
 
 import MaterialPartial from './material-partial'
 import LocationInfoPartial from './location-info-partial'
@@ -147,18 +147,12 @@ const mapDispatchToProps = {
 
 export default compose(
   scrollToTop(),
+  guard(props => props.modelsWithConfig.length > 0),
   withProps(({location}) => ({
     configIds: (location.state && location.state.configIds) || []
   })),
   connect(
     mapStateToProps,
     mapDispatchToProps
-  ),
-  lifecycle({
-    componentWillMount() {
-      if (this.props.modelsWithConfig.length === 0) {
-        this.props.goToUpload()
-      }
-    }
-  })
+  )
 )(EditMaterialPage)
