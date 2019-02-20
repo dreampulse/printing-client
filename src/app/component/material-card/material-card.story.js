@@ -28,55 +28,9 @@ const info = (
   </Info>
 )
 
-storiesOf('Material Card', module)
+storiesOf('MaterialCard', module)
   .add('default', () => (
     <MaterialCard
-      title="Polyamide"
-      description="Best all-round material"
-      price={price}
-      info={info}
-      image="http://placehold.it/260x170/cccccc"
-      onMoreClick={action('onMoreClick')}
-      onSelectClick={action('onSelectClick')}
-    />
-  ))
-  .add('with colorSelect', () => (
-    <MaterialCard
-      modifiers={['tall']}
-      title="Polyamide"
-      description="Best all-round material"
-      price={price}
-      image="http://placehold.it/260x170/cccccc"
-      onMoreClick={action('onMoreClick')}
-      colorSelect={colorSelect}
-      onSelectClick={action('onSelectClick')}
-    />
-  ))
-  .add('without image', () => (
-    <MaterialCard
-      title="Polyamide"
-      description="Best all-round material"
-      price={price}
-      info={info}
-      onMoreClick={action('onMoreClick')}
-      onSelectClick={action('onSelectClick')}
-    />
-  ))
-  .add('alternative label', () => (
-    <MaterialCard
-      title="Polyamide"
-      description="Best all-round material"
-      price={price}
-      info={info}
-      image="http://placehold.it/260x170/cccccc"
-      onMoreClick={action('onMoreClick')}
-      onSelectClick={action('onSelectClick')}
-      selectLabel="Checkout"
-    />
-  ))
-  .add('selected', () => (
-    <MaterialCard
-      selected
       title="Polyamide"
       description="Best all-round material"
       price={price}
@@ -90,7 +44,7 @@ storiesOf('Material Card', module)
     <MaterialCard
       loading
       title="Polyamide"
-      description="Best all-round material"
+      description="Best all-round material. Best all-round material. Best all-round material"
       price={price}
       info={info}
       image="http://placehold.it/260x170/cccccc"
@@ -98,34 +52,6 @@ storiesOf('Material Card', module)
       onSelectClick={action('onSelectClick')}
     />
   ))
-  .add('disabled button', () => (
-    <MaterialCard
-      loading
-      title="Polyamide"
-      description="Best all-round material"
-      price={price}
-      info={info}
-      image="http://placehold.it/260x170/cccccc"
-      onMoreClick={action('onMoreClick')}
-    />
-  ))
-  .add('single color', () => {
-    const colorSelectConstant = (
-      <SelectField modifiers={['compact']} value={selectMenuColorValues[0]} />
-    )
-    return (
-      <MaterialCard
-        shipping="2-5 days"
-        title="Polyamide"
-        subline="Solid, raw"
-        price={price}
-        image="http://placehold.it/260x170/cccccc"
-        onMoreClick={action('onMoreClick')}
-        colorSelect={colorSelectConstant}
-        onSelectClick={action('onSelectClick')}
-      />
-    )
-  })
   .add('unavailable', () => (
     <MaterialCard
       unavailable

@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import React, {cloneElement} from 'react'
+import noop from 'lodash/noop'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Button from '../button'
 import Headline from '../headline'
@@ -10,72 +11,64 @@ import Link from '../link'
 
 const MaterialCard = ({
   classNames,
-  modifiers = [],
   price,
   info,
   title,
   description,
-  colorSelect,
   loading = false,
-  selected = false,
   unavailable = false,
   image,
-  onMoreClick = () => {},
-  onSelectClick,
+  onMoreClick = noop,
+  onSelectClick = noop,
   onUnavailableClick,
-  selectLabel = 'Select'
+  selectLabel = 'Select',
+  learnMoreLabel = 'Learn more',
+  unavailableLabel = 'Not printable',
+  contactUsLabel = 'Contact Us'
 }) => {
-  const selectButtonLabel = selected ? 'Selected' : selectLabel
-  modifiers.push({
-    unavailable
-  })
-  const availableFooter = (
-    <footer className="material-card__footer">
-      {price ? cloneElement(price, {loading}) : null}
-      {colorSelect ? <div className="material-card__color">{colorSelect}</div> : null}
-      <Button
-        block
-        selected={selected}
-        disabled={!onSelectClick}
-        onClick={onSelectClick}
-        label={selectButtonLabel}
-      />
-    </footer>
-  )
-
-  const unavailableFooter = (
-    <footer className="material-card__footer">
-      <div className="material-card__unavailable">Not printable</div>
-      <div className="material-card__body-empty" />
-      <Button minor label="Contact Us" onClick={onUnavailableClick} />
-    </footer>
-  )
-
   const imageStyle = {
     backgroundImage: `url(${image})`
   }
 
   return (
-    <article className={buildClassName('material-card', modifiers, classNames)}>
-      {image && <div className="material-card__image" style={imageStyle} />}
-      <div className="material-card__content">
-        <header className="material-card__header">
+    <article
+      className={cn(
+        'MaterialCard',
+        {
+          unavailable
+        },
+        classNames
+      )}
+    >
+      {image && <div className="MaterialCard__image" style={imageStyle} />}
+      <div className="MaterialCard__content">
+        <header className="MaterialCard__header">
           {info}
           <Headline label={title} tag="strong" />
         </header>
         {Boolean(description) && (
-          <div className="material-card__body">
+          <div className="MaterialCard__body">
             {description}{' '}
             <Link
               onClick={event => {
                 event.preventDefault()
                 onMoreClick()
               }}
-              label="Learn more"
+              label={learnMoreLabel}
             />
           </div>
         )}
-        {unavailable ? unavailableFooter : availableFooter}
+        {unavailable ? (
+          <footer className="MaterialCard__footer">
+            <div className="MaterialCard__unavailableText">{unavailableLabel}</div>
+            <Button minor tiny label={contactUsLabel} onClick={onUnavailableClick} />
+          </footer>
+        ) : (
+          <footer className="MaterialCard__footer">
+            {price && cloneElement(price, {loading})}
+            <Button minor tiny label={selectLabel} onClick={onSelectClick} />
+          </footer>
+        )}
       </div>
     </article>
   )
@@ -87,15 +80,15 @@ MaterialCard.propTypes = {
   info: PropTypes.node,
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
-  colorSelect: PropTypes.node,
   loading: PropTypes.bool,
-  selected: PropTypes.bool,
   unavailable: PropTypes.bool,
   onMoreClick: PropTypes.func,
   onSelectClick: PropTypes.func,
   image: PropTypes.string,
-  selectLabel: PropTypes.string,
-  onUnavailableClick: PropTypes.func
+  onUnavailableClick: PropTypes.func,
+  learnMoreLabel: PropTypes.bool,
+  unavailableLabel: PropTypes.bool,
+  contactUsLabel: PropTypes.bool
 }
 
 export default MaterialCard

@@ -32,7 +32,7 @@ storiesOf('Select Field', module)
   ))
   .add('compact', () => (
     <HandleValue>
-      <SelectField modifiers={['compact']} placeholder="Placeholder" menu={colorMenu} />
+      <SelectField modifiers={['compact']} placeholder="Placeholder" menu={menu} />
     </HandleValue>
   ))
   .add('constant', () => (
