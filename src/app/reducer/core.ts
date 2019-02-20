@@ -12,7 +12,8 @@ import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
 import {
   resetModelConfigs,
   hasModelConfigWithQuote,
-  setQuotesAndShippingInModelConfigs
+  setQuotesAndShippingInModelConfigs,
+  updateQuotesInModelConfigs
 } from '../lib/model'
 import {
   getMaterialGroupLookupTable,
@@ -502,7 +503,7 @@ const deleteModelConfigs = (
     selectedModelConfigs: state.selectedModelConfigs.filter(id => payload.ids.indexOf(id) === -1)
   }
 
-  // Create new cart if a least one model config was deleted from cart
+  // Create new cart if at least one model config was deleted from cart
   if (isModelConfigInCart) {
     return loop(nextState, Cmd.action(cartActions.createCart()))
   }
@@ -547,8 +548,7 @@ const duplicateModelConfig = (
   invariant(modelConfig, `Error in duplicateModelConfig(): Model Config id ${id} is unknown`)
 
   const modelConfigIndex = state.modelConfigs.indexOf(modelConfig)
-  // Cause flow is crap!
-  const nextModelConfig: any = {
+  const nextModelConfig = {
     ...modelConfig,
     id: nextId,
     quoteId: null,
@@ -637,14 +637,27 @@ const startPollingQuotes = (
 const quotesReceived = (
   state: CoreState,
   {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceived
-): CoreReducer => ({
-  ...state,
-  quotes: {
-    ...state.quotes,
-    ...keyBy(quotes, 'quoteId')
-  },
-  printingServiceComplete
-})
+): CoreReducer => {
+  const quoteMap = keyBy(quotes, 'quoteId')
+  const modelConfigs = updateQuotesInModelConfigs(state.modelConfigs, quotes, state.quotes)
+
+  const nextState = {
+    ...state,
+    quotes: {
+      ...state.quotes,
+      ...quoteMap
+    },
+    modelConfigs,
+    printingServiceComplete
+  }
+
+  // Create new cart if at least one model config changed its quote id
+  if (!isEqual(modelConfigs, state.modelConfigs)) {
+    return loop(nextState, Cmd.action(cartActions.createCart()))
+  }
+
+  return nextState
+}
 
 const quotesComplete = (state: CoreState, {payload}: quoteActions.QuotesComplete) =>
   loop(
@@ -699,20 +712,19 @@ const createCart = (state: CoreState): CoreReducer => {
   const quoteIds = compact(
     modelConfigs.map(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId)
   )
-  const nextState = {
-    ...state,
-    cart: null // Clear old cart
-  }
 
   if (modelConfigs.length === 0) {
-    return nextState
+    return {
+      ...state,
+      cart: null
+    }
   }
 
   invariant(shippingIds.length > 0, 'Shippings for cart creation missing.')
   invariant(quoteIds.length > 0, 'Quotes for cart creation missing.')
 
   return loop(
-    nextState,
+    state,
     Cmd.run<Actions>(printingEngine.createCart, {
       args: [
         {

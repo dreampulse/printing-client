@@ -1,10 +1,9 @@
 import React from 'react'
 import compose from 'recompose/compose'
+import withState from 'recompose/withState'
 import branch from 'recompose/branch'
 import renderComponent from 'recompose/renderComponent'
-import {connect} from 'react-redux'
 import {Redirect} from 'react-router'
-import {push} from 'react-router-redux'
 
 const createRedirectHoc = redirectRoute => () => <Redirect to={redirectRoute} />
 
@@ -12,13 +11,6 @@ const createRedirectHoc = redirectRoute => () => <Redirect to={redirectRoute} />
 // It redirects otherwise (by default to `/`)
 export const guard = (predicate, redirectRoute = '/') =>
   compose(
-    connect(
-      state => ({
-        guardPassed: predicate(state)
-      }),
-      {
-        pushRoute: push
-      }
-    ),
+    withState('guardPassed', 'setGuardPassed', predicate),
     branch(({guardPassed}) => !guardPassed, renderComponent(createRedirectHoc(redirectRoute)))
   )

@@ -2,11 +2,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
-import lifecycle from 'recompose/lifecycle'
 import unzip from 'lodash/unzip'
 
 import * as navigationAction from '../action/navigation'
 import * as modelViewerAction from '../action/model-viewer'
+import * as modelAction from '../action/model'
 
 import backIcon from '../../asset/icon/back.svg'
 import cartIcon from '../../asset/icon/cart.svg'
@@ -17,6 +17,7 @@ import {formatDimensions} from '../lib/formatter'
 import {selectCartCount, selectModelsOfModelConfigs} from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
 import {openIntercom} from '../service/intercom'
+import {guard} from './util/guard'
 
 import MaterialPartial from './material-partial'
 import LocationInfoPartial from './location-info-partial'
@@ -31,6 +32,7 @@ import Link from '../component/link'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import UploadModelItem from '../component/upload-model-item'
+import NumberField from '../component/number-field'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
@@ -40,7 +42,8 @@ const EditMaterialPage = ({
   modelsWithConfig,
   configIds,
   cartCount,
-  openModelViewer
+  openModelViewer,
+  updateQuantities
 }) => {
   const sidebar = () => (
     <>
@@ -70,7 +73,12 @@ const EditMaterialPage = ({
             imageSource={model.thumbnailUrl}
             title={model.fileName}
             subline={formatDimensions(model.dimensions, model.fileUnit)}
-            buttonsLeft={`Qty: ${modelConfig.quantity}`}
+            buttonsLeft={
+              <NumberField
+                value={modelConfig.quantity}
+                onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+              />
+            }
             buttonsRight={
               <ButtonBar>
                 <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
@@ -133,7 +141,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   goToUpload: navigationAction.goToUpload,
   goToCart: navigationAction.goToCart,
-  openModelViewer: modelViewerAction.open
+  openModelViewer: modelViewerAction.open,
+  updateQuantities: modelAction.updateQuantities
 }
 
 export default compose(
@@ -145,11 +154,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  lifecycle({
-    componentWillMount() {
-      if (this.props.modelsWithConfig.length === 0) {
-        this.props.goToUpload()
-      }
-    }
-  })
+  guard(props => props.modelsWithConfig.length > 0)
 )(EditMaterialPage)

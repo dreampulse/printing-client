@@ -15,11 +15,7 @@ import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
-import {
-  selectCartShippings,
-  selectConfiguredModelInformation,
-  selectCartCount
-} from '../lib/selector'
+import * as selector from '../lib/selector'
 import getCloudinaryUrl from '../lib/cloudinary'
 
 import PageHeader from '../component/page-header'
@@ -441,12 +437,13 @@ const mapStateToProps = state => ({
   orderNumber: state.core.orderNumber,
   shippings: state.core.shippings,
   modelConfigs: state.core.modelConfigs,
-  modelsWithConfig: selectConfiguredModelInformation(state),
-  cartShippings: selectCartShippings(state),
+  modelsWithConfig: selector.selectConfiguredModelInformation(state),
+  cartShippings: selector.selectCartShippings(state),
   featureFlags: state.core.featureFlags,
   urlParams: state.core.urlParams,
   liableForVat: state.core.user && state.core.user.liableForVat,
-  cartCount: selectCartCount(state)
+  cartCount: selector.selectCartCount(state),
+  isCartUpToDate: selector.isCartUpToDate(state)
 })
 
 const mapDispatchToProps = {
@@ -463,11 +460,11 @@ const mapDispatchToProps = {
 
 const enhance = compose(
   scrollToTop(),
-  guard(state => state.core.cart),
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
+  guard(props => props.isCartUpToDate, '/cart'),
   withState('paymentInProgress', 'setPaymentInProgress', false),
   withProps(props => ({
     utmParams: {
