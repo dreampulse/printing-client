@@ -147,12 +147,12 @@ const mapDispatchToProps = {
 
 export default compose(
   scrollToTop(),
-  guard(props => props.modelsWithConfig.length > 0),
   withProps(({location}) => ({
     configIds: (location.state && location.state.configIds) || []
   })),
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )
+  ),
+  guard(props => props.modelsWithConfig.length > 0)
 )(EditMaterialPage)
