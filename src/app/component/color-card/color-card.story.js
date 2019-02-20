@@ -10,7 +10,7 @@ storiesOf('ColorCard', module).add('default', () => (
   <ColorCard
     colorTrait={<ColorTrait color="#ff0000" />}
     title="Red"
-    price={<Price value="$19.44" />}
+    price={<Price value="$19.44" prefix="+" />}
     button={<Button label="Select" minor tiny />}
   />
 ))

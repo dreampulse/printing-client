@@ -10,8 +10,6 @@ import Icon from '../icon'
 
 import arrowIcon from '../../../asset/icon/arrow-down.svg'
 
-// TODO: update to new style
-
 export default class SelectField extends Component {
   static propTypes = {
     ...propTypes.component,

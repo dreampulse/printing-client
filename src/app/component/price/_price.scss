@@ -1,4 +1,4 @@
-.price {
+.Price {
   $price-height: 30px;
 
   line-height: $price-height;
@@ -39,10 +39,9 @@
   }
 
   &__prefix {
-    color: $color-minor;
-    font-style: italic;
-    font-size: $font-size-base;
-    font-weight: $font-weight-regular;
+    font-size: $font-size-l;
+    font-weight: $font-weight-bold;
+    white-space: nowrap;
     margin-right: $space-s;
   }
 
