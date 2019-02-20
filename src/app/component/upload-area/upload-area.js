@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
@@ -16,11 +16,15 @@ export default class UploadArea extends Component {
     linkLabel: PropTypes.string.isRequired,
     accept: PropTypes.string,
     description: PropTypes.string.isRequired,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    s: PropTypes.bool,
+    l: PropTypes.bool
   }
 
   static defaultProps = {
-    onChange: () => {}
+    onChange: () => {},
+    s: false,
+    l: false
   }
 
   constructor(props) {
@@ -67,19 +71,20 @@ export default class UploadArea extends Component {
   }
 
   render() {
-    const {classNames, modifiers = [], label, linkLabel, accept, description} = this.props
+    const {classNames, label, linkLabel, accept, description, s, l} = this.props
     const {inputId, dragOver} = this.state
-
-    const finalModifiers = [
-      ...modifiers,
-      {
-        drag: dragOver > 0
-      }
-    ]
 
     return (
       <label
-        className={buildClassName('upload-area', finalModifiers, classNames)}
+        className={cn(
+          'upload-area',
+          {
+            drag: dragOver > 0,
+            s,
+            l
+          },
+          classNames
+        )}
         onDragEnter={this.onDragEnter}
         onDragLeave={this.onDragLeave}
         onDragOver={this.onDragOver}

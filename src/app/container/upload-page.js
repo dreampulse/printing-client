@@ -117,7 +117,8 @@ const UploadPage = ({
     <ModelUploadList
       uploadArea={
         <UploadArea
-          modifiers={compact([numModels === 0 && 'l', modelsWithConfig.length >= 1 && 's'])}
+          s={modelsWithConfig.length >= 1}
+          l={numModels === 0}
           label={
             modelsWithConfig.length > 0
               ? 'Drag additional 3D files here or'
@@ -172,7 +173,6 @@ const UploadPage = ({
           return (
             <UploadModelItem
               key={modelConfig.id}
-              id={modelConfig.id}
               imageSource={model.thumbnailUrl}
               title={model.fileName}
               subline={formatDimensions(model.dimensions, model.fileUnit)}
@@ -218,12 +218,13 @@ const UploadPage = ({
         <>
           {featureFlags.share && (
             <Button
+              text
               disabled={selectedModelConfigIds.length === 0}
               label="Share configuration"
               onClick={() => createConfiguration(selectedModelConfigIds)}
             />
           )}
-          {modelsWithConfig.length > 1 && (
+          {modelsWithConfig.length > 0 && (
             <Button
               text
               label={
@@ -242,7 +243,7 @@ const UploadPage = ({
         </>
       }
     >
-      <Container>
+      <Container full={Boolean(cart)}>
         {cart ? (
           <LocationInfoPartial />
         ) : (
@@ -250,6 +251,8 @@ const UploadPage = ({
             <ConfigurationHeaderPartial />
           </Section>
         )}
+      </Container>
+      <Container>
         {(cart || (location.state && location.state.notification)) && notificationSection()}
         {hasModels && (
           <Headline
@@ -297,28 +300,16 @@ const enhance = compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withProps(({modelsWithConfig, selectedModelConfigIds}) => {
+  withProps(({modelsWithConfig}) => {
     const numModelsUploading = modelsWithConfig.reduce(
       (sum, [modelConfig, model]) =>
         modelConfig.type === 'UPLOADING' && !model.error ? sum + 1 : sum,
       0
     )
     const isUploadCompleted = numModelsUploading === 0
-
-    // Special case when there is only one uploaded model the checkbox for selecting the model aren't shown anymore
-    // therefore we have to guarantee that the model is always selected.
-    const updatedSelectedModelConfigIds = [...selectedModelConfigIds]
-    if (updatedSelectedModelConfigIds.length === 0 && modelsWithConfig.length === 1) {
-      const modelConfig = modelsWithConfig[0][0]
-      if (modelConfig.type === 'UPLOADED') {
-        updatedSelectedModelConfigIds.push(modelConfig.id)
-      }
-    }
-
     return {
       numModelsUploading,
-      isUploadCompleted,
-      selectedModelConfigIds: updatedSelectedModelConfigIds
+      isUploadCompleted
     }
   }),
   withHandlers({

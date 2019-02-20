@@ -11,7 +11,7 @@ storiesOf('Upload Area', module)
       linkLabel="select files"
       description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
       accept="*"
-      onChange={action('change')}
+      onChange={action('onChange')}
     />
   ))
   .add('l', () => (
@@ -20,8 +20,8 @@ storiesOf('Upload Area', module)
       linkLabel="select files"
       description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
       accept="*"
-      onChange={action('change')}
-      modifiers={['l']}
+      onChange={action('onChange')}
+      l
     />
   ))
   .add('s', () => (
@@ -30,7 +30,7 @@ storiesOf('Upload Area', module)
       linkLabel="select files"
       description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
       accept="*"
-      onChange={action('change')}
-      modifiers={['s']}
+      onChange={action('onChange')}
+      s
     />
   ))
