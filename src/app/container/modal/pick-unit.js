@@ -23,7 +23,8 @@ const PickUnitModal = ({
   files,
   onUploadFiles,
   sameMaterials,
-  setSameMaterials
+  setSameMaterials,
+  featureFlags
 }) => {
   const headline = <Headline label="Pick file unit" modifiers={['l']} />
   const buttons = [
@@ -33,7 +34,7 @@ const PickUnitModal = ({
       onClick={() => {
         onUpdateUnit(unit)
         onUpdateUseSameMaterial(sameMaterials === 'yes')
-        onUploadFiles(files, unit)
+        onUploadFiles(files, unit, !!featureFlags.refresh)
         closeModal()
       }}
     />
@@ -68,7 +69,8 @@ const PickUnitModal = ({
 
 const mapStateToProps = state => ({
   globalUnit: state.core.unit,
-  useSameMaterial: state.core.useSameMaterial
+  useSameMaterial: state.core.useSameMaterial,
+  featureFlags: state.core.featureFlags
 })
 
 const mapDispatchToProps = {

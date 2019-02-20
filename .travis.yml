@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "10"
+  - '10'
 cache:
   directories:
     - node_modules
@@ -8,6 +8,7 @@ cache:
     - ~/.cache
 script:
   - npm test
+  - npm run test:cypress
   - npm run build
 install:
   - npm ci
