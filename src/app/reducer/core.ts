@@ -356,7 +356,8 @@ const uploadFile = (state: CoreState, {payload}: modelActions.UploadFileAction):
         payload.file,
         {unit: payload.unit},
         Cmd.dispatch,
-        (progress: number) => modelActions.uploadProgress(fileId, progress)
+        (progress: number) => modelActions.uploadProgress(fileId, progress),
+        payload.refresh
       ],
       successActionCreator: models =>
         modelActions.uploadComplete(fileId, models, payload.fileIndex),
@@ -367,11 +368,13 @@ const uploadFile = (state: CoreState, {payload}: modelActions.UploadFileAction):
 
 const uploadFiles = (
   state: CoreState,
-  {payload: {files, unit}}: modelActions.UploadFilesAction
+  {payload: {files, unit, refresh}}: modelActions.UploadFilesAction
 ): CoreReducer =>
   loop(
     state,
-    Cmd.list(files.map((file, index) => Cmd.action(modelActions.uploadFile(file, unit, index))))
+    Cmd.list(
+      files.map((file, index) => Cmd.action(modelActions.uploadFile(file, unit, index, refresh)))
+    )
   )
 
 const uploadProgress = (
