@@ -15,9 +15,6 @@ import '../sass/main.scss'
 
 import {init} from './action/core'
 
-// Warn if the browser is one version behind
-browserUpdate({notify: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
-
 const history = createHistory()
 const store = Store(history)
 
@@ -60,4 +57,7 @@ if (process.env.NODE_ENV !== 'production') {
       renderApp(require('./router').default)
     })
   }
+} else {
+  // In production version only
+  browserUpdate({notify: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
 }

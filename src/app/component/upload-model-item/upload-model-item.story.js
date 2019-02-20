@@ -43,7 +43,7 @@ storiesOf('UploadModelItem', module)
         buttonsLeft={buttonBar()}
         buttonsRight={buttonBar()}
         selected={store.state.selected}
-        onSelect={() => store.set({selected: !store.state.selected})}
+        onSelect={selected => store.set({selected})}
       />
     ))
   )

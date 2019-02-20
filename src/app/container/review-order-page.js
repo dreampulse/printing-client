@@ -43,8 +43,6 @@ import IconLink from '../component/icon-link'
 import Container from '../component/container'
 import PageLayout from '../component/page-layout'
 
-import Modal from './modal'
-
 import * as navigationActions from '../action/navigation'
 import * as modelViewerActions from '../action/model-viewer'
 import * as orderActions from '../action/order'
@@ -104,6 +102,8 @@ const ReviewOrderPage = ({
               !match && (
                 <Button
                   label="Upload"
+                  minor
+                  compact
                   onClick={() => goToUpload()}
                   modifiers={['minor', 'compact']}
                 />
@@ -312,7 +312,7 @@ const ReviewOrderPage = ({
   ])
 
   const renderPaymentSection = () => (
-    <Fragment>
+    <>
       <PaymentSection
         classNames={['u-margin-bottom']}
         subtotal={formatPrice(cart.subTotalPrice, cart.currency)}
@@ -367,12 +367,11 @@ const ReviewOrderPage = ({
           href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
         />
       </Paragraph>
-    </Fragment>
+    </>
   )
 
   return (
     <PageLayout header={renderHeader()}>
-      <Modal />
       <Container>
         <PageHeader label="Review Order" />
         <SidebarLayout sidebar={renderPaymentSection()}>

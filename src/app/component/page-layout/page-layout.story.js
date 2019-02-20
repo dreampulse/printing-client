@@ -19,7 +19,7 @@ const navBar = () => (
     leftContent={<Logo />}
     rightContent={
       <>
-        <Button minor compact label="Some Button" />
+        <Button minor compact label="Upload" />
         <IconLink icon={cartIcon} cartCount={99} />
         <IconLink icon={helpIcon} />
       </>
