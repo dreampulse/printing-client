@@ -1,4 +1,4 @@
-.upload-area {
+.UploadArea {
   $border-image: url('../asset/image/upload-area-border.gif');
 
   display: flex;
@@ -54,7 +54,7 @@
     padding: $space-l;
     font-size: $font-size-base;
 
-    .upload-area__description {
+    .UploadArea__description {
       display: none;
     }
   }

@@ -77,7 +77,7 @@ export default class UploadArea extends Component {
     return (
       <label
         className={cn(
-          'upload-area',
+          'UploadArea',
           {
             drag: dragOver > 0,
             s,
@@ -92,14 +92,14 @@ export default class UploadArea extends Component {
         htmlFor={inputId}
       >
         <Icon source={uploadIcon} />
-        <div className="upload-area__label">
-          {label} <span className="upload-area__link">{linkLabel}</span>
+        <div className="UploadArea__label">
+          {label} <span className="UploadArea__link">{linkLabel}</span>
         </div>
-        <div className="upload-area__description">{description}</div>
+        <div className="UploadArea__description">{description}</div>
         <input
           id={inputId}
           type="file"
-          className="upload-area__input"
+          className="UploadArea__input"
           multiple
           accept={accept}
           onChange={this.onInputChange}
