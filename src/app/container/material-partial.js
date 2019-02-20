@@ -22,7 +22,9 @@ import {getProviderName} from '../lib/material'
 import {
   getBestMultiModelOfferForMaterial,
   getBestMultiModelOffersForMaterialConfig,
-  isSameOffer
+  isSameOffer,
+  getBestMultiModelOfferForFinishGroup,
+  getBestMultiModelOfferForMaterialConfig
 } from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
@@ -68,10 +70,11 @@ import ProviderBox from '../component/provider-box'
 import Icon from '../component/icon'
 import ProviderBoxSection from '../component/provider-box-section'
 import LoadingCheckmark from '../component/loading-checkmark'
+import ColorCard from '../component/color-card'
+import ColorTrait from '../component/color-trait'
+import ColorCardList from '../component/color-card-list'
 
 const MaterialPartial = ({
-  selectMaterialConfigForFinishGroup,
-  selectedMaterialConfigs,
   materialGroups,
   materials,
   materialConfigs,
@@ -84,6 +87,9 @@ const MaterialPartial = ({
   selectMaterial,
   selectedMaterialConfigId,
   selectMaterialConfig,
+  selectedFinishGroupId,
+  selectedFinishGroup,
+  selectFinishGroup,
   setMaterialFilter,
   openMaterialModal,
   openFinishGroupModal,
@@ -121,6 +127,7 @@ const MaterialPartial = ({
   )
 
   const finishSectionEnabled = Boolean(selectedMaterial)
+  const colorSectionEnabled = Boolean(selectedFinishGroup)
   const providerSectionEnabled = selectedMaterialConfigId && providerList.length > 0
 
   const hasItemsOnUploadPage = uploadedModelConfigs.some(
@@ -144,7 +151,6 @@ const MaterialPartial = ({
               ? formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
               : undefined
           }
-          prefix="Total price"
           loadingCheckmark={
             <LoadingCheckmark
               modifiers={compact([
@@ -238,92 +244,110 @@ const MaterialPartial = ({
 
   const renderFinishSection = () => {
     const renderFinishCard = finishGroup => {
-      const colors = finishGroup.materialConfigs
-        .map(materialConfig => [
-          materialConfig,
-          getBestMultiModelOffersForMaterialConfig(
-            multiModelQuotes,
-            usedShippingIds,
-            shippings,
-            materialConfig.id
-          )
-        ])
-        // Filter out material configs which do not have an offer
-        .filter(([, offers]) => Boolean(offers.length))
-        .map(([{id, color, colorCode, colorImage}, [bestOffer]]) => ({
-          value: id,
-          colorValue: colorCode,
-          label: color,
-          colorImage: colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']),
-          price: formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
-        }))
+      // const colors = finishGroup.materialConfigs
+      //   .map(materialConfig => [
+      //     materialConfig,
+      //     getBestMultiModelOffersForMaterialConfig(
+      //       multiModelQuotes,
+      //       usedShippingIds,
+      //       shippings,
+      //       materialConfig.id
+      //     )
+      //   ])
+      //   // Filter out material configs which do not have an offer
+      //   .filter(([, offers]) => Boolean(offers.length))
+      //   .map(([{id, color, colorCode, colorImage}, [bestOffer]]) => ({
+      //     value: id,
+      //     colorValue: colorCode,
+      //     label: color,
+      //     colorImage: colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']),
+      //     price: formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
+      //   }))
+      // let sortedOffers = getBestMultiModelOffersForMaterialConfig(
+      //   multiModelQuotes,
+      //   usedShippingIds,
+      //   shippings,
+      //   selectedMaterialConfigs[finishGroup.id]
+      // )
+      // let selectedColor = colors.find(
+      //   ({value}) =>
+      //     selectedMaterialConfigs[finishGroup.id] !== undefined &&
+      //     value === selectedMaterialConfigs[finishGroup.id]
+      // )
 
-      let sortedOffers = getBestMultiModelOffersForMaterialConfig(
+      // // If there is no previous selected config use the first color
+      // if (!selectedColor) {
+      //   selectedColor = colors.length > 0 && colors[0]
+      //   if (selectedColor) {
+      //     sortedOffers = getBestMultiModelOffersForMaterialConfig(
+      //       multiModelQuotes,
+      //       usedShippingIds,
+      //       shippings,
+      //       selectedColor.value
+      //     )
+      //   }
+      // }
+
+      // const [bestOffer] = sortedOffers
+
+      // // const colorMenu = colors.length > 1 && <SelectMenu values={colors} />
+      // const materialPrice = (
+      //   <Price
+      //     value={
+      //       bestOffer && formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
+      //     }
+      //     loadingCheckmark={<LoadingCheckmark modifiers={isPollingComplete ? ['done'] : []} />}
+      //   />
+      // )
+      // // const colorSelect = (
+      // //   <SelectField
+      // //     modifiers={['compact']}
+      // //     menu={colorMenu}
+      // //     value={selectedColor || null}
+      // //     onChange={({value}) => selectMaterialConfigForFinishGroup(value, finishGroup.id)}
+      // //   />
+      // // )
+
+      const bestOffer = getBestMultiModelOfferForFinishGroup(
         multiModelQuotes,
         usedShippingIds,
         shippings,
-        selectedMaterialConfigs[finishGroup.id]
-      )
-      let selectedColor = colors.find(
-        ({value}) =>
-          selectedMaterialConfigs[finishGroup.id] !== undefined &&
-          value === selectedMaterialConfigs[finishGroup.id]
+        finishGroup
       )
 
-      // If there is no previous selected config use the first color
-      if (!selectedColor) {
-        selectedColor = colors.length > 0 && colors[0]
-        if (selectedColor) {
-          sortedOffers = getBestMultiModelOffersForMaterialConfig(
-            multiModelQuotes,
-            usedShippingIds,
-            shippings,
-            selectedColor.value
-          )
-        }
-      }
-
-      const [bestOffer] = sortedOffers
-
-      const colorMenu = colors.length > 1 && <SelectMenu values={colors} />
-      const materialPrice = (
+      // Note: This is c&p from the `renderMaterialSection()`
+      // Check what we need here
+      const price = (
         <Price
           value={
-            bestOffer && formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
+            bestOffer
+              ? formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
+              : undefined
           }
-          prefix="Total price"
-          loadingCheckmark={<LoadingCheckmark modifiers={isPollingComplete ? ['done'] : []} />}
-        />
-      )
-      const colorSelect = (
-        <SelectField
-          modifiers={['compact']}
-          menu={colorMenu}
-          value={selectedColor || null}
-          onChange={({value}) => selectMaterialConfigForFinishGroup(value, finishGroup.id)}
+          loadingCheckmark={
+            <LoadingCheckmark
+              modifiers={compact([
+                isPollingComplete && 'done',
+                hasMoreThanOneResult && 'hideWithDelay'
+              ])}
+            />
+          }
         />
       )
 
       return (
         <MaterialCard
-          modifiers={['tall']}
           key={finishGroup.id}
           title={finishGroup.name}
           description={finishGroup.descriptionShort}
-          price={materialPrice}
+          price={price}
           image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
-          colorSelect={colorSelect}
-          selected={selectedColor && selectedColor.value === selectedMaterialConfigId}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
-          onSelectClick={
-            (selectedColor &&
-              (() => {
-                selectMaterialConfig(selectedColor && selectedColor.value)
-                scrollTo('#section-provider')
-              })) ||
-            null
-          }
+          onSelectClick={() => {
+            selectFinishGroup(finishGroup.id)
+            scrollTo('#section-color')
+          }}
           onMoreClick={() => {
             openFinishGroupModal(finishGroup.id)
           }}
@@ -347,6 +371,76 @@ const MaterialPartial = ({
             {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
           </MaterialSlider>
         )}
+      </Section>
+    )
+  }
+
+  const renderColorSection = () => {
+    const renderColorCard = materialConfig => {
+      console.log('-- materialConfig', materialConfig)
+
+      const bestOffer = getBestMultiModelOfferForMaterialConfig(
+        multiModelQuotes,
+        usedShippingIds,
+        shippings,
+        materialConfig
+      )
+
+      console.log('-- bestOffers', bestOffer)
+
+      // Note: 3rd copy of `renderMaterialSection()`
+      const price = (
+        <Price
+          value={
+            bestOffer
+              ? formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
+              : undefined
+          }
+          loadingCheckmark={
+            <LoadingCheckmark
+              modifiers={compact([
+                isPollingComplete && 'done',
+                hasMoreThanOneResult && 'hideWithDelay'
+              ])}
+            />
+          }
+        />
+      )
+
+      return (
+        <ColorCard
+          colorTrait={
+            <ColorTrait
+              color={materialConfig.colorCode}
+              image={
+                materialConfig.colorImage &&
+                getCloudinaryUrl(materialConfig.colorImage, ['w_40', 'h_40', 'c_fill'])
+              }
+            />
+          }
+          title={materialConfig.color}
+          price={price}
+          button={
+            <Button
+              label="Select"
+              minor
+              tiny
+              onClick={() => {
+                selectMaterialConfig(materialConfig.id)
+                scrollTo('#section-provider')
+              }}
+            />
+          }
+        />
+      )
+    }
+
+    // TODO sort
+
+    return (
+      <Section>
+        <Headline label="3. Select Color" modifiers={['xl']} />
+        <ColorCardList>{selectedFinishGroup.materialConfigs.map(renderColorCard)}</ColorCardList>
       </Section>
     )
   }
@@ -553,6 +647,7 @@ const MaterialPartial = ({
     <Fragment>
       <div id="section-material">{renderMaterialSection()}</div>
       <div id="section-finish">{finishSectionEnabled && renderFinishSection()}</div>
+      <div id="section-color">{colorSectionEnabled && renderColorSection()}</div>
       <div id="section-provider">{providerSectionEnabled && renderProviderSection()}</div>
     </Fragment>
   )
@@ -597,50 +692,67 @@ export default compose(
     ({commonMaterialPath}) => ({
       selectedMaterialGroupId: commonMaterialPath.materialGroupId,
       selectedMaterialId: commonMaterialPath.materialId,
+      selectedFinishGroupId: commonMaterialPath.finishGroupId, // new
       selectedMaterialConfigId: commonMaterialPath.materialConfigId,
       // These are the selected colors in the drop down fields
-      selectedMaterialConfigs:
-        commonMaterialPath.finishGroupId && commonMaterialPath.materialConfigId
-          ? {
-              [commonMaterialPath.finishGroupId]: commonMaterialPath.materialConfigId
-            }
-          : {},
+      // selectedMaterialConfigs:
+      //   commonMaterialPath.finishGroupId && commonMaterialPath.materialConfigId
+      //     ? {
+      //         [commonMaterialPath.finishGroupId]: commonMaterialPath.materialConfigId
+      //       }
+      //     : {},
       materialFilter: ''
     }),
     {
       selectMaterialGroup: () => id => ({
         selectedMaterialGroupId: id,
         selectedMaterialId: null,
+        selectedFinishGroupId: null,
         selectedMaterialConfigId: null,
-        selectedMaterialConfigs: {},
+        // selectedMaterialConfigs: {},
         materialFilter: ''
       }),
       selectMaterial: () => id => ({
         selectedMaterialId: id,
-        selectedMaterialConfigId: null,
-        selectedMaterialConfigs: {}
+        selectedFinishGroupId: null,
+        selectedMaterialConfigId: null
+        // selectedMaterialConfigs: {}
+      }),
+      selectFinishGroup: () => id => ({
+        selectedFinishGroupId: id,
+        selectedMaterialConfigId: null
       }),
       selectMaterialConfig: () => id => ({
         selectedMaterialConfigId: id
       }),
-      selectMaterialConfigForFinishGroup: ({selectedMaterialConfigs, selectedMaterialConfigId}) => (
-        materialConfigId,
-        finishGroupId
-      ) => ({
-        // Update selected material config if there was a selection before.
-        selectedMaterialConfigId: selectedMaterialConfigId ? materialConfigId : null,
-        selectedMaterialConfigs: {
-          ...selectedMaterialConfigs,
-          [finishGroupId]: materialConfigId
-        }
-      }),
+      // selectMaterialConfigForFinishGroup: ({selectedMaterialConfigs, selectedMaterialConfigId}) => (
+      //   materialConfigId,
+      //   finishGroupId
+      // ) => ({
+      //   // Update selected material config if there was a selection before.
+      //   selectedMaterialConfigId: selectedMaterialConfigId ? materialConfigId : null,
+      //   selectedMaterialConfigs: {
+      //     ...selectedMaterialConfigs,
+      //     [finishGroupId]: materialConfigId
+      //   }
+      // }),
       setMaterialFilter: () => materialFilter => ({materialFilter})
     }
   ),
-  withProps(({materialGroups, materials, selectedMaterialGroupId, selectedMaterialId}) => ({
-    selectedMaterialGroup: materialGroups[selectedMaterialGroupId],
-    selectedMaterial: materials[selectedMaterialId]
-  })),
+  withProps(
+    ({
+      materialGroups,
+      materials,
+      finishGroups,
+      selectedMaterialGroupId,
+      selectedMaterialId,
+      selectedFinishGroupId
+    }) => ({
+      selectedMaterialGroup: materialGroups[selectedMaterialGroupId],
+      selectedMaterial: materials[selectedMaterialId],
+      selectedFinishGroup: finishGroups[selectedFinishGroupId]
+    })
+  ),
   withPropsOnChange(['materials'], ({materials}) => ({
     materialSearch: createMaterialSearch(Object.values(materials))
   })),
