@@ -25,8 +25,8 @@ const UploadModelItem = ({
   onSelect,
   s = false
 }) => (
-  <div className={cn('UploadModelItem', {selected, s}, classNames)}>
-    <div className="UploadModelItem__aside">
+  <div className={cn('UploadModelItem', {selected, s, onSelect}, classNames)}>
+    <div className="UploadModelItem__aside" onClick={() => onSelect(!selected)}>
       <ImageContainer
         modifiers={['ratio-1-1']}
         source={imageSource}

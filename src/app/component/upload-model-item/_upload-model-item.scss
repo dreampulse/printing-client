@@ -57,6 +57,12 @@
     }
   }
 
+  &--onSelect {
+    .UploadModelItem__aside {
+      cursor: pointer;
+    }
+  }
+
   &--selected:after {
     content: '';
     display: block;

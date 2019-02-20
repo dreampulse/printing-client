@@ -197,7 +197,7 @@ const UploadPage = ({
       stickyFooter={
         <Button
           disabled={!selectedModelConfigIds.length > 0}
-          label={`Customize (${selectedModelConfigIds.length}/${numModels})`}
+          label={`Select Material (${selectedModelConfigIds.length}/${numModels})`}
           onClick={() => goToMaterial(selectedModelConfigIds)}
         />
       }
