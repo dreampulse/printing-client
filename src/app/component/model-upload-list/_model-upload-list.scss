@@ -1,4 +1,7 @@
 .ModelUploadList {
+  max-width: 750px; // Design decision
+  margin: 0 auto;
+
   &__items {
     list-style: none;
     padding: 0;
@@ -15,14 +18,6 @@
 
   &__uploadArea {
     grid-column: 1 / span 2;
-  }
-
-  &--hasModels {
-    max-width: 750px; // Design decision
-    margin: 0 auto;
-
-    .ModelUploadList__uploadArea {
-      height: 100%;
-    }
+    height: 100%;
   }
 }
