@@ -113,32 +113,55 @@ const UploadPage = ({
     </Section>
   )
 
-  const modelList = () => (
-    <ModelUploadList
-      uploadArea={
-        <UploadArea
-          s={modelsWithConfig.length >= 1}
-          l={numModels === 0}
-          label={
-            modelsWithConfig.length > 0
-              ? 'Drag additional 3D files here or'
-              : 'Drag any 3D files here or'
-          }
-          linkLabel="select files"
-          description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
-          accept="*"
-          onChange={openPickUnitModal}
-        />
-      }
-    >
-      {modelsWithConfig.map(([modelConfig, model]) => {
-        if (modelConfig.type === 'UPLOADING') {
-          if (model.error) {
+  const modelList = () =>
+    numModels === 0 ? (
+      <UploadArea
+        l
+        label="Drag any 3D files here or"
+        linkLabel="select files"
+        description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+        accept="*"
+        onChange={openPickUnitModal}
+      />
+    ) : (
+      <ModelUploadList
+        uploadArea={
+          <UploadArea
+            s
+            label="Drag additional 3D files here or"
+            linkLabel="select files"
+            description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+            accept="*"
+            onChange={openPickUnitModal}
+          />
+        }
+      >
+        {modelsWithConfig.map(([modelConfig, model]) => {
+          if (modelConfig.type === 'UPLOADING') {
+            if (model.error) {
+              return (
+                <UploadModelItemError
+                  key={modelConfig.id}
+                  title="Upload failed"
+                  subline={model.errorMessage}
+                  buttonsRight={
+                    <ButtonBar>
+                      <Button
+                        icon={deleteIcon}
+                        iconOnly
+                        onClick={() => deleteModelConfigs([modelConfig.id])}
+                      />
+                    </ButtonBar>
+                  }
+                />
+              )
+            }
             return (
-              <UploadModelItemError
+              <UploadModelItemLoad
                 key={modelConfig.id}
-                title="Upload failed"
-                subline={model.errorMessage}
+                status={model.progress}
+                title="Uploading"
+                subline={model.fileName}
                 buttonsRight={
                   <ButtonBar>
                     <Button
@@ -151,63 +174,49 @@ const UploadPage = ({
               />
             )
           }
-          return (
-            <UploadModelItemLoad
-              key={modelConfig.id}
-              status={model.progress}
-              title="Uploading"
-              subline={model.fileName}
-              buttonsRight={
-                <ButtonBar>
-                  <Button
-                    icon={deleteIcon}
-                    iconOnly
-                    onClick={() => deleteModelConfigs([modelConfig.id])}
-                  />
-                </ButtonBar>
-              }
-            />
-          )
-        }
-        if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
-          return (
-            <UploadModelItem
-              key={modelConfig.id}
-              imageSource={model.thumbnailUrl}
-              title={model.fileName}
-              subline={formatDimensions(model.dimensions, model.fileUnit)}
-              buttonsRight={
-                <ButtonBar>
-                  <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(modelConfig)} />
-                  <Button
-                    icon={copyIcon}
-                    iconOnly
-                    onClick={() => duplicateModelConfig(modelConfig.id)}
-                  />
-                  <Button
-                    icon={deleteIcon}
-                    iconOnly
-                    onClick={() => deleteModelConfigs([modelConfig.id])}
-                  />
-                </ButtonBar>
-              }
-              selected={selectedModelConfigIds.includes(modelConfig.id)}
-              onSelect={() => toggleId(modelConfig.id)}
-              buttonsLeft={
-                modelConfig.quantity && (
-                  <NumberField
-                    value={modelConfig.quantity}
-                    onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-                  />
-                )
-              }
-            />
-          )
-        }
-        return null
-      })}
-    </ModelUploadList>
-  )
+          if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
+            return (
+              <UploadModelItem
+                key={modelConfig.id}
+                imageSource={model.thumbnailUrl}
+                title={model.fileName}
+                subline={formatDimensions(model.dimensions, model.fileUnit)}
+                buttonsRight={
+                  <ButtonBar>
+                    <Button
+                      icon={zoomInIcon}
+                      iconOnly
+                      onClick={() => openModelViewer(modelConfig)}
+                    />
+                    <Button
+                      icon={copyIcon}
+                      iconOnly
+                      onClick={() => duplicateModelConfig(modelConfig.id)}
+                    />
+                    <Button
+                      icon={deleteIcon}
+                      iconOnly
+                      onClick={() => deleteModelConfigs([modelConfig.id])}
+                    />
+                  </ButtonBar>
+                }
+                selected={selectedModelConfigIds.includes(modelConfig.id)}
+                onSelect={() => toggleId(modelConfig.id)}
+                buttonsLeft={
+                  modelConfig.quantity && (
+                    <NumberField
+                      value={modelConfig.quantity}
+                      onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+                    />
+                  )
+                }
+              />
+            )
+          }
+          return null
+        })}
+      </ModelUploadList>
+    )
 
   return (
     <UploadLayout
