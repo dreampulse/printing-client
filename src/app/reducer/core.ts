@@ -799,7 +799,19 @@ const configurationReceived = (
 
 const reset = (state: CoreState): CoreReducer => ({
   ...state,
-  ...omit(initialState, 'materialGroups', 'location', 'featureFlags', 'shippings', 'urlParams'),
+  ...omit(
+    initialState,
+    'materialGroups',
+    'materials',
+    'finishGroups',
+    'materialConfigs',
+    'location',
+    'currency',
+    'unit',
+    'featureFlags',
+    'shippings',
+    'urlParams'
+  ),
   user: {
     ...omit(state.user, 'userId')
   }
