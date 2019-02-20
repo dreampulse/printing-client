@@ -18,10 +18,9 @@ const ProviderBox = ({
   price,
   priceColumn,
   materialColumn,
-  actionButton,
-  onClick
+  actionButton
 }) => (
-  <div className={buildClassName('provider-box', modifiers, classNames)} onClick={onClick}>
+  <div className={buildClassName('provider-box', modifiers, classNames)}>
     <div className="provider-box__header">
       {icon}
       <div className="provider-box__headline">{headline}</div>
@@ -60,8 +59,7 @@ ProviderBox.propTypes = {
   priceColumn: PropTypes.node.isRequired,
   material: PropTypes.string.isRequired,
   materialColumn: PropTypes.node.isRequired,
-  actionButton: PropTypes.node.isRequired,
-  onClick: PropTypes.func
+  actionButton: PropTypes.node.isRequired
 }
 
 export default ProviderBox
