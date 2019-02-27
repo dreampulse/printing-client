@@ -43,6 +43,10 @@ describe('formatPrice()', () => {
   it('rounds value up', () => {
     expect(formatPrice(19.995, 'USD'), 'to equal', '$20.00')
   })
+
+  it('returns placeholder for empty value', () => {
+    expect(formatPrice(null, 'USD'), 'to equal', '$ - ')
+  })
 })
 
 describe('formatDeliveryTime()', () => {

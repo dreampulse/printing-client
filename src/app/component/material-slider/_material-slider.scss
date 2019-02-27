@@ -116,7 +116,10 @@
   &--show-back {
     .material-slider__back {
       opacity: 1;
-      pointer-events: initial;
+
+      & > * {
+        pointer-events: initial;
+      }
 
       &:before {
         transform: none;
@@ -131,7 +134,10 @@
   &--show-next {
     .material-slider__next {
       opacity: 1;
-      pointer-events: initial;
+
+      & > * {
+        pointer-events: initial;
+      }
 
       &:before {
         transform: none;

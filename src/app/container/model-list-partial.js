@@ -162,12 +162,7 @@ export default compose(
       const allModelConfigIds = this.props.uploadedModelConfigs.map(modelConfig => modelConfig.id)
       const selectModelConfigIds = (location.state && location.state.selectModelConfigIds) || []
       const filteredModelConfigIds = intersection(allModelConfigIds, selectModelConfigIds)
-      if (filteredModelConfigIds.length > 0) {
-        this.props.updateSelectedModelConfigs(filteredModelConfigIds)
-      }
-    },
-    componentWillUnmount() {
-      this.props.clearSelectedModelConfigs()
+      this.props.updateSelectedModelConfigs(filteredModelConfigIds)
     }
   })
 )(ModelListPartial)

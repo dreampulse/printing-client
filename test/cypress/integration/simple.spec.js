@@ -15,16 +15,18 @@ context('Simple application flow', () => {
 
     cy.fixture('test-model.stl', 'base64').then(model =>
       Cypress.Blob.base64StringToBlob(model, 'application/vnd.ms-pki.stl').then(blob => {
-        dropEvent.dataTransfer.files.push(blob)
+        dropEvent.dataTransfer.files.push(new File([blob], 'test-model.stl', {type: ''}))
       })
     )
 
-    cy.get('.upload-area').trigger('drop', dropEvent)
+    cy.get('.UploadArea').trigger('drop', dropEvent)
     cy.contains('button', 'Upload').click()
-    cy.contains('.upload-model-item', 'test-model.stl')
+    cy.get('.UploadModelItem').should('have.length', 1)
   })
 
   it('selects material and provider', () => {
+    cy.contains('button', 'Select Material').click()
+
     cy.get('#section-material')
       .contains('button', 'Select')
       .click()
@@ -34,12 +36,13 @@ context('Simple application flow', () => {
       .click()
 
     cy.get('#section-provider')
-      .contains('button', 'Checkout')
+      .contains('button', 'Add to cart')
       .click()
   })
 
   it('handles address form', () => {
-    cy.contains('.headline', 'Shipping address')
+    cy.contains('.headline', 'Shipping Address')
+    cy.contains('button', 'Add Address').click()
 
     cy.get('input[name="shippingAddress.firstName"]').type('TEST firstName')
     cy.get('input[name="shippingAddress.lastName"]').type('TEST lastName')
@@ -49,7 +52,7 @@ context('Simple application flow', () => {
     cy.get('input[name="emailAddress"]').type('TEST@example.com')
     cy.get('input[name="phoneNumber"]').type('0123456789')
 
-    cy.contains('button', 'Review Order').click()
+    cy.contains('button', 'Confirm').click()
   })
 
   it('pays per invoice', () => {

@@ -15,11 +15,7 @@ import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
-import {
-  selectCartShippings,
-  selectConfiguredModelInformation,
-  selectCartCount
-} from '../lib/selector'
+import * as selector from '../lib/selector'
 import getCloudinaryUrl from '../lib/cloudinary'
 
 import PageHeader from '../component/page-header'
@@ -42,8 +38,6 @@ import Logo from '../component/logo'
 import IconLink from '../component/icon-link'
 import Container from '../component/container'
 import PageLayout from '../component/page-layout'
-
-import Modal from './modal'
 
 import * as navigationActions from '../action/navigation'
 import * as modelViewerActions from '../action/model-viewer'
@@ -104,6 +98,8 @@ const ReviewOrderPage = ({
               !match && (
                 <Button
                   label="Upload"
+                  minor
+                  compact
                   onClick={() => goToUpload()}
                   modifiers={['minor', 'compact']}
                 />
@@ -312,7 +308,7 @@ const ReviewOrderPage = ({
   ])
 
   const renderPaymentSection = () => (
-    <Fragment>
+    <>
       <PaymentSection
         classNames={['u-margin-bottom']}
         subtotal={formatPrice(cart.subTotalPrice, cart.currency)}
@@ -367,12 +363,11 @@ const ReviewOrderPage = ({
           href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
         />
       </Paragraph>
-    </Fragment>
+    </>
   )
 
   return (
     <PageLayout header={renderHeader()}>
-      <Modal />
       <Container>
         <PageHeader label="Review Order" />
         <SidebarLayout sidebar={renderPaymentSection()}>
@@ -442,12 +437,13 @@ const mapStateToProps = state => ({
   orderNumber: state.core.orderNumber,
   shippings: state.core.shippings,
   modelConfigs: state.core.modelConfigs,
-  modelsWithConfig: selectConfiguredModelInformation(state),
-  cartShippings: selectCartShippings(state),
+  modelsWithConfig: selector.selectConfiguredModelInformation(state),
+  cartShippings: selector.selectCartShippings(state),
   featureFlags: state.core.featureFlags,
   urlParams: state.core.urlParams,
   liableForVat: state.core.user && state.core.user.liableForVat,
-  cartCount: selectCartCount(state)
+  cartCount: selector.selectCartCount(state),
+  isCartUpToDate: selector.isCartUpToDate(state)
 })
 
 const mapDispatchToProps = {
@@ -464,11 +460,11 @@ const mapDispatchToProps = {
 
 const enhance = compose(
   scrollToTop(),
-  guard(state => state.core.cart),
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
+  guard(props => props.isCartUpToDate, '/cart'),
   withState('paymentInProgress', 'setPaymentInProgress', false),
   withProps(props => ({
     utmParams: {

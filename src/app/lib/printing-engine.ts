@@ -31,13 +31,13 @@ type ModelResponse = BackendModel
 type ShippingsResponse = Shipping[]
 
 export type PriceRequest = {
-  refresh: boolean,
-  currency: string,
-  countryCode: string,
+  refresh: boolean
+  currency: string
+  countryCode: string
   models: Array<{
-    modelId: ModelId,
+    modelId: ModelId
     quantity: number
-  }>,
+  }>
   materialConfigIds?: MaterialConfigId[]
 }
 
@@ -46,21 +46,21 @@ export type PriceResponse = {
 }
 
 export type QuotesResponse = {
-  quotes: Quote[],
-  allComplete: boolean,
+  quotes: Quote[]
+  allComplete: boolean
   printingServiceComplete: {
     [printingServiceName: string]: boolean
   }
 }
 
 export type UserResponse = {
-  userId: UserId,
+  userId: UserId
   liableForVat: boolean
 }
 
 export type CartRequest = {
-  quoteIds: QuoteId[],
-  shippingIds: ShippingId[],
+  quoteIds: QuoteId[]
+  shippingIds: ShippingId[]
   currency: string
 }
 
@@ -68,7 +68,7 @@ export type CartResponse = Cart
 
 export type ConfigurationRequest = {
   items: Array<{
-    modelId: ModelId,
+    modelId: ModelId
     quantity: 42
   }>
 }
@@ -78,19 +78,19 @@ export type ConfigurationResponse = {
 }
 
 export type BackendConfiguration = {
-  items: Array<BackendModel & {quantity: number}>,
+  items: Array<BackendModel & {quantity: number}>
   materialConfigId: MaterialConfigId
 }
 
 export type OrderRequest = {
-  userId: UserId,
-  cartId: CartId,
-  currency: string,
+  userId: UserId
+  cartId: CartId
+  currency: string
   utmParams?: UtmParams
 }
 
 export type OrderResponse = {
-  orderId: OrderId,
+  orderId: OrderId
   orderNumber: string
 }
 
@@ -123,7 +123,7 @@ export type PaypalPaymentRequest = PaymentRequest
 export type PaypalPaymentResponse = PaymentResponse & {
   providerFields: {
     // Warning: this is the paypal internal id not our payment id
-    paymentId: string,
+    paymentId: string
     redirectLink: string
   }
 }
@@ -133,7 +133,7 @@ export type PaypalExecutePaymentRequest = {
 }
 
 export type PaypalExecutePaymentResponse = {
-  paymentId: string,
+  paymentId: string
   status: boolean
 }
 
@@ -154,14 +154,16 @@ export const uploadModel = async (
     unit: string
   },
   dispatch: Dispatch<Actions>,
-  onProgressActionCreator: ModelOnProgressActionCreator
+  onProgressActionCreator: ModelOnProgressActionCreator,
+  refresh = false
 ): Promise<ModelUploadResponse> => {
   const response = await httpJson.upload({
     method: 'POST',
     url: `${config.printingEngineBaseUrl}/v3/model`,
     body: {
       file,
-      unit: meta.unit
+      unit: meta.unit,
+      refresh
     },
     onProgress: (progress: number) => {
       dispatch(onProgressActionCreator(progress))

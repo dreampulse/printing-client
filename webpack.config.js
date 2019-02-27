@@ -123,7 +123,7 @@ module.exports = {
       : []),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(env),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || env),
         SENTRY_RELEASE_VERSION: JSON.stringify(sentryReleaseVersion)
       }
     }),
@@ -132,8 +132,13 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
+        from: path.resolve(__dirname, './src/asset/robots.txt'),
+        to: path.resolve(__dirname, './dist')
+      },
+      {
         from: path.resolve(__dirname, './src/asset'),
-        to: path.resolve(__dirname, './dist/asset')
+        to: path.resolve(__dirname, './dist/asset'),
+        ignore: 'robots.txt'
       }
     ])
   ],

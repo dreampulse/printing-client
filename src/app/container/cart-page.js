@@ -1,17 +1,18 @@
 import React from 'react'
-import {connect} from 'react-redux'
-
 import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import debounce from 'lodash/debounce'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
+import withPropsOnChange from 'recompose/withPropsOnChange'
 
-import {selectCartShippings, selectConfiguredModelInformation} from '../lib/selector'
+import * as selector from '../lib/selector'
 import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
-import {guard} from './util/guard'
 import {scrollToTop} from './util/scroll-to-top'
+import {guard} from './util/guard'
 
 import Link from '../component/link'
 import SidebarLayout from '../component/sidebar-layout'
@@ -25,18 +26,21 @@ import ModelItem from '../component/model-item'
 import ButtonBar from '../component/button-bar'
 import LoadingIndicator from '../component/loading-indicator'
 import Notification from '../component/notification'
+import PageLayout from '../component/page-layout'
+import Container from '../component/container'
+import NumberField from '../component/number-field'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
 import * as modelViewerAction from '../action/model-viewer'
+import * as quoteAction from '../action/quote'
 
-import AppLayout from './app-layout'
 import ModelListPartial from './model-list-partial'
+import NavBarPartial from './nav-bar-partial'
 
 import deleteIcon from '../../asset/icon/delete.svg'
-// import plusIcon from '../../asset/icon/plus.svg'
-// import minusIcon from '../../asset/icon/minus.svg'
 import copyIcon from '../../asset/icon/copy.svg'
+import editIcon from '../../asset/icon/edit.svg'
 
 const CartPage = ({
   modelsWithConfig,
@@ -47,31 +51,24 @@ const CartPage = ({
   deleteModelConfigs,
   cart,
   cartShippings,
-  magnifyModel,
-  goToMaterial,
+  openModelViewer,
+  goToEditMaterial,
   numAddedItems,
-  liableForVat
+  liableForVat,
+  updateQuantities,
+  hasOnlyValidModelConfigsWithQuote,
+  isCartUpToDate
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
 
   const buttonBar = modelConfig => (
     <ButtonBar>
-      <Button label="Edit material …" tiny minor onClick={() => goToMaterial([modelConfig.id])} />
-      {/*
-      TODO: Quantity change in card is hard to solve because we have to do another price request and match old to new quotes afterwards, which makes all of this async
-      <Button
-        icon={minusIcon}
-        disabled={modelConfig.quantity === 1}
-        iconOnly
-        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity - 1)}
+      <NumberField
+        value={modelConfig.quantity}
+        onChange={quantity => updateQuantities([modelConfig.id], quantity)}
       />
-      <Button
-        icon={plusIcon}
-        iconOnly
-        onClick={() => onChangeQuantities([modelConfig.id], modelConfig.quantity + 1)}
-      />
-      */}
+      <Button icon={editIcon} iconOnly onClick={() => goToEditMaterial([modelConfig.id])} />
       <Button icon={copyIcon} iconOnly onClick={() => duplicateModelConfig(modelConfig.id)} />
       <Button icon={deleteIcon} iconOnly onClick={() => deleteModelConfigs([modelConfig.id])} />
     </ButtonBar>
@@ -79,7 +76,7 @@ const CartPage = ({
 
   const modelListSection = () => (
     <Section>
-      <ModelListPartial editMode onPrimaryActionClick={goToMaterial}>
+      <ModelListPartial editMode onPrimaryActionClick={goToEditMaterial}>
         {modelsWithConfig.map(
           ({
             modelConfig,
@@ -101,7 +98,10 @@ const CartPage = ({
               title={model.fileName}
               subline={formatDimensions(model.dimensions, model.fileUnit)}
               buttonBar={buttonBar(modelConfig)}
-              price={formatPrice(quote.price, quote.currency)}
+              price={formatPrice(
+                quote.quantity === modelConfig.quantity ? quote.price : null,
+                quote.currency
+              )}
               deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
               shippingMethod={shipping.name}
               providerId={shipping.vendorId}
@@ -118,7 +118,7 @@ const CartPage = ({
                   }}
                 />
               }
-              onMagnify={() => magnifyModel(model)}
+              onMagnify={() => openModelViewer(model)}
             />
           )
         )}
@@ -135,20 +135,22 @@ const CartPage = ({
       )
     }
 
+    const showCart = isCartUpToDate && hasOnlyValidModelConfigsWithQuote
     const showVat = cart.vatPrice > 0 && liableForVat !== false
+    const totalPrice = showVat ? cart.totalPrice : cart.totalNetPrice
 
     return (
       <PaymentSection
         classNames={['u-margin-bottom']}
-        subtotal={formatPrice(cart.subTotalPrice, cart.currency)}
+        subtotal={formatPrice(showCart ? cart.subTotalPrice : null, cart.currency)}
         shippings={cartShippings.map(shipping => ({
           label: getProviderName(shipping.vendorId),
-          price: formatPrice(shipping.price, shipping.currency)
+          price: formatPrice(showCart ? shipping.price : null, shipping.currency)
         }))}
-        vat={showVat ? formatPrice(cart.vatPrice, cart.currency) : ''}
-        total={formatPrice(showVat ? cart.totalPrice : cart.totalNetPrice, cart.currency)}
+        vat={showVat ? formatPrice(showCart ? cart.vatPrice : null, cart.currency) : ''}
+        total={showCart ? formatPrice(totalPrice, cart.currency) : <LoadingIndicator />}
       >
-        <Button block label="Checkout" onClick={() => goToReviewOrder()} />
+        <Button block label="Checkout" onClick={() => goToReviewOrder()} disabled={!showCart} />
       </PaymentSection>
     )
   }
@@ -192,75 +194,118 @@ const CartPage = ({
   const hasItemsOnUploadPage = modelConfigs.length > modelsWithConfig.length
 
   return (
-    <AppLayout>
-      {(hasAddedItems || hasItemsOnUploadPage) && (
-        <Section>
-          {hasAddedItems && addedNotificationSection()}
-          {hasItemsOnUploadPage && warningNotificationSection()}
-        </Section>
-      )}
-      <Headline label="Your Cart" modifiers={['xl']} />
-      {hasModels && <SidebarLayout sidebar={paymentSection()}>{modelListSection()}</SidebarLayout>}
-      {!hasModels && (
-        <Paragraph modifiers={['l']}>
-          Your cart is currently empty. Start by{' '}
-          <Link
-            href="/"
-            onClick={event => {
-              event.preventDefault()
-              goToUpload()
-            }}
-            label="uploading your 3D model"
-          />{' '}
-          for printing.
-        </Paragraph>
-      )}
-    </AppLayout>
+    <PageLayout header={<NavBarPartial />}>
+      <Container>
+        {(hasAddedItems || hasItemsOnUploadPage) && (
+          <Section>
+            {hasAddedItems && addedNotificationSection()}
+            {hasItemsOnUploadPage && warningNotificationSection()}
+          </Section>
+        )}
+        <Headline label="Your Cart" modifiers={['xl']} />
+        {hasModels && (
+          <SidebarLayout sidebar={paymentSection()}>{modelListSection()}</SidebarLayout>
+        )}
+        {!hasModels && (
+          <Paragraph modifiers={['l']}>
+            Your cart is currently empty. Start by{' '}
+            <Link
+              href="/"
+              onClick={event => {
+                event.preventDefault()
+                goToUpload()
+              }}
+              label="uploading your 3D model"
+            />{' '}
+            for printing.
+          </Paragraph>
+        )}
+      </Container>
+    </PageLayout>
   )
 }
 
 const mapStateToProps = state => ({
-  modelsWithConfig: selectConfiguredModelInformation(state),
+  modelsWithConfig: selector.selectConfiguredModelInformation(state),
   modelConfigs: state.core.modelConfigs,
-  cartShippings: selectCartShippings(state),
+  cartShippings: selector.selectCartShippings(state),
   currency: state.core.currency,
+  location: state.core.location,
   cart: state.core.cart,
-  liableForVat: state.core.user && state.core.user.liableForVat
+  liableForVat: state.core.user && state.core.user.liableForVat,
+  featureFlags: state.core.featureFlags,
+  hasOnlyValidModelConfigsWithQuote: selector.hasOnlyValidModelConfigsWithQuote(state),
+  isQuotePollingDone: selector.isQuotePollingDone(state),
+  isCartUpToDate: selector.isCartUpToDate(state)
 })
 
 const mapDispatchToProps = dispatch => ({
   goToReviewOrder: bindActionCreators(navigationAction.goToReviewOrder, dispatch),
   goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
-  goToMaterial: bindActionCreators(navigationAction.goToMaterial, dispatch),
-  magnifyModel: bindActionCreators(modelViewerAction.open, dispatch),
+  goToEditMaterial: bindActionCreators(navigationAction.goToEditMaterial, dispatch),
+  openModelViewer: bindActionCreators(modelViewerAction.open, dispatch),
+  updateQuantities: bindActionCreators(modelAction.updateQuantities, dispatch),
+  receiveQuotes: bindActionCreators(quoteAction.receiveQuotes, dispatch),
   duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)
-    // Flow is crap
     return dispatch(action).then(() => {
-      dispatch(
-        navigationAction.goToUpload({
-          selectModelConfigIds: [action.payload.nextId]
-        })
-      )
+      dispatch(navigationAction.goToMaterial([action.payload.nextId]))
     })
   }
 })
 
 export default compose(
   scrollToTop(),
-  guard(state => state.core.cart),
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
+  guard(props => props.modelsWithConfig.length > 0),
   withProps(({location}) => ({
     numAddedItems: (location.state || {}).numAddedItems || 0
   })),
+  withPropsOnChange(
+    () => false, // Should never reinitialize the debounce function
+    ({receiveQuotes}) => ({
+      debouncedReceiveQuotes: debounce(receiveQuotes, 1000)
+    })
+  ),
   lifecycle({
+    componentWillMount() {
+      // Refresh quotes if cart is invalid
+      if (!this.props.hasOnlyValidModelConfigsWithQuote) {
+        const modelConfigs = this.props.modelConfigs
+        const {refresh} = this.props.featureFlags
+        const currency = this.props.currency
+        const {countryCode} = this.props.location
+
+        this.props.receiveQuotes({
+          modelConfigs,
+          countryCode,
+          currency,
+          refresh
+        })
+      }
+    },
     componentDidUpdate(prevProps) {
-      if (prevProps.modelsWithConfig.length > 0 && this.props.modelsWithConfig === 0) {
+      if (prevProps.modelsWithConfig.length > 0 && this.props.modelsWithConfig.length === 0) {
         this.props.goToUpload()
+      }
+
+      // Refresh quotes if cart got invalid
+      if (!this.props.hasOnlyValidModelConfigsWithQuote && this.props.isQuotePollingDone) {
+        const modelConfigs = this.props.modelConfigs
+        const {refresh} = this.props.featureFlags
+        const currency = this.props.currency
+        const {countryCode} = this.props.location
+
+        this.props.debouncedReceiveQuotes({
+          modelConfigs,
+          countryCode,
+          currency,
+          refresh
+        })
       }
     }
   })

@@ -220,3 +220,8 @@ storiesOf('UploadLayout', module)
       {''}
     </UploadLayout>
   ))
+  .add('hasModels', () => (
+    <UploadLayout hasModels header={navBar()} footer={footer()} stickyFooter={stickyFooter()}>
+      {lorem}
+    </UploadLayout>
+  ))

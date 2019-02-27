@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import noop from 'lodash/noop'
 
 import fallbackSource from '../../../asset/image/model-thumbnail-fallback.png'
 
@@ -25,8 +26,8 @@ const UploadModelItem = ({
   onSelect,
   s = false
 }) => (
-  <div className={cn('UploadModelItem', {selected, s}, classNames)}>
-    <div className="UploadModelItem__aside">
+  <div className={cn('UploadModelItem', {selected, s, onSelect}, classNames)}>
+    <div className="UploadModelItem__aside" onClick={onSelect ? () => onSelect(!selected) : noop}>
       <ImageContainer
         modifiers={['ratio-1-1']}
         source={imageSource}

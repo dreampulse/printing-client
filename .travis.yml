@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "10"
+  - '10'
 cache:
   directories:
     - node_modules
@@ -8,21 +8,35 @@ cache:
     - ~/.cache
 script:
   - npm test
+  - npm run test:cypress
   - npm run build
 install:
   - npm ci
 deploy:
-  skip_cleanup: true
-  provider: s3
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_ACCESS_KEY
-  region: eu-west-1
-  bucket: print.all3dp.com
-  acl: public_read
-  local_dir: dist
-  on:
-    repo: all3dp/printing-engine-client
-    branch: master
-after_deploy:
-  - ./bin/create-sentry-release.sh
-  - ./bin/purge-cloudflare-cache.sh
+  # Deploy to production
+  - provider: s3
+    skip_cleanup: true
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    region: eu-west-1
+    bucket: print.all3dp.com
+    acl: public_read
+    local_dir: dist
+    on:
+      branch: master
+  # Purge cache for master deployment
+  - provider: script
+    script: ./bin/create-sentry-release.sh && ./bin/purge-cloudflare-cache.sh
+    on:
+      branch: master
+  # Deploy develop
+  - provider: s3
+    skip_cleanup: true
+    access_key_id: $AWS_ACCESS_KEY_STAGE
+    secret_access_key: $AWS_SECRET_ACCESS_KEY_STAGE
+    region: eu-west-1
+    bucket: print-stage.all3dp.com
+    acl: public_read
+    local_dir: dist
+    on:
+      branch: develop

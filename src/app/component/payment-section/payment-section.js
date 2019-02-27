@@ -74,7 +74,7 @@ PaymentSection.propTypes = {
     })
   ),
   vat: PropTypes.string,
-  total: PropTypes.string.isRequired
+  total: PropTypes.node.isRequired
 }
 
 export default PaymentSection

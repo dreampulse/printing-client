@@ -2,7 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withStateHandlers from 'recompose/withStateHandlers'
-import withHandlers from 'recompose/withHandlers'
 import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 import withState from 'recompose/withState'
@@ -11,6 +10,7 @@ import keyBy from 'lodash/keyBy'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import compact from 'lodash/compact'
+import debounce from 'lodash/debounce'
 
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
@@ -111,15 +111,17 @@ const MaterialPartial = ({
   configIds,
   uploadedModelConfigs,
   usedShippingIds,
-  isUploadPage,
-  updateSelectedModelConfigs,
+  isEditMode,
   modelConfigs,
   setProviderListHidden,
   isProviderListHidden,
   pollingProgress,
   goToReviewOrder,
   selectedStep,
-  setSelectedStep
+  setSelectedStep,
+  updateSelectedModelConfigs,
+  resetConfigurationState,
+  scrollContainerId
 }) => {
   const isPollingComplete = pollingProgress.complete === pollingProgress.total
   const hasMoreThanOneResult = pollingProgress.complete > 0
@@ -449,10 +451,14 @@ const MaterialPartial = ({
         : formatPrice(shipping.grossPrice, shipping.currency),
       totalPrice: formatPrice(totalGrossPrice, multiModelQuote.currency),
       finishImageUrl: getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill']),
-      addToCartLabel: hasItemsOnUploadPage ? 'Add to cart' : 'Checkout',
+      addToCartLabel: isEditMode ? 'Select offer' : 'Add to cart',
       handleAddToCart: () =>
         addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
-          if (isUploadPage && hasItemsOnUploadPage) {
+          // If there are still models to configure stay on material page
+          if (!isEditMode && hasItemsOnUploadPage) {
+            // Since we stay on the same page, we have to reset the state.
+            resetConfigurationState()
+
             updateSelectedModelConfigs(
               modelConfigs
                 .filter(
@@ -463,11 +469,20 @@ const MaterialPartial = ({
                 )
                 .map(modelConfig => modelConfig.id)
             )
-            scrollTo('#root')
-          } else if (isUploadPage && !hasItemsOnUploadPage && modelConfigs.length === 1) {
+
+            global.document.querySelector(`#${scrollContainerId}`).scrollTo(0, 0)
+            // Go to review order page if user has configured all uploaded models at once.
+          } else if (
+            !isEditMode &&
+            !hasItemsOnUploadPage &&
+            configIds.length === modelConfigs.length
+          ) {
             goToReviewOrder()
           } else {
-            goToCart()
+            goToCart({
+              numAddedItems: isEditMode ? 0 : configIds.length,
+              selectModelConfigIds: configIds
+            })
           }
         })
     }
@@ -494,7 +509,6 @@ const MaterialPartial = ({
       <ProviderBox
         icon={<Icon source={cheapest ? cheapestIcon : fastestIcon} />}
         headline={cheapest ? `Best Price: ${totalPrice}` : `Fastest: ${time}`}
-        onClick={handleAddToCart}
         actionButton={
           <Button icon={checkoutIcon} label={addToCartLabel} onClick={handleAddToCart} />
         }
@@ -637,8 +651,18 @@ const MaterialPartial = ({
     )
   }
 
+  if (selectedModelConfigs.length === 0) {
+    return (
+      <>
+        <Headline label="Select a file to start customizing" modifiers={['xl']} />
+        {/* TODO: still show headlines for steps 1. 2. 3. here but disabled and without the content */}
+      </>
+    )
+  }
+
   return (
     <>
+      <Headline label="Customize your selection" modifiers={['xl']} />
       <>{renderMaterialSection()}</>
       <>{finishSectionEnabled && renderFinishSection()}</>
       <>{colorSectionEnabled && renderColorSection()}</>
@@ -667,14 +691,14 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
+  goToCart: navigationAction.goToCart,
+  goToReviewOrder: navigationAction.goToReviewOrder,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,
   stopReceivingQuotes: quoteAction.stopReceivingQuotes,
   addToCart: cartAction.addToCart,
-  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
-  goToCart: navigationAction.goToCart,
-  goToReviewOrder: navigationAction.goToReviewOrder
+  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
 }
 
 export default compose(
@@ -710,7 +734,13 @@ export default compose(
       selectMaterialConfig: () => id => ({
         selectedMaterialConfigId: id
       }),
-      setMaterialFilter: () => materialFilter => ({materialFilter})
+      setMaterialFilter: () => materialFilter => ({materialFilter}),
+      resetConfigurationState: () => () => ({
+        selectedMaterialGroupId: null,
+        selectedMaterialId: null,
+        selectedFinishGroupId: null,
+        selectedMaterialConfigId: null
+      })
     }
   ),
   withProps(
@@ -736,21 +766,12 @@ export default compose(
   withPropsOnChange(['materialFilter', 'materialSearch'], ({materialFilter, materialSearch}) => ({
     filteredMaterials: materialFilter.length > 0 ? materialSearch.search(materialFilter) : undefined
   })),
-  withHandlers({
-    receiveQuotes: props => () => {
-      const modelConfigs = props.selectedModelConfigs
-      const {refresh} = props.featureFlags
-      const currency = props.currency
-      const {countryCode} = props.location
-
-      props.receiveQuotes({
-        modelConfigs,
-        countryCode,
-        currency,
-        refresh
-      })
-    }
-  }),
+  withPropsOnChange(
+    () => false, // Should never reinitialize the debounce function
+    ({receiveQuotes}) => ({
+      debouncedReceiveQuotes: debounce(receiveQuotes, 1000)
+    })
+  ),
   withState('isProviderListHidden', 'setProviderListHidden', true),
   withState('selectedStep', 'setSelectedStep', props =>
     // All closed for edit mode
@@ -760,14 +781,24 @@ export default compose(
     componentWillMount() {
       // It is possible that we do not have a location yet!
       if (this.props.selectedModelConfigs.length > 0 && this.props.location) {
-        this.props.receiveQuotes()
+        const modelConfigs = this.props.selectedModelConfigs
+        const {refresh} = this.props.featureFlags
+        const currency = this.props.currency
+        const {countryCode} = this.props.location
+
+        this.props.receiveQuotes({
+          modelConfigs,
+          countryCode,
+          currency,
+          refresh
+        })
       }
     },
     componentDidUpdate(prevProps) {
       // Refresh quotes if...
       // - countryCode changed
       // - currency changed
-      // - configIds changed
+      // - selectedModelConfigs changed
       // - quantities changed
       // - we had no location before
       if (
@@ -776,10 +807,21 @@ export default compose(
           get(this.props.location, 'countryCode') !== get(prevProps.location, 'countryCode') ||
           !isEqual(this.props.selectedModelConfigs, prevProps.selectedModelConfigs))
       ) {
-        this.props.receiveQuotes()
+        const modelConfigs = this.props.selectedModelConfigs
+        const {refresh} = this.props.featureFlags
+        const currency = this.props.currency
+        const {countryCode} = this.props.location
+
+        this.props.debouncedReceiveQuotes({
+          modelConfigs,
+          countryCode,
+          currency,
+          refresh
+        })
       }
     },
     componentWillUnmount() {
+      this.props.debouncedReceiveQuotes.cancel()
       this.props.stopReceivingQuotes()
     }
   })
