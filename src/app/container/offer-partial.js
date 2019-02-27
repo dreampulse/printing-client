@@ -48,7 +48,9 @@ const OfferPartial = ({
   goToReviewOrder,
   updateSelectedModelConfigs,
   resetConfigurationState,
-  scrollContainerId
+  scrollContainerId,
+  showMore,
+  setShowMore
 }) => {
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
@@ -70,56 +72,62 @@ const OfferPartial = ({
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
   return (
-    <OfferFooter>
+    <OfferFooter showMore={showMore}>
       {providerList.map(({multiModelQuote, shipping, totalGrossPrice}, i) => {
         const materialConfig = materialConfigs[multiModelQuote.materialConfigId]
         const finishGroup = finishGroups[materialConfig.finishGroupId]
         const {productionTimeFast, productionTimeSlow} = materialConfig.printingService[
           multiModelQuote.vendorId
         ]
+        const firstOffer = i === 0
 
         return (
           <OfferItem
             key={i}
             actions={
-              <Button
-                icon={checkoutIcon}
-                label={isEditMode ? 'Select offer' : 'Add to cart'}
-                onClick={() =>
-                  addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
-                    // If there are still models to configure stay on material page
-                    if (!isEditMode && hasItemsOnUploadPage) {
-                      // Since we stay on the same page, we have to reset the state.
-                      resetConfigurationState()
+              <>
+                {firstOffer && !showMore && (
+                  <Button text label="See all offers" onClick={() => setShowMore(true)} />
+                )}
+                <Button
+                  icon={checkoutIcon}
+                  label={isEditMode ? 'Select offer' : 'Add to cart'}
+                  onClick={() =>
+                    addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
+                      // If there are still models to configure stay on material page
+                      if (!isEditMode && hasItemsOnUploadPage) {
+                        // Since we stay on the same page, we have to reset the state.
+                        resetConfigurationState()
 
-                      updateSelectedModelConfigs(
-                        modelConfigs
-                          .filter(
-                            modelConfig =>
-                              modelConfig.type === 'UPLOADED' &&
-                              modelConfig.quoteId === null &&
-                              !configIds.includes(modelConfig.id)
-                          )
-                          .map(modelConfig => modelConfig.id)
-                      )
+                        updateSelectedModelConfigs(
+                          modelConfigs
+                            .filter(
+                              modelConfig =>
+                                modelConfig.type === 'UPLOADED' &&
+                                modelConfig.quoteId === null &&
+                                !configIds.includes(modelConfig.id)
+                            )
+                            .map(modelConfig => modelConfig.id)
+                        )
 
-                      global.document.querySelector(`#${scrollContainerId}`).scrollTo(0, 0)
-                      // Go to review order page if user has configured all uploaded models at once.
-                    } else if (
-                      !isEditMode &&
-                      !hasItemsOnUploadPage &&
-                      configIds.length === modelConfigs.length
-                    ) {
-                      goToReviewOrder()
-                    } else {
-                      goToCart({
-                        numAddedItems: isEditMode ? 0 : configIds.length,
-                        selectModelConfigIds: configIds
-                      })
-                    }
-                  })
-                }
-              />
+                        global.document.querySelector(`#${scrollContainerId}`).scrollTo(0, 0)
+                        // Go to review order page if user has configured all uploaded models at once.
+                      } else if (
+                        !isEditMode &&
+                        !hasItemsOnUploadPage &&
+                        configIds.length === modelConfigs.length
+                      ) {
+                        goToReviewOrder()
+                      } else {
+                        goToCart({
+                          numAddedItems: isEditMode ? 0 : configIds.length,
+                          selectModelConfigIds: configIds
+                        })
+                      }
+                    })
+                  }
+                />
+              </>
             }
           >
             <DescriptionList>
@@ -127,7 +135,9 @@ const OfferPartial = ({
                 <strong>Price total:</strong>
               </dt>
               <dd>
-                <strong>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</strong>
+                <strong className={firstOffer ? 'u-font-size-l' : ''}>
+                  {formatPrice(totalGrossPrice, multiModelQuote.currency)}
+                </strong>
               </dd>
               <dt>Production:</dt>
               <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
@@ -143,7 +153,7 @@ const OfferPartial = ({
                 <strong>Est. delivery time:</strong>
               </dt>
               <dd>
-                <strong>
+                <strong className={firstOffer ? 'u-font-size-l' : ''}>
                   {formatTimeRange(
                     productionTimeFast + parseInt(shipping.deliveryTime, 10),
                     productionTimeSlow + parseInt(shipping.deliveryTime, 10)
