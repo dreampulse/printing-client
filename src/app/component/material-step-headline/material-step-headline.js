@@ -5,7 +5,7 @@ import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
 
 const MaterialStepHeadline = ({classNames, number, selected, change, children}) => (
-  <div className={cn('MaterialStepHeadline', {}, classNames)}>
+  <div className={cn('MaterialStepHeadline', {selected}, classNames)}>
     <span className="MaterialStepHeadline__number">{`${number}.`}</span>
     <span className="MaterialStepHeadline__content">{selected ? `${children}: ` : children}</span>
     {selected && (

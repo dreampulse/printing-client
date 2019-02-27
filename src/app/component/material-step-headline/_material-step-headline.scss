@@ -1,6 +1,7 @@
 .MaterialStepHeadline {
   font-size: $font-size-l;
   margin-bottom: $space-base;
+  color: $color-minor;
 
   &__number {
     display: inline-block;
@@ -15,5 +16,9 @@
   &__change {
     font-size: $font-size-base;
     margin-left: 1.2em;
+  }
+
+  &--selected {
+    color: $color-text-label;
   }
 }

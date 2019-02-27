@@ -41,7 +41,6 @@ import {
 } from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
-import scrollTo from '../service/scroll-to'
 import checkoutIcon from '../../asset/icon/checkout.svg'
 import fastestIcon from '../../asset/icon/fastest.svg'
 import cheapestIcon from '../../asset/icon/cheapest.svg'
@@ -59,8 +58,6 @@ import RadioButtonGroup from '../component/radio-button-group'
 import MaterialSlider from '../component/material-slider'
 import Paragraph from '../component/paragraph'
 import Link from '../component/link'
-import SelectField from '../component/select-field'
-import SelectMenu from '../component/select-menu'
 import ProviderItem from '../component/provider-item'
 import ProviderList from '../component/provider-list'
 import DescriptionList from '../component/description-list'
@@ -95,7 +92,6 @@ const MaterialPartial = ({
   selectMaterial,
   selectedMaterialConfigId,
   selectMaterialConfig,
-  selectedFinishGroupId,
   selectedMaterialConfig,
   selectedFinishGroup,
   selectFinishGroup,
@@ -381,8 +377,6 @@ const MaterialPartial = ({
       )
     }
 
-    // TODO sort
-
     return (
       <Section>
         {selectedStep === SELECTED_STEP.COLOR ? (
@@ -659,6 +653,8 @@ const MaterialPartial = ({
       </>
     )
   }
+
+  // TODO: support this
 
   return (
     <>
