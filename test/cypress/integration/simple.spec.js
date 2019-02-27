@@ -19,9 +19,9 @@ context('Simple application flow', () => {
       })
     )
 
-    cy.get('.upload-area').trigger('drop', dropEvent)
+    cy.get('.UploadArea').trigger('drop', dropEvent)
     cy.contains('button', 'Upload').click()
-    cy.get('.deprecated-upload-model-item').should('have.length', 1)
+    cy.get('.UploadModelItem').should('have.length', 1)
   })
 
   it('selects material and provider', () => {
