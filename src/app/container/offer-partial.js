@@ -4,8 +4,6 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import keyBy from 'lodash/keyBy'
 
-import * as modalAction from '../action/modal'
-import * as quoteAction from '../action/quote'
 import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
@@ -16,11 +14,8 @@ import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
 import {
   selectModelConfigsByIds,
-  selectQuotePollingProgress,
-  isQuotePollingDone,
   selectQuotes,
   selectUploadedModelConfigs,
-  selectCommonMaterialPathOfModelConfigs,
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
 import checkoutIcon from '../../asset/icon/checkout.svg'
@@ -32,23 +27,27 @@ import OfferFooter from '../component/offer-footer'
 import OfferItem from '../component/offer-item'
 
 const OfferPartial = ({
+  // Own props
+  isEditMode,
+  configIds,
+  selectedMaterialId,
+  selectedFinishGroupId,
+  selectedMaterialConfigId,
+  scrollContainerId,
+  // HOC props
   materialConfigs,
   finishGroups,
-  selectedMaterialConfigId,
   addToCart,
   goToCart,
   quotes,
   selectedModelConfigs,
   shippings,
-  configIds,
   uploadedModelConfigs,
   usedShippingIds,
-  isEditMode,
   modelConfigs,
   goToReviewOrder,
   updateSelectedModelConfigs,
   resetConfigurationState,
-  scrollContainerId,
   showMore,
   setShowMore
 }) => {
@@ -187,28 +186,17 @@ const OfferPartial = ({
 const mapStateToProps = (state, ownProps) => ({
   modelConfigs: state.core.modelConfigs,
   quotes: selectQuotes(state),
-  materialGroups: state.core.materialGroups,
   materialConfigs: state.core.materialConfigs,
   finishGroups: state.core.finishGroups,
-  pollingProgress: selectQuotePollingProgress(state),
-  isPollingDone: isQuotePollingDone(state),
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
-  featureFlags: state.core.featureFlags,
-  currency: state.core.currency,
-  location: state.core.location,
   shippings: state.core.shippings,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
-  commonMaterialPath: selectCommonMaterialPathOfModelConfigs(state, ownProps.configIds),
   usedShippingIds: selectUsedShippingIdsAndFilter(state, ownProps.configIds)
 })
 
 const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
   goToReviewOrder: navigationAction.goToReviewOrder,
-  openMaterialModal: modalAction.openMaterialModal,
-  openFinishGroupModal: modalAction.openFinishGroupModal,
-  receiveQuotes: quoteAction.receiveQuotes,
-  stopReceivingQuotes: quoteAction.stopReceivingQuotes,
   addToCart: cartAction.addToCart,
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
 }
