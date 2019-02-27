@@ -57,9 +57,7 @@ export function getBestMultiModelOfferForMaterial(
   return bestQuote
 }
 
-// TODO: Test
-// This is the same as `getBestMultiModelOfferForMaterial`
-// just changes to the loop
+// TODO: Add Tests
 export function getBestMultiModelOfferForFinishGroup(
   quotes: MultiModelQuote[],
   usedShippingIds: ShippingId[],
@@ -82,8 +80,7 @@ export function getBestMultiModelOfferForFinishGroup(
   return bestQuote
 }
 
-// TODO: Test
-// Temp solution
+// TODO: We need a different price calculation for the colors
 export function getBestMultiModelOfferForMaterialConfig(
   quotes: MultiModelQuote[],
   usedShippingIds: ShippingId[],

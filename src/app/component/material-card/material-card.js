@@ -17,6 +17,7 @@ const MaterialCard = ({
   description,
   loading = false,
   unavailable = false,
+  selected = false,
   image,
   onMoreClick = noop,
   onSelectClick = noop,
@@ -88,7 +89,8 @@ MaterialCard.propTypes = {
   onUnavailableClick: PropTypes.func,
   learnMoreLabel: PropTypes.bool,
   unavailableLabel: PropTypes.bool,
-  contactUsLabel: PropTypes.bool
+  contactUsLabel: PropTypes.bool,
+  selected: PropTypes.bool
 }
 
 export default MaterialCard

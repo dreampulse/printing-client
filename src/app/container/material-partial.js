@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withStateHandlers from 'recompose/withStateHandlers'
@@ -73,6 +73,14 @@ import LoadingCheckmark from '../component/loading-checkmark'
 import ColorCard from '../component/color-card'
 import ColorTrait from '../component/color-trait'
 import ColorCardList from '../component/color-card-list'
+import MaterialStepHeadline from '../component/material-step-headline'
+
+const SELECTED_STEP = {
+  MATERIAL: 'material',
+  FINISH: 'finish',
+  COLOR: 'color',
+  PROVIDER: 'provider' // Can be removed of the footer is ready
+}
 
 const MaterialPartial = ({
   materialGroups,
@@ -88,6 +96,7 @@ const MaterialPartial = ({
   selectedMaterialConfigId,
   selectMaterialConfig,
   selectedFinishGroupId,
+  selectedMaterialConfig,
   selectedFinishGroup,
   selectFinishGroup,
   setMaterialFilter,
@@ -108,7 +117,9 @@ const MaterialPartial = ({
   setProviderListHidden,
   isProviderListHidden,
   pollingProgress,
-  goToReviewOrder
+  goToReviewOrder,
+  selectedStep,
+  setSelectedStep
 }) => {
   const isPollingComplete = pollingProgress.complete === pollingProgress.total
   const hasMoreThanOneResult = pollingProgress.complete > 0
@@ -136,6 +147,20 @@ const MaterialPartial = ({
 
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
+  const getPrice = offer => (
+    <Price
+      value={offer ? formatPrice(offer.totalGrossPrice, offer.multiModelQuote.currency) : undefined}
+      loadingCheckmark={
+        <LoadingCheckmark
+          modifiers={compact([
+            isPollingComplete && 'done',
+            hasMoreThanOneResult && 'hideWithDelay'
+          ])}
+        />
+      }
+    />
+  )
+
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
       const bestOffer = getBestMultiModelOfferForMaterial(
@@ -144,37 +169,19 @@ const MaterialPartial = ({
         shippings,
         material
       )
-      const price = (
-        <Price
-          value={
-            bestOffer
-              ? formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
-              : undefined
-          }
-          loadingCheckmark={
-            <LoadingCheckmark
-              modifiers={compact([
-                isPollingComplete && 'done',
-                hasMoreThanOneResult && 'hideWithDelay'
-              ])}
-            />
-          }
-        />
-      )
 
       return (
         <MaterialCard
           key={material.id}
           title={material.name}
           description={material.descriptionShort}
-          price={price}
+          price={getPrice(bestOffer)}
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
-          selected={selectedMaterial && selectedMaterial.id === material.id}
           unavailable={!bestOffer && isPollingDone}
           onSelectClick={() => {
             selectMaterial(material.id)
-            scrollTo('#section-finish')
+            setSelectedStep(SELECTED_STEP.FINISH)
           }}
           onMoreClick={() => {
             openMaterialModal(material.id)
@@ -198,45 +205,68 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        <Headline label="1. Select Material" modifiers={['xl']} />
-        <Grid>
-          <Column lg={8} classNames={['u-margin-bottom']}>
-            <RadioButtonGroup
-              name="material-group"
-              value={(selectedMaterialGroup && selectedMaterialGroup.id) || undefined}
-              onChange={selectMaterialGroup}
-            >
-              <RadioButton key="__ALL__" value={undefined} label="All" />
-              {Object.values(materialGroups).map(group => (
-                <RadioButton key={group.id} value={group.id} label={group.name} />
-              ))}
-            </RadioButtonGroup>
-          </Column>
-          <Column lg={4} classNames={['u-margin-bottom']}>
-            <MaterialFilterPartial
-              materialFilter={materialFilter}
-              onFilterMaterials={setMaterialFilter}
-            />
-            <Paragraph classNames={['u-no-margin', 'u-align-right']}>
-              {'Not printable? '}
+        {selectedStep === SELECTED_STEP.MATERIAL ? (
+          <>
+            <MaterialStepHeadline number="1">Material</MaterialStepHeadline>
+            <Grid>
+              <Column lg={8} classNames={['u-margin-bottom']}>
+                <RadioButtonGroup
+                  name="material-group"
+                  value={(selectedMaterialGroup && selectedMaterialGroup.id) || undefined}
+                  onChange={selectMaterialGroup}
+                >
+                  <RadioButton key="__ALL__" value={undefined} label="All" />
+                  {Object.values(materialGroups).map(group => (
+                    <RadioButton key={group.id} value={group.id} label={group.name} />
+                  ))}
+                </RadioButtonGroup>
+              </Column>
+              <Column lg={4} classNames={['u-margin-bottom']}>
+                <MaterialFilterPartial
+                  materialFilter={materialFilter}
+                  onFilterMaterials={setMaterialFilter}
+                />
+                <Paragraph classNames={['u-no-margin', 'u-align-right']}>
+                  {'Not printable? '}
+                  <Link
+                    onClick={event => {
+                      event.preventDefault()
+                      openIntercom()
+                    }}
+                    label="Contact us"
+                  />
+                  {' and let’s help you!'}
+                </Paragraph>
+              </Column>
+            </Grid>
+            {showMaterials.length > 0 && (
+              <MaterialSlider>
+                {sortMaterials(showMaterials).map(renderMaterialCard)}
+              </MaterialSlider>
+            )}
+            {showMaterials.length === 0 && (
+              <Paragraph modifiers={['l']} classNames={['u-align-center']}>
+                No materials found.
+              </Paragraph>
+            )}
+          </>
+        ) : (
+          <MaterialStepHeadline
+            number="1"
+            selected={selectedMaterial.name}
+            change={
               <Link
-                onClick={event => {
-                  event.preventDefault()
-                  openIntercom()
+                label="change"
+                href="#"
+                onClick={e => {
+                  e.preventDefault()
+                  setSelectedStep(SELECTED_STEP.MATERIAL)
                 }}
-                label="Contact us"
               />
-              {' and let’s help you!'}
-            </Paragraph>
-          </Column>
-        </Grid>
-        {showMaterials.length > 0 && (
-          <MaterialSlider>{sortMaterials(showMaterials).map(renderMaterialCard)}</MaterialSlider>
-        )}
-        {showMaterials.length === 0 && (
-          <Paragraph modifiers={['l']} classNames={['u-align-center']}>
-            No materials found.
-          </Paragraph>
+            }
+          >
+            Material
+          </MaterialStepHeadline>
         )}
       </Section>
     )
@@ -244,70 +274,6 @@ const MaterialPartial = ({
 
   const renderFinishSection = () => {
     const renderFinishCard = finishGroup => {
-      // const colors = finishGroup.materialConfigs
-      //   .map(materialConfig => [
-      //     materialConfig,
-      //     getBestMultiModelOffersForMaterialConfig(
-      //       multiModelQuotes,
-      //       usedShippingIds,
-      //       shippings,
-      //       materialConfig.id
-      //     )
-      //   ])
-      //   // Filter out material configs which do not have an offer
-      //   .filter(([, offers]) => Boolean(offers.length))
-      //   .map(([{id, color, colorCode, colorImage}, [bestOffer]]) => ({
-      //     value: id,
-      //     colorValue: colorCode,
-      //     label: color,
-      //     colorImage: colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill']),
-      //     price: formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
-      //   }))
-      // let sortedOffers = getBestMultiModelOffersForMaterialConfig(
-      //   multiModelQuotes,
-      //   usedShippingIds,
-      //   shippings,
-      //   selectedMaterialConfigs[finishGroup.id]
-      // )
-      // let selectedColor = colors.find(
-      //   ({value}) =>
-      //     selectedMaterialConfigs[finishGroup.id] !== undefined &&
-      //     value === selectedMaterialConfigs[finishGroup.id]
-      // )
-
-      // // If there is no previous selected config use the first color
-      // if (!selectedColor) {
-      //   selectedColor = colors.length > 0 && colors[0]
-      //   if (selectedColor) {
-      //     sortedOffers = getBestMultiModelOffersForMaterialConfig(
-      //       multiModelQuotes,
-      //       usedShippingIds,
-      //       shippings,
-      //       selectedColor.value
-      //     )
-      //   }
-      // }
-
-      // const [bestOffer] = sortedOffers
-
-      // // const colorMenu = colors.length > 1 && <SelectMenu values={colors} />
-      // const materialPrice = (
-      //   <Price
-      //     value={
-      //       bestOffer && formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
-      //     }
-      //     loadingCheckmark={<LoadingCheckmark modifiers={isPollingComplete ? ['done'] : []} />}
-      //   />
-      // )
-      // // const colorSelect = (
-      // //   <SelectField
-      // //     modifiers={['compact']}
-      // //     menu={colorMenu}
-      // //     value={selectedColor || null}
-      // //     onChange={({value}) => selectMaterialConfigForFinishGroup(value, finishGroup.id)}
-      // //   />
-      // // )
-
       const bestOffer = getBestMultiModelOfferForFinishGroup(
         multiModelQuotes,
         usedShippingIds,
@@ -315,38 +281,18 @@ const MaterialPartial = ({
         finishGroup
       )
 
-      // Note: This is c&p from the `renderMaterialSection()`
-      // Check what we need here
-      const price = (
-        <Price
-          value={
-            bestOffer
-              ? formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
-              : undefined
-          }
-          loadingCheckmark={
-            <LoadingCheckmark
-              modifiers={compact([
-                isPollingComplete && 'done',
-                hasMoreThanOneResult && 'hideWithDelay'
-              ])}
-            />
-          }
-        />
-      )
-
       return (
         <MaterialCard
           key={finishGroup.id}
           title={finishGroup.name}
           description={finishGroup.descriptionShort}
-          price={price}
+          price={getPrice(bestOffer)}
           image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
           onSelectClick={() => {
             selectFinishGroup(finishGroup.id)
-            scrollTo('#section-color')
+            setSelectedStep(SELECTED_STEP.COLOR)
           }}
           onMoreClick={() => {
             openFinishGroupModal(finishGroup.id)
@@ -365,11 +311,32 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        <Headline label="2. Select Finish" modifiers={['xl']} />
-        {selectedMaterial.finishGroups.length > 0 && (
-          <MaterialSlider>
-            {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
-          </MaterialSlider>
+        {selectedStep === SELECTED_STEP.FINISH ? (
+          <>
+            <MaterialStepHeadline number="2">Finish</MaterialStepHeadline>
+            {selectedMaterial.finishGroups.length > 0 && (
+              <MaterialSlider>
+                {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
+              </MaterialSlider>
+            )}
+          </>
+        ) : (
+          <MaterialStepHeadline
+            number="2"
+            selected={selectedFinishGroup.name}
+            change={
+              <Link
+                label="change"
+                href="#"
+                onClick={e => {
+                  e.preventDefault()
+                  setSelectedStep(SELECTED_STEP.FINISH)
+                }}
+              />
+            }
+          >
+            Finish
+          </MaterialStepHeadline>
         )}
       </Section>
     )
@@ -377,34 +344,11 @@ const MaterialPartial = ({
 
   const renderColorSection = () => {
     const renderColorCard = materialConfig => {
-      console.log('-- materialConfig', materialConfig)
-
       const bestOffer = getBestMultiModelOfferForMaterialConfig(
         multiModelQuotes,
         usedShippingIds,
         shippings,
         materialConfig
-      )
-
-      console.log('-- bestOffers', bestOffer)
-
-      // Note: 3rd copy of `renderMaterialSection()`
-      const price = (
-        <Price
-          value={
-            bestOffer
-              ? formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
-              : undefined
-          }
-          loadingCheckmark={
-            <LoadingCheckmark
-              modifiers={compact([
-                isPollingComplete && 'done',
-                hasMoreThanOneResult && 'hideWithDelay'
-              ])}
-            />
-          }
-        />
       )
 
       return (
@@ -419,7 +363,7 @@ const MaterialPartial = ({
             />
           }
           title={materialConfig.color}
-          price={price}
+          price={getPrice(bestOffer)}
           button={
             <Button
               label="Select"
@@ -427,7 +371,7 @@ const MaterialPartial = ({
               tiny
               onClick={() => {
                 selectMaterialConfig(materialConfig.id)
-                scrollTo('#section-provider')
+                setSelectedStep(SELECTED_STEP.PROVIDER)
               }}
             />
           }
@@ -439,8 +383,31 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        <Headline label="3. Select Color" modifiers={['xl']} />
-        <ColorCardList>{selectedFinishGroup.materialConfigs.map(renderColorCard)}</ColorCardList>
+        {selectedStep === SELECTED_STEP.COLOR ? (
+          <>
+            <MaterialStepHeadline number="3">Color</MaterialStepHeadline>
+            <ColorCardList>
+              {selectedFinishGroup.materialConfigs.map(renderColorCard)}
+            </ColorCardList>
+          </>
+        ) : (
+          <MaterialStepHeadline
+            number="3"
+            selected={selectedMaterialConfig.color}
+            change={
+              <Link
+                label="change"
+                href="#"
+                onClick={e => {
+                  e.preventDefault()
+                  setSelectedStep(SELECTED_STEP.COLOR)
+                }}
+              />
+            }
+          >
+            Color
+          </MaterialStepHeadline>
+        )}
       </Section>
     )
   }
@@ -571,85 +538,112 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        <Headline label="3. Select Offer" modifiers={['xl']} />
-        <ProviderBoxSection>
-          {renderPromotedOffer({offer: cheapestOffer, cheapest: true})}
-          {renderPromotedOffer({offer: fastestOffer, cheapest: false})}
-        </ProviderBoxSection>
-        <ProviderList
-          modifiers={isProviderListHidden ? ['hidden'] : []}
-          onShowOffers={() => setProviderListHidden(false)}
-        >
-          {providerList.map(offer => {
-            const {
-              shippingId,
-              materialName,
-              process,
-              providerName,
-              vendorId,
-              productionTime,
-              deliveryTime,
-              time,
-              productionPrice,
-              shippingPrice,
-              totalPrice,
-              addToCartLabel,
-              handleAddToCart
-            } = getOfferInfos(offer)
+        {selectedStep === SELECTED_STEP.PROVIDER ? (
+          <>
+            <MaterialStepHeadline number="4">Offer</MaterialStepHeadline>
+            <ProviderBoxSection>
+              {renderPromotedOffer({offer: cheapestOffer, cheapest: true})}
+              {renderPromotedOffer({offer: fastestOffer, cheapest: false})}
+            </ProviderBoxSection>
+            <ProviderList
+              modifiers={isProviderListHidden ? ['hidden'] : []}
+              onShowOffers={() => setProviderListHidden(false)}
+            >
+              {providerList.map(offer => {
+                const {
+                  shippingId,
+                  materialName,
+                  process,
+                  providerName,
+                  vendorId,
+                  productionTime,
+                  deliveryTime,
+                  time,
+                  productionPrice,
+                  shippingPrice,
+                  totalPrice,
+                  addToCartLabel,
+                  handleAddToCart
+                } = getOfferInfos(offer)
 
-            const isCheapestOffer = isSameOffer(offer, cheapestOffer)
-            const isFastestOffer = isSameOffer(offer, fastestOffer)
+                const isCheapestOffer = isSameOffer(offer, cheapestOffer)
+                const isFastestOffer = isSameOffer(offer, fastestOffer)
 
-            return (
-              <ProviderItem
-                key={shippingId}
-                providerAnnotation={
-                  <DescriptionList>
-                    <dt>Process:</dt>
-                    <dd>{process}</dd>
-                    <dt>Fulfilled by:</dt>
-                    <dd>
-                      {<ProviderImage modifiers={['xs']} name={providerName} slug={vendorId} />}
-                    </dd>
-                  </DescriptionList>
-                }
-                provider={materialName}
-                timeAnnotation={
-                  <DescriptionList>
-                    <dt>Production:</dt>
-                    <dd>{productionTime}</dd>
-                    <dt>Shipping:</dt>
-                    <dd>{deliveryTime}</dd>
-                  </DescriptionList>
-                }
-                time={isFastestOffer ? <strong>{time}</strong> : time}
-                priceAnnotation={
-                  <DescriptionList>
-                    <dt>Production:</dt>
-                    <dd>{productionPrice}</dd>
-                    <dt>Shipping:</dt>
-                    <dd>{shippingPrice}</dd>
-                  </DescriptionList>
-                }
-                price={isCheapestOffer ? <strong>{totalPrice}</strong> : totalPrice}
-                action={
-                  <Button icon={checkoutIcon} label={addToCartLabel} onClick={handleAddToCart} />
-                }
-              />
-            )
-          })}
-        </ProviderList>
+                return (
+                  <ProviderItem
+                    key={shippingId}
+                    providerAnnotation={
+                      <DescriptionList>
+                        <dt>Process:</dt>
+                        <dd>{process}</dd>
+                        <dt>Fulfilled by:</dt>
+                        <dd>
+                          {<ProviderImage modifiers={['xs']} name={providerName} slug={vendorId} />}
+                        </dd>
+                      </DescriptionList>
+                    }
+                    provider={materialName}
+                    timeAnnotation={
+                      <DescriptionList>
+                        <dt>Production:</dt>
+                        <dd>{productionTime}</dd>
+                        <dt>Shipping:</dt>
+                        <dd>{deliveryTime}</dd>
+                      </DescriptionList>
+                    }
+                    time={isFastestOffer ? <strong>{time}</strong> : time}
+                    priceAnnotation={
+                      <DescriptionList>
+                        <dt>Production:</dt>
+                        <dd>{productionPrice}</dd>
+                        <dt>Shipping:</dt>
+                        <dd>{shippingPrice}</dd>
+                      </DescriptionList>
+                    }
+                    price={isCheapestOffer ? <strong>{totalPrice}</strong> : totalPrice}
+                    action={
+                      <Button
+                        icon={checkoutIcon}
+                        label={addToCartLabel}
+                        onClick={handleAddToCart}
+                      />
+                    }
+                  />
+                )
+              })}
+            </ProviderList>
+          </>
+        ) : (
+          <>
+            <MaterialStepHeadline
+              number="4"
+              selected="(Provider)"
+              change={
+                <Link
+                  label="change"
+                  href="#"
+                  onClick={e => {
+                    e.preventDefault()
+                    setSelectedStep(SELECTED_STEP.PROVIDER)
+                  }}
+                />
+              }
+            >
+              Offer
+            </MaterialStepHeadline>
+          </>
+        )}
       </Section>
     )
   }
 
   return (
-    <Fragment>
-      <div id="section-material">{renderMaterialSection()}</div>
-      <div id="section-finish">{finishSectionEnabled && renderFinishSection()}</div>
-      <div id="section-color">{colorSectionEnabled && renderColorSection()}</div>
-      <div id="section-provider">{providerSectionEnabled && renderProviderSection()}</div>
-    </Fragment>
+    <>
+      <>{renderMaterialSection()}</>
+      <>{finishSectionEnabled && renderFinishSection()}</>
+      <>{colorSectionEnabled && renderColorSection()}</>
+      <>{providerSectionEnabled && renderProviderSection()}</>
+    </>
   )
 }
 
@@ -692,15 +686,8 @@ export default compose(
     ({commonMaterialPath}) => ({
       selectedMaterialGroupId: commonMaterialPath.materialGroupId,
       selectedMaterialId: commonMaterialPath.materialId,
-      selectedFinishGroupId: commonMaterialPath.finishGroupId, // new
+      selectedFinishGroupId: commonMaterialPath.finishGroupId,
       selectedMaterialConfigId: commonMaterialPath.materialConfigId,
-      // These are the selected colors in the drop down fields
-      // selectedMaterialConfigs:
-      //   commonMaterialPath.finishGroupId && commonMaterialPath.materialConfigId
-      //     ? {
-      //         [commonMaterialPath.finishGroupId]: commonMaterialPath.materialConfigId
-      //       }
-      //     : {},
       materialFilter: ''
     }),
     {
@@ -709,14 +696,12 @@ export default compose(
         selectedMaterialId: null,
         selectedFinishGroupId: null,
         selectedMaterialConfigId: null,
-        // selectedMaterialConfigs: {},
         materialFilter: ''
       }),
       selectMaterial: () => id => ({
         selectedMaterialId: id,
         selectedFinishGroupId: null,
         selectedMaterialConfigId: null
-        // selectedMaterialConfigs: {}
       }),
       selectFinishGroup: () => id => ({
         selectedFinishGroupId: id,
@@ -725,17 +710,6 @@ export default compose(
       selectMaterialConfig: () => id => ({
         selectedMaterialConfigId: id
       }),
-      // selectMaterialConfigForFinishGroup: ({selectedMaterialConfigs, selectedMaterialConfigId}) => (
-      //   materialConfigId,
-      //   finishGroupId
-      // ) => ({
-      //   // Update selected material config if there was a selection before.
-      //   selectedMaterialConfigId: selectedMaterialConfigId ? materialConfigId : null,
-      //   selectedMaterialConfigs: {
-      //     ...selectedMaterialConfigs,
-      //     [finishGroupId]: materialConfigId
-      //   }
-      // }),
       setMaterialFilter: () => materialFilter => ({materialFilter})
     }
   ),
@@ -744,13 +718,16 @@ export default compose(
       materialGroups,
       materials,
       finishGroups,
+      materialConfigs,
       selectedMaterialGroupId,
       selectedMaterialId,
-      selectedFinishGroupId
+      selectedFinishGroupId,
+      selectedMaterialConfigId
     }) => ({
       selectedMaterialGroup: materialGroups[selectedMaterialGroupId],
       selectedMaterial: materials[selectedMaterialId],
-      selectedFinishGroup: finishGroups[selectedFinishGroupId]
+      selectedFinishGroup: finishGroups[selectedFinishGroupId],
+      selectedMaterialConfig: materialConfigs[selectedMaterialConfigId]
     })
   ),
   withPropsOnChange(['materials'], ({materials}) => ({
@@ -775,6 +752,10 @@ export default compose(
     }
   }),
   withState('isProviderListHidden', 'setProviderListHidden', true),
+  withState('selectedStep', 'setSelectedStep', props =>
+    // All closed for edit mode
+    props.selectedMaterialId ? null : SELECTED_STEP.MATERIAL
+  ),
   lifecycle({
     componentWillMount() {
       // It is possible that we do not have a location yet!

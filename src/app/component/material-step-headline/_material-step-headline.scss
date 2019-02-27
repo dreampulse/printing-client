@@ -1,0 +1,19 @@
+.MaterialStepHeadline {
+  font-size: $font-size-l;
+  margin-bottom: $space-base;
+
+  &__number {
+    display: inline-block;
+    min-width: 1.5em;
+    font-weight: $font-weight-bold;
+  }
+
+  &__content {
+    font-weight: $font-weight-bold;
+  }
+
+  &__change {
+    font-size: $font-size-base;
+    margin-left: 1.2em;
+  }
+}
