@@ -27,6 +27,7 @@ import {
 import {openIntercom} from '../service/intercom'
 
 import MaterialPartial from './material-partial'
+import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
 
 import ToolLayout from '../component/tool-layout'
@@ -41,6 +42,7 @@ import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import NumberField from '../component/number-field'
 import Paragraph from '../component/paragraph'
+import OfferLayout from '../component/offer-layout'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
@@ -130,6 +132,7 @@ const MaterialPage = ({
 
   return (
     <ToolLayout
+      fullMain
       scrollContainerId={SCROLL_CONTAINER_ID}
       header={
         <NavBar
@@ -158,10 +161,22 @@ const MaterialPage = ({
       }
       sidebar={sidebar()}
     >
-      <Section>
-        <LocationInfoPartial />
-      </Section>
-      <MaterialPartial configIds={selectedModelConfigIds} scrollContainerId={SCROLL_CONTAINER_ID} />
+      <OfferLayout
+        footer={
+          <OfferPartial
+            configIds={selectedModelConfigIds}
+            scrollContainerId={SCROLL_CONTAINER_ID}
+          />
+        }
+      >
+        <Section>
+          <LocationInfoPartial />
+        </Section>
+        <MaterialPartial
+          configIds={selectedModelConfigIds}
+          scrollContainerId={SCROLL_CONTAINER_ID}
+        />
+      </OfferLayout>
     </ToolLayout>
   )
 }
