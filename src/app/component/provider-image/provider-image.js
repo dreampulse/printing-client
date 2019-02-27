@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import buildClassName from '../../lib/class-names'
 
 import facfoxImage from '../../../asset/image/printing-service/facfox.png'
 import imaterialiseImage from '../../../asset/image/printing-service/imaterialise.png'
@@ -22,9 +22,9 @@ const providerImages = {
   treatstock: treatstockImage
 }
 
-const ProviderImage = ({classNames, modifiers, name, slug}) => (
+const ProviderImage = ({classNames, s = false, xs = false, name, slug}) => (
   <img
-    className={buildClassName('provider-image', modifiers, classNames)}
+    className={buildClassName('ProviderImage', {s, xs}, classNames)}
     src={providerImages[slug]}
     alt={name || slug}
   />
@@ -33,7 +33,9 @@ const ProviderImage = ({classNames, modifiers, name, slug}) => (
 ProviderImage.propTypes = {
   ...propTypes.component,
   name: PropTypes.string,
-  slug: PropTypes.string.isRequired
+  slug: PropTypes.string.isRequired,
+  s: PropTypes.bool,
+  xs: PropTypes.bool
 }
 
 export default ProviderImage

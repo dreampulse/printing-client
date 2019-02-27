@@ -1,0 +1,17 @@
+.OfferLayout {
+  height: 100%; // Needs to have height in order to fill the ToolLayout main area.
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &__main {
+    flex-grow: 1;
+    flex-shrink: 0;
+    padding: $space-xl;
+  }
+
+  &__footer {
+    position: sticky;
+    bottom: 0;
+  }
+}
