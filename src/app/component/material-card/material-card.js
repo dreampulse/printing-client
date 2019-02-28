@@ -17,16 +17,13 @@ const MaterialCard = ({
   description,
   loading = false,
   unavailable = false,
-  selected = false,
   image,
   onMoreClick = noop,
   onSelectClick = noop,
-  onUnavailableClick,
   descriptionHeadline,
   selectLabel = 'Select',
   learnMoreLabel = 'Learn more',
-  unavailableLabel = 'Not printable',
-  contactUsLabel = 'Contact Us'
+  unavailableLabel = 'Not printable'
 }) => {
   const imageStyle = {
     backgroundImage: `url(${image})`
@@ -64,7 +61,6 @@ const MaterialCard = ({
         {unavailable ? (
           <footer className="MaterialCard__footer">
             <div className="MaterialCard__unavailableText">{unavailableLabel}</div>
-            <Button minor tiny label={contactUsLabel} onClick={onUnavailableClick} />
           </footer>
         ) : (
           <footer className="MaterialCard__footer">

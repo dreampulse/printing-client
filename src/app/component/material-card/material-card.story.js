@@ -74,6 +74,5 @@ storiesOf('MaterialCard', module)
       onMoreClick={action('onMoreClick')}
       colorSelect={colorSelect}
       onSelectClick={action('onSelectClick')}
-      onUnavailableClick={action('onUnavailableClick')}
     />
   ))
