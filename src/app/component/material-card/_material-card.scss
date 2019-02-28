@@ -19,13 +19,13 @@
     padding: $space-l;
     display: flex;
     flex-direction: column;
-    // height: 270px; // Design decision
   }
 
   &__header {
     flex-shrink: 0;
     position: relative;
     margin-bottom: $space-l;
+    height: $font-size-xl * $line-height-base;
 
     & > .headline {
       @include scut-truncate();
@@ -49,9 +49,14 @@
     border-top: 1px solid $color-border-minor;
     line-height: $line-height-base;
     padding: $space-base 0;
-    height: 2 * $font-size-base * $line-height-base;
+    height: 3 * $font-size-base * $line-height-base;
     box-sizing: content-box;
     overflow: hidden;
+  }
+
+  &__descriptionHeadline {
+    @include scut-truncate();
+    font-weight: $font-weight-bold;
   }
 
   &__footer {
@@ -62,6 +67,7 @@
     align-items: center;
     border-top: 1px solid $color-border-minor;
     padding-top: $space-base;
+    height: 1px + $space-base + $tiny-field-height;
   }
 
   &__unavailableText {
