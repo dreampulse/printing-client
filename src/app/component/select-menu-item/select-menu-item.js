@@ -10,8 +10,6 @@ import selectedIcon from '../../../asset/icon/selected.svg'
 
 const getLabel = ({value, label}) => label || value
 
-// TODO: update component to the new style
-
 const SelectMenuItem = ({
   classNames,
   modifiers = [],

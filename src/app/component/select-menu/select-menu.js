@@ -46,9 +46,6 @@ SelectMenu.propTypes = {
       type: PropTypes.oneOf(['regular', 'group', 'material']), // Default is regular
       value: PropTypes.any,
       label: PropTypes.string, // When not provided value will be shown
-      colorValue: propTypes.string, // Optional color square
-      colorImage: PropTypes.string, // Optional color image URL
-      hasColor: PropTypes.bool, // Only if type is material
       price: PropTypes.string,
       children: PropTypes.arrayOf(
         PropTypes.shape({
@@ -56,9 +53,6 @@ SelectMenu.propTypes = {
           type: PropTypes.oneOf(['regular', 'material']), // Default is regular
           value: PropTypes.string.isRequired,
           label: PropTypes.string, // When not provided value will be shown
-          colorValue: propTypes.string, // Optional color square
-          colorImage: PropTypes.string, // Optional color image URL
-          hasColor: PropTypes.bool, // Only if type is material
           price: PropTypes.string
         })
       )

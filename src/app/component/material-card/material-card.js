@@ -20,11 +20,10 @@ const MaterialCard = ({
   image,
   onMoreClick = noop,
   onSelectClick = noop,
-  onUnavailableClick,
+  descriptionHeadline,
   selectLabel = 'Select',
   learnMoreLabel = 'Learn more',
-  unavailableLabel = 'Not printable',
-  contactUsLabel = 'Contact Us'
+  unavailableLabel = 'Not printable'
 }) => {
   const imageStyle = {
     backgroundImage: `url(${image})`
@@ -48,6 +47,7 @@ const MaterialCard = ({
         </header>
         {Boolean(description) && (
           <div className="MaterialCard__body">
+            <div className="MaterialCard__descriptionHeadline">{descriptionHeadline}</div>
             {description}{' '}
             <Link
               onClick={event => {
@@ -61,7 +61,6 @@ const MaterialCard = ({
         {unavailable ? (
           <footer className="MaterialCard__footer">
             <div className="MaterialCard__unavailableText">{unavailableLabel}</div>
-            <Button minor tiny label={contactUsLabel} onClick={onUnavailableClick} />
           </footer>
         ) : (
           <footer className="MaterialCard__footer">
@@ -80,6 +79,7 @@ MaterialCard.propTypes = {
   info: PropTypes.node,
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
+  descriptionHeadline: PropTypes.string,
   loading: PropTypes.bool,
   unavailable: PropTypes.bool,
   onMoreClick: PropTypes.func,

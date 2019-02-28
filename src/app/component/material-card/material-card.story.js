@@ -32,10 +32,21 @@ storiesOf('MaterialCard', module)
   .add('default', () => (
     <MaterialCard
       title="Polyamide"
+      descriptionHeadline="Best used for:"
       description="Best all-round material"
       price={price}
       info={info}
       image="http://placehold.it/260x170/cccccc"
+      onMoreClick={action('onMoreClick')}
+      onSelectClick={action('onSelectClick')}
+    />
+  ))
+  .add('without image', () => (
+    <MaterialCard
+      title="Polyamide"
+      description="Best all-round material"
+      price={price}
+      info={info}
       onMoreClick={action('onMoreClick')}
       onSelectClick={action('onSelectClick')}
     />
@@ -63,6 +74,5 @@ storiesOf('MaterialCard', module)
       onMoreClick={action('onMoreClick')}
       colorSelect={colorSelect}
       onSelectClick={action('onSelectClick')}
-      onUnavailableClick={action('onUnavailableClick')}
     />
   ))
