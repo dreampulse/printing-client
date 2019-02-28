@@ -57,13 +57,12 @@ export function getBestMultiModelOfferForMaterial(
   return bestQuote
 }
 
-// TODO: Add Tests
-export function getBestMultiModelOfferForFinishGroup(
+export function getBestMultiModelOffersForFinishGroup(
   quotes: MultiModelQuote[],
   usedShippingIds: ShippingId[],
   shippings: Shipping[],
   finishGroup: FinishGroup
-): Offer {
+): Offer[] {
   const materialConfigs: {[materialConfigId: string]: boolean} = {}
   finishGroup.materialConfigs.forEach(materialConfig => {
     materialConfigs[materialConfig.id] = true
@@ -72,31 +71,7 @@ export function getBestMultiModelOfferForFinishGroup(
   const multiModelQuotesForSelectedMaterial = quotes.filter(
     quote => quote.isPrintable && materialConfigs[quote.materialConfigId]
   )
-  const [bestQuote] = getSortedMultiModelOffers(
-    multiModelQuotesForSelectedMaterial,
-    usedShippingIds,
-    shippings
-  )
-  return bestQuote
-}
-
-// TODO: We need a different price calculation for the colors
-export function getBestMultiModelOfferForMaterialConfig(
-  quotes: MultiModelQuote[],
-  usedShippingIds: ShippingId[],
-  shippings: Shipping[],
-  materialConfig: MaterialConfig
-): Offer {
-  const multiModelQuotesForSelectedMaterial = quotes.filter(
-    quote => quote.isPrintable && quote.materialConfigId === materialConfig.id
-  )
-
-  const [bestQuote] = getSortedMultiModelOffers(
-    multiModelQuotesForSelectedMaterial,
-    usedShippingIds,
-    shippings
-  )
-  return bestQuote
+  return getSortedMultiModelOffers(multiModelQuotesForSelectedMaterial, usedShippingIds, shippings)
 }
 
 export function getBestMultiModelOffersForMaterialConfig(

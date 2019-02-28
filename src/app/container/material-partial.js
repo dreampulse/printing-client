@@ -23,8 +23,7 @@ import {
   getBestMultiModelOfferForMaterial,
   getBestMultiModelOffersForMaterialConfig,
   isSameOffer,
-  getBestMultiModelOfferForFinishGroup,
-  getBestMultiModelOfferForMaterialConfig
+  getBestMultiModelOffersForFinishGroup
 } from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
@@ -269,7 +268,7 @@ const MaterialPartial = ({
 
   const renderFinishSection = () => {
     const renderFinishCard = finishGroup => {
-      const bestOffer = getBestMultiModelOfferForFinishGroup(
+      const [bestOffer] = getBestMultiModelOffersForFinishGroup(
         multiModelQuotes,
         usedShippingIds,
         shippings,
@@ -339,11 +338,11 @@ const MaterialPartial = ({
 
   const renderColorSection = () => {
     const renderColorCard = materialConfig => {
-      const bestOffer = getBestMultiModelOfferForMaterialConfig(
+      const [bestOffer] = getBestMultiModelOffersForMaterialConfig(
         multiModelQuotes,
         usedShippingIds,
         shippings,
-        materialConfig
+        materialConfig.id
       )
 
       return (
