@@ -65,7 +65,7 @@ const MaterialCard = ({
         ) : (
           <footer className="MaterialCard__footer">
             {price && cloneElement(price, {loading})}
-            <Button minor tiny label={selectLabel} onClick={onSelectClick} />
+            <Button minor tiny label={selectLabel} disabled={loading} onClick={onSelectClick} />
           </footer>
         )}
       </div>

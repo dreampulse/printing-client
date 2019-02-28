@@ -76,7 +76,7 @@ const SELECTED_STEP = {
   MATERIAL: 'material',
   FINISH: 'finish',
   COLOR: 'color',
-  PROVIDER: 'provider' // Can be removed of the footer is ready
+  PROVIDER: 'provider' // Can be removed when the footer is ready
 }
 
 const MaterialPartial = ({
@@ -121,6 +121,7 @@ const MaterialPartial = ({
 }) => {
   const isPollingComplete = pollingProgress.complete === pollingProgress.total
   const hasMoreThanOneResult = pollingProgress.complete > 0
+  const isModelConfigEmpty = selectedModelConfigs.length === 0
 
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
@@ -134,10 +135,6 @@ const MaterialPartial = ({
     shippings,
     selectedMaterialConfigId
   )
-
-  const finishSectionEnabled = Boolean(selectedMaterial)
-  const colorSectionEnabled = Boolean(selectedFinishGroup)
-  const providerSectionEnabled = selectedMaterialConfigId && providerList.length > 0
 
   const hasItemsOnUploadPage = uploadedModelConfigs.some(
     modelConfig => !configIds.find(id => id === modelConfig.id) && !modelConfig.quoteId
@@ -203,7 +200,7 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        {selectedStep === SELECTED_STEP.MATERIAL ? (
+        {selectedStep === SELECTED_STEP.MATERIAL && !isModelConfigEmpty ? (
           <>
             <MaterialStepHeadline number="1">Material</MaterialStepHeadline>
             <Grid>
@@ -251,7 +248,7 @@ const MaterialPartial = ({
         ) : (
           <MaterialStepHeadline
             number="1"
-            selected={selectedMaterial.name}
+            selected={!isModelConfigEmpty && selectedMaterial && selectedMaterial.name}
             change={
               <Link
                 label="change"
@@ -309,7 +306,7 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        {selectedStep === SELECTED_STEP.FINISH ? (
+        {selectedStep === SELECTED_STEP.FINISH && !isModelConfigEmpty ? (
           <>
             <MaterialStepHeadline number="2">Finish</MaterialStepHeadline>
             {selectedMaterial.finishGroups.length > 0 && (
@@ -321,7 +318,7 @@ const MaterialPartial = ({
         ) : (
           <MaterialStepHeadline
             number="2"
-            selected={selectedFinishGroup.name}
+            selected={!isModelConfigEmpty && selectedFinishGroup && selectedFinishGroup.name}
             change={
               <Link
                 label="change"
@@ -351,6 +348,7 @@ const MaterialPartial = ({
 
       return (
         <ColorCard
+          key={materialConfig.id}
           colorTrait={
             <ColorTrait
               color={materialConfig.colorCode}
@@ -367,6 +365,7 @@ const MaterialPartial = ({
               label="Select"
               minor
               tiny
+              disabled={!bestOffer}
               onClick={() => {
                 selectMaterialConfig(materialConfig.id)
                 setSelectedStep(SELECTED_STEP.PROVIDER)
@@ -379,7 +378,7 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        {selectedStep === SELECTED_STEP.COLOR ? (
+        {selectedStep === SELECTED_STEP.COLOR && !isModelConfigEmpty ? (
           <>
             <MaterialStepHeadline number="3">Color</MaterialStepHeadline>
             <ColorCardList>
@@ -389,7 +388,7 @@ const MaterialPartial = ({
         ) : (
           <MaterialStepHeadline
             number="3"
-            selected={selectedMaterialConfig.color}
+            selected={!isModelConfigEmpty && selectedMaterialConfig && selectedMaterialConfig.color}
             change={
               <Link
                 label="change"
@@ -538,6 +537,9 @@ const MaterialPartial = ({
     )
   }
 
+  // Note: There is no change to the provider section (besides the headline) since this will be moved to the footer
+  // With the integration of the footer the whole `renderProviderSection()` can be removed
+  // Reminder: We need to deal with a preselected state here, too
   const renderProviderSection = () => {
     const cheapestOffer = providerList[0]
     const fastestOffer = [...providerList].sort(
@@ -546,7 +548,7 @@ const MaterialPartial = ({
 
     return (
       <Section>
-        {selectedStep === SELECTED_STEP.PROVIDER ? (
+        {selectedStep === SELECTED_STEP.PROVIDER && !isModelConfigEmpty ? (
           <>
             <MaterialStepHeadline number="4">Offer</MaterialStepHeadline>
             <ProviderBoxSection>
@@ -625,7 +627,7 @@ const MaterialPartial = ({
           <>
             <MaterialStepHeadline
               number="4"
-              selected="(Provider)"
+              selected={!isModelConfigEmpty && selectedMaterialConfigId && '(Provider)'}
               change={
                 <Link
                   label="change"
@@ -645,24 +647,17 @@ const MaterialPartial = ({
     )
   }
 
-  if (selectedModelConfigs.length === 0) {
-    return (
-      <>
-        <Headline label="Select a file to start customizing" modifiers={['xl']} />
-        {/* TODO: still show headlines for steps 1. 2. 3. here but disabled and without the content */}
-      </>
-    )
-  }
-
-  // TODO: support this
-
   return (
     <>
-      <Headline label="Customize your selection" modifiers={['xl']} />
+      {isModelConfigEmpty ? (
+        <Headline label="Select a file to start customizing" modifiers={['xl']} />
+      ) : (
+        <Headline label="Customize your selection" modifiers={['xl']} />
+      )}
       <>{renderMaterialSection()}</>
-      <>{finishSectionEnabled && renderFinishSection()}</>
-      <>{colorSectionEnabled && renderColorSection()}</>
-      <>{providerSectionEnabled && renderProviderSection()}</>
+      <>{renderFinishSection()}</>
+      <>{renderColorSection()}</>
+      <>{renderProviderSection()}</>
     </>
   )
 }

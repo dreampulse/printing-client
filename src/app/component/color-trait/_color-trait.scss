@@ -4,13 +4,8 @@
   display: inline-block;
   height: $color-trait-size;
   width: $color-trait-size;
-  border: 1px solid transparent;
   background: $color-bg;
   background-size: cover;
   vertical-align: middle;
   border-radius: $color-trait-size / 2;
-
-  &--border {
-    border-color: $color-gray-1;
-  }
 }
