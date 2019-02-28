@@ -21,6 +21,7 @@ const MaterialCard = ({
   onMoreClick = noop,
   onSelectClick = noop,
   onUnavailableClick,
+  descriptionHeadline,
   selectLabel = 'Select',
   learnMoreLabel = 'Learn more',
   unavailableLabel = 'Not printable',
@@ -48,6 +49,7 @@ const MaterialCard = ({
         </header>
         {Boolean(description) && (
           <div className="MaterialCard__body">
+            <div className="MaterialCard__descriptionHeadline">{descriptionHeadline}</div>
             {description}{' '}
             <Link
               onClick={event => {
@@ -80,6 +82,7 @@ MaterialCard.propTypes = {
   info: PropTypes.node,
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
+  descriptionHeadline: PropTypes.string,
   loading: PropTypes.bool,
   unavailable: PropTypes.bool,
   onMoreClick: PropTypes.func,

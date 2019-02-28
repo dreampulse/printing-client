@@ -12,7 +12,7 @@ const ColorCard = ({classNames, colorTrait, title, price, button}) => (
     </div>
     <div className="ColorCard__secondRow">
       <div className="ColorCard__price">{price}</div>
-      <div>{button}</div>
+      {button}
     </div>
   </div>
 )
