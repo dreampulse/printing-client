@@ -113,9 +113,9 @@ const MaterialPartial = ({
   pollingProgress,
   goToReviewOrder,
   selectedStep,
-  setSelectedStep,
   updateSelectedModelConfigs,
   resetConfigurationState,
+  setSelectedStep,
   scrollContainerId
 }) => {
   const isPollingComplete = pollingProgress.complete === pollingProgress.total
@@ -141,7 +141,7 @@ const MaterialPartial = ({
 
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
-  const getPrice = offer => (
+  const renderPrice = offer => (
     <Price
       value={offer ? formatPrice(offer.totalGrossPrice, offer.multiModelQuote.currency) : undefined}
       loadingCheckmark={
@@ -169,13 +169,12 @@ const MaterialPartial = ({
           key={material.id}
           title={material.name}
           description={material.descriptionShort}
-          price={getPrice(bestOffer)}
+          price={renderPrice(bestOffer)}
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
           onSelectClick={() => {
             selectMaterial(material.id)
-            setSelectedStep(SELECTED_STEP.FINISH)
           }}
           onMoreClick={() => {
             openMaterialModal(material.id)
@@ -198,7 +197,7 @@ const MaterialPartial = ({
       )
 
     return (
-      <Section>
+      <Section key="material-section">
         {selectedStep === SELECTED_STEP.MATERIAL && !isModelConfigEmpty ? (
           <>
             <MaterialStepHeadline number="1">Material</MaterialStepHeadline>
@@ -247,7 +246,7 @@ const MaterialPartial = ({
         ) : (
           <MaterialStepHeadline
             number="1"
-            selected={!isModelConfigEmpty && selectedMaterial && selectedMaterial.name}
+            selected={!isModelConfigEmpty && selectedMaterial ? selectedMaterial.name : null}
             change={
               <Link
                 label="change"
@@ -280,13 +279,12 @@ const MaterialPartial = ({
           key={finishGroup.id}
           title={finishGroup.name}
           description={finishGroup.descriptionShort}
-          price={getPrice(bestOffer)}
+          price={renderPrice(bestOffer)}
           image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
           onSelectClick={() => {
             selectFinishGroup(finishGroup.id)
-            setSelectedStep(SELECTED_STEP.COLOR)
           }}
           onMoreClick={() => {
             openFinishGroupModal(finishGroup.id)
@@ -304,7 +302,7 @@ const MaterialPartial = ({
       )
 
     return (
-      <Section>
+      <Section key="finish-section">
         {selectedStep === SELECTED_STEP.FINISH && !isModelConfigEmpty ? (
           <>
             <MaterialStepHeadline number="2">Finish</MaterialStepHeadline>
@@ -317,7 +315,7 @@ const MaterialPartial = ({
         ) : (
           <MaterialStepHeadline
             number="2"
-            selected={!isModelConfigEmpty && selectedFinishGroup && selectedFinishGroup.name}
+            selected={!isModelConfigEmpty && selectedFinishGroup ? selectedFinishGroup.name : null}
             change={
               <Link
                 label="change"
@@ -358,7 +356,7 @@ const MaterialPartial = ({
             />
           }
           title={materialConfig.color}
-          price={getPrice(bestOffer)}
+          price={renderPrice(bestOffer)}
           button={
             <Button
               label="Select"
@@ -367,7 +365,6 @@ const MaterialPartial = ({
               disabled={!bestOffer}
               onClick={() => {
                 selectMaterialConfig(materialConfig.id)
-                setSelectedStep(SELECTED_STEP.PROVIDER)
               }}
             />
           }
@@ -376,7 +373,7 @@ const MaterialPartial = ({
     }
 
     return (
-      <Section>
+      <Section key="color-section">
         {selectedStep === SELECTED_STEP.COLOR && !isModelConfigEmpty ? (
           <>
             <MaterialStepHeadline number="3">Color</MaterialStepHeadline>
@@ -387,7 +384,9 @@ const MaterialPartial = ({
         ) : (
           <MaterialStepHeadline
             number="3"
-            selected={!isModelConfigEmpty && selectedMaterialConfig && selectedMaterialConfig.color}
+            selected={
+              !isModelConfigEmpty && selectedMaterialConfig ? selectedMaterialConfig.color : null
+            }
             change={
               <Link
                 label="change"
@@ -546,7 +545,7 @@ const MaterialPartial = ({
     )[0]
 
     return (
-      <Section>
+      <Section key="provider-section">
         {selectedStep === SELECTED_STEP.PROVIDER && !isModelConfigEmpty ? (
           <>
             <MaterialStepHeadline number="4">Offer</MaterialStepHeadline>
@@ -626,7 +625,7 @@ const MaterialPartial = ({
           <>
             <MaterialStepHeadline
               number="4"
-              selected={!isModelConfigEmpty && selectedMaterialConfigId && '(Provider)'}
+              selected={!isModelConfigEmpty && selectedMaterialConfigId ? '(Provider)' : null}
               change={
                 <Link
                   label="change"
@@ -646,19 +645,24 @@ const MaterialPartial = ({
     )
   }
 
-  return (
-    <>
-      {isModelConfigEmpty ? (
-        <Headline label="Select a file to start customizing" modifiers={['xl']} />
-      ) : (
-        <Headline label="Customize your selection" modifiers={['xl']} />
-      )}
-      <>{renderMaterialSection()}</>
-      <>{renderFinishSection()}</>
-      <>{renderColorSection()}</>
-      <>{renderProviderSection()}</>
-    </>
-  )
+  const renderHeadline = () =>
+    isModelConfigEmpty ? (
+      <Headline
+        key="headline-empty"
+        label="Select a file to start customizing"
+        modifiers={['xl']}
+      />
+    ) : (
+      <Headline key="headline" label="Customize your selection" modifiers={['xl']} />
+    )
+
+  return [
+    renderHeadline(),
+    renderMaterialSection(),
+    renderFinishSection(),
+    renderColorSection(),
+    renderProviderSection()
+  ]
 }
 
 const mapStateToProps = (state, ownProps) => ({
@@ -697,12 +701,13 @@ export default compose(
     mapDispatchToProps
   ),
   withStateHandlers(
-    ({commonMaterialPath}) => ({
+    ({commonMaterialPath, selectedMaterialId}) => ({
       selectedMaterialGroupId: commonMaterialPath.materialGroupId,
       selectedMaterialId: commonMaterialPath.materialId,
       selectedFinishGroupId: commonMaterialPath.finishGroupId,
       selectedMaterialConfigId: commonMaterialPath.materialConfigId,
-      materialFilter: ''
+      materialFilter: '',
+      selectedStep: selectedMaterialId ? null : SELECTED_STEP.MATERIAL
     }),
     {
       selectMaterialGroup: () => id => ({
@@ -710,19 +715,23 @@ export default compose(
         selectedMaterialId: null,
         selectedFinishGroupId: null,
         selectedMaterialConfigId: null,
-        materialFilter: ''
+        materialFilter: '',
+        selectedStep: SELECTED_STEP.MATERIAL
       }),
       selectMaterial: () => id => ({
         selectedMaterialId: id,
         selectedFinishGroupId: null,
-        selectedMaterialConfigId: null
+        selectedMaterialConfigId: null,
+        selectedStep: SELECTED_STEP.FINISH
       }),
       selectFinishGroup: () => id => ({
         selectedFinishGroupId: id,
-        selectedMaterialConfigId: null
+        selectedMaterialConfigId: null,
+        selectedStep: SELECTED_STEP.COLOR
       }),
       selectMaterialConfig: () => id => ({
-        selectedMaterialConfigId: id
+        selectedMaterialConfigId: id,
+        selectedStep: SELECTED_STEP.PROVIDER
       }),
       setMaterialFilter: () => materialFilter => ({materialFilter}),
       resetConfigurationState: () => () => ({
@@ -730,6 +739,9 @@ export default compose(
         selectedMaterialId: null,
         selectedFinishGroupId: null,
         selectedMaterialConfigId: null
+      }),
+      setSelectedStep: () => selectedStep => ({
+        selectedStep
       })
     }
   ),
@@ -763,10 +775,10 @@ export default compose(
     })
   ),
   withState('isProviderListHidden', 'setProviderListHidden', true),
-  withState('selectedStep', 'setSelectedStep', props =>
-    // All closed for edit mode
-    props.selectedMaterialId ? null : SELECTED_STEP.MATERIAL
-  ),
+  // withState('selectedStep', 'setSelectedStep', props =>
+  //   // All closed for edit mode
+  //   props.selectedMaterialId ? null : SELECTED_STEP.MATERIAL
+  // ),
   lifecycle({
     componentWillMount() {
       // It is possible that we do not have a location yet!

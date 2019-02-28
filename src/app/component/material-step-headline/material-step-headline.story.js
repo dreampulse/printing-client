@@ -1,6 +1,5 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
-import {action} from '@storybook/addon-actions'
 
 import MaterialStepHeadline from '.'
 import Link from '../link'
@@ -11,16 +10,7 @@ storiesOf('MaterialStepHeadline', module)
     <MaterialStepHeadline
       number="1"
       selected="Some Material"
-      change={
-        <Link
-          label="change"
-          href="#"
-          onClick={e => {
-            e.preventDefault()
-            action('onClick')(e)
-          }}
-        />
-      }
+      change={<Link label="change" href="#" />}
     >
       Headline
     </MaterialStepHeadline>
