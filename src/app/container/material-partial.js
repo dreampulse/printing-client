@@ -656,13 +656,15 @@ const MaterialPartial = ({
       <Headline key="headline" label="Customize your selection" modifiers={['xl']} />
     )
 
-  return [
-    renderHeadline(),
-    renderMaterialSection(),
-    renderFinishSection(),
-    renderColorSection(),
-    renderProviderSection()
-  ]
+  return (
+    <>
+      {renderHeadline()}
+      {renderMaterialSection()}
+      {renderFinishSection()}
+      {renderColorSection()}
+      {renderProviderSection()}
+    </>
+  )
 }
 
 const mapStateToProps = (state, ownProps) => ({
