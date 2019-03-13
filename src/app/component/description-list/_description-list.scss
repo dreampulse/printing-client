@@ -28,6 +28,7 @@
     // There is a grid bug when provider image is a block element
     & > .ProviderImage {
       display: inline-block;
+      vertical-align: middle;
     }
   }
 

@@ -1,5 +1,5 @@
 .OfferItem {
-  $data-column-width: 15em;
+  $data-column-width: 18em;
 
   display: flex;
   align-items: center;
@@ -15,7 +15,7 @@
     }
 
     & > * + * {
-      margin-left: $space-xxxl;
+      margin-left: $space-xxl;
     }
   }
 

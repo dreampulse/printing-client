@@ -4,6 +4,7 @@ import unzip from 'lodash/unzip'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import withHandlers from 'recompose/withHandlers'
+import withState from 'recompose/withState'
 import lifecycle from 'recompose/lifecycle'
 import intersection from 'lodash/intersection'
 
@@ -26,7 +27,7 @@ import {
 } from '../lib/selector'
 import {openIntercom} from '../service/intercom'
 
-import MaterialPartial from './material-partial'
+import MaterialPartial, {SELECTED_STEP} from './material-partial'
 import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
 
@@ -47,6 +48,8 @@ import OfferLayout from '../component/offer-layout'
 const SCROLL_CONTAINER_ID = 'main-container'
 
 const MaterialPage = ({
+  selectedState,
+  setSelectedState,
   goToCart,
   goToUpload,
   cartCount,
@@ -166,6 +169,7 @@ const MaterialPage = ({
           <OfferPartial
             configIds={selectedModelConfigIds}
             scrollContainerId={SCROLL_CONTAINER_ID}
+            selectedState={selectedState}
           />
         }
       >
@@ -174,7 +178,8 @@ const MaterialPage = ({
         </Section>
         <MaterialPartial
           configIds={selectedModelConfigIds}
-          scrollContainerId={SCROLL_CONTAINER_ID}
+          selectedState={selectedState}
+          onChange={setSelectedState}
         />
       </OfferLayout>
     </ToolLayout>
@@ -226,6 +231,13 @@ export default compose(
         updateSelectedModelConfigs(modelsWithConfig.map(([modelConfig]) => modelConfig.id))
       }
     }
+  }),
+  withState('selectedState', 'setSelectedState', {
+    step: SELECTED_STEP.MATERIAL,
+    materialGroupId: null,
+    materialId: null,
+    finishGroupId: null,
+    materialConfigId: null
   }),
   lifecycle({
     componentWillMount() {

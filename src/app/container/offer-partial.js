@@ -2,7 +2,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
+import lifecycle from 'recompose/lifecycle'
 import keyBy from 'lodash/keyBy'
+import isEqual from 'lodash/isEqual'
 
 import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
@@ -30,9 +32,7 @@ const OfferPartial = ({
   // Own props
   isEditMode,
   configIds,
-  selectedMaterialId,
-  selectedFinishGroupId,
-  selectedMaterialConfigId,
+  selectedState,
   scrollContainerId,
   // HOC props
   materialConfigs,
@@ -61,7 +61,7 @@ const OfferPartial = ({
     multiModelQuotes,
     usedShippingIds,
     shippings,
-    selectedMaterialConfigId
+    selectedState.materialConfigId
   )
 
   const hasItemsOnUploadPage = uploadedModelConfigs.some(
@@ -206,5 +206,12 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withState('showMore', 'setShowMore', false)
+  withState('showMore', 'setShowMore', false),
+  lifecycle({
+    componentDidUpdate(prevProps) {
+      if (!isEqual(prevProps.selectedState, this.props.selectedState)) {
+        this.props.setShowMore(false)
+      }
+    }
+  })
 )(OfferPartial)
