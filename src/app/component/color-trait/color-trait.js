@@ -13,7 +13,12 @@ const ColorTrait = ({classNames, color = '#ffffff', image}) => {
     style.backgroundImage = `url(${image})`
   }
 
-  return <span className={cn('ColorTrait', {}, classNames)} style={style} />
+  return (
+    <span
+      className={cn('ColorTrait', {border: color === '#ffffff' || image}, classNames)}
+      style={style}
+    />
+  )
 }
 
 ColorTrait.propTypes = {
