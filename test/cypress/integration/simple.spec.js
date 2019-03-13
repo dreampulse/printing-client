@@ -25,19 +25,11 @@ context('Simple application flow', () => {
   })
 
   it('selects material and provider', () => {
-    cy.contains('button', 'Select Material').click()
-
-    cy.get('#section-material')
-      .contains('button', 'Select')
-      .click()
-
-    cy.get('#section-finish')
-      .contains('button:not(:disabled)', 'Select')
-      .click()
-
-    cy.get('#section-provider')
-      .contains('button', 'Add to cart')
-      .click()
+    cy.contains('button', 'Select').click()
+    cy.contains('button', 'Select').click()
+    cy.contains('button', 'Select').click()
+    cy.contains('button', 'Select').click()
+    cy.contains('button', 'Add to cart').click()
   })
 
   it('handles address form', () => {

@@ -11,7 +11,7 @@ import Headline from '../headline'
 import Paragraph from '../paragraph'
 import Container from '../container'
 
-const price = <Price value="$19.99" prefix="Total price" />
+const price = <Price value="$19.99" />
 
 const info = (
   <Info modifiers={['minor']}>
