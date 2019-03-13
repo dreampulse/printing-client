@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import lifecycle from 'recompose/lifecycle'
+import withProps from 'recompose/withProps'
 import keyBy from 'lodash/keyBy'
 import isEqual from 'lodash/isEqual'
 
@@ -11,7 +12,11 @@ import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
 import {getProviderName} from '../lib/material'
-import {getBestMultiModelOffersForMaterialConfig} from '../lib/offer'
+import {
+  getBestMultiModelOffersForMaterial,
+  getBestMultiModelOffersForFinishGroup,
+  getBestMultiModelOffersForMaterialConfig
+} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
 import {
@@ -49,13 +54,33 @@ const OfferPartial = ({
   updateSelectedModelConfigs,
   resetConfigurationState,
   showMore,
-  setShowMore
+  setShowMore,
+  currency,
+  selectedMaterial,
+  selectedFinishGroup
 }) => {
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
     shippings.some(shipping => shipping.vendorId === quote.vendorId)
   )
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, validQuotes)
+
+  let bestOffer = null
+  if (selectedFinishGroup) {
+    ;[bestOffer] = getBestMultiModelOffersForFinishGroup(
+      multiModelQuotes,
+      usedShippingIds,
+      shippings,
+      selectedFinishGroup
+    )
+  } else if (selectedMaterial) {
+    ;[bestOffer] = getBestMultiModelOffersForMaterial(
+      multiModelQuotes,
+      usedShippingIds,
+      shippings,
+      selectedMaterial
+    )
+  }
 
   const providerList = getBestMultiModelOffersForMaterialConfig(
     multiModelQuotes,
@@ -72,6 +97,30 @@ const OfferPartial = ({
 
   return (
     <OfferFooter showMore={showMore}>
+      {providerList.length === 0 && (
+        <OfferItem
+          actions={
+            <Button
+              icon={checkoutIcon}
+              disabled
+              label={isEditMode ? 'Select offer' : 'Add to cart'}
+            />
+          }
+        >
+          <DescriptionList>
+            <dt>
+              <strong>Total (incl. shipping):</strong>
+            </dt>
+            <dd>
+              <strong className="u-font-size-l">
+                {bestOffer
+                  ? formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
+                  : formatPrice(null, currency)}
+              </strong>
+            </dd>
+          </DescriptionList>
+        </OfferItem>
+      )}
       {providerList.map(({multiModelQuote, shipping, totalGrossPrice}, i) => {
         const materialConfig = materialConfigs[multiModelQuote.materialConfigId]
         const finishGroup = finishGroups[materialConfig.finishGroupId]
@@ -187,11 +236,13 @@ const mapStateToProps = (state, ownProps) => ({
   modelConfigs: state.core.modelConfigs,
   quotes: selectQuotes(state),
   materialConfigs: state.core.materialConfigs,
+  materials: state.core.materials,
   finishGroups: state.core.finishGroups,
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
   shippings: state.core.shippings,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
-  usedShippingIds: selectUsedShippingIdsAndFilter(state, ownProps.configIds)
+  usedShippingIds: selectUsedShippingIdsAndFilter(state, ownProps.configIds),
+  currency: state.core.currency
 })
 
 const mapDispatchToProps = {
@@ -207,6 +258,11 @@ export default compose(
     mapDispatchToProps
   ),
   withState('showMore', 'setShowMore', false),
+  withProps(({materials, finishGroups, materialConfigs, selectedState}) => ({
+    selectedMaterial: materials[selectedState.materialId],
+    selectedFinishGroup: finishGroups[selectedState.finishGroupId],
+    selectedMaterialConfig: materialConfigs[selectedState.materialConfigId]
+  })),
   lifecycle({
     componentDidUpdate(prevProps) {
       if (!isEqual(prevProps.selectedState, this.props.selectedState)) {

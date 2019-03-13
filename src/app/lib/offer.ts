@@ -34,12 +34,12 @@ function getSortedMultiModelOffers(
   return sortedQuotes
 }
 
-export function getBestMultiModelOfferForMaterial(
+export function getBestMultiModelOffersForMaterial(
   quotes: MultiModelQuote[],
   usedShippingIds: ShippingId[],
   shippings: Shipping[],
   material: Material
-): Offer {
+): Offer[] {
   const materialConfigs: {[materialConfigId: string]: boolean} = {}
   material.finishGroups.forEach(finishGroup => {
     finishGroup.materialConfigs.forEach(materialConfig => {
@@ -49,12 +49,7 @@ export function getBestMultiModelOfferForMaterial(
   const multiModelQuotesForSelectedMaterial = quotes.filter(
     quote => quote.isPrintable && materialConfigs[quote.materialConfigId]
   )
-  const [bestQuote] = getSortedMultiModelOffers(
-    multiModelQuotesForSelectedMaterial,
-    usedShippingIds,
-    shippings
-  )
-  return bestQuote
+  return getSortedMultiModelOffers(multiModelQuotesForSelectedMaterial, usedShippingIds, shippings)
 }
 
 export function getBestMultiModelOffersForFinishGroup(

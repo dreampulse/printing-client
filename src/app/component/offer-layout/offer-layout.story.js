@@ -262,6 +262,6 @@ const lorem = `
 storiesOf('OfferLayout', module).add(
   'default',
   withState({showMore: false}, store => (
-    <OfferLayout footer={offerFooter(store)}>foobar</OfferLayout>
+    <OfferLayout footer={offerFooter(store)}>{lorem}</OfferLayout>
   ))
 )

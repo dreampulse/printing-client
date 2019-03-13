@@ -18,7 +18,7 @@ import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
 import {
-  getBestMultiModelOfferForMaterial,
+  getBestMultiModelOffersForMaterial,
   getBestMultiModelOffersForMaterialConfig,
   getBestMultiModelOffersForFinishGroup
 } from '../lib/offer'
@@ -114,7 +114,7 @@ const MaterialPartial = ({
 
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
-      const bestOffer = getBestMultiModelOfferForMaterial(
+      const [bestOffer] = getBestMultiModelOffersForMaterial(
         multiModelQuotes,
         usedShippingIds,
         shippings,
@@ -147,10 +147,11 @@ const MaterialPartial = ({
       Object.values(materials)
 
     const sortMaterials = unsortedMaterials =>
-      partitionBy(unsortedMaterials, material =>
-        Boolean(
-          getBestMultiModelOfferForMaterial(multiModelQuotes, usedShippingIds, shippings, material)
-        )
+      partitionBy(
+        unsortedMaterials,
+        material =>
+          getBestMultiModelOffersForMaterial(multiModelQuotes, usedShippingIds, shippings, material)
+            .length > 0
       )
 
     return (
