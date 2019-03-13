@@ -1,7 +1,16 @@
 import keyBy from 'lodash/keyBy'
 import flatMap from 'lodash/flatMap'
 
-import {Material, MaterialId, MultiModelQuote, ShippingId, Shipping, Offer} from '../type'
+import {
+  Material,
+  MaterialId,
+  MultiModelQuote,
+  ShippingId,
+  Shipping,
+  Offer,
+  FinishGroup,
+  MaterialConfig
+} from '../type'
 
 function getSortedMultiModelOffers(
   quotes: MultiModelQuote[],
@@ -9,20 +18,18 @@ function getSortedMultiModelOffers(
   shippings: Shipping[]
 ): Offer[] {
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
-  const sortedQuotes = flatMap(
-    quotes,
-    multiModelQuote =>
-      shippings
-        .filter(shipping => shipping.vendorId === multiModelQuote.vendorId)
-        .map(shipping => ({
-          multiModelQuote,
-          shipping,
-          totalGrossPrice:
-            multiModelQuote.grossPrice +
-            (usedShippingIdsById[shipping.shippingId]
-              ? 0 // No additional costs if shipping method is already in cart
-              : shipping.grossPrice)
-        }))
+  const sortedQuotes = flatMap(quotes, multiModelQuote =>
+    shippings
+      .filter(shipping => shipping.vendorId === multiModelQuote.vendorId)
+      .map(shipping => ({
+        multiModelQuote,
+        shipping,
+        totalGrossPrice:
+          multiModelQuote.grossPrice +
+          (usedShippingIdsById[shipping.shippingId]
+            ? 0 // No additional costs if shipping method is already in cart
+            : shipping.grossPrice)
+      }))
   ).sort((a, b) => a.totalGrossPrice - b.totalGrossPrice)
   return sortedQuotes
 }
@@ -48,6 +55,23 @@ export function getBestMultiModelOfferForMaterial(
     shippings
   )
   return bestQuote
+}
+
+export function getBestMultiModelOffersForFinishGroup(
+  quotes: MultiModelQuote[],
+  usedShippingIds: ShippingId[],
+  shippings: Shipping[],
+  finishGroup: FinishGroup
+): Offer[] {
+  const materialConfigs: {[materialConfigId: string]: boolean} = {}
+  finishGroup.materialConfigs.forEach(materialConfig => {
+    materialConfigs[materialConfig.id] = true
+  })
+
+  const multiModelQuotesForSelectedMaterial = quotes.filter(
+    quote => quote.isPrintable && materialConfigs[quote.materialConfigId]
+  )
+  return getSortedMultiModelOffers(multiModelQuotesForSelectedMaterial, usedShippingIds, shippings)
 }
 
 export function getBestMultiModelOffersForMaterialConfig(

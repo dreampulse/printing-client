@@ -1,6 +1,4 @@
-.material-card {
-  $footer-text-height: 30px;
-
+.MaterialCard {
   max-width: $screen-sm-max;
   border-radius: $border-radius;
   box-shadow: $box-shadow-base;
@@ -21,13 +19,13 @@
     padding: $space-l;
     display: flex;
     flex-direction: column;
-    height: 270px; // Design decision
   }
 
   &__header {
     flex-shrink: 0;
     position: relative;
     margin-bottom: $space-l;
+    height: $font-size-xl * $line-height-base;
 
     & > .headline {
       @include scut-truncate();
@@ -51,32 +49,30 @@
     border-top: 1px solid $color-border-minor;
     line-height: $line-height-base;
     padding: $space-base 0;
-    height: 2 * $font-size-base * $line-height-base;
+    height: 3 * $font-size-base * $line-height-base;
     box-sizing: content-box;
     overflow: hidden;
   }
 
+  &__descriptionHeadline {
+    @include scut-truncate();
+    font-weight: $font-weight-bold;
+  }
+
   &__footer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-grow: 1;
     justify-content: space-between;
-    position: relative;
+    align-items: center;
     border-top: 1px solid $color-border-minor;
     padding-top: $space-base;
+    height: 1px + $space-base + $tiny-field-height;
   }
 
-  &__color {
-    margin-top: $space-s;
-    margin-bottom: $space-l;
-  }
-
-  &__unavailable {
-    height: $footer-text-height;
-    line-height: $footer-text-height;
+  &__unavailableText {
     font-size: $font-size-l;
     font-weight: $font-weight-bold;
-    margin-bottom: $space-base;
   }
 
   &--unavailable {
@@ -84,14 +80,8 @@
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
     opacity: 0.6;
 
-    .material-card__image {
+    .MaterialCard__image {
       filter: grayscale(100%);
-    }
-  }
-
-  &--tall {
-    .material-card__content {
-      height: 340px;
     }
   }
 }

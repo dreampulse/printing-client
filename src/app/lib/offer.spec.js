@@ -1,6 +1,7 @@
 import {
   getBestMultiModelOfferForMaterial,
   getBestMultiModelOffersForMaterialConfig,
+  getBestMultiModelOffersForFinishGroup,
   isSameOffer
 } from './offer'
 
@@ -38,6 +39,51 @@ const quotes = [
     vendorId: 'vendor-id'
   }
 ]
+
+const finishGroup = {
+  materialConfigs: [
+    {
+      id: 'material-config-1'
+    }
+  ]
+}
+
+describe('getBestMultiModelOfferForMaterial()', () => {
+  it('returns the sorted offer list for the material config', () =>
+    expect(
+      getBestMultiModelOffersForFinishGroup(quotes, usedShippingIds, shippings, finishGroup),
+      'to equal',
+      [
+        {
+          multiModelQuote: {
+            grossPrice: 23,
+            isPrintable: true,
+            materialConfigId: 'material-config-1',
+            vendorId: 'vendor-id'
+          },
+          shipping: {shippingId: 'shipping-id', vendorId: 'vendor-id', grossPrice: 10},
+          totalGrossPrice: 33
+        },
+        {
+          multiModelQuote: {
+            grossPrice: 42,
+            isPrintable: true,
+            materialConfigId: 'material-config-1',
+            vendorId: 'vendor-id'
+          },
+          shipping: {shippingId: 'shipping-id', vendorId: 'vendor-id', grossPrice: 10},
+          totalGrossPrice: 52
+        }
+      ]
+    ))
+
+  it('returns empty an empty list if no quotes match', () =>
+    expect(
+      getBestMultiModelOffersForFinishGroup([], usedShippingIds, shippings, finishGroup),
+      'to equal',
+      []
+    ))
+})
 
 describe('getBestMultiModelPriceForMaterialConfig()', () => {
   it('returns the sorted offer list for the material config only', () => {
@@ -89,7 +135,7 @@ describe('getBestMultiModelPriceForMaterialConfig()', () => {
   })
 })
 
-describe('getBestMultiModelPriceForMaterial()', () => {
+describe('getBestMultiModelOfferForMaterial()', () => {
   const material = {
     finishGroups: [
       {

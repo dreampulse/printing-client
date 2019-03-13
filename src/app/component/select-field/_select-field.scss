@@ -17,16 +17,6 @@
   background: $color-bg;
   color: $color-minor;
 
-  & > .color-square {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-
-    & + .select-field__value {
-      margin-left: $color-square-size + $space-base;
-    }
-  }
-
   &__value {
     @include scut-truncate;
 

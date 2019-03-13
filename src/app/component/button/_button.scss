@@ -43,24 +43,6 @@
     box-shadow: none;
   }
 
-  &--selected {
-    background-color: $color-gray-5;
-    color: $color-minor;
-    box-shadow: none;
-
-    & > .icon {
-      color: $color-green;
-    }
-
-    &:hover:not([disabled]),
-    &:focus:not([disabled]),
-    &:active:not([disabled]) {
-      background-color: $color-gray-5;
-      color: $color-minor;
-      box-shadow: none;
-    }
-  }
-
   &--text {
     padding: 0;
     background-color: inherit;

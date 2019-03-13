@@ -17,7 +17,6 @@ storiesOf('Button', module)
   .add('compact', () => <Button label="Compact Button" compact onClick={action('onClick')} />)
   .add('tiny', () => <Button label="Tiny Button" tiny onClick={action('onClick')} />)
   .add('minor', () => <Button label="Minor Button" minor onClick={action('onClick')} />)
-  .add('selected', () => <Button label="Selected Button" selected onClick={action('onClick')} />)
   .add('minor & disabled', () => (
     <Button label="Disabled Minor Button" disabled minor onClick={action('onClick')} />
   ))
