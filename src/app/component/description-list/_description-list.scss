@@ -1,22 +1,41 @@
-.description-list {
+.DescriptionList {
   display: inline-grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto 1fr;
   grid-column-gap: $space-base;
+  align-items: baseline;
   font-size: $font-size-s;
   color: $color-minor;
   margin: 0;
   text-align: left;
 
-  & > :nth-child(2n) {
-    @include scut-truncate();
-    margin-left: 0;
+  & > dt {
+    & > strong {
+      font-weight: $font-weight-regular;
+      color: $color-text;
+    }
   }
 
-  &--align-right {
-    & > :nth-child(2n) {
+  & > dd {
+    @include scut-truncate();
+    margin-left: 0;
+
+    & > strong {
+      font-weight: $font-weight-bold;
+      color: $color-text;
+      font-size: $font-size-base;
+    }
+
+    // There is a grid bug when provider image is a block element
+    & > .ProviderImage {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  &--alignRight {
+    & > dd {
       margin-left: 0;
       text-align: right;
     }
   }
 }
-

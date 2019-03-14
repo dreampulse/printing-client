@@ -1,54 +1,60 @@
 import {
-  getBestMultiModelOfferForMaterial,
+  getBestMultiModelOffersForMaterial,
   getBestMultiModelOffersForMaterialConfig,
   getBestMultiModelOffersForFinishGroup,
   isSameOffer
 } from './offer'
 
-const usedShippingIds = []
-const shippings = [
-  {
-    shippingId: 'shipping-id',
-    vendorId: 'vendor-id',
-    grossPrice: 10
-  }
-]
-const quotes = [
-  {
-    grossPrice: 42,
-    isPrintable: true,
-    materialConfigId: 'material-config-1',
-    vendorId: 'vendor-id'
-  },
-  {
-    grossPrice: 23,
-    isPrintable: true,
-    materialConfigId: 'material-config-1',
-    vendorId: 'vendor-id'
-  },
-  {
-    grossPrice: 10,
-    isPrintable: false,
-    materialConfigId: 'material-config-1',
-    vendorId: 'vendor-id'
-  },
-  {
-    grossPrice: 2,
-    isPrintable: true,
-    materialConfigId: 'material-config-2',
-    vendorId: 'vendor-id'
-  }
-]
+describe('getBestMultiModelOffersForFinishGroup()', () => {
+  let usedShippingIds
+  let shippings
+  let quotes
+  let finishGroup
 
-const finishGroup = {
-  materialConfigs: [
-    {
-      id: 'material-config-1'
+  beforeEach(() => {
+    usedShippingIds = []
+    shippings = [
+      {
+        shippingId: 'shipping-id',
+        vendorId: 'vendor-id',
+        grossPrice: 10
+      }
+    ]
+    quotes = [
+      {
+        grossPrice: 42,
+        isPrintable: true,
+        materialConfigId: 'material-config-1',
+        vendorId: 'vendor-id'
+      },
+      {
+        grossPrice: 23,
+        isPrintable: true,
+        materialConfigId: 'material-config-1',
+        vendorId: 'vendor-id'
+      },
+      {
+        grossPrice: 10,
+        isPrintable: false,
+        materialConfigId: 'material-config-1',
+        vendorId: 'vendor-id'
+      },
+      {
+        grossPrice: 2,
+        isPrintable: true,
+        materialConfigId: 'material-config-2',
+        vendorId: 'vendor-id'
+      }
+    ]
+    finishGroup = {
+      materialConfigs: [
+        {
+          id: 'material-config-1'
+        }
+      ]
     }
-  ]
-}
+  })
 
-describe('getBestMultiModelOfferForMaterial()', () => {
   it('returns the sorted offer list for the material config', () =>
     expect(
       getBestMultiModelOffersForFinishGroup(quotes, usedShippingIds, shippings, finishGroup),
@@ -85,7 +91,48 @@ describe('getBestMultiModelOfferForMaterial()', () => {
     ))
 })
 
-describe('getBestMultiModelPriceForMaterialConfig()', () => {
+describe('getBestMultiModelOffersForMaterialConfig()', () => {
+  let usedShippingIds
+  let shippings
+  let quotes
+
+  beforeEach(() => {
+    usedShippingIds = []
+    shippings = [
+      {
+        shippingId: 'shipping-id',
+        vendorId: 'vendor-id',
+        grossPrice: 10
+      }
+    ]
+    quotes = [
+      {
+        grossPrice: 42,
+        isPrintable: true,
+        materialConfigId: 'material-config-1',
+        vendorId: 'vendor-id'
+      },
+      {
+        grossPrice: 23,
+        isPrintable: true,
+        materialConfigId: 'material-config-1',
+        vendorId: 'vendor-id'
+      },
+      {
+        grossPrice: 10,
+        isPrintable: false,
+        materialConfigId: 'material-config-1',
+        vendorId: 'vendor-id'
+      },
+      {
+        grossPrice: 2,
+        isPrintable: true,
+        materialConfigId: 'material-config-2',
+        vendorId: 'vendor-id'
+      }
+    ]
+  })
+
   it('returns the sorted offer list for the material config only', () => {
     expect(
       getBestMultiModelOffersForMaterialConfig(
@@ -135,45 +182,99 @@ describe('getBestMultiModelPriceForMaterialConfig()', () => {
   })
 })
 
-describe('getBestMultiModelOfferForMaterial()', () => {
-  const material = {
-    finishGroups: [
+describe('getBestMultiModelOffersForMaterial()', () => {
+  let usedShippingIds
+  let shippings
+  let quotes
+  let material
+
+  beforeEach(() => {
+    usedShippingIds = []
+    shippings = [
       {
-        materialConfigs: [
-          {
-            id: 'material-config-1'
-          }
-        ]
-      },
-      {
-        materialConfigs: [
-          {
-            id: 'material-config-2'
-          },
-          {
-            id: 'material-config-3'
-          }
-        ]
+        shippingId: 'shipping-id',
+        vendorId: 'vendor-id',
+        grossPrice: 10
       }
     ]
-  }
+    quotes = [
+      {
+        grossPrice: 42,
+        isPrintable: true,
+        materialConfigId: 'material-config-1',
+        vendorId: 'vendor-id'
+      },
+      {
+        grossPrice: 23,
+        isPrintable: true,
+        materialConfigId: 'material-config-1',
+        vendorId: 'vendor-id'
+      },
+      {
+        grossPrice: 10,
+        isPrintable: false,
+        materialConfigId: 'material-config-1',
+        vendorId: 'vendor-id'
+      },
+      {
+        grossPrice: 2,
+        isPrintable: true,
+        materialConfigId: 'material-config-2',
+        vendorId: 'vendor-id'
+      }
+    ]
+    material = {
+      finishGroups: [
+        {
+          materialConfigs: [
+            {
+              id: 'material-config-1'
+            }
+          ]
+        },
+        {
+          materialConfigs: [
+            {
+              id: 'material-config-2'
+            },
+            {
+              id: 'material-config-3'
+            }
+          ]
+        }
+      ]
+    }
+  })
 
   it('returns the best offer for the material', () => {
     expect(
-      getBestMultiModelOfferForMaterial(quotes, usedShippingIds, shippings, material),
+      getBestMultiModelOffersForMaterial(quotes, usedShippingIds, shippings, material),
       'to equal',
-      {
-        multiModelQuote: quotes[3],
-        shipping: shippings[0],
-        totalGrossPrice: quotes[3].grossPrice + shippings[0].grossPrice
-      }
+      [
+        {
+          multiModelQuote: quotes[3],
+          shipping: shippings[0],
+          totalGrossPrice: quotes[3].grossPrice + shippings[0].grossPrice
+        },
+        {
+          multiModelQuote: quotes[1],
+          shipping: shippings[0],
+          totalGrossPrice: quotes[1].grossPrice + shippings[0].grossPrice
+        },
+        {
+          multiModelQuote: quotes[0],
+          shipping: shippings[0],
+          totalGrossPrice: quotes[0].grossPrice + shippings[0].grossPrice
+        }
+      ]
     )
   })
 
-  it('returns undefined if no quotes provided / matched', () => {
+  it('returns empty list if no quotes provided / matched', () => {
     expect(
-      getBestMultiModelOfferForMaterial([], usedShippingIds, shippings, material),
-      'to be undefined'
+      getBestMultiModelOffersForMaterial([], usedShippingIds, shippings, material),
+      'to equal',
+      []
     )
   })
 })

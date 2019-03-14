@@ -2,29 +2,28 @@
 
 // Third party libs
 
-@import "../../node_modules/normalize.css/normalize.css";
-@import "../../node_modules/scut/dist/scut";
+@import '../../node_modules/normalize.css/normalize.css';
+@import '../../node_modules/scut/dist/scut';
 
 // Config
 
-@import "config";
+@import 'config';
 
 // Mixins
 
-@import "mixin/**/*.scss";
+@import 'mixin/**/*.scss';
 
 // Bootstrap
 
-@import "scaffolding";
+@import 'scaffolding';
 
 // Components
 // (BEM-like Naming, see http://cssguidelin.es/#bem-like-naming)
 
-@import "../app/component/**/*.scss";
-
+@import '../app/component/**/*.scss';
 
 // Utility classes
 // (they should have the highest priority)
-
-@import "util/**/*.scss";
-
+#root {
+  @import 'util/**/*.scss';
+}

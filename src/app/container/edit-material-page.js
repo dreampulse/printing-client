@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
+import withState from 'recompose/withState'
 import unzip from 'lodash/unzip'
 
 import * as navigationAction from '../action/navigation'
@@ -14,12 +15,16 @@ import helpIcon from '../../asset/icon/help.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
 import {formatDimensions} from '../lib/formatter'
-import {selectCartCount, selectModelsOfModelConfigs} from '../lib/selector'
-import {scrollToTop} from './util/scroll-to-top'
+import {
+  selectCartCount,
+  selectModelsOfModelConfigs,
+  selectCommonMaterialPathOfModelConfigs
+} from '../lib/selector'
 import {openIntercom} from '../service/intercom'
 import {guard} from './util/guard'
 
-import MaterialPartial from './material-partial'
+import MaterialPartial, {SELECTED_STEP} from './material-partial'
+import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
 
 import NavBar from '../component/nav-bar'
@@ -33,6 +38,7 @@ import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import UploadModelItem from '../component/upload-model-item'
 import NumberField from '../component/number-field'
+import OfferLayout from '../component/offer-layout'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
@@ -43,14 +49,15 @@ const EditMaterialPage = ({
   configIds,
   cartCount,
   openModelViewer,
-  updateQuantities
+  updateQuantities,
+  selectedState,
+  setSelectedState
 }) => {
   const sidebar = () => (
     <>
       <Section>
         <Link
           label="Back to cart"
-          href="#"
           icon={backIcon}
           onClick={event => {
             event.preventDefault()
@@ -92,6 +99,7 @@ const EditMaterialPage = ({
 
   return (
     <ToolLayout
+      fullMain
       scrollContainerId={SCROLL_CONTAINER_ID}
       header={
         <NavBar
@@ -120,10 +128,25 @@ const EditMaterialPage = ({
       }
       sidebar={sidebar()}
     >
-      <Section>
-        <LocationInfoPartial />
-      </Section>
-      <MaterialPartial isEditMode configIds={configIds} scrollContainerId={SCROLL_CONTAINER_ID} />
+      <OfferLayout
+        footer={
+          <OfferPartial
+            isEditMode
+            configIds={configIds}
+            scrollContainerId={SCROLL_CONTAINER_ID}
+            selectedState={selectedState}
+          />
+        }
+      >
+        <Section>
+          <LocationInfoPartial />
+        </Section>
+        <MaterialPartial
+          configIds={configIds}
+          selectedState={selectedState}
+          onChange={setSelectedState}
+        />
+      </OfferLayout>
     </ToolLayout>
   )
 }
@@ -135,7 +158,8 @@ const mapStateToProps = (state, ownProps) => ({
   ),
   currency: state.core.currency,
   location: state.core.location,
-  cartCount: selectCartCount(state)
+  cartCount: selectCartCount(state),
+  commonMaterialPath: selectCommonMaterialPathOfModelConfigs(state, ownProps.configIds)
 })
 
 const mapDispatchToProps = {
@@ -146,7 +170,6 @@ const mapDispatchToProps = {
 }
 
 export default compose(
-  scrollToTop(),
   withProps(({location}) => ({
     configIds: (location.state && location.state.configIds) || []
   })),
@@ -154,5 +177,23 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
+  withState('selectedState', 'setSelectedState', ({commonMaterialPath}) => {
+    let step = null
+    if (!commonMaterialPath.materialId) {
+      step = SELECTED_STEP.MATERIAL
+    } else if (!commonMaterialPath.finishGroupId) {
+      step = SELECTED_STEP.FINISH
+    } else if (!commonMaterialPath.materialConfigId) {
+      step = SELECTED_STEP.COLOR
+    }
+
+    return {
+      step,
+      materialGroupId: commonMaterialPath.materialGroupId,
+      materialId: commonMaterialPath.materialId,
+      finishGroupId: commonMaterialPath.finishGroupId,
+      materialConfigId: commonMaterialPath.materialConfigId
+    }
+  }),
   guard(props => props.modelsWithConfig.length > 0)
 )(EditMaterialPage)

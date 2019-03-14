@@ -4,6 +4,7 @@ import unzip from 'lodash/unzip'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import withHandlers from 'recompose/withHandlers'
+import withState from 'recompose/withState'
 import lifecycle from 'recompose/lifecycle'
 import intersection from 'lodash/intersection'
 
@@ -26,7 +27,8 @@ import {
 } from '../lib/selector'
 import {openIntercom} from '../service/intercom'
 
-import MaterialPartial from './material-partial'
+import MaterialPartial, {SELECTED_STEP} from './material-partial'
+import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
 
 import ToolLayout from '../component/tool-layout'
@@ -41,10 +43,13 @@ import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import NumberField from '../component/number-field'
 import Paragraph from '../component/paragraph'
+import OfferLayout from '../component/offer-layout'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
 const MaterialPage = ({
+  selectedState,
+  setSelectedState,
   goToCart,
   goToUpload,
   cartCount,
@@ -130,6 +135,7 @@ const MaterialPage = ({
 
   return (
     <ToolLayout
+      fullMain
       scrollContainerId={SCROLL_CONTAINER_ID}
       header={
         <NavBar
@@ -158,10 +164,24 @@ const MaterialPage = ({
       }
       sidebar={sidebar()}
     >
-      <Section>
-        <LocationInfoPartial />
-      </Section>
-      <MaterialPartial configIds={selectedModelConfigIds} scrollContainerId={SCROLL_CONTAINER_ID} />
+      <OfferLayout
+        footer={
+          <OfferPartial
+            configIds={selectedModelConfigIds}
+            scrollContainerId={SCROLL_CONTAINER_ID}
+            selectedState={selectedState}
+          />
+        }
+      >
+        <Section>
+          <LocationInfoPartial />
+        </Section>
+        <MaterialPartial
+          configIds={selectedModelConfigIds}
+          selectedState={selectedState}
+          onChange={setSelectedState}
+        />
+      </OfferLayout>
     </ToolLayout>
   )
 }
@@ -211,6 +231,13 @@ export default compose(
         updateSelectedModelConfigs(modelsWithConfig.map(([modelConfig]) => modelConfig.id))
       }
     }
+  }),
+  withState('selectedState', 'setSelectedState', {
+    step: SELECTED_STEP.MATERIAL,
+    materialGroupId: null,
+    materialId: null,
+    finishGroupId: null,
+    materialConfigId: null
   }),
   lifecycle({
     componentWillMount() {

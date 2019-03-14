@@ -10,7 +10,7 @@ storiesOf('MaterialStepHeadline', module)
     <MaterialStepHeadline
       number="1"
       selected="Some Material"
-      change={<Link label="change" href="#" />}
+      action={<Link label="change" href="#" />}
     >
       Headline
     </MaterialStepHeadline>

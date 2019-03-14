@@ -5,4 +5,5 @@ import ProviderImage from '.'
 
 storiesOf('Provider Image', module)
   .add('default', () => <ProviderImage slug="imaterialise" name="i.Materialise" />)
-  .add('s', () => <ProviderImage modifiers={['s']} slug="imaterialise" name="i.Materialise" />)
+  .add('s', () => <ProviderImage s slug="imaterialise" name="i.Materialise" />)
+  .add('xs', () => <ProviderImage xs slug="imaterialise" name="i.Materialise" />)
