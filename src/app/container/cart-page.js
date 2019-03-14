@@ -7,7 +7,7 @@ import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 
 import {selectCartShippings, selectConfiguredModelInformation} from '../lib/selector'
-import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
+import {formatPrice, formatDimensions, formatTimeRange} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {guard} from './util/guard'
@@ -91,7 +91,9 @@ const CartPage = ({
             finishGroupName,
             colorCode,
             color,
-            colorImage
+            colorImage,
+            productionTimeFast,
+            productionTimeSlow
           }) => (
             <ModelItem
               key={modelConfig.id}
@@ -102,7 +104,10 @@ const CartPage = ({
               subline={formatDimensions(model.dimensions, model.fileUnit)}
               buttonBar={buttonBar(modelConfig)}
               price={formatPrice(quote.price, quote.currency)}
-              deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
+              time={formatTimeRange(
+                productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+              )}
               shippingMethod={shipping.name}
               providerId={shipping.vendorId}
               materialName={materialName}

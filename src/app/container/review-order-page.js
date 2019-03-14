@@ -13,7 +13,7 @@ import * as logging from '../service/logging'
 
 import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
-import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
+import {formatPrice, formatDimensions, formatTimeRange} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import {
   selectCartShippings,
@@ -398,7 +398,9 @@ const ReviewOrderPage = ({
                 finishGroupName,
                 colorCode,
                 color,
-                colorImage
+                colorImage,
+                productionTimeFast,
+                productionTimeSlow
               }) => (
                 <ModelItem
                   modifiers={['read-only']}
@@ -409,7 +411,10 @@ const ReviewOrderPage = ({
                   subline={formatDimensions(model.dimensions, model.fileUnit)}
                   quantity={modelConfig.quantity}
                   price={formatPrice(quote.price, quote.currency)}
-                  deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
+                  time={formatTimeRange(
+                    productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                    productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                  )}
                   shippingMethod={shipping.name}
                   providerId={shipping.vendorId}
                   materialName={materialName}
