@@ -58,17 +58,13 @@ const OfferPartial = ({
     shippings.some(shipping => shipping.vendorId === quote.vendorId)
   )
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, validQuotes)
-  const offers = getBestMultiModelOffers(
-    multiModelQuotes,
-    usedShippingIds,
-    shippings,
-    materialConfigs,
-    {
-      materialConfigId: selectedState.materialConfigId,
-      finishGroupId: selectedState.finishGroupId,
-      materialId: selectedState.materialId
-    }
-  )
+  const offers = selectedState.materialId
+    ? getBestMultiModelOffers(multiModelQuotes, usedShippingIds, shippings, materialConfigs, {
+        materialConfigId: selectedState.materialConfigId,
+        finishGroupId: selectedState.finishGroupId,
+        materialId: selectedState.materialId
+      })
+    : []
 
   const hasItemsOnUploadPage = uploadedModelConfigs.some(
     modelConfig => !configIds.find(id => id === modelConfig.id) && !modelConfig.quoteId

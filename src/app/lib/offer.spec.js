@@ -1,10 +1,4 @@
-import {
-  getBestMultiModelOffers,
-  getBestMultiModelOffersForMaterial,
-  getBestMultiModelOffersForMaterialConfig,
-  getBestMultiModelOffersForFinishGroup,
-  isSameOffer
-} from './offer'
+import {getBestMultiModelOffers, isSameOffer} from './offer'
 
 describe('getBestMultiModelOffers()', () => {
   let shippings

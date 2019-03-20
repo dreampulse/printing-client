@@ -1,5 +1,6 @@
 import {
   formatPrice,
+  formatPriceDifference,
   formatDeliveryTime,
   formatLocation,
   formatDimensions,
@@ -9,43 +10,57 @@ import {
 
 describe('formatPrice()', () => {
   it('returns formatted string with price and currency USD', () => {
-    expect(formatPrice(19.99, 'USD'), 'to equal', '$19.99')
+    expect(formatPrice(19.99, 'USD'), 'to equal', '$ 19.99')
   })
 
   it('returns formatted string with price and currency EUR', () => {
-    expect(formatPrice(19.99, 'EUR'), 'to equal', '19.99€')
+    expect(formatPrice(19.99, 'EUR'), 'to equal', '19.99 €')
   })
 
   it('returns formatted string with price and currency GBP', () => {
-    expect(formatPrice(19.99, 'GBP'), 'to equal', '£19.99')
+    expect(formatPrice(19.99, 'GBP'), 'to equal', '£ 19.99')
   })
 
   it('returns formatted string with price and currency CAD', () => {
-    expect(formatPrice(19.99, 'CAD'), 'to equal', 'CDN$19.99')
+    expect(formatPrice(19.99, 'CAD'), 'to equal', 'CDN$ 19.99')
   })
 
   it('returns formatted string with price and currency AUD', () => {
-    expect(formatPrice(19.99, 'AUD'), 'to equal', 'AU$19.99')
+    expect(formatPrice(19.99, 'AUD'), 'to equal', 'AU$ 19.99')
   })
 
   it('returns formatted string with price and unsupported currency', () => {
-    expect(formatPrice(19.99, 'ZAR', true), 'to equal', 'ZAR19.99')
+    expect(formatPrice(19.99, 'ZAR', true), 'to equal', 'ZAR 19.99')
   })
 
   it('adds two 0s', () => {
-    expect(formatPrice(10, 'USD'), 'to equal', '$10.00')
+    expect(formatPrice(10, 'USD'), 'to equal', '$ 10.00')
   })
 
   it('rounds value down', () => {
-    expect(formatPrice(19.994, 'USD'), 'to equal', '$19.99')
+    expect(formatPrice(19.994, 'USD'), 'to equal', '$ 19.99')
   })
 
   it('rounds value up', () => {
-    expect(formatPrice(19.995, 'USD'), 'to equal', '$20.00')
+    expect(formatPrice(19.995, 'USD'), 'to equal', '$ 20.00')
   })
 
   it('returns placeholder for empty value', () => {
-    expect(formatPrice(null, 'USD'), 'to equal', '$ - ')
+    expect(formatPrice(null, 'USD'), 'to equal', '$ -')
+  })
+})
+
+describe('formatPriceDifference()', () => {
+  it('returns formatted string with positive price difference and currency USD', () => {
+    expect(formatPriceDifference(20, 10, 'USD'), 'to equal', '+$ 10.00')
+  })
+
+  it('returns formatted string with negative price difference and currency USD', () => {
+    expect(formatPriceDifference(10, 20, 'USD'), 'to equal', '-$ 10.00')
+  })
+
+  it('returns formatted string with zero price difference and currency USD', () => {
+    expect(formatPriceDifference(10, 10, 'USD'), 'to equal', '+$ 0.00')
   })
 })
 
