@@ -301,7 +301,18 @@ const saveUser = (state: CoreState, action: coreActions.SaveUserAction): CoreRed
     },
     Cmd.run<Actions>(
       (user: User, userId: UserId) => {
-        const finalUser = omit(user, 'saveAddress', 'liableForVat')
+        const finalUser = pick(
+          user,
+          'userId',
+          'emailAddress',
+          'isCompany',
+          'companyName',
+          'vatId',
+          'phoneNumber',
+          'useDifferentBillingAddress',
+          'shippingAddress',
+          'billingAddress'
+        )
 
         return userId
           ? printingEngine.updateUser(userId, finalUser)
@@ -324,7 +335,18 @@ const restoreUser = (state: CoreState, action: coreActions.RestoreUserAction): C
       Cmd.run<Actions>(
         printingEngine.createUser,
         {
-          args: [omit(state.user, 'saveAddress', 'liableForVat')],
+          args: [pick(
+            state.user,
+            'userId',
+            'emailAddress',
+            'isCompany',
+            'companyName',
+            'vatId',
+            'phoneNumber',
+            'useDifferentBillingAddress',
+            'shippingAddress',
+            'billingAddress'
+          )],
           successActionCreator: coreActions.userReceived,
           failActionCreator: coreActions.fatalError
         }
