@@ -15,7 +15,7 @@ import PageHeader from '../component/page-header'
 import Paragraph from '../component/paragraph'
 import Link from '../component/link'
 
-const OrderStatusPage = ({location, error, orderStatus}) => {
+const OrderStatusPage = ({location, orderStatusError, orderStatus}) => {
   if (!location.state || !location.state.orderNumber) {
     return <Redirect to="/" />
   }
@@ -54,7 +54,7 @@ const mapDispatchToProps = {}
 
 const enhance = compose(
   scrollToTop(),
-  withState('error', 'setError', true),
+  withState('orderStatusError', 'setOrderStatusError', true),
   withState('orderStatus', 'setOrderStatus', true),
   connect(
     mapStateToProps,
