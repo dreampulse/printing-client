@@ -3,6 +3,7 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import withProps from 'recompose/withProps'
+import lifecycle from 'recompose/lifecycle'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
@@ -241,7 +242,7 @@ const ReviewOrderPage = ({
     <Button
       key="payment-stripe"
       block
-      disabled={paymentInProgress || !user}
+      disabled={paymentInProgress || !user || !user.userId}
       icon={creditCardIcon}
       label="Credit card"
       onClick={async () => {
@@ -267,7 +268,7 @@ const ReviewOrderPage = ({
       <Button
         key="payment-invoice"
         block
-        disabled={paymentInProgress || !user}
+        disabled={paymentInProgress || !user || !user.userId}
         label="Pay with Invoice"
         onClick={async () => {
           try {
@@ -461,7 +462,8 @@ const mapDispatchToProps = {
   executePaypalPayment: orderActions.executePaypalPayment,
   fatalError: coreActions.fatalError,
   openErrorModal: modalActions.openErrorModal,
-  goToUpload: navigationActions.goToUpload
+  goToUpload: navigationActions.goToUpload,
+  restoreUser: coreActions.restoreUser
 }
 
 const enhance = compose(
@@ -551,6 +553,11 @@ const enhance = compose(
         orderId,
         orderNumber
       }
+    }
+  }),
+  lifecycle({
+    componentDidMount() {
+      this.props.restoreUser()
     }
   })
 )
