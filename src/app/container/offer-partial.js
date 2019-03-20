@@ -27,6 +27,8 @@ import {
 } from '../lib/selector'
 import checkoutIcon from '../../asset/icon/checkout.svg'
 
+import {SELECTED_STEP} from './material-partial'
+
 import DescriptionList from '../component/description-list'
 import ProviderImage from '../component/provider-image'
 import Button from '../component/button'
@@ -39,6 +41,7 @@ const OfferPartial = ({
   configIds,
   selectedState,
   scrollContainerId,
+  onChange,
   // HOC props
   materialConfigs,
   finishGroups,
@@ -52,7 +55,6 @@ const OfferPartial = ({
   modelConfigs,
   goToReviewOrder,
   updateSelectedModelConfigs,
-  resetConfigurationState,
   showMore,
   setShowMore,
   currency,
@@ -145,7 +147,13 @@ const OfferPartial = ({
                       // If there are still models to configure stay on material page
                       if (!isEditMode && hasItemsOnUploadPage) {
                         // Since we stay on the same page, we have to reset the state.
-                        resetConfigurationState()
+                        onChange({
+                          materialGroupId: selectedState.materialGroupId,
+                          materialId: null,
+                          finishGroupId: null,
+                          materialConfigId: null,
+                          step: SELECTED_STEP.MATERIAL
+                        })
 
                         updateSelectedModelConfigs(
                           modelConfigs
