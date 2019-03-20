@@ -1,13 +1,14 @@
 .OfferLayout {
   $stacking: main, footer;
 
-  height: 100%; // Needs to have height in order to fill the ToolLayout main area.
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  min-height: 100%; // Needs to have height in order to fill the ToolLayout main area.
 
   &__main {
     position: relative;
+    height: 100%;
     z-index: z($stacking, main);
     flex-grow: 1;
     flex-shrink: 0;

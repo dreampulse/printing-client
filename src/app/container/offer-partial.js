@@ -12,11 +12,7 @@ import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
 import {getProviderName} from '../lib/material'
-import {
-  getBestMultiModelOffersForMaterial,
-  getBestMultiModelOffersForFinishGroup,
-  getBestMultiModelOffersForMaterialConfig
-} from '../lib/offer'
+import {getBestMultiModelOffers} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice, formatTimeRange, formatDeliveryTime} from '../lib/formatter'
 import {
@@ -55,39 +51,20 @@ const OfferPartial = ({
   resetConfigurationState,
   showMore,
   setShowMore,
-  currency,
-  selectedMaterial,
-  selectedFinishGroup
+  currency
 }) => {
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
     shippings.some(shipping => shipping.vendorId === quote.vendorId)
   )
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, validQuotes)
-
-  let bestOffer = null
-  if (selectedFinishGroup) {
-    ;[bestOffer] = getBestMultiModelOffersForFinishGroup(
-      multiModelQuotes,
-      usedShippingIds,
-      shippings,
-      selectedFinishGroup
-    )
-  } else if (selectedMaterial) {
-    ;[bestOffer] = getBestMultiModelOffersForMaterial(
-      multiModelQuotes,
-      usedShippingIds,
-      shippings,
-      selectedMaterial
-    )
-  }
-
-  const providerList = getBestMultiModelOffersForMaterialConfig(
-    multiModelQuotes,
-    usedShippingIds,
-    shippings,
-    selectedState.materialConfigId
-  )
+  const offers = selectedState.materialId
+    ? getBestMultiModelOffers(multiModelQuotes, usedShippingIds, shippings, materialConfigs, {
+        materialConfigId: selectedState.materialConfigId,
+        finishGroupId: selectedState.finishGroupId,
+        materialId: selectedState.materialId
+      })
+    : []
 
   const hasItemsOnUploadPage = uploadedModelConfigs.some(
     modelConfig => !configIds.find(id => id === modelConfig.id) && !modelConfig.quoteId
@@ -97,7 +74,7 @@ const OfferPartial = ({
 
   return (
     <OfferFooter showMore={showMore}>
-      {providerList.length === 0 && (
+      {!selectedState.materialConfigId && (
         <OfferItem
           actions={
             <Button
@@ -113,15 +90,15 @@ const OfferPartial = ({
             </dt>
             <dd>
               <strong className="u-font-size-l">
-                {bestOffer
-                  ? formatPrice(bestOffer.totalGrossPrice, bestOffer.multiModelQuote.currency)
+                {offers.length > 0
+                  ? formatPrice(offers[0].totalGrossPrice, offers[0].multiModelQuote.currency)
                   : formatPrice(null, currency)}
               </strong>
             </dd>
           </DescriptionList>
         </OfferItem>
       )}
-      {providerList.map(({multiModelQuote, shipping, totalGrossPrice}, i) => {
+      {offers.map(({multiModelQuote, shipping, totalGrossPrice}, i) => {
         const materialConfig = materialConfigs[multiModelQuote.materialConfigId]
         const finishGroup = finishGroups[materialConfig.finishGroupId]
         const {productionTimeFast, productionTimeSlow} = materialConfig.printingService[
@@ -134,7 +111,7 @@ const OfferPartial = ({
             key={i}
             actions={
               <>
-                {firstOffer && providerList.length > 1 && !showMore && (
+                {firstOffer && offers.length > 1 && !showMore && (
                   <Button text label="See all offers" onClick={() => setShowMore(true)} />
                 )}
                 <Button
@@ -258,9 +235,7 @@ export default compose(
     mapDispatchToProps
   ),
   withState('showMore', 'setShowMore', false),
-  withProps(({materials, finishGroups, materialConfigs, selectedState}) => ({
-    selectedMaterial: materials[selectedState.materialId],
-    selectedFinishGroup: finishGroups[selectedState.finishGroupId],
+  withProps(({materialConfigs, selectedState}) => ({
     selectedMaterialConfig: materialConfigs[selectedState.materialConfigId]
   })),
   lifecycle({

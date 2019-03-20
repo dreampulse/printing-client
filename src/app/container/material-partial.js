@@ -17,13 +17,9 @@ import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
-import {
-  getBestMultiModelOffersForMaterial,
-  getBestMultiModelOffersForMaterialConfig,
-  getBestMultiModelOffersForFinishGroup
-} from '../lib/offer'
+import {getBestMultiModelOffers} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
-import {formatPrice} from '../lib/formatter'
+import {formatPrice, formatPriceDifference} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {partitionBy} from '../lib/util'
 import {
@@ -66,6 +62,7 @@ export const SELECTED_STEP = {
 const MaterialPartial = ({
   materialGroups,
   materials,
+  materialConfigs,
   filteredMaterials,
   selectedMaterialGroup,
   selectedMaterial,
@@ -98,27 +95,45 @@ const MaterialPartial = ({
   )
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, validQuotes)
 
-  const renderPrice = offer => (
-    <Price
-      value={offer ? formatPrice(offer.totalGrossPrice, offer.multiModelQuote.currency) : undefined}
-      loadingCheckmark={
-        <LoadingCheckmark
-          modifiers={compact([
-            isPollingComplete && 'done',
-            hasMoreThanOneResult && 'hideWithDelay'
-          ])}
-        />
+  const renderPrice = (offer, compareOffer) => {
+    let price
+    if (offer) {
+      if (compareOffer) {
+        price = formatPriceDifference(
+          offer.totalGrossPrice,
+          compareOffer.totalGrossPrice,
+          offer.multiModelQuote.currency
+        )
+      } else {
+        price = formatPrice(offer.totalGrossPrice, offer.multiModelQuote.currency)
       }
-    />
-  )
+    }
+
+    return (
+      <Price
+        value={price}
+        loadingCheckmark={
+          <LoadingCheckmark
+            modifiers={compact([
+              isPollingComplete && 'done',
+              hasMoreThanOneResult && 'hideWithDelay'
+            ])}
+          />
+        }
+      />
+    )
+  }
 
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
-      const [bestOffer] = getBestMultiModelOffersForMaterial(
+      const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
         usedShippingIds,
         shippings,
-        material
+        materialConfigs,
+        {
+          materialId: material.id
+        }
       )
 
       return (
@@ -150,8 +165,9 @@ const MaterialPartial = ({
       partitionBy(
         unsortedMaterials,
         material =>
-          getBestMultiModelOffersForMaterial(multiModelQuotes, usedShippingIds, shippings, material)
-            .length > 0
+          getBestMultiModelOffers(multiModelQuotes, usedShippingIds, shippings, materialConfigs, {
+            materialId: material.id
+          }).length > 0
       )
 
     return (
@@ -231,12 +247,26 @@ const MaterialPartial = ({
   }
 
   const renderFinishSection = () => {
+    const [compareOffer] = getBestMultiModelOffers(
+      multiModelQuotes,
+      usedShippingIds,
+      shippings,
+      materialConfigs,
+      {
+        materialId: selectedState.materialId,
+        finishGroupId: selectedState.finishGroupId
+      }
+    )
+
     const renderFinishCard = finishGroup => {
-      const [bestOffer] = getBestMultiModelOffersForFinishGroup(
+      const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
         usedShippingIds,
         shippings,
-        finishGroup
+        materialConfigs,
+        {
+          finishGroupId: finishGroup.id
+        }
       )
 
       return (
@@ -244,7 +274,7 @@ const MaterialPartial = ({
           key={finishGroup.id}
           title={finishGroup.name}
           description={finishGroup.descriptionShort}
-          price={renderPrice(bestOffer)}
+          price={renderPrice(bestOffer, compareOffer)}
           image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
@@ -305,12 +335,27 @@ const MaterialPartial = ({
   }
 
   const renderColorSection = () => {
+    const [compareOffer] = getBestMultiModelOffers(
+      multiModelQuotes,
+      usedShippingIds,
+      shippings,
+      materialConfigs,
+      {
+        materialId: selectedState.materialId,
+        finishGroupId: selectedState.finishGroupId,
+        materialConfigId: selectedState.materialConfigId
+      }
+    )
+
     const renderColorCard = materialConfig => {
-      const [bestOffer] = getBestMultiModelOffersForMaterialConfig(
+      const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
         usedShippingIds,
         shippings,
-        materialConfig.id
+        materialConfigs,
+        {
+          materialConfigId: materialConfig.id
+        }
       )
 
       return (
@@ -326,7 +371,7 @@ const MaterialPartial = ({
             />
           }
           title={materialConfig.color}
-          price={renderPrice(bestOffer)}
+          price={renderPrice(bestOffer, compareOffer)}
           button={
             <Button
               label="Select"
