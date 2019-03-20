@@ -4,31 +4,105 @@ import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 import withState from 'recompose/withState'
 
-import AppLayout from './app-layout'
 import {scrollToTop} from './util/scroll-to-top'
 import {getOrderStatus} from '../lib/printing-engine'
-
+import {openIntercom} from '../service/intercom'
 import {removeBootsplash} from '../service/bootsplash'
+import {goToUpload} from '../action/navigation'
 
+import helpIcon from '../../asset/icon/help.svg'
+
+import FooterPartial from './footer-partial'
+
+import LoadingContainer from '../component/loading-container'
+import Container from '../component/container'
+import PageLayout from '../component/page-layout'
 import Section from '../component/section'
 import Headline from '../component/headline'
-import PageHeader from '../component/page-header'
+import Paragraph from '../component/paragraph'
+import Button from '../component/button'
+import NavBar from '../component/nav-bar'
+import Logo from '../component/logo'
+import IconLink from '../component/icon-link'
 
-const OrderStatusPage = ({orderStatusError, orderStatus}) => (
-  <AppLayout>
-    <PageHeader label="Thank you for ordering with Craftcloud by All3DP!" />
-    <Section modifiers={['highlight']}>
-      <Headline label="Headline" />
-      <code>
-        <pre>{JSON.stringify(orderStatus, '', 2)}</pre>
-      </code>
-    </Section>
-  </AppLayout>
+const OrderStatusPage = ({orderStatusError, orderStatus, match, onHomeClick}) => (
+  <PageLayout
+    header={
+      <NavBar
+        leftContent={<Logo onClick={() => onHomeClick()} />}
+        rightContent={
+          <IconLink
+            icon={helpIcon}
+            onClick={event => {
+              event.preventDefault()
+              openIntercom()
+            }}
+          />
+        }
+      />
+    }
+    footer={<FooterPartial />}
+  >
+    {!orderStatusError && !orderStatus ? (
+      <LoadingContainer insideContent />
+    ) : (
+      <Container>
+        {orderStatus && !orderStatus.cancelled && (
+          <Section classNames={['u-align-center']}>
+            <Headline modifiers={['xl']} label="Where is my order?" />
+            <Paragraph>
+              <strong>Your order number:</strong> {orderStatus.orderNumber}
+            </Paragraph>
+          </Section>
+        )}
+        {orderStatus && orderStatus.cancelled && (
+          <Section classNames={['u-align-center']}>
+            <Headline modifiers={['xl']} label="Your order got cancelled!" />
+            <Paragraph>
+              <strong>Your order number:</strong> {orderStatus.orderNumber}
+            </Paragraph>
+            <Paragraph>Your order got cancelled for some reason we don't know.</Paragraph>
+          </Section>
+        )}
+        {orderStatusError && orderStatusError.status === 404 && (
+          <Section classNames={['u-align-center']}>
+            <Headline modifiers={['xl']} label="Order not found!" />
+            <Paragraph>
+              Sorry! We can't find an order with the ID:
+              <br />
+              <strong>{match.params.id}</strong>
+              <br />
+              Please contact support or check the link in your email.
+            </Paragraph>
+          </Section>
+        )}
+        {orderStatusError && orderStatusError.status === 500 && (
+          <Section classNames={['u-align-center']}>
+            <Headline modifiers={['xl']} label="Something wen't wrong!" />
+            <Paragraph>
+              Something went wrong with finding your order in our system.
+              <br />
+              Please try again later or contact support.
+            </Paragraph>
+          </Section>
+        )}
+        <Section classNames={['u-align-center']}>
+          <Headline modifiers={['l']} label="Any Questions?" />
+          <Paragraph classNames={['u-margin-bottom-xl']}>
+            <strong>Contact us</strong> if you have any questions.
+          </Paragraph>
+          <Button minor label="Contact Us" onClick={() => openIntercom()} />
+        </Section>
+      </Container>
+    )}
+  </PageLayout>
 )
 
 const mapStateToProps = () => ({})
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  onHomeClick: goToUpload
+}
 
 const enhance = compose(
   scrollToTop(),
@@ -46,7 +120,8 @@ const enhance = compose(
           removeBootsplash()
         })
         .catch(error => {
-          this.props.setError(error)
+          this.props.setOrderStatusError(error)
+          removeBootsplash()
         })
     }
   })

@@ -312,9 +312,9 @@ export type OrderStatusResponse = {
   orderStatus: OrderStatus[]
 }
 
-export const getOrderStatus = async (orderStatusId: string): Promise<OrderStatusResponse> => {
+export const getOrderStatus = async (orderId: OrderId): Promise<OrderStatusResponse> => {
   // const response = await httpJson.fetch(
-  //   `${config.printingEngineBaseUrl}/v3/order-status/${orderStatusId}`
+  //   `${config.printingEngineBaseUrl}/v3/order/${orderId}/status`
   // )
   // return response.json
   return new Promise((resolve, reject) => {
@@ -330,6 +330,10 @@ export const getOrderStatus = async (orderStatusId: string): Promise<OrderStatus
           date: '2019-03-02T00:00:00T'
         }]
       })
+
+      // reject({
+      //   status: 404
+      // })
     }, 1000)
   })
 }
