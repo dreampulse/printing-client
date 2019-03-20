@@ -315,6 +315,28 @@ const saveUser = (state: CoreState, action: coreActions.SaveUserAction): CoreRed
     )
   )
 
+const restoreUser = (state: CoreState, action: coreActions.RestoreUserAction): CoreReducer => {
+  if (state.user && !state.user.userId) {
+    return loop(
+      {
+        ...state
+      },
+      Cmd.run<Actions>(
+        printingEngine.createUser,
+        {
+          args: [omit(state.user, 'saveAddress', 'liableForVat')],
+          successActionCreator: coreActions.userReceived,
+          failActionCreator: coreActions.fatalError
+        }
+      )
+    )
+  }
+
+  return {
+    ...state
+  }
+}
+
 const userReceived = (state: CoreState, action: coreActions.UserReceivedAction): CoreReducer => ({
   ...state,
   user: {
@@ -799,7 +821,19 @@ const configurationReceived = (
 
 const reset = (state: CoreState): CoreReducer => ({
   ...state,
-  ...omit(initialState, 'materialGroups', 'location', 'featureFlags', 'shippings', 'urlParams'),
+  ...omit(
+    initialState,
+    'materialGroups',
+    'materials',
+    'finishGroups',
+    'materialConfigs',
+    'location',
+    'currency',
+    'unit',
+    'featureFlags',
+    'shippings',
+    'urlParams'
+  ),
   user: {
     ...omit(state.user, 'userId')
   }
@@ -825,6 +859,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return updateShippings(state, action)
     case 'CORE.SAVE_USER':
       return saveUser(state, action)
+    case 'CORE.RESTORE_USER':
+      return restoreUser(state, action)
     case 'CORE.USER_RECEIVED':
       return userReceived(state, action)
     case 'MODEL.UPLOAD_FILE':
