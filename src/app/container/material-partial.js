@@ -17,11 +17,7 @@ import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
-import {
-  getBestMultiModelOffersForMaterial,
-  getBestMultiModelOffersForMaterialConfig,
-  getBestMultiModelOffersForFinishGroup
-} from '../lib/offer'
+import {getBestMultiModelOffers} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
@@ -66,6 +62,7 @@ export const SELECTED_STEP = {
 const MaterialPartial = ({
   materialGroups,
   materials,
+  materialConfigs,
   filteredMaterials,
   selectedMaterialGroup,
   selectedMaterial,
@@ -114,11 +111,14 @@ const MaterialPartial = ({
 
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
-      const [bestOffer] = getBestMultiModelOffersForMaterial(
+      const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
         usedShippingIds,
         shippings,
-        material
+        materialConfigs,
+        {
+          materialId: material.id
+        }
       )
 
       return (
@@ -150,8 +150,9 @@ const MaterialPartial = ({
       partitionBy(
         unsortedMaterials,
         material =>
-          getBestMultiModelOffersForMaterial(multiModelQuotes, usedShippingIds, shippings, material)
-            .length > 0
+          getBestMultiModelOffers(multiModelQuotes, usedShippingIds, shippings, materialConfigs, {
+            materialId: material.id
+          }).length > 0
       )
 
     return (
@@ -232,11 +233,14 @@ const MaterialPartial = ({
 
   const renderFinishSection = () => {
     const renderFinishCard = finishGroup => {
-      const [bestOffer] = getBestMultiModelOffersForFinishGroup(
+      const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
         usedShippingIds,
         shippings,
-        finishGroup
+        materialConfigs,
+        {
+          finishGroupId: finishGroup.id
+        }
       )
 
       return (
@@ -306,11 +310,14 @@ const MaterialPartial = ({
 
   const renderColorSection = () => {
     const renderColorCard = materialConfig => {
-      const [bestOffer] = getBestMultiModelOffersForMaterialConfig(
+      const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
         usedShippingIds,
         shippings,
-        materialConfig.id
+        materialConfigs,
+        {
+          materialConfigId: materialConfig.id
+        }
       )
 
       return (

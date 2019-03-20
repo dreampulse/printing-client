@@ -2,14 +2,15 @@ import keyBy from 'lodash/keyBy'
 import flatMap from 'lodash/flatMap'
 
 import {
-  Material,
   MaterialId,
   MultiModelQuote,
   ShippingId,
   Shipping,
   Offer,
-  FinishGroup,
-  MaterialConfig
+  FinishGroupId,
+  MaterialConfig,
+  MaterialConfigId,
+  MaterialGroupId
 } from '../type'
 
 function getSortedMultiModelOffers(
@@ -34,55 +35,30 @@ function getSortedMultiModelOffers(
   return sortedQuotes
 }
 
-export function getBestMultiModelOffersForMaterial(
+export function getBestMultiModelOffers(
   quotes: MultiModelQuote[],
   usedShippingIds: ShippingId[],
   shippings: Shipping[],
-  material: Material
+  materialConfigs: {[materialConfigId: string]: MaterialConfig},
+  filterBy: {
+    materialConfigId?: MaterialConfigId
+    finishGroupId?: FinishGroupId
+    materialId?: MaterialId
+    materialGroupId?: MaterialGroupId
+  } = {}
 ): Offer[] {
-  const materialConfigs: {[materialConfigId: string]: boolean} = {}
-  material.finishGroups.forEach(finishGroup => {
-    finishGroup.materialConfigs.forEach(materialConfig => {
-      materialConfigs[materialConfig.id] = true
-    })
-  })
-  const multiModelQuotesForSelectedMaterial = quotes.filter(
-    quote => quote.isPrintable && materialConfigs[quote.materialConfigId]
+  const selectedQuotes = quotes.filter(
+    quote =>
+      quote.isPrintable &&
+      (!filterBy.materialConfigId || quote.materialConfigId === filterBy.materialConfigId) &&
+      (!filterBy.finishGroupId ||
+        materialConfigs[quote.materialConfigId].finishGroupId === filterBy.finishGroupId) &&
+      (!filterBy.materialId ||
+        materialConfigs[quote.materialConfigId].materialId === filterBy.materialId) &&
+      (!filterBy.materialGroupId ||
+        materialConfigs[quote.materialConfigId].materialGroupId === filterBy.materialGroupId)
   )
-  return getSortedMultiModelOffers(multiModelQuotesForSelectedMaterial, usedShippingIds, shippings)
-}
-
-export function getBestMultiModelOffersForFinishGroup(
-  quotes: MultiModelQuote[],
-  usedShippingIds: ShippingId[],
-  shippings: Shipping[],
-  finishGroup: FinishGroup
-): Offer[] {
-  const materialConfigs: {[materialConfigId: string]: boolean} = {}
-  finishGroup.materialConfigs.forEach(materialConfig => {
-    materialConfigs[materialConfig.id] = true
-  })
-
-  const multiModelQuotesForSelectedMaterial = quotes.filter(
-    quote => quote.isPrintable && materialConfigs[quote.materialConfigId]
-  )
-  return getSortedMultiModelOffers(multiModelQuotesForSelectedMaterial, usedShippingIds, shippings)
-}
-
-export function getBestMultiModelOffersForMaterialConfig(
-  quotes: MultiModelQuote[],
-  usedShippingIds: ShippingId[],
-  shippings: Shipping[],
-  materialConfigId: MaterialId
-): Offer[] {
-  const multiModelQuotesForSelectedMaterialConfigId = quotes.filter(
-    quote => quote.isPrintable && quote.materialConfigId === materialConfigId
-  )
-  return getSortedMultiModelOffers(
-    multiModelQuotesForSelectedMaterialConfigId,
-    usedShippingIds,
-    shippings
-  )
+  return getSortedMultiModelOffers(selectedQuotes, usedShippingIds, shippings)
 }
 
 export function isSameOffer(offer1: Offer, offer2: Offer) {
