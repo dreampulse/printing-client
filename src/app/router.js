@@ -8,6 +8,7 @@ import CartPage from './container/cart-page'
 import ReviewOrderPage from './container/review-order-page'
 import SuccessPage from './container/success-page'
 import ConfigurationPage from './container/configuration-page'
+import OrderStatusPage from './container/order-status-page'
 
 /* eslint-disable react/prop-types */
 export default ({history}) => (
@@ -19,6 +20,7 @@ export default ({history}) => (
       <Route component={ReviewOrderPage} path="/review-order" exact />
       <Route component={SuccessPage} path="/success" exact />
       <Route component={ConfigurationPage} path="/configuration/:id" exact />
+      <Route component={OrderStatusPage} path="/order-status/:id" exact />
     </Switch>
   </ConnectedRouter>
 )
