@@ -19,6 +19,7 @@ export type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: str
 export type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 export type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Shipping[]>
 export type SaveUserAction = Action<'CORE.SAVE_USER', User>
+export type RestoreUserAction = Action<'CORE.RESTORE_USER', void>
 export type UserReceivedAction = Action<'CORE.USER_RECEIVED', UserResponse>
 export type ResetAction = Action<'CORE.RESET', void>
 
@@ -34,6 +35,7 @@ export type CoreAction =
   | UserReceivedAction
   | ResetAction
   | UpdateUseSameMaterialAction
+  | RestoreUserAction
 
 export const init = ({featureFlags, urlParams}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
@@ -86,6 +88,11 @@ export const updateShippings = (payload: Shipping[]): UpdateShippingsAction => (
 export const saveUser = (user: User): SaveUserAction => ({
   type: 'CORE.SAVE_USER',
   payload: user
+})
+
+export const restoreUser = (): RestoreUserAction => ({
+  type: 'CORE.RESTORE_USER',
+  payload: undefined
 })
 
 export const userReceived = (payload: UserResponse): UserReceivedAction => ({

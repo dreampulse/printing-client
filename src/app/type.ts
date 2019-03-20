@@ -238,7 +238,7 @@ export type User = {
   shippingAddress: Address;
   billingAddress: Address;
   saveAddress?: boolean;
-  liableForVat: boolean;
+  liableForVat?: boolean;
 }
 
 export enum ModalContentType {
