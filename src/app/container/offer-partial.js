@@ -76,7 +76,7 @@ const OfferPartial = ({
 
   return (
     <OfferFooter showMore={showMore}>
-      {!selectedState.materialConfigId && (
+      {(offers.length === 0 || !selectedState.materialConfigId) && (
         <OfferItem
           actions={
             <Button
@@ -100,119 +100,120 @@ const OfferPartial = ({
           </DescriptionList>
         </OfferItem>
       )}
-      {offers.map(({multiModelQuote, shipping, totalGrossPrice}, i) => {
-        const materialConfig = materialConfigs[multiModelQuote.materialConfigId]
-        const finishGroup = finishGroups[materialConfig.finishGroupId]
-        const {productionTimeFast, productionTimeSlow} = materialConfig.printingService[
-          multiModelQuote.vendorId
-        ]
-        const firstOffer = i === 0
+      {selectedState.materialConfigId &&
+        offers.map(({multiModelQuote, shipping, totalGrossPrice}, i) => {
+          const materialConfig = materialConfigs[multiModelQuote.materialConfigId]
+          const finishGroup = finishGroups[materialConfig.finishGroupId]
+          const {productionTimeFast, productionTimeSlow} = materialConfig.printingService[
+            multiModelQuote.vendorId
+          ]
+          const firstOffer = i === 0
 
-        return (
-          <OfferItem
-            key={i}
-            actions={
-              <>
-                {firstOffer && offers.length > 1 && !showMore && (
-                  <Button text label="See all offers" onClick={() => setShowMore(true)} />
-                )}
-                <Button
-                  icon={checkoutIcon}
-                  label={isEditMode ? 'Select offer' : 'Add to cart'}
-                  onClick={() =>
-                    addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
-                      // If there are still models to configure stay on material page
-                      if (!isEditMode && hasItemsOnUploadPage) {
-                        // Since we stay on the same page, we have to reset the state.
-                        onChange({
-                          materialGroupId: selectedState.materialGroupId,
-                          materialId: null,
-                          finishGroupId: null,
-                          materialConfigId: null,
-                          step: SELECTED_STEP.MATERIAL
-                        })
-
-                        updateSelectedModelConfigs(
-                          modelConfigs
-                            .filter(
-                              modelConfig =>
-                                modelConfig.type === 'UPLOADED' &&
-                                modelConfig.quoteId === null &&
-                                !configIds.includes(modelConfig.id)
-                            )
-                            .map(modelConfig => modelConfig.id)
-                        )
-
-                        global.document.querySelector(`#${scrollContainerId}`).scrollTo(0, 0)
-                        // Go to review order page if user has configured all uploaded models at once.
-                      } else if (
-                        !isEditMode &&
-                        !hasItemsOnUploadPage &&
-                        configIds.length === modelConfigs.length
-                      ) {
-                        goToReviewOrder()
-                      } else {
-                        goToCart({
-                          numAddedItems: isEditMode ? 0 : configIds.length,
-                          selectModelConfigIds: configIds
-                        })
-                      }
-                    })
-                  }
-                />
-              </>
-            }
-          >
-            <DescriptionList>
-              <dt>
-                <strong>Price total:</strong>
-              </dt>
-              <dd>
-                <strong className={firstOffer ? 'u-font-size-l' : ''}>
-                  {formatPrice(totalGrossPrice, multiModelQuote.currency)}
-                </strong>
-              </dd>
-              <dt>Production:</dt>
-              <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
-              <dt>Shipping:</dt>
-              <dd>
-                {usedShippingIdsById[shipping.shippingId]
-                  ? formatPrice(0, shipping.currency)
-                  : formatPrice(shipping.grossPrice, shipping.currency)}
-              </dd>
-            </DescriptionList>
-            <DescriptionList>
-              <dt>
-                <strong>Est. delivery time:</strong>
-              </dt>
-              <dd>
-                <strong className={firstOffer ? 'u-font-size-l' : ''}>
-                  {formatTimeRange(
-                    productionTimeFast + parseInt(shipping.deliveryTime, 10),
-                    productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+          return (
+            <OfferItem
+              key={i}
+              actions={
+                <>
+                  {firstOffer && offers.length > 1 && !showMore && (
+                    <Button text label="See all offers" onClick={() => setShowMore(true)} />
                   )}
-                </strong>
-              </dd>
-              <dt>Production:</dt>
-              <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
-              <dt>Shipping:</dt>
-              <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
-            </DescriptionList>
-            <DescriptionList>
-              <dt>Process:</dt>
-              <dd>{finishGroup.properties.printingMethodShort}</dd>
-              <dt>Fulfilled by:</dt>
-              <dd>
-                <ProviderImage
-                  xs
-                  name={getProviderName(multiModelQuote.vendorId)}
-                  slug={multiModelQuote.vendorId}
-                />
-              </dd>
-            </DescriptionList>
-          </OfferItem>
-        )
-      })}
+                  <Button
+                    icon={checkoutIcon}
+                    label={isEditMode ? 'Select offer' : 'Add to cart'}
+                    onClick={() =>
+                      addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
+                        // If there are still models to configure stay on material page
+                        if (!isEditMode && hasItemsOnUploadPage) {
+                          // Since we stay on the same page, we have to reset the state.
+                          onChange({
+                            materialGroupId: selectedState.materialGroupId,
+                            materialId: null,
+                            finishGroupId: null,
+                            materialConfigId: null,
+                            step: SELECTED_STEP.MATERIAL
+                          })
+
+                          updateSelectedModelConfigs(
+                            modelConfigs
+                              .filter(
+                                modelConfig =>
+                                  modelConfig.type === 'UPLOADED' &&
+                                  modelConfig.quoteId === null &&
+                                  !configIds.includes(modelConfig.id)
+                              )
+                              .map(modelConfig => modelConfig.id)
+                          )
+
+                          global.document.querySelector(`#${scrollContainerId}`).scrollTo(0, 0)
+                          // Go to review order page if user has configured all uploaded models at once.
+                        } else if (
+                          !isEditMode &&
+                          !hasItemsOnUploadPage &&
+                          configIds.length === modelConfigs.length
+                        ) {
+                          goToReviewOrder()
+                        } else {
+                          goToCart({
+                            numAddedItems: isEditMode ? 0 : configIds.length,
+                            selectModelConfigIds: configIds
+                          })
+                        }
+                      })
+                    }
+                  />
+                </>
+              }
+            >
+              <DescriptionList>
+                <dt>
+                  <strong>Price total:</strong>
+                </dt>
+                <dd>
+                  <strong className={firstOffer ? 'u-font-size-l' : ''}>
+                    {formatPrice(totalGrossPrice, multiModelQuote.currency)}
+                  </strong>
+                </dd>
+                <dt>Production:</dt>
+                <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
+                <dt>Shipping:</dt>
+                <dd>
+                  {usedShippingIdsById[shipping.shippingId]
+                    ? formatPrice(0, shipping.currency)
+                    : formatPrice(shipping.grossPrice, shipping.currency)}
+                </dd>
+              </DescriptionList>
+              <DescriptionList>
+                <dt>
+                  <strong>Est. delivery time:</strong>
+                </dt>
+                <dd>
+                  <strong className={firstOffer ? 'u-font-size-l' : ''}>
+                    {formatTimeRange(
+                      productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                      productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                    )}
+                  </strong>
+                </dd>
+                <dt>Production:</dt>
+                <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
+                <dt>Shipping:</dt>
+                <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
+              </DescriptionList>
+              <DescriptionList>
+                <dt>Process:</dt>
+                <dd>{finishGroup.properties.printingMethodShort}</dd>
+                <dt>Fulfilled by:</dt>
+                <dd>
+                  <ProviderImage
+                    xs
+                    name={getProviderName(multiModelQuote.vendorId)}
+                    slug={multiModelQuote.vendorId}
+                  />
+                </dd>
+              </DescriptionList>
+            </OfferItem>
+          )
+        })}
     </OfferFooter>
   )
 }
