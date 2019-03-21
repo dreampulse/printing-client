@@ -60,6 +60,9 @@ export const SELECTED_STEP = {
 }
 
 const MaterialPartial = ({
+  // Own props
+  selectedState,
+  // HOC props
   materialGroups,
   materials,
   materialConfigs,
@@ -82,7 +85,6 @@ const MaterialPartial = ({
   isPollingDone,
   usedShippingIds,
   pollingProgress,
-  selectedState,
   selectStep,
   selectNextStep
 }) => {

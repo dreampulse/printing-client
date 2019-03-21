@@ -170,6 +170,7 @@ const MaterialPage = ({
             configIds={selectedModelConfigIds}
             scrollContainerId={SCROLL_CONTAINER_ID}
             selectedState={selectedState}
+            onChange={setSelectedState}
           />
         }
       >
