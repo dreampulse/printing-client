@@ -14,6 +14,7 @@ storiesOf('Provider Teaser', module)
       <ProviderImage slug="treatstock" />
       <ProviderImage slug="facfox" />
       <ProviderImage slug="jawstec" />
+      <ProviderImage slug="zverse" />
     </ProviderTeaser>
   ))
   .add('left', () => (
@@ -25,5 +26,6 @@ storiesOf('Provider Teaser', module)
       <ProviderImage slug="treatstock" />
       <ProviderImage slug="facfox" />
       <ProviderImage slug="jawstec" />
+      <ProviderImage slug="zverse" />
     </ProviderTeaser>
   ))

@@ -11,6 +11,7 @@ import sculpteoImage from '../../../asset/image/printing-service/sculpteo.png'
 import shapewaysImage from '../../../asset/image/printing-service/shapeways.png'
 import trinckleImage from '../../../asset/image/printing-service/trinckle.svg'
 import treatstockImage from '../../../asset/image/printing-service/treatstock.png'
+import zverseImage from '../../../asset/image/printing-service/zverse.png'
 
 const providerImages = {
   facfox: facfoxImage,
@@ -19,7 +20,8 @@ const providerImages = {
   sculpteo: sculpteoImage,
   shapeways: shapewaysImage,
   trinckle: trinckleImage,
-  treatstock: treatstockImage
+  treatstock: treatstockImage,
+  zverse: zverseImage
 }
 
 const ProviderImage = ({classNames, modifiers, name, slug}) => (
