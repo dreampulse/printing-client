@@ -29,7 +29,8 @@ export default {
     sculpteo: 'Sculpteo',
     shapeways: 'Shapeways',
     trinckle: 'Trinckle',
-    treatstock: 'Treatstock'
+    treatstock: 'Treatstock',
+    zverse: 'ZVerse'
   },
   localStorageAddressKey: 'address_v2',
   printingEngineBaseUrl: 'http://localhost:8000',
