@@ -6,6 +6,7 @@ import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 
 import {getProviderName} from '../lib/provider-selector'
+import {openIntercom} from '../service/intercom'
 
 import AppLayout from './app-layout'
 import {scrollToTop} from './util/scroll-to-top'
@@ -14,20 +15,27 @@ import ProviderTeaser from '../component/provider-teaser'
 import ProviderImage from '../component/provider-image'
 import Section from '../component/section'
 import Headline from '../component/headline'
-import PageHeader from '../component/page-header'
 import Paragraph from '../component/paragraph'
-import Link from '../component/link'
 
 import * as coreActions from '../action/core'
+import OrderConfirmationList from '../component/order-confirmation-list'
+import OrderConfirmationItem from '../component/order-confirmation-item'
+import Icon from '../component/icon'
+
+import orderPlaced from '../../asset/icon/order-placed.svg'
+import orderStarted from '../../asset/icon/order-started.svg'
+import orderShipped from '../../asset/icon/order-shipped.svg'
+import orderReceived from '../../asset/icon/order-received.svg'
+import Button from '../component/button'
 
 const SuccessPage = ({location}) => {
   if (!location.state || !location.state.orderNumber) {
     return <Redirect to="/" />
   }
   return (
-    <AppLayout>
-      <PageHeader label="Thank you for ordering with Craftcloud by All3DP!" />
-      <Section modifiers={['highlight']}>
+    <AppLayout minorBackground>
+      <Section classNames={['u-align-center']}>
+        <Headline modifiers={['xl']} label="Thank you for ordering with Craftcloud by All3DP!" />
         <Headline
           label={
             location.state.orderNumber
@@ -35,31 +43,40 @@ const SuccessPage = ({location}) => {
               : 'Thank you for ordering with Craftcloud by All3DP!'
           }
         />
-        <Paragraph modifiers={['l']}>
-          You should shortly receive an email confirming your order.
-        </Paragraph>
-        <Paragraph modifiers={['l']}>
-          Please note that your order will be produced and sent from:
+        <Paragraph>
+          Your should shortly receive an <strong>email confirming</strong> your oder. We will also
+          send you an update on your order when we have received the tracking number from the
+          manufacturer. Please note that your order will be produced and sent from:
         </Paragraph>
 
-        <ProviderTeaser modifiers={['left']}>
+        <ProviderTeaser classNames={['u-margin-bottom-xl']}>
           {uniq(location.state.vendorIds).map(vendorId => (
             <ProviderImage key={vendorId} slug={vendorId} name={getProviderName(vendorId)} />
           ))}
         </ProviderTeaser>
 
-        <Headline label="What happens now?" />
-        <Paragraph modifiers={['l']}>
-          Your order is going through manual checks for printability at the manufacturer. At this
-          first step they make sure that small details and necessary parts are printable. Thereafter
-          the order is pushed to production, finishing and finally to quality control before being
-          shipped out. We will send you an update on your order when we have received the tracking
-          number from the manufacturer.
+        <OrderConfirmationList step={1}>
+          <OrderConfirmationItem icon={<Icon source={orderPlaced} />} firstLine="Order Placed" />
+
+          <OrderConfirmationItem
+            icon={<Icon source={orderStarted} />}
+            firstLine="Production started"
+          />
+
+          <OrderConfirmationItem icon={<Icon source={orderShipped} />} firstLine="Order shipped" />
+
+          <OrderConfirmationItem
+            icon={<Icon source={orderReceived} />}
+            firstLine="Order Received"
+          />
+        </OrderConfirmationList>
+      </Section>
+      <Section classNames={['u-align-center']}>
+        <Headline modifiers={['l']} label="Any Questions?" />
+        <Paragraph classNames={['u-margin-bottom-xl']}>
+          <strong>Contact us</strong> if you have any questions.
         </Paragraph>
-        <Headline label="Questions regarding your order?" />
-        <Paragraph modifiers={['l']}>
-          Email us at <Link href="mailto:support@all3dp.com" label="support@all3dp.com" />
-        </Paragraph>
+        <Button minor label="Contact Us" onClick={() => openIntercom()} />
       </Section>
     </AppLayout>
   )

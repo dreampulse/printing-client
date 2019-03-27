@@ -24,9 +24,11 @@ const AppLayout = ({
   cartCount,
   onHomeClick,
   onUploadClick,
-  onCartClick
+  onCartClick,
+  minorBackground
 }) => (
   <PageLayout
+    minorBackground={minorBackground}
     header={
       <>
         <NavBar
