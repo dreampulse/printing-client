@@ -25,7 +25,7 @@ import NavBar from '../component/nav-bar'
 import Logo from '../component/logo'
 import IconLink from '../component/icon-link'
 
-const OrderStatusPage = ({orderStatusError, orderStatus, match, onHomeClick}) => (
+const OrderStatusPage = ({orderStatusError, orderStatus, onHomeClick}) => (
   <PageLayout
     header={
       <NavBar
@@ -61,28 +61,16 @@ const OrderStatusPage = ({orderStatusError, orderStatus, match, onHomeClick}) =>
             <Paragraph>
               <strong>Your order number:</strong> {orderStatus.orderNumber}
             </Paragraph>
-            <Paragraph>Your order got cancelled for some reason we don't know.</Paragraph>
+            <Paragraph>Your order got cancelled for some reason we don&apos;t know.</Paragraph>
           </Section>
         )}
-        {orderStatusError && orderStatusError.status === 404 && (
+        {orderStatusError && (
           <Section classNames={['u-align-center']}>
             <Headline modifiers={['xl']} label="Order not found!" />
             <Paragraph>
-              Sorry! We can't find an order with the ID:
-              <br />
-              <strong>{match.params.id}</strong>
+              Sorry! We can&apos;t find your order.
               <br />
               Please contact support or check the link in your email.
-            </Paragraph>
-          </Section>
-        )}
-        {orderStatusError && orderStatusError.status === 500 && (
-          <Section classNames={['u-align-center']}>
-            <Headline modifiers={['xl']} label="Something wen't wrong!" />
-            <Paragraph>
-              Something went wrong with finding your order in our system.
-              <br />
-              Please try again later or contact support.
             </Paragraph>
           </Section>
         )}

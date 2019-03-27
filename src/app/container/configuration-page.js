@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
@@ -10,11 +10,7 @@ import * as navigationAction from '../action/navigation'
 
 import LoadingContainer from '../component/loading-container'
 
-const ConfigurationPage = () => (
-  <Fragment>
-    <LoadingContainer />
-  </Fragment>
-)
+const ConfigurationPage = () => <LoadingContainer />
 
 const mapStateToProps = () => ({})
 
