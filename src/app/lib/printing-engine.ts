@@ -317,23 +317,4 @@ export const getOrderStatus = async (orderId: OrderId): Promise<OrderStatusRespo
     `${config.printingEngineBaseUrl}/v3/order/${orderId}/status`
   )
   return response.json
-  // return new Promise((resolve, reject) => {
-  //   setTimeout(() => {
-  //     resolve({
-  //       orderNumber: '123455678',
-  //       cancelled: false,
-  //       orderStatus: [{
-  //         type: OrderStatusType.ORDER_PLACED,
-  //         date: '2019-03-02T00:00:00T'
-  //       }, {
-  //         type: OrderStatusType.PRODUCTION_STARTED,
-  //         date: '2019-03-02T00:00:00T'
-  //       }]
-  //     })
-
-  //     // reject({
-  //     //   status: 404
-  //     // })
-  //   }, 1000)
-  // })
 }

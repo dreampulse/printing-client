@@ -1,21 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {Transition} from 'react-transition-group'
 
 import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
 
 const OrderConfirmationList = ({classNames, step, children}) => (
-  // <Transition in appear>
-  //   {state =>
-  // console.log('-- state', state, step && state !== 'exited' ? {[`step${step}`]: true} : {}) || (
-  <div
-    className={cn(
-      'OrderConfirmationList',
-      step /*&& state !== 'exited'*/ ? {[`step${step}`]: true} : {},
-      classNames
-    )}
-  >
+  <div className={cn('OrderConfirmationList', step ? {[`step${step}`]: true} : {}, classNames)}>
     <div className="OrderConfirmationList__bar">
       <div className="OrderConfirmationList__progress" />
     </div>
@@ -25,9 +15,6 @@ const OrderConfirmationList = ({classNames, step, children}) => (
       </div>
     ))}
   </div>
-  //     )
-  //   }
-  // </Transition>
 )
 
 OrderConfirmationList.propTypes = {
