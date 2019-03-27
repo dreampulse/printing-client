@@ -58,17 +58,11 @@ const SuccessPage = ({location}) => {
         <OrderConfirmationList step={1}>
           <OrderConfirmationItem icon={<Icon source={orderPlaced} />} firstLine="Order Placed" />
 
-          <OrderConfirmationItem
-            icon={<Icon source={orderStarted} />}
-            firstLine="Production started"
-          />
+          <OrderConfirmationItem icon={<Icon source={orderStarted} />} title="Production started" />
 
-          <OrderConfirmationItem icon={<Icon source={orderShipped} />} firstLine="Order shipped" />
+          <OrderConfirmationItem icon={<Icon source={orderShipped} />} title="Order shipped" />
 
-          <OrderConfirmationItem
-            icon={<Icon source={orderReceived} />}
-            firstLine="Order Received"
-          />
+          <OrderConfirmationItem icon={<Icon source={orderReceived} />} title="Order Received" />
         </OrderConfirmationList>
       </Section>
       <Section classNames={['u-align-center']}>

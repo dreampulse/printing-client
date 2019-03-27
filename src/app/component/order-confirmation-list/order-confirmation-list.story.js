@@ -16,26 +16,26 @@ const items = [
   <OrderConfirmationItem
     key="orderPlaced"
     icon={<Icon source={orderPlaced} />}
-    firstLine="Order Placed"
-    secondLine="1th Jan 2000"
+    title="Order Placed"
+    date="1th Jan 2000"
   />,
   <OrderConfirmationItem
     key="orderStarted"
     icon={<Icon source={orderStarted} />}
-    firstLine="Order Started"
-    secondLine="1th Jan 2000"
+    title="Order Started"
+    date="1th Jan 2000"
   />,
   <OrderConfirmationItem
     key="orderShipped"
     icon={<Icon source={orderShipped} />}
-    firstLine="Order Shipped"
-    secondLine="1th Jan 2000"
+    title="Order Shipped"
+    date="1th Jan 2000"
   />,
   <OrderConfirmationItem
     key="orderReceived"
     icon={<Icon source={orderReceived} />}
-    firstLine="Order Received"
-    secondLine="1th Jan 2000"
+    title="Order Received"
+    date="1th Jan 2000"
   />
 ]
 

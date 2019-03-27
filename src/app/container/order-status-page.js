@@ -36,7 +36,7 @@ import orderReceived from '../../asset/icon/order-received.svg'
 const localDate = orderStatus =>
   orderStatus &&
   orderStatus.date &&
-  new Date(orderStatus.date).toLocaleDateString(global.navigator.language, {
+  new Date(orderStatus.date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -74,34 +74,28 @@ const OrderStatusPage = ({orderStatusError, orderStatus, onHomeClick}) => (
             <OrderConfirmationList step={orderStatus.orderStatus.length}>
               <OrderConfirmationItem
                 icon={<Icon source={orderPlaced} />}
-                firstLine="Order Placed"
-                secondLine={localDate(
-                  orderStatus.orderStatus.find(status => status.type === 'placed')
-                )}
+                title="Order Placed"
+                date={localDate(orderStatus.orderStatus.find(status => status.type === 'placed'))}
               />
 
               <OrderConfirmationItem
                 icon={<Icon source={orderStarted} />}
-                firstLine="Production started"
-                secondLine={localDate(
+                title="Production started"
+                date={localDate(
                   orderStatus.orderStatus.find(status => status.type === 'in_production')
                 )}
               />
 
               <OrderConfirmationItem
                 icon={<Icon source={orderShipped} />}
-                firstLine="Order shipped"
-                secondLine={localDate(
-                  orderStatus.orderStatus.find(status => status.type === 'shipped')
-                )}
+                title="Order shipped"
+                date={localDate(orderStatus.orderStatus.find(status => status.type === 'shipped'))}
               />
 
               <OrderConfirmationItem
                 icon={<Icon source={orderReceived} />}
-                firstLine="Order Received"
-                secondLine={localDate(
-                  orderStatus.orderStatus.find(status => status.type === 'received')
-                )}
+                title="Order Received"
+                date={localDate(orderStatus.orderStatus.find(status => status.type === 'received'))}
               />
             </OrderConfirmationList>
           </Section>

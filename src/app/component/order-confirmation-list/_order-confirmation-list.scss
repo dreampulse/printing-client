@@ -1,6 +1,7 @@
 .OrderConfirmationList {
-  $bar-size: 10px;
+  $bar-width: 10px;
   $stacking: bar, item;
+  // divides the progress bar in 6 segments (0.166 = 1/6)
   $progress-list: 0.166 0.5 0.833 1;
 
   display: inline-flex;
@@ -23,6 +24,7 @@
   }
 
   &__item {
+    position: relative;
     z-index: z($stacking, item);
   }
 
@@ -30,15 +32,15 @@
     position: absolute;
     z-index: z($stacking, bar);
     background-color: $color-bg;
-    left: $oder-confirmation-item-size / 2 - $bar-size / 2;
+    left: $oder-confirmation-item-size / 2 - $bar-width / 2;
     top: $oder-confirmation-item-size / 2;
     height: calc(100% - #{$oder-confirmation-item-size});
-    width: $bar-size;
+    width: $bar-width;
 
     @include respond-to(medium) {
       left: $oder-confirmation-item-size / 2;
-      top: $oder-confirmation-item-size / 2 - $bar-size / 2;
-      height: $bar-size;
+      top: $oder-confirmation-item-size / 2 - $bar-width / 2;
+      height: $bar-width;
       width: calc(100% - #{$oder-confirmation-item-size});
     }
   }

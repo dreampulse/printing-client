@@ -12,6 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
     height: $oder-confirmation-item-size;
     width: $oder-confirmation-item-size;
     font-size: $icon-size;
@@ -38,7 +39,7 @@
       color: $color-primary;
     }
 
-    .OrderConfirmationItem__firstLine {
+    .OrderConfirmationItem__title {
       font-weight: $font-weight-bold;
     }
   }
