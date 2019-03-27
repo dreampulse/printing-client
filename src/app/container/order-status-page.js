@@ -104,6 +104,7 @@ const enhance = compose(
     componentDidMount() {
       getOrderStatus(this.props.match.params.id)
         .then(orderStatus => {
+          console.log('-- orderStatus', orderStatus)
           this.props.setOrderStatus(orderStatus)
           removeBootsplash()
         })
