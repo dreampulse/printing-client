@@ -27,6 +27,7 @@ import IconLink from '../component/icon-link'
 import OrderConfirmationList from '../component/order-confirmation-list'
 import OrderConfirmationItem from '../component/order-confirmation-item'
 import Icon from '../component/icon'
+import Link from '../component/link'
 
 import orderPlaced from '../../asset/icon/order-placed.svg'
 import orderStarted from '../../asset/icon/order-started.svg'
@@ -68,9 +69,10 @@ const OrderStatusPage = ({orderStatusError, orderStatus, onHomeClick}) => (
         {orderStatus && !orderStatus.cancelled && (
           <Section classNames={['u-align-center']}>
             <Headline modifiers={['xl']} label="Where is my order?" />
-            <Paragraph classNames={['u-margin-bottom-xl']}>
-              <strong>Your order number:</strong> {orderStatus.orderNumber}
-            </Paragraph>
+            <Headline
+              classNames={['u-margin-bottom-xl']}
+              label={orderStatus.orderNumber ? `Order number: ${orderStatus.orderNumber}` : ''}
+            />
             <OrderConfirmationList step={orderStatus.orderStatus.length}>
               <OrderConfirmationItem
                 icon={<Icon source={orderPlaced} />}
@@ -103,28 +105,26 @@ const OrderStatusPage = ({orderStatusError, orderStatus, onHomeClick}) => (
         {orderStatus && orderStatus.cancelled && (
           <Section classNames={['u-align-center']}>
             <Headline modifiers={['xl']} label="Your order got cancelled!" />
-            <Paragraph>
-              <strong>Your order number:</strong> {orderStatus.orderNumber}
-            </Paragraph>
-            <Paragraph>Your order got cancelled for some reason we don&apos;t know.</Paragraph>
+            <Headline
+              label={orderStatus.orderNumber ? `Order number: ${orderStatus.orderNumber}` : ''}
+            />
+            <Paragraph>Please contact our support team or check your email.</Paragraph>
           </Section>
         )}
         {orderStatusError && (
           <Section classNames={['u-align-center']}>
             <Headline modifiers={['xl']} label="Order not found!" />
-            <Paragraph>
-              Sorry! We can&apos;t find your order.
-              <br />
-              Please contact support or check the link in your email.
-            </Paragraph>
+            <Paragraph>Please contact our support team or check the link in your email.</Paragraph>
           </Section>
         )}
         <Section classNames={['u-align-center']}>
-          <Headline modifiers={['l']} label="Any Questions?" />
-          <Paragraph classNames={['u-margin-bottom-xl']}>
-            <strong>Contact us</strong> if you have any questions.
-          </Paragraph>
+          <Headline modifiers={['l']} classNames={['u-margin-bottom-xl']} label="Any questions?" />
           <Button minor label="Contact Us" onClick={() => openIntercom()} />
+        </Section>
+        <Section classNames={['u-align-center']}>
+          <Paragraph>
+            Or email us at <Link href="mailto:support@all3dp.com" label="support@all3dp.com" />
+          </Paragraph>
         </Section>
       </Container>
     )}
