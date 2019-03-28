@@ -16,6 +16,8 @@ import ProviderImage from '../component/provider-image'
 import Section from '../component/section'
 import Headline from '../component/headline'
 import Paragraph from '../component/paragraph'
+import Button from '../component/button'
+import Link from '../component/link'
 
 import * as coreActions from '../action/core'
 import OrderConfirmationList from '../component/order-confirmation-list'
@@ -26,7 +28,6 @@ import orderPlaced from '../../asset/icon/order-placed.svg'
 import orderStarted from '../../asset/icon/order-started.svg'
 import orderShipped from '../../asset/icon/order-shipped.svg'
 import orderReceived from '../../asset/icon/order-received.svg'
-import Button from '../component/button'
 
 const SuccessPage = ({location}) => {
   if (!location.state || !location.state.orderNumber) {
@@ -35,18 +36,14 @@ const SuccessPage = ({location}) => {
   return (
     <AppLayout minorBackground>
       <Section classNames={['u-align-center']}>
-        <Headline modifiers={['xl']} label="Thank you for ordering with Craftcloud by All3DP!" />
+        <Headline modifiers={['xl']} label="Thank you for ordering with Craftcloud by All3DP" />
         <Headline
-          label={
-            location.state.orderNumber
-              ? `Order number: ${location.state.orderNumber}`
-              : 'Thank you for ordering with Craftcloud by All3DP!'
-          }
+          label={location.state.orderNumber ? `Order number: ${location.state.orderNumber}` : ''}
         />
         <Paragraph>
-          Your should shortly receive an <strong>email confirming</strong> your oder. We will also
-          send you an update on your order when we have received the tracking number from the
-          manufacturer. Please note that your order will be produced and sent from:
+          You should receive an order confirmation email from us shortly. We will also let you know
+          when we have received the tracking number for your print from the manufacturer. Your order
+          will be produced by:
         </Paragraph>
 
         <ProviderTeaser classNames={['u-margin-bottom-xl']}>
@@ -56,7 +53,7 @@ const SuccessPage = ({location}) => {
         </ProviderTeaser>
 
         <OrderConfirmationList step={1}>
-          <OrderConfirmationItem icon={<Icon source={orderPlaced} />} firstLine="Order Placed" />
+          <OrderConfirmationItem icon={<Icon source={orderPlaced} />} title="Order Placed" />
 
           <OrderConfirmationItem icon={<Icon source={orderStarted} />} title="Production started" />
 
@@ -66,11 +63,13 @@ const SuccessPage = ({location}) => {
         </OrderConfirmationList>
       </Section>
       <Section classNames={['u-align-center']}>
-        <Headline modifiers={['l']} label="Any Questions?" />
-        <Paragraph classNames={['u-margin-bottom-xl']}>
-          <strong>Contact us</strong> if you have any questions.
-        </Paragraph>
+        <Headline modifiers={['l']} classNames={['u-margin-bottom-xl']} label="Any questions?" />
         <Button minor label="Contact Us" onClick={() => openIntercom()} />
+      </Section>
+      <Section classNames={['u-align-center']}>
+        <Paragraph>
+          Or email us at <Link href="mailto:support@all3dp.com" label="support@all3dp.com" />
+        </Paragraph>
       </Section>
     </AppLayout>
   )
