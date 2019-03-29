@@ -1,19 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-import propTypes from '../../prop-types'
+import propTypes from '../../lib/prop-types'
+import buildClassName from '../../lib/build-class-name'
 import LoadingIndicator from '../loading-indicator'
-import cn from '../../lib/class-names'
 
-const LoadingContainer = ({classNames, insideContent = false}) => (
-  <div className={cn('LoadingContainer', {insideContent}, classNames)}>
+const LoadingContainer = ({classNames, modifiers}) => (
+  <div className={buildClassName('loading-container', modifiers, classNames)}>
     <LoadingIndicator />
   </div>
 )
 
 LoadingContainer.propTypes = {
-  ...propTypes.component,
-  insideContent: PropTypes.bool
+  ...propTypes.component
 }
 
 export default LoadingContainer

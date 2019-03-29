@@ -16,8 +16,7 @@ import {
   createStripePayment,
   createInvoicePayment,
   createPaypalPayment,
-  executePaypalPayment,
-  getOrderStatus
+  executePaypalPayment
 } from './printing-engine'
 import getFileMock from '../../../test/unit/mock/file'
 
@@ -384,24 +383,5 @@ describe('printing-engine lib', () => {
 
     it('returns the json result', () =>
       expect(result, 'to equal', 'some-execute-paypal-payment-result'))
-  })
-
-  describe('getOrderStatus()', () => {
-    let result
-
-    beforeEach(async () => {
-      sandbox.stub(httpJson, 'fetch').resolves({
-        json: 'some-order-status'
-      })
-
-      result = await getOrderStatus('some-order-id')
-    })
-
-    it('calls httpJson.fetch() with the correct URL', () =>
-      expect(httpJson.fetch, 'to have a call satisfying', [
-        `SOME-BASE-URL/v3/order/some-order-id/status`
-      ]))
-
-    it('returns the json result', () => expect(result, 'to equal', 'some-order-status'))
   })
 })
