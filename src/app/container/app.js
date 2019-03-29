@@ -14,7 +14,6 @@ import EditMaterialPage from './edit-material-page'
 import CartPage from './cart-page'
 import ReviewOrderPage from './review-order-page'
 import SuccessPage from './success-page'
-import ConfigurationPage from './configuration-page'
 
 const App = () => (
   <>
@@ -24,7 +23,6 @@ const App = () => (
       <Route component={CartPage} path="/cart" exact />
       <Route component={ReviewOrderPage} path="/review-order" exact />
       <Route component={SuccessPage} path="/success" exact />
-      <Route component={ConfigurationPage} path="/configuration/:id" exact />
     </Switch>
     <Modal />
   </>
