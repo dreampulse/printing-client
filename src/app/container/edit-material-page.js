@@ -12,6 +12,7 @@ import {scrollToTop} from './util/scroll-to-top'
 import FooterPartial from './footer-partial'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import MaterialPartial from './material-partial'
+import Modal from './modal'
 
 import PageLayout from '../component/page-layout'
 import Container from '../component/container'
@@ -49,6 +50,7 @@ const EditMaterialPage = ({goToCart, configIds, uploadedModelConfigs}) => {
       <Container>
         <MaterialPartial configIds={configIds} />
       </Container>
+      <Modal />
     </PageLayout>
   )
 }

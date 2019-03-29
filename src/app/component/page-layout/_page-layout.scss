@@ -25,8 +25,4 @@
     position: relative;
     z-index: z($stacking, footer);
   }
-
-  &--minorBackground {
-    background-color: $color-bg-minor;
-  }
 }
