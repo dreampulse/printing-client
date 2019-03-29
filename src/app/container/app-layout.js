@@ -8,7 +8,6 @@ import cartIcon from '../../asset/icon/cart.svg'
 import {selectCartCount} from '../lib/selector'
 
 import {goToUpload, goToCart} from '../action/navigation'
-import Modal from './modal'
 import {openIntercom} from '../service/intercom'
 
 import PageLayout from '../component/page-layout'
@@ -25,9 +24,11 @@ const AppLayout = ({
   cartCount,
   onHomeClick,
   onUploadClick,
-  onCartClick
+  onCartClick,
+  minorBackground
 }) => (
   <PageLayout
+    minorBackground={minorBackground}
     header={
       <>
         <NavBar
@@ -64,7 +65,6 @@ const AppLayout = ({
     footer={footer}
   >
     <Container>{children}</Container>
-    <Modal />
   </PageLayout>
 )
 
