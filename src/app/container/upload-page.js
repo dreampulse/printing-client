@@ -66,22 +66,17 @@ const UploadPage = ({
   const promoSection = () => (
     <Fragment>
       <Section>
-        <Headline
-          label="Need a Quote?"
-          modifiers={['l', 'light']}
-          classNames={['u-margin-bottom-l', 'u-align-center']}
-        />
         <Grid>
-          <Column md={0} lg={3} />
-          <Column md={12} lg={6}>
+          <Column md={0} lg={4} />
+          <Column md={12} lg={4}>
             <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
-              Large quantities, recurring orders or special requirements
+              Large quantities, recurring orders or special requirements?
             </RichText>
             <div className="u-align-center ">
               <Button minor label="Contact Us" onClick={() => openIntercom()} />
             </div>
           </Column>
-          <Column md={0} lg={3} />
+          <Column md={0} lg={4} />
         </Grid>
       </Section>
     </Fragment>
