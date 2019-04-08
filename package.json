@@ -119,7 +119,7 @@
   },
   "dependencies": {
     "basic-auth": "^2.0.0",
-    "browser-update": "^2.1.6",
+    "browser-update": "^3.2.5",
     "compression": "^1.6.2",
     "country-list": "^1.1.0",
     "debounce-promise": "^3.0.1",
