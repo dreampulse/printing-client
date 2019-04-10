@@ -10,7 +10,6 @@ storiesOf('Provider Teaser', module)
       <ProviderImage slug="shapeways" />
       <ProviderImage slug="imaterialise" />
       <ProviderImage slug="sculpteo" />
-      <ProviderImage slug="trinckle" />
       <ProviderImage slug="treatstock" />
       <ProviderImage slug="facfox" />
       <ProviderImage slug="jawstec" />
@@ -22,7 +21,6 @@ storiesOf('Provider Teaser', module)
       <ProviderImage slug="shapeways" />
       <ProviderImage slug="imaterialise" />
       <ProviderImage slug="sculpteo" />
-      <ProviderImage slug="trinckle" />
       <ProviderImage slug="treatstock" />
       <ProviderImage slug="facfox" />
       <ProviderImage slug="jawstec" />

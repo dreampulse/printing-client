@@ -28,7 +28,6 @@ export default {
     jawstec: 'JawsTec',
     sculpteo: 'Sculpteo',
     shapeways: 'Shapeways',
-    trinckle: 'Trinckle',
     treatstock: 'Treatstock',
     zverse: 'ZVerse'
   },
