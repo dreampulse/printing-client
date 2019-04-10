@@ -9,7 +9,6 @@ import imaterialiseImage from '../../../asset/image/printing-service/imaterialis
 import jawstecImage from '../../../asset/image/printing-service/jawstec.png'
 import sculpteoImage from '../../../asset/image/printing-service/sculpteo.png'
 import shapewaysImage from '../../../asset/image/printing-service/shapeways.png'
-import trinckleImage from '../../../asset/image/printing-service/trinckle.svg'
 import treatstockImage from '../../../asset/image/printing-service/treatstock.png'
 import zverseImage from '../../../asset/image/printing-service/zverse.png'
 
@@ -19,7 +18,6 @@ const providerImages = {
   jawstec: jawstecImage,
   sculpteo: sculpteoImage,
   shapeways: shapewaysImage,
-  trinckle: trinckleImage,
   treatstock: treatstockImage,
   zverse: zverseImage
 }
