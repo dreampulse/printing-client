@@ -24,6 +24,7 @@ export default {
   defaultCurrency: 'USD',
   providerNames: {
     facfox: 'FacFox',
+    harp: 'Harp Concepts',
     imaterialise: 'i.Materialise',
     jawstec: 'JawsTec',
     sculpteo: 'Sculpteo',

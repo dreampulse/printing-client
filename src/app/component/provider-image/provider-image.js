@@ -5,6 +5,7 @@ import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
 import facfoxImage from '../../../asset/image/printing-service/facfox.png'
+import harpImage from '../../../asset/image/printing-service/harp.png'
 import imaterialiseImage from '../../../asset/image/printing-service/imaterialise.png'
 import jawstecImage from '../../../asset/image/printing-service/jawstec.png'
 import sculpteoImage from '../../../asset/image/printing-service/sculpteo.png'
@@ -14,6 +15,7 @@ import zverseImage from '../../../asset/image/printing-service/zverse.png'
 
 const providerImages = {
   facfox: facfoxImage,
+  harp: harpImage,
   imaterialise: imaterialiseImage,
   jawstec: jawstecImage,
   sculpteo: sculpteoImage,
