@@ -10,14 +10,16 @@ import {selectCartCount} from '../lib/selector'
 import {goToUpload, goToCart} from '../action/navigation'
 import {openIntercom} from '../service/intercom'
 
+import config from '../../../config'
+
 import NavBar from '../component/nav-bar'
 import IconLink from '../component/icon-link'
 import Button from '../component/button'
 import Logo from '../component/logo'
 
-const NavBarPartial = ({navBarContent, cartCount, onHomeClick, onUploadClick, onCartClick}) => (
+const NavBarPartial = ({navBarContent, cartCount, onUploadClick, onCartClick}) => (
   <NavBar
-    leftContent={<Logo onClick={() => onHomeClick()} />}
+    leftContent={<Logo href={config.landingPageUrl} />}
     rightContent={
       <>
         {navBarContent}
@@ -52,7 +54,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onHomeClick: goToUpload,
   onUploadClick: goToUpload,
   onCartClick: goToCart
 }

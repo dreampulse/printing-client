@@ -5,6 +5,7 @@ export default {
   fetchTimout: 3000,
   imagePollingInterval: 1500,
   cloudinaryUrl: '//res.cloudinary.com/all3dp/image/upload',
+  landingPageUrl: '//craftcloud.all3dp.com',
   cloudinaryDefaultParams: ['q_90', 'f_auto'],
   stripeCheckoutImage: 'asset/image/checkout-logo.png',
   stripeDescription: '3D Printing Service',

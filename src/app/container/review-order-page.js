@@ -54,6 +54,8 @@ import {scrollToTop} from './util/scroll-to-top'
 
 import {PaymentAbortedError} from '../lib/error'
 
+import config from '../../../config'
+
 const ReviewOrderPage = ({
   user,
   openAddressFormModal,
@@ -90,7 +92,7 @@ const ReviewOrderPage = ({
 
   const renderHeader = () => (
     <NavBar
-      leftContent={<Logo onClick={() => goToUpload()} />}
+      leftContent={<Logo href={config.landingPageUrl}  />}
       rightContent={
         <>
           <Route path="/" exact>

@@ -10,13 +10,15 @@ import Button from '../button'
 import IconLink from '../icon-link'
 import Logo from '../logo'
 
+import config from '../../../../config'
+
 import helpIcon from '../../../asset/icon/help.svg'
 import cartIcon from '../../../asset/icon/cart.svg'
 
 const navBar = () => (
   <NavBar
     key="navbar"
-    leftContent={<Logo />}
+    leftContent={<Logo href={config.landingPageUrl} />}
     rightContent={
       <>
         <Button minor compact label="Upload" />

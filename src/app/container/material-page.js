@@ -31,6 +31,8 @@ import MaterialPartial, {SELECTED_STEP} from './material-partial'
 import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
 
+import config from '../../../config'
+
 import ToolLayout from '../component/tool-layout'
 import NavBar from '../component/nav-bar'
 import Logo from '../component/logo'
@@ -139,7 +141,7 @@ const MaterialPage = ({
       scrollContainerId={SCROLL_CONTAINER_ID}
       header={
         <NavBar
-          leftContent={<Logo onClick={() => goToUpload()} />}
+          leftContent={<Logo href={config.landingPageUrl} />}
           rightContent={
             <>
               <IconLink
