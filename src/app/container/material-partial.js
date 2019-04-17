@@ -51,7 +51,7 @@ import LoadingCheckmark from '../component/loading-checkmark'
 import ColorCard from '../component/color-card'
 import ColorTrait from '../component/color-trait'
 import ColorCardList from '../component/color-card-list'
-import MaterialStepHeadline from '../component/material-step-headline'
+import MaterialStepSection from '../component/material-step-section'
 
 export const SELECTED_STEP = {
   MATERIAL: 'material',
@@ -174,9 +174,11 @@ const MaterialPartial = ({
 
     return (
       <Section key="material-section">
-        <MaterialStepHeadline
+        <MaterialStepSection
           number="1"
           selected={selectedMaterial ? selectedMaterial.name : null}
+          label="Material"
+          open={selectedState.step === SELECTED_STEP.MATERIAL}
           action={
             selectedState.step === SELECTED_STEP.MATERIAL ? (
               <Link
@@ -197,53 +199,46 @@ const MaterialPartial = ({
             )
           }
         >
-          Material
-        </MaterialStepHeadline>
-        {selectedState.step === SELECTED_STEP.MATERIAL && (
-          <>
-            <Grid>
-              <Column lg={8} classNames={['u-margin-bottom']}>
-                <RadioButtonGroup
-                  name="material-group"
-                  value={(selectedMaterialGroup && selectedMaterialGroup.id) || undefined}
-                  onChange={selectMaterialGroup}
-                >
-                  <RadioButton key="__ALL__" value={undefined} label="All" />
-                  {Object.values(materialGroups).map(group => (
-                    <RadioButton key={group.id} value={group.id} label={group.name} />
-                  ))}
-                </RadioButtonGroup>
-              </Column>
-              <Column lg={4} classNames={['u-margin-bottom']}>
-                <MaterialFilterPartial
-                  materialFilter={materialFilter}
-                  onFilterMaterials={setMaterialFilter}
+          <Grid>
+            <Column lg={8} classNames={['u-margin-bottom']}>
+              <RadioButtonGroup
+                name="material-group"
+                value={(selectedMaterialGroup && selectedMaterialGroup.id) || undefined}
+                onChange={selectMaterialGroup}
+              >
+                <RadioButton key="__ALL__" value={undefined} label="All" />
+                {Object.values(materialGroups).map(group => (
+                  <RadioButton key={group.id} value={group.id} label={group.name} />
+                ))}
+              </RadioButtonGroup>
+            </Column>
+            <Column lg={4} classNames={['u-margin-bottom']}>
+              <MaterialFilterPartial
+                materialFilter={materialFilter}
+                onFilterMaterials={setMaterialFilter}
+              />
+              <Paragraph classNames={['u-no-margin', 'u-align-right']}>
+                {'Not printable? '}
+                <Link
+                  onClick={event => {
+                    event.preventDefault()
+                    openIntercom()
+                  }}
+                  label="Contact us"
                 />
-                <Paragraph classNames={['u-no-margin', 'u-align-right']}>
-                  {'Not printable? '}
-                  <Link
-                    onClick={event => {
-                      event.preventDefault()
-                      openIntercom()
-                    }}
-                    label="Contact us"
-                  />
-                  {' and let’s help you!'}
-                </Paragraph>
-              </Column>
-            </Grid>
-            {showMaterials.length > 0 && (
-              <MaterialSlider>
-                {sortMaterials(showMaterials).map(renderMaterialCard)}
-              </MaterialSlider>
-            )}
-            {showMaterials.length === 0 && (
-              <Paragraph modifiers={['l']} classNames={['u-align-center']}>
-                No materials found.
+                {' and let’s help you!'}
               </Paragraph>
-            )}
-          </>
-        )}
+            </Column>
+          </Grid>
+          {showMaterials.length > 0 && (
+            <MaterialSlider>{sortMaterials(showMaterials).map(renderMaterialCard)}</MaterialSlider>
+          )}
+          {showMaterials.length === 0 && (
+            <Paragraph modifiers={['l']} classNames={['u-align-center']}>
+              No materials found.
+            </Paragraph>
+          )}
+        </MaterialStepSection>
       </Section>
     )
   }
@@ -300,9 +295,11 @@ const MaterialPartial = ({
 
     return (
       <Section key="finish-section">
-        <MaterialStepHeadline
+        <MaterialStepSection
           number="2"
           selected={selectedFinishGroup ? selectedFinishGroup.name : null}
+          label="Finish"
+          open={selectedState.step === SELECTED_STEP.FINISH}
           action={
             selectedState.step === SELECTED_STEP.FINISH ? (
               <Link
@@ -323,15 +320,13 @@ const MaterialPartial = ({
             )
           }
         >
-          Finish
-        </MaterialStepHeadline>
-        {selectedState.step === SELECTED_STEP.FINISH &&
-          selectedMaterial &&
-          selectedMaterial.finishGroups.length > 0 && (
-            <MaterialSlider>
-              {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
-            </MaterialSlider>
-          )}
+          <MaterialSlider>
+            {selectedState.step === SELECTED_STEP.FINISH &&
+              selectedMaterial &&
+              selectedMaterial.finishGroups.length > 0 &&
+              sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
+          </MaterialSlider>
+        </MaterialStepSection>
       </Section>
     )
   }
@@ -391,9 +386,11 @@ const MaterialPartial = ({
 
     return (
       <Section key="color-section">
-        <MaterialStepHeadline
+        <MaterialStepSection
           number="3"
           selected={selectedMaterialConfig ? selectedMaterialConfig.color : null}
+          label="Color"
+          open={selectedState.step === SELECTED_STEP.COLOR}
           action={
             selectedState.step === SELECTED_STEP.COLOR ? (
               <Link
@@ -414,11 +411,12 @@ const MaterialPartial = ({
             )
           }
         >
-          Color
-        </MaterialStepHeadline>
-        {selectedState.step === SELECTED_STEP.COLOR && selectedFinishGroup && (
-          <ColorCardList>{selectedFinishGroup.materialConfigs.map(renderColorCard)}</ColorCardList>
-        )}
+          {selectedState.step === SELECTED_STEP.COLOR && selectedFinishGroup && (
+            <ColorCardList>
+              {selectedFinishGroup.materialConfigs.map(renderColorCard)}
+            </ColorCardList>
+          )}
+        </MaterialStepSection>
       </Section>
     )
   }
