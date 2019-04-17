@@ -2,7 +2,7 @@
   $item-width: 245px;
   $item-gutter: $space-l;
   $item-space-top: 2px; // Due to material card shadow
-  $wide-nav-width: $global-max-width - 4 * ($item-width + $item-gutter) + 0.5 * $item-gutter;
+  $wide-nav-width: 45px;
   $stacking: edge, button;
 
   position: relative;
@@ -146,17 +146,6 @@
 
     &:after {
       display: block;
-    }
-  }
-
-  // Use less space for navigation if both are visible
-  &.material-slider--show-back.material-slider--show-next {
-    .material-slider__back:before {
-      transform: translateX(-50%);
-    }
-
-    .material-slider__next:before {
-      transform: translateX(50%);
     }
   }
 }
