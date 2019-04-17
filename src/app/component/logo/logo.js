@@ -1,21 +1,21 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import noop from 'lodash/noop'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import logoImage from '../../../asset/image/logo.svg'
 
-const Logo = ({classNames, modifiers, onClick = noop}) => (
-  <button className={buildClassName('logo', modifiers, classNames)} type="button" onClick={onClick}>
-    <img className="logo__image" src={logoImage} alt="Craftcloud by All3DP" />
-  </button>
+const Logo = ({classNames, href = '#', alt = 'Craftcloud by All3DP'}) => (
+  <a className={cn('Logo', classNames)} href={href}>
+    <img className="Logo__image" src={logoImage} alt={alt} />
+  </a>
 )
 
 Logo.propTypes = {
   ...propTypes.component,
-  onClick: PropTypes.func
+  href: PropTypes.string,
+  alt: PropTypes.string
 }
 
 export default Logo
