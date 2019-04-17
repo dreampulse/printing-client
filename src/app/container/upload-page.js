@@ -73,12 +73,12 @@ const UploadPage = ({
       <Headline
         label="Need a Quote?"
         modifiers={['l', 'light']}
-        classNames={['u-margin-bottom-l', 'u-align-center']}
+        classNames={['u-margin-bottom', 'u-align-center']}
       />
       <Grid>
         <Column md={0} lg={3} />
         <Column md={12} lg={6}>
-          <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
+          <RichText classNames={['u-margin-bottom-xl', 'u-align-center']}>
             Large quantities, recurring orders or special requirements
           </RichText>
           <div className="u-align-center ">
@@ -266,7 +266,7 @@ const UploadPage = ({
         {hasModels && (
           <Headline
             classNames={['u-align-center']}
-            modifiers={['xl']}
+            modifiers={['xl', 'light']}
             label="Which files do you want to customize first?"
           />
         )}

@@ -202,7 +202,7 @@ const CartPage = ({
             {hasItemsOnUploadPage && warningNotificationSection()}
           </Section>
         )}
-        <Headline label="Your Cart" modifiers={['xl']} />
+        <Headline label="Your Cart" modifiers={['xl', 'light']} />
         {hasModels && (
           <SidebarLayout sidebar={paymentSection()}>{modelListSection()}</SidebarLayout>
         )}

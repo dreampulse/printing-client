@@ -72,7 +72,7 @@ const AddressFormModal = ({
     <>
       <FormRow>
         <Headline
-          modifiers={['xs']}
+          modifiers={['s']}
           label="Company information"
           classNames={['u-no-margin-bottom']}
         />
@@ -87,7 +87,7 @@ const AddressFormModal = ({
   const billingAddressSection = (
     <div id="billing-address">
       <Headline
-        modifiers={['l']}
+        modifiers={['l', 'minor']}
         classNames={['u-margin-bottom-xl', 'u-margin-top-xl']}
         label="Billing Address"
       />
@@ -187,7 +187,6 @@ const AddressFormModal = ({
 
   return (
     <Overlay
-      modifiers={['l']}
       headline={headline}
       buttons={buttons}
       closePortal={() => closeModal()}
@@ -198,7 +197,7 @@ const AddressFormModal = ({
         <div id="shipping-address">
           <FormRow>
             <Headline
-              modifiers={['xs']}
+              modifiers={['s']}
               label="Personal information"
               classNames={['u-no-margin-bottom']}
             />
@@ -250,7 +249,7 @@ const AddressFormModal = ({
 
           <FormRow>
             <Headline
-              modifiers={['xs']}
+              modifiers={['s']}
               label="Shipping address"
               classNames={['u-no-margin-bottom']}
             />

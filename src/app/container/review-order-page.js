@@ -23,7 +23,6 @@ import SidebarLayout from '../component/sidebar-layout'
 import Section from '../component/section'
 import Headline from '../component/headline'
 import Button from '../component/button'
-import EditLink from '../component/edit-link'
 import Link from '../component/link'
 import Grid from '../component/grid'
 import Column from '../component/column'
@@ -144,11 +143,15 @@ const ReviewOrderPage = ({
                 label={
                   <Fragment key="label">
                     Shipping Address{' '}
-                    <EditLink label="edit" onClick={() => openAddressFormModal()} />
+                    <Link
+                      label="edit"
+                      onClick={() => openAddressFormModal()}
+                      classNames={['u-font-size-base']}
+                    />
                   </Fragment>
                 }
               />
-              <Paragraph modifiers={['l']}>
+              <Paragraph>
                 {user.companyName ? (
                   <span>
                     {user.companyName}
@@ -188,14 +191,15 @@ const ReviewOrderPage = ({
                 label={
                   <>
                     Billing Address{' '}
-                    <EditLink
+                    <Link
                       label="edit"
                       onClick={() => openAddressFormModal('billing-address')}
+                      classNames={['u-font-size-base']}
                     />
                   </>
                 }
               />
-              <Paragraph modifiers={['l']}>
+              <Paragraph>
                 {user.companyName ? (
                   <span>
                     {user.companyName}
@@ -325,7 +329,7 @@ const ReviewOrderPage = ({
       <Paragraph>
         <Headline
           tag="strong"
-          modifiers={['xs']}
+          modifiers={['s']}
           label="Need different payment option?"
           classNames={['u-no-margin-bottom']}
         />
@@ -341,7 +345,7 @@ const ReviewOrderPage = ({
       <Paragraph>
         <Headline
           tag="strong"
-          modifiers={['xs']}
+          modifiers={['s']}
           label="Any questions?"
           classNames={['u-no-margin-bottom']}
         />
@@ -377,7 +381,8 @@ const ReviewOrderPage = ({
             modifiers={['minor', 'l', 'inline']}
             label={
               <Fragment key="label">
-                Your Order <EditLink label="edit" onClick={() => goToCart()} />
+                Your Order{' '}
+                <Link label="edit" onClick={() => goToCart()} classNames={['u-font-size-base']} />
               </Fragment>
             }
           />

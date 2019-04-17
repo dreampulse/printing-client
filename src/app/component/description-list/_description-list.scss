@@ -22,7 +22,8 @@
     & > strong {
       font-weight: $font-weight-bold;
       color: $color-text;
-      font-size: $font-size-base;
+      font-size: $font-size-l;
+      line-height: $line-height-s;
     }
 
     // There is a grid bug when provider image is a block element

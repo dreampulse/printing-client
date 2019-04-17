@@ -177,7 +177,7 @@ storiesOf('Overlay', module)
             </RichText>
             <Grid>
               <Column sm={6}>
-                <Headline modifiers={['xs']} label="Printing Method" />
+                <Headline modifiers={['s']} label="Printing Method" />
                 <Paragraph classNames={['u-margin-bottom-xl']}>
                   EOS Selective Laser Sintering (SLS)
                 </Paragraph>
@@ -189,7 +189,7 @@ storiesOf('Overlay', module)
                 </FeatureList>
               </Column>
               <Column sm={6}>
-                <Headline modifiers={['xs']} label="Material Spec" />
+                <Headline modifiers={['s']} label="Material Spec" />
                 <Paragraph classNames={['u-margin-bottom-xl']}>EOS PA 2200 (PA 12)</Paragraph>
                 <FeatureList>
                   <FeatureListItem feature={unchecked} label="Dishwasher safe" />

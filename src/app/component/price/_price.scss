@@ -1,8 +1,5 @@
 .Price {
-  $price-height: 30px;
-
-  line-height: $price-height;
-  height: $price-height;
+  font-size: $font-size-base;
 
   &__loading {
     display: flex;
@@ -16,16 +13,12 @@
     }
   }
 
-  &__global-loading {
-    margin-left: $space-s;
-  }
-
   &__price {
     display: flex;
     justify-content: flex-start;
   }
 
-  &__loading-checkmark {
+  &__loadingCheckmark {
     display: flex;
     margin-left: $space-base;
     justify-content: center;
@@ -33,24 +26,13 @@
   }
 
   &__value {
-    font-size: $font-size-l;
     font-weight: $font-weight-bold;
     white-space: nowrap;
   }
 
   &__prefix {
-    font-size: $font-size-l;
     font-weight: $font-weight-bold;
     white-space: nowrap;
     margin-right: $space-s;
-  }
-
-  &__meta {
-    @include scut-truncate();
-    color: $color-minor;
-    font-style: italic;
-    font-size: $font-size-base;
-    font-weight: $font-weight-regular;
-    margin-left: $space-s;
   }
 }

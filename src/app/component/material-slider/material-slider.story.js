@@ -15,7 +15,7 @@ const price = <Price value="$19.99" />
 
 const info = (
   <Info modifiers={['minor']}>
-    <Headline modifiers={['s']} label="Headline" />
+    <Headline label="Headline" />
     <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
   </Info>
 )
