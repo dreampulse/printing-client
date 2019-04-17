@@ -368,7 +368,7 @@ const MaterialPartial = ({
               color={materialConfig.colorCode}
               image={
                 materialConfig.colorImage &&
-                getCloudinaryUrl(materialConfig.colorImage, ['w_40', 'h_40', 'c_fill'])
+                getCloudinaryUrl(materialConfig.colorImage, ['w_30', 'h_30', 'c_fill'])
               }
             />
           }
