@@ -22,12 +22,13 @@ export default {
   defaultCurrency: 'USD',
   providerNames: {
     facfox: 'FacFox',
+    harp: 'Harp Concepts',
     imaterialise: 'i.Materialise',
     jawstec: 'JawsTec',
     sculpteo: 'Sculpteo',
     shapeways: 'Shapeways',
-    trinckle: 'Trinckle',
-    treatstock: 'Treatstock'
+    treatstock: 'Treatstock',
+    zverse: 'ZVerse'
   },
   localStorageAddressKey: 'address_v2',
   printingEngineBaseUrl: 'http://localhost:8000',

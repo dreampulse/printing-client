@@ -78,7 +78,12 @@ const AddressFormModal = ({
         />
       </FormRow>
       <FormRow modifiers={['half-half']}>
-        <Field component={renderFormikField(InputField)} label="Company Name" name="companyName" />
+        <Field
+          component={renderFormikField(InputField)}
+          label="Company Name"
+          name="companyName"
+          validate={required}
+        />
         <Field component={renderFormikField(InputField)} label="VAT ID" name="vatId" />
       </FormRow>
     </>

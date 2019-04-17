@@ -3,6 +3,7 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import withProps from 'recompose/withProps'
+import lifecycle from 'recompose/lifecycle'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
@@ -13,7 +14,7 @@ import * as logging from '../service/logging'
 
 import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
-import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
+import {formatPrice, formatDimensions, formatTimeRange} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import * as selector from '../lib/selector'
 import getCloudinaryUrl from '../lib/cloudinary'
@@ -243,7 +244,7 @@ const ReviewOrderPage = ({
     <Button
       key="payment-stripe"
       block
-      disabled={paymentInProgress || !user}
+      disabled={paymentInProgress || !user || !user.userId}
       icon={creditCardIcon}
       label="Credit card"
       onClick={async () => {
@@ -269,7 +270,7 @@ const ReviewOrderPage = ({
       <Button
         key="payment-invoice"
         block
-        disabled={paymentInProgress || !user}
+        disabled={paymentInProgress || !user || !user.userId}
         label="Pay with Invoice"
         onClick={async () => {
           try {
@@ -398,7 +399,9 @@ const ReviewOrderPage = ({
                 finishGroupName,
                 colorCode,
                 color,
-                colorImage
+                colorImage,
+                productionTimeFast,
+                productionTimeSlow
               }) => (
                 <ModelItem
                   modifiers={['read-only']}
@@ -409,7 +412,10 @@ const ReviewOrderPage = ({
                   subline={formatDimensions(model.dimensions, model.fileUnit)}
                   quantity={modelConfig.quantity}
                   price={formatPrice(quote.price, quote.currency)}
-                  deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
+                  time={formatTimeRange(
+                    productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                    productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                  )}
                   shippingMethod={shipping.name}
                   providerId={shipping.vendorId}
                   materialName={materialName}
@@ -460,7 +466,8 @@ const mapDispatchToProps = {
   executePaypalPayment: orderActions.executePaypalPayment,
   fatalError: coreActions.fatalError,
   openErrorModal: modalActions.openErrorModal,
-  goToUpload: navigationActions.goToUpload
+  goToUpload: navigationActions.goToUpload,
+  restoreUser: coreActions.restoreUser
 }
 
 const enhance = compose(
@@ -550,6 +557,11 @@ const enhance = compose(
         orderId,
         orderNumber
       }
+    }
+  }),
+  lifecycle({
+    componentDidMount() {
+      this.props.restoreUser()
     }
   })
 )

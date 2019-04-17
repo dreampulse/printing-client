@@ -1,0 +1,10 @@
+.StickyFooter {
+  background: $color-bg;
+  padding: $space-base $space-l;
+  text-align: right;
+  border-top: 1px solid $color-bg-minor;
+
+  & > * + * {
+    margin-left: $space-xl;
+  }
+}

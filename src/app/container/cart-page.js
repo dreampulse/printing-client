@@ -8,7 +8,7 @@ import lifecycle from 'recompose/lifecycle'
 import withPropsOnChange from 'recompose/withPropsOnChange'
 
 import * as selector from '../lib/selector'
-import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
+import {formatPrice, formatDimensions, formatTimeRange} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {scrollToTop} from './util/scroll-to-top'
@@ -88,7 +88,9 @@ const CartPage = ({
             finishGroupName,
             colorCode,
             color,
-            colorImage
+            colorImage,
+            productionTimeFast,
+            productionTimeSlow
           }) => (
             <ModelItem
               key={modelConfig.id}
@@ -98,11 +100,11 @@ const CartPage = ({
               title={model.fileName}
               subline={formatDimensions(model.dimensions, model.fileUnit)}
               buttonBar={buttonBar(modelConfig)}
-              price={formatPrice(
-                quote.quantity === modelConfig.quantity ? quote.price : null,
-                quote.currency
+              price={formatPrice(quote.price, quote.currency)}
+              time={formatTimeRange(
+                productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                productionTimeSlow + parseInt(shipping.deliveryTime, 10)
               )}
-              deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
               shippingMethod={shipping.name}
               providerId={shipping.vendorId}
               materialName={materialName}
