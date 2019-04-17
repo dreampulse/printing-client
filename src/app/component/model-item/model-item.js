@@ -6,9 +6,11 @@ import fallbackSource from '../../../asset/image/model-thumbnail-fallback.png'
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
-import ImageContainer from '../image-container'
 import Icon from '../icon'
+import Info from '../info'
+import Paragraph from '../paragraph'
 import ProviderImage from '../provider-image'
+import ImageContainer from '../image-container'
 import MagnifyableItem from '../magnifyable-item'
 
 import ShippingIcon from '../../../asset/icon/shipping.svg'
@@ -26,7 +28,7 @@ const ModelItem = ({
   quantity,
   buttonBar,
   price,
-  deliveryTime,
+  time,
   shippingMethod,
   materialName,
   color,
@@ -57,7 +59,13 @@ const ModelItem = ({
     <div className="model-item__right-content">
       <div className="model-item__price">{price}</div>
       <div className="model-item__value">
-        <Icon source={ShippingIcon} /> {deliveryTime}
+        <Icon source={ShippingIcon} /> {time}{' '}
+        <Info modifiers={['minor']}>
+          <Paragraph>
+            Delivery time is an estimate based on similar orders. Actual production time may vary
+            due to model analysis, reprints, and quality control.
+          </Paragraph>
+        </Info>
       </div>
       <div className="model-item__value">{shippingMethod}</div>
     </div>
@@ -75,7 +83,7 @@ ModelItem.propTypes = {
   buttonBar: PropTypes.node,
   color: PropTypes.node.isRequired,
   price: PropTypes.string.isRequired,
-  deliveryTime: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
   shippingMethod: PropTypes.string.isRequired,
   materialName: PropTypes.string.isRequired,
   providerId: PropTypes.string.isRequired,

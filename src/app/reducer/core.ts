@@ -302,7 +302,18 @@ const saveUser = (state: CoreState, action: coreActions.SaveUserAction): CoreRed
     },
     Cmd.run<Actions>(
       (user: User, userId: UserId) => {
-        const finalUser = omit(user, 'saveAddress', 'liableForVat')
+        const finalUser = pick(
+          user,
+          'userId',
+          'emailAddress',
+          'isCompany',
+          'companyName',
+          'vatId',
+          'phoneNumber',
+          'useDifferentBillingAddress',
+          'shippingAddress',
+          'billingAddress'
+        )
 
         return userId
           ? printingEngine.updateUser(userId, finalUser)
@@ -315,6 +326,39 @@ const saveUser = (state: CoreState, action: coreActions.SaveUserAction): CoreRed
       }
     )
   )
+
+const restoreUser = (state: CoreState, action: coreActions.RestoreUserAction): CoreReducer => {
+  if (state.user && !state.user.userId) {
+    return loop(
+      {
+        ...state
+      },
+      Cmd.run<Actions>(
+        printingEngine.createUser,
+        {
+          args: [pick(
+            state.user,
+            'userId',
+            'emailAddress',
+            'isCompany',
+            'companyName',
+            'vatId',
+            'phoneNumber',
+            'useDifferentBillingAddress',
+            'shippingAddress',
+            'billingAddress'
+          )],
+          successActionCreator: coreActions.userReceived,
+          failActionCreator: coreActions.fatalError
+        }
+      )
+    )
+  }
+
+  return {
+    ...state
+  }
+}
 
 const userReceived = (state: CoreState, action: coreActions.UserReceivedAction): CoreReducer => ({
   ...state,
@@ -852,6 +896,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return updateShippings(state, action)
     case 'CORE.SAVE_USER':
       return saveUser(state, action)
+    case 'CORE.RESTORE_USER':
+      return restoreUser(state, action)
     case 'CORE.USER_RECEIVED':
       return userReceived(state, action)
     case 'MODEL.UPLOAD_FILE':

@@ -295,3 +295,28 @@ export const executePaypalPayment = async (
   )
   return response.json
 }
+
+export enum OrderStatusType {
+  ORDER_PLACED = 'placed',
+  PRODUCTION_STARTED = 'in_production',
+  ORDER_SHIPPED = 'shipped',
+  ORDER_RECEIVED = 'received'
+}
+
+export type OrderStatus = {
+  type: OrderStatusType
+  date: string
+}
+
+export type OrderStatusResponse = {
+  orderNumber: string
+  cancelled: boolean
+  orderStatus: OrderStatus[]
+}
+
+export const getOrderStatus = async (orderId: OrderId): Promise<OrderStatusResponse> => {
+  const response = await httpJson.fetch(
+    `${config.printingEngineBaseUrl}/v3/order/${orderId}/status`
+  )
+  return response.json
+}

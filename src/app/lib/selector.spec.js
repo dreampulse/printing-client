@@ -570,6 +570,16 @@ describe('selectConfiguredModelInformation()', () => {
             id: 'material-config-1',
             finishGroupId: 'finish-group-1',
             materialId: 'material-1',
+            printingService: {
+              'vendor-id-1': {
+                productionTimeFast: 3,
+                productionTimeSlow: 4
+              },
+              'vendor-id-2': {
+                productionTimeFast: 3,
+                productionTimeSlow: 4
+              }
+            },
             materialGroupId: 'material-group-1',
             colorCode: 'color-code',
             color: 'color',
@@ -579,6 +589,16 @@ describe('selectConfiguredModelInformation()', () => {
             id: 'material-config-2',
             finishGroupId: 'finish-group-2',
             materialId: 'material-2',
+            printingService: {
+              'vendor-id-1': {
+                productionTimeFast: 3,
+                productionTimeSlow: 4
+              },
+              'vendor-id-2': {
+                productionTimeFast: 3,
+                productionTimeSlow: 4
+              }
+            },
             materialGroupId: 'material-group-1',
             colorCode: 'color-code',
             color: 'color',
@@ -588,6 +608,16 @@ describe('selectConfiguredModelInformation()', () => {
             id: 'material-config-3',
             finishGroupId: 'finish-group-3',
             materialId: 'material-3',
+            printingService: {
+              'vendor-id-1': {
+                productionTimeFast: 3,
+                productionTimeSlow: 4
+              },
+              'vendor-id-2': {
+                productionTimeFast: 3,
+                productionTimeSlow: 4
+              }
+            },
             materialGroupId: 'material-group-3',
             colorCode: 'color-code',
             color: 'color',
@@ -745,7 +775,9 @@ describe('selectConfiguredModelInformation()', () => {
         materialConfigId: 'material-config-1',
         colorCode: 'color-code',
         color: 'color',
-        colorImage: 'color-image'
+        colorImage: 'color-image',
+        productionTimeFast: 3,
+        productionTimeSlow: 4
       },
       {
         modelConfig: {
@@ -775,7 +807,9 @@ describe('selectConfiguredModelInformation()', () => {
         materialConfigId: 'material-config-1',
         colorCode: 'color-code',
         color: 'color',
-        colorImage: 'color-image'
+        colorImage: 'color-image',
+        productionTimeFast: 3,
+        productionTimeSlow: 4
       }
     ])
   })

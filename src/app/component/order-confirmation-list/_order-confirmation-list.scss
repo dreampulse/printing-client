@@ -1,0 +1,72 @@
+.OrderConfirmationList {
+  $bar-width: 10px;
+  $stacking: bar, item;
+  // divides the progress bar in 6 segments (0.166 = 1/6)
+  $progress-list: 0.166 0.5 0.833 1;
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+
+  & > &__item + &__item {
+    margin-top: $space-xxxl;
+  }
+
+  @include respond-to(medium) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    & > &__item + &__item {
+      margin-top: 0;
+    }
+  }
+
+  &__item {
+    position: relative;
+    z-index: z($stacking, item);
+  }
+
+  &__bar {
+    position: absolute;
+    z-index: z($stacking, bar);
+    background-color: $color-bg;
+    left: $oder-confirmation-item-size / 2 - $bar-width / 2;
+    top: $oder-confirmation-item-size / 2;
+    height: calc(100% - #{$oder-confirmation-item-size});
+    width: $bar-width;
+
+    @include respond-to(medium) {
+      left: $oder-confirmation-item-size / 2;
+      top: $oder-confirmation-item-size / 2 - $bar-width / 2;
+      height: $bar-width;
+      width: calc(100% - #{$oder-confirmation-item-size});
+    }
+  }
+
+  &__progress {
+    height: 100%;
+    width: 100%;
+    background-color: $color-primary;
+    transform-origin: center top;
+    transform: scaleY(0);
+
+    @include respond-to(medium) {
+      transform-origin: left center;
+      transform: scaleX(0);
+    }
+  }
+
+  @each $value in $progress-list {
+    $i: index($progress-list, $value);
+
+    &--step#{$i} &__progress {
+      transform: scaleY(#{$value});
+
+      @include respond-to(medium) {
+        transform: scaleX(#{$value});
+      }
+    }
+  }
+}

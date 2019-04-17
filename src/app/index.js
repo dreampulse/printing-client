@@ -6,14 +6,11 @@ import {AppContainer} from 'react-hot-loader'
 import browserUpdate from 'browser-update'
 
 import './service/logging'
-import {getFeatureFlags, getUrlParams} from './lib/url'
 
 import Store from './store'
 import Router from './router'
 
 import '../sass/main.scss'
-
-import {init} from './action/core'
 
 const history = createHistory()
 const store = Store(history)
@@ -29,20 +26,7 @@ function renderApp(CurrentRouter) {
   )
 }
 
-store
-  .dispatch(
-    init({featureFlags: getFeatureFlags(global.location), urlParams: getUrlParams(global.location)})
-  )
-  .then(() => {
-    renderApp(Router)
-
-    const bootsplash = global.document.getElementById('bootsplash')
-    // TODO: lets fade out the bootsplash, looks nicer
-    if (bootsplash) {
-      // Otherwise hot reloading breaks
-      bootsplash.parentNode.removeChild(bootsplash)
-    }
-  })
+renderApp(Router)
 
 // Webpack (uglify) will remove this code in the production build
 if (process.env.NODE_ENV !== 'production') {
@@ -59,5 +43,5 @@ if (process.env.NODE_ENV !== 'production') {
   }
 } else {
   // In production version only
-  browserUpdate({notify: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
+  browserUpdate({required: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
 }
