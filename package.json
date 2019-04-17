@@ -109,6 +109,7 @@
     "svgo": "^1.1.1",
     "svgo-loader": "^2.2.0",
     "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.1.6",
     "unexpected": "^10.36.0",
     "unexpected-sinon": "^10.4.0",
