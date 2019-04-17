@@ -58,7 +58,7 @@
     }
   }
 
-  & > .loading-indicator {
+  & > .LoadingIndicator {
     position: absolute;
     top: 0.5 * ($field-height - $button-size);
     right: $field-space;
