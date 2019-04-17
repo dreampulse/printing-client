@@ -45,6 +45,7 @@ const localDate = orderStatus =>
 
 const OrderStatusPage = ({orderStatusError, orderStatus, onHomeClick}) => (
   <PageLayout
+    showStickyFooter
     minorBackground
     header={
       <NavBar
@@ -60,7 +61,7 @@ const OrderStatusPage = ({orderStatusError, orderStatus, onHomeClick}) => (
         }
       />
     }
-    footer={<FooterPartial />}
+    stickyFooter={<FooterPartial />}
   >
     {!orderStatusError && !orderStatus ? (
       <LoadingContainer insideContent />

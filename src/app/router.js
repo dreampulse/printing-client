@@ -6,8 +6,6 @@ import App from './container/app'
 import OrderStatusPage from './container/order-status-page'
 import configurationPage from './container/configuration-page'
 
-import Modal from './container/modal'
-
 /* eslint-disable react/prop-types */
 export default ({history}) => (
   <ConnectedRouter history={history}>

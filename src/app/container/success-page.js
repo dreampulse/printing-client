@@ -21,6 +21,7 @@ import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 
 import NavBarPartial from './nav-bar-partial'
+import FooterPartial from './footer-partial'
 
 import * as coreActions from '../action/core'
 import OrderConfirmationList from '../component/order-confirmation-list'
@@ -37,7 +38,7 @@ const SuccessPage = ({location}) => {
     return <Redirect to="/" />
   }
   return (
-    <PageLayout header={<NavBarPartial />}>
+    <PageLayout header={<NavBarPartial />} minorBackground footer={<FooterPartial />}>
       <Container>
         <Section classNames={['u-align-center']}>
           <Headline modifiers={['xl']} label="Thank you for ordering with Craftcloud by All3DP" />

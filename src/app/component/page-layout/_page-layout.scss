@@ -1,32 +1,49 @@
 .PageLayout {
-  $stacking: footer, main, header;
+  $stacking: content, sticky;
 
-  position: relative;
-  z-index: z($global-stacking, app);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  position: relative;
 
   &__header {
     position: sticky;
     top: 0;
-    z-index: z($stacking, header);
-    margin-bottom: $space-xl;
+    flex-shrink: 0;
+    z-index: z($stacking, sticky);
   }
 
   &__main {
-    flex: 1;
-    position: relative;
-    z-index: z($stacking, main);
-    margin-bottom: $space-xl;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    flex-shrink: 0;
+    flex-grow: 1;
   }
 
-  &__footer {
+  &__content {
     position: relative;
-    z-index: z($stacking, footer);
+    margin: $space-l 0 $space-l 0;
+    flex-grow: 1;
+    height: 100%;
+    z-index: z($stacking, content);
+  }
+
+  &__stickyFooter {
+    display: none;
+    position: sticky;
+    bottom: 0;
+    z-index: z($stacking, sticky);
+  }
+
+  &--showStickyFooter {
+    .PageLayout__stickyFooter {
+      display: block;
+    }
   }
 
   &--minorBackground {
-    background-color: $color-bg-minor;
+    .PageLayout__main {
+      background: $color-bg-minor;
+    }
   }
 }

@@ -43,9 +43,10 @@ import NumberField from '../component/number-field'
 import Grid from '../component/grid'
 import Column from '../component/column'
 import RichText from '../component/rich-text'
-import UploadLayout from '../component/upload-layout'
+import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 import ModelUploadList from '../component/model-upload-list'
+import StickyFooter from '../component/sticky-footer'
 
 const UploadPage = ({
   openPickUnitModal,
@@ -214,12 +215,13 @@ const UploadPage = ({
     )
 
   return (
-    <UploadLayout
+    <PageLayout
       footer={<FooterPartial />}
       header={<NavBarPartial />}
-      hasModels={hasModels}
+      showStickyFooter={hasModels}
+      minorBackground={hasModels}
       stickyFooter={
-        <>
+        <StickyFooter>
           {featureFlags.share && (
             <Button
               text
@@ -244,7 +246,7 @@ const UploadPage = ({
             label={`Select Material (${selectedModelConfigIds.length}/${numModels})`}
             onClick={() => goToMaterial(selectedModelConfigIds)}
           />
-        </>
+        </StickyFooter>
       }
     >
       <Container full={Boolean(cart)}>
@@ -268,7 +270,7 @@ const UploadPage = ({
         <Section>{modelList()}</Section>
         {!hasModels && promoSection()}
       </Container>
-    </UploadLayout>
+    </PageLayout>
   )
 }
 
