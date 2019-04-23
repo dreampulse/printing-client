@@ -14,7 +14,7 @@ import config from '../../../../config'
 import {renderFormikField} from '../util/form'
 import {formatTelephoneNumber} from '../../lib/formatter'
 import {getCountriesMenu, getStateName, getStates, getCountryName} from '../../service/country'
-import {required, email, validateVat} from '../../lib/validator'
+import {required, email, vat} from '../../lib/validator'
 import scrollTo from '../../service/scroll-to'
 
 import Button from '../../component/button'
@@ -86,7 +86,7 @@ const AddressFormModal = ({
           component={renderFormikField(InputField)}
           label="VAT ID"
           name="vatId"
-          validate={validateVat(values, config.euCountries)}
+          validate={vat(values.shippingAddress.countryCode, config.euCountries)}
         />
       </FormRow>
     </>

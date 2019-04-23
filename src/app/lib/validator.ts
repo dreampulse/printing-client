@@ -7,11 +7,6 @@ export const email = (value: string) =>
     ? 'Invalid email address'
     : undefined
 
-export const validateVat = (
-  formValues: {shippingAddress: {countryCode: string}},
-  euCountries: string[]
-) => (value: string) => {
-  return !value && euCountries.includes(formValues.shippingAddress.countryCode)
-  ? 'Vat Id required'
-    : undefined
+export const vat = (countryCode: string, euCountries: string[]) => (value: string) => {
+  return !value && euCountries.includes(countryCode) ? 'Vat Id required' : undefined
 }
