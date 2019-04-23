@@ -23,6 +23,7 @@ export default {
   ],
   defaultCurrency: 'USD',
   providerNames: {
+    autotiv: 'Autotiv MFG',
     facfox: 'FacFox',
     harp: 'Harp Concepts',
     imaterialise: 'i.Materialise',
