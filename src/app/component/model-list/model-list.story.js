@@ -14,10 +14,9 @@ import deleteIcon from '../../../asset/icon/delete.svg'
 
 import HandleValue from '../../../../stories/util/handle-value'
 
-const primaryActions = () => <Button label="Choose Material…" />
-const secondaryActions = () => [
-  <NumberField key="quantity" value={42} />,
-  <Button icon={deleteIcon} key="delete" />
+const actions = () => [
+  <Button icon={deleteIcon} iconOnly key="delete" />,
+  <Button tiny minor label="Edit material" key="edit" />
 ]
 const buttonBar = () => (
   <ButtonBar>
@@ -35,7 +34,11 @@ const color = () => (
 
 storiesOf('Model List', module).add('default', () => (
   <HandleValue initialValue={[]} valueName="checkedIds" onChangeName="onChangeCheckedIds">
-    <ModelList primaryActions={primaryActions()} secondaryActions={secondaryActions()}>
+    <ModelList
+      actions={actions()}
+      selectLabel="Select all files"
+      deselectLabel="Deselect all files"
+    >
       {range(0, 5).map(index => (
         <ModelItem
           key={index}

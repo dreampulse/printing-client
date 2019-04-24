@@ -20,7 +20,10 @@ const LocationInfoPartial = ({currency, location, openPickLocationModal}) => {
     <Paragraph classNames={['u-align-right']}>
       Your printing and shipping prices depend on your location.{' '}
       <Link
-        onClick={() => openPickLocationModal({isCloseable: true})}
+        onClick={event => {
+          event.preventDefault()
+          openPickLocationModal({isCloseable: true})
+        }}
         label={locationNameAndCurrency}
       />
     </Paragraph>

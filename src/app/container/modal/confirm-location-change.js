@@ -33,7 +33,7 @@ const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation,
 
   return (
     <Overlay headline={headline} buttons={buttons} closeable={false}>
-      <Paragraph modifiers={['strong']}>
+      <Paragraph strong>
         Do you really want to change your location to <strong>{formatLocation(location)}</strong>?
       </Paragraph>
       <Paragraph>

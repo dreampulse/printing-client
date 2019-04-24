@@ -4,8 +4,8 @@
   &__priceComponents {
     list-style: none;
     margin: 0;
-    padding: $space-l;
-    margin-bottom: $space-l;
+    padding: $space-base;
+    margin-bottom: $space-base;
     border-bottom: 1px solid $color-border-minor;
   }
 
@@ -71,15 +71,15 @@
   &__buttons {
     list-style: none;
     margin: 0;
-    padding: 0 $space-l $space-l;
+    padding: 0 $space-base $space-base;
 
     & > * + * {
-      margin-top: $space-l;
+      margin-top: $space-base;
     }
   }
 
   &__sectionLabel {
-    padding: 0 $space-l;
+    padding: 0 $space-base;
     margin-bottom: $space-base;
     font-size: $font-size-base;
     color: $color-minor;

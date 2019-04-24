@@ -225,7 +225,7 @@ const MaterialPartial = ({
             <MaterialSlider>{sortMaterials(showMaterials).map(renderMaterialCard)}</MaterialSlider>
           )}
           {showMaterials.length === 0 && (
-            <Paragraph modifiers={['l']} classNames={['u-align-center']}>
+            <Paragraph l classNames={['u-align-center']}>
               No materials found.
             </Paragraph>
           )}
@@ -446,7 +446,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
-  goToReviewOrder: navigationAction.goToReviewOrder,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,

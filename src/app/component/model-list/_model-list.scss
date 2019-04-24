@@ -1,11 +1,10 @@
 .model-list {
   position: relative;
   margin-bottom: $space-base;
-  border-top: 1px solid $color-border;
 
   &__header {
     position: sticky;
-    top: 0;
+    top: $nav-bar-height;
     // To let header disappear before last model item
     margin-bottom: $model-item-height;
     display: flex;
@@ -22,15 +21,14 @@
     }
   }
 
-  &__header-checkbox {
+  &__select {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    width: $model-item-space-left;
+    flex-grow: 1;
   }
 
-  &__primary-actions,
-  &__secondary-actions {
+  &__actions {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -43,19 +41,10 @@
     }
   }
 
-  &__primary-actions {
-    flex-grow: 1;
-  }
-
   &__items {
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-
-  &__item {
-    position: relative;
-    border-bottom: 1px solid $color-border-minor;
   }
 
   &__checkbox {

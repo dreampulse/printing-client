@@ -6,7 +6,7 @@
   padding: 0 $space-xl;
   display: flex;
   flex-direction: row;
-  height: $nav-bar-content-height + 2 * $space-l;
+  height: $nav-bar-height;
   align-items: center;
 
   &__left {
@@ -17,11 +17,6 @@
 
     & > * + * {
       margin-left: $space-l;
-    }
-
-    // TODO: remove when design change is completed
-    & > .headline {
-      margin-bottom: 0;
     }
   }
 

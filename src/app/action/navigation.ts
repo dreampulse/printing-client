@@ -37,7 +37,5 @@ export const goToCart = (
   routerAction: any = push
 ) => routerAction('/cart', {numAddedItems, selectModelConfigIds})
 
-export const goToReviewOrder = (routerAction: any = push) => routerAction('/review-order')
-
 export const goToSuccess = (state: SuccessPageRouteState, routerAction: any = push) =>
   routerAction('/success', state)

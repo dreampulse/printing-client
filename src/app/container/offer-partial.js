@@ -48,7 +48,6 @@ const OfferPartial = ({
   uploadedModelConfigs,
   usedShippingIds,
   modelConfigs,
-  goToReviewOrder,
   updateSelectedModelConfigs,
   showMore,
   setShowMore,
@@ -138,16 +137,8 @@ const OfferPartial = ({
                           )
 
                           global.document.querySelector(`#${scrollContainerId}`).scrollTo(0, 0)
-                          // Go to review order page if user has configured all uploaded models at once.
-                        } else if (
-                          !isEditMode &&
-                          !hasItemsOnUploadPage &&
-                          configIds.length === modelConfigs.length
-                        ) {
-                          goToReviewOrder()
                         } else {
                           goToCart({
-                            numAddedItems: isEditMode ? 0 : configIds.length,
                             selectModelConfigIds: configIds
                           })
                         }
@@ -237,7 +228,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
-  goToReviewOrder: navigationAction.goToReviewOrder,
   addToCart: cartAction.addToCart,
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
 }
