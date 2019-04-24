@@ -1,0 +1,13 @@
+.PositioningPortal {
+  position: absolute;
+  z-index: z($global-stacking, positioning-portal);
+  visibility: hidden;
+
+  &--isPositioned {
+    visibility: visible;
+  }
+
+  &--behindOverlay {
+    z-index: z($global-stacking, positioning-portal-behind-overlay);
+  }
+}

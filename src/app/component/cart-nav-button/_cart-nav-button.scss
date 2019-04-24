@@ -1,0 +1,51 @@
+.CartNavButton {
+  $icon-size: 30px;
+
+  display: inline-flex;
+  flex-direction: column;
+  color: $color-primary;
+  font-size: $font-size-s;
+  align-items: center;
+  outline: none;
+
+  &__icon {
+    position: relative;
+
+    & > .icon {
+      color: $color-primary;
+      font-size: scut-em($icon-size);
+    }
+  }
+
+  &__count {
+    display: block;
+    position: absolute;
+    // Position the count within the icon
+    top: scut-em(-2px, $font-size-s);
+    left: scut-em(7px, $font-size-s);
+    width: scut-em(16px, $font-size-s);
+
+    color: $color-cart-count;
+    font-size: $font-size-s;
+    font-weight: $font-weight-bold;
+    text-align: center;
+  }
+
+  &__label {
+    margin-top: 0.2em;
+  }
+
+  &:hover,
+  &:active {
+    color: $color-primary-active;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}

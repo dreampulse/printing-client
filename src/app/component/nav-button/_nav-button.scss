@@ -1,0 +1,32 @@
+.NavButton {
+  $icon-size: 30px;
+
+  display: inline-flex;
+  flex-direction: column;
+  color: $color-primary;
+  font-size: $font-size-s;
+  align-items: center;
+  outline: none;
+
+  & > .icon {
+    font-size: scut-em($icon-size);
+  }
+
+  &__label {
+    margin-top: 0.2em;
+  }
+
+  &:hover,
+  &:active {
+    color: $color-primary-active;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}
