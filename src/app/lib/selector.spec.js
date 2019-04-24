@@ -9,7 +9,6 @@ import {
   selectCartShippings,
   selectCommonMaterialPathOfModelConfigs,
   selectConfiguredModelInformation,
-  isQuotePollingDone,
   selectQuotePollingProgress,
   selectQuotes,
   selectUsedShippingIdsAndFilter,
@@ -812,28 +811,6 @@ describe('selectConfiguredModelInformation()', () => {
         productionTimeSlow: 4
       }
     ])
-  })
-})
-
-describe('isQuotePollingDone()', () => {
-  it('returns false when quote polling is not done', () => {
-    const state = {
-      core: {
-        quotePollingId: 'some-polling-id'
-      }
-    }
-
-    expect(isQuotePollingDone(state), 'to equal', false)
-  })
-
-  it('returns true when quote polling is done', () => {
-    const state = {
-      core: {
-        quotePollingId: null
-      }
-    }
-
-    expect(isQuotePollingDone(state), 'to equal', true)
   })
 })
 
