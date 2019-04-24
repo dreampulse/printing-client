@@ -60,6 +60,7 @@ storiesOf('MaterialCard', module)
       price={price}
       info={info}
       image="http://placehold.it/260x170/cccccc"
+      selectLabel="Contact us"
       onMoreClick={action('onMoreClick')}
       onSelectClick={action('onSelectClick')}
     />

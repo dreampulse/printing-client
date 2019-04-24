@@ -72,14 +72,13 @@
   }
 
   &__unavailableText {
-    font-size: $font-size-l;
+    font-size: $font-size-base;
     font-weight: $font-weight-bold;
   }
 
   &--unavailable {
     color: $color-minor;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
-    opacity: 0.6;
+    box-shadow: 0 0 0 1px rgba($color-border-minor, 0.5);
 
     .MaterialCard__image {
       filter: grayscale(100%);
