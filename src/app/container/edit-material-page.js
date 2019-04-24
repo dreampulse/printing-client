@@ -46,7 +46,6 @@ const SCROLL_CONTAINER_ID = 'main-container'
 
 const EditMaterialPage = ({
   goToCart,
-  goToUpload,
   modelsWithConfig,
   configIds,
   cartCount,

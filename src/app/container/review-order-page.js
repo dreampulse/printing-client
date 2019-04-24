@@ -92,7 +92,7 @@ const ReviewOrderPage = ({
 
   const renderHeader = () => (
     <NavBar
-      leftContent={<Logo href={config.landingPageUrl}  />}
+      leftContent={<Logo href={config.landingPageUrl} />}
       rightContent={
         <>
           <Route path="/" exact>
