@@ -21,9 +21,9 @@ const secondaryActions = () => [
 ]
 const buttonBar = () => (
   <ButtonBar>
-    <Button label="Button" tiny minor />
-    <Button icon={placeholderIcon} />
-    <Button icon={placeholderIcon} />
+    <Button icon={placeholderIcon} iconOnly />
+    <Button icon={placeholderIcon} iconOnly />
+    <Button icon={placeholderIcon} iconOnly />
   </ButtonBar>
 )
 const color = () => (
