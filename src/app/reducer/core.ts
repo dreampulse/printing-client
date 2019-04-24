@@ -333,10 +333,9 @@ const restoreUser = (state: CoreState, action: coreActions.RestoreUserAction): C
       {
         ...state
       },
-      Cmd.run<Actions>(
-        printingEngine.createUser,
-        {
-          args: [pick(
+      Cmd.run<Actions>(printingEngine.createUser, {
+        args: [
+          pick(
             state.user,
             'userId',
             'emailAddress',
@@ -347,11 +346,11 @@ const restoreUser = (state: CoreState, action: coreActions.RestoreUserAction): C
             'useDifferentBillingAddress',
             'shippingAddress',
             'billingAddress'
-          )],
-          successActionCreator: coreActions.userReceived,
-          failActionCreator: coreActions.fatalError
-        }
-      )
+          )
+        ],
+        successActionCreator: coreActions.userReceived,
+        failActionCreator: coreActions.fatalError
+      })
     )
   }
 
