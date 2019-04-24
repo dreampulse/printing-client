@@ -1,6 +1,6 @@
 .form-row {
   display: grid;
-  grid-gap: $gutter-width;
+  grid-gap: $space-base;
 
   &--half-half {
     grid-template-columns: 12fr;

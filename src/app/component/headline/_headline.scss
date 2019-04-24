@@ -3,40 +3,29 @@
   margin: 0 0 $space-base;
   font-weight: $font-weight-bold;
   color: inherit;
-  font-size: $font-size-xl;
+  font-size: $font-size-l;
 
   & > .icon {
     position: relative;
     font-size: 1.3em;
-    margin-right: .5em;
+    margin-right: 0.5em;
     top: -0.08em; // Optimize vertical center
   }
 
-  &--xs {
+  &--s {
     font-size: $font-size-base;
     font-weight: $font-weight-bold;
   }
 
-  &--s {
-    font-size: $font-size-l;
-    font-weight: $font-weight-regular;
-  }
-
   &--l {
-    font-size: $font-size-xxl;
+    font-size: $font-size-xl;
     font-weight: $font-weight-light;
-    color: $color-text-label;
   }
 
   &--xl {
     margin-bottom: $space-xl;
-    font-size: $font-size-xxxl;
+    font-size: $font-size-xxl;
     font-weight: $font-weight-light;
-    color: $color-text-label;
-  }
-
-  &--disabled {
-    color: $color-disabled;
   }
 
   &--minor {

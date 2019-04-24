@@ -10,9 +10,9 @@
     position: absolute;
     right: $space-s;
     bottom: $space-s;
-    font-size: $font-size-xl;
+    font-size: $font-size-l;
     transform-origin: right bottom;
-    transition: transform $transition-duration-fast ease-out;
+    transition: transform $transition-duration-fast ease-in-out;
   }
 
   &:hover {

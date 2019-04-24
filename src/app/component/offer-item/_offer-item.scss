@@ -11,7 +11,7 @@
     margin-right: $space-xxxl;
 
     & > * {
-      width: $data-column-width;
+      min-width: $data-column-width;
     }
 
     & > * + * {

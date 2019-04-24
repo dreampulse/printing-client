@@ -13,7 +13,7 @@
     box-shadow: $box-shadow-base;
     border-radius: $border-radius;
     color: $color-text;
-    font-size: $font-size-l;
+    font-size: $font-size-base;
     outline: 0;
 
     &:focus {
@@ -58,7 +58,7 @@
     }
   }
 
-  & > .loading-indicator {
+  & > .LoadingIndicator {
     position: absolute;
     top: 0.5 * ($field-height - $button-size);
     right: $field-space;

@@ -5,10 +5,11 @@
   overflow: hidden;
 
   &__image {
-    @include scut-ratio-box(26/17);
+    @include scut-ratio-box(245/160);
     margin: 0;
     width: 100%;
     background-color: $color-gray-3;
+    background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
     border-top-left-radius: $border-radius;
@@ -24,8 +25,7 @@
   &__header {
     flex-shrink: 0;
     position: relative;
-    margin-bottom: $space-l;
-    height: $font-size-xl * $line-height-base;
+    margin-bottom: $space-base;
 
     & > .headline {
       @include scut-truncate();
@@ -49,7 +49,8 @@
     border-top: 1px solid $color-border-minor;
     line-height: $line-height-base;
     padding: $space-base 0;
-    height: 3 * $font-size-base * $line-height-base;
+    font-size: $font-size-s;
+    height: 3 * $font-size-s * $line-height-base;
     box-sizing: content-box;
     overflow: hidden;
   }

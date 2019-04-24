@@ -36,13 +36,14 @@ context('Simple application flow', () => {
     cy.contains('.headline', 'Shipping Address')
     cy.contains('button', 'Add Address').click()
 
-    cy.get('input[name="shippingAddress.firstName"]').type('TEST firstName')
-    cy.get('input[name="shippingAddress.lastName"]').type('TEST lastName')
-    cy.get('input[name="shippingAddress.address"]').type('TEST address')
-    cy.get('input[name="shippingAddress.city"]').type('TEST city')
-    cy.get('input[name="shippingAddress.zipCode"]').type('TEST zipCode')
-    cy.get('input[name="emailAddress"]').type('TEST@example.com')
-    cy.get('input[name="phoneNumber"]').type('0123456789')
+    // Because label of InputField overlaps input we have to force the interactions here.
+    cy.get('input[name="shippingAddress.firstName"]').type('TEST firstName', {force: true})
+    cy.get('input[name="shippingAddress.lastName"]').type('TEST lastName', {force: true})
+    cy.get('input[name="shippingAddress.address"]').type('TEST address', {force: true})
+    cy.get('input[name="shippingAddress.city"]').type('TEST city', {force: true})
+    cy.get('input[name="shippingAddress.zipCode"]').type('TEST zipCode', {force: true})
+    cy.get('input[name="emailAddress"]').type('TEST@example.com', {force: true})
+    cy.get('input[name="phoneNumber"]').type('0123456789', {force: true})
 
     cy.contains('button', 'Confirm').click()
   })

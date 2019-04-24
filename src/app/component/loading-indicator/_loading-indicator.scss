@@ -1,4 +1,4 @@
-.loading-indicator {
+.LoadingIndicator {
   display: inline-block;
   color: $color-primary;
   vertical-align: middle;
@@ -13,7 +13,7 @@
     height: 1em;
     animation: loading-indicator-spin 1s linear infinite;
 
-    &:after{
+    &:after {
       content: '';
       position: absolute;
       top: 0;
@@ -46,6 +46,8 @@
   }
 
   @keyframes loading-indicator-spin {
-    100% { transform: rotate(360deg); }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 }

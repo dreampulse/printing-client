@@ -143,6 +143,7 @@ const MaterialPartial = ({
           key={material.id}
           title={material.name}
           description={material.descriptionShort}
+          descriptionHeadline="Best used for:"
           price={renderPrice(bestOffer)}
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
@@ -424,12 +425,12 @@ const MaterialPartial = ({
   }
 
   if (selectedModelConfigs.length === 0) {
-    return <Headline label="Select a file to start customizing" modifiers={['xl']} />
+    return <Headline label="Select a file to start customizing" modifiers={['xl', 'light']} />
   }
 
   return (
     <>
-      <Headline label="Customize your selection" modifiers={['xl']} />
+      <Headline label="Customize your selection" modifiers={['xl', 'light']} />
       {renderMaterialSection()}
       {renderFinishSection()}
       {renderColorSection()}

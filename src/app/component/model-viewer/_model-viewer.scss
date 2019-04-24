@@ -13,7 +13,7 @@
 
   &__loading-indicator {
     @include scut-center-transform;
-    font-size: $font-size-xl;
-    color: $color-gray-0;
+    font-size: $font-size-l;
+    color: $color-text;
   }
 }
