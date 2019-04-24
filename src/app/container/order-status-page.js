@@ -63,7 +63,7 @@ const OrderStatusPage = ({orderStatusError, orderStatus, onHomeClick}) => (
     }
     stickyFooter={<FooterPartial />}
   >
-    {!orderStatusError && !orderStatus ? (
+    {true ? (
       <LoadingContainer insideContent />
     ) : (
       <Container>
