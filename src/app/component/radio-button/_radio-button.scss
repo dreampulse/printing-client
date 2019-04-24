@@ -1,4 +1,4 @@
-.radio-button {
+.RadioButton {
   display: block;
   background-color: $color-white;
   height: $field-height;
@@ -13,12 +13,12 @@
     background-color: $color-blue-very-light;
   }
 
-  &[aria-checked="true"] {
+  &[aria-checked='true'] {
     background-color: $color-primary;
     color: $color-invert-text;
   }
 
-  &[aria-disabled="true"] {
+  &[aria-disabled='true'] {
     background-color: $color-gray-5;
     cursor: not-allowed;
     color: $color-minor;
@@ -28,12 +28,19 @@
     }
   }
 
-  &[aria-checked="true"].radio-button[aria-disabled="true"] {
+  &[aria-checked='true'].RadioButton[aria-disabled='true'] {
     background-color: $color-primary;
     color: $color-invert-text;
   }
 
   &__input {
     display: none;
+  }
+
+  &--tiny {
+    height: $tiny-field-height;
+    line-height: $tiny-field-height;
+    font-size: $font-size-base;
+    padding: 0 1em;
   }
 }

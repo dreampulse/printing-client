@@ -19,7 +19,7 @@ const Button = ({classNames, modifiers = [], onClick = () => {}}) => {
       onClick={onClick}
     >
       <Icon
-        modifiers={['block']}
+        block
         source={back ? backIcon : nextIcon}
         title={back ? 'Goto previous page' : 'Goto next page'}
       />

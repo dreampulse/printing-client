@@ -205,6 +205,7 @@ const MaterialPartial = ({
             <Grid>
               <Column lg={8} classNames={['u-margin-bottom']}>
                 <RadioButtonGroup
+                  tiny
                   name="material-group"
                   value={(selectedMaterialGroup && selectedMaterialGroup.id) || undefined}
                   onChange={selectMaterialGroup}
@@ -220,17 +221,6 @@ const MaterialPartial = ({
                   materialFilter={materialFilter}
                   onFilterMaterials={setMaterialFilter}
                 />
-                <Paragraph classNames={['u-no-margin', 'u-align-right']}>
-                  {'Not printable? '}
-                  <Link
-                    onClick={event => {
-                      event.preventDefault()
-                      openIntercom()
-                    }}
-                    label="Contact us"
-                  />
-                  {' and let’s help you!'}
-                </Paragraph>
               </Column>
             </Grid>
             {showMaterials.length > 0 && (

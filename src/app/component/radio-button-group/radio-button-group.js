@@ -2,17 +2,17 @@ import PropTypes from 'prop-types'
 import React, {cloneElement} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 const RadioButtonGroup = ({
   classNames,
-  modifiers = [],
   children,
   name,
   value,
   disabled = false,
-  onChange = () => {}
+  onChange = () => {},
+  tiny = false
 }) => {
   const onClick = event => {
     onChange(event.target.value, name, event)
@@ -23,12 +23,11 @@ const RadioButtonGroup = ({
       onClick,
       name: groupName,
       checked: value === child.props.value,
-      disabled: child.props.disabled || disabled
+      disabled: child.props.disabled || disabled,
+      tiny
     })
   )
-  return (
-    <div className={buildClassName('radio-button-group', modifiers, classNames)}>{buttons}</div>
-  )
+  return <div className={cn('RadioButtonGroup', {}, classNames)}>{buttons}</div>
 }
 
 RadioButtonGroup.propTypes = {
@@ -37,7 +36,8 @@ RadioButtonGroup.propTypes = {
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  tiny: PropTypes.bool
 }
 
 export default RadioButtonGroup

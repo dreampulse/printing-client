@@ -23,7 +23,7 @@
     display: block;
   }
 
-  & > .icon {
+  & > .Icon {
     position: absolute;
     top: 0;
     right: $space-around-icon;
@@ -47,7 +47,7 @@
     padding-left: 0.5em;
     padding-right: 2 * $space-around-icon-compact + 1em;
 
-    & > .icon {
+    & > .Icon {
       right: $space-around-icon-compact;
     }
   }
@@ -61,7 +61,7 @@
     background-color: transparent;
     cursor: initial;
 
-    & > .icon {
+    & > .Icon {
       display: none;
     }
   }

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
@@ -11,27 +11,26 @@ import searchIcon from '../../../asset/icon/search.svg'
 
 const SearchField = ({
   classNames,
-  modifiers = [],
   onChange = () => {},
   onClearClick = () => {},
   value = '',
   id,
   name,
   placeholder,
-  disabled
+  disabled = false,
+  tiny = false
 }) => {
-  const finalModifiers = [...modifiers, {disabled}]
   const hasValue = value && value.length > 0
   const handleChange = event => {
     onChange(event.target.value, name, event)
   }
 
   return (
-    <div className={buildClassName('search-field', finalModifiers, classNames)}>
+    <div className={cn('SearchField', {disabled, tiny}, classNames)}>
       <input
         id={id}
         name={name}
-        className="search-field__input"
+        className="SearchField__input"
         type="text"
         placeholder={placeholder}
         value={value}
@@ -39,13 +38,13 @@ const SearchField = ({
         onChange={handleChange}
       />
       {hasValue && (
-        <button type="button" className="search-field__clear" onClick={onClearClick}>
-          <Icon source={closeIcon} title="Clear" />
+        <button type="button" className="SearchField__clear" onClick={onClearClick}>
+          <Icon source={closeIcon} title="Clear" block />
         </button>
       )}
       {!hasValue && (
-        <span className="search-field__search" aria-hidden>
-          <Icon source={searchIcon} />
+        <span className="SearchField__search" aria-hidden>
+          <Icon source={searchIcon} block />
         </span>
       )}
     </div>
@@ -60,7 +59,8 @@ SearchField.propTypes = {
   name: PropTypes.string,
   id: PropTypes.string,
   placeholder: PropTypes.string,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  tiny: PropTypes.bool
 }
 
 export default SearchField
