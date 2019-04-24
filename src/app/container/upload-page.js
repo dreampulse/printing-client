@@ -11,10 +11,9 @@ import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
-import cartIcon from '../../asset/icon/cart.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
-import {formatDimensions, formatPrice} from '../lib/formatter'
+import {formatDimensions} from '../lib/formatter'
 import * as printingEngine from '../lib/printing-engine'
 import * as selector from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
@@ -54,11 +53,9 @@ const UploadPage = ({
   updateQuantities,
   duplicateModelConfig,
   modelsWithConfig,
-  goToCart,
   goToMaterial,
   openModelViewer,
   cart,
-  cartCount,
   location,
   featureFlags,
   selectedModelConfigIds,
@@ -86,23 +83,12 @@ const UploadPage = ({
     </Section>
   )
 
-  const cartNotification = () => (
-    <Notification
-      message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
-      button={<Button label="Cart" icon={cartIcon} onClick={() => goToCart()} />}
-    >
-      Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
-      <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>
-    </Notification>
-  )
-
   const locationNotification = ({message, warning}) => (
     <Notification message={message} warning={warning} />
   )
 
   const notificationSection = () => (
     <Section>
-      {cart && cartNotification()}
       {location.state &&
         location.state.notification &&
         locationNotification(location.state.notification)}
@@ -259,7 +245,7 @@ const UploadPage = ({
         )}
       </Container>
       <Container>
-        {(cart || (location.state && location.state.notification)) && notificationSection()}
+        {location.state && location.state.notification && notificationSection()}
         {hasModels && (
           <Headline
             classNames={['u-align-center']}
@@ -281,7 +267,6 @@ const mapStateToProps = state => ({
     selector.selectModelsOfModelConfigs(state)
   ]).filter(([modelConfig]) => modelConfig.type !== 'UPLOADED' || modelConfig.quoteId === null),
   cart: state.core.cart,
-  cartCount: selector.selectCartCount(state),
   featureFlags: state.core.featureFlags,
   useSameMaterial: state.core.useSameMaterial,
   uploadedModelConfigs: selector.selectUploadedModelConfigs(state)
@@ -292,7 +277,6 @@ const mapDispatchToProps = {
   deleteModelConfigs: modelAction.deleteModelConfigs,
   updateQuantities: modelAction.updateQuantities,
   duplicateModelConfig: modelAction.duplicateModelConfig,
-  goToCart: navigationAction.goToCart,
   goToMaterial: navigationAction.goToMaterial,
   openModelViewer: modelViewerAction.open,
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
