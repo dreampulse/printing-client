@@ -21,7 +21,6 @@ import {
   selectUploadedModelConfigs,
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
-import checkoutIcon from '../../asset/icon/checkout.svg'
 
 import {SELECTED_STEP} from './material-partial'
 

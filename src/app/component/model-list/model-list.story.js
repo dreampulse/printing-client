@@ -3,12 +3,13 @@ import {storiesOf} from '@storybook/react'
 import range from 'lodash/range'
 
 import ModelList from '.'
-import DeprecatedUploadModelItem from '../deprecated-upload-model-item'
-import DeprecatedUploadModelItemError from '../deprecated-upload-model-item-error'
-import DeprecatedUploadModelItemLoad from '../deprecated-upload-model-item-load'
 import Button from '../button'
 import NumberField from '../number-field'
+import ButtonBar from '../button-bar'
+import ModelItem from '../model-item'
+import SelectField from '../select-field'
 
+import placeholderIcon from '../../../asset/icon/placeholder.svg'
 import deleteIcon from '../../../asset/icon/delete.svg'
 
 import HandleValue from '../../../../stories/util/handle-value'
@@ -18,25 +19,41 @@ const secondaryActions = () => [
   <NumberField key="quantity" value={42} />,
   <Button icon={deleteIcon} key="delete" />
 ]
+const buttonBar = () => (
+  <ButtonBar>
+    <Button label="Button" tiny minor />
+    <Button icon={placeholderIcon} />
+    <Button icon={placeholderIcon} />
+  </ButtonBar>
+)
+const color = () => (
+  <SelectField
+    modifiers={['compact']}
+    value={{value: 'item2', colorValue: 'ff0000', label: 'Color'}}
+  />
+)
 
 storiesOf('Model List', module).add('default', () => (
   <HandleValue initialValue={[]} valueName="checkedIds" onChangeName="onChangeCheckedIds">
     <ModelList primaryActions={primaryActions()} secondaryActions={secondaryActions()}>
       {range(0, 5).map(index => (
-        <DeprecatedUploadModelItem
+        <ModelItem
           key={index}
           id={String(index)}
-          imageSource="http://placehold.it/130x98"
-          title={`model_item_${index}.stl`}
+          imageSource="http://placehold.it/180x180"
+          title="model_item_title.stl"
           subline="42 x 42 x 42 mm"
+          quantity={1}
+          price="80.99€"
+          deliveryTime="2-5 Days"
+          shippingMethod="DHL Express"
+          providerId="shapeways"
+          materialName="Metal, polished"
+          providerMaterialName="Polyamide (SLS)"
+          color={color()}
+          buttonBar={buttonBar()}
         />
       ))}
-      <DeprecatedUploadModelItemError title="Upload failed" subline="This is why" />
-      <DeprecatedUploadModelItemLoad
-        status={0.4}
-        title="Uploading"
-        subline="model_item_title.stl"
-      />
     </ModelList>
   </HandleValue>
 ))
