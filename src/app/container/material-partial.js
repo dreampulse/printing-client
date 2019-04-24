@@ -172,63 +172,61 @@ const MaterialPartial = ({
       )
 
     return (
-      <Section key="material-section">
-        <MaterialStepSection
-          number="1"
-          selected={selectedMaterial ? selectedMaterial.name : null}
-          label="Material"
-          open={selectedState.step === SELECTED_STEP.MATERIAL}
-          action={
-            selectedState.step === SELECTED_STEP.MATERIAL ? (
-              <Link
-                label="cancel"
-                onClick={e => {
-                  e.preventDefault()
-                  selectNextStep()
-                }}
-              />
-            ) : (
-              <Link
-                label="change"
-                onClick={e => {
-                  e.preventDefault()
-                  selectStep(SELECTED_STEP.MATERIAL)
-                }}
-              />
-            )
-          }
-        >
-          <Grid>
-            <Column lg={8} classNames={['u-margin-bottom']}>
-              <RadioButtonGroup
-                tiny
-                name="material-group"
-                value={(selectedMaterialGroup && selectedMaterialGroup.id) || undefined}
-                onChange={selectMaterialGroup}
-              >
-                <RadioButton key="__ALL__" value={undefined} label="All" />
-                {Object.values(materialGroups).map(group => (
-                  <RadioButton key={group.id} value={group.id} label={group.name} />
-                ))}
-              </RadioButtonGroup>
-            </Column>
-            <Column lg={4} classNames={['u-margin-bottom']}>
-              <MaterialFilterPartial
-                materialFilter={materialFilter}
-                onFilterMaterials={setMaterialFilter}
-              />
-            </Column>
-          </Grid>
-          {showMaterials.length > 0 && (
-            <MaterialSlider>{sortMaterials(showMaterials).map(renderMaterialCard)}</MaterialSlider>
-          )}
-          {showMaterials.length === 0 && (
-            <Paragraph modifiers={['l']} classNames={['u-align-center']}>
-              No materials found.
-            </Paragraph>
-          )}
-        </MaterialStepSection>
-      </Section>
+      <MaterialStepSection
+        number="1"
+        selected={selectedMaterial ? selectedMaterial.name : null}
+        label="Material"
+        open={selectedState.step === SELECTED_STEP.MATERIAL}
+        action={
+          selectedState.step === SELECTED_STEP.MATERIAL ? (
+            <Link
+              label="cancel"
+              onClick={e => {
+                e.preventDefault()
+                selectNextStep()
+              }}
+            />
+          ) : (
+            <Link
+              label="change"
+              onClick={e => {
+                e.preventDefault()
+                selectStep(SELECTED_STEP.MATERIAL)
+              }}
+            />
+          )
+        }
+      >
+        <Grid>
+          <Column lg={8} classNames={['u-margin-bottom']}>
+            <RadioButtonGroup
+              tiny
+              name="material-group"
+              value={(selectedMaterialGroup && selectedMaterialGroup.id) || undefined}
+              onChange={selectMaterialGroup}
+            >
+              <RadioButton key="__ALL__" value={undefined} label="All" />
+              {Object.values(materialGroups).map(group => (
+                <RadioButton key={group.id} value={group.id} label={group.name} />
+              ))}
+            </RadioButtonGroup>
+          </Column>
+          <Column lg={4} classNames={['u-margin-bottom']}>
+            <MaterialFilterPartial
+              materialFilter={materialFilter}
+              onFilterMaterials={setMaterialFilter}
+            />
+          </Column>
+        </Grid>
+        {showMaterials.length > 0 && (
+          <MaterialSlider>{sortMaterials(showMaterials).map(renderMaterialCard)}</MaterialSlider>
+        )}
+        {showMaterials.length === 0 && (
+          <Paragraph modifiers={['l']} classNames={['u-align-center']}>
+            No materials found.
+          </Paragraph>
+        )}
+      </MaterialStepSection>
     )
   }
 
@@ -283,40 +281,38 @@ const MaterialPartial = ({
       )
 
     return (
-      <Section key="finish-section">
-        <MaterialStepSection
-          number="2"
-          selected={selectedFinishGroup ? selectedFinishGroup.name : null}
-          label="Finish"
-          open={selectedState.step === SELECTED_STEP.FINISH}
-          action={
-            selectedState.step === SELECTED_STEP.FINISH ? (
-              <Link
-                label="cancel"
-                onClick={e => {
-                  e.preventDefault()
-                  selectNextStep()
-                }}
-              />
-            ) : (
-              <Link
-                label="change"
-                onClick={e => {
-                  e.preventDefault()
-                  selectStep(SELECTED_STEP.FINISH)
-                }}
-              />
-            )
-          }
-        >
-          <MaterialSlider>
-            {selectedState.step === SELECTED_STEP.FINISH &&
-              selectedMaterial &&
-              selectedMaterial.finishGroups.length > 0 &&
-              sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
-          </MaterialSlider>
-        </MaterialStepSection>
-      </Section>
+      <MaterialStepSection
+        number="2"
+        selected={selectedFinishGroup ? selectedFinishGroup.name : null}
+        label="Finish"
+        open={selectedState.step === SELECTED_STEP.FINISH}
+        action={
+          selectedState.step === SELECTED_STEP.FINISH ? (
+            <Link
+              label="cancel"
+              onClick={e => {
+                e.preventDefault()
+                selectNextStep()
+              }}
+            />
+          ) : (
+            <Link
+              label="change"
+              onClick={e => {
+                e.preventDefault()
+                selectStep(SELECTED_STEP.FINISH)
+              }}
+            />
+          )
+        }
+      >
+        <MaterialSlider>
+          {selectedState.step === SELECTED_STEP.FINISH &&
+            selectedMaterial &&
+            selectedMaterial.finishGroups.length > 0 &&
+            sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
+        </MaterialSlider>
+      </MaterialStepSection>
     )
   }
 
@@ -374,39 +370,35 @@ const MaterialPartial = ({
     }
 
     return (
-      <Section key="color-section">
-        <MaterialStepSection
-          number="3"
-          selected={selectedMaterialConfig ? selectedMaterialConfig.color : null}
-          label="Color"
-          open={selectedState.step === SELECTED_STEP.COLOR}
-          action={
-            selectedState.step === SELECTED_STEP.COLOR ? (
-              <Link
-                label="cancel"
-                onClick={e => {
-                  e.preventDefault()
-                  selectStep('')
-                }}
-              />
-            ) : (
-              <Link
-                label="change"
-                onClick={e => {
-                  e.preventDefault()
-                  selectStep(SELECTED_STEP.COLOR)
-                }}
-              />
-            )
-          }
-        >
-          {selectedState.step === SELECTED_STEP.COLOR && selectedFinishGroup && (
-            <ColorCardList>
-              {selectedFinishGroup.materialConfigs.map(renderColorCard)}
-            </ColorCardList>
-          )}
-        </MaterialStepSection>
-      </Section>
+      <MaterialStepSection
+        number="3"
+        selected={selectedMaterialConfig ? selectedMaterialConfig.color : null}
+        label="Color"
+        open={selectedState.step === SELECTED_STEP.COLOR}
+        action={
+          selectedState.step === SELECTED_STEP.COLOR ? (
+            <Link
+              label="cancel"
+              onClick={e => {
+                e.preventDefault()
+                selectStep('')
+              }}
+            />
+          ) : (
+            <Link
+              label="change"
+              onClick={e => {
+                e.preventDefault()
+                selectStep(SELECTED_STEP.COLOR)
+              }}
+            />
+          )
+        }
+      >
+        {selectedState.step === SELECTED_STEP.COLOR && selectedFinishGroup && (
+          <ColorCardList>{selectedFinishGroup.materialConfigs.map(renderColorCard)}</ColorCardList>
+        )}
+      </MaterialStepSection>
     )
   }
 
