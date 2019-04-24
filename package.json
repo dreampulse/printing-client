@@ -19,7 +19,7 @@
     "test:eslint": "eslint src test bin stories .storybook ./*.js",
     "test:dev": "NODE_ENV=test mocha --opts test/unit/mocha.opts ./src/**/*.spec.js",
     "test:dev:watch": "NODE_ENV=test mocha --opts test/unit/mocha.opts ./src/**/*.spec.js --watch",
-    "test:cypress:run": "cypress run --record --key 29366e1c-0b4c-461a-a399-c99c42de27d2",
+    "test:cypress:run": "cypress run",
     "test:cypress": "start-server-and-test start:cypress http-get://localhost:3002 test:cypress:run",
     "test:compile": "tsc --noEmit --skipLibCheck --project ./tsconfig.json",
     "test:tslint": "tslint -c tslint.json 'src/**/*.ts'",
