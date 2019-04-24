@@ -1,4 +1,4 @@
-.search-field {
+.SearchField {
   $border-width: 1px;
   $field-space: 10px;
   $button-size: 20px;
@@ -25,7 +25,7 @@
       box-shadow: $box-shadow-active;
     }
 
-    &:placeholder {
+    &::placeholder {
       color: $color-minor;
     }
   }
@@ -37,18 +37,13 @@
     display: inline-block;
     width: $button-size;
     height: $button-size;
+    font-size: $button-size;
     color: $color-primary;
     outline: 0;
 
     &:hover,
     &:focus {
       color: $color-primary-active;
-    }
-
-    & > .icon {
-      display: block;
-      width: $button-size;
-      height: $button-size;
     }
   }
 
@@ -59,18 +54,30 @@
     display: inline-block;
     width: $button-size;
     height: $button-size;
+    font-size: $button-size;
     color: $color-minor;
     outline: 0;
+  }
 
-    & > .icon {
-      display: block;
-      width: $button-size;
-      height: $button-size;
+  &--tiny {
+    $button-size-tiny: 16px;
+
+    .SearchField__input {
+      height: $tiny-field-height;
+      font-size: $font-size-base;
+    }
+
+    .SearchField__search,
+    .SearchField__clear {
+      top: 0.5 * ($tiny-field-height - $button-size-tiny);
+      width: $button-size-tiny;
+      height: $button-size-tiny;
+      font-size: $button-size-tiny;
     }
   }
 
   &--disabled {
-    opacity: .5;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 }

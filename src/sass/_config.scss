@@ -90,12 +90,16 @@ $screen-sm-max: 749px;
 $screen-md-min: 750px;
 $screen-md-max: 959px;
 $screen-lg-min: 960px;
+$screen-lg-max: 1619px;
+$screen-xlg-min: 1620px;
 
 $mediaqueries: (
   small-only: '(max-width: #{$screen-sm-max})',
   medium: '(min-width: #{$screen-md-min})',
   medium-only: '(min-width: #{$screen-md-min}) and (max-width: #{$screen-md-max})',
-  large: '(min-width: #{$screen-lg-min})'
+  large: '(min-width: #{$screen-lg-min})',
+  large-only: '(min-width: #{$screen-lg-min}) and (max-width: #{$screen-lg-max})',
+  xlarge: '(min-width: #{$screen-xlg-min})'
 );
 
 // Misc
