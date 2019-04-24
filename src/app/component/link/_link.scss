@@ -1,9 +1,10 @@
 .Link {
   color: $color-link;
+  font-weight: $font-weight-regular;
   text-decoration: none;
   cursor: pointer;
 
-  & > .icon {
+  & > .Icon {
     position: relative;
     margin-right: 0.5em;
     font-size: 0.8em;

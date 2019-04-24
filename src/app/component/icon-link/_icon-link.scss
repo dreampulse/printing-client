@@ -4,7 +4,7 @@
   position: relative;
   display: inline-block;
   color: $color-primary;
-  font-size: $font-size-xxl;
+  font-size: $font-size-xl;
   line-height: 1;
   filter: drop-shadow($shadow);
   outline: 0;
@@ -22,12 +22,12 @@
     font-weight: $font-weight-bold;
   }
 
-  &:hover:not([aria-disabled="true"]),
-  &:focus:not([aria-disabled="true"]) {
+  &:hover:not([aria-disabled='true']),
+  &:focus:not([aria-disabled='true']) {
     color: $color-primary-active;
   }
 
-  &[aria-disabled="true"] {
+  &[aria-disabled='true'] {
     cursor: not-allowed;
     color: $color-disabled;
     filter: none;

@@ -24,6 +24,6 @@
 
 // Utility classes
 // (they should have the highest priority)
-#root {
+#body {
   @import 'util/**/*.scss';
 }

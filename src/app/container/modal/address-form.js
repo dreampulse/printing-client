@@ -14,7 +14,7 @@ import config from '../../../../config'
 import {renderFormikField} from '../util/form'
 import {formatTelephoneNumber} from '../../lib/formatter'
 import {getCountriesMenu, getStateName, getStates, getCountryName} from '../../service/country'
-import {required, email} from '../../lib/validator'
+import {required, email, vat} from '../../lib/validator'
 import scrollTo from '../../service/scroll-to'
 
 import Button from '../../component/button'
@@ -72,14 +72,24 @@ const AddressFormModal = ({
     <>
       <FormRow>
         <Headline
-          modifiers={['xs']}
+          modifiers={['s']}
           label="Company information"
           classNames={['u-no-margin-bottom']}
         />
       </FormRow>
       <FormRow modifiers={['half-half']}>
-        <Field component={renderFormikField(InputField)} label="Company Name" name="companyName" />
-        <Field component={renderFormikField(InputField)} label="VAT ID" name="vatId" />
+        <Field
+          component={renderFormikField(InputField)}
+          label="Company Name"
+          name="companyName"
+          validate={required}
+        />
+        <Field
+          component={renderFormikField(InputField)}
+          label="VAT ID"
+          name="vatId"
+          validate={vat(values.shippingAddress.countryCode, config.euCountries)}
+        />
       </FormRow>
     </>
   )
@@ -87,7 +97,7 @@ const AddressFormModal = ({
   const billingAddressSection = (
     <div id="billing-address">
       <Headline
-        modifiers={['l']}
+        modifiers={['l', 'minor']}
         classNames={['u-margin-bottom-xl', 'u-margin-top-xl']}
         label="Billing Address"
       />
@@ -187,7 +197,6 @@ const AddressFormModal = ({
 
   return (
     <Overlay
-      modifiers={['l']}
       headline={headline}
       buttons={buttons}
       closePortal={() => closeModal()}
@@ -198,7 +207,7 @@ const AddressFormModal = ({
         <div id="shipping-address">
           <FormRow>
             <Headline
-              modifiers={['xs']}
+              modifiers={['s']}
               label="Personal information"
               classNames={['u-no-margin-bottom']}
             />
@@ -250,7 +259,7 @@ const AddressFormModal = ({
 
           <FormRow>
             <Headline
-              modifiers={['xs']}
+              modifiers={['s']}
               label="Shipping address"
               classNames={['u-no-margin-bottom']}
             />
@@ -341,7 +350,8 @@ const AddressFormModal = ({
 
 const mapStateToProps = state => ({
   userLocation: state.core.location,
-  user: state.core.user
+  user: state.core.user,
+  cart: state.core.cart
 })
 
 const mapDispatchToProps = {

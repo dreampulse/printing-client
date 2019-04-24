@@ -11,9 +11,9 @@ import placeholderIcon from '../../../asset/icon/placeholder.svg'
 
 const buttonBar = () => (
   <ButtonBar>
-    <Button label="Button" tiny minor onClick={action('click')} />
-    <Button icon={placeholderIcon} onClick={action('click')} />
-    <Button icon={placeholderIcon} onClick={action('click')} />
+    <Button icon={placeholderIcon} iconOnly onClick={action('click')} />
+    <Button icon={placeholderIcon} iconOnly onClick={action('click')} />
+    <Button icon={placeholderIcon} iconOnly onClick={action('click')} />
   </ButtonBar>
 )
 

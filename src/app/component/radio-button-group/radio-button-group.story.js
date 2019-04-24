@@ -16,6 +16,15 @@ storiesOf('Radio Button Group & Radio Button', module)
       </RadioButtonGroup>
     </HandleValue>
   ))
+  .add('tiny', () => (
+    <HandleValue>
+      <RadioButtonGroup tiny name="group1">
+        <RadioButton value="value1" label="Value 1" />
+        <RadioButton value="value2" label="Value 2" />
+        <RadioButton value="value3" label="Value 3" />
+      </RadioButtonGroup>
+    </HandleValue>
+  ))
   .add('with value', () => (
     <HandleValue initialValue="value1">
       <RadioButtonGroup name="group1">

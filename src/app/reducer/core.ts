@@ -302,7 +302,18 @@ const saveUser = (state: CoreState, action: coreActions.SaveUserAction): CoreRed
     },
     Cmd.run<Actions>(
       (user: User, userId: UserId) => {
-        const finalUser = omit(user, 'saveAddress', 'liableForVat')
+        const finalUser = pick(
+          user,
+          'userId',
+          'emailAddress',
+          'isCompany',
+          'companyName',
+          'vatId',
+          'phoneNumber',
+          'useDifferentBillingAddress',
+          'shippingAddress',
+          'billingAddress'
+        )
 
         return userId
           ? printingEngine.updateUser(userId, finalUser)
@@ -315,6 +326,38 @@ const saveUser = (state: CoreState, action: coreActions.SaveUserAction): CoreRed
       }
     )
   )
+
+const restoreUser = (state: CoreState, action: coreActions.RestoreUserAction): CoreReducer => {
+  if (state.user && !state.user.userId) {
+    return loop(
+      {
+        ...state
+      },
+      Cmd.run<Actions>(printingEngine.createUser, {
+        args: [
+          pick(
+            state.user,
+            'userId',
+            'emailAddress',
+            'isCompany',
+            'companyName',
+            'vatId',
+            'phoneNumber',
+            'useDifferentBillingAddress',
+            'shippingAddress',
+            'billingAddress'
+          )
+        ],
+        successActionCreator: coreActions.userReceived,
+        failActionCreator: coreActions.fatalError
+      })
+    )
+  }
+
+  return {
+    ...state
+  }
+}
 
 const userReceived = (state: CoreState, action: coreActions.UserReceivedAction): CoreReducer => ({
   ...state,
@@ -569,6 +612,14 @@ const duplicateModelConfig = (
   }
 }
 
+const goingToReceiveQuotes = (
+  state: CoreState,
+  action: quoteActions.GoingToReceiveQuotesAction
+): CoreReducer => ({
+  ...state,
+  printingServiceComplete: {} // Reset to signal the UI that quotes are going to be loaded
+})
+
 const receiveQuotes = (
   state: CoreState,
   {payload: {countryCode, currency, modelConfigs, refresh}}: quoteActions.ReceiveQuotesAction
@@ -639,7 +690,7 @@ const startPollingQuotes = (
 
 const quotesReceived = (
   state: CoreState,
-  {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceived
+  {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceivedAction
 ): CoreReducer => {
   const quoteMap = keyBy(quotes, 'quoteId')
   const modelConfigs = updateQuotesInModelConfigs(state.modelConfigs, quotes, state.quotes)
@@ -662,7 +713,7 @@ const quotesReceived = (
   return nextState
 }
 
-const quotesComplete = (state: CoreState, {payload}: quoteActions.QuotesComplete) =>
+const quotesComplete = (state: CoreState, {payload}: quoteActions.QuotesCompleteAction) =>
   loop(
     {
       ...state,
@@ -852,6 +903,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return updateShippings(state, action)
     case 'CORE.SAVE_USER':
       return saveUser(state, action)
+    case 'CORE.RESTORE_USER':
+      return restoreUser(state, action)
     case 'CORE.USER_RECEIVED':
       return userReceived(state, action)
     case 'MODEL.UPLOAD_FILE':
@@ -872,6 +925,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return updateQuantities(state, action)
     case 'MODEL.DUPLICATE_MODEL_CONFIG':
       return duplicateModelConfig(state, action)
+    case 'QUOTE.GOING_TO_RECEIVE_QUOTES':
+      return goingToReceiveQuotes(state, action)
     case 'QUOTE.RECEIVE_QUOTES':
       return receiveQuotes(state, action)
     case 'QUOTE.START_POLLING_QUOTES':

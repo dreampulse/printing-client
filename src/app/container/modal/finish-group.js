@@ -33,7 +33,7 @@ const FinishGroupModal = ({finishGroup, closeModal}) => {
           <Paragraph classNames={['u-margin-bottom-xl']}>{finishGroup.description}</Paragraph>
           <Grid>
             <Column sm={6}>
-              <Headline modifiers={['xs']} label="Printing Method" />
+              <Headline label="Printing Method" />
               <Paragraph classNames={['u-margin-bottom-xl']}>
                 {finishGroup.properties.printingMethod}
               </Paragraph>
@@ -56,7 +56,7 @@ const FinishGroupModal = ({finishGroup, closeModal}) => {
             </Column>
             <Column sm={6}>
               {finishGroup.properties.materialSpec && (
-                <Headline modifiers={['xs']} label="Material Spec" />
+                <Headline modifiers={['s']} label="Material Spec" />
               )}
               {finishGroup.properties.materialSpec && (
                 <Paragraph classNames={['u-margin-bottom-xl']}>

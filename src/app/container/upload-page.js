@@ -43,9 +43,10 @@ import NumberField from '../component/number-field'
 import Grid from '../component/grid'
 import Column from '../component/column'
 import RichText from '../component/rich-text'
-import UploadLayout from '../component/upload-layout'
+import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 import ModelUploadList from '../component/model-upload-list'
+import StickyFooter from '../component/sticky-footer'
 
 const UploadPage = ({
   openPickUnitModal,
@@ -70,22 +71,17 @@ const UploadPage = ({
 
   const promoSection = () => (
     <Section>
-      <Headline
-        label="Need a Quote?"
-        modifiers={['l', 'light']}
-        classNames={['u-margin-bottom-l', 'u-align-center']}
-      />
       <Grid>
-        <Column md={0} lg={3} />
-        <Column md={12} lg={6}>
-          <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
-            Large quantities, recurring orders or special requirements
+        <Column md={0} lg={4} />
+        <Column md={12} lg={4}>
+          <RichText classNames={['u-margin-bottom-xl', 'u-align-center']}>
+            Large quantities, recurring orders or special requirements?
           </RichText>
           <div className="u-align-center ">
             <Button minor label="Contact Us" onClick={() => openIntercom()} />
           </div>
         </Column>
-        <Column md={0} lg={3} />
+        <Column md={0} lg={4} />
       </Grid>
     </Section>
   )
@@ -219,12 +215,13 @@ const UploadPage = ({
     )
 
   return (
-    <UploadLayout
+    <PageLayout
       footer={<FooterPartial />}
       header={<NavBarPartial />}
-      hasModels={hasModels}
+      showStickyFooter={hasModels}
+      minorBackground={hasModels}
       stickyFooter={
-        <>
+        <StickyFooter>
           {featureFlags.share && (
             <Button
               text
@@ -249,7 +246,7 @@ const UploadPage = ({
             label={`Select Material (${selectedModelConfigIds.length}/${numModels})`}
             onClick={() => goToMaterial(selectedModelConfigIds)}
           />
-        </>
+        </StickyFooter>
       }
     >
       <Container full={Boolean(cart)}>
@@ -266,14 +263,14 @@ const UploadPage = ({
         {hasModels && (
           <Headline
             classNames={['u-align-center']}
-            modifiers={['xl']}
+            modifiers={['xl', 'light']}
             label="Which files do you want to customize first?"
           />
         )}
         <Section>{modelList()}</Section>
         {!hasModels && promoSection()}
       </Container>
-    </UploadLayout>
+    </PageLayout>
   )
 }
 

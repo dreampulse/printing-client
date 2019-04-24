@@ -68,7 +68,7 @@ const EditMaterialPage = ({
       </Section>
       <Section classNames={['u-no-margin']}>
         <Headline
-          modifiers={['s']}
+          modifiers={['light']}
           label={`Your selection (${modelsWithConfig.length} ${
             modelsWithConfig.length > 1 ? 'files' : 'file'
           })`}

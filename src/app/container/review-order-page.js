@@ -3,6 +3,7 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import withProps from 'recompose/withProps'
+import lifecycle from 'recompose/lifecycle'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
@@ -13,7 +14,7 @@ import * as logging from '../service/logging'
 
 import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
-import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
+import {formatPrice, formatDimensions, formatTimeRange} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import * as selector from '../lib/selector'
 import getCloudinaryUrl from '../lib/cloudinary'
@@ -23,7 +24,6 @@ import SidebarLayout from '../component/sidebar-layout'
 import Section from '../component/section'
 import Headline from '../component/headline'
 import Button from '../component/button'
-import EditLink from '../component/edit-link'
 import Link from '../component/link'
 import Grid from '../component/grid'
 import Column from '../component/column'
@@ -146,11 +146,15 @@ const ReviewOrderPage = ({
                 label={
                   <Fragment key="label">
                     Shipping Address{' '}
-                    <EditLink label="edit" onClick={() => openAddressFormModal()} />
+                    <Link
+                      label="edit"
+                      onClick={() => openAddressFormModal()}
+                      classNames={['u-font-size-base']}
+                    />
                   </Fragment>
                 }
               />
-              <Paragraph modifiers={['l']}>
+              <Paragraph>
                 {user.companyName ? (
                   <span>
                     {user.companyName}
@@ -190,14 +194,15 @@ const ReviewOrderPage = ({
                 label={
                   <>
                     Billing Address{' '}
-                    <EditLink
+                    <Link
                       label="edit"
                       onClick={() => openAddressFormModal('billing-address')}
+                      classNames={['u-font-size-base']}
                     />
                   </>
                 }
               />
-              <Paragraph modifiers={['l']}>
+              <Paragraph>
                 {user.companyName ? (
                   <span>
                     {user.companyName}
@@ -241,7 +246,7 @@ const ReviewOrderPage = ({
     <Button
       key="payment-stripe"
       block
-      disabled={paymentInProgress || !user}
+      disabled={paymentInProgress || !user || !user.userId}
       icon={creditCardIcon}
       label="Credit card"
       onClick={async () => {
@@ -267,7 +272,7 @@ const ReviewOrderPage = ({
       <Button
         key="payment-invoice"
         block
-        disabled={paymentInProgress || !user}
+        disabled={paymentInProgress || !user || !user.userId}
         label="Pay with Invoice"
         onClick={async () => {
           try {
@@ -327,7 +332,7 @@ const ReviewOrderPage = ({
       <Paragraph>
         <Headline
           tag="strong"
-          modifiers={['xs']}
+          modifiers={['s']}
           label="Need different payment option?"
           classNames={['u-no-margin-bottom']}
         />
@@ -343,7 +348,7 @@ const ReviewOrderPage = ({
       <Paragraph>
         <Headline
           tag="strong"
-          modifiers={['xs']}
+          modifiers={['s']}
           label="Any questions?"
           classNames={['u-no-margin-bottom']}
         />
@@ -379,7 +384,8 @@ const ReviewOrderPage = ({
             modifiers={['minor', 'l', 'inline']}
             label={
               <Fragment key="label">
-                Your Order <EditLink label="edit" onClick={() => goToCart()} />
+                Your Order{' '}
+                <Link label="edit" onClick={() => goToCart()} classNames={['u-font-size-base']} />
               </Fragment>
             }
           />
@@ -395,7 +401,9 @@ const ReviewOrderPage = ({
                 finishGroupName,
                 colorCode,
                 color,
-                colorImage
+                colorImage,
+                productionTimeFast,
+                productionTimeSlow
               }) => (
                 <ModelItem
                   modifiers={['read-only']}
@@ -406,7 +414,10 @@ const ReviewOrderPage = ({
                   subline={formatDimensions(model.dimensions, model.fileUnit)}
                   quantity={modelConfig.quantity}
                   price={formatPrice(quote.price, quote.currency)}
-                  deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
+                  time={formatTimeRange(
+                    productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                    productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                  )}
                   shippingMethod={shipping.name}
                   providerId={shipping.vendorId}
                   materialName={materialName}
@@ -419,7 +430,7 @@ const ReviewOrderPage = ({
                         colorValue: colorCode,
                         label: `${color}, ${finishGroupName}`,
                         colorImage:
-                          colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
+                          colorImage && getCloudinaryUrl(colorImage, ['w_30', 'h_30', 'c_fill'])
                       }}
                     />
                   }
@@ -457,7 +468,8 @@ const mapDispatchToProps = {
   executePaypalPayment: orderActions.executePaypalPayment,
   fatalError: coreActions.fatalError,
   openErrorModal: modalActions.openErrorModal,
-  goToUpload: navigationActions.goToUpload
+  goToUpload: navigationActions.goToUpload,
+  restoreUser: coreActions.restoreUser
 }
 
 const enhance = compose(
@@ -547,6 +559,11 @@ const enhance = compose(
         orderId,
         orderNumber
       }
+    }
+  }),
+  lifecycle({
+    componentDidMount() {
+      this.props.restoreUser()
     }
   })
 )

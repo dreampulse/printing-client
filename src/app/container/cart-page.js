@@ -8,11 +8,12 @@ import lifecycle from 'recompose/lifecycle'
 import withPropsOnChange from 'recompose/withPropsOnChange'
 
 import * as selector from '../lib/selector'
-import {formatPrice, formatDimensions, formatDeliveryTime} from '../lib/formatter'
+import {formatPrice, formatDimensions, formatTimeRange} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {scrollToTop} from './util/scroll-to-top'
 import {guard} from './util/guard'
+import config from '../../../config'
 
 import Link from '../component/link'
 import SidebarLayout from '../component/sidebar-layout'
@@ -88,7 +89,9 @@ const CartPage = ({
             finishGroupName,
             colorCode,
             color,
-            colorImage
+            colorImage,
+            productionTimeFast,
+            productionTimeSlow
           }) => (
             <ModelItem
               key={modelConfig.id}
@@ -98,11 +101,11 @@ const CartPage = ({
               title={model.fileName}
               subline={formatDimensions(model.dimensions, model.fileUnit)}
               buttonBar={buttonBar(modelConfig)}
-              price={formatPrice(
-                quote.quantity === modelConfig.quantity ? quote.price : null,
-                quote.currency
+              price={formatPrice(quote.price, quote.currency)}
+              time={formatTimeRange(
+                productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                productionTimeSlow + parseInt(shipping.deliveryTime, 10)
               )}
-              deliveryTime={formatDeliveryTime(shipping.deliveryTime)}
               shippingMethod={shipping.name}
               providerId={shipping.vendorId}
               materialName={materialName}
@@ -114,7 +117,7 @@ const CartPage = ({
                     colorValue: colorCode,
                     label: `${color}, ${finishGroupName}`,
                     colorImage:
-                      colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
+                      colorImage && getCloudinaryUrl(colorImage, ['w_30', 'h_30', 'c_fill'])
                   }}
                 />
               }
@@ -202,7 +205,7 @@ const CartPage = ({
             {hasItemsOnUploadPage && warningNotificationSection()}
           </Section>
         )}
-        <Headline label="Your Cart" modifiers={['xl']} />
+        <Headline label="Your Cart" modifiers={['xl', 'light']} />
         {hasModels && (
           <SidebarLayout sidebar={paymentSection()}>{modelListSection()}</SidebarLayout>
         )}
@@ -235,7 +238,7 @@ const mapStateToProps = state => ({
   liableForVat: state.core.user && state.core.user.liableForVat,
   featureFlags: state.core.featureFlags,
   hasOnlyValidModelConfigsWithQuote: selector.hasOnlyValidModelConfigsWithQuote(state),
-  isQuotePollingDone: selector.isQuotePollingDone(state),
+  pollingProgress: selector.selectQuotePollingProgress(state),
   isCartUpToDate: selector.isCartUpToDate(state)
 })
 
@@ -246,6 +249,7 @@ const mapDispatchToProps = dispatch => ({
   goToEditMaterial: bindActionCreators(navigationAction.goToEditMaterial, dispatch),
   openModelViewer: bindActionCreators(modelViewerAction.open, dispatch),
   updateQuantities: bindActionCreators(modelAction.updateQuantities, dispatch),
+  goingToReceiveQuotes: bindActionCreators(quoteAction.goingToReceiveQuotes, dispatch),
   receiveQuotes: bindActionCreators(quoteAction.receiveQuotes, dispatch),
   duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)
@@ -268,7 +272,7 @@ export default compose(
   withPropsOnChange(
     () => false, // Should never reinitialize the debounce function
     ({receiveQuotes}) => ({
-      debouncedReceiveQuotes: debounce(receiveQuotes, 1000)
+      debouncedReceiveQuotes: debounce(receiveQuotes, config.receiveQuotesWait)
     })
   ),
   lifecycle({
@@ -289,17 +293,22 @@ export default compose(
       }
     },
     componentDidUpdate(prevProps) {
+      const isPollingDone =
+        this.props.pollingProgress.total > 0 &&
+        this.props.pollingProgress.complete === this.props.pollingProgress.total
+
       if (prevProps.modelsWithConfig.length > 0 && this.props.modelsWithConfig.length === 0) {
         this.props.goToUpload()
       }
 
       // Refresh quotes if cart got invalid
-      if (!this.props.hasOnlyValidModelConfigsWithQuote && this.props.isQuotePollingDone) {
+      if (!this.props.hasOnlyValidModelConfigsWithQuote && isPollingDone) {
         const modelConfigs = this.props.modelConfigs
         const {refresh} = this.props.featureFlags
         const currency = this.props.currency
         const {countryCode} = this.props.location
 
+        this.props.goingToReceiveQuotes()
         this.props.debouncedReceiveQuotes({
           modelConfigs,
           countryCode,

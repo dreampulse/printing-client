@@ -21,7 +21,6 @@ import {
   selectUploadedModelConfigs,
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
-import checkoutIcon from '../../asset/icon/checkout.svg'
 
 import {SELECTED_STEP} from './material-partial'
 
@@ -78,20 +77,14 @@ const OfferPartial = ({
     <OfferFooter showMore={showMore}>
       {(offers.length === 0 || !selectedState.materialConfigId) && (
         <OfferItem
-          actions={
-            <Button
-              icon={checkoutIcon}
-              disabled
-              label={isEditMode ? 'Select offer' : 'Add to cart'}
-            />
-          }
+          actions={<Button disabled label={isEditMode ? 'Select offer' : 'Add to cart'} />}
         >
           <DescriptionList>
             <dt>
               <strong>Total (incl. shipping):</strong>
             </dt>
             <dd>
-              <strong className="u-font-size-l">
+              <strong className="u-font-size-xl">
                 {offers.length > 0
                   ? formatPrice(offers[0].totalGrossPrice, offers[0].multiModelQuote.currency)
                   : formatPrice(null, currency)}
@@ -118,7 +111,7 @@ const OfferPartial = ({
                     <Button text label="See all offers" onClick={() => setShowMore(true)} />
                   )}
                   <Button
-                    icon={checkoutIcon}
+                    minor={!firstOffer}
                     label={isEditMode ? 'Select offer' : 'Add to cart'}
                     onClick={() =>
                       addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
@@ -169,25 +162,36 @@ const OfferPartial = ({
                   <strong>Price total:</strong>
                 </dt>
                 <dd>
-                  <strong className={firstOffer ? 'u-font-size-l' : ''}>
+                  <strong className={firstOffer ? 'u-font-size-xl' : ''}>
                     {formatPrice(totalGrossPrice, multiModelQuote.currency)}
                   </strong>
                 </dd>
-                <dt>Production:</dt>
-                <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
-                <dt>Shipping:</dt>
-                <dd>
+                <dt className="u-hide-xlarge">
+                  <strong>Est. delivery time:</strong>
+                </dt>
+                <dd className="u-hide-xlarge">
+                  {formatTimeRange(
+                    productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                    productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                  )}
+                </dd>
+                <dt className="u-show-xlarge">Production:</dt>
+                <dd className="u-show-xlarge">
+                  {formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
+                </dd>
+                <dt className="u-show-xlarge">Shipping:</dt>
+                <dd className="u-show-xlarge">
                   {usedShippingIdsById[shipping.shippingId]
                     ? formatPrice(0, shipping.currency)
                     : formatPrice(shipping.grossPrice, shipping.currency)}
                 </dd>
               </DescriptionList>
-              <DescriptionList>
+              <DescriptionList classNames={['u-show-xlarge']}>
                 <dt>
                   <strong>Est. delivery time:</strong>
                 </dt>
                 <dd>
-                  <strong className={firstOffer ? 'u-font-size-l' : ''}>
+                  <strong className={firstOffer ? 'u-font-size-xl' : ''}>
                     {formatTimeRange(
                       productionTimeFast + parseInt(shipping.deliveryTime, 10),
                       productionTimeSlow + parseInt(shipping.deliveryTime, 10)

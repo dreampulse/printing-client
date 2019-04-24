@@ -6,8 +6,6 @@ import buildClassName from '../../lib/build-class-name'
 
 import {createPollHandle} from '../../service/image'
 
-import LoadingIndicator from '../loading-indicator'
-
 export default class ImageContainer extends Component {
   static propTypes = {
     ...propTypes.component,
@@ -68,12 +66,6 @@ export default class ImageContainer extends Component {
         {imageLoaded && <img className="image-container__image" src={source} alt={alt} />}
         {!imageLoaded && fallbackSource && (
           <img className="image-container__image" src={fallbackSource} alt={alt} />
-        )}
-        {!imageLoaded && !fallbackSource && (
-          <LoadingIndicator
-            classNames={['image-container__loading-indicator']}
-            modifiers={['invert']}
-          />
         )}
       </div>
     )
