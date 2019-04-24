@@ -60,7 +60,8 @@ const MaterialCard = ({
         )}
         {unavailable ? (
           <footer className="MaterialCard__footer">
-            <div className="MaterialCard__unavailableText">{unavailableLabel}</div>
+            <span className="MaterialCard__unavailableText">{unavailableLabel}</span>
+            <Button minor tiny label={selectLabel} disabled={loading} onClick={onSelectClick} />
           </footer>
         ) : (
           <footer className="MaterialCard__footer">
