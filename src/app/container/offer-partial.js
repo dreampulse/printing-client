@@ -166,16 +166,27 @@ const OfferPartial = ({
                     {formatPrice(totalGrossPrice, multiModelQuote.currency)}
                   </strong>
                 </dd>
-                <dt>Production:</dt>
-                <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
-                <dt>Shipping:</dt>
-                <dd>
+                <dt className="u-hide-xlarge">
+                  <strong>Est. delivery time:</strong>
+                </dt>
+                <dd className="u-hide-xlarge">
+                  {formatTimeRange(
+                    productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                    productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                  )}
+                </dd>
+                <dt className="u-show-xlarge">Production:</dt>
+                <dd className="u-show-xlarge">
+                  {formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
+                </dd>
+                <dt className="u-show-xlarge">Shipping:</dt>
+                <dd className="u-show-xlarge">
                   {usedShippingIdsById[shipping.shippingId]
                     ? formatPrice(0, shipping.currency)
                     : formatPrice(shipping.grossPrice, shipping.currency)}
                 </dd>
               </DescriptionList>
-              <DescriptionList>
+              <DescriptionList classNames={['u-show-xlarge']}>
                 <dt>
                   <strong>Est. delivery time:</strong>
                 </dt>

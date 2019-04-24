@@ -4,6 +4,7 @@ import React from 'react'
 import propTypes from '../../prop-types'
 import buildClassName from '../../lib/class-names'
 
+import autotivImage from '../../../asset/image/printing-service/autotiv.png'
 import facfoxImage from '../../../asset/image/printing-service/facfox.png'
 import harpImage from '../../../asset/image/printing-service/harp.png'
 import imaterialiseImage from '../../../asset/image/printing-service/imaterialise.png'
@@ -14,6 +15,7 @@ import treatstockImage from '../../../asset/image/printing-service/treatstock.pn
 import zverseImage from '../../../asset/image/printing-service/zverse.png'
 
 const providerImages = {
+  autotiv: autotivImage,
   facfox: facfoxImage,
   harp: harpImage,
   imaterialise: imaterialiseImage,

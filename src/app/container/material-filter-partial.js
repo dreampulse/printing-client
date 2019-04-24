@@ -14,7 +14,7 @@ const MaterialFilterPartial = ({
   onFilterMaterials
 }) => (
   <SearchField
-    classNames={['u-margin-bottom']}
+    tiny
     name="material-search"
     placeholder="Search…"
     value={value}

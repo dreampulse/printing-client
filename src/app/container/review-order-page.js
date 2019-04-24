@@ -428,7 +428,7 @@ const ReviewOrderPage = ({
                         colorValue: colorCode,
                         label: `${color}, ${finishGroupName}`,
                         colorImage:
-                          colorImage && getCloudinaryUrl(colorImage, ['w_40', 'h_40', 'c_fill'])
+                          colorImage && getCloudinaryUrl(colorImage, ['w_30', 'h_30', 'c_fill'])
                       }}
                     />
                   }

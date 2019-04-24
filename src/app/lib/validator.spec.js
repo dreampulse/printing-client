@@ -1,4 +1,4 @@
-import {required, email} from './validator'
+import {required, email, vat} from './validator'
 
 describe('required()', () => {
   it('returns undefined if an input is provided', () =>
@@ -14,4 +14,15 @@ describe('email()', () => {
 
   it('returns "Invalid email address" if an invalid email-address is provided', () =>
     expect(email('in---fo{}codastic.com'), 'to equal', 'Invalid email address'))
+})
+
+describe('vat()', () => {
+  it('returns undefined if a string is provide', () =>
+    expect(vat(null, ['DE'])('DE123'), 'to be undefined'))
+
+  it('returns "Vat Id required" if value is empty and it is a eu country', () =>
+    expect(vat('DE', ['DE'])(''), 'to equal', 'Vat Id required'))
+
+  it('returns undefined if value is empty and it is a eu country', () =>
+    expect(vat('DE', ['US'])(''), 'to be undefined'))
 })

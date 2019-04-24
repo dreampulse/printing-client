@@ -12,6 +12,11 @@ storiesOf('Search Field', module)
       <SearchField placeholder="Search…" onClearClick={action('clear click')} />
     </HandleValue>
   ))
+  .add('tiny', () => (
+    <HandleValue>
+      <SearchField tiny placeholder="Search…" onClearClick={action('clear click')} />
+    </HandleValue>
+  ))
   .add('disabled', () => (
     <HandleValue>
       <SearchField placeholder="Search…" disabled />

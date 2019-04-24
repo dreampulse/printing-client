@@ -1,5 +1,6 @@
 .progress {
   height: 100%;
+  background-color: $color-bg;
 
   &__bar {
     $progress-bar-background: transparent;

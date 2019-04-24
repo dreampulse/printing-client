@@ -16,7 +16,7 @@
     color $transition-duration-fast ease-in-out;
   vertical-align: middle;
 
-  & > .icon {
+  & > .Icon {
     position: relative;
     font-size: 1.2em;
     top: -0.08em; // Optimize vertical center
@@ -100,7 +100,7 @@
       background-color: inherit;
     }
 
-    & > .icon {
+    & > .Icon {
       top: initial;
       font-size: 1em;
       margin: 0;
