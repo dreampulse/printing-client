@@ -17,7 +17,7 @@ import usePrevious from '../../hook/use-previous'
 const UPLOAD_MODEL_ITEM_HEIGHT = 122 + 15
 const STACK_HEIGHT = 10
 
-const ANIMATION_STEP_DURATION = 2000
+const ANIMATION_STEP_DURATION = 5000
 
 const UploadModelList = ({classNames, children}) => {
   const childrenArray = Children.toArray(children)
@@ -27,9 +27,10 @@ const UploadModelList = ({classNames, children}) => {
   const refRoot = useRef(null)
 
   const transitions = useTransition(childrenArray, item => item.key, {
-    from: item => ({
+    initial: item => ({
       y: getIndexOfElement(childrenArray, item.key) * UPLOAD_MODEL_ITEM_HEIGHT,
-      scale: 1
+      scale: 1,
+      zIndex: 1
     }),
 
     enter: item => ({
@@ -39,15 +40,13 @@ const UploadModelList = ({classNames, children}) => {
 
     leave: item => [
       {
+        from: {
+          zIndex: leavingChildren.length - getIndexOfElement(leavingChildren, item.key) + 100,
+          opacity: 0.5
+        },
         to: {
           y: getIndexOfElement(leavingChildren, item.key) * STACK_HEIGHT,
-          zIndex: leavingChildren.length - getIndexOfElement(leavingChildren, item.key) + 100,
           scale: 1 - getIndexOfElement(leavingChildren, item.key) * 0.01
-        }
-      },
-      {
-        to: {
-          display: 'none'
         }
       }
     ],
@@ -62,6 +61,7 @@ const UploadModelList = ({classNames, children}) => {
     },
     config: {
       duration: ANIMATION_STEP_DURATION
+      // easing: t => t * t
     }
   })
 
@@ -86,7 +86,8 @@ const UploadModelList = ({classNames, children}) => {
       })
     },
     config: {
-      duration: ANIMATION_STEP_DURATION
+      duration: ANIMATION_STEP_DURATION,
+      easing: t => t * (2 - t)
     }
   })
 
@@ -96,7 +97,7 @@ const UploadModelList = ({classNames, children}) => {
       style={{height: `${childrenArray.length * UPLOAD_MODEL_ITEM_HEIGHT}px`}}
       ref={refRoot}
     >
-      {transitions.map(({item, props: {y, scale, display, zIndex, opacity}, key}) => (
+      {transitions.map(({item, props: {y, scale, display, zIndex, opacity, ...rest}, key}) => (
         <animated.div
           key={key}
           style={{
@@ -107,7 +108,8 @@ const UploadModelList = ({classNames, children}) => {
             ),
             zIndex,
             opacity,
-            display
+            display,
+            ...rest
           }}
           className="UploadModelList__card"
         >
