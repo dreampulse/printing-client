@@ -57,8 +57,8 @@ $color-field-bg: $color-white;
 $color-disabled: $color-gray-3;
 $color-link: $color-blue;
 $color-success: $color-green;
-$color-warning: $color-yellow;
 $color-warning-active: $color-yellow-light;
+$color-cart-count: $color-yellow;
 
 $color-tooltip-bg: rgba(0, 0, 0, 0.89);
 $color-tooltip-text: $color-white;
@@ -115,16 +115,21 @@ $model-item-space-left: $space-xxxl;
 $model-item-image-width: 180px;
 $model-item-height: $model-item-image-width / 4 * 3 + 2 * $space-base + 2px;
 $upload-model-item-height: 122px;
+$upload-model-item-height-s: 102px;
+
+$cart-model-item-height: 185px;
+$cart-model-item-height-s: 60px;
 
 $box-shadow-base: 1px 1px 2px 1px rgba(0, 0, 0, 0.15);
 $box-shadow-active: 1px 1px 6px 0 rgba(0, 0, 0, 0.4);
+$box-shadow-flyout: 2px 2px 12px 0 rgba(0, 0, 0, 0.33);
 $box-shadow-focus: 0px 0px 4px 0 rgba($color-primary, 0.5);
 $box-shadow-error: 0px 0px 4px 0 rgba($color-error, 0.5);
 
 $transition-duration: 0.4s;
 $transition-duration-fast: 0.15s;
 
-$global-stacking: app, tooltip, overlay, select-menu;
+$global-stacking: app, tooltip, overlay, select-menu, positioning-portal;
 
 $interface-touchable-min-size: 45px;
 

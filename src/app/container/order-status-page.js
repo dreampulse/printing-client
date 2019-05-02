@@ -8,11 +8,9 @@ import {scrollToTop} from './util/scroll-to-top'
 import {getOrderStatus} from '../lib/printing-engine'
 import {openIntercom} from '../service/intercom'
 import {removeBootsplash} from '../service/bootsplash'
-import {goToUpload} from '../action/navigation'
-
-import helpIcon from '../../asset/icon/help.svg'
 
 import FooterPartial from './footer-partial'
+import NavBarPartial from './nav-bar-partial'
 
 import LoadingContainer from '../component/loading-container'
 import Container from '../component/container'
@@ -21,9 +19,6 @@ import Section from '../component/section'
 import Headline from '../component/headline'
 import Paragraph from '../component/paragraph'
 import Button from '../component/button'
-import NavBar from '../component/nav-bar'
-import Logo from '../component/logo'
-import IconLink from '../component/icon-link'
 import OrderConfirmationList from '../component/order-confirmation-list'
 import OrderConfirmationItem from '../component/order-confirmation-item'
 import Icon from '../component/icon'
@@ -43,24 +38,11 @@ const localDate = orderStatus =>
     day: 'numeric'
   })
 
-const OrderStatusPage = ({orderStatusError, orderStatus, onHomeClick}) => (
+const OrderStatusPage = ({orderStatusError, orderStatus}) => (
   <PageLayout
     showStickyFooter
     minorBackground
-    header={
-      <NavBar
-        leftContent={<Logo onClick={() => onHomeClick()} />}
-        rightContent={
-          <IconLink
-            icon={helpIcon}
-            onClick={event => {
-              event.preventDefault()
-              openIntercom()
-            }}
-          />
-        }
-      />
-    }
+    header={<NavBarPartial helpOnly />}
     stickyFooter={<FooterPartial />}
   >
     {!orderStatusError && !orderStatus ? (
@@ -134,9 +116,7 @@ const OrderStatusPage = ({orderStatusError, orderStatus, onHomeClick}) => (
 
 const mapStateToProps = () => ({})
 
-const mapDispatchToProps = {
-  onHomeClick: goToUpload
-}
+const mapDispatchToProps = {}
 
 const enhance = compose(
   scrollToTop(),
