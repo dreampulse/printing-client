@@ -7,13 +7,15 @@ import uploadIcon from '../../asset/icon/upload.svg'
 import {selectCartCount} from '../lib/selector'
 
 import {goToUpload, goToCart} from '../action/navigation'
-import {openIntercom} from '../service/intercom'
+import {openIntercom, isActualIntercomImpl} from '../service/intercom'
 import CartNavLink from '../component/cart-nav-link'
 import NavLink from '../component/nav-link'
 import NavBar from '../component/nav-bar'
 
 import Button from '../component/button'
 import Logo from '../component/logo'
+
+import config from '../../../config'
 
 const NavBarPartial = ({
   navBarContent,
@@ -53,7 +55,11 @@ const NavBarPartial = ({
           label="Need help?"
           onClick={event => {
             event.preventDefault()
-            openIntercom()
+            if (isActualIntercomImpl()) {
+              openIntercom()
+            } else {
+              global.document.location.href = `mailto:${config.contactEmail}`
+            }
           }}
         />
       </>
