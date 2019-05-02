@@ -2,21 +2,21 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 
 import NavBar from '.'
-import IconLink from '../icon-link'
 import Button from '../button'
 import Logo from '../logo'
+import CartNavLink from '../cart-nav-link'
+import NavLink from '../nav-link'
 
-import helpIcon from '../../../asset/icon/help.svg'
-import cartIcon from '../../../asset/icon/cart.svg'
+import uploadIcon from '../../../asset/icon/upload.svg'
 
 storiesOf('NavBar', module).add('default', () => (
   <NavBar
     leftContent={<Logo />}
     rightContent={
       <>
-        <Button minor compact label="Some Button" />
-        <IconLink icon={cartIcon} cartCount={99} />
-        <IconLink icon={helpIcon} />
+        <NavLink label="Upload" icon={uploadIcon} />
+        <CartNavLink label="Your Cart" count={6} />
+        <Button minor compact label="Need help?" />
       </>
     }
   />
