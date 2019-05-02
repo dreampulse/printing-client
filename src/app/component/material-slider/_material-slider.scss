@@ -1,5 +1,5 @@
 .material-slider {
-  $item-width: 245px;
+  $item-width: $material-card-width;
   $item-gutter: $space-l;
   $item-space-top: 2px; // Due to material card shadow
   $wide-nav-width: 45px;

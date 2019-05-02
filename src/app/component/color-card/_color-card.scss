@@ -1,5 +1,5 @@
 .ColorCard {
-  $card-width: 200px;
+  $card-width: $material-card-width;
 
   border-radius: $border-radius;
   box-shadow: $box-shadow-base;
