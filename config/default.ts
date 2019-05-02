@@ -11,7 +11,7 @@ export default {
   ravenUrl: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
   ravenRelease: process.env.SENTRY_RELEASE_VERSION,
   countryCookie: 'country',
-  contactEmail: 'contact@all3dp.com',
+  supportEmailAddress: 'support@all3dp.com',
   currencies: [
     {value: 'USD', label: 'USD', symbol: '$', prefix: true},
     {value: 'EUR', label: 'EUR', symbol: '€', prefix: false},

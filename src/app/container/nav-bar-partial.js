@@ -58,7 +58,7 @@ const NavBarPartial = ({
             if (isActualIntercomImpl()) {
               openIntercom()
             } else {
-              global.document.location.href = `mailto:${config.contactEmail}`
+              global.document.location.href = `mailto:${config.supportEmailAddress}`
             }
           }}
         />
