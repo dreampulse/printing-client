@@ -17,6 +17,7 @@ import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
+import config from '../../../config'
 import {getBestMultiModelOffers} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice, formatPriceDifference} from '../lib/formatter'
@@ -25,7 +26,6 @@ import {partitionBy} from '../lib/util'
 import {
   selectModelConfigsByIds,
   selectQuotePollingProgress,
-  isQuotePollingDone,
   selectQuotes,
   selectUploadedModelConfigs,
   selectUsedShippingIdsAndFilter
@@ -82,14 +82,14 @@ const MaterialPartial = ({
   quotes,
   selectedModelConfigs,
   shippings,
-  isPollingDone,
   usedShippingIds,
   pollingProgress,
   selectStep,
   selectNextStep
 }) => {
-  const isPollingComplete = pollingProgress.complete === pollingProgress.total
-  const hasMoreThanOneResult = pollingProgress.complete > 0
+  const isPollingDone =
+    pollingProgress.total > 0 && pollingProgress.complete === pollingProgress.total
+  const hasAtLeastOneResult = pollingProgress.complete > 0
 
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
@@ -116,10 +116,7 @@ const MaterialPartial = ({
         value={price}
         loadingCheckmark={
           <LoadingCheckmark
-            modifiers={compact([
-              isPollingComplete && 'done',
-              hasMoreThanOneResult && 'hideWithDelay'
-            ])}
+            modifiers={compact([isPollingDone && 'done', hasAtLeastOneResult && 'hideWithDelay'])}
           />
         }
       />
@@ -435,7 +432,6 @@ const mapStateToProps = (state, ownProps) => ({
   materialConfigs: state.core.materialConfigs,
   finishGroups: state.core.finishGroups,
   pollingProgress: selectQuotePollingProgress(state),
-  isPollingDone: isQuotePollingDone(state),
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
   featureFlags: state.core.featureFlags,
   currency: state.core.currency,
@@ -451,6 +447,7 @@ const mapDispatchToProps = {
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,
+  goingToReceiveQuotes: quoteAction.goingToReceiveQuotes,
   stopReceivingQuotes: quoteAction.stopReceivingQuotes,
   addToCart: cartAction.addToCart,
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
@@ -534,7 +531,7 @@ export default compose(
   withPropsOnChange(
     () => false, // Should never reinitialize the debounce function
     ({receiveQuotes}) => ({
-      debouncedReceiveQuotes: debounce(receiveQuotes, 1000)
+      debouncedReceiveQuotes: debounce(receiveQuotes, config.receiveQuotesWait)
     })
   ),
   lifecycle({
@@ -572,6 +569,7 @@ export default compose(
         const currency = this.props.currency
         const {countryCode} = this.props.location
 
+        this.props.goingToReceiveQuotes()
         this.props.debouncedReceiveQuotes({
           modelConfigs,
           countryCode,
