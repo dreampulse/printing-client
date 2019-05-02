@@ -49,8 +49,6 @@ import {scrollToTop} from './util/scroll-to-top'
 
 import {PaymentAbortedError} from '../lib/error'
 
-import config from '../../../config'
-
 const ReviewOrderPage = ({
   user,
   openAddressFormModal,
