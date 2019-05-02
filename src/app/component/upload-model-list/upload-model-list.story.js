@@ -1,8 +1,9 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {withState} from '@dump247/storybook-state'
+import {action} from '@storybook/addon-actions'
 
-import UploadModelList from './upload-model-list'
+import UploadModelList from '.'
 import Button from '../button'
 import UploadModelItem from '../upload-model-item'
 import ButtonBar from '../button-bar'
@@ -34,7 +35,7 @@ storiesOf('Upload Model List', module).add(
   'default',
   withState({toggle: true}, store => (
     <div style={{marginLeft: 100, width: 600}}>
-      <UploadModelList>
+      <UploadModelList onExit={action('onExit')}>
         {store.state.toggle ? uploadModelItemList1 : uploadModelItemList2}
       </UploadModelList>
       <Button

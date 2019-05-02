@@ -16,7 +16,7 @@ const ANIMATION_DURATION = 600
 const UploadModelList = ({classNames, children, onExit = noop}) => {
   const numChildren = Children.count(children)
   const previousChildren = usePrevious(children)
-  const refRoot = useRef(null)
+  const refRoot = useRef()
 
   if (Children.count(previousChildren) < numChildren && refRoot.current) {
     onExit()
