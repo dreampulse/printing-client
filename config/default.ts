@@ -1,9 +1,8 @@
 export default {
   pollingRetries: 200,
   pollingInterval: 1000,
-  pollingDebouncedWait: 2000,
-  fetchTimout: 3000,
   imagePollingInterval: 1500,
+  receiveQuotesWait: 2000,
   cloudinaryUrl: '//res.cloudinary.com/all3dp/image/upload',
   cloudinaryDefaultParams: ['q_90', 'f_auto'],
   stripeCheckoutImage: 'asset/image/checkout-logo.png',
