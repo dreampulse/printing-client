@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import noop from 'lodash/noop'
+import {CSSTransition, TransitionGroup} from 'react-transition-group'
 
 import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
@@ -10,6 +11,12 @@ import PositioningPortal from '../positioning-portal'
 
 import basketIcon from '../../../asset/icon/basket.svg'
 
+// Needs to be synced with the styles
+const FLYOUT_TRANSITION_TIMEOUT = 300
+const COUNT_TRANSITION_TIMEOUT = 500
+
+const FLYOUT_CLOSING_DELAY = 500
+
 class CartNavLink extends React.Component {
   static propTypes = {
     ...propTypes.component,
@@ -17,12 +24,10 @@ class CartNavLink extends React.Component {
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func,
     count: PropTypes.number,
-    cartFlyout: PropTypes.node,
-    delay: PropTypes.number
+    cartFlyout: PropTypes.node
   }
 
   static defaultProps = {
-    delay: 500,
     count: 0,
     onClick: noop
   }
@@ -42,7 +47,7 @@ class CartNavLink extends React.Component {
       this.setState({
         open: this.state.open - 1
       })
-    }, this.props.delay)
+    }, FLYOUT_CLOSING_DELAY)
   }
 
   render() {
@@ -77,13 +82,23 @@ class CartNavLink extends React.Component {
             enoughSpace: true
           }
         }}
-        portalContent={
-          cartFlyout &&
-          React.cloneElement(cartFlyout, {
-            onMouseEnter: this.onEnter,
-            onMouseLeave: this.onLeave
-          })
-        }
+        portalContent={({isOpen, transitionStarted, transitionEnded, position}) => (
+          <CSSTransition
+            classNames="CartNavLink--transition"
+            timeout={FLYOUT_TRANSITION_TIMEOUT}
+            in={isOpen && !!position}
+            onEnter={transitionStarted}
+            onExited={transitionEnded}
+          >
+            <div className="CartNavLink__portal">
+              {cartFlyout &&
+                React.cloneElement(cartFlyout, {
+                  onMouseEnter: this.onEnter,
+                  onMouseLeave: this.onLeave
+                })}
+            </div>
+          </CSSTransition>
+        )}
         isOpen={open > 0}
       >
         <a
@@ -95,7 +110,15 @@ class CartNavLink extends React.Component {
           onMouseLeave={count > 0 ? this.onLeave : noop}
         >
           <div className="CartNavLink__icon">
-            <span className="CartNavLink__count">{count > 9 ? '9+' : count || '0'}</span>
+            <TransitionGroup>
+              <CSSTransition
+                key={count}
+                timeout={COUNT_TRANSITION_TIMEOUT}
+                classNames="CartNavLink--count-transition"
+              >
+                <span className="CartNavLink__count">{count > 9 ? '9+' : count || '0'}</span>
+              </CSSTransition>
+            </TransitionGroup>
             <Icon source={basketIcon} />
           </div>
           {label && <span className="CartNavLink__label">{label}</span>}

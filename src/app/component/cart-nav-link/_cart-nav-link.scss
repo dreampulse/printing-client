@@ -1,5 +1,8 @@
 .CartNavLink {
   $icon-size: 30px;
+  // Needs to be synced with the component
+  $count-transition-timeout: 0.5s;
+  $flyout-transition-timeout: 0.3s;
 
   display: inline-flex;
   flex-direction: column;
@@ -26,10 +29,27 @@
     left: scut-em(7px, $font-size-s);
     width: scut-em(16px, $font-size-s);
 
+    transition: transform $count-transition-timeout cubic-bezier(0.2, 0.9, 0.3, 1.5);
+    transform: scale(1);
+
     color: $color-cart-count;
     font-size: $font-size-s;
     font-weight: $font-weight-bold;
     text-align: center;
+
+    &.CartNavLink--count-transition-enter {
+      transform: scale(1.5);
+    }
+
+    &.CartNavLink--count-transition-enter-active,
+    &.CartNavLink--count-transition-enter-done {
+      transform: scale(1);
+    }
+
+    &.CartNavLink--count-transition-exit,
+    &.CartNavLink--count-transition-exit-done {
+      transform: scale(0.1);
+    }
   }
 
   &__label {
@@ -40,6 +60,24 @@
   &:active {
     color: $color-primary-active;
   }
+
+  &__portal {
+    opacity: 0;
+
+    &.CartNavLink--transition-enter-active,
+    &.CartNavLink--transition-enter-done {
+      transition: opacity $flyout-transition-timeout ease-out;
+      opacity: 1;
+    }
+
+    &.CartNavLink--transition-exit,
+    &.CartNavLink--transition-exit-done {
+      transition: opacity $flyout-transition-timeout ease-out;
+      opacity: 0;
+    }
+  }
+
+
 
   &--zero {
     .CartNavLink__count {
