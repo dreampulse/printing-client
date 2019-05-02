@@ -8,7 +8,6 @@ import defaultProps from 'recompose/defaultProps'
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
-import CheckboxField from '../checkbox-field'
 import Link from '../link'
 
 const ModelList = ({

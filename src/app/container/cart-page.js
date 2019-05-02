@@ -54,7 +54,6 @@ import NavBarPartial from './nav-bar-partial'
 import creditCardIcon from '../../asset/icon/credit-card.svg'
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
-import editIcon from '../../asset/icon/edit.svg'
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 

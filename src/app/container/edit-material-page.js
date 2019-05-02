@@ -13,11 +13,7 @@ import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
 import {formatDimensions} from '../lib/formatter'
-import {
-  selectCartCount,
-  selectModelsOfModelConfigs,
-  selectCommonMaterialPathOfModelConfigs
-} from '../lib/selector'
+import {selectModelsOfModelConfigs, selectCommonMaterialPathOfModelConfigs} from '../lib/selector'
 import {guard} from './util/guard'
 
 import MaterialPartial, {SELECTED_STEP} from './material-partial'
