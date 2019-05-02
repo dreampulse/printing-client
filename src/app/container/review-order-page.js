@@ -6,7 +6,6 @@ import withProps from 'recompose/withProps'
 import lifecycle from 'recompose/lifecycle'
 import compact from 'lodash/compact'
 import {connect} from 'react-redux'
-import {Route} from 'react-router'
 
 import * as printingEngine from '../lib/printing-engine'
 import * as stripe from '../service/stripe'
@@ -18,6 +17,7 @@ import {formatPrice, formatDimensions, formatTimeRange} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
 import * as selector from '../lib/selector'
 import getCloudinaryUrl from '../lib/cloudinary'
+import NavBarPartial from './nav-bar-partial'
 
 import PageHeader from '../component/page-header'
 import SidebarLayout from '../component/sidebar-layout'
@@ -32,10 +32,7 @@ import PaymentSection from '../component/payment-section'
 import CheckoutModelList from '../component/checkout-model-list'
 import ModelItem from '../component/model-item'
 import SelectField from '../component/select-field'
-import NavBar from '../component/nav-bar'
 import PaypalButton from '../component/paypal-button'
-import Logo from '../component/logo'
-import IconLink from '../component/icon-link'
 import Container from '../component/container'
 import PageLayout from '../component/page-layout'
 
@@ -46,8 +43,6 @@ import * as coreActions from '../action/core'
 import * as modalActions from '../action/modal'
 
 import creditCardIcon from '../../asset/icon/credit-card.svg'
-import helpIcon from '../../asset/icon/help.svg'
-import cartIcon from '../../asset/icon/cart.svg'
 
 import {guard} from './util/guard'
 import {scrollToTop} from './util/scroll-to-top'
@@ -74,9 +69,7 @@ const ReviewOrderPage = ({
   payWithStripe,
   payWithInvoice,
   success,
-  liableForVat,
-  cartCount,
-  goToUpload
+  liableForVat
 }) => {
   const shippingStateName =
     user && getStateName(user.shippingAddress.countryCode, user.shippingAddress.stateCode)
@@ -89,45 +82,6 @@ const ReviewOrderPage = ({
     shippingStateName
 
   const showVat = cart.vatPrice > 0 && liableForVat !== false
-
-  const renderHeader = () => (
-    <NavBar
-      leftContent={<Logo href={config.landingPageUrl} />}
-      rightContent={
-        <>
-          <Route path="/" exact>
-            {({match}) =>
-              !match && (
-                <Button
-                  label="Upload"
-                  minor
-                  compact
-                  onClick={() => goToUpload()}
-                  modifiers={['minor', 'compact']}
-                />
-              )
-            }
-          </Route>
-          <IconLink
-            icon={cartIcon}
-            disabled={cartCount < 1}
-            cartCount={cartCount}
-            onClick={event => {
-              event.preventDefault()
-              goToCart()
-            }}
-          />
-          <IconLink
-            icon={helpIcon}
-            onClick={event => {
-              event.preventDefault()
-              openIntercom()
-            }}
-          />
-        </>
-      }
-    />
-  )
 
   const renderAddressSection = () => (
     <Section>
@@ -374,7 +328,7 @@ const ReviewOrderPage = ({
   )
 
   return (
-    <PageLayout header={renderHeader()}>
+    <PageLayout header={<NavBarPartial />}>
       <Container>
         <PageHeader label="Review Order" />
         <SidebarLayout sidebar={renderPaymentSection()}>

@@ -8,8 +8,6 @@ import withState from 'recompose/withState'
 import lifecycle from 'recompose/lifecycle'
 import intersection from 'lodash/intersection'
 
-import helpIcon from '../../asset/icon/help.svg'
-import cartIcon from '../../asset/icon/cart.svg'
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 import copyIcon from '../../asset/icon/copy.svg'
@@ -25,18 +23,13 @@ import {
   selectCartCount,
   selectModelsOfModelConfigs
 } from '../lib/selector'
-import {openIntercom} from '../service/intercom'
 
 import MaterialPartial, {SELECTED_STEP} from './material-partial'
 import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
-
-import config from '../../../config'
+import NavBarPartial from './nav-bar-partial'
 
 import ToolLayout from '../component/tool-layout'
-import NavBar from '../component/nav-bar'
-import Logo from '../component/logo'
-import IconLink from '../component/icon-link'
 import Link from '../component/link'
 import Headline from '../component/headline'
 import Section from '../component/section'
@@ -52,9 +45,7 @@ const SCROLL_CONTAINER_ID = 'main-container'
 const MaterialPage = ({
   selectedState,
   setSelectedState,
-  goToCart,
   goToUpload,
-  cartCount,
   uploadedModelConfigs,
   openModelViewer,
   modelsWithConfig,
@@ -139,31 +130,7 @@ const MaterialPage = ({
     <ToolLayout
       fullMain
       scrollContainerId={SCROLL_CONTAINER_ID}
-      header={
-        <NavBar
-          leftContent={<Logo href={config.landingPageUrl} />}
-          rightContent={
-            <>
-              <IconLink
-                icon={cartIcon}
-                disabled={cartCount < 1}
-                cartCount={cartCount}
-                onClick={event => {
-                  event.preventDefault()
-                  goToCart()
-                }}
-              />
-              <IconLink
-                icon={helpIcon}
-                onClick={event => {
-                  event.preventDefault()
-                  openIntercom()
-                }}
-              />
-            </>
-          }
-        />
-      }
+      header={<NavBarPartial />}
       sidebar={sidebar()}
     >
       <OfferLayout
@@ -202,7 +169,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   goToUpload: navigationAction.goToUpload,
-  goToCart: navigationAction.goToCart,
   openModelViewer: modelViewerAction.open,
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
   clearSelectedModelConfigs: modelAction.clearSelectedModelConfigs,
