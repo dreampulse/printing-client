@@ -4,7 +4,6 @@ import range from 'lodash/range'
 
 import ModelList from '.'
 import Button from '../button'
-import NumberField from '../number-field'
 import ButtonBar from '../button-bar'
 import ModelItem from '../model-item'
 import SelectField from '../select-field'
