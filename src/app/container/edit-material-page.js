@@ -14,6 +14,8 @@ import cartIcon from '../../asset/icon/cart.svg'
 import helpIcon from '../../asset/icon/help.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
+import config from '../../../config'
+
 import {formatDimensions} from '../lib/formatter'
 import {
   selectCartCount,
@@ -44,7 +46,6 @@ const SCROLL_CONTAINER_ID = 'main-container'
 
 const EditMaterialPage = ({
   goToCart,
-  goToUpload,
   modelsWithConfig,
   configIds,
   cartCount,
@@ -103,7 +104,7 @@ const EditMaterialPage = ({
       scrollContainerId={SCROLL_CONTAINER_ID}
       header={
         <NavBar
-          leftContent={<Logo onClick={() => goToUpload()} />}
+          leftContent={<Logo href={config.landingPageUrl} />}
           rightContent={
             <>
               <IconLink

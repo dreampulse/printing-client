@@ -1,32 +1,27 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Route} from 'react-router'
-
+import config from '../../../config'
 import uploadIcon from '../../asset/icon/upload.svg'
 
 import {selectCartCount} from '../lib/selector'
-
 import {goToUpload, goToCart} from '../action/navigation'
 import {openIntercom, isActualIntercomImpl} from '../service/intercom'
 import CartNavLink from '../component/cart-nav-link'
 import NavLink from '../component/nav-link'
 import NavBar from '../component/nav-bar'
-
 import Button from '../component/button'
 import Logo from '../component/logo'
-
-import config from '../../../config'
 
 const NavBarPartial = ({
   navBarContent,
   cartCount,
-  onHomeClick,
   onUploadClick,
   onCartClick,
   helpOnly = false
 }) => (
   <NavBar
-    leftContent={<Logo onClick={() => onHomeClick()} />}
+    leftContent={<Logo href={config.landingPageUrl} />}
     rightContent={
       <>
         {navBarContent}
@@ -72,7 +67,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onHomeClick: goToUpload,
   onUploadClick: goToUpload,
   onCartClick: goToCart
 }
