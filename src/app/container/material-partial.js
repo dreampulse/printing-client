@@ -35,7 +35,6 @@ import {openIntercom} from '../service/intercom'
 
 import MaterialFilterPartial from './material-filter-partial'
 
-import Section from '../component/section'
 import Grid from '../component/grid'
 import Column from '../component/column'
 import Headline from '../component/headline'
