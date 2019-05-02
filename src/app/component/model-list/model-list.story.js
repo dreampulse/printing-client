@@ -5,8 +5,9 @@ import range from 'lodash/range'
 import ModelList from '.'
 import Button from '../button'
 import ButtonBar from '../button-bar'
-import ModelItem from '../model-item'
-import SelectField from '../select-field'
+import CartModelItem from '../cart-model-item'
+import NumberField from '../number-field'
+import ProviderImage from '../provider-image'
 
 import placeholderIcon from '../../../asset/icon/placeholder.svg'
 import deleteIcon from '../../../asset/icon/delete.svg'
@@ -17,18 +18,18 @@ const actions = () => [
   <Button icon={deleteIcon} iconOnly key="delete" />,
   <Button tiny minor label="Edit material" key="edit" />
 ]
-const buttonBar = () => (
-  <ButtonBar>
-    <Button icon={placeholderIcon} iconOnly />
-    <Button icon={placeholderIcon} iconOnly />
-    <Button icon={placeholderIcon} iconOnly />
+const leftButtonBar = () => (
+  <ButtonBar l>
+    <NumberField value={1} />
   </ButtonBar>
 )
-const color = () => (
-  <SelectField
-    modifiers={['compact']}
-    value={{value: 'item2', colorValue: 'ff0000', label: 'Color'}}
-  />
+
+const rightButtonBar = () => (
+  <ButtonBar l>
+    <Button icon={placeholderIcon} iconOnly />
+    <Button icon={placeholderIcon} iconOnly />
+    <Button icon={placeholderIcon} label="Edit material" tiny minor />
+  </ButtonBar>
 )
 
 storiesOf('Model List', module).add('default', () => (
@@ -39,21 +40,29 @@ storiesOf('Model List', module).add('default', () => (
       deselectLabel="Deselect all files"
     >
       {range(0, 5).map(index => (
-        <ModelItem
+        <CartModelItem
           key={index}
-          id={String(index)}
+          id={index}
           imageSource="http://placehold.it/180x180"
-          title="model_item_title.stl"
-          subline="42 x 42 x 42 mm"
-          quantity={1}
-          price="80.99€"
-          deliveryTime="2-5 Days"
-          shippingMethod="DHL Express"
-          providerId="shapeways"
-          materialName="Metal, polished"
-          providerMaterialName="Polyamide (SLS)"
-          color={color()}
-          buttonBar={buttonBar()}
+          title="model_item_title_can_be_long_and_gets_truncated.stl"
+          price="26.44€"
+          info={
+            <>
+              42 x 42 x 42 mm
+              <br />
+              Standard Resin, Natural & Dyed, Red
+            </>
+          }
+          shippingInfo={
+            <>
+              Est. delivery time: <strong>11 days</strong>
+              <br />
+              Deslivery method: <strong>Standard</strong>
+            </>
+          }
+          providerImage={<ProviderImage s slug="imaterialise" name="i.Materialise" />}
+          buttonsLeft={leftButtonBar()}
+          buttonsRight={rightButtonBar()}
         />
       ))}
     </ModelList>
