@@ -1,0 +1,46 @@
+.CartFlyout {
+  // Has to be in sync with the components js
+  $max-items: 4;
+  $compensate-shadow: 4px;
+  $list-max-height: $max-items * $cart-model-item-height-s + $space-base * ($max-items - 1) + $compensate-shadow * 2;
+  $triangle-width: 20px; // Design decision
+  $triangle-height: 10px; // Design decision
+
+  position: relative;
+  margin-top: $triangle-height;
+  padding: $space-base;
+  box-shadow: $box-shadow-flyout;
+  border-radius: $border-radius;
+  width: 285px; // Design decision
+  background-color: $color-bg;
+
+  display: inline-block;
+
+  &:after {
+    @include scut-triangle(up, $triangle-width $triangle-height, $color-bg);
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &__items {
+    box-sizing: border-box;
+    list-style: none;
+    margin: -1 * $compensate-shadow;
+    padding: $compensate-shadow;
+    max-height: $list-max-height;
+    overflow-y: auto;
+
+    & > * + * {
+      margin-top: $space-base;
+    }
+  }
+
+  &--hasOverflow {
+    .CartFlyout__items {
+      max-height: $list-max-height + $cart-model-item-height-s / 2;
+    }
+  }
+}
