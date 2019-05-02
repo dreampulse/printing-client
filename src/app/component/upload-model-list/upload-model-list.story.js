@@ -32,7 +32,7 @@ const uploadModelItemList1 = [1, 2, 3, 4, 5].map(key => uploadModelItem(key))
 const uploadModelItemList2 = [3, 5].map(key => uploadModelItem(key))
 
 storiesOf('Upload Model List', module).add(
-  'default',
+  'with leaving items',
   withState({toggle: true}, store => (
     <div style={{marginLeft: 100, width: 600}}>
       <UploadModelList onExit={action('onExit')}>

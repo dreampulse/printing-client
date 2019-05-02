@@ -157,6 +157,7 @@
     "timeout-as-promise": "^1.0.0",
     "timezones.json": "^1.1.0",
     "url-search-params": "^0.10.0",
+    "velocity-animate": "^1.5.2",
     "whatwg-fetch": "^2.0.1"
   },
   "repository": {
