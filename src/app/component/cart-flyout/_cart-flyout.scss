@@ -1,4 +1,5 @@
 .CartFlyout {
+  // Has to be in sync with the components js
   $max-items: 4;
   $compensate-shadow: 4px;
   $list-max-height: $max-items * $cart-model-item-height-s + $space-base * ($max-items - 1) + $compensate-shadow * 2;
@@ -30,11 +31,16 @@
     margin: -1 * $compensate-shadow;
     padding: $compensate-shadow;
     max-height: $list-max-height;
-    overflow: hidden;
     overflow-y: auto;
 
     & > * + * {
       margin-top: $space-base;
+    }
+  }
+
+  &--hasOverflow {
+    .CartFlyout__items {
+      max-height: $list-max-height + $cart-model-item-height-s / 2;
     }
   }
 }

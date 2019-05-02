@@ -6,8 +6,4 @@
   &--isPositioned {
     visibility: visible;
   }
-
-  &--behindOverlay {
-    z-index: z($global-stacking, positioning-portal-behind-overlay);
-  }
 }

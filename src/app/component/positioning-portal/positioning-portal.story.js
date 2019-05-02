@@ -21,20 +21,6 @@ storiesOf('PositioningPortal', module)
     ))
   )
   .add(
-    'behindOverlay',
-    withState({isOpen: false}, store => (
-      <PositioningPortal
-        behindOverlay
-        isOpen={store.state.isOpen}
-        onOpen={action('onOpen')}
-        onShouldClose={() => store.set({isOpen: false})}
-        portalContent={<Button onClick={() => store.set({isOpen: false})} label="Close portal" />}
-      >
-        <Button onClick={() => store.set({isOpen: true})} label="Open portal" />
-      </PositioningPortal>
-    ))
-  )
-  .add(
     'scrollable test',
     withState({isOpen: false}, store => (
       <div style={{margin: '95vh 95vw', display: 'inline-block'}}>

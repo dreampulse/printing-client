@@ -82,8 +82,7 @@ class PositioningPortal extends React.Component {
      * Optional positioning strategy.
      * Call signature: (parentRect, portalRect, props) => { left, top, position }
      */
-    positionStrategy: PropTypes.func,
-    behindOverlay: PropTypes.bool
+    positionStrategy: PropTypes.func
   }
 
   static defaultProps = {
@@ -255,7 +254,7 @@ class PositioningPortal extends React.Component {
     })
 
   render() {
-    const {children, portalContent, behindOverlay, classNames} = this.props
+    const {children, portalContent, classNames} = this.props
     const {
       top,
       left,
@@ -277,7 +276,7 @@ class PositioningPortal extends React.Component {
     const renderPortal = () => (
       <Portal>
         <div
-          className={cn('PositioningPortal', {isPositioned, behindOverlay}, classNames)}
+          className={cn('PositioningPortal', {isPositioned}, classNames)}
           ref={this.portalRef}
           style={portalStyle}
         >

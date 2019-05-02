@@ -30,6 +30,7 @@ storiesOf('CartModelItem', module)
       imageSource="http://placehold.it/180x180"
       title="model_item_title_can_be_long_and_gets_truncated.stl"
       price="26.44€"
+      id="someId"
       info={
         <>
           42 x 42 x 42 mm
@@ -56,6 +57,7 @@ storiesOf('CartModelItem', module)
         imageSource="http://placehold.it/180x180"
         title="model_item_title_can_be_long_and_gets_truncated.stl"
         price="26.44€"
+        id="someId"
         info={
           <>
             42 x 42 x 42 mm
@@ -81,6 +83,7 @@ storiesOf('CartModelItem', module)
   .add('s', () => (
     <CartModelItem
       s
+      id="someId"
       imageSource="http://placehold.it/180x180"
       title="model_item_title_can_be_long_and_gets_truncated.stl"
       info="42 x 42 x 42 mm"

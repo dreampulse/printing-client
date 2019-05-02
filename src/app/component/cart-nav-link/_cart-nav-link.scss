@@ -1,4 +1,4 @@
-.CartNavButton {
+.CartNavLink {
   $icon-size: 30px;
 
   display: inline-flex;
@@ -7,6 +7,7 @@
   font-size: $font-size-s;
   align-items: center;
   outline: none;
+  text-decoration: none;
 
   &__icon {
     position: relative;
@@ -40,9 +41,10 @@
     color: $color-primary-active;
   }
 
-  &[disabled] {
-    cursor: not-allowed;
-    opacity: 0.5;
+  &--zero {
+    .CartNavLink__count {
+      color: $color-primary;
+    }
 
     &:hover {
       color: $color-primary;

@@ -130,7 +130,7 @@ $box-shadow-error: 0px 0px 4px 0 rgba($color-error, 0.5);
 $transition-duration: 0.4s;
 $transition-duration-fast: 0.15s;
 
-$global-stacking: app, tooltip, positioning-portal-behind-overlay, overlay, select-menu, positioning-portal;
+$global-stacking: app, tooltip, overlay, select-menu, positioning-portal;
 
 $interface-touchable-min-size: 45px;
 

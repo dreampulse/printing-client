@@ -6,6 +6,7 @@
   display: flex;
   height: $cart-model-item-height;
   font-size: $font-size-s;
+  overflow: hidden;
 
   &__aside {
     position: relative;
