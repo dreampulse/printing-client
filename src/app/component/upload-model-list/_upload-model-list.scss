@@ -1,9 +1,61 @@
 .UploadModelList {
   position: relative;
 
-  &__card {
+  &__item {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    transition: transform 0.3s 0.3s ease-in-out;
+
+    // First item to exit
+    &.appear-active {
+      animation:
+        UploadModelList-phase1-exit-first 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+        UploadModelList-phase2-exit-first 0.3s 0.3s cubic-bezier(0.9, -0.02, 0.58, 1) forwards !important;
+    }
+
+    // item to exit expect the first
+    &.appear-active + &.appear-active {
+      animation:
+        UploadModelList-phase1-exit 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+        UploadModelList-phase2-exit 0.3s 0.3s cubic-bezier(0.9, -0.02, 0.58, 1) forwards !important;
+    }
+  }
+
+  @keyframes UploadModelList-phase1-exit-first {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes UploadModelList-phase1-exit {
+    to {
+      transform: translateY($space-base) scale(0.95);
+      opacity: 1;
+    }
+  }
+
+  @keyframes UploadModelList-phase2-exit-first {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translate(300px, -100px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes UploadModelList-phase2-exit {
+    from {
+      transform: translateY($space-base) scale(0.95);
+      opacity: 1;
+    }
+    to {
+      transform: translate(300px, -100px) scale(0.95);
+      opacity: 0;
+    }
   }
 }

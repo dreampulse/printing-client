@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {withState} from '@dump247/storybook-state'
 
-import UploadModelList from '.'
+import UploadModelList from './upload-model-list'
 import Button from '../button'
 import UploadModelItem from '../upload-model-item'
 import ButtonBar from '../button-bar'
@@ -28,12 +28,12 @@ const uploadModelItem = key => (
 )
 
 const uploadModelItemList1 = [1, 2, 3, 4, 5].map(key => uploadModelItem(key))
-const uploadModelItemList2 = [4, 5].map(key => uploadModelItem(key))
+const uploadModelItemList2 = [3, 5].map(key => uploadModelItem(key))
 
 storiesOf('Upload Model List', module).add(
   'default',
   withState({toggle: true}, store => (
-    <div style={{width: 300}}>
+    <div style={{marginLeft: 100, width: 600}}>
       <UploadModelList>
         {store.state.toggle ? uploadModelItemList1 : uploadModelItemList2}
       </UploadModelList>
