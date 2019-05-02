@@ -11,7 +11,6 @@ import withPropsOnChange from 'recompose/withPropsOnChange'
 import * as selector from '../lib/selector'
 import {formatPrice, formatDimensions, formatTimeRange} from '../lib/formatter'
 import {getProviderName} from '../lib/material'
-import getCloudinaryUrl from '../lib/cloudinary'
 import {PaymentAbortedError} from '../lib/error'
 import {scrollToTop} from './util/scroll-to-top'
 import {guard} from './util/guard'
@@ -29,8 +28,8 @@ import Headline from '../component/headline'
 import Button from '../component/button'
 import Paragraph from '../component/paragraph'
 import PaymentSection from '../component/payment-section'
-import SelectField from '../component/select-field'
-import ModelItem from '../component/model-item'
+import CartModelItem from '../component/cart-model-item'
+import ProviderImage from '../component/provider-image'
 import ButtonBar from '../component/button-bar'
 import LoadingIndicator from '../component/loading-indicator'
 import PageLayout from '../component/page-layout'
@@ -57,6 +56,7 @@ import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 import editIcon from '../../asset/icon/edit.svg'
 import backIcon from '../../asset/icon/back.svg'
+import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
 const CartPage = ({
   modelsWithConfig,
@@ -88,15 +88,12 @@ const CartPage = ({
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
 
-  const buttonBar = modelConfig => (
-    <ButtonBar>
-      <NumberField
-        value={modelConfig.quantity}
-        onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-      />
-      <Button icon={editIcon} iconOnly onClick={() => goToEditMaterial([modelConfig.id])} />
+  const buttonBar = (modelConfig, model) => (
+    <ButtonBar l>
+      <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
       <Button icon={copyIcon} iconOnly onClick={() => duplicateModelConfig(modelConfig.id)} />
       <Button icon={deleteIcon} iconOnly onClick={() => deleteModelConfigs([modelConfig.id])} />
+      <Button label="Edit Material" tiny minor onClick={() => goToEditMaterial([modelConfig.id])} />
     </ButtonBar>
   )
 
@@ -234,43 +231,51 @@ const CartPage = ({
             shipping,
             quote,
             materialName,
-            materialConfigId,
             finishGroupName,
-            colorCode,
             color,
-            colorImage,
             productionTimeFast,
             productionTimeSlow
           }) => (
-            <ModelItem
+            <CartModelItem
               key={modelConfig.id}
               id={modelConfig.id}
-              quantity={modelConfig.quantity}
               imageSource={model.thumbnailUrl}
               title={model.fileName}
-              subline={formatDimensions(model.dimensions, model.fileUnit)}
-              buttonBar={buttonBar(modelConfig)}
               price={formatPrice(quote.price, quote.currency)}
-              time={formatTimeRange(
-                productionTimeFast + parseInt(shipping.deliveryTime, 10),
-                productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-              )}
-              shippingMethod={shipping.name}
-              providerId={shipping.vendorId}
-              materialName={materialName}
-              color={
-                <SelectField
-                  modifiers={['compact']}
-                  value={{
-                    value: materialConfigId,
-                    colorValue: colorCode,
-                    label: `${color}, ${finishGroupName}`,
-                    colorImage:
-                      colorImage && getCloudinaryUrl(colorImage, ['w_30', 'h_30', 'c_fill'])
-                  }}
+              info={
+                <>
+                  {formatDimensions(model.dimensions, model.fileUnit)}
+                  <br />
+                  {materialName}, {finishGroupName}, {color}
+                </>
+              }
+              shippingInfo={
+                <>
+                  Est. delivery time:{' '}
+                  <strong>
+                    {formatTimeRange(
+                      productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                      productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                    )}
+                  </strong>
+                  <br />
+                  Deslivery method: <strong>{shipping.name}</strong>
+                </>
+              }
+              providerImage={
+                <ProviderImage
+                  s
+                  name={getProviderName(shipping.vendorId)}
+                  slug={shipping.vendorId}
                 />
               }
-              onMagnify={() => openModelViewer(model)}
+              buttonsLeft={
+                <NumberField
+                  value={modelConfig.quantity}
+                  onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+                />
+              }
+              buttonsRight={buttonBar(modelConfig, model)}
             />
           )
         )}

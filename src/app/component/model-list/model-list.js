@@ -29,12 +29,12 @@ const ModelList = ({
     const id = child.props.id
     return (
       <li className="model-list__item" key={id || index}>
-        {child}
-        {id && (numChildren > 1 || headerAlwaysVisible) && (
-          <div className="model-list__checkbox">
-            <CheckboxField checked={checkedIds.includes(id)} onChange={() => toggleId(id)} />
-          </div>
-        )}
+        {id && (numChildren > 1 || headerAlwaysVisible)
+          ? React.cloneElement(child, {
+              selected: checkedIds.includes(id),
+              onSelect: () => toggleId(id)
+            })
+          : child}
       </li>
     )
   })
