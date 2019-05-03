@@ -42,8 +42,8 @@ const PaymentSection = ({classNames, children, childrenLabel, subtotal, shipping
     </ul>
     {childrenLabel && <div className="PaymentSection__sectionLabel">{childrenLabel}</div>}
     <ul className="PaymentSection__buttons">
-      {React.Children.map(children, child => (
-        <li key={child.key} className="PaymentSection__button">
+      {React.Children.map(children, (child, index) => (
+        <li key={index} className="PaymentSection__button">
           {child}
         </li>
       ))}

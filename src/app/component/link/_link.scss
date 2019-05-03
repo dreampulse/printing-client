@@ -11,12 +11,16 @@
     top: -0.08em; // Optimize vertical center
   }
 
+  & > strong {
+    font-weight: $font-weight-bold;
+  }
+
   &:hover,
   &:focus {
     text-decoration: underline;
   }
 
-  &--invert {
-    color: $color-invert-text;
+  &--warning {
+    color: $color-warning;
   }
 }

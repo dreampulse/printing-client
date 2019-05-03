@@ -10,31 +10,20 @@ import * as modelViewerAction from '../action/model-viewer'
 import * as modelAction from '../action/model'
 
 import backIcon from '../../asset/icon/back.svg'
-import cartIcon from '../../asset/icon/cart.svg'
-import helpIcon from '../../asset/icon/help.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
-import config from '../../../config'
-
 import {formatDimensions} from '../lib/formatter'
-import {
-  selectCartCount,
-  selectModelsOfModelConfigs,
-  selectCommonMaterialPathOfModelConfigs
-} from '../lib/selector'
-import {openIntercom} from '../service/intercom'
+import {selectModelsOfModelConfigs, selectCommonMaterialPathOfModelConfigs} from '../lib/selector'
 import {guard} from './util/guard'
 
 import MaterialPartial, {SELECTED_STEP} from './material-partial'
 import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
+import NavBarPartial from './nav-bar-partial'
 
-import NavBar from '../component/nav-bar'
 import Headline from '../component/headline'
 import Section from '../component/section'
 import ToolLayout from '../component/tool-layout'
-import Logo from '../component/logo'
-import IconLink from '../component/icon-link'
 import Link from '../component/link'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
@@ -48,7 +37,6 @@ const EditMaterialPage = ({
   goToCart,
   modelsWithConfig,
   configIds,
-  cartCount,
   openModelViewer,
   updateQuantities,
   selectedState,
@@ -102,31 +90,7 @@ const EditMaterialPage = ({
     <ToolLayout
       fullMain
       scrollContainerId={SCROLL_CONTAINER_ID}
-      header={
-        <NavBar
-          leftContent={<Logo href={config.landingPageUrl} />}
-          rightContent={
-            <>
-              <IconLink
-                icon={cartIcon}
-                disabled={cartCount < 1}
-                cartCount={cartCount}
-                onClick={event => {
-                  event.preventDefault()
-                  goToCart()
-                }}
-              />
-              <IconLink
-                icon={helpIcon}
-                onClick={event => {
-                  event.preventDefault()
-                  openIntercom()
-                }}
-              />
-            </>
-          }
-        />
-      }
+      header={<NavBarPartial />}
       sidebar={sidebar()}
     >
       <OfferLayout
@@ -159,12 +123,10 @@ const mapStateToProps = (state, ownProps) => ({
   ),
   currency: state.core.currency,
   location: state.core.location,
-  cartCount: selectCartCount(state),
   commonMaterialPath: selectCommonMaterialPathOfModelConfigs(state, ownProps.configIds)
 })
 
 const mapDispatchToProps = {
-  goToUpload: navigationAction.goToUpload,
   goToCart: navigationAction.goToCart,
   openModelViewer: modelViewerAction.open,
   updateQuantities: modelAction.updateQuantities

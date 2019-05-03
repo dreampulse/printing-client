@@ -16,7 +16,7 @@ const leftButtonBar = () => (
   </ButtonBar>
 )
 
-const buttonBar = () => (
+const rightButtonBar = () => (
   <ButtonBar l>
     <Button icon={placeholderIcon} iconOnly />
     <Button icon={placeholderIcon} iconOnly />
@@ -47,7 +47,7 @@ storiesOf('CartModelItem', module)
       }
       providerImage={<ProviderImage s slug="imaterialise" name="i.Materialise" />}
       buttonsLeft={leftButtonBar()}
-      buttonsRight={buttonBar()}
+      buttonsRight={rightButtonBar()}
     />
   ))
   .add(
@@ -74,7 +74,7 @@ storiesOf('CartModelItem', module)
         }
         providerImage={<ProviderImage s slug="imaterialise" name="i.Materialise" />}
         buttonsLeft={leftButtonBar()}
-        buttonsRight={buttonBar()}
+        buttonsRight={rightButtonBar()}
         selected={store.state.selected}
         onSelect={selected => store.set({selected})}
       />

@@ -50,7 +50,7 @@ context('Simple application flow', () => {
 
   it('pays per invoice', () => {
     cy.contains('.headline', 'Review Order')
-    cy.contains('.model-item', 'test-model.stl')
+    cy.contains('.CartModelItem', 'test-model.stl')
 
     cy.contains('button', 'Pay with Invoice').click()
   })

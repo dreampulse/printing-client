@@ -24,7 +24,7 @@ const ErrorModal = ({error, closeModal}) => {
           <Image src={errorImage} alt="System Error" />
         </Column>
         <Column sm={9}>
-          <Paragraph modifiers={['minor']}>{error.message}</Paragraph>
+          <Paragraph minor>{error.message}</Paragraph>
         </Column>
       </Grid>
     </Overlay>

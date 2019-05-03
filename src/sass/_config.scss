@@ -51,13 +51,13 @@ $color-minor: $color-gray-2;
 $color-minor-highlighted: $color-gray-1;
 $color-border: $color-gray-2;
 $color-border-minor: $color-gray-4;
-$color-warning: $color-yellow;
 $color-error: $color-red;
 $color-field-focus: $color-primary;
 $color-field-bg: $color-white;
 $color-disabled: $color-gray-3;
 $color-link: $color-blue;
 $color-success: $color-green;
+$color-warning: $color-yellow;
 $color-warning-active: $color-yellow-light;
 $color-cart-count: $color-yellow;
 
@@ -106,6 +106,7 @@ $mediaqueries: (
 // ---------------------------------------------------
 
 $nav-bar-content-height: 40px;
+$nav-bar-height: $nav-bar-content-height + 2 * $space-l;
 $field-height: 50px;
 $compact-field-height: 40px;
 $tiny-field-height: 30px;

@@ -14,7 +14,7 @@ storiesOf('Paragraph', module)
     </Paragraph>
   ))
   .add('l', () => (
-    <Paragraph modifiers={['l']}>
+    <Paragraph l>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
       labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
       laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
@@ -23,7 +23,7 @@ storiesOf('Paragraph', module)
     </Paragraph>
   ))
   .add('strong', () => (
-    <Paragraph modifiers={['strong']}>
+    <Paragraph strong>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
       labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
       laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
@@ -32,7 +32,7 @@ storiesOf('Paragraph', module)
     </Paragraph>
   ))
   .add('minor', () => (
-    <Paragraph modifiers={['minor']}>
+    <Paragraph minor>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
       labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
       laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in

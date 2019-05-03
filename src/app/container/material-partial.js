@@ -434,7 +434,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
-  goToReviewOrder: navigationAction.goToReviewOrder,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,
