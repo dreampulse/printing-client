@@ -30,6 +30,7 @@ export default {
     jawstec: 'JawsTec',
     sculpteo: 'Sculpteo',
     shapeways: 'Shapeways',
+    simply3d: 'Simply 3D',
     treatstock: 'Treatstock',
     zverse: 'ZVerse'
   },
