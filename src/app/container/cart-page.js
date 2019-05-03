@@ -7,6 +7,7 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import lifecycle from 'recompose/lifecycle'
 import withPropsOnChange from 'recompose/withPropsOnChange'
+import withProps from 'recompose/withProps'
 
 import * as selector from '../lib/selector'
 import {formatPrice, formatDimensions, formatTimeRange} from '../lib/formatter'
@@ -490,7 +491,9 @@ const mapStateToProps = state => ({
   featureFlags: state.core.featureFlags,
   hasOnlyValidModelConfigsWithQuote: selector.hasOnlyValidModelConfigsWithQuote(state),
   pollingProgress: selector.selectQuotePollingProgress(state),
-  isCartUpToDate: selector.isCartUpToDate(state)
+  isCartUpToDate: selector.isCartUpToDate(state),
+  urlParams: state.core.urlParams,
+  orderNumber: state.core.orderNumber
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -499,6 +502,7 @@ const mapDispatchToProps = dispatch => ({
   goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
   goToEditMaterial: bindActionCreators(navigationAction.goToEditMaterial, dispatch),
+  goToSuccess: bindActionCreators(navigationAction.goToSuccess, dispatch),
   openModelViewer: bindActionCreators(modelViewerAction.open, dispatch),
   updateQuantities: bindActionCreators(modelAction.updateQuantities, dispatch),
   goingToReceiveQuotes: bindActionCreators(quoteAction.goingToReceiveQuotes, dispatch),
@@ -521,6 +525,15 @@ export default compose(
     mapDispatchToProps
   ),
   guard(props => props.modelsWithConfig.length > 0),
+  withProps(props => ({
+    utmParams: {
+      source: props.urlParams.utm_source,
+      medium: props.urlParams.utm_medium,
+      campaign: props.urlParams.utm_campaign,
+      term: props.urlParams.utm_term,
+      content: props.urlParams.utm_content
+    }
+  })),
   withState('paymentInProgress', 'setPaymentInProgress', false),
   withPropsOnChange(
     () => false, // Should never reinitialize the debounce function
@@ -531,7 +544,7 @@ export default compose(
   withHandlers({
     onSuccess: props => () =>
       props.goToSuccess({
-        orderNumber: props.orderNumber,
+        orderNumber: console.log(props) || props.orderNumber,
         vendorIds: props.modelsWithConfig.map(info => info.quote.vendorId)
       }),
     payWithPaypal: props => async () => {
