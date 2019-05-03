@@ -1,6 +1,8 @@
 .MaterialStepSection {
   $indentation: $space-xl;
 
+  margin-bottom: $space-xl;
+
   &__headline {
     font-size: $font-size-l;
     margin-bottom: $space-base;

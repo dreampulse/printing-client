@@ -4,6 +4,7 @@ export default {
   imagePollingInterval: 1500,
   receiveQuotesWait: 2000,
   cloudinaryUrl: '//res.cloudinary.com/all3dp/image/upload',
+  landingPageUrl: '//craftcloud.all3dp.com',
   cloudinaryDefaultParams: ['q_90', 'f_auto'],
   stripeCheckoutImage: 'asset/image/checkout-logo.png',
   stripeDescription: '3D Printing Service',
@@ -11,6 +12,7 @@ export default {
   ravenUrl: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
   ravenRelease: process.env.SENTRY_RELEASE_VERSION,
   countryCookie: 'country',
+  supportEmailAddress: 'support@all3dp.com',
   currencies: [
     {value: 'USD', label: 'USD', symbol: '$', prefix: true},
     {value: 'EUR', label: 'EUR', symbol: '€', prefix: false},

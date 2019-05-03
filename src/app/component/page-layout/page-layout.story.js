@@ -10,6 +10,8 @@ import Footer from '../footer'
 import Link from '../link'
 import StickyFooter from '../sticky-footer'
 
+import config from '../../../../config'
+
 import helpIcon from '../../../asset/icon/help.svg'
 import cartIcon from '../../../asset/icon/cart.svg'
 
@@ -30,7 +32,7 @@ const stickyFooter = () => (
 const navBar = () => (
   <NavBar
     key="navbar"
-    leftContent={<Logo />}
+    leftContent={<Logo href={config.landingPageUrl} />}
     rightContent={
       <>
         <IconLink modifiers={['invert']} icon={cartIcon} cartCount={99} />

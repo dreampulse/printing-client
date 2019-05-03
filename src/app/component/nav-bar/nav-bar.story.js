@@ -7,11 +7,13 @@ import Logo from '../logo'
 import CartNavLink from '../cart-nav-link'
 import NavLink from '../nav-link'
 
+import config from '../../../../config'
+
 import uploadIcon from '../../../asset/icon/upload.svg'
 
 storiesOf('NavBar', module).add('default', () => (
   <NavBar
-    leftContent={<Logo />}
+    leftContent={<Logo href={config.landingPageUrl} />}
     rightContent={
       <>
         <NavLink label="Upload" icon={uploadIcon} />
