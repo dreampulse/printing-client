@@ -493,7 +493,8 @@ const mapStateToProps = state => ({
   pollingProgress: selector.selectQuotePollingProgress(state),
   isCartUpToDate: selector.isCartUpToDate(state),
   urlParams: state.core.urlParams,
-  orderNumber: state.core.orderNumber
+  orderNumber: state.core.orderNumber,
+  quotePollingId: state.core.quotePollingId
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -544,7 +545,7 @@ export default compose(
   withHandlers({
     onSuccess: props => () =>
       props.goToSuccess({
-        orderNumber: console.log(props) || props.orderNumber,
+        orderNumber: props.orderNumber,
         vendorIds: props.modelsWithConfig.map(info => info.quote.vendorId)
       }),
     payWithPaypal: props => async () => {
@@ -633,16 +634,16 @@ export default compose(
       }
     },
     componentDidUpdate(prevProps) {
-      const isPollingDone =
-        this.props.pollingProgress.total > 0 &&
-        this.props.pollingProgress.complete === this.props.pollingProgress.total
-
       if (prevProps.modelsWithConfig.length > 0 && this.props.modelsWithConfig.length === 0) {
         this.props.goToUpload()
       }
 
-      // Refresh quotes if cart got invalid
-      if (!this.props.hasOnlyValidModelConfigsWithQuote && isPollingDone) {
+      if (
+        !this.props.hasOnlyValidModelConfigsWithQuote &&
+        (prevProps.modelConfigs !== this.props.modelConfigs ||
+          prevProps.countryCode !== this.props.countryCode ||
+          prevProps.currency !== this.props.currency)
+      ) {
         const modelConfigs = this.props.modelConfigs
         const {refresh} = this.props.featureFlags
         const currency = this.props.currency
