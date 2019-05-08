@@ -75,7 +75,11 @@ const UploadPage = ({
             Large quantities, recurring orders or special requirements?
           </RichText>
           <div className="u-align-center ">
-            <Button minor label="Contact Us" onClick={() => openIntercom()} />
+            <Button
+              minor
+              label="Contact Us"
+              onClick={() => global.window.open('https://craftcloud.all3dp.com/contact', '_blank')}
+            />
           </div>
         </Column>
         <Column md={0} lg={4} />
