@@ -95,9 +95,9 @@ MaterialCard.propTypes = {
   onSelectClick: PropTypes.func,
   image: PropTypes.string,
   onUnavailableClick: PropTypes.func,
-  learnMoreLabel: PropTypes.bool,
-  unavailableLabel: PropTypes.bool,
-  contactUsLabel: PropTypes.bool,
+  learnMoreLabel: PropTypes.string,
+  unavailableLabel: PropTypes.string,
+  contactUsLabel: PropTypes.string,
   selectLabel: PropTypes.string
 }
 
