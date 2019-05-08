@@ -17,7 +17,6 @@ import {formatDimensions} from '../lib/formatter'
 import * as printingEngine from '../lib/printing-engine'
 import * as selector from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
-import {openIntercom} from '../service/intercom'
 
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
