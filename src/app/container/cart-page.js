@@ -259,7 +259,7 @@ const CartPage = ({
                     )}
                   </strong>
                   <br />
-                  Deslivery method: <strong>{shipping.name}</strong>
+                  Delivery method: <strong>{shipping.name}</strong>
                 </>
               }
               providerImage={
