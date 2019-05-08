@@ -1,20 +1,11 @@
 import React from 'react'
 
-import {openIntercom} from '../service/intercom'
-
 import Footer from '../component/footer'
 import Link from '../component/link'
 
 const FooterPartial = () => (
   <Footer copyline="© 2019 All3DP">
-    <Link
-      label="Contact Us"
-      href="#"
-      onClick={event => {
-        event.preventDefault()
-        openIntercom()
-      }}
-    />
+    <Link label="Contact Us" href="https://craftcloud.all3dp.com/contact" target="_blank" />
     <Link
       label="Terms and conditions"
       target="_blank"
