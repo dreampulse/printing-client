@@ -144,7 +144,6 @@ const MaterialPartial = ({
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!isPollingDone}
           unavailable={!bestOffer && isPollingDone}
-          selectLabel={!bestOffer && isPollingDone ? 'Contact us' : 'Select'}
           onSelectClick={() => {
             selectMaterial(material.id)
           }}
