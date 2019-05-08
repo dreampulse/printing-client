@@ -165,11 +165,7 @@ const UploadPage = ({
                 subline={formatDimensions(model.dimensions, model.fileUnit)}
                 buttonsRight={
                   <ButtonBar>
-                    <Button
-                      icon={zoomInIcon}
-                      iconOnly
-                      onClick={() => openModelViewer(modelConfig)}
-                    />
+                    <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
                     <Button
                       icon={copyIcon}
                       iconOnly
