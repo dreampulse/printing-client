@@ -88,15 +88,14 @@ const UploadPage = ({
     </Section>
   )
 
-  const locationNotification = ({message, warning}) => (
-    <Notification message={message} warning={warning} />
-  )
-
   const notificationSection = () => (
     <Section>
-      {location.state &&
-        location.state.notification &&
-        locationNotification(location.state.notification)}
+      {location.state && location.state.notification && (
+        <Notification
+          message={location.state.notification.message}
+          warning={location.state.notification.warning}
+        />
+      )}
     </Section>
   )
 
@@ -276,6 +275,10 @@ const mapStateToProps = state => ({
     state.core.modelConfigs,
     selector.selectModelsOfModelConfigs(state)
   ]).filter(([modelConfig]) => modelConfig.type !== 'UPLOADED' || modelConfig.quoteId === null),
+  uploadedModelsWithConfig: unzip([
+    state.core.modelConfigs,
+    selector.selectModelsOfModelConfigs(state)
+  ]).filter(([modelConfig]) => modelConfig.type === 'UPLOADED' || modelConfig.quoteId === null),
   cart: state.core.cart,
   featureFlags: state.core.featureFlags,
   useSameMaterial: state.core.useSameMaterial,
@@ -360,6 +363,15 @@ const enhance = compose(
       const selectModelConfigIds = (location.state && location.state.selectModelConfigIds) || []
       const filteredModelConfigIds = intersection(allModelConfigIds, selectModelConfigIds)
       this.props.updateSelectedModelConfigs(filteredModelConfigIds)
+    },
+    componentDidUpdate(prevProps) {
+      // If user uploads exactly one model directly go to the material page.
+      if (
+        prevProps.uploadedModelsWithConfig.length === 0 &&
+        this.props.uploadedModelsWithConfig.length === 1
+      ) {
+        this.props.goToMaterial(this.props.selectedModelConfigIds)
+      }
     }
   })
 )
