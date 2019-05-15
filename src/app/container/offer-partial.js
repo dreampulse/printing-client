@@ -104,8 +104,12 @@ const OfferPartial = ({
               key={i}
               actions={
                 <>
-                  {firstOffer && offers.length > 1 && !showMore && (
-                    <Button text label="See all offers" onClick={() => setShowMore(true)} />
+                  {firstOffer && offers.length > 1 && (
+                    <Button
+                      text
+                      label={showMore ? 'Hide offers' : 'See all offers'}
+                      onClick={() => setShowMore(!showMore)}
+                    />
                   )}
                   <Button
                     minor={!firstOffer}

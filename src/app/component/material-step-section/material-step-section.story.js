@@ -2,15 +2,19 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 
 import MaterialStepSection from '.'
+import Headline from '../headline'
 
 storiesOf('MaterialStepSection', module)
   .add('default', () => (
-    <MaterialStepSection number="1" label="Headline">
+    <MaterialStepSection headline={<Headline modifiers={['xl', 'light']} label="Headline" />}>
       Material Step Section content
     </MaterialStepSection>
   ))
   .add('fadeIn', () => (
-    <MaterialStepSection number="1" label="Headline" fadeIn>
+    <MaterialStepSection
+      headline={<Headline modifiers={['xl', 'light']} label="Headline" />}
+      fadeIn
+    >
       Material Step Section content
     </MaterialStepSection>
   ))

@@ -142,6 +142,7 @@ const MaterialPage = ({
         </Section>
         <MaterialPartial
           configIds={selectedModelConfigIds}
+          scrollContainerId={SCROLL_CONTAINER_ID}
           selectedState={selectedState}
           onChange={setSelectedState}
         />

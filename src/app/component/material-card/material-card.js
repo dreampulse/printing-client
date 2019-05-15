@@ -17,12 +17,14 @@ const MaterialCard = ({
   description,
   loading = false,
   unavailable = false,
+  selected = false,
   image,
   onMoreClick = noop,
   onSelectClick = noop,
   onUnavailableClick = noop,
   descriptionHeadline,
   selectLabel = 'Select',
+  selectedLabel = 'Selected',
   learnMoreLabel = 'Learn more',
   unavailableLabel = 'Not printable',
   contactUsLabel = 'Contact us'
@@ -32,21 +34,22 @@ const MaterialCard = ({
   }
 
   return (
-    <article
+    <div
       className={cn(
         'MaterialCard',
         {
-          unavailable
+          unavailable,
+          selected
         },
         classNames
       )}
     >
       {image && <div className="MaterialCard__image" style={imageStyle} />}
       <div className="MaterialCard__content">
-        <header className="MaterialCard__header">
+        <div className="MaterialCard__header">
           {info}
           <Headline label={title} tag="strong" />
-        </header>
+        </div>
         {Boolean(description) && (
           <div className="MaterialCard__body">
             <div className="MaterialCard__descriptionHeadline">{descriptionHeadline}</div>
@@ -61,24 +64,26 @@ const MaterialCard = ({
           </div>
         )}
         {unavailable ? (
-          <footer className="MaterialCard__footer">
+          <div className="MaterialCard__footer">
             <span className="MaterialCard__unavailableText">{unavailableLabel}</span>
-            <Button
-              minor
-              tiny
-              label={contactUsLabel}
-              disabled={loading}
-              onClick={onUnavailableClick}
-            />
-          </footer>
+            <Button block minor tiny label={contactUsLabel} onClick={onUnavailableClick} />
+          </div>
         ) : (
-          <footer className="MaterialCard__footer">
+          <div className="MaterialCard__footer">
             {price && cloneElement(price, {loading})}
-            <Button minor tiny label={selectLabel} disabled={loading} onClick={onSelectClick} />
-          </footer>
+            <Button
+              block
+              minor={!selected}
+              tiny
+              disabled={loading}
+              selected={selected}
+              label={selected ? selectedLabel : selectLabel}
+              onClick={onSelectClick}
+            />
+          </div>
         )}
       </div>
-    </article>
+    </div>
   )
 }
 
@@ -98,7 +103,9 @@ MaterialCard.propTypes = {
   learnMoreLabel: PropTypes.string,
   unavailableLabel: PropTypes.string,
   contactUsLabel: PropTypes.string,
-  selectLabel: PropTypes.string
+  selectLabel: PropTypes.string,
+  selectedLabel: PropTypes.string,
+  selected: PropTypes.bool
 }
 
 export default MaterialCard

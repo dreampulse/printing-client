@@ -13,7 +13,7 @@ const MaterialStepSection = ({classNames, children, headline, fadeIn = false}) =
 
 MaterialStepSection.propTypes = {
   ...propTypes.component,
-  headline: PropTypes.string.isRequired,
+  headline: PropTypes.node.isRequired,
   children: PropTypes.node,
   fadeIn: PropTypes.bool
 }

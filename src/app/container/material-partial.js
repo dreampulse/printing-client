@@ -32,6 +32,7 @@ import {
 } from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
+import scrollTo from '../service/scroll-to'
 
 import MaterialFilterPartial from './material-filter-partial'
 
@@ -44,7 +45,6 @@ import RadioButton from '../component/radio-button'
 import RadioButtonGroup from '../component/radio-button-group'
 import MaterialSlider from '../component/material-slider'
 import Paragraph from '../component/paragraph'
-import Link from '../component/link'
 import Button from '../component/button'
 import LoadingCheckmark from '../component/loading-checkmark'
 import ColorCard from '../component/color-card'
@@ -106,9 +106,7 @@ const MaterialPartial = ({
       <Price
         value={price}
         loadingCheckmark={
-          <LoadingCheckmark
-            modifiers={compact([isPollingDone && 'done', hasAtLeastOneResult && 'hideWithDelay'])}
-          />
+          <LoadingCheckmark done={isPollingDone} hideAfterTimeout={hasAtLeastOneResult} />
         }
       />
     )
@@ -134,8 +132,9 @@ const MaterialPartial = ({
           descriptionHeadline="Best used for:"
           price={renderPrice(bestOffer)}
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
-          loading={!isPollingDone}
+          loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
+          selected={selectedMaterial && selectedMaterial.id === material.id}
           onSelectClick={() => {
             selectMaterial(material.id)
           }}
@@ -163,7 +162,6 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        id="material-step-1"
         headline={<Headline modifiers={['xl', 'light']} label="1. Select Material" />}
       >
         <Grid>
@@ -231,6 +229,7 @@ const MaterialPartial = ({
           image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
+          selected={selectedFinishGroup && selectedFinishGroup.id === finishGroup.id}
           onSelectClick={() => {
             selectFinishGroup(finishGroup.id)
           }}
@@ -251,7 +250,6 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        id="material-step-2"
         headline={<Headline modifiers={['xl', 'light']} label="2. Select Finish" />}
         fadeIn
       >
@@ -302,24 +300,19 @@ const MaterialPartial = ({
           }
           title={materialConfig.color}
           price={renderPrice(bestOffer, compareOffer)}
-          button={
-            <Button
-              label="Select"
-              minor
-              tiny
-              disabled={!bestOffer}
-              onClick={() => {
-                selectMaterialConfig(materialConfig.id)
-              }}
-            />
-          }
+          loading={!bestOffer}
+          unavailable={!bestOffer && isPollingDone}
+          selected={selectedMaterialConfig && selectedMaterialConfig.id === materialConfig.id}
+          onSelectClick={() => {
+            selectMaterialConfig(materialConfig.id)
+          }}
+          onUnavailableClick={() => openIntercom()}
         />
       )
     }
 
     return (
       <MaterialStepSection
-        id="material-step-3"
         headline={<Headline modifiers={['xl', 'light']} label="3. Select Color" />}
         fadeIn
       >
@@ -337,8 +330,9 @@ const MaterialPartial = ({
   return (
     <>
       {renderMaterialSection()}
-      {selectedMaterial && renderFinishSection()}
-      {selectedFinishGroup && renderColorSection()}
+      <div id="material-step-2">{selectedMaterial && renderFinishSection()}</div>
+      <div id="material-step-3">{selectedFinishGroup && renderColorSection()}</div>
+      <div id="material-step-4" />
     </>
   )
 }
@@ -387,26 +381,29 @@ export default compose(
       })
       setMaterialFilter('')
     },
-    selectMaterial: ({onChange, selectedState}) => id => {
+    selectMaterial: ({onChange, selectedState, scrollContainerId}) => id => {
       onChange({
         ...selectedState,
         materialId: id,
         finishGroupId: null,
         materialConfigId: null
       })
+      scrollTo('#material-step-2', `#${scrollContainerId}`)
     },
-    selectFinishGroup: ({onChange, selectedState}) => id => {
+    selectFinishGroup: ({onChange, selectedState, scrollContainerId}) => id => {
       onChange({
         ...selectedState,
         finishGroupId: id,
         materialConfigId: null
       })
+      scrollTo('#material-step-3', `#${scrollContainerId}`)
     },
-    selectMaterialConfig: ({onChange, selectedState}) => id => {
+    selectMaterialConfig: ({onChange, selectedState, scrollContainerId}) => id => {
       onChange({
         ...selectedState,
         materialConfigId: id
       })
+      scrollTo('#material-step-4', `#${scrollContainerId}`)
     }
   }),
   withProps(({materialGroups, materials, finishGroups, materialConfigs, selectedState}) => ({
