@@ -202,36 +202,36 @@ const UploadPage = ({
   return (
     <PageLayout
       footer={<FooterPartial />}
-      header={<NavBarPartial />}
-      showStickyFooter={hasModels}
       minorBackground={hasModels}
       stickyFooter={
-        <StickyFooter>
-          {featureFlags.share && (
+        hasModels && (
+          <StickyFooter>
+            {featureFlags.share && (
+              <Button
+                text
+                disabled={selectedModelConfigIds.length === 0}
+                label="Share configuration"
+                onClick={() => createConfiguration(selectedModelConfigIds)}
+              />
+            )}
+            {modelsWithConfig.length > 0 && (
+              <Button
+                text
+                label={
+                  selectedModelConfigIds.length === modelsWithConfig.length
+                    ? 'Deselect all files'
+                    : 'Select all files'
+                }
+                onClick={() => toggleAll()}
+              />
+            )}
             <Button
-              text
-              disabled={selectedModelConfigIds.length === 0}
-              label="Share configuration"
-              onClick={() => createConfiguration(selectedModelConfigIds)}
+              disabled={!selectedModelConfigIds.length > 0}
+              label={`Select Material (${selectedModelConfigIds.length}/${numModels})`}
+              onClick={() => goToMaterial(selectedModelConfigIds)}
             />
-          )}
-          {modelsWithConfig.length > 0 && (
-            <Button
-              text
-              label={
-                selectedModelConfigIds.length === modelsWithConfig.length
-                  ? 'Deselect all files'
-                  : 'Select all files'
-              }
-              onClick={() => toggleAll()}
-            />
-          )}
-          <Button
-            disabled={!selectedModelConfigIds.length > 0}
-            label={`Select Material (${selectedModelConfigIds.length}/${numModels})`}
-            onClick={() => goToMaterial(selectedModelConfigIds)}
-          />
-        </StickyFooter>
+          </StickyFooter>
+        )
       }
     >
       <Container full={Boolean(cart)}>

@@ -4,21 +4,26 @@ import {Route} from 'react-router'
 import config from '../../../config'
 import uploadIcon from '../../asset/icon/upload.svg'
 
-import {selectCartCount} from '../lib/selector'
+import * as selector from '../lib/selector'
+import {formatDimensions} from '../lib/formatter'
 import {goToUpload, goToCart} from '../action/navigation'
 import {openIntercom, isActualIntercomImpl} from '../service/intercom'
+
 import CartNavLink from '../component/cart-nav-link'
 import NavLink from '../component/nav-link'
 import NavBar from '../component/nav-bar'
 import Button from '../component/button'
 import Logo from '../component/logo'
+import CartFlyout from '../component/cart-flyout'
+import CartModelItem from '../component/cart-model-item'
 
 const NavBarPartial = ({
   navBarContent,
   cartCount,
   onUploadClick,
   onCartClick,
-  helpOnly = false
+  helpOnly = false,
+  modelsWithConfig
 }) => (
   <NavBar
     leftContent={<Logo href={config.landingPageUrl} />}
@@ -35,12 +40,33 @@ const NavBarPartial = ({
               }
             </Route>
             <CartNavLink
+              href="/cart"
               label="Your Cart"
               count={cartCount}
               onClick={event => {
                 event.preventDefault()
                 onCartClick()
               }}
+              cartFlyout={
+                modelsWithConfig.length > 0 && (
+                  <CartFlyout
+                    title={`${modelsWithConfig.length} ${
+                      modelsWithConfig.length > 1 ? 'files' : 'file'
+                    } in your cart`}
+                  >
+                    {modelsWithConfig.map(({modelConfig, model}) => (
+                      <CartModelItem
+                        id={modelConfig.id}
+                        key={modelConfig.id}
+                        s
+                        imageSource={model.thumbnailUrl}
+                        title={model.fileName}
+                        info={formatDimensions(model.dimensions, model.fileUnit)}
+                      />
+                    ))}
+                  </CartFlyout>
+                )
+              }
             />
           </>
         )}
@@ -63,7 +89,8 @@ const NavBarPartial = ({
 )
 
 const mapStateToProps = state => ({
-  cartCount: selectCartCount(state)
+  cartCount: selector.selectCartCount(state),
+  modelsWithConfig: selector.selectConfiguredModelInformation(state)
 })
 
 const mapDispatchToProps = {

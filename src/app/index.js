@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
-import createHistory from 'history/createBrowserHistory'
+import {createBrowserHistory} from 'history'
 import {AppContainer} from 'react-hot-loader'
 import browserUpdate from 'browser-update'
 
@@ -12,7 +12,7 @@ import Router from './router'
 
 import '../sass/main.scss'
 
-const history = createHistory()
+const history = createBrowserHistory()
 const store = Store(history)
 
 function renderApp(CurrentRouter) {

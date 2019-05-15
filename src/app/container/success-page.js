@@ -38,7 +38,7 @@ const SuccessPage = ({location}) => {
     return <Redirect to="/" />
   }
   return (
-    <PageLayout header={<NavBarPartial />} minorBackground footer={<FooterPartial />}>
+    <PageLayout minorBackground footer={<FooterPartial />}>
       <Container>
         <Section classNames={['u-align-center']}>
           <Headline modifiers={['xl']} label="Thank you for ordering with Craftcloud by All3DP" />

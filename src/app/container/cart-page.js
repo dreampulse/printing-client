@@ -424,7 +424,7 @@ const CartPage = ({
   const hasItemsOnUploadPage = modelConfigs.length > modelsWithConfig.length
 
   return (
-    <PageLayout header={<NavBarPartial />}>
+    <PageLayout>
       <Container full>
         <Section>
           <Link

@@ -127,12 +127,7 @@ const MaterialPage = ({
   )
 
   return (
-    <ToolLayout
-      fullMain
-      scrollContainerId={SCROLL_CONTAINER_ID}
-      header={<NavBarPartial />}
-      sidebar={sidebar()}
-    >
+    <ToolLayout fullMain scrollContainerId={SCROLL_CONTAINER_ID} sidebar={sidebar()}>
       <OfferLayout
         footer={
           <OfferPartial

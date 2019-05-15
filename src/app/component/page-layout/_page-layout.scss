@@ -5,19 +5,12 @@
   flex-direction: column;
   position: relative;
 
-  &__header {
-    position: sticky;
-    top: 0;
-    flex-shrink: 0;
-    z-index: z($stacking, sticky);
-  }
-
   &__main {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     flex-shrink: 0;
     flex-grow: 1;
+    height: calc(100vh - #{$nav-bar-height});
   }
 
   &__content {
@@ -38,16 +31,9 @@
   }
 
   &__stickyFooter {
-    display: none;
     position: sticky;
     bottom: 0;
     z-index: z($stacking, sticky);
-  }
-
-  &--showStickyFooter {
-    .PageLayout__stickyFooter {
-      display: block;
-    }
   }
 
   &--minorBackground {

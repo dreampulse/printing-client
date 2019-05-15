@@ -8,6 +8,8 @@ import * as coreActions from '../action/core'
 import {getFeatureFlags, getUrlParams} from '../lib/url'
 import {removeBootsplash} from '../service/bootsplash'
 
+import AppLayout from '../component/app-layout'
+import NavBarPartial from './nav-bar-partial'
 import UploadPage from './upload-page'
 import MaterialPage from './material-page'
 import EditMaterialPage from './edit-material-page'
@@ -17,7 +19,7 @@ import SuccessPage from './success-page'
 import Modal from './modal'
 
 const App = () => (
-  <>
+  <AppLayout header={<NavBarPartial />}>
     <Switch>
       <Route component={UploadPage} path="/" exact />
       <Route component={MaterialPage} path="/material" exact />
@@ -26,7 +28,7 @@ const App = () => (
       <Route component={SuccessPage} path="/success" exact />
     </Switch>
     <Modal />
-  </>
+  </AppLayout>
 )
 
 const mapStateToProps = () => ({})
