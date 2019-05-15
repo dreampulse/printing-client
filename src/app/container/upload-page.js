@@ -45,6 +45,8 @@ import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 import ModelUploadList from '../component/model-upload-list'
 import StickyFooter from '../component/sticky-footer'
+import Link from '../component/link'
+import Paragraph from '../component/paragraph'
 
 const UploadPage = ({
   openPickUnitModal,
@@ -98,106 +100,85 @@ const UploadPage = ({
     </Section>
   )
 
-  const modelList = () =>
-    numModels === 0 ? (
-      <UploadArea
-        l
-        label="Drag any 3D files here or"
-        linkLabel="select files"
-        description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
-        accept="*"
-        onChange={openPickUnitModal}
-      />
-    ) : (
-      <ModelUploadList
-        uploadArea={
-          <UploadArea
-            s
-            label="Drag additional 3D files here or"
-            linkLabel="select files"
-            description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
-            accept="*"
-            onChange={openPickUnitModal}
-          />
+  const modelList = () => (
+    <ModelUploadList>
+      {modelsWithConfig.map(([modelConfig, model]) => {
+        if (modelConfig.type === 'UPLOADING') {
+          if (model.error) {
+            return (
+              <UploadModelItemError
+                key={modelConfig.id}
+                title="Upload failed"
+                subline={model.errorMessage}
+                buttonsRight={
+                  <ButtonBar>
+                    <Button
+                      icon={deleteIcon}
+                      iconOnly
+                      onClick={() => deleteModelConfigs([modelConfig.id])}
+                    />
+                  </ButtonBar>
+                }
+              />
+            )
+          }
+          return (
+            <UploadModelItemLoad
+              key={modelConfig.id}
+              status={model.progress}
+              title="Uploading"
+              subline={model.fileName}
+              buttonsRight={
+                <ButtonBar>
+                  <Button
+                    icon={deleteIcon}
+                    iconOnly
+                    onClick={() => deleteModelConfigs([modelConfig.id])}
+                  />
+                </ButtonBar>
+              }
+            />
+          )
         }
-      >
-        {modelsWithConfig.map(([modelConfig, model]) => {
-          if (modelConfig.type === 'UPLOADING') {
-            if (model.error) {
-              return (
-                <UploadModelItemError
-                  key={modelConfig.id}
-                  title="Upload failed"
-                  subline={model.errorMessage}
-                  buttonsRight={
-                    <ButtonBar>
-                      <Button
-                        icon={deleteIcon}
-                        iconOnly
-                        onClick={() => deleteModelConfigs([modelConfig.id])}
-                      />
-                    </ButtonBar>
-                  }
-                />
-              )
-            }
-            return (
-              <UploadModelItemLoad
-                key={modelConfig.id}
-                status={model.progress}
-                title="Uploading"
-                subline={model.fileName}
-                buttonsRight={
-                  <ButtonBar>
-                    <Button
-                      icon={deleteIcon}
-                      iconOnly
-                      onClick={() => deleteModelConfigs([modelConfig.id])}
-                    />
-                  </ButtonBar>
-                }
-              />
-            )
-          }
-          if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
-            return (
-              <UploadModelItem
-                key={modelConfig.id}
-                imageSource={model.thumbnailUrl}
-                title={model.fileName}
-                subline={formatDimensions(model.dimensions, model.fileUnit)}
-                buttonsRight={
-                  <ButtonBar>
-                    <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
-                    <Button
-                      icon={copyIcon}
-                      iconOnly
-                      onClick={() => duplicateModelConfig(modelConfig.id)}
-                    />
-                    <Button
-                      icon={deleteIcon}
-                      iconOnly
-                      onClick={() => deleteModelConfigs([modelConfig.id])}
-                    />
-                  </ButtonBar>
-                }
-                selected={selectedModelConfigIds.includes(modelConfig.id)}
-                onSelect={() => toggleId(modelConfig.id)}
-                buttonsLeft={
-                  modelConfig.quantity && (
-                    <NumberField
-                      value={modelConfig.quantity}
-                      onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-                    />
-                  )
-                }
-              />
-            )
-          }
-          return null
-        })}
-      </ModelUploadList>
-    )
+        if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
+          return (
+            <UploadModelItem
+              key={modelConfig.id}
+              imageSource={model.thumbnailUrl}
+              title={model.fileName}
+              subline={formatDimensions(model.dimensions, model.fileUnit)}
+              buttonsRight={
+                <ButtonBar>
+                  <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
+                  <Button
+                    icon={copyIcon}
+                    iconOnly
+                    onClick={() => duplicateModelConfig(modelConfig.id)}
+                  />
+                  <Button
+                    icon={deleteIcon}
+                    iconOnly
+                    onClick={() => deleteModelConfigs([modelConfig.id])}
+                  />
+                </ButtonBar>
+              }
+              selected={selectedModelConfigIds.includes(modelConfig.id)}
+              onSelect={() => toggleId(modelConfig.id)}
+              buttonsLeft={
+                modelConfig.quantity && (
+                  <NumberField
+                    value={modelConfig.quantity}
+                    onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+                  />
+                )
+              }
+            />
+          )
+        }
+        return null
+      })}
+    </ModelUploadList>
+  )
 
   return (
     <PageLayout
@@ -215,27 +196,16 @@ const UploadPage = ({
               onClick={() => createConfiguration(selectedModelConfigIds)}
             />
           )}
-          {modelsWithConfig.length > 0 && (
-            <Button
-              text
-              label={
-                selectedModelConfigIds.length === modelsWithConfig.length
-                  ? 'Deselect all files'
-                  : 'Select all files'
-              }
-              onClick={() => toggleAll()}
-            />
-          )}
           <Button
             disabled={!selectedModelConfigIds.length > 0}
-            label={`Select Material (${selectedModelConfigIds.length}/${numModels})`}
+            label={`Select Material (${selectedModelConfigIds.length}/${numModels} files)`}
             onClick={() => goToMaterial(selectedModelConfigIds)}
           />
         </StickyFooter>
       }
     >
       <Container full={Boolean(cart)}>
-        {cart ? (
+        {hasModels || cart ? (
           <LocationInfoPartial />
         ) : (
           <Section>
@@ -252,9 +222,50 @@ const UploadPage = ({
             label="Which files do you want to customize first?"
           />
         )}
-        <Section>{modelList()}</Section>
-        {!hasModels && promoSection()}
+        {!hasModels && (
+          <UploadArea
+            l
+            label="Drag any 3D files here or"
+            linkLabel="select files"
+            description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+            accept="*"
+            onChange={openPickUnitModal}
+          />
+        )}
       </Container>
+      {hasModels && (
+        <Container s>
+          <Section>
+            <UploadArea
+              s
+              label="Drag additional 3D files here or"
+              linkLabel="select files"
+              description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+              accept="*"
+              onChange={openPickUnitModal}
+            />
+            <Headline
+              modifiers={['light']}
+              label={`Your selection (${selectedModelConfigIds.length}/${numModels} files)`}
+            />
+            <Paragraph>
+              <Link
+                onClick={event => {
+                  event.preventDefault()
+                  toggleAll()
+                }}
+                label={
+                  modelsWithConfig.length === selectedModelConfigIds.length
+                    ? 'Deselect all files'
+                    : 'Select all files'
+                }
+              />
+            </Paragraph>
+            {modelList()}
+          </Section>
+        </Container>
+      )}
+      {!hasModels && <Container>{promoSection()}</Container>}
     </PageLayout>
   )
 }
