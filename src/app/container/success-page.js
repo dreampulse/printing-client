@@ -20,7 +20,6 @@ import Link from '../component/link'
 import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 
-import NavBarPartial from './nav-bar-partial'
 import FooterPartial from './footer-partial'
 
 import * as coreActions from '../action/core'

@@ -26,7 +26,6 @@ import * as modalAction from '../action/modal'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import LocationInfoPartial from './location-info-partial'
 import FooterPartial from './footer-partial'
-import NavBarPartial from './nav-bar-partial'
 
 import Section from '../component/section'
 import Headline from '../component/headline'

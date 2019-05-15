@@ -27,7 +27,6 @@ import {
 import MaterialPartial, {SELECTED_STEP} from './material-partial'
 import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
-import NavBarPartial from './nav-bar-partial'
 
 import ToolLayout from '../component/tool-layout'
 import Link from '../component/link'

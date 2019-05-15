@@ -19,7 +19,6 @@ import {guard} from './util/guard'
 import MaterialPartial, {SELECTED_STEP} from './material-partial'
 import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
-import NavBarPartial from './nav-bar-partial'
 
 import Headline from '../component/headline'
 import Section from '../component/section'
