@@ -28,7 +28,6 @@ context('Simple application flow', () => {
     cy.contains('button', 'Select').click()
     cy.contains('button', 'Select').click()
     cy.contains('button', 'Select').click()
-    cy.contains('button', 'Select').click()
     cy.contains('button', 'Add to cart').click()
   })
 
