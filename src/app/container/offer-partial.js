@@ -22,8 +22,6 @@ import {
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
 
-import {SELECTED_STEP} from './material-partial'
-
 import DescriptionList from '../component/description-list'
 import ProviderImage from '../component/provider-image'
 import Button from '../component/button'
@@ -121,8 +119,7 @@ const OfferPartial = ({
                             materialGroupId: selectedState.materialGroupId,
                             materialId: null,
                             finishGroupId: null,
-                            materialConfigId: null,
-                            step: SELECTED_STEP.MATERIAL
+                            materialConfigId: null
                           })
 
                           updateSelectedModelConfigs(

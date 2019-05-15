@@ -6,15 +6,15 @@
   position: relative;
 
   &__main {
+    position: relative;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
     flex-grow: 1;
-    height: calc(100vh - #{$nav-bar-height});
+    min-height: calc(100vh - #{$nav-bar-height});
   }
 
   &__content {
-    position: relative;
     margin: $space-l 0 $space-l 0;
     flex-grow: 1;
     height: 100%;

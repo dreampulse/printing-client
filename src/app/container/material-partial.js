@@ -52,12 +52,6 @@ import ColorTrait from '../component/color-trait'
 import ColorCardList from '../component/color-card-list'
 import MaterialStepSection from '../component/material-step-section'
 
-export const SELECTED_STEP = {
-  MATERIAL: 'material',
-  FINISH: 'finish',
-  COLOR: 'color'
-}
-
 const MaterialPartial = ({
   // Own props
   selectedState,
@@ -82,9 +76,7 @@ const MaterialPartial = ({
   selectedModelConfigs,
   shippings,
   usedShippingIds,
-  pollingProgress,
-  selectStep,
-  selectNextStep
+  pollingProgress
 }) => {
   const isPollingDone =
     pollingProgress.total > 0 && pollingProgress.complete === pollingProgress.total
@@ -171,29 +163,8 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        number="1"
-        selected={selectedMaterial ? selectedMaterial.name : null}
-        label="Material"
-        open={selectedState.step === SELECTED_STEP.MATERIAL}
-        action={
-          selectedState.step === SELECTED_STEP.MATERIAL ? (
-            <Link
-              label="cancel"
-              onClick={e => {
-                e.preventDefault()
-                selectNextStep()
-              }}
-            />
-          ) : (
-            <Link
-              label="change"
-              onClick={e => {
-                e.preventDefault()
-                selectStep(SELECTED_STEP.MATERIAL)
-              }}
-            />
-          )
-        }
+        id="material-step-1"
+        headline={<Headline modifiers={['xl', 'light']} label="1. Select Material" />}
       >
         <Grid>
           <Column lg={8} classNames={['u-margin-bottom']}>
@@ -280,33 +251,12 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        number="2"
-        selected={selectedFinishGroup ? selectedFinishGroup.name : null}
-        label="Finish"
-        open={selectedState.step === SELECTED_STEP.FINISH}
-        action={
-          selectedState.step === SELECTED_STEP.FINISH ? (
-            <Link
-              label="cancel"
-              onClick={e => {
-                e.preventDefault()
-                selectNextStep()
-              }}
-            />
-          ) : (
-            <Link
-              label="change"
-              onClick={e => {
-                e.preventDefault()
-                selectStep(SELECTED_STEP.FINISH)
-              }}
-            />
-          )
-        }
+        id="material-step-2"
+        headline={<Headline modifiers={['xl', 'light']} label="2. Select Finish" />}
+        fadeIn
       >
         <MaterialSlider>
-          {selectedState.step === SELECTED_STEP.FINISH &&
-            selectedMaterial &&
+          {selectedMaterial &&
             selectedMaterial.finishGroups.length > 0 &&
             sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
         </MaterialSlider>
@@ -369,31 +319,11 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        number="3"
-        selected={selectedMaterialConfig ? selectedMaterialConfig.color : null}
-        label="Color"
-        open={selectedState.step === SELECTED_STEP.COLOR}
-        action={
-          selectedState.step === SELECTED_STEP.COLOR ? (
-            <Link
-              label="cancel"
-              onClick={e => {
-                e.preventDefault()
-                selectStep('')
-              }}
-            />
-          ) : (
-            <Link
-              label="change"
-              onClick={e => {
-                e.preventDefault()
-                selectStep(SELECTED_STEP.COLOR)
-              }}
-            />
-          )
-        }
+        id="material-step-3"
+        headline={<Headline modifiers={['xl', 'light']} label="3. Select Color" />}
+        fadeIn
       >
-        {selectedState.step === SELECTED_STEP.COLOR && selectedFinishGroup && (
+        {selectedFinishGroup && (
           <ColorCardList>{selectedFinishGroup.materialConfigs.map(renderColorCard)}</ColorCardList>
         )}
       </MaterialStepSection>
@@ -406,10 +336,9 @@ const MaterialPartial = ({
 
   return (
     <>
-      <Headline label="Customize your selection" modifiers={['xl', 'light']} />
       {renderMaterialSection()}
-      {renderFinishSection()}
-      {renderColorSection()}
+      {selectedMaterial && renderFinishSection()}
+      {selectedFinishGroup && renderColorSection()}
     </>
   )
 }
@@ -454,8 +383,7 @@ export default compose(
         materialGroupId: id,
         materialId: null,
         finishGroupId: null,
-        materialConfigId: null,
-        step: SELECTED_STEP.MATERIAL
+        materialConfigId: null
       })
       setMaterialFilter('')
     },
@@ -464,44 +392,20 @@ export default compose(
         ...selectedState,
         materialId: id,
         finishGroupId: null,
-        materialConfigId: null,
-        step: SELECTED_STEP.FINISH
+        materialConfigId: null
       })
     },
     selectFinishGroup: ({onChange, selectedState}) => id => {
       onChange({
         ...selectedState,
         finishGroupId: id,
-        materialConfigId: null,
-        step: SELECTED_STEP.COLOR
+        materialConfigId: null
       })
     },
     selectMaterialConfig: ({onChange, selectedState}) => id => {
       onChange({
         ...selectedState,
-        materialConfigId: id,
-        step: null
-      })
-    },
-    selectStep: ({onChange, selectedState}) => step => {
-      onChange({
-        ...selectedState,
-        step
-      })
-    },
-    selectNextStep: ({onChange, selectedState}) => () => {
-      let step = null
-      if (!selectedState.materialId) {
-        step = SELECTED_STEP.MATERIAL
-      } else if (!selectedState.finishGroupId) {
-        step = SELECTED_STEP.FINISH
-      } else if (!selectedState.materialConfigId) {
-        step = SELECTED_STEP.COLOR
-      }
-
-      onChange({
-        ...selectedState,
-        step
+        materialConfigId: id
       })
     }
   }),

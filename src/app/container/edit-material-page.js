@@ -16,7 +16,7 @@ import {formatDimensions} from '../lib/formatter'
 import {selectModelsOfModelConfigs, selectCommonMaterialPathOfModelConfigs} from '../lib/selector'
 import {guard} from './util/guard'
 
-import MaterialPartial, {SELECTED_STEP} from './material-partial'
+import MaterialPartial from './material-partial'
 import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
 
@@ -134,23 +134,11 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withState('selectedState', 'setSelectedState', ({commonMaterialPath}) => {
-    let step = null
-    if (!commonMaterialPath.materialId) {
-      step = SELECTED_STEP.MATERIAL
-    } else if (!commonMaterialPath.finishGroupId) {
-      step = SELECTED_STEP.FINISH
-    } else if (!commonMaterialPath.materialConfigId) {
-      step = SELECTED_STEP.COLOR
-    }
-
-    return {
-      step,
-      materialGroupId: commonMaterialPath.materialGroupId,
-      materialId: commonMaterialPath.materialId,
-      finishGroupId: commonMaterialPath.finishGroupId,
-      materialConfigId: commonMaterialPath.materialConfigId
-    }
-  }),
+  withState('selectedState', 'setSelectedState', ({commonMaterialPath}) => ({
+    materialGroupId: commonMaterialPath.materialGroupId,
+    materialId: commonMaterialPath.materialId,
+    finishGroupId: commonMaterialPath.finishGroupId,
+    materialConfigId: commonMaterialPath.materialConfigId
+  })),
   guard(props => props.modelsWithConfig.length > 0)
 )(EditMaterialPage)
