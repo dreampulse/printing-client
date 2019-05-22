@@ -24,7 +24,7 @@ import {
   selectModelsOfModelConfigs
 } from '../lib/selector'
 
-import MaterialPartial, {SELECTED_STEP} from './material-partial'
+import MaterialPartial from './material-partial'
 import OfferPartial from './offer-partial'
 import LocationInfoPartial from './location-info-partial'
 
@@ -142,6 +142,7 @@ const MaterialPage = ({
         </Section>
         <MaterialPartial
           configIds={selectedModelConfigIds}
+          scrollContainerId={SCROLL_CONTAINER_ID}
           selectedState={selectedState}
           onChange={setSelectedState}
         />
@@ -196,7 +197,6 @@ export default compose(
     }
   }),
   withState('selectedState', 'setSelectedState', {
-    step: SELECTED_STEP.MATERIAL,
     materialGroupId: null,
     materialId: null,
     finishGroupId: null,

@@ -22,8 +22,6 @@ import {
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
 
-import {SELECTED_STEP} from './material-partial'
-
 import DescriptionList from '../component/description-list'
 import ProviderImage from '../component/provider-image'
 import Button from '../component/button'
@@ -106,8 +104,12 @@ const OfferPartial = ({
               key={i}
               actions={
                 <>
-                  {firstOffer && offers.length > 1 && !showMore && (
-                    <Button text label="See all offers" onClick={() => setShowMore(true)} />
+                  {firstOffer && offers.length > 1 && (
+                    <Button
+                      text
+                      label={showMore ? 'Hide offers' : 'See all offers'}
+                      onClick={() => setShowMore(!showMore)}
+                    />
                   )}
                   <Button
                     minor={!firstOffer}
@@ -121,8 +123,7 @@ const OfferPartial = ({
                             materialGroupId: selectedState.materialGroupId,
                             materialId: null,
                             finishGroupId: null,
-                            materialConfigId: null,
-                            step: SELECTED_STEP.MATERIAL
+                            materialConfigId: null
                           })
 
                           updateSelectedModelConfigs(

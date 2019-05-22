@@ -1,25 +1,15 @@
 .ColorCard {
-  $card-width: $material-card-width;
-
+  position: relative;
   border-radius: $border-radius;
   box-shadow: $box-shadow-base;
   padding: $space-base;
-  width: $card-width;
+  width: $material-card-width;
 
-  &__firstRow,
-  &__secondRow {
+  &__content {
     display: flex;
     flex-direction: row;
     align-items: center;
-  }
-
-  &__firstRow {
-    border-bottom: solid 1px $color-border-minor;
     padding-bottom: $space-base;
-  }
-
-  &__secondRow {
-    padding-top: $space-base;
   }
 
   &__colorTrait {
@@ -33,7 +23,45 @@
     font-weight: $font-weight-bold;
   }
 
-  &__price {
+  &__footer {
+    display: flex;
+    flex-direction: row;
     flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid $color-border-minor;
+    padding-top: $space-base;
+    height: 1px + $space-base + $tiny-field-height;
+
+    & > .Button {
+      width: 50%;
+    }
+  }
+
+  &__unavailableText {
+    font-size: $font-size-base;
+    font-weight: $font-weight-bold;
+  }
+
+  &--unavailable {
+    color: $color-minor;
+    box-shadow: 0 0 0 1px rgba($color-border-minor, 0.5);
+
+    .ColorCard__colorTrait {
+      opacity: 0.2;
+    }
+  }
+
+  &--selected:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border: 1px solid $color-primary;
+    border-radius: $border-radius;
   }
 }

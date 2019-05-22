@@ -2,20 +2,9 @@ import uniqueId from 'lodash/uniqueId'
 import range from 'lodash/range'
 import {Action, BackendModel, ConfigId, FileId} from '../type'
 
-export type UploadFileAction = Action<
-  'MODEL.UPLOAD_FILE',
-  {
-    fileId: FileId
-    configId: ConfigId
-    file: File
-    unit: string
-    fileIndex: number
-    refresh: boolean
-  }
->
 export type UploadFilesAction = Action<
   'MODEL.UPLOAD_FILES',
-  {files: File[]; unit: string; refresh: boolean}
+  {files: Array<{file: File; fileId: FileId; configId: ConfigId}>; unit: string; refresh: boolean}
 >
 export type UploadProgressAction = Action<
   'MODEL.UPLOAD_PROGRESS',
@@ -26,7 +15,6 @@ export type UploadCompleteAction = Action<
   {
     fileId: string
     models: BackendModel[]
-    fileIndex: number
     additionalConfigIds: ConfigId[]
   }
 >
@@ -46,7 +34,6 @@ export type DuplicateModelConfigAction = Action<
 >
 
 export type ModelAction =
-  | UploadFileAction
   | UploadFilesAction
   | UploadProgressAction
   | UploadCompleteAction
@@ -56,23 +43,6 @@ export type ModelAction =
   | UpdateQuantitiesAction
   | DuplicateModelConfigAction
 
-export const uploadFile = (
-  file: File,
-  unit: string,
-  fileIndex: number,
-  refresh: boolean
-): UploadFileAction => ({
-  type: 'MODEL.UPLOAD_FILE',
-  payload: {
-    file,
-    fileId: uniqueId('file-id-'),
-    configId: uniqueId('config-id-'),
-    unit,
-    fileIndex,
-    refresh
-  }
-})
-
 export const uploadFiles = (
   files: FileList,
   unit: string,
@@ -80,7 +50,11 @@ export const uploadFiles = (
 ): UploadFilesAction => ({
   type: 'MODEL.UPLOAD_FILES',
   payload: {
-    files: Array.from(files),
+    files: Array.from(files).map(file => ({
+      file,
+      fileId: uniqueId('file-id-'),
+      configId: uniqueId('config-id-')
+    })),
     unit,
     refresh
   }
@@ -91,16 +65,11 @@ export const uploadProgress = (fileId: FileId, progress: number): UploadProgress
   payload: {progress, fileId}
 })
 
-export const uploadComplete = (
-  fileId: FileId,
-  models: BackendModel[],
-  fileIndex: number
-): UploadCompleteAction => ({
+export const uploadComplete = (fileId: FileId, models: BackendModel[]): UploadCompleteAction => ({
   type: 'MODEL.UPLOAD_COMPLETE',
   payload: {
     fileId,
     models,
-    fileIndex,
     additionalConfigIds: range(models.length - 1).map(() => uniqueId('config-id-'))
   }
 })

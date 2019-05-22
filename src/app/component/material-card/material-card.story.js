@@ -40,6 +40,19 @@ storiesOf('MaterialCard', module)
       onSelectClick={action('onSelectClick')}
     />
   ))
+  .add('selected', () => (
+    <MaterialCard
+      selected
+      title="Polyamide"
+      descriptionHeadline="Best used for:"
+      description="Best all-round material"
+      price={price}
+      info={info}
+      image="http://placehold.it/260x170/cccccc"
+      onMoreClick={action('onMoreClick')}
+      onSelectClick={action('onSelectClick')}
+    />
+  ))
   .add('loading', () => (
     <MaterialCard
       loading
