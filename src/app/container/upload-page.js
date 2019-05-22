@@ -277,7 +277,7 @@ const mapStateToProps = state => ({
   uploadedModelsWithConfig: unzip([
     state.core.modelConfigs,
     selector.selectModelsOfModelConfigs(state)
-  ]).filter(([modelConfig]) => modelConfig.type === 'UPLOADED' || modelConfig.quoteId === null),
+  ]).filter(([modelConfig]) => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null),
   cart: state.core.cart,
   featureFlags: state.core.featureFlags,
   useSameMaterial: state.core.useSameMaterial,
@@ -367,7 +367,8 @@ const enhance = compose(
       // If user uploads exactly one model directly go to the material page.
       if (
         prevProps.uploadedModelsWithConfig.length === 0 &&
-        this.props.uploadedModelsWithConfig.length === 1
+        this.props.uploadedModelsWithConfig.length === 1 &&
+        this.props.modelsWithConfig.length === 1
       ) {
         this.props.goToMaterial(this.props.selectedModelConfigIds)
       }
