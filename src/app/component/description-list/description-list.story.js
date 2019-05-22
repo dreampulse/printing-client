@@ -13,6 +13,12 @@ storiesOf('DescriptionList', module)
       <dd>
         <strong>Black hot drink</strong>
       </dd>
+      <dt>
+        <em>Milk:</em>
+      </dt>
+      <dd>
+        <em>White cold drink</em>
+      </dd>
       <dt>Milk:</dt>
       <dd>White cold drink</dd>
       <dt>Milk:</dt>
@@ -28,6 +34,12 @@ storiesOf('DescriptionList', module)
       </dt>
       <dd>
         <strong>Black hot drink</strong>
+      </dd>
+      <dt>
+        <em>Milk:</em>
+      </dt>
+      <dd>
+        <em>White cold drink</em>
       </dd>
       <dt>Milk:</dt>
       <dd>White cold drink</dd>

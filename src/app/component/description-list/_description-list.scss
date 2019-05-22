@@ -13,6 +13,11 @@
       font-weight: $font-weight-regular;
       color: $color-text;
     }
+
+    & > em {
+      color: $color-text;
+      font-style: normal;
+    }
   }
 
   & > dd {
@@ -24,6 +29,11 @@
       color: $color-text;
       font-size: $font-size-l;
       line-height: $line-height-s;
+    }
+
+    & > em {
+      color: $color-text;
+      font-style: normal;
     }
 
     // There is a grid bug when provider image is a block element

@@ -8,8 +8,8 @@ import withState from 'recompose/withState'
 import withPropsOnChange from 'recompose/withPropsOnChange'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
-import compact from 'lodash/compact'
 import debounce from 'lodash/debounce'
+import keyBy from 'lodash/keyBy'
 
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
@@ -18,9 +18,15 @@ import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
 import config from '../../../config'
+import {getProviderName} from '../lib/material'
 import {getBestMultiModelOffers} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
-import {formatPrice, formatPriceDifference} from '../lib/formatter'
+import {
+  formatPrice,
+  formatPriceDifference,
+  formatTimeRange,
+  formatDeliveryTime
+} from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {partitionBy} from '../lib/util'
 import {
@@ -45,19 +51,33 @@ import RadioButton from '../component/radio-button'
 import RadioButtonGroup from '../component/radio-button-group'
 import MaterialSlider from '../component/material-slider'
 import Paragraph from '../component/paragraph'
+import Icon from '../component/icon'
 import Button from '../component/button'
+import DescriptionList from '../component/description-list'
 import LoadingCheckmark from '../component/loading-checkmark'
 import ColorCard from '../component/color-card'
 import ColorTrait from '../component/color-trait'
 import ColorCardList from '../component/color-card-list'
 import MaterialStepSection from '../component/material-step-section'
+import RecommendedOfferSection from '../component/recommended-offer-section/recommended-offer-section'
+import OfferCard from '../component/offer-card'
+import ProviderImage from '../component/provider-image'
+
+import fastestIcon from '../../asset/icon/fastest.svg'
+import cheapestIcon from '../../asset/icon/cheapest.svg'
 
 const MaterialPartial = ({
   // Own props
+  isEditMode,
   selectedState,
+  scrollContainerId,
+  configIds,
+  onChange,
   // HOC props
+  modelConfigs,
   materialGroups,
   materials,
+  finishGroups,
   materialConfigs,
   filteredMaterials,
   selectedMaterialGroup,
@@ -76,7 +96,11 @@ const MaterialPartial = ({
   selectedModelConfigs,
   shippings,
   usedShippingIds,
-  pollingProgress
+  pollingProgress,
+  addToCart,
+  goToCart,
+  uploadedModelConfigs,
+  updateSelectedModelConfigs
 }) => {
   const isPollingDone =
     pollingProgress.total > 0 && pollingProgress.complete === pollingProgress.total
@@ -87,6 +111,10 @@ const MaterialPartial = ({
     shippings.some(shipping => shipping.vendorId === quote.vendorId)
   )
   const multiModelQuotes = getMultiModelQuotes(selectedModelConfigs, validQuotes)
+
+  const hasItemsOnUploadPage = uploadedModelConfigs.some(
+    modelConfig => !configIds.find(id => id === modelConfig.id) && !modelConfig.quoteId
+  )
 
   const renderPrice = (offer, compareOffer) => {
     let price
@@ -323,6 +351,150 @@ const MaterialPartial = ({
     )
   }
 
+  const renderRecommendedOffersSection = () => {
+    const usedShippingIdsById = keyBy(usedShippingIds, id => id)
+    const getDeliveryTime = ({multiModelQuote, shipping}) => {
+      const {productionTimeFast} = materialConfigs[
+        multiModelQuote.materialConfigId
+      ].printingService[multiModelQuote.vendorId]
+
+      return productionTimeFast + parseInt(shipping.deliveryTime, 10)
+    }
+
+    const renderOfferCard = ({multiModelQuote, shipping, totalGrossPrice}, isCheapest = false) => {
+      const materialConfig = materialConfigs[multiModelQuote.materialConfigId]
+      const finishGroup = finishGroups[materialConfig.finishGroupId]
+      const {productionTimeFast, productionTimeSlow} = materialConfig.printingService[
+        multiModelQuote.vendorId
+      ]
+      return (
+        <OfferCard
+          icon={<Icon source={isCheapest ? cheapestIcon : fastestIcon} />}
+          label={isCheapest ? 'Best Price' : 'Fastest'}
+          mainValue={
+            isCheapest
+              ? formatPrice(totalGrossPrice, multiModelQuote.currency)
+              : formatTimeRange(
+                  productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                  productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                )
+          }
+          subline={`${finishGroup.materialName}, ${finishGroup.name} (${materialConfig.color})`}
+          action={
+            <Button
+              major
+              tiny
+              label={isEditMode ? 'Select offer' : 'Add to cart'}
+              onClick={() =>
+                addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
+                  // If there are still models to configure stay on material page
+                  if (!isEditMode && hasItemsOnUploadPage) {
+                    // Since we stay on the same page, we have to reset the state.
+                    onChange({
+                      materialGroupId: selectedState.materialGroupId,
+                      materialId: null,
+                      finishGroupId: null,
+                      materialConfigId: null
+                    })
+
+                    updateSelectedModelConfigs(
+                      modelConfigs
+                        .filter(
+                          modelConfig =>
+                            modelConfig.type === 'UPLOADED' &&
+                            modelConfig.quoteId === null &&
+                            !configIds.includes(modelConfig.id)
+                        )
+                        .map(modelConfig => modelConfig.id)
+                    )
+
+                    global.document.querySelector(`#${scrollContainerId}`).scrollTo(0, 0)
+                  } else {
+                    goToCart({
+                      selectModelConfigIds: configIds
+                    })
+                  }
+                })
+              }
+            />
+          }
+          footerContent={
+            <DescriptionList>
+              <dt>Process:</dt>
+              <dd>{finishGroup.properties.printingMethodShort}</dd>
+              <dt>Fulfilled by:</dt>
+              <dd>
+                <ProviderImage
+                  xs
+                  name={getProviderName(multiModelQuote.vendorId)}
+                  slug={multiModelQuote.vendorId}
+                />
+              </dd>
+            </DescriptionList>
+          }
+        >
+          <DescriptionList>
+            <dt>
+              <em>Price total:</em>
+            </dt>
+            <dd>
+              <em>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</em>
+            </dd>
+            <dt>Production:</dt>
+            <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
+            <dt>Shipping:</dt>
+            <dd>
+              {usedShippingIdsById[shipping.shippingId]
+                ? formatPrice(0, shipping.currency)
+                : formatPrice(shipping.grossPrice, shipping.currency)}
+            </dd>
+          </DescriptionList>
+          <DescriptionList>
+            <dt>
+              <em>Est. delivery time:</em>
+            </dt>
+            <dd>
+              <em>
+                {formatTimeRange(
+                  productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                  productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                )}
+              </em>
+            </dd>
+            <dt>Production:</dt>
+            <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
+            <dt>Shipping:</dt>
+            <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
+          </DescriptionList>
+        </OfferCard>
+      )
+    }
+
+    const offers = selectedState.materialId
+      ? getBestMultiModelOffers(multiModelQuotes, usedShippingIds, shippings, materialConfigs, {
+          materialConfigId: selectedState.materialConfigId,
+          finishGroupId: selectedState.finishGroupId,
+          materialId: selectedState.materialId
+        })
+      : []
+    const cheapestOffer = offers[0]
+    const fastestOffer = [...offers].sort(
+      (offer1, offer2) => getDeliveryTime(offer1) - getDeliveryTime(offer2)
+    )[0]
+
+    return (
+      <MaterialStepSection
+        headline={<Headline modifiers={['xl', 'light']} label="4. Our recommended Offers" />}
+        fadeIn
+      >
+        <RecommendedOfferSection>
+          {renderOfferCard(cheapestOffer, true)}
+          {renderOfferCard(fastestOffer)}
+        </RecommendedOfferSection>
+      </MaterialStepSection>
+    )
+  }
+
   if (selectedModelConfigs.length === 0) {
     return <Headline label="Select a file to start customizing" modifiers={['xl', 'light']} />
   }
@@ -332,7 +504,7 @@ const MaterialPartial = ({
       {renderMaterialSection()}
       <div id="material-step-2">{selectedMaterial && renderFinishSection()}</div>
       <div id="material-step-3">{selectedFinishGroup && renderColorSection()}</div>
-      <div id="material-step-4" />
+      <div id="material-step-4">{selectedMaterialConfig && renderRecommendedOffersSection()}</div>
     </>
   )
 }

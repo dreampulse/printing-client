@@ -94,6 +94,7 @@ const EditMaterialPage = ({
             configIds={configIds}
             scrollContainerId={SCROLL_CONTAINER_ID}
             selectedState={selectedState}
+            onChange={setSelectedState}
           />
         }
       >
@@ -101,7 +102,9 @@ const EditMaterialPage = ({
           <LocationInfoPartial />
         </Section>
         <MaterialPartial
+          isEditMode
           configIds={configIds}
+          scrollContainerId={SCROLL_CONTAINER_ID}
           selectedState={selectedState}
           onChange={setSelectedState}
         />
