@@ -1,24 +1,27 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 
-import PageLayout from '.'
+import AppLayout from '.'
+import NavBar from '../nav-bar'
+import NavLink from '../nav-link'
+import CartNavLink from '../cart-nav-link'
 import Button from '../button'
-import Footer from '../footer'
-import Link from '../link'
-import StickyFooter from '../sticky-footer'
+import Logo from '../logo'
 
-const footer = () => (
-  <Footer copyline="© 2019 All3DP">
-    <Link label="Terms and conditions" href="#" />
-    <Link label="Imprint" href="#" />
-  </Footer>
-)
+import uploadIcon from '../../../asset/icon/upload.svg'
 
-const stickyFooter = () => (
-  <StickyFooter>
-    <Button text label="Deselct all files" />
-    <Button label="Customize" />
-  </StickyFooter>
+const navBar = () => (
+  <NavBar
+    key="navbar"
+    leftContent={<Logo />}
+    rightContent={
+      <>
+        <NavLink label="Upload" icon={uploadIcon} />
+        <CartNavLink label="Your Cart" count={6} />
+        <Button minor compact label="Need help?" />
+      </>
+    }
+  />
 )
 
 const lorem = `
@@ -191,16 +194,6 @@ const lorem = `
   deserunt mollit anim id est laborum.
 `
 
-storiesOf('PageLayout', module)
-  .add('default', () => <PageLayout footer={footer()}>{lorem}</PageLayout>)
-  .add('empty', () => <PageLayout footer={footer()} />)
-  .add('stickyFooter', () => (
-    <PageLayout footer={footer()} stickyFooter={stickyFooter()}>
-      {lorem}
-    </PageLayout>
-  ))
-  .add('minorBackground', () => (
-    <PageLayout minorBackground footer={footer()} stickyFooter={stickyFooter()}>
-      {lorem}
-    </PageLayout>
-  ))
+storiesOf('AppLayout', module).add('default', () => (
+  <AppLayout header={navBar()}>{lorem}</AppLayout>
+))

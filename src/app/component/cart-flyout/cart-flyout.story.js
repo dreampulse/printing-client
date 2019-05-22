@@ -7,7 +7,7 @@ import CartModelItem from '../cart-model-item'
 
 storiesOf('CartFlyout', module)
   .add('default', () => (
-    <CartFlyout title="2 Files in yout cart">
+    <CartFlyout title="2 files in your cart">
       {range(4).map(index => (
         <CartModelItem
           id={`some-id-${index}`}
@@ -21,7 +21,7 @@ storiesOf('CartFlyout', module)
     </CartFlyout>
   ))
   .add('with overflow', () => (
-    <CartFlyout title="2 Files in yout cart">
+    <CartFlyout title="2 files in your cart">
       {range(6).map(index => (
         <CartModelItem
           id={`some-id-${index}`}

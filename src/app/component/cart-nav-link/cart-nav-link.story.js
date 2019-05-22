@@ -17,7 +17,7 @@ storiesOf('CartNavLink', module)
         label="Your Cart"
         count={6}
         cartFlyout={
-          <CartFlyout title="2 Files in yout cart">
+          <CartFlyout title="2 files in your cart">
             {range(6).map(index => (
               <CartModelItem
                 id={`some-id-${index}`}
@@ -36,29 +36,32 @@ storiesOf('CartNavLink', module)
   .add(
     'increase count',
     withState({count: 1}, store => (
-      <div style={{paddingLeft: '30%'}}>
-        <CartNavLink
-          onClick={action('onClick')}
-          label="Your Cart"
-          count={store.state.count}
-          cartFlyout={
-            <CartFlyout title="2 Files in yout cart">
-              {range(4).map(index => (
-                <CartModelItem
-                  id={`some-id-${index}`}
-                  key={index}
-                  s
-                  imageSource="http://placehold.it/180x180"
-                  title="model_item_title_can_be_long_and_gets_truncated.stl"
-                  info="42 x 42 x 42 mm"
-                />
-              ))}
-            </CartFlyout>
-          }
-        />
-        <Button label="+" onClick={() => store.set({count: store.state.count + 1})} />
-        <Button label="-" onClick={() => store.set({count: store.state.count - 1})} />
-      </div>
+      <>
+        <div style={{paddingBottom: '20px'}}>
+          <CartNavLink
+            onClick={action('onClick')}
+            label="Your Cart"
+            count={store.state.count}
+            cartFlyout={
+              <CartFlyout title="2 files in your cart">
+                {range(4).map(index => (
+                  <CartModelItem
+                    id={`some-id-${index}`}
+                    key={index}
+                    s
+                    imageSource="http://placehold.it/180x180"
+                    title="model_item_title_can_be_long_and_gets_truncated.stl"
+                    info="42 x 42 x 42 mm"
+                  />
+                ))}
+              </CartFlyout>
+            }
+          />
+        </div>
+        <Button label="+" tiny onClick={() => store.set({count: store.state.count + 1})} />
+        &nbsp;
+        <Button label="-" tiny onClick={() => store.set({count: store.state.count - 1})} />
+      </>
     ))
   )
   .add('count > 9', () => <CartNavLink onClick={action('onClick')} label="Your Cart" count={10} />)

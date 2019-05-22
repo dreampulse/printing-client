@@ -50,7 +50,6 @@ import * as orderAction from '../action/order'
 import * as coreAction from '../action/core'
 
 import ModelListPartial from './model-list-partial'
-import NavBarPartial from './nav-bar-partial'
 
 import creditCardIcon from '../../asset/icon/credit-card.svg'
 import deleteIcon from '../../asset/icon/delete.svg'
@@ -424,7 +423,7 @@ const CartPage = ({
   const hasItemsOnUploadPage = modelConfigs.length > modelsWithConfig.length
 
   return (
-    <PageLayout header={<NavBarPartial />}>
+    <PageLayout>
       <Container full>
         <Section>
           <Link

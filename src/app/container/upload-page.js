@@ -26,7 +26,6 @@ import * as modalAction from '../action/modal'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import LocationInfoPartial from './location-info-partial'
 import FooterPartial from './footer-partial'
-import NavBarPartial from './nav-bar-partial'
 
 import Section from '../component/section'
 import Headline from '../component/headline'
@@ -182,25 +181,25 @@ const UploadPage = ({
   return (
     <PageLayout
       footer={<FooterPartial />}
-      header={<NavBarPartial />}
-      showStickyFooter={hasModels}
       minorBackground={hasModels}
       stickyFooter={
-        <StickyFooter>
-          {featureFlags.share && (
+        hasModels && (
+          <StickyFooter>
+            {featureFlags.share && (
+              <Button
+                text
+                disabled={selectedModelConfigIds.length === 0}
+                label="Share configuration"
+                onClick={() => createConfiguration(selectedModelConfigIds)}
+              />
+            )}
             <Button
-              text
-              disabled={selectedModelConfigIds.length === 0}
-              label="Share configuration"
-              onClick={() => createConfiguration(selectedModelConfigIds)}
+              disabled={!selectedModelConfigIds.length > 0}
+              label={`Select Material (${selectedModelConfigIds.length}/${numModels} files)`}
+              onClick={() => goToMaterial(selectedModelConfigIds)}
             />
-          )}
-          <Button
-            disabled={!selectedModelConfigIds.length > 0}
-            label={`Select Material (${selectedModelConfigIds.length}/${numModels} files)`}
-            onClick={() => goToMaterial(selectedModelConfigIds)}
-          />
-        </StickyFooter>
+          </StickyFooter>
+        )
       }
     >
       <Container full={Boolean(cart)}>

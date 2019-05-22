@@ -90,24 +90,24 @@ class CartNavLink extends React.Component {
             onEnter={transitionStarted}
             onExited={transitionEnded}
           >
-            <div className="CartNavLink__portal">
-              {cartFlyout &&
-                React.cloneElement(cartFlyout, {
-                  onMouseEnter: this.onEnter,
-                  onMouseLeave: this.onLeave
-                })}
+            <div
+              className="CartNavLink__portal"
+              onMouseEnter={this.onEnter}
+              onMouseLeave={this.onLeave}
+            >
+              {cartFlyout}
             </div>
           </CSSTransition>
         )}
-        isOpen={open > 0}
+        isOpen={cartFlyout && open > 0}
       >
         <a
           href={href}
           disabled={disabled}
           className={cn('CartNavLink', {zero: !count}, classNames)}
           onClick={handleClick}
-          onMouseEnter={count > 0 ? this.onEnter : noop}
-          onMouseLeave={count > 0 ? this.onLeave : noop}
+          onMouseEnter={cartFlyout ? this.onEnter : noop}
+          onMouseLeave={cartFlyout ? this.onLeave : noop}
         >
           <div className="CartNavLink__icon">
             <TransitionGroup>
