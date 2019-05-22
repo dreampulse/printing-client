@@ -1,36 +1,33 @@
 .model-list {
   position: relative;
   margin-bottom: $space-base;
-  border-top: 1px solid $color-border;
 
   &__header {
     position: sticky;
-    top: 0;
+    top: $nav-bar-height;
     // To let header disappear before last model item
     margin-bottom: $model-item-height;
     display: flex;
     flex-direction: row;
-    padding: $space-l 0;
-    padding-right: $space-xl;
+    padding: $space-base 0;
     z-index: 1;
     background: $color-bg;
     border-bottom: 1px solid $color-border-minor;
 
     & + .model-list__items {
       // To pull items back to top (due to position sticky)
-      margin-top: -1 * $model-item-height;
+      margin-top: -1 * $model-item-height + $space-base;
     }
   }
 
-  &__header-checkbox {
+  &__select {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    width: $model-item-space-left;
+    flex-grow: 1;
   }
 
-  &__primary-actions,
-  &__secondary-actions {
+  &__actions {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -43,29 +40,13 @@
     }
   }
 
-  &__primary-actions {
-    flex-grow: 1;
-  }
-
   &__items {
     margin: 0;
     padding: 0;
     list-style: none;
-  }
 
-  &__item {
-    position: relative;
-    border-bottom: 1px solid $color-border-minor;
-  }
-
-  &__checkbox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: $model-item-space-left;
+    & > * + * {
+      margin-top: $space-base;
+    }
   }
 }

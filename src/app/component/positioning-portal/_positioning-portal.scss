@@ -1,0 +1,9 @@
+.PositioningPortal {
+  position: absolute;
+  z-index: z($global-stacking, positioning-portal);
+  visibility: hidden;
+
+  &--isPositioned {
+    visibility: visible;
+  }
+}

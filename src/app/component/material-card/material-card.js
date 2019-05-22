@@ -20,10 +20,12 @@ const MaterialCard = ({
   image,
   onMoreClick = noop,
   onSelectClick = noop,
+  onUnavailableClick = noop,
   descriptionHeadline,
   selectLabel = 'Select',
   learnMoreLabel = 'Learn more',
-  unavailableLabel = 'Not printable'
+  unavailableLabel = 'Not printable',
+  contactUsLabel = 'Contact us'
 }) => {
   const imageStyle = {
     backgroundImage: `url(${image})`
@@ -60,7 +62,14 @@ const MaterialCard = ({
         )}
         {unavailable ? (
           <footer className="MaterialCard__footer">
-            <div className="MaterialCard__unavailableText">{unavailableLabel}</div>
+            <span className="MaterialCard__unavailableText">{unavailableLabel}</span>
+            <Button
+              minor
+              tiny
+              label={contactUsLabel}
+              disabled={loading}
+              onClick={onUnavailableClick}
+            />
           </footer>
         ) : (
           <footer className="MaterialCard__footer">
@@ -86,10 +95,10 @@ MaterialCard.propTypes = {
   onSelectClick: PropTypes.func,
   image: PropTypes.string,
   onUnavailableClick: PropTypes.func,
-  learnMoreLabel: PropTypes.bool,
-  unavailableLabel: PropTypes.bool,
-  contactUsLabel: PropTypes.bool,
-  selected: PropTypes.bool
+  learnMoreLabel: PropTypes.string,
+  unavailableLabel: PropTypes.string,
+  contactUsLabel: PropTypes.string,
+  selectLabel: PropTypes.string
 }
 
 export default MaterialCard

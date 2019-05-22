@@ -2,6 +2,7 @@
   "parser": "babel-eslint",
   "extends": [
     "airbnb",
+    "eslint:recommended",
     "prettier"
   ],
   "plugins": [

@@ -11,14 +11,12 @@ import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
-import cartIcon from '../../asset/icon/cart.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
-import {formatDimensions, formatPrice} from '../lib/formatter'
+import {formatDimensions} from '../lib/formatter'
 import * as printingEngine from '../lib/printing-engine'
 import * as selector from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
-import {openIntercom} from '../service/intercom'
 
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
@@ -28,7 +26,6 @@ import * as modalAction from '../action/modal'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import LocationInfoPartial from './location-info-partial'
 import FooterPartial from './footer-partial'
-import NavBarPartial from './nav-bar-partial'
 
 import Section from '../component/section'
 import Headline from '../component/headline'
@@ -47,6 +44,8 @@ import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 import ModelUploadList from '../component/model-upload-list'
 import StickyFooter from '../component/sticky-footer'
+import Link from '../component/link'
+import Paragraph from '../component/paragraph'
 
 const UploadPage = ({
   openPickUnitModal,
@@ -54,11 +53,9 @@ const UploadPage = ({
   updateQuantities,
   duplicateModelConfig,
   modelsWithConfig,
-  goToCart,
   goToMaterial,
   openModelViewer,
   cart,
-  cartCount,
   location,
   featureFlags,
   selectedModelConfigIds,
@@ -74,11 +71,15 @@ const UploadPage = ({
       <Grid>
         <Column md={0} lg={4} />
         <Column md={12} lg={4}>
-          <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
+          <RichText classNames={['u-margin-bottom-xl', 'u-align-center']}>
             Large quantities, recurring orders or special requirements?
           </RichText>
           <div className="u-align-center ">
-            <Button minor label="Contact Us" onClick={() => openIntercom()} />
+            <Button
+              minor
+              label="Contact Us"
+              onClick={() => global.window.open('https://craftcloud.all3dp.com/contact', '_blank')}
+            />
           </div>
         </Column>
         <Column md={0} lg={4} />
@@ -86,171 +87,123 @@ const UploadPage = ({
     </Section>
   )
 
-  const cartNotification = () => (
-    <Notification
-      message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
-      button={<Button label="Cart" icon={cartIcon} onClick={() => goToCart()} />}
-    >
-      Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
-      <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>
-    </Notification>
-  )
-
-  const locationNotification = ({message, warning}) => (
-    <Notification message={message} warning={warning} />
-  )
-
   const notificationSection = () => (
     <Section>
-      {cart && cartNotification()}
-      {location.state &&
-        location.state.notification &&
-        locationNotification(location.state.notification)}
+      {location.state && location.state.notification && (
+        <Notification
+          message={location.state.notification.message}
+          warning={location.state.notification.warning}
+        />
+      )}
     </Section>
   )
 
-  const modelList = () =>
-    numModels === 0 ? (
-      <UploadArea
-        l
-        label="Drag any 3D files here or"
-        linkLabel="select files"
-        description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
-        accept="*"
-        onChange={openPickUnitModal}
-      />
-    ) : (
-      <ModelUploadList
-        uploadArea={
-          <UploadArea
-            s
-            label="Drag additional 3D files here or"
-            linkLabel="select files"
-            description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
-            accept="*"
-            onChange={openPickUnitModal}
-          />
+  const modelList = () => (
+    <ModelUploadList>
+      {modelsWithConfig.map(([modelConfig, model]) => {
+        if (modelConfig.type === 'UPLOADING') {
+          if (model.error) {
+            return (
+              <UploadModelItemError
+                key={modelConfig.id}
+                title="Upload failed"
+                subline={model.errorMessage}
+                buttonsRight={
+                  <ButtonBar>
+                    <Button
+                      icon={deleteIcon}
+                      iconOnly
+                      onClick={() => deleteModelConfigs([modelConfig.id])}
+                    />
+                  </ButtonBar>
+                }
+              />
+            )
+          }
+          return (
+            <UploadModelItemLoad
+              key={modelConfig.id}
+              status={model.progress}
+              title="Uploading"
+              subline={model.fileName}
+              buttonsRight={
+                <ButtonBar>
+                  <Button
+                    icon={deleteIcon}
+                    iconOnly
+                    onClick={() => deleteModelConfigs([modelConfig.id])}
+                  />
+                </ButtonBar>
+              }
+            />
+          )
         }
-      >
-        {modelsWithConfig.map(([modelConfig, model]) => {
-          if (modelConfig.type === 'UPLOADING') {
-            if (model.error) {
-              return (
-                <UploadModelItemError
-                  key={modelConfig.id}
-                  title="Upload failed"
-                  subline={model.errorMessage}
-                  buttonsRight={
-                    <ButtonBar>
-                      <Button
-                        icon={deleteIcon}
-                        iconOnly
-                        onClick={() => deleteModelConfigs([modelConfig.id])}
-                      />
-                    </ButtonBar>
-                  }
-                />
-              )
-            }
-            return (
-              <UploadModelItemLoad
-                key={modelConfig.id}
-                status={model.progress}
-                title="Uploading"
-                subline={model.fileName}
-                buttonsRight={
-                  <ButtonBar>
-                    <Button
-                      icon={deleteIcon}
-                      iconOnly
-                      onClick={() => deleteModelConfigs([modelConfig.id])}
-                    />
-                  </ButtonBar>
-                }
-              />
-            )
-          }
-          if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
-            return (
-              <UploadModelItem
-                key={modelConfig.id}
-                imageSource={model.thumbnailUrl}
-                title={model.fileName}
-                subline={formatDimensions(model.dimensions, model.fileUnit)}
-                buttonsRight={
-                  <ButtonBar>
-                    <Button
-                      icon={zoomInIcon}
-                      iconOnly
-                      onClick={() => openModelViewer(modelConfig)}
-                    />
-                    <Button
-                      icon={copyIcon}
-                      iconOnly
-                      onClick={() => duplicateModelConfig(modelConfig.id)}
-                    />
-                    <Button
-                      icon={deleteIcon}
-                      iconOnly
-                      onClick={() => deleteModelConfigs([modelConfig.id])}
-                    />
-                  </ButtonBar>
-                }
-                selected={selectedModelConfigIds.includes(modelConfig.id)}
-                onSelect={() => toggleId(modelConfig.id)}
-                buttonsLeft={
-                  modelConfig.quantity && (
-                    <NumberField
-                      value={modelConfig.quantity}
-                      onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-                    />
-                  )
-                }
-              />
-            )
-          }
-          return null
-        })}
-      </ModelUploadList>
-    )
+        if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
+          return (
+            <UploadModelItem
+              key={modelConfig.id}
+              imageSource={model.thumbnailUrl}
+              title={model.fileName}
+              subline={formatDimensions(model.dimensions, model.fileUnit)}
+              buttonsRight={
+                <ButtonBar>
+                  <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
+                  <Button
+                    icon={copyIcon}
+                    iconOnly
+                    onClick={() => duplicateModelConfig(modelConfig.id)}
+                  />
+                  <Button
+                    icon={deleteIcon}
+                    iconOnly
+                    onClick={() => deleteModelConfigs([modelConfig.id])}
+                  />
+                </ButtonBar>
+              }
+              selected={selectedModelConfigIds.includes(modelConfig.id)}
+              onSelect={() => toggleId(modelConfig.id)}
+              buttonsLeft={
+                modelConfig.quantity && (
+                  <NumberField
+                    value={modelConfig.quantity}
+                    onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+                  />
+                )
+              }
+            />
+          )
+        }
+        return null
+      })}
+    </ModelUploadList>
+  )
 
   return (
     <PageLayout
       footer={<FooterPartial />}
-      header={<NavBarPartial />}
-      showStickyFooter={hasModels}
       minorBackground={hasModels}
       stickyFooter={
-        <StickyFooter>
-          {featureFlags.share && (
+        hasModels && (
+          <StickyFooter>
+            {featureFlags.share && (
+              <Button
+                text
+                disabled={selectedModelConfigIds.length === 0}
+                label="Share configuration"
+                onClick={() => createConfiguration(selectedModelConfigIds)}
+              />
+            )}
             <Button
-              text
-              disabled={selectedModelConfigIds.length === 0}
-              label="Share configuration"
-              onClick={() => createConfiguration(selectedModelConfigIds)}
+              disabled={!selectedModelConfigIds.length > 0}
+              label={`Select Material (${selectedModelConfigIds.length}/${numModels} files)`}
+              onClick={() => goToMaterial(selectedModelConfigIds)}
             />
-          )}
-          {modelsWithConfig.length > 0 && (
-            <Button
-              text
-              label={
-                selectedModelConfigIds.length === modelsWithConfig.length
-                  ? 'Deselect all files'
-                  : 'Select all files'
-              }
-              onClick={() => toggleAll()}
-            />
-          )}
-          <Button
-            disabled={!selectedModelConfigIds.length > 0}
-            label={`Select Material (${selectedModelConfigIds.length}/${numModels})`}
-            onClick={() => goToMaterial(selectedModelConfigIds)}
-          />
-        </StickyFooter>
+          </StickyFooter>
+        )
       }
     >
       <Container full={Boolean(cart)}>
-        {cart ? (
+        {hasModels || cart ? (
           <LocationInfoPartial />
         ) : (
           <Section>
@@ -259,17 +212,58 @@ const UploadPage = ({
         )}
       </Container>
       <Container>
-        {(cart || (location.state && location.state.notification)) && notificationSection()}
+        {location.state && location.state.notification && notificationSection()}
         {hasModels && (
           <Headline
             classNames={['u-align-center']}
-            modifiers={['xl']}
+            modifiers={['xl', 'light']}
             label="Which files do you want to customize first?"
           />
         )}
-        <Section>{modelList()}</Section>
-        {!hasModels && promoSection()}
+        {!hasModels && (
+          <UploadArea
+            l
+            label="Drag any 3D files here or"
+            linkLabel="select files"
+            description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+            accept="*"
+            onChange={openPickUnitModal}
+          />
+        )}
       </Container>
+      {hasModels && (
+        <Container s>
+          <Section>
+            <UploadArea
+              s
+              label="Drag additional 3D files here or"
+              linkLabel="select files"
+              description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+              accept="*"
+              onChange={openPickUnitModal}
+            />
+            <Headline
+              modifiers={['light']}
+              label={`Your selection (${selectedModelConfigIds.length}/${numModels} files)`}
+            />
+            <Paragraph>
+              <Link
+                onClick={event => {
+                  event.preventDefault()
+                  toggleAll()
+                }}
+                label={
+                  modelsWithConfig.length === selectedModelConfigIds.length
+                    ? 'Deselect all files'
+                    : 'Select all files'
+                }
+              />
+            </Paragraph>
+            {modelList()}
+          </Section>
+        </Container>
+      )}
+      {!hasModels && <Container>{promoSection()}</Container>}
     </PageLayout>
   )
 }
@@ -280,8 +274,11 @@ const mapStateToProps = state => ({
     state.core.modelConfigs,
     selector.selectModelsOfModelConfigs(state)
   ]).filter(([modelConfig]) => modelConfig.type !== 'UPLOADED' || modelConfig.quoteId === null),
+  uploadedModelsWithConfig: unzip([
+    state.core.modelConfigs,
+    selector.selectModelsOfModelConfigs(state)
+  ]).filter(([modelConfig]) => modelConfig.type === 'UPLOADED' || modelConfig.quoteId === null),
   cart: state.core.cart,
-  cartCount: selector.selectCartCount(state),
   featureFlags: state.core.featureFlags,
   useSameMaterial: state.core.useSameMaterial,
   uploadedModelConfigs: selector.selectUploadedModelConfigs(state)
@@ -292,7 +289,6 @@ const mapDispatchToProps = {
   deleteModelConfigs: modelAction.deleteModelConfigs,
   updateQuantities: modelAction.updateQuantities,
   duplicateModelConfig: modelAction.duplicateModelConfig,
-  goToCart: navigationAction.goToCart,
   goToMaterial: navigationAction.goToMaterial,
   openModelViewer: modelViewerAction.open,
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
@@ -366,6 +362,15 @@ const enhance = compose(
       const selectModelConfigIds = (location.state && location.state.selectModelConfigIds) || []
       const filteredModelConfigIds = intersection(allModelConfigIds, selectModelConfigIds)
       this.props.updateSelectedModelConfigs(filteredModelConfigIds)
+    },
+    componentDidUpdate(prevProps) {
+      // If user uploads exactly one model directly go to the material page.
+      if (
+        prevProps.uploadedModelsWithConfig.length === 0 &&
+        this.props.uploadedModelsWithConfig.length === 1
+      ) {
+        this.props.goToMaterial(this.props.selectedModelConfigIds)
+      }
     }
   })
 )

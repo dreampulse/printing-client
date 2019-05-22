@@ -1,13 +1,18 @@
 .Link {
   color: $color-link;
+  font-weight: $font-weight-regular;
   text-decoration: none;
   cursor: pointer;
 
-  & > .icon {
+  & > .Icon {
     position: relative;
     margin-right: 0.5em;
     font-size: 0.8em;
     top: -0.08em; // Optimize vertical center
+  }
+
+  & > strong {
+    font-weight: $font-weight-bold;
   }
 
   &:hover,
@@ -15,7 +20,7 @@
     text-decoration: underline;
   }
 
-  &--invert {
-    color: $color-invert-text;
+  &--warning {
+    color: $color-warning;
   }
 }

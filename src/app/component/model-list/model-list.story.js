@@ -3,40 +3,68 @@ import {storiesOf} from '@storybook/react'
 import range from 'lodash/range'
 
 import ModelList from '.'
-import DeprecatedUploadModelItem from '../deprecated-upload-model-item'
-import DeprecatedUploadModelItemError from '../deprecated-upload-model-item-error'
-import DeprecatedUploadModelItemLoad from '../deprecated-upload-model-item-load'
 import Button from '../button'
+import ButtonBar from '../button-bar'
+import CartModelItem from '../cart-model-item'
 import NumberField from '../number-field'
+import ProviderImage from '../provider-image'
 
+import placeholderIcon from '../../../asset/icon/placeholder.svg'
 import deleteIcon from '../../../asset/icon/delete.svg'
 
 import HandleValue from '../../../../stories/util/handle-value'
 
-const primaryActions = () => <Button label="Choose Material…" />
-const secondaryActions = () => [
-  <NumberField key="quantity" value={42} />,
-  <Button icon={deleteIcon} key="delete" />
+const actions = () => [
+  <Button icon={deleteIcon} iconOnly key="delete" />,
+  <Button tiny minor label="Edit material" key="edit" />
 ]
+const leftButtonBar = () => (
+  <ButtonBar l>
+    <NumberField value={1} />
+  </ButtonBar>
+)
+
+const rightButtonBar = () => (
+  <ButtonBar l>
+    <Button icon={placeholderIcon} iconOnly />
+    <Button icon={placeholderIcon} iconOnly />
+    <Button icon={placeholderIcon} label="Edit material" tiny minor />
+  </ButtonBar>
+)
 
 storiesOf('Model List', module).add('default', () => (
   <HandleValue initialValue={[]} valueName="checkedIds" onChangeName="onChangeCheckedIds">
-    <ModelList primaryActions={primaryActions()} secondaryActions={secondaryActions()}>
+    <ModelList
+      actions={actions()}
+      selectLabel="Select all files"
+      deselectLabel="Deselect all files"
+    >
       {range(0, 5).map(index => (
-        <DeprecatedUploadModelItem
+        <CartModelItem
           key={index}
-          id={String(index)}
-          imageSource="http://placehold.it/130x98"
-          title={`model_item_${index}.stl`}
-          subline="42 x 42 x 42 mm"
+          id={index}
+          imageSource="http://placehold.it/180x180"
+          title="model_item_title_can_be_long_and_gets_truncated.stl"
+          price="26.44€"
+          info={
+            <>
+              42 x 42 x 42 mm
+              <br />
+              Standard Resin, Natural & Dyed, Red
+            </>
+          }
+          shippingInfo={
+            <>
+              Est. delivery time: <strong>11 days</strong>
+              <br />
+              Deslivery method: <strong>Standard</strong>
+            </>
+          }
+          providerImage={<ProviderImage s slug="imaterialise" name="i.Materialise" />}
+          buttonsLeft={leftButtonBar()}
+          buttonsRight={rightButtonBar()}
         />
       ))}
-      <DeprecatedUploadModelItemError title="Upload failed" subline="This is why" />
-      <DeprecatedUploadModelItemLoad
-        status={0.4}
-        title="Uploading"
-        subline="model_item_title.stl"
-      />
     </ModelList>
   </HandleValue>
 ))

@@ -24,15 +24,6 @@
     animation-fill-mode: forwards;
   }
 
-  &__loading-indicator {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    // Increases loading indicator size
-    font-size: $font-size-xl;
-  }
-
   &--ratio-1-1 {
     @include scut-ratio-box(1/1);
   }

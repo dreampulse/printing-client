@@ -14,7 +14,7 @@ const CloseButton = ({classNames, modifiers, onClick = () => {}}) => (
     className={buildClassName('close-button', modifiers, classNames)}
     onClick={onClick}
   >
-    <Icon modifiers={['block']} source={closeIcon} title="Close" />
+    <Icon block source={closeIcon} title="Close" />
   </button>
 )
 

@@ -2,16 +2,10 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 
 import PageLayout from '.'
-import NavBar from '../nav-bar'
 import Button from '../button'
-import IconLink from '../icon-link'
-import Logo from '../logo'
 import Footer from '../footer'
 import Link from '../link'
 import StickyFooter from '../sticky-footer'
-
-import helpIcon from '../../../asset/icon/help.svg'
-import cartIcon from '../../../asset/icon/cart.svg'
 
 const footer = () => (
   <Footer copyline="© 2019 All3DP">
@@ -25,19 +19,6 @@ const stickyFooter = () => (
     <Button text label="Deselct all files" />
     <Button label="Customize" />
   </StickyFooter>
-)
-
-const navBar = () => (
-  <NavBar
-    key="navbar"
-    leftContent={<Logo />}
-    rightContent={
-      <>
-        <IconLink modifiers={['invert']} icon={cartIcon} cartCount={99} />
-        <IconLink modifiers={['invert']} icon={helpIcon} />
-      </>
-    }
-  />
 )
 
 const lorem = `
@@ -211,23 +192,15 @@ const lorem = `
 `
 
 storiesOf('PageLayout', module)
-  .add('default', () => (
-    <PageLayout header={navBar()} footer={footer()} stickyFooter={stickyFooter()}>
-      {lorem}
-    </PageLayout>
-  ))
-  .add('empty', () => (
-    <PageLayout header={navBar()} footer={footer()} stickyFooter={stickyFooter()}>
-      {''}
-    </PageLayout>
-  ))
-  .add('showStickyFooter', () => (
-    <PageLayout showStickyFooter header={navBar()} footer={footer()} stickyFooter={stickyFooter()}>
+  .add('default', () => <PageLayout footer={footer()}>{lorem}</PageLayout>)
+  .add('empty', () => <PageLayout footer={footer()} />)
+  .add('stickyFooter', () => (
+    <PageLayout footer={footer()} stickyFooter={stickyFooter()}>
       {lorem}
     </PageLayout>
   ))
   .add('minorBackground', () => (
-    <PageLayout minorBackground header={navBar()} footer={footer()} stickyFooter={stickyFooter()}>
+    <PageLayout minorBackground footer={footer()} stickyFooter={stickyFooter()}>
       {lorem}
     </PageLayout>
   ))

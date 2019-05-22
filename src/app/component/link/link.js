@@ -6,8 +6,16 @@ import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
-const Link = ({classNames, label, href = '#', icon, onClick = () => {}, ...rest}) => (
-  <a className={cn('Link', {}, classNames)} href={href} onClick={onClick} {...rest}>
+const Link = ({
+  classNames,
+  label,
+  href = '#',
+  icon,
+  warning = false,
+  onClick = () => {},
+  ...rest
+}) => (
+  <a className={cn('Link', {warning}, classNames)} href={href} onClick={onClick} {...rest}>
     {icon && <Icon source={icon} />}
     {label}
   </a>
@@ -15,10 +23,11 @@ const Link = ({classNames, label, href = '#', icon, onClick = () => {}, ...rest}
 
 Link.propTypes = {
   ...propTypes.component,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   href: PropTypes.string,
   string: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  warning: PropTypes.bool
 }
 
 export default Link

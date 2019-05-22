@@ -19,7 +19,8 @@ import {
   BackendModel,
   MaterialGroup,
   Cart,
-  UtmParams
+  UtmParams,
+  Address
 } from '../type'
 import {Actions} from '../action'
 import * as httpJson from './http-json'
@@ -51,6 +52,17 @@ export type QuotesResponse = {
   printingServiceComplete: {
     [printingServiceName: string]: boolean
   }
+}
+
+export type UserPayload = {
+  emailAddress: string
+  isCompany: boolean
+  companyName?: string
+  vatId?: string
+  phoneNumber: string
+  useDifferentBillingAddress: boolean
+  shippingAddress: Address
+  billingAddress?: Address
 }
 
 export type UserResponse = {
@@ -191,7 +203,7 @@ export const getQuotes = async (priceId: PriceId): Promise<QuotesResponse> => {
   return response.json
 }
 
-export const createUser = async (user: User): Promise<UserResponse> => {
+export const createUser = async (user: UserPayload): Promise<UserResponse> => {
   const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/user`, {
     method: 'POST',
     body: user
@@ -199,7 +211,7 @@ export const createUser = async (user: User): Promise<UserResponse> => {
   return response.json
 }
 
-export const updateUser = async (userId: UserId, user: User): Promise<UserResponse> => {
+export const updateUser = async (userId: UserId, user: UserPayload): Promise<UserResponse> => {
   const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/user/${userId}`, {
     method: 'PUT',
     body: user

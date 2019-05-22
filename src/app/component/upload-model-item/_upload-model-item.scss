@@ -5,6 +5,7 @@
   position: relative;
   display: flex;
   height: $upload-model-item-height;
+  font-size: $font-size-s;
 
   &__aside {
     position: relative;
@@ -77,7 +78,7 @@
   }
 
   &--s {
-    height: $upload-model-item-height;
+    height: $upload-model-item-height-s;
 
     .UploadModelItem__aside {
       min-width: 65px; // Design decision

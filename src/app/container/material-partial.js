@@ -17,6 +17,7 @@ import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
+import config from '../../../config'
 import {getBestMultiModelOffers} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {formatPrice, formatPriceDifference} from '../lib/formatter'
@@ -25,7 +26,6 @@ import {partitionBy} from '../lib/util'
 import {
   selectModelConfigsByIds,
   selectQuotePollingProgress,
-  isQuotePollingDone,
   selectQuotes,
   selectUploadedModelConfigs,
   selectUsedShippingIdsAndFilter
@@ -35,7 +35,6 @@ import {openIntercom} from '../service/intercom'
 
 import MaterialFilterPartial from './material-filter-partial'
 
-import Section from '../component/section'
 import Grid from '../component/grid'
 import Column from '../component/column'
 import Headline from '../component/headline'
@@ -51,7 +50,7 @@ import LoadingCheckmark from '../component/loading-checkmark'
 import ColorCard from '../component/color-card'
 import ColorTrait from '../component/color-trait'
 import ColorCardList from '../component/color-card-list'
-import MaterialStepHeadline from '../component/material-step-headline'
+import MaterialStepSection from '../component/material-step-section'
 
 export const SELECTED_STEP = {
   MATERIAL: 'material',
@@ -82,14 +81,14 @@ const MaterialPartial = ({
   quotes,
   selectedModelConfigs,
   shippings,
-  isPollingDone,
   usedShippingIds,
   pollingProgress,
   selectStep,
   selectNextStep
 }) => {
-  const isPollingComplete = pollingProgress.complete === pollingProgress.total
-  const hasMoreThanOneResult = pollingProgress.complete > 0
+  const isPollingDone =
+    pollingProgress.total > 0 && pollingProgress.complete === pollingProgress.total
+  const hasAtLeastOneResult = pollingProgress.complete > 0
 
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
@@ -116,10 +115,7 @@ const MaterialPartial = ({
         value={price}
         loadingCheckmark={
           <LoadingCheckmark
-            modifiers={compact([
-              isPollingComplete && 'done',
-              hasMoreThanOneResult && 'hideWithDelay'
-            ])}
+            modifiers={compact([isPollingDone && 'done', hasAtLeastOneResult && 'hideWithDelay'])}
           />
         }
       />
@@ -143,9 +139,10 @@ const MaterialPartial = ({
           key={material.id}
           title={material.name}
           description={material.descriptionShort}
+          descriptionHeadline="Best used for:"
           price={renderPrice(bestOffer)}
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
-          loading={!bestOffer}
+          loading={!isPollingDone}
           unavailable={!bestOffer && isPollingDone}
           onSelectClick={() => {
             selectMaterial(material.id)
@@ -173,78 +170,61 @@ const MaterialPartial = ({
       )
 
     return (
-      <Section key="material-section">
-        <MaterialStepHeadline
-          number="1"
-          selected={selectedMaterial ? selectedMaterial.name : null}
-          action={
-            selectedState.step === SELECTED_STEP.MATERIAL ? (
-              <Link
-                label="cancel"
-                onClick={e => {
-                  e.preventDefault()
-                  selectNextStep()
-                }}
-              />
-            ) : (
-              <Link
-                label="change"
-                onClick={e => {
-                  e.preventDefault()
-                  selectStep(SELECTED_STEP.MATERIAL)
-                }}
-              />
-            )
-          }
-        >
-          Material
-        </MaterialStepHeadline>
-        {selectedState.step === SELECTED_STEP.MATERIAL && (
-          <>
-            <Grid>
-              <Column lg={8} classNames={['u-margin-bottom']}>
-                <RadioButtonGroup
-                  name="material-group"
-                  value={(selectedMaterialGroup && selectedMaterialGroup.id) || undefined}
-                  onChange={selectMaterialGroup}
-                >
-                  <RadioButton key="__ALL__" value={undefined} label="All" />
-                  {Object.values(materialGroups).map(group => (
-                    <RadioButton key={group.id} value={group.id} label={group.name} />
-                  ))}
-                </RadioButtonGroup>
-              </Column>
-              <Column lg={4} classNames={['u-margin-bottom']}>
-                <MaterialFilterPartial
-                  materialFilter={materialFilter}
-                  onFilterMaterials={setMaterialFilter}
-                />
-                <Paragraph classNames={['u-no-margin', 'u-align-right']}>
-                  {'Not printable? '}
-                  <Link
-                    onClick={event => {
-                      event.preventDefault()
-                      openIntercom()
-                    }}
-                    label="Contact us"
-                  />
-                  {' and let’s help you!'}
-                </Paragraph>
-              </Column>
-            </Grid>
-            {showMaterials.length > 0 && (
-              <MaterialSlider>
-                {sortMaterials(showMaterials).map(renderMaterialCard)}
-              </MaterialSlider>
-            )}
-            {showMaterials.length === 0 && (
-              <Paragraph modifiers={['l']} classNames={['u-align-center']}>
-                No materials found.
-              </Paragraph>
-            )}
-          </>
+      <MaterialStepSection
+        number="1"
+        selected={selectedMaterial ? selectedMaterial.name : null}
+        label="Material"
+        open={selectedState.step === SELECTED_STEP.MATERIAL}
+        action={
+          selectedState.step === SELECTED_STEP.MATERIAL ? (
+            <Link
+              label="cancel"
+              onClick={e => {
+                e.preventDefault()
+                selectNextStep()
+              }}
+            />
+          ) : (
+            <Link
+              label="change"
+              onClick={e => {
+                e.preventDefault()
+                selectStep(SELECTED_STEP.MATERIAL)
+              }}
+            />
+          )
+        }
+      >
+        <Grid>
+          <Column lg={8} classNames={['u-margin-bottom']}>
+            <RadioButtonGroup
+              tiny
+              name="material-group"
+              value={(selectedMaterialGroup && selectedMaterialGroup.id) || undefined}
+              onChange={selectMaterialGroup}
+            >
+              <RadioButton key="__ALL__" value={undefined} label="All" />
+              {Object.values(materialGroups).map(group => (
+                <RadioButton key={group.id} value={group.id} label={group.name} />
+              ))}
+            </RadioButtonGroup>
+          </Column>
+          <Column lg={4} classNames={['u-margin-bottom']}>
+            <MaterialFilterPartial
+              materialFilter={materialFilter}
+              onFilterMaterials={setMaterialFilter}
+            />
+          </Column>
+        </Grid>
+        {showMaterials.length > 0 && (
+          <MaterialSlider>{sortMaterials(showMaterials).map(renderMaterialCard)}</MaterialSlider>
         )}
-      </Section>
+        {showMaterials.length === 0 && (
+          <Paragraph modifiers={['l']} classNames={['u-align-center']}>
+            No materials found.
+          </Paragraph>
+        )}
+      </MaterialStepSection>
     )
   }
 
@@ -299,40 +279,38 @@ const MaterialPartial = ({
       )
 
     return (
-      <Section key="finish-section">
-        <MaterialStepHeadline
-          number="2"
-          selected={selectedFinishGroup ? selectedFinishGroup.name : null}
-          action={
-            selectedState.step === SELECTED_STEP.FINISH ? (
-              <Link
-                label="cancel"
-                onClick={e => {
-                  e.preventDefault()
-                  selectNextStep()
-                }}
-              />
-            ) : (
-              <Link
-                label="change"
-                onClick={e => {
-                  e.preventDefault()
-                  selectStep(SELECTED_STEP.FINISH)
-                }}
-              />
-            )
-          }
-        >
-          Finish
-        </MaterialStepHeadline>
-        {selectedState.step === SELECTED_STEP.FINISH &&
-          selectedMaterial &&
-          selectedMaterial.finishGroups.length > 0 && (
-            <MaterialSlider>
-              {sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
-            </MaterialSlider>
-          )}
-      </Section>
+      <MaterialStepSection
+        number="2"
+        selected={selectedFinishGroup ? selectedFinishGroup.name : null}
+        label="Finish"
+        open={selectedState.step === SELECTED_STEP.FINISH}
+        action={
+          selectedState.step === SELECTED_STEP.FINISH ? (
+            <Link
+              label="cancel"
+              onClick={e => {
+                e.preventDefault()
+                selectNextStep()
+              }}
+            />
+          ) : (
+            <Link
+              label="change"
+              onClick={e => {
+                e.preventDefault()
+                selectStep(SELECTED_STEP.FINISH)
+              }}
+            />
+          )
+        }
+      >
+        <MaterialSlider>
+          {selectedState.step === SELECTED_STEP.FINISH &&
+            selectedMaterial &&
+            selectedMaterial.finishGroups.length > 0 &&
+            sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
+        </MaterialSlider>
+      </MaterialStepSection>
     )
   }
 
@@ -390,46 +368,45 @@ const MaterialPartial = ({
     }
 
     return (
-      <Section key="color-section">
-        <MaterialStepHeadline
-          number="3"
-          selected={selectedMaterialConfig ? selectedMaterialConfig.color : null}
-          action={
-            selectedState.step === SELECTED_STEP.COLOR ? (
-              <Link
-                label="cancel"
-                onClick={e => {
-                  e.preventDefault()
-                  selectStep('')
-                }}
-              />
-            ) : (
-              <Link
-                label="change"
-                onClick={e => {
-                  e.preventDefault()
-                  selectStep(SELECTED_STEP.COLOR)
-                }}
-              />
-            )
-          }
-        >
-          Color
-        </MaterialStepHeadline>
+      <MaterialStepSection
+        number="3"
+        selected={selectedMaterialConfig ? selectedMaterialConfig.color : null}
+        label="Color"
+        open={selectedState.step === SELECTED_STEP.COLOR}
+        action={
+          selectedState.step === SELECTED_STEP.COLOR ? (
+            <Link
+              label="cancel"
+              onClick={e => {
+                e.preventDefault()
+                selectStep('')
+              }}
+            />
+          ) : (
+            <Link
+              label="change"
+              onClick={e => {
+                e.preventDefault()
+                selectStep(SELECTED_STEP.COLOR)
+              }}
+            />
+          )
+        }
+      >
         {selectedState.step === SELECTED_STEP.COLOR && selectedFinishGroup && (
           <ColorCardList>{selectedFinishGroup.materialConfigs.map(renderColorCard)}</ColorCardList>
         )}
-      </Section>
+      </MaterialStepSection>
     )
   }
 
   if (selectedModelConfigs.length === 0) {
-    return <Headline label="Select a file to start customizing" modifiers={['xl']} />
+    return <Headline label="Select a file to start customizing" modifiers={['xl', 'light']} />
   }
 
   return (
     <>
-      <Headline label="Customize your selection" modifiers={['xl']} />
+      <Headline label="Customize your selection" modifiers={['xl', 'light']} />
       {renderMaterialSection()}
       {renderFinishSection()}
       {renderColorSection()}
@@ -445,7 +422,6 @@ const mapStateToProps = (state, ownProps) => ({
   materialConfigs: state.core.materialConfigs,
   finishGroups: state.core.finishGroups,
   pollingProgress: selectQuotePollingProgress(state),
-  isPollingDone: isQuotePollingDone(state),
   selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
   featureFlags: state.core.featureFlags,
   currency: state.core.currency,
@@ -457,10 +433,10 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
-  goToReviewOrder: navigationAction.goToReviewOrder,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
   receiveQuotes: quoteAction.receiveQuotes,
+  goingToReceiveQuotes: quoteAction.goingToReceiveQuotes,
   stopReceivingQuotes: quoteAction.stopReceivingQuotes,
   addToCart: cartAction.addToCart,
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
@@ -544,7 +520,7 @@ export default compose(
   withPropsOnChange(
     () => false, // Should never reinitialize the debounce function
     ({receiveQuotes}) => ({
-      debouncedReceiveQuotes: debounce(receiveQuotes, 1000)
+      debouncedReceiveQuotes: debounce(receiveQuotes, config.receiveQuotesWait)
     })
   ),
   lifecycle({
@@ -582,6 +558,7 @@ export default compose(
         const currency = this.props.currency
         const {countryCode} = this.props.location
 
+        this.props.goingToReceiveQuotes()
         this.props.debouncedReceiveQuotes({
           modelConfigs,
           countryCode,

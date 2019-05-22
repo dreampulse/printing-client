@@ -65,7 +65,6 @@ export type CoreState = {
   materialConfigs: {[materialConfigId: string]: MaterialConfig}
   currency: string | null
   unit: string
-  useSameMaterial: boolean
   location: Location | null
   shippings: Shipping[]
   featureFlags: Features
@@ -94,7 +93,6 @@ const initialState: CoreState = {
   materialConfigs: {},
   currency: null,
   unit: 'mm',
-  useSameMaterial: true,
   location: null,
   shippings: [],
   featureFlags: {},
@@ -237,14 +235,6 @@ const updateUnit = (state: CoreState, action: coreActions.UpdateUnitAction): Cor
   unit: action.payload.unit
 })
 
-const updateUseSameMaterial = (
-  state: CoreState,
-  action: coreActions.UpdateUseSameMaterialAction
-): CoreReducer => ({
-  ...state,
-  useSameMaterial: action.payload
-})
-
 const updateCurrency = (
   state: CoreState,
   action: coreActions.UpdateCurrencyAction
@@ -333,10 +323,9 @@ const restoreUser = (state: CoreState, action: coreActions.RestoreUserAction): C
       {
         ...state
       },
-      Cmd.run<Actions>(
-        printingEngine.createUser,
-        {
-          args: [pick(
+      Cmd.run<Actions>(printingEngine.createUser, {
+        args: [
+          pick(
             state.user,
             'userId',
             'emailAddress',
@@ -347,11 +336,11 @@ const restoreUser = (state: CoreState, action: coreActions.RestoreUserAction): C
             'useDifferentBillingAddress',
             'shippingAddress',
             'billingAddress'
-          )],
-          successActionCreator: coreActions.userReceived,
-          failActionCreator: coreActions.fatalError
-        }
-      )
+          )
+        ],
+        successActionCreator: coreActions.userReceived,
+        failActionCreator: coreActions.fatalError
+      })
     )
   }
 
@@ -473,15 +462,11 @@ const uploadComplete = (
     shippingId: null
   }))
 
-  let selectedModelConfigs: string[] = [
+  const selectedModelConfigs: string[] = [
     ...state.selectedModelConfigs,
     modelConfig.id,
     ...additionalModelConfigs.map<string>(m => m.id)
   ]
-
-  if (!state.useSameMaterial) {
-    selectedModelConfigs = payload.fileIndex === 0 ? [modelConfig.id] : state.selectedModelConfigs
-  }
 
   return {
     ...state,
@@ -613,6 +598,14 @@ const duplicateModelConfig = (
   }
 }
 
+const goingToReceiveQuotes = (
+  state: CoreState,
+  action: quoteActions.GoingToReceiveQuotesAction
+): CoreReducer => ({
+  ...state,
+  printingServiceComplete: {} // Reset to signal the UI that quotes are going to be loaded
+})
+
 const receiveQuotes = (
   state: CoreState,
   {payload: {countryCode, currency, modelConfigs, refresh}}: quoteActions.ReceiveQuotesAction
@@ -683,7 +676,7 @@ const startPollingQuotes = (
 
 const quotesReceived = (
   state: CoreState,
-  {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceived
+  {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceivedAction
 ): CoreReducer => {
   const quoteMap = keyBy(quotes, 'quoteId')
   const modelConfigs = updateQuotesInModelConfigs(state.modelConfigs, quotes, state.quotes)
@@ -706,7 +699,7 @@ const quotesReceived = (
   return nextState
 }
 
-const quotesComplete = (state: CoreState, {payload}: quoteActions.QuotesComplete) =>
+const quotesComplete = (state: CoreState, {payload}: quoteActions.QuotesCompleteAction) =>
   loop(
     {
       ...state,
@@ -888,8 +881,6 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return updateLocation(state, action)
     case 'CORE.UPDATE_UNIT':
       return updateUnit(state, action)
-    case 'CORE.UPDATE_USE_SAME_MATERIAL':
-      return updateUseSameMaterial(state, action)
     case 'CORE.UPDATE_CURRENCY':
       return updateCurrency(state, action)
     case 'CORE.UPDATE_SHIPPINGS':
@@ -918,6 +909,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return updateQuantities(state, action)
     case 'MODEL.DUPLICATE_MODEL_CONFIG':
       return duplicateModelConfig(state, action)
+    case 'QUOTE.GOING_TO_RECEIVE_QUOTES':
+      return goingToReceiveQuotes(state, action)
     case 'QUOTE.RECEIVE_QUOTES':
       return receiveQuotes(state, action)
     case 'QUOTE.START_POLLING_QUOTES':

@@ -14,7 +14,6 @@ export type UpdateMaterialGroupsAction = Action<
 >
 export type UpdateLocationAction = Action<'CORE.UPDATE_LOCATION', {location: Location; force: boolean}>
 export type UpdateUnitAction = Action<'CORE.UPDATE_UNIT', {unit: string}>
-export type UpdateUseSameMaterialAction = Action<'CORE.UPDATE_USE_SAME_MATERIAL', boolean>
 export type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string; force: boolean}>
 export type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 export type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Shipping[]>
@@ -34,7 +33,6 @@ export type CoreAction =
   | SaveUserAction
   | UserReceivedAction
   | ResetAction
-  | UpdateUseSameMaterialAction
   | RestoreUserAction
 
 export const init = ({featureFlags, urlParams}: InitPayload): InitAction => ({
@@ -63,11 +61,6 @@ export const updateLocation = (
 export const updateUnit = (unit: string): UpdateUnitAction => ({
   type: 'CORE.UPDATE_UNIT',
   payload: {unit}
-})
-
-export const updateUseSameMaterial = (useSameMaterial: boolean): UpdateUseSameMaterialAction => ({
-  type: 'CORE.UPDATE_USE_SAME_MATERIAL',
-  payload: useSameMaterial
 })
 
 export const updateCurrency = (currency: string, force: boolean = false): UpdateCurrencyAction => ({
