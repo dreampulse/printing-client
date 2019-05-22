@@ -8,4 +8,8 @@
   &--full {
     max-width: none;
   }
+
+  &--s {
+    max-width: 750px + 2 * $space-l;
+  }
 }

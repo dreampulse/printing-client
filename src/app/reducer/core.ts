@@ -65,7 +65,6 @@ export type CoreState = {
   materialConfigs: {[materialConfigId: string]: MaterialConfig}
   currency: string | null
   unit: string
-  useSameMaterial: boolean
   location: Location | null
   shippings: Shipping[]
   featureFlags: Features
@@ -94,7 +93,6 @@ const initialState: CoreState = {
   materialConfigs: {},
   currency: null,
   unit: 'mm',
-  useSameMaterial: true,
   location: null,
   shippings: [],
   featureFlags: {},
@@ -235,14 +233,6 @@ const updateLocation = (
 const updateUnit = (state: CoreState, action: coreActions.UpdateUnitAction): CoreReducer => ({
   ...state,
   unit: action.payload.unit
-})
-
-const updateUseSameMaterial = (
-  state: CoreState,
-  action: coreActions.UpdateUseSameMaterialAction
-): CoreReducer => ({
-  ...state,
-  useSameMaterial: action.payload
 })
 
 const updateCurrency = (
@@ -472,15 +462,11 @@ const uploadComplete = (
     shippingId: null
   }))
 
-  let selectedModelConfigs: string[] = [
+  const selectedModelConfigs: string[] = [
     ...state.selectedModelConfigs,
     modelConfig.id,
     ...additionalModelConfigs.map<string>(m => m.id)
   ]
-
-  if (!state.useSameMaterial) {
-    selectedModelConfigs = payload.fileIndex === 0 ? [modelConfig.id] : state.selectedModelConfigs
-  }
 
   return {
     ...state,
@@ -895,8 +881,6 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return updateLocation(state, action)
     case 'CORE.UPDATE_UNIT':
       return updateUnit(state, action)
-    case 'CORE.UPDATE_USE_SAME_MATERIAL':
-      return updateUseSameMaterial(state, action)
     case 'CORE.UPDATE_CURRENCY':
       return updateCurrency(state, action)
     case 'CORE.UPDATE_SHIPPINGS':
