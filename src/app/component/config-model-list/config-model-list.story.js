@@ -40,7 +40,7 @@ const uploadModelItemList3 = [[1, false], [3, false], [4, false], [5, false]].ma
   ([key, configured]) => uploadModelItem(key, configured)
 )
 
-storiesOf('Config Model List', module)
+storiesOf('ConfigModelList', module)
   .add(
     'with leaving items',
     withState({toggle: true}, store => (

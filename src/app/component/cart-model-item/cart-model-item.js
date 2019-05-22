@@ -64,7 +64,6 @@ const CartModelItem = ({
 
 CartModelItem.propTypes = {
   ...propTypes.component,
-  id: PropTypes.string.isRequired, // Necessary for ModelList
   imageSource: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   price: PropTypes.string,

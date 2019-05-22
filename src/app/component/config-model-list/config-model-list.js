@@ -38,7 +38,7 @@ const ConfigModelList = ({classNames, children, onConfigurationChanged = noop}) 
   const refRootPortal = useRef()
 
   if (
-    numOfUnconfiguredChildren(React.Children.toArray(previousChildren)) < numUnconfiguredChildren &&
+    numOfUnconfiguredChildren(React.Children.toArray(previousChildren)) > numUnconfiguredChildren &&
     refRoot.current
   ) {
     onConfigurationChanged()

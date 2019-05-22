@@ -54,7 +54,8 @@ const MaterialPage = ({
   toggleAll,
   duplicateModelConfig,
   updateQuantities,
-  deleteModelConfigs
+  deleteModelConfigs,
+  initialConfigIds
 }) => {
   const sidebar = asideNode => (
     <>
@@ -94,40 +95,42 @@ const MaterialPage = ({
             asideNode.scrollTop = 0
           }}
         >
-          {modelsWithConfig.map(([modelConfig, model]) => (
-            <UploadModelItem
-              configured={modelConfig.quoteId}
-              s
-              classNames={['u-margin-bottom']}
-              key={modelConfig.id}
-              imageSource={model.thumbnailUrl}
-              title={model.fileName}
-              subline={formatDimensions(model.dimensions, model.fileUnit)}
-              buttonsLeft={
-                <NumberField
-                  value={modelConfig.quantity}
-                  onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-                />
-              }
-              buttonsRight={
-                <ButtonBar>
-                  <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
-                  <Button
-                    icon={copyIcon}
-                    iconOnly
-                    onClick={() => duplicateModelConfig(modelConfig.id)}
+          {modelsWithConfig
+            .filter(([modelConfig]) => !initialConfigIds.includes(modelConfig.id))
+            .map(([modelConfig, model]) => (
+              <UploadModelItem
+                configured={modelConfig.quoteId}
+                s
+                classNames={['u-margin-bottom']}
+                key={modelConfig.id}
+                imageSource={model.thumbnailUrl}
+                title={model.fileName}
+                subline={formatDimensions(model.dimensions, model.fileUnit)}
+                buttonsLeft={
+                  <NumberField
+                    value={modelConfig.quantity}
+                    onChange={quantity => updateQuantities([modelConfig.id], quantity)}
                   />
-                  <Button
-                    icon={deleteIcon}
-                    iconOnly
-                    onClick={() => deleteModelConfigs([modelConfig.id])}
-                  />
-                </ButtonBar>
-              }
-              selected={selectedModelConfigIds.includes(modelConfig.id)}
-              onSelect={() => toggleId(modelConfig.id)}
-            />
-          ))}
+                }
+                buttonsRight={
+                  <ButtonBar>
+                    <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
+                    <Button
+                      icon={copyIcon}
+                      iconOnly
+                      onClick={() => duplicateModelConfig(modelConfig.id)}
+                    />
+                    <Button
+                      icon={deleteIcon}
+                      iconOnly
+                      onClick={() => deleteModelConfigs([modelConfig.id])}
+                    />
+                  </ButtonBar>
+                }
+                selected={selectedModelConfigIds.includes(modelConfig.id)}
+                onSelect={() => toggleId(modelConfig.id)}
+              />
+            ))}
         </ConfigModelList>
       </Section>
     </>
@@ -165,7 +168,8 @@ const mapStateToProps = state => ({
   currency: state.core.currency,
   location: state.core.location,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
-  cartCount: selectCartCount(state)
+  cartCount: selectCartCount(state),
+  modelConfigs: state.core.modelConfigs
 })
 
 const mapDispatchToProps = {
@@ -208,6 +212,9 @@ export default compose(
     finishGroupId: null,
     materialConfigId: null
   }),
+  withState('initialConfigIds', 'setInitialConfigIds', props =>
+    props.modelConfigs.filter(model => model.quoteId).map(model => model.id)
+  ),
   lifecycle({
     componentWillMount() {
       const {configIds, uploadedModelConfigs, updateSelectedModelConfigs, goToUpload} = this.props

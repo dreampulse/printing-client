@@ -83,7 +83,6 @@ NumberField.propTypes = {
   onChange: PropTypes.func,
   lowerLimit: PropTypes.number,
   upperLimit: PropTypes.number,
-  disabled: PropTypes.bool,
   name: PropTypes.string
 }
 
