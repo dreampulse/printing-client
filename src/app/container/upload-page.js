@@ -66,7 +66,7 @@ const UploadPage = ({
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
 
-  const promoSection = () => (
+  const renderPromoSection = () => (
     <Section>
       <Grid>
         <Column md={0} lg={4} />
@@ -87,7 +87,7 @@ const UploadPage = ({
     </Section>
   )
 
-  const notificationSection = () => (
+  const renderNotificationSection = () => (
     <Section>
       {location.state && location.state.notification && (
         <Notification
@@ -98,7 +98,7 @@ const UploadPage = ({
     </Section>
   )
 
-  const modelList = () => (
+  const renderModelList = () => (
     <ModelUploadList>
       {modelsWithConfig.map(([modelConfig, model]) => {
         if (modelConfig.type === 'UPLOADING') {
@@ -212,7 +212,7 @@ const UploadPage = ({
         )}
       </Container>
       <Container>
-        {location.state && location.state.notification && notificationSection()}
+        {location.state && location.state.notification && renderNotificationSection()}
         {hasModels && (
           <Headline
             classNames={['u-align-center']}
@@ -259,11 +259,11 @@ const UploadPage = ({
                 }
               />
             </Paragraph>
-            {modelList()}
+            {renderModelList()}
           </Section>
         </Container>
       )}
-      {!hasModels && <Container>{promoSection()}</Container>}
+      {!hasModels && <Container>{renderPromoSection()}</Container>}
     </PageLayout>
   )
 }
