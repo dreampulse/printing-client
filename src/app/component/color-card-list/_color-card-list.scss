@@ -2,10 +2,10 @@
   &__wrapper {
     display: flex;
     flex-wrap: wrap;
-    margin: -$space-base;
+    margin: -0.5 * $space-l;
 
     & > * {
-      margin: $space-base;
+      margin: 0.5 * $space-l;
     }
   }
 }

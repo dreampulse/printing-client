@@ -6,6 +6,8 @@ import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
+import selectedIcon from '../../../asset/icon/selected.svg'
+
 const Button = ({
   classNames,
   label,
@@ -17,19 +19,23 @@ const Button = ({
   compact = false,
   text = false,
   block = false,
+  selected = false,
   iconOnly = false,
   onClick = () => {}
-}) => (
-  <button
-    className={cn('Button', {minor, tiny, compact, text, block, iconOnly}, classNames)}
-    type={type}
-    disabled={disabled}
-    onClick={onClick}
-  >
-    {icon && <Icon source={icon} />}
-    {label && <span className="Button__label">{label}</span>}
-  </button>
-)
+}) => {
+  const finalIcon = selected ? selectedIcon : icon
+  return (
+    <button
+      className={cn('Button', {minor, tiny, compact, text, block, selected, iconOnly}, classNames)}
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {finalIcon && <Icon source={finalIcon} />}
+      {label && <span className="Button__label">{label}</span>}
+    </button>
+  )
+}
 
 Button.propTypes = {
   ...propTypes.component,
@@ -45,6 +51,7 @@ Button.propTypes = {
   compact: PropTypes.bool,
   text: PropTypes.bool,
   block: PropTypes.bool,
+  selected: PropTypes.bool,
   iconOnly: PropTypes.bool
 }
 

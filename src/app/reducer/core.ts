@@ -358,58 +358,53 @@ const userReceived = (state: CoreState, action: coreActions.UserReceivedAction):
   }
 })
 
-const uploadFile = (state: CoreState, {payload}: modelActions.UploadFileAction): CoreReducer => {
-  const fileId = payload.fileId
-
-  const file = {
+const uploadFiles = (
+  state: CoreState,
+  {payload: {files, unit, refresh}}: modelActions.UploadFilesAction
+): CoreReducer => {
+  const modelConfigs: ModelConfig[] = files.map(({fileId, configId}) => ({
+    type: 'UPLOADING',
     fileId,
-    fileName: payload.file.name,
-    fileSize: payload.file.size,
-    progress: 0,
-    error: false
-  }
+    id: configId
+  }))
+
+  const uploadingFiles = files.reduce(
+    (aggr, {file, fileId}) => ({
+      ...aggr,
+      [fileId]: {
+        fileId,
+        fileName: file.name,
+        fileSize: file.size,
+        progress: 0,
+        error: false
+      }
+    }),
+    state.uploadingFiles
+  )
 
   return loop<CoreState, Actions>(
     {
       ...state,
-      uploadingFiles: {
-        ...state.uploadingFiles,
-        [fileId]: file
-      },
-      modelConfigs: [
-        ...state.modelConfigs,
-        {
-          type: 'UPLOADING',
-          fileId,
-          id: payload.configId
-        }
-      ]
+      uploadingFiles,
+      modelConfigs: [...state.modelConfigs, ...modelConfigs]
     },
-    Cmd.run<Actions>(printingEngine.uploadModel, {
-      args: [
-        payload.file,
-        {unit: payload.unit},
-        Cmd.dispatch,
-        (progress: number) => modelActions.uploadProgress(fileId, progress),
-        payload.refresh
-      ],
-      successActionCreator: models =>
-        modelActions.uploadComplete(fileId, models, payload.fileIndex),
-      failActionCreator: error => modelActions.uploadFail(fileId, error)
-    })
-  )
-}
-
-const uploadFiles = (
-  state: CoreState,
-  {payload: {files, unit, refresh}}: modelActions.UploadFilesAction
-): CoreReducer =>
-  loop(
-    state,
     Cmd.list(
-      files.map((file, index) => Cmd.action(modelActions.uploadFile(file, unit, index, refresh)))
+      files.map(({file, fileId}) =>
+        Cmd.run<Actions>(printingEngine.uploadModel, {
+          args: [
+            file,
+            {unit},
+            Cmd.dispatch,
+            (progress: number) => modelActions.uploadProgress(fileId, progress),
+            refresh
+          ],
+          successActionCreator: models => modelActions.uploadComplete(fileId, models),
+          failActionCreator: error => modelActions.uploadFail(fileId, error)
+        })
+      )
     )
   )
+}
 
 const uploadProgress = (
   state: CoreState,
@@ -891,8 +886,6 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return restoreUser(state, action)
     case 'CORE.USER_RECEIVED':
       return userReceived(state, action)
-    case 'MODEL.UPLOAD_FILE':
-      return uploadFile(state, action)
     case 'MODEL.UPLOAD_FILES':
       return uploadFiles(state, action)
     case 'MODEL.UPLOAD_PROGRESS':

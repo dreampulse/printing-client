@@ -1,0 +1,9 @@
+.RecommendedOfferSection {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: $space-l;
+
+  @include respond-to(large) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
