@@ -98,7 +98,7 @@ const MaterialPage = ({
           />
         </Paragraph>
         <UploadModelList
-          onExit={() => {
+          onConfigurationChanged={() => {
             asideNode.scrollTop = 0
           }}
         >
@@ -107,6 +107,7 @@ const MaterialPage = ({
               s
               classNames={['u-margin-bottom']}
               key={modelConfig.id}
+              configured={modelConfig.quoteId}
               imageSource={model.thumbnailUrl}
               title={model.fileName}
               subline={formatDimensions(model.dimensions, model.fileUnit)}

@@ -13,32 +13,59 @@ import usePrevious from '../../hook/use-previous'
 const UPLOAD_MODEL_ITEM_HEIGHT = 122 + 15
 const ANIMATION_DURATION = 600
 
-const UploadModelList = ({classNames, children, onExit = noop}) => {
-  const numChildren = Children.count(children)
+const configuredIndex = (children, index) => {
+  const childArray = React.Children.toArray(children)
+
+  let idx = 0
+  for (let i = 0; i < index; i++) {
+    if (!childArray[i].props.configured) {
+      idx += 1
+    }
+  }
+
+  return idx
+}
+
+const numOfUnconfiguredChildren = childArray =>
+  childArray.reduce((acc, cur) => (cur.props.configured ? acc : acc + 1), 0)
+
+const UploadModelList = ({classNames, children, onConfigurationChanged = noop}) => {
+  const numChildren = React.Children.count(children)
+  const numUnconfiguredChildren = numOfUnconfiguredChildren(React.Children.toArray(children))
   const previousChildren = usePrevious(children)
   const refRoot = useRef()
 
-  if (Children.count(previousChildren) < numChildren && refRoot.current) {
-    onExit()
+  if (
+    numOfUnconfiguredChildren(React.Children.toArray(previousChildren)) < numUnconfiguredChildren &&
+    refRoot.current
+  ) {
+    onConfigurationChanged()
   }
 
   return (
     <div
       className={cn('UploadModelList', {}, classNames)}
-      style={{height: `${numChildren * UPLOAD_MODEL_ITEM_HEIGHT}px`}}
+      style={{
+        height: `${numUnconfiguredChildren * UPLOAD_MODEL_ITEM_HEIGHT}px`
+      }}
       ref={refRoot}
     >
       <TransitionGroup component={null}>
         {Children.map(children, (child, index) => (
-          <Transition timeout={ANIMATION_DURATION}>
-            {state => {
+          <CSSTransition timeout={ANIMATION_DURATION} classNames="ItemTransition" appear>
+            {_childTransitionState => {
               const {top = 0, left = 0, width = 0} = refRoot.current
                 ? refRoot.current.getBoundingClientRect()
                 : {}
 
-              if (state === 'exiting' || state === 'exited') {
+              if (child.props.configured) {
                 return ReactDOM.createPortal(
-                  <CSSTransition in timeout={ANIMATION_DURATION} appear>
+                  <CSSTransition
+                    in
+                    timeout={ANIMATION_DURATION}
+                    classNames="PortalTransition"
+                    appear
+                  >
                     <div
                       className="UploadModelList__item"
                       style={{
@@ -60,14 +87,15 @@ const UploadModelList = ({classNames, children, onExit = noop}) => {
                 <div
                   className="UploadModelList__item"
                   style={{
-                    transform: `translateY(${UPLOAD_MODEL_ITEM_HEIGHT * index}px)`
+                    transform: `translateY(${UPLOAD_MODEL_ITEM_HEIGHT *
+                      configuredIndex(children, index)}px)`
                   }}
                 >
                   {child}
                 </div>
               )
             }}
-          </Transition>
+          </CSSTransition>
         ))}
       </TransitionGroup>
     </div>

@@ -17,32 +17,56 @@ const buttonBar = () => (
   </ButtonBar>
 )
 
-const uploadModelItem = key => (
+const uploadModelItem = (key, configured) => (
   <UploadModelItem
     key={key}
+    configured={configured}
     imageSource="http://placehold.it/180x180"
-    title="model_item_title_can_be_long_and_gets_truncated.stl"
+    title={`model_item_title_can_be_long_and_gets_truncated.stl ${key}`}
     subline="42 x 42 x 42 mm"
     buttonsLeft={buttonBar()}
     buttonsRight={buttonBar()}
   />
 )
 
-const uploadModelItemList1 = [1, 2, 3, 4, 5].map(key => uploadModelItem(key))
-const uploadModelItemList2 = [3, 5].map(key => uploadModelItem(key))
-
-storiesOf('Upload Model List', module).add(
-  'with leaving items',
-  withState({toggle: true}, store => (
-    <div style={{marginLeft: 100, width: 600}}>
-      <UploadModelList onExit={action('onExit')}>
-        {store.state.toggle ? uploadModelItemList1 : uploadModelItemList2}
-      </UploadModelList>
-      <Button
-        classNames={['u-margin-top']}
-        label="Play animation"
-        onClick={() => store.set({toggle: !store.state.toggle})}
-      />
-    </div>
-  ))
+const uploadModelItemList1 = [[1, false], [2, false], [3, false], [4, false], [5, false]].map(
+  ([key, configured]) => uploadModelItem(key, configured)
 )
+const uploadModelItemList2 = [[1, true], [2, true], [3, false], [4, true], [5, false]].map(
+  ([key, configured]) => uploadModelItem(key, configured)
+)
+const uploadModelItemList3 = [[1, false], [3, false], [4, false], [5, false]].map(
+  ([key, configured]) => uploadModelItem(key, configured)
+)
+
+storiesOf('Upload Model List', module)
+  .add(
+    'with leaving items',
+    withState({toggle: true}, store => (
+      <div style={{marginLeft: 100, width: 600}}>
+        <UploadModelList onExit={action('onExit')}>
+          {store.state.toggle ? uploadModelItemList1 : uploadModelItemList2}
+        </UploadModelList>
+        <Button
+          classNames={['u-margin-top']}
+          label="Play animation"
+          onClick={() => store.set({toggle: !store.state.toggle})}
+        />
+      </div>
+    ))
+  )
+  .add(
+    'with removing items',
+    withState({toggle: true}, store => (
+      <div style={{marginLeft: 100, width: 600}}>
+        <UploadModelList onExit={action('onExit')}>
+          {store.state.toggle ? uploadModelItemList1 : uploadModelItemList3}
+        </UploadModelList>
+        <Button
+          classNames={['u-margin-top']}
+          label="Play animation"
+          onClick={() => store.set({toggle: !store.state.toggle})}
+        />
+      </div>
+    ))
+  )
