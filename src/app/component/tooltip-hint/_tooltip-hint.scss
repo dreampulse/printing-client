@@ -1,0 +1,19 @@
+.TooltipHint {
+  position: relative;
+
+  &__tooltip {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity $transition-duration-fast ease-out;
+    width: 90%;
+  }
+
+  &--show {
+    .TooltipHint__tooltip {
+      opacity: 1;
+    }
+  }
+}

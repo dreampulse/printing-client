@@ -78,8 +78,7 @@ class CartNavLink extends React.Component {
           return {
             position: 'bottom',
             top: parentRect.top + parentRect.height + global.scrollY,
-            left: parentRect.left + global.scrollX + horizontalCenter,
-            enoughSpace: true
+            left: parentRect.left + global.scrollX + horizontalCenter
           }
         }}
         portalContent={({isOpen, transitionStarted, transitionEnded, position}) => (

@@ -23,4 +23,9 @@
   &--warning {
     color: $color-warning;
   }
+
+  &--invert {
+    color: inherit;
+    text-decoration: underline;
+  }
 }

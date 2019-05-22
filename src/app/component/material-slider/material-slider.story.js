@@ -6,19 +6,9 @@ import range from 'lodash/range'
 import MaterialSlider from '.'
 import MaterialCard from '../material-card'
 import Price from '../price'
-import Info from '../info'
-import Headline from '../headline'
-import Paragraph from '../paragraph'
 import Container from '../container'
 
 const price = <Price value="$19.99" />
-
-const info = (
-  <Info modifiers={['minor']}>
-    <Headline label="Headline" />
-    <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
-  </Info>
-)
 
 const card = ({title = 'Polyamide'}) => (
   <MaterialCard
@@ -26,7 +16,6 @@ const card = ({title = 'Polyamide'}) => (
     title={title}
     description="Best all-round material"
     price={price}
-    info={info}
     image="http://placehold.it/260x170/cccccc"
     onSelectClick={action('onSelectClick')}
   />

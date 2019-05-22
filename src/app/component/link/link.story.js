@@ -9,6 +9,7 @@ import backIcon from '../../../asset/icon/back.svg'
 storiesOf('Link', module)
   .add('default', () => <Link label="Default Link" href="#" onClick={action('onClick')} />)
   .add('warning', () => <Link label="Warning Link" warning href="#" onClick={action('onClick')} />)
+  .add('invert', () => <Link label="Warning Link" invert href="#" onClick={action('onClick')} />)
   .add('with icon', () => (
     <Link label="Link with Icon" href="#" icon={backIcon} onClick={action('onClick')} />
   ))

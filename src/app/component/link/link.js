@@ -12,10 +12,11 @@ const Link = ({
   href = '#',
   icon,
   warning = false,
+  invert = false,
   onClick = () => {},
   ...rest
 }) => (
-  <a className={cn('Link', {warning}, classNames)} href={href} onClick={onClick} {...rest}>
+  <a className={cn('Link', {warning, invert}, classNames)} href={href} onClick={onClick} {...rest}>
     {icon && <Icon source={icon} />}
     {label}
   </a>
@@ -27,7 +28,8 @@ Link.propTypes = {
   href: PropTypes.string,
   string: PropTypes.string,
   onClick: PropTypes.func,
-  warning: PropTypes.bool
+  warning: PropTypes.bool,
+  invert: PropTypes.bool
 }
 
 export default Link

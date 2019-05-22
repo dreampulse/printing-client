@@ -12,7 +12,6 @@ import Link from '../link'
 const MaterialCard = ({
   classNames,
   price,
-  info,
   title,
   description,
   loading = false,
@@ -47,7 +46,6 @@ const MaterialCard = ({
       {image && <div className="MaterialCard__image" style={imageStyle} />}
       <div className="MaterialCard__content">
         <div className="MaterialCard__header">
-          {info}
           <Headline label={title} tag="strong" />
         </div>
         {Boolean(description) && (
@@ -90,7 +88,6 @@ const MaterialCard = ({
 MaterialCard.propTypes = {
   ...propTypes.component,
   price: PropTypes.node,
-  info: PropTypes.node,
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
   descriptionHeadline: PropTypes.string,
