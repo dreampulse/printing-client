@@ -59,7 +59,7 @@ import ColorCard from '../component/color-card'
 import ColorTrait from '../component/color-trait'
 import ColorCardList from '../component/color-card-list'
 import MaterialStepSection from '../component/material-step-section'
-import RecommendedOfferSection from '../component/recommended-offer-section/recommended-offer-section'
+import RecommendedOfferSection from '../component/recommended-offer-section'
 import OfferCard from '../component/offer-card'
 import ProviderImage from '../component/provider-image'
 

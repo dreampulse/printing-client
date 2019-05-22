@@ -1,1 +1,1 @@
-export {default} from './RecommendedOfferSection'
+export {default} from './recommended-offer-section'
