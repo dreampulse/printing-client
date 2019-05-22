@@ -6,11 +6,18 @@ import cn from '../../lib/class-names'
 
 import LoadingIndicator from '../loading-indicator'
 
-const Price = ({classNames, value, prefix, loading = false, loadingCheckmark = null}) => (
+const Price = ({
+  classNames,
+  value,
+  prefix,
+  loading = false,
+  loadingCheckmark = null,
+  loadingLabel = 'Fetching'
+}) => (
   <div className={cn('Price', {}, classNames)}>
     {loading ? (
       <div className="Price__loading">
-        <LoadingIndicator /> Fetching prices
+        <LoadingIndicator /> {loadingLabel}
       </div>
     ) : (
       <div className="Price__price">
@@ -27,7 +34,8 @@ Price.propTypes = {
   value: PropTypes.string,
   prefix: PropTypes.string,
   loading: PropTypes.bool,
-  loadingCheckmark: PropTypes.node
+  loadingCheckmark: PropTypes.node,
+  loadingLabel: PropTypes.string
 }
 
 export default Price

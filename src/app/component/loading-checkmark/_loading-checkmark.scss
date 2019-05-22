@@ -1,10 +1,5 @@
-.loading-checkmark {
+.LoadingCheckmark {
   position: relative;
-
-  &__loading {
-    opacity: 1;
-    transition: opacity 0.2s linear;
-  }
 
   &__check {
     position: absolute;
@@ -15,44 +10,35 @@
   }
 
   @keyframes check-animation {
-    100% {
+    0% {
       opacity: 0;
-    }
-    90% {
-      opacity: 1;
     }
     10% {
       opacity: 1;
     }
-    0% {
-      opacity: 0;
+    90% {
+      opacity: 1;
     }
-  }
-
-  @keyframes hide-animation {
     100% {
       opacity: 0;
-    }
-    // The hide duration is .2s (based on 30s total)
-    99.833% {
-      opacity: 1;
-    }
-    0% {
-      opacity: 1;
     }
   }
 
   &--done {
-    .loading-checkmark__check {
-      animation: check-animation 2s linear forwards;
-    }
-
-    .loading-checkmark__loading {
+    .LoadingCheckmark__loading {
+      transition: opacity 0.2s linear;
       opacity: 0;
     }
   }
 
-  &--hideWithDelay {
-    animation: hide-animation 30s linear forwards;
+  &--doneActive {
+    .LoadingCheckmark__check {
+      animation: check-animation 2s linear forwards;
+    }
+  }
+
+  &--hideAfterTimeout {
+    transition: opacity 0.2s 30s linear;
+    opacity: 0;
   }
 }

@@ -245,7 +245,7 @@ const CartPage = ({
                 <>
                   {formatDimensions(model.dimensions, model.fileUnit)}
                   <br />
-                  {materialName}, {finishGroupName}, {color}
+                  {materialName}, {finishGroupName} ({color})
                 </>
               }
               shippingInfo={

@@ -26,8 +26,12 @@ context('Simple application flow', () => {
 
   it('selects material and provider', () => {
     cy.contains('button', 'Select').click()
-    cy.contains('button', 'Select').click()
-    cy.contains('button', 'Select').click()
+    cy.get('#material-step-2')
+      .contains('button', 'Select')
+      .click()
+    cy.get('#material-step-3')
+      .contains('button', 'Select')
+      .click()
     cy.contains('button', 'Add to cart').click()
   })
 

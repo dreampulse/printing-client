@@ -1,0 +1,55 @@
+.OfferCard {
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-base;
+  padding: $space-base;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    padding-bottom: $space-base;
+
+    & > .Icon {
+      flex-shrink: 0;
+      font-size: $font-size-xl;
+      color: $color-primary;
+      margin-right: $space-l;
+    }
+  }
+
+  &__label {
+    font-weight: bold;
+    font-size: $font-size-l;
+    line-height: $line-height-s;
+  }
+
+  &__mainValue {
+    font-weight: bold;
+    font-size: $font-size-xl;
+  }
+
+  &__subline {
+    font-size: $font-size-s;
+  }
+
+  &__content {
+    display: flex;
+    border-top: 1px solid $color-border-minor;
+    padding: $space-base 0;
+
+    & > * + * {
+      margin-left: $space-xl;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid $color-border-minor;
+    padding-top: $space-base;
+
+    & > * + * {
+      margin-left: $space-xl;
+    }
+  }
+}
