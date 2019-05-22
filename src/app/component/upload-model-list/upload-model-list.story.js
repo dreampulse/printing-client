@@ -1,72 +1,35 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
-import {withState} from '@dump247/storybook-state'
-import {action} from '@storybook/addon-actions'
+import range from 'lodash/range'
 
 import UploadModelList from '.'
-import Button from '../button'
 import UploadModelItem from '../upload-model-item'
-import ButtonBar from '../button-bar'
+import UploadModelItemError from '../upload-model-item-error'
+import UploadModelItemLoad from '../upload-model-item-load'
 
-import placeholderIcon from '../../../asset/icon/placeholder.svg'
-
-const buttonBar = () => (
-  <ButtonBar>
-    <Button icon={placeholderIcon} iconOnly />
-    <Button icon={placeholderIcon} iconOnly />
-  </ButtonBar>
-)
-
-const uploadModelItem = (key, configured) => (
-  <UploadModelItem
-    key={key}
-    configured={configured}
-    imageSource="http://placehold.it/180x180"
-    title={`model_item_title_can_be_long_and_gets_truncated.stl ${key}`}
-    subline="42 x 42 x 42 mm"
-    buttonsLeft={buttonBar()}
-    buttonsRight={buttonBar()}
-  />
-)
-
-const uploadModelItemList1 = [[1, false], [2, false], [3, false], [4, false], [5, false]].map(
-  ([key, configured]) => uploadModelItem(key, configured)
-)
-const uploadModelItemList2 = [[1, true], [2, true], [3, false], [4, true], [5, false]].map(
-  ([key, configured]) => uploadModelItem(key, configured)
-)
-const uploadModelItemList3 = [[1, false], [3, false], [4, false], [5, false]].map(
-  ([key, configured]) => uploadModelItem(key, configured)
-)
-
-storiesOf('Upload Model List', module)
-  .add(
-    'with leaving items',
-    withState({toggle: true}, store => (
-      <div style={{marginLeft: 100, width: 600}}>
-        <UploadModelList onExit={action('onExit')}>
-          {store.state.toggle ? uploadModelItemList1 : uploadModelItemList2}
-        </UploadModelList>
-        <Button
-          classNames={['u-margin-top']}
-          label="Play animation"
-          onClick={() => store.set({toggle: !store.state.toggle})}
+storiesOf('UploadModelList', module)
+  .add('default', () => (
+    <UploadModelList>
+      {range(0, 5).map(index => (
+        <UploadModelItem
+          key={index}
+          id={String(index)}
+          imageSource="http://placehold.it/130x98"
+          title={`model_item_${index}.stl`}
+          subline="42 x 42 x 42 mm"
         />
-      </div>
-    ))
-  )
-  .add(
-    'with removing items',
-    withState({toggle: true}, store => (
-      <div style={{marginLeft: 100, width: 600}}>
-        <UploadModelList onExit={action('onExit')}>
-          {store.state.toggle ? uploadModelItemList1 : uploadModelItemList3}
-        </UploadModelList>
-        <Button
-          classNames={['u-margin-top']}
-          label="Play animation"
-          onClick={() => store.set({toggle: !store.state.toggle})}
-        />
-      </div>
-    ))
-  )
+      ))}
+      <UploadModelItemError title="Upload failed" subline="This is why" />
+      <UploadModelItemLoad status={0.4} title="Uploading" subline="model_item_title.stl" />
+    </UploadModelList>
+  ))
+  .add('single item', () => (
+    <UploadModelList>
+      <UploadModelItem
+        id="item-1"
+        imageSource="http://placehold.it/130x98"
+        title="model_item.stl"
+        subline="42 x 42 x 42 mm"
+      />
+    </UploadModelList>
+  ))

@@ -42,7 +42,7 @@ import Column from '../component/column'
 import RichText from '../component/rich-text'
 import PageLayout from '../component/page-layout'
 import Container from '../component/container'
-import ModelUploadList from '../component/model-upload-list'
+import UploadModelList from '../component/upload-model-list'
 import StickyFooter from '../component/sticky-footer'
 import Link from '../component/link'
 import Paragraph from '../component/paragraph'
@@ -99,7 +99,7 @@ const UploadPage = ({
   )
 
   const modelList = () => (
-    <ModelUploadList>
+    <UploadModelList>
       {modelsWithConfig.map(([modelConfig, model]) => {
         if (modelConfig.type === 'UPLOADING') {
           if (model.error) {
@@ -175,7 +175,7 @@ const UploadPage = ({
         }
         return null
       })}
-    </ModelUploadList>
+    </UploadModelList>
   )
 
   return (

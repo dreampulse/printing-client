@@ -38,7 +38,7 @@ import ButtonBar from '../component/button-bar'
 import NumberField from '../component/number-field'
 import Paragraph from '../component/paragraph'
 import OfferLayout from '../component/offer-layout'
-import UploadModelList from '../component/upload-model-list'
+import ConfigModelList from '../component/config-model-list'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
@@ -89,17 +89,17 @@ const MaterialPage = ({
             }
           />
         </Paragraph>
-        <UploadModelList
+        <ConfigModelList
           onConfigurationChanged={() => {
             asideNode.scrollTop = 0
           }}
         >
           {modelsWithConfig.map(([modelConfig, model]) => (
             <UploadModelItem
+              configured={modelConfig.quoteId}
               s
               classNames={['u-margin-bottom']}
               key={modelConfig.id}
-              configured={modelConfig.quoteId}
               imageSource={model.thumbnailUrl}
               title={model.fileName}
               subline={formatDimensions(model.dimensions, model.fileUnit)}
@@ -128,7 +128,7 @@ const MaterialPage = ({
               onSelect={() => toggleId(modelConfig.id)}
             />
           ))}
-        </UploadModelList>
+        </ConfigModelList>
       </Section>
     </>
   )
@@ -160,9 +160,7 @@ const MaterialPage = ({
 
 const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
-  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
-    ([modelConfig]) => modelConfig.type !== 'UPLOADED' || modelConfig.quoteId === null
-  ),
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]),
   currency: state.core.currency,
   location: state.core.location,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
