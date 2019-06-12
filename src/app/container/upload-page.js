@@ -210,7 +210,7 @@ const UploadPage = ({
         )
       }
     >
-      <Container full={Boolean(cart)}>
+      <Container full={hasModels}>
         {hasModels || cart ? (
           <LocationInfoPartial />
         ) : (

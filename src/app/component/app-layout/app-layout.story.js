@@ -5,10 +5,10 @@ import AppLayout from '.'
 import NavBar from '../nav-bar'
 import NavLink from '../nav-link'
 import CartNavLink from '../cart-nav-link'
-import Button from '../button'
 import Logo from '../logo'
 
 import uploadIcon from '../../../asset/icon/upload.svg'
+import intercomIcon from '../../../asset/icon/intercom.svg'
 
 const navBar = () => (
   <NavBar
@@ -18,7 +18,7 @@ const navBar = () => (
       <>
         <NavLink label="Upload" icon={uploadIcon} />
         <CartNavLink label="Your Cart" count={6} />
-        <Button minor compact label="Need help?" />
+        <NavLink label="Need help?" icon={intercomIcon} />
       </>
     }
   />
