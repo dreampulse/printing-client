@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import Button from '../../component/button'
-import Overlay from '../../component/overlay'
+import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 
@@ -24,14 +24,14 @@ const ConfirmCurrencyChangeModal = ({currency, updateCurrency, closeModal}) => {
   ]
 
   return (
-    <Overlay headline={headline} buttons={buttons} closeable={false}>
+    <Modal headline={headline} buttons={buttons} closeable={false}>
       <Paragraph strong>
         Do you really want to change the currency to <strong>{currency}</strong>?
       </Paragraph>
       <Paragraph>
         By changing the currency you have to customize all models in your cart again.
       </Paragraph>
-    </Overlay>
+    </Modal>
   )
 }
 

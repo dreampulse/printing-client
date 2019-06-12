@@ -6,7 +6,7 @@ import getCloudinaryUrl from '../../lib/cloudinary'
 import * as modalActions from '../../action/modal'
 
 import Button from '../../component/button'
-import Overlay from '../../component/overlay'
+import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 import Grid from '../../component/grid'
@@ -18,12 +18,7 @@ const MaterialModal = ({material, closeModal}) => {
   const buttons = [<Button label="Close" onClick={() => closeModal()} />]
 
   return (
-    <Overlay
-      modifiers={['l']}
-      headline={headline}
-      buttons={buttons}
-      closePortal={() => closeModal()}
-    >
+    <Modal l headline={headline} buttons={buttons} closePortal={() => closeModal()}>
       <Grid>
         <Column sm={12} md={8} lg={7}>
           <Paragraph classNames={['u-margin-bottom-xl']}>{material.description}</Paragraph>
@@ -35,7 +30,7 @@ const MaterialModal = ({material, closeModal}) => {
           />
         </Column>
       </Grid>
-    </Overlay>
+    </Modal>
   )
 }
 

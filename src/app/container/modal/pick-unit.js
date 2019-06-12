@@ -8,7 +8,7 @@ import * as modelActions from '../../action/model'
 import * as coreActions from '../../action/core'
 
 import Button from '../../component/button'
-import Overlay from '../../component/overlay'
+import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 import RadioButtonGroup from '../../component/radio-button-group'
@@ -37,14 +37,14 @@ const PickUnitModal = ({
   ]
 
   return (
-    <Overlay headline={headline} buttons={buttons} closeable={false}>
+    <Modal headline={headline} buttons={buttons} closeable={false}>
       <Paragraph>In which unit are the chosen files?</Paragraph>
       <RadioButtonGroup name="unit" value={unit} onChange={value => setUnit(value)}>
         <RadioButton value="mm" />
         <RadioButton value="cm" />
         <RadioButton value="in" />
       </RadioButtonGroup>
-    </Overlay>
+    </Modal>
   )
 }
 

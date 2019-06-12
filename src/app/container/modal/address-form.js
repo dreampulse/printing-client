@@ -29,7 +29,7 @@ import Notification from '../../component/notification'
 
 const isSameCountry = (location, address) => location.countryCode === address.countryCode
 
-const addressFormOverlayScrollContainerId = 'addressFormOverlayScrollContainer'
+const addressFormModalScrollContainerId = 'addressFormModalScrollContainer'
 
 const AddressFormModal = ({
   closeModal,
@@ -192,12 +192,12 @@ const AddressFormModal = ({
   ]
 
   return (
-    <Overlay
+    <Modal
       headline={headline}
       buttons={buttons}
       closePortal={() => closeModal()}
       noCloseOnClickOutside
-      scrollContainerId={addressFormOverlayScrollContainerId}
+      scrollContainerId={addressFormModalScrollContainerId}
     >
       <Form>
         <div id="shipping-address">
@@ -464,7 +464,7 @@ const enhance = compose(
     },
     componentDidMount() {
       if (this.props.scrollTo === 'billing-address') {
-        scrollTo('#billing-address', `#${addressFormOverlayScrollContainerId}`)
+        scrollTo('#billing-address', `#${addressFormModalScrollContainerId}`)
       }
     }
   })

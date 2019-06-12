@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import Button from '../../component/button'
-import Overlay from '../../component/overlay'
+import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 import Grid from '../../component/grid'
@@ -18,7 +18,7 @@ const ErrorModal = ({error, closeModal}) => {
   const headline = <Headline label="Error occurred" modifiers={['l']} />
 
   return (
-    <Overlay headline={headline} buttons={buttons} closeable={false}>
+    <Modal headline={headline} buttons={buttons} closeable={false}>
       <Grid>
         <Column sm={3}>
           <Image src={errorImage} alt="System Error" />
@@ -27,7 +27,7 @@ const ErrorModal = ({error, closeModal}) => {
           <Paragraph minor>{error.message}</Paragraph>
         </Column>
       </Grid>
-    </Overlay>
+    </Modal>
   )
 }
 

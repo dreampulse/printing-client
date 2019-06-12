@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 
-import Overlay from '.'
+import Modal from '.'
 import Headline from '../headline'
 import Button from '../button'
 import Image from '../image'
@@ -27,46 +27,41 @@ import {googleMapsApiKey, currencies, selectMenuValues} from '../../../../storie
 import HandleValue from '../../../../stories/util/handle-value'
 
 const headline = <Headline label="Warning Headline" modifiers={['l']} />
-const headlineOther = <Headline label="Overlay Headline" modifiers={['l']} />
+const headlineOther = <Headline label="Modal Headline" modifiers={['l']} />
 const buttons = [<Button label="Cancel" text />, <Button label="OK" />]
 
-storiesOf('Overlay', module)
+storiesOf('Modal', module)
   .add('default', () => (
-    <Overlay headline={headline} buttons={buttons} closePortal={action('onClose')}>
-      <div>Overlay content</div>
-    </Overlay>
+    <Modal headline={headline} buttons={buttons} closePortal={action('onClose')}>
+      <div>Modal content</div>
+    </Modal>
   ))
   .add('noCloseOnClickOutside', () => (
-    <Overlay
+    <Modal
       headline={headline}
       buttons={buttons}
       closePortal={action('onClose')}
       noCloseOnClickOutside
     >
-      <div>Overlay content</div>
-    </Overlay>
+      <div>Modal content</div>
+    </Modal>
   ))
-  .add('large', () => (
-    <Overlay
-      modifiers={['l']}
-      headline={headlineOther}
-      buttons={buttons}
-      closePortal={action('onClose')}
-    >
-      <div>Overlay content</div>
-    </Overlay>
+  .add('l', () => (
+    <Modal l headline={headlineOther} buttons={buttons} closePortal={action('onClose')}>
+      <div>Modal content</div>
+    </Modal>
   ))
   .add('not closeable', () => (
-    <Overlay headline={headlineOther} buttons={buttons} closeable={false}>
-      <div>Overlay content</div>
-    </Overlay>
+    <Modal headline={headlineOther} buttons={buttons} closeable={false}>
+      <div>Modal content</div>
+    </Modal>
   ))
   .add('prices changed', () => {
     const pricesChangedHeadline = (
       <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
     )
     return (
-      <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
+      <Modal headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <Paragraph>
           We used the location <strong>Munich, Germany</strong> to calculate prices. You have
           entered <strong>New York, USA</strong> as your shipping address.
@@ -75,7 +70,7 @@ storiesOf('Overlay', module)
           Please double check the prices on the order summary or go back to find the best deal for
           your new location.
         </Paragraph>
-      </Overlay>
+      </Modal>
     )
   })
   .add('fetching new prices', () => {
@@ -87,7 +82,7 @@ storiesOf('Overlay', module)
       <Button label="OK" disabled />
     ]
     return (
-      <Overlay
+      <Modal
         headline={fetchingNewPricesHeadline}
         buttons={fetchingNewPricesButtons}
         closePortal={action('onClose')}
@@ -97,14 +92,14 @@ storiesOf('Overlay', module)
           <br />
           This might take a few minutes
         </LabeledLoadingIndicator>
-      </Overlay>
+      </Modal>
     )
   })
   .add('system error', () => {
     const systemErrorHeadline = <Headline label="System Error" modifiers={['l']} />
     const systemErrorButtons = [<Button label="OK" />]
     return (
-      <Overlay
+      <Modal
         headline={systemErrorHeadline}
         buttons={systemErrorButtons}
         closePortal={action('onClose')}
@@ -121,13 +116,13 @@ storiesOf('Overlay', module)
             <Paragraph>Please press OK to reload the app.</Paragraph>
           </Column>
         </Grid>
-      </Overlay>
+      </Modal>
     )
   })
   .add('shipping address', () => {
     const pricesChangedHeadline = <Headline label="Shipping address" modifiers={['l']} />
     return (
-      <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
+      <Modal headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <Paragraph>We need your address and currency to calculate the shipping prices</Paragraph>
         <Grid>
           <Column sm={9}>
@@ -146,7 +141,7 @@ storiesOf('Overlay', module)
             </HandleValue>
           </Column>
         </Grid>
-      </Overlay>
+      </Modal>
     )
   })
   .add('material detail', () => {
@@ -156,8 +151,8 @@ storiesOf('Overlay', module)
     const checked = <Checked checked />
     const unchecked = <Checked />
     return (
-      <Overlay
-        modifiers={['l']}
+      <Modal
+        l
         headline={materialDetailHeadline}
         buttons={materialDetailButtons}
         closePortal={action('onClose')}
@@ -204,13 +199,13 @@ storiesOf('Overlay', module)
             <Image src="http://placehold.it/360x270" alt="Polyamide" />
           </Column>
         </Grid>
-      </Overlay>
+      </Modal>
     )
   })
   .add('change country', () => {
     const pricesChangedHeadline = <Headline label="Change country" modifiers={['l']} />
     return (
-      <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
+      <Modal headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <Grid>
           <Column sm={2}>
             <WarningIcon />
@@ -236,13 +231,13 @@ storiesOf('Overlay', module)
             />
           </HandleValue>
         </LabeledField>
-      </Overlay>
+      </Modal>
     )
   })
   .add('confirm location', () => {
     const pricesChangedHeadline = <Headline label="Confirm your location" modifiers={['l']} />
     return (
-      <Overlay headline={pricesChangedHeadline}>
+      <Modal headline={pricesChangedHeadline}>
         <LabeledField
           label="Shipping to:"
           modifiers={['block']}
@@ -259,13 +254,13 @@ storiesOf('Overlay', module)
         <Paragraph modifiers={['minor', 'l']}>
           Why do we need to know this? Printing prices and shipping options depend on your location
         </Paragraph>
-      </Overlay>
+      </Modal>
     )
   })
   .add('thank you', () => {
-    const pricesChangedHeadline = <Headline label="Thank you for using All3DP" modifiers={['l']} />
+    const pricesChangedHeadline = <Headline label="Thank you for using All3DP" l />
     return (
-      <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
+      <Modal headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <Grid>
           <Column sm={3}>
             <Image src="http://placehold.it/200x200" alt="Thank you image" />
@@ -279,6 +274,6 @@ storiesOf('Overlay', module)
             </Paragraph>
           </Column>
         </Grid>
-      </Overlay>
+      </Modal>
     )
   })

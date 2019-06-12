@@ -5,7 +5,7 @@ import withState from 'recompose/withState'
 import compact from 'lodash/compact'
 
 import Button from '../../component/button'
-import Overlay from '../../component/overlay'
+import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 import LocationField from '../../component/location-field'
@@ -59,7 +59,7 @@ const PickLocationModal = ({
   ]
 
   return (
-    <Overlay
+    <Modal
       headline={hasQuotes ? headlineWarning : headline}
       buttons={compact(buttons)}
       closeable={meta.isCloseable}
@@ -96,7 +96,7 @@ const PickLocationModal = ({
           />
         </Column>
       </Grid>
-    </Overlay>
+    </Modal>
   )
 }
 
