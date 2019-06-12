@@ -54,6 +54,7 @@
   &--s {
     padding: $space-l;
     font-size: $font-size-base;
+    height: $upload-model-item-height;
 
     .UploadArea__description {
       display: none;
