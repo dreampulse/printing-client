@@ -9,6 +9,11 @@
     opacity: 0;
     transition: opacity $transition-duration-fast ease-out;
     width: 90%;
+
+    & > * {
+      // Center tooltip
+      margin: 0 auto;
+    }
   }
 
   &--show {
