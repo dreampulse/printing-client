@@ -104,8 +104,11 @@ const CartPage = ({
       (user &&
         user.billingAddress &&
         user.billingAddress.stateCode &&
-        getStateName(user.shippingAddress.countryCode, user.billingAddress.stateCode)) ||
-      shippingStateName
+        getStateName(user.billingAddress.countryCode, user.billingAddress.stateCode)) ||
+      (user &&
+        user.shippingAddress.countryCode === user.billingAddress.countryCode &&
+        shippingStateName) ||
+      ''
     return (
       <Section>
         <Grid>
@@ -135,12 +138,6 @@ const CartPage = ({
                   {user.companyName ? (
                     <span>
                       {user.companyName}
-                      <br />
-                    </span>
-                  ) : null}
-                  {user.vatId ? (
-                    <span>
-                      {user.vatId}
                       <br />
                     </span>
                   ) : null}

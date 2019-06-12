@@ -96,11 +96,7 @@ const AddressFormModal = ({
 
   const billingAddressSection = (
     <div id="billing-address">
-      <Headline
-        modifiers={['l', 'minor']}
-        classNames={['u-margin-bottom-xl', 'u-margin-top-xl']}
-        label="Billing Address"
-      />
+      <Headline modifiers={['s']} classNames={['u-margin-top-xl']} label="Billing Address" />
       <FormRow modifiers={['half-half']}>
         <Field
           validate={required}
@@ -131,7 +127,7 @@ const AddressFormModal = ({
       <FormRow>
         <Field
           component={renderFormikField(InputField)}
-          label="Address line 2"
+          label="Additional address information, e.g. company name, floor, building, etc..."
           name="billingAddress.addressLine2"
           maxLength="35"
         />
@@ -171,7 +167,7 @@ const AddressFormModal = ({
     </div>
   )
 
-  const headline = <Headline label="Shipping Address" modifiers={['l']} />
+  const headline = <Headline label="Your Address" modifiers={['l']} />
   const buttons = [
     <Button
       key="cancel_button"
@@ -278,7 +274,7 @@ const AddressFormModal = ({
           <FormRow>
             <Field
               component={renderFormikField(InputField)}
-              label="Address line 2"
+              label="Additional address information, e.g. company name, floor, building, etc..."
               name="shippingAddress.addressLine2"
               maxLength="35"
             />
