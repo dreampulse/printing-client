@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route, Switch} from 'react-router'
+import {Route, Switch, Redirect} from 'react-router'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
@@ -33,6 +33,7 @@ const MainApp = ({initDone}) => {
         <Route component={CartPage} path="/cart" exact />
         <Route component={SuccessPage} path="/success" exact />
         <Route component={ConfigurationPage} path="/configuration/:id" exact />
+        <Redirect to="/" />
       </Switch>
       <Modal />
     </AppLayout>
