@@ -32,17 +32,6 @@
       @include scut-truncate();
       margin-bottom: 0;
     }
-
-    & > .info {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-
-      & + .headline {
-        margin-right: 1em; // Space for info
-      }
-    }
   }
 
   &__body {

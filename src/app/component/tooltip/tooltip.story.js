@@ -14,8 +14,20 @@ storiesOf('Tooltip', module)
       <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
     </Tooltip>
   ))
-  .add('right', () => (
-    <Tooltip modifiers={['right']}>
+  .add('orientation right', () => (
+    <Tooltip orientation="right">
+      <Headline label="Headline" />
+      <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
+    </Tooltip>
+  ))
+  .add('orientation top', () => (
+    <Tooltip orientation="top">
+      <Headline label="Headline" />
+      <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
+    </Tooltip>
+  ))
+  .add('orientation bottom', () => (
+    <Tooltip orientation="bottom">
       <Headline label="Headline" />
       <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
     </Tooltip>

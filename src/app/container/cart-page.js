@@ -40,6 +40,8 @@ import Grid from '../component/grid'
 import Column from '../component/column'
 import PaypalButton from '../component/paypal-button'
 import PageHeader from '../component/page-header'
+import Tooltip from '../component/tooltip'
+import TooltipHint from '../component/tooltip-hint'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
@@ -352,28 +354,48 @@ const CartPage = ({
               }}
             />
           )}
-          <PaypalButton
-            disabled={!showCart || paymentInProgress || !user}
-            onClick={async () => {
-              setPaymentInProgress(true)
-              const {paymentToken, orderNumber, paymentId} = await payWithPaypal()
-              orderPaid({orderNumber, paymentId})
-              return paymentToken
-            }}
-            onAuthorize={async data => {
-              try {
-                const payment = await executePaypalPayment(data)
-                onSuccess()
-                return payment
-              } catch (error) {
-                logging.captureException(error)
-                return null
-              } finally {
-                setPaymentInProgress(false)
-              }
-            }}
-            onCancel={() => setPaymentInProgress(false)}
-          />
+          <TooltipHint
+            tooltip={
+              <Tooltip>
+                <Paragraph>
+                  You need to{' '}
+                  <Link
+                    invert
+                    label="add your address"
+                    onClick={event => {
+                      event.preventDefault()
+                      openAddressFormModal()
+                    }}
+                  />{' '}
+                  first.
+                </Paragraph>
+              </Tooltip>
+            }
+            show={!user || !user.userId}
+          >
+            <PaypalButton
+              disabled={!showCart || paymentInProgress || !user}
+              onClick={async () => {
+                setPaymentInProgress(true)
+                const {paymentToken, orderNumber, paymentId} = await payWithPaypal()
+                orderPaid({orderNumber, paymentId})
+                return paymentToken
+              }}
+              onAuthorize={async data => {
+                try {
+                  const payment = await executePaypalPayment(data)
+                  onSuccess()
+                  return payment
+                } catch (error) {
+                  logging.captureException(error)
+                  return null
+                } finally {
+                  setPaymentInProgress(false)
+                }
+              }}
+              onCancel={() => setPaymentInProgress(false)}
+            />
+          </TooltipHint>
         </PaymentSection>
         <Paragraph>
           <Headline
