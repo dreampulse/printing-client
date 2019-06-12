@@ -382,8 +382,7 @@ const MaterialPartial = ({
           subline={`${finishGroup.materialName}, ${finishGroup.name} (${materialConfig.color})`}
           action={
             <Button
-              major
-              tiny
+              primary
               label={isEditMode ? 'Select offer' : 'Add to cart'}
               onClick={() =>
                 addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
@@ -418,41 +417,32 @@ const MaterialPartial = ({
               }
             />
           }
-          footerContent={
-            <DescriptionList>
-              <dt>Process:</dt>
-              <dd>{finishGroup.properties.printingMethodShort}</dd>
-              <dt>Fulfilled by:</dt>
-              <dd>
-                <ProviderImage
-                  xs
-                  name={getProviderName(multiModelQuote.vendorId)}
-                  slug={multiModelQuote.vendorId}
-                />
-              </dd>
-            </DescriptionList>
-          }
         >
-          <DescriptionList>
+          <DescriptionList
+            topline={
+              <em>
+                {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
+              </em>
+            }
+          >
+            <dt>Process:</dt>
+            <dd>{finishGroup.properties.printingMethodShort}</dd>
+            <dt>Fulfilled by:</dt>
+            <dd>
+              <ProviderImage
+                xs
+                name={getProviderName(multiModelQuote.vendorId)}
+                slug={multiModelQuote.vendorId}
+              />
+            </dd>
+          </DescriptionList>
+          <DescriptionList alignRight doubleValues>
             <dt>
-              <em>Price total:</em>
+              <em>Total:</em>
             </dt>
             <dd>
               <em>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</em>
             </dd>
-            <dt>Production:</dt>
-            <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
-            <dt>Shipping:</dt>
-            <dd>
-              {usedShippingIdsById[shipping.shippingId]
-                ? formatPrice(0, shipping.currency)
-                : formatPrice(shipping.grossPrice, shipping.currency)}
-            </dd>
-          </DescriptionList>
-          <DescriptionList>
-            <dt>
-              <em>Est. delivery time:</em>
-            </dt>
             <dd>
               <em>
                 {formatTimeRange(
@@ -462,8 +452,14 @@ const MaterialPartial = ({
               </em>
             </dd>
             <dt>Production:</dt>
+            <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
             <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
             <dt>Shipping:</dt>
+            <dd>
+              {usedShippingIdsById[shipping.shippingId]
+                ? formatPrice(0, shipping.currency)
+                : formatPrice(shipping.grossPrice, shipping.currency)}
+            </dd>
             <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
           </DescriptionList>
         </OfferCard>
