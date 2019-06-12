@@ -41,7 +41,7 @@ const localDate = orderStatus =>
 
 const OrderStatusPage = ({orderStatusError, orderStatus}) => (
   <AppLayout header={<NavBarPartial helpOnly />}>
-    <PageLayout minorBackground stickyFooter={<FooterPartial />}>
+    <PageLayout minorBackground footer={<FooterPartial />}>
       {!orderStatusError && !orderStatus ? (
         <LoadingContainer insideContent />
       ) : (
