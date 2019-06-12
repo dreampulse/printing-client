@@ -605,6 +605,10 @@ const MaterialPartial = ({
       (offer1, offer2) => getDeliveryTime(offer1) - getDeliveryTime(offer2)
     )[0]
 
+    if (offers.length === 0) {
+      return null
+    }
+
     return (
       <MaterialStepSection
         headline={<Headline modifiers={['xl', 'light']} label="4. Select Offer" />}
