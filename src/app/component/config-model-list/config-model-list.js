@@ -11,8 +11,7 @@ import usePrevious from '../../hook/use-previous'
 
 // Keep this in sync with the height of `$upload-model-item-height-s`
 const UPLOAD_MODEL_ITEM_HEIGHT = 102 + 15
-const ITEM_ANIMATION_DURATION = 300
-const PORTAL_ANIMATION_DURATION = 1200
+const ANIMATION_DURATION = 1200
 
 const configuredIndex = (children, index) => {
   const childArray = React.Children.toArray(children)
@@ -30,7 +29,12 @@ const configuredIndex = (children, index) => {
 const numOfUnconfiguredChildren = childArray =>
   childArray.reduce((acc, cur) => (cur.props.configured ? acc : acc + 1), 0)
 
-const ConfigModelList = ({classNames, children, onConfigurationChanged = noop}) => {
+const ConfigModelList = ({
+  classNames,
+  children,
+  onConfigurationChanged = noop,
+  onConfigurationDidChange = noop
+}) => {
   const numChildren = React.Children.count(children)
   const numUnconfiguredChildren = numOfUnconfiguredChildren(React.Children.toArray(children))
   const previousChildren = usePrevious(children)
@@ -59,7 +63,7 @@ const ConfigModelList = ({classNames, children, onConfigurationChanged = noop}) 
       )}
       <TransitionGroup component={null}>
         {Children.map(children, (child, index) => (
-          <CSSTransition timeout={ITEM_ANIMATION_DURATION} classNames="ItemTransition" appear>
+          <CSSTransition timeout={ANIMATION_DURATION} classNames="ItemTransition" appear>
             {_transitionState => {
               const {top = 0, left = 0, width = 0} = refRoot.current
                 ? refRoot.current.getBoundingClientRect()
@@ -69,9 +73,12 @@ const ConfigModelList = ({classNames, children, onConfigurationChanged = noop}) 
                 return ReactDOM.createPortal(
                   <CSSTransition
                     in
-                    timeout={PORTAL_ANIMATION_DURATION}
+                    timeout={ANIMATION_DURATION}
                     classNames="PortalTransition"
                     appear
+                    onEntered={() => {
+                      onConfigurationDidChange()
+                    }}
                   >
                     <div
                       className="ConfigModelList__item"
@@ -83,7 +90,7 @@ const ConfigModelList = ({classNames, children, onConfigurationChanged = noop}) 
                         width
                       }}
                     >
-                      {child}
+                      {React.cloneElement(child, {noCache: true, selected: true, onSelect: noop})}
                     </div>
                   </CSSTransition>,
                   refRootPortal.current
@@ -112,7 +119,8 @@ const ConfigModelList = ({classNames, children, onConfigurationChanged = noop}) 
 ConfigModelList.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
-  onConfigurationChanged: PropTypes.func
+  onConfigurationChanged: PropTypes.func,
+  onConfigurationDidChange: PropTypes.func
 }
 
 export default ConfigModelList

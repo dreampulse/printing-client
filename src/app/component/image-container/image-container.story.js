@@ -17,3 +17,6 @@ storiesOf('Image Container', module)
       alt="Fallback Source"
     />
   ))
+  .add('with fallbackSource only', () => (
+    <ImageContainer fallbackSource="http://placehold.it/400x300" alt="Default" />
+  ))

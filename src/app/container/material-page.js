@@ -42,6 +42,9 @@ import ConfigModelList from '../component/config-model-list'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
+const getConfiguredModelIds = modelConfigs =>
+  modelConfigs.filter(model => model.quoteId).map(model => model.id)
+
 const MaterialPage = ({
   selectedState,
   setSelectedState,
@@ -55,7 +58,9 @@ const MaterialPage = ({
   duplicateModelConfig,
   updateQuantities,
   deleteModelConfigs,
-  initialConfigIds
+  initialConfigIds,
+  setInitialConfigIds,
+  modelConfigs
 }) => {
   const sidebar = asideNode => (
     <>
@@ -93,6 +98,9 @@ const MaterialPage = ({
         <ConfigModelList
           onConfigurationChanged={() => {
             asideNode.scrollTop = 0
+          }}
+          onConfigurationDidChange={() => {
+            setInitialConfigIds(getConfiguredModelIds(modelConfigs))
           }}
         >
           {modelsWithConfig
@@ -212,8 +220,8 @@ export default compose(
     finishGroupId: null,
     materialConfigId: null
   }),
-  withState('initialConfigIds', 'setInitialConfigIds', props =>
-    props.modelConfigs.filter(model => model.quoteId).map(model => model.id)
+  withState('initialConfigIds', 'setInitialConfigIds', ({modelConfigs}) =>
+    getConfiguredModelIds(modelConfigs)
   ),
   lifecycle({
     componentWillMount() {
