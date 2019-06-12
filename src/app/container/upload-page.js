@@ -188,7 +188,7 @@ const UploadPage = ({
 
   return (
     <PageLayout
-      footer={<FooterPartial />}
+      footer={!hasModels && <FooterPartial />}
       minorBackground={hasModels}
       stickyFooter={
         hasModels && (

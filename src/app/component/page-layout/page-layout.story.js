@@ -199,6 +199,11 @@ storiesOf('PageLayout', module)
       {lorem}
     </PageLayout>
   ))
+  .add('stickyBottom', () => (
+    <PageLayout stickyBottom stickyFooter={footer()}>
+      {lorem.substring(0, 1000)}
+    </PageLayout>
+  ))
   .add('minorBackground', () => (
     <PageLayout minorBackground footer={footer()} stickyFooter={stickyFooter()}>
       {lorem}

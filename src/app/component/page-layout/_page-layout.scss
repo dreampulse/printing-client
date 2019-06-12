@@ -15,7 +15,7 @@
   }
 
   &__content {
-    margin: $space-l 0 $space-l 0;
+    margin-top: $space-l;
     flex-grow: 1;
     height: 100%;
     z-index: z($stacking, content);
@@ -33,7 +33,19 @@
   &__stickyFooter {
     position: sticky;
     bottom: 0;
+    width: 100%;
     z-index: z($stacking, sticky);
+  }
+
+  &--stickyBottom {
+    .PageLayout__stickyFooter {
+      position: fixed;
+      bottom: 0;
+    }
+
+    .PageLayout__content {
+      padding-bottom: $sticky-footer-height;
+    }
   }
 
   &--minorBackground {
