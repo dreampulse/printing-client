@@ -340,7 +340,7 @@ const AddressFormModal = ({
           />
         </FormRow>
       </Form>
-    </Overlay>
+    </Modal>
   )
 }
 
