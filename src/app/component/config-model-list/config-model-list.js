@@ -11,7 +11,8 @@ import usePrevious from '../../hook/use-previous'
 
 // Keep this in sync with the height of `$upload-model-item-height-s`
 const UPLOAD_MODEL_ITEM_HEIGHT = 102 + 15
-const ANIMATION_DURATION = 1200
+const ITEM_ANIMATION_DURATION = 300
+const PORTAL_ANIMATION_DURATION = 1200
 
 const configuredIndex = (children, index) => {
   const childArray = React.Children.toArray(children)
@@ -58,8 +59,8 @@ const ConfigModelList = ({classNames, children, onConfigurationChanged = noop}) 
       )}
       <TransitionGroup component={null}>
         {Children.map(children, (child, index) => (
-          <CSSTransition timeout={ANIMATION_DURATION} classNames="ItemTransition" appear>
-            {_childTransitionState => {
+          <CSSTransition timeout={ITEM_ANIMATION_DURATION} classNames="ItemTransition" appear>
+            {_transitionState => {
               const {top = 0, left = 0, width = 0} = refRoot.current
                 ? refRoot.current.getBoundingClientRect()
                 : {}
@@ -68,7 +69,7 @@ const ConfigModelList = ({classNames, children, onConfigurationChanged = noop}) 
                 return ReactDOM.createPortal(
                   <CSSTransition
                     in
-                    timeout={ANIMATION_DURATION}
+                    timeout={PORTAL_ANIMATION_DURATION}
                     classNames="PortalTransition"
                     appear
                   >

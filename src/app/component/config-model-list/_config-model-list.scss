@@ -16,6 +16,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    opacity: 1;
     transition: transform 0.3s ease-in-out 0.6s, opacity 0.3s ease-in-out;
 
     // First item to exit
@@ -24,7 +25,7 @@
         ConfigModelList-phase2-exit-first 0.3s cubic-bezier(0.9, -0.02, 0.58, 1) 0.6s forwards !important;
     }
 
-    // item to exit expect the first
+    // Item to exit expect the first
     &.PortalTransition-appear-active + &.PortalTransition-appear-active {
       animation: ConfigModelList-phase1-exit 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s,
         ConfigModelList-phase2-exit 0.3s cubic-bezier(0.9, -0.02, 0.58, 1) 0.6s forwards !important;
@@ -34,9 +35,19 @@
       display: none;
     }
 
+    // Item is removed
     &.ItemTransition-exit-active,
     &.ItemTransition-exit {
       opacity: 0;
+    }
+
+    // New item is added
+    &.ItemTransition-enter {
+      transition: transform 0.3s ease-in-out 0.4s, opacity 0.3s ease-in-out 0.9s;
+      opacity: 0;
+    }
+    &.ItemTransition-enter-active {
+      opacity: 1;
     }
   }
 
