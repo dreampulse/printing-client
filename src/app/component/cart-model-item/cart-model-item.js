@@ -64,6 +64,7 @@ const CartModelItem = ({
 
 CartModelItem.propTypes = {
   ...propTypes.component,
+  // eslint-disable-next-line react/no-unused-prop-types
   id: PropTypes.string.isRequired, // Necessary for ModelList
   imageSource: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
