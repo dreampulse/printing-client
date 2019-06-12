@@ -70,6 +70,7 @@ ModelList.propTypes = {
   children: PropTypes.node.isRequired,
   actions: PropTypes.node.isRequired,
   checkedIds: PropTypes.arrayOf(PropTypes.string),
+  onChangeCheckedIds: PropTypes.func,
   selectLabel: PropTypes.string.isRequired,
   deselectLabel: PropTypes.string.isRequired,
   headerAlwaysVisible: PropTypes.bool
