@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 import withState from 'recompose/withState'
@@ -39,7 +38,7 @@ const localDate = orderStatus =>
     day: 'numeric'
   })
 
-const OrderStatusPage = ({orderStatusError, orderStatus}) => (
+const OrderStatusApp = ({orderStatusError, orderStatus}) => (
   <AppLayout header={<NavBarPartial helpOnly />}>
     <PageLayout minorBackground stickyFooter={<FooterPartial />}>
       {!orderStatusError && !orderStatus ? (
@@ -122,18 +121,10 @@ const OrderStatusPage = ({orderStatusError, orderStatus}) => (
   </AppLayout>
 )
 
-const mapStateToProps = () => ({})
-
-const mapDispatchToProps = {}
-
 const enhance = compose(
   scrollToTop(),
   withState('orderStatusError', 'setOrderStatusError', null),
   withState('orderStatus', 'setOrderStatus', null),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
   lifecycle({
     componentDidMount() {
       getOrderStatus(this.props.match.params.id)
@@ -149,4 +140,4 @@ const enhance = compose(
   })
 )
 
-export default enhance(OrderStatusPage)
+export default enhance(OrderStatusApp)

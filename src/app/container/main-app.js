@@ -15,23 +15,34 @@ import MaterialPage from './material-page'
 import EditMaterialPage from './edit-material-page'
 import CartPage from './cart-page'
 import SuccessPage from './success-page'
+import ConfigurationPage from './configuration-page'
 
 import Modal from './modal'
 
-const App = () => (
-  <AppLayout header={<NavBarPartial />}>
-    <Switch>
-      <Route component={UploadPage} path="/" exact />
-      <Route component={MaterialPage} path="/material" exact />
-      <Route component={EditMaterialPage} path="/material/edit" exact />
-      <Route component={CartPage} path="/cart" exact />
-      <Route component={SuccessPage} path="/success" exact />
-    </Switch>
-    <Modal />
-  </AppLayout>
-)
+const MainApp = ({initDone}) => {
+  if (!initDone) {
+    return null
+  }
 
-const mapStateToProps = () => ({})
+  return (
+    <AppLayout header={<NavBarPartial />}>
+      <Switch>
+        <Route component={UploadPage} path="/" exact />
+        <Route component={MaterialPage} path="/material" exact />
+        <Route component={EditMaterialPage} path="/material/edit" exact />
+        <Route component={CartPage} path="/cart" exact />
+        <Route component={SuccessPage} path="/success" exact />
+        <Route component={ConfigurationPage} path="/configuration/:id" exact />
+      </Switch>
+      <Modal />
+    </AppLayout>
+  )
+}
+
+const mapStateToProps = state => ({
+  initTriggered: state.core.initTriggered,
+  initDone: state.core.initDone
+})
 
 const mapDispatchToProps = {
   init: coreActions.init
@@ -44,16 +55,18 @@ const enhance = compose(
   ),
   lifecycle({
     componentDidMount() {
-      this.props
-        .init({
+      const {init, initTriggered} = this.props
+
+      if (!initTriggered) {
+        init({
           featureFlags: getFeatureFlags(global.location),
           urlParams: getUrlParams(global.location)
-        })
-        .then(() => {
+        }).then(() => {
           removeBootsplash()
         })
+      }
     }
   })
 )
 
-export default enhance(App)
+export default enhance(MainApp)
