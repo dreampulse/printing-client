@@ -195,17 +195,12 @@ storiesOf('PageLayout', module)
   .add('default', () => <PageLayout footer={footer()}>{lorem}</PageLayout>)
   .add('empty', () => <PageLayout footer={footer()} />)
   .add('stickyFooter', () => (
-    <PageLayout footer={footer()} stickyFooter={stickyFooter()}>
-      {lorem}
-    </PageLayout>
-  ))
-  .add('stickyBottom', () => (
-    <PageLayout stickyBottom stickyFooter={footer()}>
-      {lorem.substring(0, 1000)}
+    <PageLayout stickyFooter footer={stickyFooter()}>
+      {lorem.substring(0, 5000)}
     </PageLayout>
   ))
   .add('minorBackground', () => (
-    <PageLayout minorBackground footer={footer()} stickyFooter={stickyFooter()}>
+    <PageLayout minorBackground footer={footer()}>
       {lorem}
     </PageLayout>
   ))

@@ -1,5 +1,5 @@
 .PageLayout {
-  $stacking: content, sticky;
+  $stacking: content, footer;
 
   display: flex;
   flex-direction: column;
@@ -30,21 +30,20 @@
     }
   }
 
-  &__stickyFooter {
-    position: sticky;
-    bottom: 0;
+  &__footer {
     width: 100%;
-    z-index: z($stacking, sticky);
+    z-index: z($stacking, footer);
   }
 
-  &--stickyBottom {
-    .PageLayout__stickyFooter {
-      position: fixed;
-      bottom: 0;
+  &--stickyFooter {
+    .PageLayout__content {
+      height: auto;
+      flex-grow: 0;
     }
 
-    .PageLayout__content {
-      padding-bottom: $sticky-footer-height;
+    .PageLayout__footer {
+      position: sticky;
+      bottom: 0;
     }
   }
 
