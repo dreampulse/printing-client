@@ -83,8 +83,6 @@ NumberField.propTypes = {
   onChange: PropTypes.func,
   lowerLimit: PropTypes.number,
   upperLimit: PropTypes.number,
-  // eslint-disable-next-line react/no-unused-prop-types
-  disabled: PropTypes.bool,
   name: PropTypes.string
 }
 

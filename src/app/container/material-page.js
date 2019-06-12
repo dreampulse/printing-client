@@ -38,8 +38,12 @@ import ButtonBar from '../component/button-bar'
 import NumberField from '../component/number-field'
 import Paragraph from '../component/paragraph'
 import OfferLayout from '../component/offer-layout'
+import ConfigModelList from '../component/config-model-list'
 
 const SCROLL_CONTAINER_ID = 'main-container'
+
+const getConfiguredModelIds = modelConfigs =>
+  modelConfigs.filter(model => model.quoteId).map(model => model.id)
 
 const MaterialPage = ({
   selectedState,
@@ -53,9 +57,12 @@ const MaterialPage = ({
   toggleAll,
   duplicateModelConfig,
   updateQuantities,
-  deleteModelConfigs
+  deleteModelConfigs,
+  initialConfigIds,
+  setInitialConfigIds,
+  modelConfigs
 }) => {
-  const sidebar = () => (
+  const sidebar = asideNode => (
     <>
       <Section>
         <Link
@@ -88,45 +95,57 @@ const MaterialPage = ({
             }
           />
         </Paragraph>
-        {modelsWithConfig.map(([modelConfig, model]) => (
-          <UploadModelItem
-            s
-            classNames={['u-margin-bottom']}
-            key={modelConfig.id}
-            imageSource={model.thumbnailUrl}
-            title={model.fileName}
-            subline={formatDimensions(model.dimensions, model.fileUnit)}
-            buttonsLeft={
-              <NumberField
-                value={modelConfig.quantity}
-                onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+        <ConfigModelList
+          onConfigurationChanged={() => {
+            asideNode.scrollTop = 0
+          }}
+          onConfigurationDidChange={() => {
+            setInitialConfigIds(getConfiguredModelIds(modelConfigs))
+          }}
+        >
+          {modelsWithConfig
+            .filter(([modelConfig]) => !initialConfigIds.includes(modelConfig.id))
+            .map(([modelConfig, model]) => (
+              <UploadModelItem
+                configured={modelConfig.quoteId}
+                s
+                classNames={['u-margin-bottom']}
+                key={modelConfig.id}
+                imageSource={model.thumbnailUrl}
+                title={model.fileName}
+                subline={formatDimensions(model.dimensions, model.fileUnit)}
+                buttonsLeft={
+                  <NumberField
+                    value={modelConfig.quantity}
+                    onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+                  />
+                }
+                buttonsRight={
+                  <ButtonBar>
+                    <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
+                    <Button
+                      icon={copyIcon}
+                      iconOnly
+                      onClick={() => duplicateModelConfig(modelConfig.id)}
+                    />
+                    <Button
+                      icon={deleteIcon}
+                      iconOnly
+                      onClick={() => deleteModelConfigs([modelConfig.id])}
+                    />
+                  </ButtonBar>
+                }
+                selected={selectedModelConfigIds.includes(modelConfig.id)}
+                onSelect={() => toggleId(modelConfig.id)}
               />
-            }
-            buttonsRight={
-              <ButtonBar>
-                <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
-                <Button
-                  icon={copyIcon}
-                  iconOnly
-                  onClick={() => duplicateModelConfig(modelConfig.id)}
-                />
-                <Button
-                  icon={deleteIcon}
-                  iconOnly
-                  onClick={() => deleteModelConfigs([modelConfig.id])}
-                />
-              </ButtonBar>
-            }
-            selected={selectedModelConfigIds.includes(modelConfig.id)}
-            onSelect={() => toggleId(modelConfig.id)}
-          />
-        ))}
+            ))}
+        </ConfigModelList>
       </Section>
     </>
   )
 
   return (
-    <ToolLayout fullMain scrollContainerId={SCROLL_CONTAINER_ID} sidebar={sidebar()}>
+    <ToolLayout fullMain scrollContainerId={SCROLL_CONTAINER_ID} sidebar={sidebar}>
       <OfferLayout
         footer={
           <OfferFooterPartial configIds={selectedModelConfigIds} selectedState={selectedState} />
@@ -148,13 +167,12 @@ const MaterialPage = ({
 
 const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
-  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
-    ([modelConfig]) => modelConfig.type !== 'UPLOADED' || modelConfig.quoteId === null
-  ),
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]),
   currency: state.core.currency,
   location: state.core.location,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
-  cartCount: selectCartCount(state)
+  cartCount: selectCartCount(state),
+  modelConfigs: state.core.modelConfigs
 })
 
 const mapDispatchToProps = {
@@ -197,6 +215,9 @@ export default compose(
     finishGroupId: null,
     materialConfigId: null
   }),
+  withState('initialConfigIds', 'setInitialConfigIds', ({modelConfigs}) =>
+    getConfiguredModelIds(modelConfigs)
+  ),
   lifecycle({
     componentWillMount() {
       const {configIds, uploadedModelConfigs, updateSelectedModelConfigs, goToUpload} = this.props
