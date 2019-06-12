@@ -100,6 +100,14 @@ const UploadPage = ({
 
   const renderModelList = () => (
     <ModelUploadList>
+      <UploadArea
+        s
+        label="Drag additional 3D files here or"
+        linkLabel="select files"
+        description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+        accept="*"
+        onChange={openPickUnitModal}
+      />
       {modelsWithConfig.map(([modelConfig, model]) => {
         if (modelConfig.type === 'UPLOADING') {
           if (model.error) {
@@ -195,7 +203,7 @@ const UploadPage = ({
             )}
             <Button
               disabled={!selectedModelConfigIds.length > 0}
-              label={`Select Material (${selectedModelConfigIds.length}/${numModels} files)`}
+              label="Customize"
               onClick={() => goToMaterial(selectedModelConfigIds)}
             />
           </StickyFooter>
@@ -234,14 +242,6 @@ const UploadPage = ({
       {hasModels && (
         <Container s>
           <Section>
-            <UploadArea
-              s
-              label="Drag additional 3D files here or"
-              linkLabel="select files"
-              description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
-              accept="*"
-              onChange={openPickUnitModal}
-            />
             <Headline
               modifiers={['light']}
               label={`Your selection (${selectedModelConfigIds.length}/${numModels} files)`}

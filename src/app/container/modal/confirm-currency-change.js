@@ -29,7 +29,7 @@ const ConfirmCurrencyChangeModal = ({currency, updateCurrency, closeModal}) => {
         Do you really want to change the currency to <strong>{currency}</strong>?
       </Paragraph>
       <Paragraph>
-        By changing the currency you have to choose the materials for all models in your cart again.
+        By changing the currency you have to customize all models in your cart again.
       </Paragraph>
     </Overlay>
   )

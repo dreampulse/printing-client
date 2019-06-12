@@ -37,7 +37,7 @@ const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation,
         Do you really want to change your location to <strong>{formatLocation(location)}</strong>?
       </Paragraph>
       <Paragraph>
-        By changing the country you have to choose the materials for all models in your cart again.
+        By changing the country you have to customize all models in your cart again.
       </Paragraph>
     </Overlay>
   )
