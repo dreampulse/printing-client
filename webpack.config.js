@@ -1,4 +1,5 @@
 const childProcess = require('child_process')
+// eslint-disable-next-line import/no-extraneous-dependencies
 const path = require('path')
 const webpack = require('webpack')
 const autoprefixer = require('autoprefixer')
