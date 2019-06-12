@@ -17,7 +17,7 @@ import {selectModelsOfModelConfigs, selectCommonMaterialPathOfModelConfigs} from
 import {guard} from './util/guard'
 
 import MaterialPartial from './material-partial'
-import OfferPartial from './offer-partial'
+import OfferFooterPartial from './offer-footer-partial'
 import LocationInfoPartial from './location-info-partial'
 
 import Headline from '../component/headline'
@@ -88,15 +88,7 @@ const EditMaterialPage = ({
   return (
     <ToolLayout fullMain scrollContainerId={SCROLL_CONTAINER_ID} sidebar={sidebar()}>
       <OfferLayout
-        footer={
-          <OfferPartial
-            isEditMode
-            configIds={configIds}
-            scrollContainerId={SCROLL_CONTAINER_ID}
-            selectedState={selectedState}
-            onChange={setSelectedState}
-          />
-        }
+        footer={<OfferFooterPartial configIds={configIds} selectedState={selectedState} />}
       >
         <Section>
           <LocationInfoPartial />

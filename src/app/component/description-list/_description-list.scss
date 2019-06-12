@@ -1,6 +1,6 @@
 .DescriptionList {
   display: inline-grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto 1fr;
   grid-column-gap: $space-l;
   align-items: baseline;
   font-size: $font-size-s;
@@ -54,7 +54,7 @@
   }
 
   &--doubleValues {
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto 1fr;
 
     .DescriptionList__topline {
       grid-column: span 3;
