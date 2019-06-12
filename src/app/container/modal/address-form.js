@@ -18,7 +18,7 @@ import {required, email, vat} from '../../lib/validator'
 import scrollTo from '../../service/scroll-to'
 
 import Button from '../../component/button'
-import Overlay from '../../component/overlay'
+import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import FormRow from '../../component/form-row'
 import InputField from '../../component/input-field'
