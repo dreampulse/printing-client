@@ -27,4 +27,8 @@
   &--ratio-1-1 {
     @include scut-ratio-box(1/1);
   }
+
+  &--no-source &__image {
+    animation-name: none;
+  }
 }

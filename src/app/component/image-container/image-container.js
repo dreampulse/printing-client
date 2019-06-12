@@ -38,6 +38,12 @@ export default class ImageContainer extends Component {
     if (source && source !== this.props.source) {
       this.startLoading(source)
     }
+
+    if (!source && source !== this.props.source) {
+      this.setState({
+        imageLoaded: false
+      })
+    }
   }
 
   componentWillUnmount() {
@@ -58,11 +64,13 @@ export default class ImageContainer extends Component {
   }
 
   render() {
-    const {source, fallbackSource, modifiers, classNames, alt} = this.props
+    const {source, fallbackSource, modifiers = [], classNames, alt} = this.props
     const {imageLoaded} = this.state
 
+    const finalModifiers = source ? modifiers : ['no-source', ...modifiers]
+
     return (
-      <div className={buildClassName('image-container', modifiers, classNames)}>
+      <div className={buildClassName('image-container', finalModifiers, classNames)}>
         {imageLoaded && <img className="image-container__image" src={source} alt={alt} />}
         {!imageLoaded && fallbackSource && (
           <img className="image-container__image" src={fallbackSource} alt={alt} />

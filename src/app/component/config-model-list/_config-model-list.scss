@@ -1,0 +1,89 @@
+.ConfigModelList {
+  position: relative;
+
+  &__rootPortal {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    pointer-events: none;
+  }
+
+  &__item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 1;
+    transition: transform 0.3s ease-in-out 0.6s, opacity 0.3s ease-in-out;
+
+    // First item to exit
+    &.PortalTransition-appear-active {
+      animation: ConfigModelList-phase1-exit-first 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s,
+        ConfigModelList-phase2-exit-first 0.3s cubic-bezier(0.9, -0.02, 0.58, 1) 0.6s forwards !important;
+    }
+
+    // Item to exit expect the first
+    &.PortalTransition-appear-active + &.PortalTransition-appear-active {
+      animation: ConfigModelList-phase1-exit 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s,
+        ConfigModelList-phase2-exit 0.3s cubic-bezier(0.9, -0.02, 0.58, 1) 0.6s forwards !important;
+    }
+
+    &.PortalTransition-appear-done {
+      display: none;
+    }
+
+    // Item is removed
+    &.ItemTransition-exit-active,
+    &.ItemTransition-exit {
+      opacity: 0;
+    }
+
+    // New item is added
+    &.ItemTransition-enter {
+      transition: transform 0.3s ease-in-out 0.4s, opacity 0.3s ease-in-out 0.9s;
+      opacity: 0;
+    }
+    &.ItemTransition-enter-active {
+      opacity: 1;
+    }
+  }
+
+  @keyframes ConfigModelList-phase1-exit-first {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes ConfigModelList-phase1-exit {
+    to {
+      transform: translateY($space-base) scale(0.95);
+      opacity: 1;
+    }
+  }
+
+  @keyframes ConfigModelList-phase2-exit-first {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translate(60vw, -200px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes ConfigModelList-phase2-exit {
+    from {
+      transform: translateY($space-base) scale(0.95);
+      opacity: 1;
+    }
+    to {
+      transform: translate(60vw, -200px) scale(0.95);
+      opacity: 0;
+    }
+  }
+}

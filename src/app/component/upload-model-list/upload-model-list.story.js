@@ -2,14 +2,14 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import range from 'lodash/range'
 
-import ModelUploadList from '.'
+import UploadModelList from '.'
 import UploadModelItem from '../upload-model-item'
 import UploadModelItemError from '../upload-model-item-error'
 import UploadModelItemLoad from '../upload-model-item-load'
 
-storiesOf('ModelUploadList', module)
+storiesOf('UploadModelList', module)
   .add('default', () => (
-    <ModelUploadList>
+    <UploadModelList>
       {range(0, 5).map(index => (
         <UploadModelItem
           key={index}
@@ -21,15 +21,15 @@ storiesOf('ModelUploadList', module)
       ))}
       <UploadModelItemError title="Upload failed" subline="This is why" />
       <UploadModelItemLoad status={0.4} title="Uploading" subline="model_item_title.stl" />
-    </ModelUploadList>
+    </UploadModelList>
   ))
   .add('single item', () => (
-    <ModelUploadList>
+    <UploadModelList>
       <UploadModelItem
         id="item-1"
         imageSource="http://placehold.it/130x98"
         title="model_item.stl"
         subline="42 x 42 x 42 mm"
       />
-    </ModelUploadList>
+    </UploadModelList>
   ))
