@@ -25,7 +25,7 @@ import {
 } from '../lib/selector'
 
 import MaterialPartial from './material-partial'
-import OfferPartial from './offer-partial'
+import OfferFooterPartial from './offer-footer-partial'
 import LocationInfoPartial from './location-info-partial'
 
 import ToolLayout from '../component/tool-layout'
@@ -129,12 +129,7 @@ const MaterialPage = ({
     <ToolLayout fullMain scrollContainerId={SCROLL_CONTAINER_ID} sidebar={sidebar()}>
       <OfferLayout
         footer={
-          <OfferPartial
-            configIds={selectedModelConfigIds}
-            scrollContainerId={SCROLL_CONTAINER_ID}
-            selectedState={selectedState}
-            onChange={setSelectedState}
-          />
+          <OfferFooterPartial configIds={selectedModelConfigIds} selectedState={selectedState} />
         }
       >
         <Section>

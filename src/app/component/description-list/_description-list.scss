@@ -1,7 +1,7 @@
 .DescriptionList {
   display: inline-grid;
   grid-template-columns: auto 1fr;
-  grid-column-gap: $space-base;
+  grid-column-gap: $space-l;
   align-items: baseline;
   font-size: $font-size-s;
   color: $color-minor;
@@ -43,10 +43,21 @@
     }
   }
 
+  &__topline {
+    grid-column: span 2;
+  }
+
   &--alignRight {
-    & > dd {
-      margin-left: 0;
+    & > dt {
       text-align: right;
+    }
+  }
+
+  &--doubleValues {
+    grid-template-columns: auto auto 1fr;
+
+    .DescriptionList__topline {
+      grid-column: span 3;
     }
   }
 }

@@ -11,16 +11,7 @@ storiesOf('OfferCard', module).add('default', () => (
     icon={<Icon />}
     label="Label"
     mainValue="62.20 €"
-    subline="Subline"
-    footerContent={
-      <DescriptionList>
-        <dt>Term:</dt>
-        <dd>Value</dd>
-        <dt>Term:</dt>
-        <dd>Value</dd>
-      </DescriptionList>
-    }
-    action={<Button tiny primary label="Primary Action" />}
+    action={<Button primary label="Primary Action" />}
   >
     <DescriptionList>
       <dt>
@@ -34,16 +25,21 @@ storiesOf('OfferCard', module).add('default', () => (
       <dt>Term:</dt>
       <dd>Value</dd>
     </DescriptionList>
-    <DescriptionList>
+    <DescriptionList doubleValues alignRight>
       <dt>
         <em>Term:</em>
       </dt>
       <dd>
         <em>Value</em>
       </dd>
+      <dd>
+        <em>Value</em>
+      </dd>
       <dt>Term:</dt>
       <dd>Value</dd>
+      <dd>Value</dd>
       <dt>Term:</dt>
+      <dd>Value</dd>
       <dd>Value</dd>
     </DescriptionList>
   </OfferCard>

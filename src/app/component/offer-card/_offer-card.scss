@@ -12,7 +12,7 @@
       flex-shrink: 0;
       font-size: $font-size-xl;
       color: $color-primary;
-      margin-right: $space-l;
+      margin-right: $space-base;
     }
   }
 
@@ -27,26 +27,16 @@
     font-size: $font-size-xl;
   }
 
-  &__subline {
-    font-size: $font-size-s;
+  &__action {
+    margin-left: auto;
   }
 
   &__content {
     display: flex;
-    border-top: 1px solid $color-border-minor;
-    padding: $space-base 0;
-
-    & > * + * {
-      margin-left: $space-xl;
-    }
-  }
-
-  &__footer {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
     border-top: 1px solid $color-border-minor;
     padding-top: $space-base;
+    margin-left: $space-base + $font-size-xl;
 
     & > * + * {
       margin-left: $space-xl;

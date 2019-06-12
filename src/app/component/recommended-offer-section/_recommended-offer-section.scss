@@ -3,7 +3,7 @@
   grid-template-columns: 1fr;
   grid-gap: $space-l;
 
-  @include respond-to(large) {
+  @include respond-to(xlarge) {
     grid-template-columns: 1fr 1fr;
   }
 }
