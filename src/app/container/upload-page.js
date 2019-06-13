@@ -188,10 +188,10 @@ const UploadPage = ({
 
   return (
     <PageLayout
-      footer={<FooterPartial />}
       minorBackground={hasModels}
-      stickyFooter={
-        hasModels && (
+      stickyFooter={hasModels}
+      footer={
+        hasModels ? (
           <StickyFooter>
             {featureFlags.share && (
               <Button
@@ -207,10 +207,12 @@ const UploadPage = ({
               onClick={() => goToMaterial(selectedModelConfigIds)}
             />
           </StickyFooter>
+        ) : (
+          <FooterPartial />
         )
       }
     >
-      <Container full={Boolean(cart)}>
+      <Container full={hasModels}>
         {hasModels || cart ? (
           <LocationInfoPartial />
         ) : (
