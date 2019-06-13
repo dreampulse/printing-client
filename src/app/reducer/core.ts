@@ -866,7 +866,9 @@ const reset = (state: CoreState): CoreReducer => ({
     'unit',
     'featureFlags',
     'shippings',
-    'urlParams'
+    'urlParams',
+    'initTriggered',
+    'initDone'
   ),
   user: {
     ...omit(state.user, 'userId')
