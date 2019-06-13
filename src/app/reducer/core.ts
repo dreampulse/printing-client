@@ -82,6 +82,8 @@ export type CoreState = {
   cart: Cart | null
   paymentId: PaymentId | null
   orderNumber: string | null
+  initTriggered: boolean
+  initDone: boolean
 }
 
 type CoreReducer = CoreState | Loop<CoreState, Actions>
@@ -107,7 +109,9 @@ const initialState: CoreState = {
   user: null,
   cart: null,
   paymentId: null,
-  orderNumber: null
+  orderNumber: null,
+  initTriggered: false,
+  initDone: false
 }
 
 const createPriceRequestSingleton = singletonPromise()
@@ -120,21 +124,26 @@ const init = (
     {
       ...state,
       featureFlags,
-      urlParams
+      urlParams,
+      initTriggered: true
     },
-    Cmd.list([
-      Cmd.run<Actions>(printingEngine.getMaterialGroups, {
-        successActionCreator: response =>
-          coreActions.updateMaterialGroups(response.materialStructure),
-        failActionCreator: coreActions.fatalError,
-        args: []
-      }),
-      Cmd.run<Actions>(getLocationFromCookie, {
-        successActionCreator: coreActions.updateLocation,
-        failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
-        args: []
-      })
-    ])
+    Cmd.list(
+      [
+        Cmd.run<Actions>(printingEngine.getMaterialGroups, {
+          successActionCreator: response =>
+            coreActions.updateMaterialGroups(response.materialStructure),
+          failActionCreator: coreActions.fatalError,
+          args: []
+        }),
+        Cmd.run<Actions>(getLocationFromCookie, {
+          successActionCreator: coreActions.updateLocation,
+          failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
+          args: []
+        }),
+        Cmd.action(coreActions.initDone())
+      ],
+      {sequence: true}
+    )
   )
 
 const fatalError = (
@@ -857,12 +866,16 @@ const reset = (state: CoreState): CoreReducer => ({
     'unit',
     'featureFlags',
     'shippings',
-    'urlParams'
+    'urlParams',
+    'initTriggered',
+    'initDone'
   ),
   user: {
     ...omit(state.user, 'userId')
   }
 })
+
+const initDone = (state: CoreState): CoreReducer => ({...state, initDone: true})
 
 export const reducer = (state: CoreState = initialState, action: Actions): CoreReducer => {
   switch (action.type) {
@@ -930,6 +943,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return configurationReceived(state, action)
     case 'CORE.RESET':
       return reset(state)
+    case 'CORE.INIT_DONE':
+      return initDone(state)
     default:
       return state
   }
