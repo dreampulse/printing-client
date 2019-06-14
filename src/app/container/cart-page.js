@@ -293,11 +293,12 @@ const CartPage = ({
     const showCart = isCartUpToDate && hasOnlyValidModelConfigsWithQuote
     const showVat = cart.vatPrice > 0 && liableForVat !== false
     const totalPrice = showVat ? cart.totalPrice : cart.totalNetPrice
+    const showTooltipHint = !user || !user.userId
 
     return (
       <>
         <PaymentSection
-          classNames={['u-margin-bottom']}
+          classNames={showTooltipHint ? ['u-margin-bottom-xxxl'] : ['u-margin-bottom']}
           subtotal={formatPrice(showCart ? cart.subTotalPrice : null, cart.currency)}
           shippings={cartShippings.map(shipping => ({
             label: getProviderName(shipping.vendorId),
@@ -368,7 +369,7 @@ const CartPage = ({
                 </Paragraph>
               </Tooltip>
             }
-            show={!user || !user.userId}
+            show={showTooltipHint}
           >
             <PaypalButton
               disabled={!showCart || paymentInProgress || !user}
