@@ -203,7 +203,7 @@ const UploadPage = ({
             )}
             <Button
               disabled={!selectedModelConfigIds.length > 0}
-              label="Customize"
+              label="Configure Selection"
               onClick={() => goToMaterial(selectedModelConfigIds)}
             />
           </StickyFooter>
@@ -227,7 +227,7 @@ const UploadPage = ({
           <Headline
             classNames={['u-align-center']}
             modifiers={['xl', 'light']}
-            label="Which files do you want to customize first?"
+            label="Which files do you want to configure first?"
           />
         )}
         {!hasModels && (
