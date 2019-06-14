@@ -17,7 +17,7 @@ const footer = () => (
 const stickyFooter = () => (
   <StickyFooter>
     <Button text label="Deselct all files" />
-    <Button label="Customize" />
+    <Button label="Configure Selection" />
   </StickyFooter>
 )
 

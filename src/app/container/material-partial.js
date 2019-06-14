@@ -624,7 +624,7 @@ const MaterialPartial = ({
   }
 
   if (selectedModelConfigs.length === 0) {
-    return <Headline label="Select a file to start customizing" modifiers={['xl', 'light']} />
+    return <Headline label="Select a file to start configuring" modifiers={['xl', 'light']} />
   }
 
   return (

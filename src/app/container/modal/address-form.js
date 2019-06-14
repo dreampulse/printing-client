@@ -315,7 +315,7 @@ const AddressFormModal = ({
           {!isSameCountry(userLocation, values.shippingAddress) && (
             <FormRow>
               <Notification
-                message="By changing the country you have customize all models in your cart again."
+                message="By changing the country you have configure all models in your cart again."
                 warning
               />
             </FormRow>
