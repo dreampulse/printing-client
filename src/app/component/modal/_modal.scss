@@ -4,32 +4,14 @@
   $close-button-size: 20px;
   $modal-box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 4px 0;
 
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  z-index: z($global-stacking, modal);
-
-  &__mask {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba($color-gray-0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  &__modal {
-    width: $modal-default-width;
-    max-height: 95%;
-    background-color: $color-bg;
-    padding: $space-l;
-    overflow: auto;
-    border-radius: $border-radius;
-    box-shadow: $modal-box-shadow;
-  }
+  width: $modal-default-width;
+  max-width: 100%;
+  max-height: 100%;
+  background-color: $color-bg;
+  padding: $space-l;
+  overflow: auto;
+  border-radius: $border-radius;
+  box-shadow: $modal-box-shadow;
 
   &__headline {
     position: relative;
@@ -66,8 +48,6 @@
   }
 
   &--l {
-    .Modal__modal {
-      width: $modal-l-width;
-    }
+    width: $modal-l-width;
   }
 }
