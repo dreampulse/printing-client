@@ -49,7 +49,9 @@ const EditMaterialPage = ({
           icon={backIcon}
           onClick={event => {
             event.preventDefault()
-            goToCart()
+            goToCart({
+              selectModelConfigIds: configIds
+            })
           }}
         />
       </Section>

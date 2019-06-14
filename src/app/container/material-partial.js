@@ -414,7 +414,7 @@ const MaterialPartial = ({
                     global.document.querySelector(`#${scrollContainerId}`).scrollTo(0, 0)
                   } else {
                     goToCart({
-                      selectModelConfigIds: configIds
+                      selectModelConfigIds: isEditMode ? configIds : []
                     })
                   }
                 })
