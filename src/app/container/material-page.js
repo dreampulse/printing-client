@@ -71,7 +71,7 @@ const MaterialPage = ({
           icon={backIcon}
           onClick={event => {
             event.preventDefault()
-            goToUpload()
+            goToUpload({selectModelConfigIds: selectedModelConfigIds})
           }}
         />
       </Section>
