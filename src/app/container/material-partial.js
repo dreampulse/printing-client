@@ -10,6 +10,7 @@ import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import debounce from 'lodash/debounce'
 import keyBy from 'lodash/keyBy'
+import defer from 'lodash/defer'
 
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
@@ -690,7 +691,7 @@ export default compose(
         finishGroupId: null,
         materialConfigId: null
       })
-      scrollTo('#material-step-2', `#${scrollContainerId}`)
+      defer(() => scrollTo('#material-step-2', `#${scrollContainerId}`))
       setShowAllOffers(false)
     },
     selectFinishGroup: ({onChange, selectedState, scrollContainerId, setShowAllOffers}) => id => {
@@ -699,7 +700,7 @@ export default compose(
         finishGroupId: id,
         materialConfigId: null
       })
-      scrollTo('#material-step-3', `#${scrollContainerId}`)
+      defer(() => scrollTo('#material-step-3', `#${scrollContainerId}`))
       setShowAllOffers(false)
     },
     selectMaterialConfig: ({onChange, selectedState, scrollContainerId}) => id => {
@@ -707,7 +708,7 @@ export default compose(
         ...selectedState,
         materialConfigId: id
       })
-      scrollTo('#material-step-4', `#${scrollContainerId}`)
+      defer(() => scrollTo('#material-step-4', `#${scrollContainerId}`))
     }
   }),
   withProps(({materialGroups, materials, finishGroups, materialConfigs, selectedState}) => ({

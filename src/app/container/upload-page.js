@@ -7,6 +7,7 @@ import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import withHandlers from 'recompose/withHandlers'
 import intersection from 'lodash/intersection'
+import difference from 'lodash/difference'
 import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
@@ -351,14 +352,33 @@ const enhance = compose(
       this.props.updateSelectedModelConfigs(filteredModelConfigIds)
     },
     componentDidUpdate(prevProps) {
+      const {
+        uploadedModelsWithConfig,
+        modelsWithConfig,
+        selectedModelConfigIds,
+        goToMaterial,
+        updateSelectedModelConfigs,
+        isModelOpen
+      } = this.props
+
       // If user uploads exactly one model directly go to the material page.
       if (
         prevProps.uploadedModelsWithConfig.length === 0 &&
-        this.props.uploadedModelsWithConfig.length === 1 &&
-        this.props.modelsWithConfig.length === 1 &&
-        !this.props.isModelOpen
+        uploadedModelsWithConfig.length === 1 &&
+        modelsWithConfig.length === 1 &&
+        !isModelOpen
       ) {
-        this.props.goToMaterial(this.props.selectedModelConfigIds)
+        goToMaterial(uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id))
+      }
+      // Add new uploaded model to selection
+      else if (uploadedModelsWithConfig.length > prevProps.uploadedModelsWithConfig.length) {
+        updateSelectedModelConfigs([
+          ...selectedModelConfigIds,
+          ...difference(
+            uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id),
+            prevProps.uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id)
+          )
+        ])
       }
     }
   })

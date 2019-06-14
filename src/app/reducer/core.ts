@@ -466,12 +466,6 @@ const uploadComplete = (
     shippingId: null
   }))
 
-  const selectedModelConfigs: string[] = [
-    ...state.selectedModelConfigs,
-    modelConfig.id,
-    ...additionalModelConfigs.map<string>(m => m.id)
-  ]
-
   return {
     ...state,
     backendModels: {
@@ -492,8 +486,7 @@ const uploadComplete = (
           : item
       ),
       ...additionalModelConfigs
-    ],
-    selectedModelConfigs
+    ]
   }
 }
 
