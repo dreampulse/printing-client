@@ -43,13 +43,19 @@ import ConfigModelList from '../component/config-model-list'
 const SCROLL_CONTAINER_ID = 'main-container'
 
 const getConfiguredModelIds = modelConfigs =>
-  modelConfigs.filter(model => model.quoteId).map(model => model.id)
+  modelConfigs
+    .filter(modelConfig => modelConfig.quoteId !== null)
+    .map(modelConfig => modelConfig.id)
+
+const getUnconfiguredModelIds = modelConfigs =>
+  modelConfigs
+    .filter(modelConfig => modelConfig.quoteId === null)
+    .map(modelConfig => modelConfig.id)
 
 const MaterialPage = ({
   selectedState,
   setSelectedState,
   goToUpload,
-  uploadedModelConfigs,
   openModelViewer,
   modelsWithConfig,
   selectedModelConfigIds,
@@ -62,6 +68,8 @@ const MaterialPage = ({
   setInitialConfigIds,
   modelConfigs
 }) => {
+  const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
+
   const sidebar = asideNode => (
     <>
       <Section>
@@ -79,7 +87,7 @@ const MaterialPage = ({
         <Headline
           modifiers={['light']}
           label={`Your selection (${selectedModelConfigIds.length}/${
-            uploadedModelConfigs.length
+            unconfiguredConfigIds.length
           } files)`}
         />
         <Paragraph>
@@ -89,7 +97,7 @@ const MaterialPage = ({
               toggleAll()
             }}
             label={
-              modelsWithConfig.length === selectedModelConfigIds.length
+              unconfiguredConfigIds.length === selectedModelConfigIds.length
                 ? 'Deselect all files'
                 : 'Select all files'
             }
@@ -201,11 +209,12 @@ export default compose(
         updateSelectedModelConfigs([...selectedModelConfigIds, id])
       }
     },
-    toggleAll: ({updateSelectedModelConfigs, modelsWithConfig, selectedModelConfigIds}) => () => {
-      if (modelsWithConfig.length === selectedModelConfigIds.length) {
+    toggleAll: ({updateSelectedModelConfigs, modelConfigs, selectedModelConfigIds}) => () => {
+      const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
+      if (unconfiguredConfigIds.length === selectedModelConfigIds.length) {
         updateSelectedModelConfigs([])
       } else {
-        updateSelectedModelConfigs(modelsWithConfig.map(([modelConfig]) => modelConfig.id))
+        updateSelectedModelConfigs(unconfiguredConfigIds)
       }
     }
   }),
