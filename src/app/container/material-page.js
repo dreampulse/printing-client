@@ -44,7 +44,7 @@ const SCROLL_CONTAINER_ID = 'main-container'
 
 const getConfiguredModelIds = modelConfigs =>
   modelConfigs
-    .filter(modelConfig => modelConfig.quoteId !== null)
+    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null)
     .map(modelConfig => modelConfig.id)
 
 const getUnconfiguredModelIds = modelConfigs =>
@@ -64,8 +64,8 @@ const MaterialPage = ({
   duplicateModelConfig,
   updateQuantities,
   deleteModelConfigs,
-  initialConfigIds,
-  setInitialConfigIds,
+  configuredConfigIds,
+  setConfiguredConfigIds,
   modelConfigs
 }) => {
   const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
@@ -108,11 +108,11 @@ const MaterialPage = ({
             asideNode.scrollTop = 0
           }}
           onConfigurationDidChange={() => {
-            setInitialConfigIds(getConfiguredModelIds(modelConfigs))
+            setConfiguredConfigIds(getConfiguredModelIds(modelConfigs))
           }}
         >
           {modelsWithConfig
-            .filter(([modelConfig]) => !initialConfigIds.includes(modelConfig.id))
+            .filter(([modelConfig]) => !configuredConfigIds.includes(modelConfig.id))
             .map(([modelConfig, model]) => (
               <UploadModelItem
                 configured={modelConfig.quoteId}
@@ -226,7 +226,7 @@ export default compose(
     finishGroupId: null,
     materialConfigId: null
   }),
-  withState('initialConfigIds', 'setInitialConfigIds', ({modelConfigs}) =>
+  withState('configuredConfigIds', 'setConfiguredConfigIds', ({modelConfigs}) =>
     getConfiguredModelIds(modelConfigs)
   ),
   lifecycle({
