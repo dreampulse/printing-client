@@ -175,7 +175,9 @@ const MaterialPage = ({
 
 const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
-  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]),
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
+    ([modelConfig]) => modelConfig.type === 'UPLOADED'
+  ),
   currency: state.core.currency,
   location: state.core.location,
   uploadedModelConfigs: selectUploadedModelConfigs(state),

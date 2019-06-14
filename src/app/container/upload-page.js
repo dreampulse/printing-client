@@ -115,16 +115,8 @@ const UploadPage = ({
               <UploadModelItemError
                 key={modelConfig.id}
                 title="Upload failed"
-                subline={model.errorMessage}
-                buttonsRight={
-                  <ButtonBar>
-                    <Button
-                      icon={deleteIcon}
-                      iconOnly
-                      onClick={() => deleteModelConfigs([modelConfig.id])}
-                    />
-                  </ButtonBar>
-                }
+                subline="Invalid file uploaded."
+                onDelete={() => deleteModelConfigs([modelConfig.id])}
               />
             )
           }
@@ -134,15 +126,7 @@ const UploadPage = ({
               status={model.progress}
               title="Uploading"
               subline={model.fileName}
-              buttonsRight={
-                <ButtonBar>
-                  <Button
-                    icon={deleteIcon}
-                    iconOnly
-                    onClick={() => deleteModelConfigs([modelConfig.id])}
-                  />
-                </ButtonBar>
-              }
+              onDelete={() => deleteModelConfigs([modelConfig.id])}
             />
           )
         }
@@ -283,7 +267,8 @@ const mapStateToProps = state => ({
   cart: state.core.cart,
   featureFlags: state.core.featureFlags,
   useSameMaterial: state.core.useSameMaterial,
-  uploadedModelConfigs: selector.selectUploadedModelConfigs(state)
+  uploadedModelConfigs: selector.selectUploadedModelConfigs(state),
+  isModelOpen: state.modal.isOpen
 })
 
 const mapDispatchToProps = {
@@ -370,7 +355,8 @@ const enhance = compose(
       if (
         prevProps.uploadedModelsWithConfig.length === 0 &&
         this.props.uploadedModelsWithConfig.length === 1 &&
-        this.props.modelsWithConfig.length === 1
+        this.props.modelsWithConfig.length === 1 &&
+        !this.props.isModelOpen
       ) {
         this.props.goToMaterial(this.props.selectedModelConfigIds)
       }
