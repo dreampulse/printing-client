@@ -1,44 +1,36 @@
-.payment-section {
-  &__box {
-    padding: $space-l;
-    border: 1px solid $color-border-minor;
-  }
+.PaymentSection {
+  border: 1px solid $color-border-minor;
 
-  &__price-components {
+  &__priceComponents {
     list-style: none;
     margin: 0;
-    padding: 0 0;
-    margin-bottom: $space-l;
+    padding: $space-base;
+    margin-bottom: $space-base;
+    border-bottom: 1px solid $color-border-minor;
   }
 
-  &__price-component,
-  &__total-price {
+  &__priceComponent,
+  &__totalPrice {
     @include scut-clearfix;
     margin: $space-base 0;
     padding: 0;
-    font-size: $font-size-l;
+    font-size: $font-size-base;
 
     &:first-child {
       margin: 0;
     }
   }
 
-  &__price-label {
+  &__priceLabel {
     float: left;
     color: $color-minor;
   }
 
-  &__price-label-smallprint {
-    float: left;
-    font-size: $font-size-s;
-    color: $color-minor;
-  }
-
-  &__price-value {
+  &__priceValue {
     float: right;
   }
 
-  &__price-detail {
+  &__priceDetail {
     display: block;
     clear: both;
     list-style: none;
@@ -46,12 +38,12 @@
     padding: 0;
   }
 
-  &__price-detail-item {
+  &__priceDetailItem {
     @include scut-clearfix;
     display: block;
   }
 
-  &__price-detail-label {
+  &__priceDetailLabel {
     float: left;
     color: $color-minor;
 
@@ -60,31 +52,36 @@
       padding-right: $space-s;
     }
   }
-  &__price-detail-value {
+
+  &__priceDetailValue {
     float: right;
   }
 
-  &__total-price {
-    margin: $space-l 0 0;
+  &__totalPrice {
+    margin: $space-base 0 0;
+    padding-top: $space-base;
+    border-top: 1px solid $color-border-minor;
 
-    .payment-section__price-value {
+    .PaymentSection__priceValue {
       font-weight: $font-weight-bold;
+      font-size: $font-size-l;
     }
   }
 
   &__buttons {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 $space-base $space-base;
 
     & > * + * {
-      margin-top: $space-l;
+      margin-top: $space-base;
     }
   }
 
-  &__section-label {
-    font-size: $font-size-l;
-    color: $color-minor;
+  &__sectionLabel {
+    padding: 0 $space-base;
     margin-bottom: $space-base;
+    font-size: $font-size-base;
+    color: $color-minor;
   }
 }

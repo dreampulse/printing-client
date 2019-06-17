@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
-import createHistory from 'history/createBrowserHistory'
+import {createBrowserHistory} from 'history'
 import {AppContainer} from 'react-hot-loader'
 import browserUpdate from 'browser-update'
 
@@ -12,10 +12,7 @@ import Router from './router'
 
 import '../sass/main.scss'
 
-// Warn if the browser is one version behind
-browserUpdate({required: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
-
-const history = createHistory()
+const history = createBrowserHistory()
 const store = Store(history)
 
 function renderApp(CurrentRouter) {
@@ -44,4 +41,7 @@ if (process.env.NODE_ENV !== 'production') {
       renderApp(require('./router').default)
     })
   }
+} else {
+  // In production version only
+  browserUpdate({required: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
 }

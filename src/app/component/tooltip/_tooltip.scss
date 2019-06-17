@@ -1,36 +1,58 @@
 .tooltip {
-  $arrow-width: 10px;
+  $arrow-width: 5px;
   $tooltip-width: 300px;
 
   text-align: left;
-  width: $tooltip-width;
+  max-width: $tooltip-width;
   position: relative;
   background: $color-tooltip-bg;
   padding: $space-l;
   color: $color-tooltip-text;
   border-radius: $border-radius;
-  transform: translateY(-50%) translateX($arrow-width);
+  font-size: $font-size-s;
 
   & > :last-child {
     margin-bottom: 0;
   }
 
   &:before {
-    @include scut-triangle(left, $arrow-width 20px, $color-tooltip-bg);
-    transform: rotate(360deg) translateY(-50%);
-    left: -1*$arrow-width;
-    top: 50%;
     content: ' ';
     position: absolute;
+    @include scut-triangle(left, $arrow-width 15px, $color-tooltip-bg);
+    transform: rotate(360deg) translateY(-50%);
+    left: -1 * $arrow-width;
+    top: 50%;
   }
 
-  &--right {
-    transform: translateY(-50%) translateX(-1 * $tooltip-width - $arrow-width);
+  &--left {
     &:before {
-      @include scut-triangle(right, $arrow-width 20px, $color-tooltip-bg);
+      @include scut-triangle(right, $arrow-width 15px, $color-tooltip-bg);
       transform: rotate(360deg) translateY(-50%);
-      right: -1*$arrow-width;
+      right: -1 * $arrow-width;
       left: auto;
+    }
+  }
+
+  &--top {
+    text-align: center;
+
+    &:before {
+      @include scut-triangle(down, 15px $arrow-width, $color-tooltip-bg);
+      transform: rotate(360deg) translateX(-50%);
+      top: auto;
+      bottom: -1 * $arrow-width;
+      left: 50%;
+    }
+  }
+
+  &--bottom {
+    text-align: center;
+
+    &:before {
+      @include scut-triangle(up, 15px $arrow-width, $color-tooltip-bg);
+      transform: rotate(360deg) translateX(-50%);
+      top: -1 * $arrow-width;
+      left: 50%;
     }
   }
 }

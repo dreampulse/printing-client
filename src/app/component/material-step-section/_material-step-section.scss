@@ -1,0 +1,22 @@
+.MaterialStepSection {
+  $indentation: $space-xl;
+
+  margin-bottom: $space-xxxl;
+
+  &__content {
+    padding-left: $indentation;
+  }
+
+  &--fadeIn {
+    animation: MaterialStepSection-fadeIn $transition-duration linear;
+  }
+}
+
+@keyframes MaterialStepSection-fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

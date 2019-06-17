@@ -77,7 +77,22 @@ describe('printing-engine lib', () => {
     it('calls httpJson.upload() with the correct upload options', async () => {
       await uploadModel(fileMock, {unit: 'mm'}, dispatchMock, onProgressActionCreatorMock)
       expect(httpJson.upload, 'to have a call satisfying', [
-        {method: 'POST', url: `SOME-BASE-URL/v3/model`, body: {file: fileMock, unit: 'mm'}}
+        {
+          method: 'POST',
+          url: `SOME-BASE-URL/v3/model`,
+          body: {file: fileMock, unit: 'mm', refresh: false}
+        }
+      ])
+    })
+
+    it('calls httpJson.upload() with the correct upload options when refresh is true', async () => {
+      await uploadModel(fileMock, {unit: 'mm'}, dispatchMock, onProgressActionCreatorMock, true)
+      expect(httpJson.upload, 'to have a call satisfying', [
+        {
+          method: 'POST',
+          url: `SOME-BASE-URL/v3/model`,
+          body: {file: fileMock, unit: 'mm', refresh: true}
+        }
       ])
     })
 

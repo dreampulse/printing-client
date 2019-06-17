@@ -43,7 +43,7 @@ storiesOf('UploadModelItem', module)
         buttonsLeft={buttonBar()}
         buttonsRight={buttonBar()}
         selected={store.state.selected}
-        onSelect={() => store.set({selected: !store.state.selected})}
+        onSelect={selected => store.set({selected})}
       />
     ))
   )
@@ -55,5 +55,15 @@ storiesOf('UploadModelItem', module)
       subline="42 x 42 x 42 mm"
       buttonsLeft={buttonBar()}
       buttonsRight={buttonBar()}
+    />
+  ))
+  .add('no cache', () => (
+    <UploadModelItem
+      imageSource="http://placehold.it/180x180"
+      title="model_item_title_can_be_long_and_gets_truncated.stl"
+      subline="42 x 42 x 42 mm"
+      buttonsLeft={buttonBar()}
+      buttonsRight={buttonBar()}
+      noCache
     />
   ))

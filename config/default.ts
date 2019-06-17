@@ -1,19 +1,18 @@
 export default {
   pollingRetries: 200,
   pollingInterval: 1000,
-  pollingDebouncedWait: 2000,
-  fetchTimout: 3000,
   imagePollingInterval: 1500,
+  receiveQuotesWait: 2000,
   cloudinaryUrl: '//res.cloudinary.com/all3dp/image/upload',
+  landingPageUrl: '//craftcloud.all3dp.com',
   cloudinaryDefaultParams: ['q_90', 'f_auto'],
-  scrollToOffset: 100, // Height of sticky header in pixels plus spacing
-  debouncePriceRequestWait: 1000,
   stripeCheckoutImage: 'asset/image/checkout-logo.png',
   stripeDescription: '3D Printing Service',
   stripeName: 'Craftcloud by All3DP',
   ravenUrl: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
   ravenRelease: process.env.SENTRY_RELEASE_VERSION,
   countryCookie: 'country',
+  supportContactUrl: '//craftcloud.all3dp.com/contact',
   currencies: [
     {value: 'USD', label: 'USD', symbol: '$', prefix: true},
     {value: 'EUR', label: 'EUR', symbol: '€', prefix: false},

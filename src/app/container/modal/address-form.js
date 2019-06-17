@@ -29,6 +29,8 @@ import Notification from '../../component/notification'
 
 const isSameCountry = (location, address) => location.countryCode === address.countryCode
 
+const addressFormOverlayScrollContainerId = 'addressFormOverlayScrollContainer'
+
 const AddressFormModal = ({
   closeModal,
   values,
@@ -70,7 +72,7 @@ const AddressFormModal = ({
     <>
       <FormRow>
         <Headline
-          modifiers={['xs']}
+          modifiers={['s']}
           label="Company information"
           classNames={['u-no-margin-bottom']}
         />
@@ -94,11 +96,7 @@ const AddressFormModal = ({
 
   const billingAddressSection = (
     <div id="billing-address">
-      <Headline
-        modifiers={['l']}
-        classNames={['u-margin-bottom-xl', 'u-margin-top-xl']}
-        label="Billing Address"
-      />
+      <Headline modifiers={['s']} classNames={['u-margin-top-xl']} label="Billing Address" />
       <FormRow modifiers={['half-half']}>
         <Field
           validate={required}
@@ -129,7 +127,7 @@ const AddressFormModal = ({
       <FormRow>
         <Field
           component={renderFormikField(InputField)}
-          label="Address line 2"
+          label="Additional address information, e.g. company name, floor, building, etc..."
           name="billingAddress.addressLine2"
           maxLength="35"
         />
@@ -169,7 +167,7 @@ const AddressFormModal = ({
     </div>
   )
 
-  const headline = <Headline label="Shipping Address" modifiers={['l']} />
+  const headline = <Headline label="Your Address" modifiers={['l']} />
   const buttons = [
     <Button
       key="cancel_button"
@@ -195,17 +193,17 @@ const AddressFormModal = ({
 
   return (
     <Overlay
-      modifiers={['l']}
       headline={headline}
       buttons={buttons}
       closePortal={() => closeModal()}
       noCloseOnClickOutside
+      scrollContainerId={addressFormOverlayScrollContainerId}
     >
       <Form>
         <div id="shipping-address">
           <FormRow>
             <Headline
-              modifiers={['xs']}
+              modifiers={['s']}
               label="Personal information"
               classNames={['u-no-margin-bottom']}
             />
@@ -257,7 +255,7 @@ const AddressFormModal = ({
 
           <FormRow>
             <Headline
-              modifiers={['xs']}
+              modifiers={['s']}
               label="Shipping address"
               classNames={['u-no-margin-bottom']}
             />
@@ -276,7 +274,7 @@ const AddressFormModal = ({
           <FormRow>
             <Field
               component={renderFormikField(InputField)}
-              label="Address line 2"
+              label="Additional address information, e.g. company name, floor, building, etc..."
               name="shippingAddress.addressLine2"
               maxLength="35"
             />
@@ -317,7 +315,7 @@ const AddressFormModal = ({
           {!isSameCountry(userLocation, values.shippingAddress) && (
             <FormRow>
               <Notification
-                message="By changing the country you have to choose the materials for all models in your cart again."
+                message="By changing the country you have configure all models in your cart again."
                 warning
               />
             </FormRow>
@@ -466,7 +464,7 @@ const enhance = compose(
     },
     componentDidMount() {
       if (this.props.scrollTo === 'billing-address') {
-        scrollTo('#billing-address', global.document.querySelector('.overlay__modal'))
+        scrollTo('#billing-address', `#${addressFormOverlayScrollContainerId}`)
       }
     }
   })

@@ -33,11 +33,11 @@ const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation,
 
   return (
     <Overlay headline={headline} buttons={buttons} closeable={false}>
-      <Paragraph modifiers={['strong']}>
+      <Paragraph strong>
         Do you really want to change your location to <strong>{formatLocation(location)}</strong>?
       </Paragraph>
       <Paragraph>
-        By changing the country you have to choose the materials for all models in your cart again.
+        By changing the country you have to configure all models in your cart again.
       </Paragraph>
     </Overlay>
   )

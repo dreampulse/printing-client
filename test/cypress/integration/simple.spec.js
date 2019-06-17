@@ -1,12 +1,13 @@
 context('Simple application flow', () => {
   it('loads', () => {
-    cy.setCookie('country', 'DE')
     cy.visit(
       '/?feature:refresh&feature:invoice&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test'
     )
   })
 
   it('uploads test model', () => {
+    cy.setCookie('country', 'DE')
+
     const dropEvent = {
       dataTransfer: {
         files: []
@@ -15,46 +16,45 @@ context('Simple application flow', () => {
 
     cy.fixture('test-model.stl', 'base64').then(model =>
       Cypress.Blob.base64StringToBlob(model, 'application/vnd.ms-pki.stl').then(blob => {
-        dropEvent.dataTransfer.files.push(blob)
+        dropEvent.dataTransfer.files.push(new File([blob], 'test-model.stl', {type: ''}))
       })
     )
 
-    cy.get('.upload-area').trigger('drop', dropEvent)
+    cy.get('.UploadArea').trigger('drop', dropEvent)
     cy.contains('button', 'Upload').click()
-    cy.contains('.upload-model-item', 'test-model.stl')
+    cy.get('.UploadModelItem').should('have.length', 1)
   })
 
   it('selects material and provider', () => {
-    cy.get('#section-material')
+    cy.contains('button', 'Select').click()
+    cy.get('#material-step-2')
       .contains('button', 'Select')
       .click()
-
-    cy.get('#section-finish')
-      .contains('button:not(:disabled)', 'Select')
+    cy.get('#material-step-3')
+      .contains('button', 'Select')
       .click()
-
-    cy.get('#section-provider')
-      .contains('button', 'Checkout')
-      .click()
+    cy.contains('button', 'Add to cart').click()
   })
 
   it('handles address form', () => {
-    cy.contains('.headline', 'Shipping address')
+    cy.contains('.headline', 'Shipping Address')
+    cy.contains('button', 'Add Address').click()
 
-    cy.get('input[name="shippingAddress.firstName"]').type('TEST firstName')
-    cy.get('input[name="shippingAddress.lastName"]').type('TEST lastName')
-    cy.get('input[name="shippingAddress.address"]').type('TEST address')
-    cy.get('input[name="shippingAddress.city"]').type('TEST city')
-    cy.get('input[name="shippingAddress.zipCode"]').type('TEST zipCode')
-    cy.get('input[name="emailAddress"]').type('TEST@example.com')
-    cy.get('input[name="phoneNumber"]').type('0123456789')
+    // Because label of InputField overlaps input we have to force the interactions here.
+    cy.get('input[name="shippingAddress.firstName"]').type('TEST firstName', {force: true})
+    cy.get('input[name="shippingAddress.lastName"]').type('TEST lastName', {force: true})
+    cy.get('input[name="shippingAddress.address"]').type('TEST address', {force: true})
+    cy.get('input[name="shippingAddress.city"]').type('TEST city', {force: true})
+    cy.get('input[name="shippingAddress.zipCode"]').type('TEST zipCode', {force: true})
+    cy.get('input[name="emailAddress"]').type('TEST@example.com', {force: true})
+    cy.get('input[name="phoneNumber"]').type('0123456789', {force: true})
 
-    cy.contains('button', 'Review Order').click()
+    cy.contains('button', 'Confirm').click()
   })
 
   it('pays per invoice', () => {
     cy.contains('.headline', 'Review Order')
-    cy.contains('.model-item', 'test-model.stl')
+    cy.contains('.CartModelItem', 'test-model.stl')
 
     cy.contains('button', 'Pay with Invoice').click()
   })

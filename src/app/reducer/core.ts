@@ -12,7 +12,8 @@ import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
 import {
   resetModelConfigs,
   hasModelConfigWithQuote,
-  setQuotesAndShippingInModelConfigs
+  setQuotesAndShippingInModelConfigs,
+  updateQuotesInModelConfigs
 } from '../lib/model'
 import {
   getMaterialGroupLookupTable,
@@ -64,7 +65,6 @@ export type CoreState = {
   materialConfigs: {[materialConfigId: string]: MaterialConfig}
   currency: string | null
   unit: string
-  useSameMaterial: boolean
   location: Location | null
   shippings: Shipping[]
   featureFlags: Features
@@ -82,6 +82,8 @@ export type CoreState = {
   cart: Cart | null
   paymentId: PaymentId | null
   orderNumber: string | null
+  initTriggered: boolean
+  initDone: boolean
 }
 
 type CoreReducer = CoreState | Loop<CoreState, Actions>
@@ -93,7 +95,6 @@ const initialState: CoreState = {
   materialConfigs: {},
   currency: null,
   unit: 'mm',
-  useSameMaterial: true,
   location: null,
   shippings: [],
   featureFlags: {},
@@ -108,7 +109,9 @@ const initialState: CoreState = {
   user: null,
   cart: null,
   paymentId: null,
-  orderNumber: null
+  orderNumber: null,
+  initTriggered: false,
+  initDone: false
 }
 
 const createPriceRequestSingleton = singletonPromise()
@@ -121,21 +124,26 @@ const init = (
     {
       ...state,
       featureFlags,
-      urlParams
+      urlParams,
+      initTriggered: true
     },
-    Cmd.list([
-      Cmd.run<Actions>(printingEngine.getMaterialGroups, {
-        successActionCreator: response =>
-          coreActions.updateMaterialGroups(response.materialStructure),
-        failActionCreator: coreActions.fatalError,
-        args: []
-      }),
-      Cmd.run<Actions>(getLocationFromCookie, {
-        successActionCreator: coreActions.updateLocation,
-        failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
-        args: []
-      })
-    ])
+    Cmd.list(
+      [
+        Cmd.run<Actions>(printingEngine.getMaterialGroups, {
+          successActionCreator: response =>
+            coreActions.updateMaterialGroups(response.materialStructure),
+          failActionCreator: coreActions.fatalError,
+          args: []
+        }),
+        Cmd.run<Actions>(getLocationFromCookie, {
+          successActionCreator: coreActions.updateLocation,
+          failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
+          args: []
+        }),
+        Cmd.action(coreActions.initDone())
+      ],
+      {sequence: true}
+    )
   )
 
 const fatalError = (
@@ -236,14 +244,6 @@ const updateUnit = (state: CoreState, action: coreActions.UpdateUnitAction): Cor
   unit: action.payload.unit
 })
 
-const updateUseSameMaterial = (
-  state: CoreState,
-  action: coreActions.UpdateUseSameMaterialAction
-): CoreReducer => ({
-  ...state,
-  useSameMaterial: action.payload
-})
-
 const updateCurrency = (
   state: CoreState,
   action: coreActions.UpdateCurrencyAction
@@ -332,10 +332,9 @@ const restoreUser = (state: CoreState, action: coreActions.RestoreUserAction): C
       {
         ...state
       },
-      Cmd.run<Actions>(
-        printingEngine.createUser,
-        {
-          args: [pick(
+      Cmd.run<Actions>(printingEngine.createUser, {
+        args: [
+          pick(
             state.user,
             'userId',
             'emailAddress',
@@ -346,11 +345,11 @@ const restoreUser = (state: CoreState, action: coreActions.RestoreUserAction): C
             'useDifferentBillingAddress',
             'shippingAddress',
             'billingAddress'
-          )],
-          successActionCreator: coreActions.userReceived,
-          failActionCreator: coreActions.fatalError
-        }
-      )
+          )
+        ],
+        successActionCreator: coreActions.userReceived,
+        failActionCreator: coreActions.fatalError
+      })
     )
   }
 
@@ -368,55 +367,53 @@ const userReceived = (state: CoreState, action: coreActions.UserReceivedAction):
   }
 })
 
-const uploadFile = (state: CoreState, {payload}: modelActions.UploadFileAction): CoreReducer => {
-  const fileId = payload.fileId
-
-  const file = {
+const uploadFiles = (
+  state: CoreState,
+  {payload: {files, unit, refresh}}: modelActions.UploadFilesAction
+): CoreReducer => {
+  const modelConfigs: ModelConfig[] = files.map(({fileId, configId}) => ({
+    type: 'UPLOADING',
     fileId,
-    fileName: payload.file.name,
-    fileSize: payload.file.size,
-    progress: 0,
-    error: false
-  }
+    id: configId
+  }))
+
+  const uploadingFiles = files.reduce(
+    (aggr, {file, fileId}) => ({
+      ...aggr,
+      [fileId]: {
+        fileId,
+        fileName: file.name,
+        fileSize: file.size,
+        progress: 0,
+        error: false
+      }
+    }),
+    state.uploadingFiles
+  )
 
   return loop<CoreState, Actions>(
     {
       ...state,
-      uploadingFiles: {
-        ...state.uploadingFiles,
-        [fileId]: file
-      },
-      modelConfigs: [
-        ...state.modelConfigs,
-        {
-          type: 'UPLOADING',
-          fileId,
-          id: payload.configId
-        }
-      ]
+      uploadingFiles,
+      modelConfigs: [...state.modelConfigs, ...modelConfigs]
     },
-    Cmd.run<Actions>(printingEngine.uploadModel, {
-      args: [
-        payload.file,
-        {unit: payload.unit},
-        Cmd.dispatch,
-        (progress: number) => modelActions.uploadProgress(fileId, progress)
-      ],
-      successActionCreator: models =>
-        modelActions.uploadComplete(fileId, models, payload.fileIndex),
-      failActionCreator: error => modelActions.uploadFail(fileId, error)
-    })
+    Cmd.list(
+      files.map(({file, fileId}) =>
+        Cmd.run<Actions>(printingEngine.uploadModel, {
+          args: [
+            file,
+            {unit},
+            Cmd.dispatch,
+            (progress: number) => modelActions.uploadProgress(fileId, progress),
+            refresh
+          ],
+          successActionCreator: models => modelActions.uploadComplete(fileId, models),
+          failActionCreator: error => modelActions.uploadFail(fileId, error)
+        })
+      )
+    )
   )
 }
-
-const uploadFiles = (
-  state: CoreState,
-  {payload: {files, unit}}: modelActions.UploadFilesAction
-): CoreReducer =>
-  loop(
-    state,
-    Cmd.list(files.map((file, index) => Cmd.action(modelActions.uploadFile(file, unit, index))))
-  )
 
 const uploadProgress = (
   state: CoreState,
@@ -469,16 +466,6 @@ const uploadComplete = (
     shippingId: null
   }))
 
-  let selectedModelConfigs: string[] = [
-    ...state.selectedModelConfigs,
-    modelConfig.id,
-    ...additionalModelConfigs.map<string>(m => m.id)
-  ]
-
-  if (!state.useSameMaterial) {
-    selectedModelConfigs = payload.fileIndex === 0 ? [modelConfig.id] : state.selectedModelConfigs
-  }
-
   return {
     ...state,
     backendModels: {
@@ -499,8 +486,7 @@ const uploadComplete = (
           : item
       ),
       ...additionalModelConfigs
-    ],
-    selectedModelConfigs
+    ]
   }
 }
 
@@ -546,7 +532,7 @@ const deleteModelConfigs = (
     selectedModelConfigs: state.selectedModelConfigs.filter(id => payload.ids.indexOf(id) === -1)
   }
 
-  // Create new cart if a least one model config was deleted from cart
+  // Create new cart if at least one model config was deleted from cart
   if (isModelConfigInCart) {
     return loop(nextState, Cmd.action(cartActions.createCart()))
   }
@@ -591,8 +577,7 @@ const duplicateModelConfig = (
   invariant(modelConfig, `Error in duplicateModelConfig(): Model Config id ${id} is unknown`)
 
   const modelConfigIndex = state.modelConfigs.indexOf(modelConfig)
-  // Cause flow is crap!
-  const nextModelConfig: any = {
+  const nextModelConfig = {
     ...modelConfig,
     id: nextId,
     quoteId: null,
@@ -609,6 +594,14 @@ const duplicateModelConfig = (
     selectedModelConfigs: [...state.selectedModelConfigs, nextId]
   }
 }
+
+const goingToReceiveQuotes = (
+  state: CoreState,
+  action: quoteActions.GoingToReceiveQuotesAction
+): CoreReducer => ({
+  ...state,
+  printingServiceComplete: {} // Reset to signal the UI that quotes are going to be loaded
+})
 
 const receiveQuotes = (
   state: CoreState,
@@ -680,17 +673,30 @@ const startPollingQuotes = (
 
 const quotesReceived = (
   state: CoreState,
-  {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceived
-): CoreReducer => ({
-  ...state,
-  quotes: {
-    ...state.quotes,
-    ...keyBy(quotes, 'quoteId')
-  },
-  printingServiceComplete
-})
+  {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceivedAction
+): CoreReducer => {
+  const quoteMap = keyBy(quotes, 'quoteId')
+  const modelConfigs = updateQuotesInModelConfigs(state.modelConfigs, quotes, state.quotes)
 
-const quotesComplete = (state: CoreState, {payload}: quoteActions.QuotesComplete) =>
+  const nextState = {
+    ...state,
+    quotes: {
+      ...state.quotes,
+      ...quoteMap
+    },
+    modelConfigs,
+    printingServiceComplete
+  }
+
+  // Create new cart if at least one model config changed its quote id
+  if (!isEqual(modelConfigs, state.modelConfigs)) {
+    return loop(nextState, Cmd.action(cartActions.createCart()))
+  }
+
+  return nextState
+}
+
+const quotesComplete = (state: CoreState, {payload}: quoteActions.QuotesCompleteAction) =>
   loop(
     {
       ...state,
@@ -743,20 +749,19 @@ const createCart = (state: CoreState): CoreReducer => {
   const quoteIds = compact(
     modelConfigs.map(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId)
   )
-  const nextState = {
-    ...state,
-    cart: null // Clear old cart
-  }
 
   if (modelConfigs.length === 0) {
-    return nextState
+    return {
+      ...state,
+      cart: null
+    }
   }
 
   invariant(shippingIds.length > 0, 'Shippings for cart creation missing.')
   invariant(quoteIds.length > 0, 'Quotes for cart creation missing.')
 
   return loop(
-    nextState,
+    state,
     Cmd.run<Actions>(printingEngine.createCart, {
       args: [
         {
@@ -854,12 +859,16 @@ const reset = (state: CoreState): CoreReducer => ({
     'unit',
     'featureFlags',
     'shippings',
-    'urlParams'
+    'urlParams',
+    'initTriggered',
+    'initDone'
   ),
   user: {
     ...omit(state.user, 'userId')
   }
 })
+
+const initDone = (state: CoreState): CoreReducer => ({...state, initDone: true})
 
 export const reducer = (state: CoreState = initialState, action: Actions): CoreReducer => {
   switch (action.type) {
@@ -873,8 +882,6 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return updateLocation(state, action)
     case 'CORE.UPDATE_UNIT':
       return updateUnit(state, action)
-    case 'CORE.UPDATE_USE_SAME_MATERIAL':
-      return updateUseSameMaterial(state, action)
     case 'CORE.UPDATE_CURRENCY':
       return updateCurrency(state, action)
     case 'CORE.UPDATE_SHIPPINGS':
@@ -885,8 +892,6 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return restoreUser(state, action)
     case 'CORE.USER_RECEIVED':
       return userReceived(state, action)
-    case 'MODEL.UPLOAD_FILE':
-      return uploadFile(state, action)
     case 'MODEL.UPLOAD_FILES':
       return uploadFiles(state, action)
     case 'MODEL.UPLOAD_PROGRESS':
@@ -903,6 +908,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return updateQuantities(state, action)
     case 'MODEL.DUPLICATE_MODEL_CONFIG':
       return duplicateModelConfig(state, action)
+    case 'QUOTE.GOING_TO_RECEIVE_QUOTES':
+      return goingToReceiveQuotes(state, action)
     case 'QUOTE.RECEIVE_QUOTES':
       return receiveQuotes(state, action)
     case 'QUOTE.START_POLLING_QUOTES':
@@ -929,6 +936,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return configurationReceived(state, action)
     case 'CORE.RESET':
       return reset(state)
+    case 'CORE.INIT_DONE':
+      return initDone(state)
     default:
       return state
   }

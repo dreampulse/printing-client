@@ -1,16 +1,16 @@
-.material-card {
-  $footer-text-height: 30px;
-
-  max-width: $screen-sm-max;
+.MaterialCard {
+  position: relative;
+  width: $material-card-width;
   border-radius: $border-radius;
   box-shadow: $box-shadow-base;
   overflow: hidden;
 
   &__image {
-    @include scut-ratio-box(26/17);
+    @include scut-ratio-box(245/160);
     margin: 0;
     width: 100%;
     background-color: $color-gray-3;
+    background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
     border-top-left-radius: $border-radius;
@@ -18,31 +18,19 @@
   }
 
   &__content {
-    padding: $space-l;
+    padding: $space-base;
     display: flex;
     flex-direction: column;
-    height: 270px; // Design decision
   }
 
   &__header {
     flex-shrink: 0;
     position: relative;
-    margin-bottom: $space-l;
+    margin-bottom: $space-base;
 
     & > .headline {
       @include scut-truncate();
       margin-bottom: 0;
-    }
-
-    & > .info {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-
-      & + .headline {
-        margin-right: 1em; // Space for info
-      }
     }
   }
 
@@ -51,47 +39,56 @@
     border-top: 1px solid $color-border-minor;
     line-height: $line-height-base;
     padding: $space-base 0;
-    height: 2 * $font-size-base * $line-height-base;
+    font-size: $font-size-s;
+    height: 3 * $font-size-s * $line-height-base;
     box-sizing: content-box;
     overflow: hidden;
   }
 
+  &__descriptionHeadline {
+    @include scut-truncate();
+    font-weight: $font-weight-bold;
+  }
+
   &__footer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-grow: 1;
     justify-content: space-between;
-    position: relative;
+    align-items: center;
     border-top: 1px solid $color-border-minor;
     padding-top: $space-base;
+    height: 1px + $space-base + $tiny-field-height;
+
+    & > .Button {
+      width: 50%;
+    }
   }
 
-  &__color {
-    margin-top: $space-s;
-    margin-bottom: $space-l;
-  }
-
-  &__unavailable {
-    height: $footer-text-height;
-    line-height: $footer-text-height;
-    font-size: $font-size-l;
+  &__unavailableText {
+    font-size: $font-size-base;
     font-weight: $font-weight-bold;
-    margin-bottom: $space-base;
   }
 
   &--unavailable {
     color: $color-minor;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
-    opacity: 0.6;
+    box-shadow: 0 0 0 1px rgba($color-border-minor, 0.5);
 
-    .material-card__image {
+    .MaterialCard__image {
       filter: grayscale(100%);
     }
   }
 
-  &--tall {
-    .material-card__content {
-      height: 340px;
-    }
+  &--selected:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border: 1px solid $color-primary;
+    border-radius: $border-radius;
   }
 }

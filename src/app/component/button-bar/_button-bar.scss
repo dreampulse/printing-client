@@ -1,8 +1,14 @@
-.button-bar {
+.ButtonBar {
   margin-bottom: $space-base;
   white-space: nowrap;
 
   & > * + * {
-    margin-left: $space-base;
+    margin-left: $space-s;
+  }
+
+  &--l {
+    & > * + * {
+      margin-left: $space-base;
+    }
   }
 }

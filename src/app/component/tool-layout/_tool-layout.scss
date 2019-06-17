@@ -1,25 +1,19 @@
 .ToolLayout {
-  $sidebar-width: 310px;
+  $sidebar-width: 360px;
 
   position: relative;
   z-index: z($global-stacking, app);
   display: grid;
-  grid-template-areas:
-    'header header'
-    'aside main';
-  grid-template-rows: auto 1fr;
+  grid-template-areas: 'aside main';
   grid-template-columns: $sidebar-width 1fr;
-  height: 100vh;
+  height: calc(100vh - #{$nav-bar-height});
   overflow: hidden;
-
-  &__header {
-    grid-area: header;
-  }
 
   &__main {
     grid-area: main;
     padding: $space-xl;
     overflow-y: auto;
+    scroll-behavior: smooth;
   }
 
   &__aside {

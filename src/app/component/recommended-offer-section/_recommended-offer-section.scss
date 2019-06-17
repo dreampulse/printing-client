@@ -1,0 +1,13 @@
+.RecommendedOfferSection {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: $space-l;
+
+  & > * {
+    max-width: 600px; // If this section gets too wide its looks bad.
+  }
+
+  @include respond-to(xlarge) {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -1,0 +1,30 @@
+.OfferItem {
+  $data-column-width: 18em;
+
+  display: flex;
+  align-items: center;
+
+  &__main {
+    display: flex;
+    align-items: flex-end;
+    flex-grow: 1;
+    margin-right: $space-xxxl;
+
+    & > * {
+      min-width: $data-column-width;
+    }
+
+    & > * + * {
+      margin-left: $space-xxl;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+
+    & > * + * {
+      margin-left: $space-base;
+    }
+  }
+}

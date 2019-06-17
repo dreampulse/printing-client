@@ -2,29 +2,29 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 const RadioButton = ({
   classNames,
-  modifiers = [],
   name,
   label,
   value,
   checked,
   disabled = false,
-  onClick = () => {}
+  onClick = () => {},
+  tiny = false
 }) => {
   const buttonId = uniqueId('radio-button-')
   return (
     <label
       htmlFor={buttonId}
-      className={buildClassName('radio-button', modifiers, classNames)}
+      className={cn('RadioButton', {tiny}, classNames)}
       aria-checked={checked}
       aria-disabled={disabled}
     >
       <input
-        className="radio-button__input"
+        className="RadioButton__input"
         type="radio"
         name={name}
         id={buttonId}
@@ -45,7 +45,8 @@ RadioButton.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onClick: PropTypes.func,
   checked: PropTypes.bool,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  tiny: PropTypes.bool
 }
 
 export default RadioButton

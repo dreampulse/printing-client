@@ -33,7 +33,9 @@ class PaypalButton extends Component {
       <div
         style={{
           pointerEvents: this.props.disabled ? 'none' : 'auto',
-          opacity: this.props.disabled ? 0.5 : 1
+          opacity: this.props.disabled ? 0.5 : 1,
+          height: BUTTON_HEIGHT,
+          overflow: 'hidden'
         }}
         ref={el => {
           this.paypalButton = el

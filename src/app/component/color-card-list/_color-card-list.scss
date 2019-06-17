@@ -1,0 +1,11 @@
+.ColorCardList {
+  &__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -0.5 * $space-l;
+
+    & > * {
+      margin: 0.5 * $space-l;
+    }
+  }
+}

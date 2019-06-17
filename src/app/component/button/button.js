@@ -24,7 +24,6 @@ const Button = ({
   onClick = () => {}
 }) => {
   const finalIcon = selected ? selectedIcon : icon
-
   return (
     <button
       className={cn('Button', {minor, tiny, compact, text, block, selected, iconOnly}, classNames)}
@@ -52,6 +51,7 @@ Button.propTypes = {
   compact: PropTypes.bool,
   text: PropTypes.bool,
   block: PropTypes.bool,
+  selected: PropTypes.bool,
   iconOnly: PropTypes.bool
 }
 

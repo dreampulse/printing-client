@@ -5,6 +5,7 @@
   position: relative;
   display: flex;
   height: $upload-model-item-height;
+  font-size: $font-size-s;
 
   &__aside {
     position: relative;
@@ -54,6 +55,12 @@
   &__buttonsRight {
     & > * {
       margin-bottom: 0;
+    }
+  }
+
+  &--onSelect {
+    .UploadModelItem__aside {
+      cursor: pointer;
     }
   }
 

@@ -8,43 +8,38 @@ import defaultProps from 'recompose/defaultProps'
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
 
-import CheckboxField from '../checkbox-field'
+import Link from '../link'
 
 const ModelList = ({
   classNames,
   modifiers,
   children,
-  primaryActions,
-  secondaryActions,
+  actions,
   ids,
   checkedIds,
   toggleId,
   toggleAll,
-  headerAlwaysVisible
+  headerAlwaysVisible = false,
+  selectLabel,
+  deselectLabel
 }) => {
   const numChildren = React.Children.count(children)
   const childrenList = React.Children.map(children, (child, index) => {
     const id = child.props.id
     return (
       <li className="model-list__item" key={id || index}>
-        {child}
-        {id && (numChildren > 1 || headerAlwaysVisible) && (
-          <div className="model-list__checkbox">
-            <CheckboxField checked={checkedIds.includes(id)} onChange={() => toggleId(id)} />
-          </div>
-        )}
+        {id && (numChildren > 1 || headerAlwaysVisible)
+          ? React.cloneElement(child, {
+              selected: checkedIds.includes(id),
+              onSelect: () => toggleId(id)
+            })
+          : child}
       </li>
     )
   })
 
-  const primaryActionList = React.Children.map(primaryActions, (child, index) => (
-    <li className="model-list__primary-action" key={`primary-${index}`}>
-      {child}
-    </li>
-  ))
-
-  const secondaryActionList = React.Children.map(secondaryActions, (child, index) => (
-    <li className="model-list__secondary-action" key={`secondary-${index}`}>
+  const actionList = React.Children.map(actions, (child, index) => (
+    <li className="model-list__action" key={`action-${index}`}>
       {child}
     </li>
   ))
@@ -53,11 +48,16 @@ const ModelList = ({
     <div className={buildClassName('model-list', modifiers, classNames)}>
       {(numChildren > 1 || headerAlwaysVisible) && (
         <div className="model-list__header">
-          <div className="model-list__header-checkbox">
-            <CheckboxField checked={ids.length === checkedIds.length} onChange={toggleAll} />
+          <div className="model-list__select">
+            <Link
+              onClick={event => {
+                event.preventDefault()
+                toggleAll()
+              }}
+              label={ids.length === checkedIds.length ? deselectLabel : selectLabel}
+            />
           </div>
-          <ul className="model-list__primary-actions">{primaryActionList}</ul>
-          <ul className="model-list__secondary-actions">{secondaryActionList}</ul>
+          <ul className="model-list__actions">{actionList}</ul>
         </div>
       )}
       <ul className="model-list__items">{childrenList}</ul>
@@ -68,10 +68,13 @@ const ModelList = ({
 ModelList.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
-  primaryActions: PropTypes.node.isRequired,
-  secondaryActions: PropTypes.node,
+  actions: PropTypes.node.isRequired,
   checkedIds: PropTypes.arrayOf(PropTypes.string),
-  onChangeCheckedIds: PropTypes.func
+  // eslint-disable-next-line react/no-unused-prop-types
+  onChangeCheckedIds: PropTypes.func,
+  selectLabel: PropTypes.string.isRequired,
+  deselectLabel: PropTypes.string.isRequired,
+  headerAlwaysVisible: PropTypes.bool
 }
 
 const enhance = compose(

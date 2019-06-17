@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
@@ -18,12 +18,10 @@ const PickUnitModal = ({
   unit,
   setUnit,
   onUpdateUnit,
-  onUpdateUseSameMaterial,
   closeModal,
   files,
   onUploadFiles,
-  sameMaterials,
-  setSameMaterials
+  featureFlags
 }) => {
   const headline = <Headline label="Pick file unit" modifiers={['l']} />
   const buttons = [
@@ -32,8 +30,7 @@ const PickUnitModal = ({
       label="Upload"
       onClick={() => {
         onUpdateUnit(unit)
-        onUpdateUseSameMaterial(sameMaterials === 'yes')
-        onUploadFiles(files, unit)
+        onUploadFiles(files, unit, !!featureFlags.refresh)
         closeModal()
       }}
     />
@@ -47,33 +44,17 @@ const PickUnitModal = ({
         <RadioButton value="cm" />
         <RadioButton value="in" />
       </RadioButtonGroup>
-      {files.length > 1 && (
-        <Fragment>
-          <Paragraph classNames={['u-margin-top-l']}>
-            Do you want to use the same material for all files?
-          </Paragraph>
-          <RadioButtonGroup
-            name="sameMaterials"
-            value={sameMaterials}
-            onChange={value => setSameMaterials(value)}
-          >
-            <RadioButton value="yes" />
-            <RadioButton value="no" />
-          </RadioButtonGroup>
-        </Fragment>
-      )}
     </Overlay>
   )
 }
 
 const mapStateToProps = state => ({
   globalUnit: state.core.unit,
-  useSameMaterial: state.core.useSameMaterial
+  featureFlags: state.core.featureFlags
 })
 
 const mapDispatchToProps = {
   onUpdateUnit: coreActions.updateUnit,
-  onUpdateUseSameMaterial: coreActions.updateUseSameMaterial,
   onUploadFiles: modelActions.uploadFiles,
   closeModal: modalActions.closeModal
 }
@@ -83,6 +64,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withState('unit', 'setUnit', props => props.globalUnit),
-  withState('sameMaterials', 'setSameMaterials', props => (props.useSameMaterial ? 'yes' : 'no'))
+  withState('unit', 'setUnit', props => props.globalUnit)
 )(PickUnitModal)

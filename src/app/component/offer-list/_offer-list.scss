@@ -1,0 +1,55 @@
+.OfferList {
+  $min-height: 300px;
+
+  position: relative;
+
+  &__offers {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  &__offer {
+    padding: $space-base 0;
+
+    &:not(:first-child) {
+      border-top: 2px solid $color-bg-minor;
+    }
+  }
+
+  &__more {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $min-height;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(rgba($color-bg, 0.5), rgba($color-bg, 1));
+    transition: opacity $transition-duration linear;
+  }
+
+  &--hasMore {
+    .OfferList__offers {
+      height: $min-height;
+      min-height: $min-height;
+    }
+
+    .OfferList__more {
+      display: flex;
+    }
+  }
+
+  &--showMore {
+    .OfferList__offers {
+      height: auto;
+    }
+
+    .OfferList__more {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+}

@@ -1,4 +1,5 @@
 const childProcess = require('child_process')
+// eslint-disable-next-line import/no-extraneous-dependencies
 const path = require('path')
 const webpack = require('webpack')
 const autoprefixer = require('autoprefixer')
@@ -123,7 +124,7 @@ module.exports = {
       : []),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(env),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || env),
         SENTRY_RELEASE_VERSION: JSON.stringify(sentryReleaseVersion)
       }
     }),

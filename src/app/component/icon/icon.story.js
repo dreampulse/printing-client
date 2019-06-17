@@ -7,4 +7,4 @@ import icon from '../../../asset/icon/placeholder.svg'
 
 storiesOf('Icon', module)
   .add('default', () => <Icon source={icon} />)
-  .add('block', () => <Icon source={icon} modifiers={['block']} />)
+  .add('block', () => <Icon source={icon} block />)

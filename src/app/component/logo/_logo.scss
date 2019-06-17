@@ -1,11 +1,10 @@
-.logo {
+.Logo {
   display: flex;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
   margin-bottom: $space-l;
   text-align: left;
-  outline: 0;
   height: $nav-bar-content-height;
 
   @include respond-to(medium) {
@@ -16,12 +15,5 @@
   &__image {
     height: $nav-bar-content-height;
     margin-right: $space-base;
-  }
-
-  &__subline {
-    font-weight: inherit;
-    line-height: $line-height-s;
-    margin-top: -1em; // Center subline and let it overflow
-    margin-bottom: -1em;
   }
 }

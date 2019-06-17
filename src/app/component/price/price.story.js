@@ -5,9 +5,9 @@ import Price from '.'
 import LoadingCheckmark from '../loading-checkmark'
 
 storiesOf('Price', module)
-  .add('default', () => <Price value="$19.44" meta="incl. tax & shipping" />)
-  .add('with prefix', () => <Price value="$19.44" prefix="From" />)
-  .add('loading', () => <Price value="$19.44" meta="incl. tax & shipping" loading />)
-  .add('global loading', () => (
+  .add('default', () => <Price value="$19.44" />)
+  .add('prefix', () => <Price value="$19.44" prefix="+" />)
+  .add('loading', () => <Price value="$19.44" loading />)
+  .add('loadingCheckmark', () => (
     <Price value="$19.44" loadingCheckmark={<LoadingCheckmark modifiers={['done']} />} />
   ))

@@ -1,7 +1,8 @@
 import {
   resetModelConfigs,
   hasModelConfigWithQuote,
-  setQuotesAndShippingInModelConfigs
+  setQuotesAndShippingInModelConfigs,
+  updateQuotesInModelConfigs
 } from './model'
 
 describe('resetModelConfigs()', () => {
@@ -272,5 +273,115 @@ describe('setQuotesAndShippingInModelConfigs()', () => {
       'to equal',
       modelConfigs
     )
+  })
+})
+
+describe('updateQuotesInModelConfigs()', () => {
+  it('updates quote id in model configs', () => {
+    const modelConfigs = [
+      {
+        type: 'UPLOADING',
+        fileId: 'file-id-1',
+        id: 'id-1'
+      },
+      {
+        type: 'UPLOADED',
+        quantity: 2,
+        modelId: 'model-id-1',
+        id: 'id-1',
+        quoteId: 'quote-id-1',
+        shippingId: 'shipping-id-1'
+      }
+    ]
+
+    const newQuotes = [
+      {
+        quoteId: 'quote-id-2',
+        modelId: 'model-id-1',
+        materialConfigId: 'material-config-id-1',
+        vendorId: 'vendor-id-1',
+        quantity: 2
+      }
+    ]
+
+    const quotesMap = {
+      'quote-id-1': {
+        quoteId: 'quote-id-1',
+        modelId: 'model-id-1',
+        materialConfigId: 'material-config-id-1',
+        vendorId: 'vendor-id-1',
+        quantity: 1
+      }
+    }
+
+    expect(updateQuotesInModelConfigs(modelConfigs, newQuotes, quotesMap), 'to equal', [
+      {
+        type: 'UPLOADING',
+        fileId: 'file-id-1',
+        id: 'id-1'
+      },
+      {
+        type: 'UPLOADED',
+        quantity: 2,
+        modelId: 'model-id-1',
+        id: 'id-1',
+        quoteId: 'quote-id-2',
+        shippingId: 'shipping-id-1'
+      }
+    ])
+  })
+
+  it('does not update quote ids when no new quotes are matching', () => {
+    const modelConfigs = [
+      {
+        type: 'UPLOADING',
+        fileId: 'file-id-1',
+        id: 'id-1'
+      },
+      {
+        type: 'UPLOADED',
+        quantity: 1,
+        modelId: 'model-id-1',
+        id: 'id-1',
+        quoteId: 'quote-id-1',
+        shippingId: 'shipping-id-1'
+      }
+    ]
+
+    const newQuotes = [
+      {
+        quoteId: 'quote-id-2',
+        modelId: 'model-id-2',
+        materialConfigId: 'material-config-id-2',
+        vendorId: 'vendor-id-2',
+        quantity: 2
+      }
+    ]
+
+    const quotesMap = {
+      'quote-id-1': {
+        quoteId: 'quote-id-1',
+        modelId: 'model-id-1',
+        materialConfigId: 'material-config-id-1',
+        vendorId: 'vendor-id-1',
+        quantity: 1
+      }
+    }
+
+    expect(updateQuotesInModelConfigs(modelConfigs, newQuotes, quotesMap), 'to equal', [
+      {
+        type: 'UPLOADING',
+        fileId: 'file-id-1',
+        id: 'id-1'
+      },
+      {
+        type: 'UPLOADED',
+        quantity: 1,
+        modelId: 'model-id-1',
+        id: 'id-1',
+        quoteId: 'quote-id-1',
+        shippingId: 'shipping-id-1'
+      }
+    ])
   })
 })

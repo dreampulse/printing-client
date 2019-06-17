@@ -1,30 +1,29 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 import compact from 'lodash/compact'
 import {withRouter} from 'react-router'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
+import withHandlers from 'recompose/withHandlers'
+import intersection from 'lodash/intersection'
+import difference from 'lodash/difference'
 import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
-import cartIcon from '../../asset/icon/cart.svg'
+import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
-import {formatDimensions, formatPrice} from '../lib/formatter'
-import {selectModelsOfModelConfigs, selectCartCount} from '../lib/selector'
+import {formatDimensions} from '../lib/formatter'
+import * as printingEngine from '../lib/printing-engine'
+import * as selector from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
-import scrollTo from '../service/scroll-to'
-import {openIntercom} from '../service/intercom'
 
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 import * as modelViewerAction from '../action/model-viewer'
 import * as modalAction from '../action/modal'
 
-import AppLayout from './app-layout'
-import ModelListPartial from './model-list-partial'
-import MaterialPartial from './material-partial'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import LocationInfoPartial from './location-info-partial'
 import FooterPartial from './footer-partial'
@@ -32,9 +31,9 @@ import FooterPartial from './footer-partial'
 import Section from '../component/section'
 import Headline from '../component/headline'
 import UploadArea from '../component/upload-area'
-import DeprecatedUploadModelItemError from '../component/deprecated-upload-model-item-error'
-import DeprecatedUploadModelItemLoad from '../component/deprecated-upload-model-item-load'
-import DeprecatedUploadModelItem from '../component/deprecated-upload-model-item'
+import UploadModelItemError from '../component/upload-model-item-error'
+import UploadModelItemLoad from '../component/upload-model-item-load'
+import UploadModelItem from '../component/upload-model-item'
 import Button from '../component/button'
 import ButtonBar from '../component/button-bar'
 import Notification from '../component/notification'
@@ -42,6 +41,12 @@ import NumberField from '../component/number-field'
 import Grid from '../component/grid'
 import Column from '../component/column'
 import RichText from '../component/rich-text'
+import PageLayout from '../component/page-layout'
+import Container from '../component/container'
+import UploadModelList from '../component/upload-model-list'
+import StickyFooter from '../component/sticky-footer'
+import Link from '../component/link'
+import Paragraph from '../component/paragraph'
 
 const UploadPage = ({
   openPickUnitModal,
@@ -49,171 +54,222 @@ const UploadPage = ({
   updateQuantities,
   duplicateModelConfig,
   modelsWithConfig,
-  goToCart,
+  goToMaterial,
   openModelViewer,
   cart,
-  cartCount,
   location,
   featureFlags,
   selectedModelConfigIds,
-  numModelsUploading,
-  isUploadCompleted,
-  hasQuotes
+  toggleId,
+  toggleAll,
+  createConfiguration
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
 
-  const promoSection = () => (
-    <Fragment>
-      <Section>
-        <Grid>
-          <Column md={0} lg={4} />
-          <Column md={12} lg={4}>
-            <RichText modifiers={['l']} classNames={['u-margin-bottom-xl', 'u-align-center']}>
-              Large quantities, recurring orders or special requirements?
-            </RichText>
-            <div className="u-align-center ">
-              <Button minor label="Contact Us" onClick={() => openIntercom()} />
-            </div>
-          </Column>
-          <Column md={0} lg={4} />
-        </Grid>
-      </Section>
-    </Fragment>
+  const renderPromoSection = () => (
+    <Section>
+      <Grid>
+        <Column md={0} lg={4} />
+        <Column md={12} lg={4}>
+          <RichText classNames={['u-margin-bottom-xl', 'u-align-center']}>
+            Large quantities, recurring orders or special requirements?
+          </RichText>
+          <div className="u-align-center ">
+            <Button
+              minor
+              label="Contact Us"
+              onClick={() => global.window.open('https://craftcloud.all3dp.com/contact', '_blank')}
+            />
+          </div>
+        </Column>
+        <Column md={0} lg={4} />
+      </Grid>
+    </Section>
   )
 
-  const uploadSection = () => (
+  const renderNotificationSection = () => (
     <Section>
+      {location.state && location.state.notification && (
+        <Notification
+          message={location.state.notification.message}
+          warning={location.state.notification.warning}
+        />
+      )}
+    </Section>
+  )
+
+  const renderModelList = () => (
+    <UploadModelList>
       <UploadArea
-        label="Drag any 3D files here or"
+        s
+        label="Drag additional 3D files here or"
         linkLabel="select files"
         description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
         accept="*"
         onChange={openPickUnitModal}
-        modifiers={compact([numModels === 0 && 'l'])}
       />
-    </Section>
-  )
-
-  const buttonBar = modelConfig => (
-    <ButtonBar>
-      {modelConfig.quantity && (
-        <NumberField
-          value={modelConfig.quantity}
-          onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-        />
-      )}
-      <Button icon={copyIcon} iconOnly onClick={() => duplicateModelConfig(modelConfig.id)} />
-      <Button icon={deleteIcon} iconOnly onClick={() => deleteModelConfigs([modelConfig.id])} />
-    </ButtonBar>
-  )
-
-  const modelListSection = () => (
-    <Section>
-      <Headline
-        label={
-          isUploadCompleted
-            ? 'Your Files'
-            : `Uploading files ${numModelsUploading} of ${numModels}…`
-        }
-        modifiers={['xl']}
-      />
-      <ModelListPartial
-        enableShare={featureFlags.share}
-        onPrimaryActionClick={() => scrollTo('#section-material')}
-      >
-        {modelsWithConfig.map(([modelConfig, model]) => {
-          if (modelConfig.type === 'UPLOADING') {
-            if (model.error) {
-              return (
-                <DeprecatedUploadModelItemError
-                  key={modelConfig.id}
-                  title="Upload failed"
-                  subline={model.errorMessage}
-                  onDelete={() => deleteModelConfigs([modelConfig.id])}
-                />
-              )
-            }
+      {modelsWithConfig.map(([modelConfig, model]) => {
+        if (modelConfig.type === 'UPLOADING') {
+          if (model.error) {
             return (
-              <DeprecatedUploadModelItemLoad
+              <UploadModelItemError
                 key={modelConfig.id}
-                status={model.progress}
-                title="Uploading"
-                subline={model.fileName}
+                title="Upload failed"
+                subline="Invalid file uploaded."
                 onDelete={() => deleteModelConfigs([modelConfig.id])}
               />
             )
           }
-          if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
-            return (
-              <DeprecatedUploadModelItem
-                key={modelConfig.id}
-                id={modelConfig.id}
-                imageSource={model.thumbnailUrl}
-                title={model.fileName}
-                subline={formatDimensions(model.dimensions, model.fileUnit)}
-                buttonBar={buttonBar(modelConfig)}
-                onMagnify={() => openModelViewer(model)}
-              />
-            )
-          }
-
-          return null
-        })}
-      </ModelListPartial>
-    </Section>
-  )
-
-  const cartNotification = () => (
-    <Notification
-      message={`${cartCount} item${cartCount > 1 ? 's' : ''} added to your cart`}
-      button={<Button label="Cart" icon={cartIcon} onClick={() => goToCart()} />}
-    >
-      Cart subtotal ({cartCount} item{cartCount > 1 ? 's' : ''}):&nbsp;
-      <strong>{formatPrice(cart.totalPrice, cart.currency)}</strong>
-    </Notification>
-  )
-
-  const locationNotification = ({message, warning}) => (
-    <Notification message={message} warning={warning} />
-  )
-
-  const notificationSection = () => (
-    <Section>
-      {cart && cartNotification()}
-      {location.state &&
-        location.state.notification &&
-        locationNotification(location.state.notification)}
-    </Section>
+          return (
+            <UploadModelItemLoad
+              key={modelConfig.id}
+              status={model.progress}
+              title="Uploading"
+              subline={model.fileName}
+              onDelete={() => deleteModelConfigs([modelConfig.id])}
+            />
+          )
+        }
+        if (modelConfig.type === 'UPLOADED' && !modelConfig.quoteId) {
+          return (
+            <UploadModelItem
+              key={modelConfig.id}
+              imageSource={model.thumbnailUrl}
+              title={model.fileName}
+              subline={formatDimensions(model.dimensions, model.fileUnit)}
+              buttonsRight={
+                <ButtonBar>
+                  <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
+                  <Button
+                    icon={copyIcon}
+                    iconOnly
+                    onClick={() => duplicateModelConfig(modelConfig.id)}
+                  />
+                  <Button
+                    icon={deleteIcon}
+                    iconOnly
+                    onClick={() => deleteModelConfigs([modelConfig.id])}
+                  />
+                </ButtonBar>
+              }
+              selected={selectedModelConfigIds.includes(modelConfig.id)}
+              onSelect={() => toggleId(modelConfig.id)}
+              buttonsLeft={
+                modelConfig.quantity && (
+                  <NumberField
+                    value={modelConfig.quantity}
+                    onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+                  />
+                )
+              }
+            />
+          )
+        }
+        return null
+      })}
+    </UploadModelList>
   )
 
   return (
-    <AppLayout footer={<FooterPartial />}>
-      {hasQuotes ? <LocationInfoPartial /> : <ConfigurationHeaderPartial />}
-      {(cart || (location.state && location.state.notification)) && notificationSection()}
-      {uploadSection()}
-      {hasModels && modelListSection()}
-      {hasModels && selectedModelConfigIds.length > 0 && (
-        <MaterialPartial configIds={selectedModelConfigIds} isUploadPage />
+    <PageLayout
+      minorBackground={hasModels}
+      stickyFooter={hasModels}
+      footer={
+        hasModels ? (
+          <StickyFooter>
+            {featureFlags.share && (
+              <Button
+                text
+                disabled={selectedModelConfigIds.length === 0}
+                label="Share configuration"
+                onClick={() => createConfiguration(selectedModelConfigIds)}
+              />
+            )}
+            <Button
+              disabled={!selectedModelConfigIds.length > 0}
+              label="Configure Selection"
+              onClick={() => goToMaterial(selectedModelConfigIds)}
+            />
+          </StickyFooter>
+        ) : (
+          <FooterPartial />
+        )
+      }
+    >
+      <Container full={hasModels}>
+        {hasModels || cart ? (
+          <LocationInfoPartial />
+        ) : (
+          <Section>
+            <ConfigurationHeaderPartial />
+          </Section>
+        )}
+      </Container>
+      <Container>
+        {location.state && location.state.notification && renderNotificationSection()}
+        {hasModels && (
+          <Headline
+            classNames={['u-align-center']}
+            modifiers={['xl', 'light']}
+            label="Which files do you want to configure first?"
+          />
+        )}
+        {!hasModels && (
+          <UploadArea
+            l
+            label="Drag any 3D files here or"
+            linkLabel="select files"
+            description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+            accept="*"
+            onChange={openPickUnitModal}
+          />
+        )}
+      </Container>
+      {hasModels && (
+        <Container s>
+          <Section>
+            <Headline
+              modifiers={['light']}
+              label={`Your selection (${selectedModelConfigIds.length}/${numModels} files)`}
+            />
+            <Paragraph>
+              <Link
+                onClick={event => {
+                  event.preventDefault()
+                  toggleAll()
+                }}
+                label={
+                  modelsWithConfig.length === selectedModelConfigIds.length
+                    ? 'Deselect all files'
+                    : 'Select all files'
+                }
+              />
+            </Paragraph>
+            {renderModelList()}
+          </Section>
+        </Container>
       )}
-      {!hasModels && promoSection()}
-    </AppLayout>
+      {!hasModels && <Container>{renderPromoSection()}</Container>}
+    </PageLayout>
   )
 }
 
 const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
-  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
-    ([modelConfig]) => {
-      const mc = modelConfig // Flow bug with detecting correct branch in union type
-      return mc.type !== 'UPLOADED' || mc.quoteId === null
-    }
-  ),
+  modelsWithConfig: unzip([
+    state.core.modelConfigs,
+    selector.selectModelsOfModelConfigs(state)
+  ]).filter(([modelConfig]) => modelConfig.type !== 'UPLOADED' || modelConfig.quoteId === null),
+  uploadedModelsWithConfig: unzip([
+    state.core.modelConfigs,
+    selector.selectModelsOfModelConfigs(state)
+  ]).filter(([modelConfig]) => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null),
   cart: state.core.cart,
-  cartCount: selectCartCount(state),
   featureFlags: state.core.featureFlags,
   useSameMaterial: state.core.useSameMaterial,
-  hasQuotes: !!state.core.modelConfigs.find(modelConfig => modelConfig.quoteId)
+  uploadedModelConfigs: selector.selectUploadedModelConfigs(state),
+  isModelOpen: state.modal.isOpen
 })
 
 const mapDispatchToProps = {
@@ -221,8 +277,10 @@ const mapDispatchToProps = {
   deleteModelConfigs: modelAction.deleteModelConfigs,
   updateQuantities: modelAction.updateQuantities,
   duplicateModelConfig: modelAction.duplicateModelConfig,
-  goToCart: navigationAction.goToCart,
-  openModelViewer: modelViewerAction.open
+  goToMaterial: navigationAction.goToMaterial,
+  openModelViewer: modelViewerAction.open,
+  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
+  openShareConfigurationModal: modalAction.openShareConfigurationModal
 }
 
 const enhance = compose(
@@ -232,38 +290,95 @@ const enhance = compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withProps(({modelsWithConfig, selectedModelConfigIds}) => {
+  withProps(({modelsWithConfig}) => {
     const numModelsUploading = modelsWithConfig.reduce(
       (sum, [modelConfig, model]) =>
         modelConfig.type === 'UPLOADING' && !model.error ? sum + 1 : sum,
       0
     )
     const isUploadCompleted = numModelsUploading === 0
-
-    // Special case when there is only one uploaded model the checkbox for selecting the model aren't shown anymore
-    // therefore we have to guarantee that the model is always selected.
-    const updatedSelectedModelConfigIds = [...selectedModelConfigIds]
-    if (updatedSelectedModelConfigIds.length === 0 && modelsWithConfig.length === 1) {
-      const modelConfig = modelsWithConfig[0][0]
-      if (modelConfig.type === 'UPLOADED') {
-        updatedSelectedModelConfigIds.push(modelConfig.id)
-      }
-    }
-
     return {
       numModelsUploading,
-      isUploadCompleted,
-      selectedModelConfigIds: updatedSelectedModelConfigIds
+      isUploadCompleted
+    }
+  }),
+  withHandlers({
+    toggleId: ({updateSelectedModelConfigs, selectedModelConfigIds}) => id => {
+      if (selectedModelConfigIds.includes(id)) {
+        updateSelectedModelConfigs(selectedModelConfigIds.filter(item => item !== id))
+      } else {
+        updateSelectedModelConfigs([...selectedModelConfigIds, id])
+      }
+    },
+    toggleAll: ({updateSelectedModelConfigs, modelsWithConfig, selectedModelConfigIds}) => () => {
+      if (modelsWithConfig.length === selectedModelConfigIds.length) {
+        updateSelectedModelConfigs([])
+      } else {
+        updateSelectedModelConfigs(modelsWithConfig.map(([modelConfig]) => modelConfig.id))
+      }
+    },
+    createConfiguration: ({
+      uploadedModelConfigs,
+      fatalError,
+      openShareConfigurationModal
+    }) => configIds => {
+      const items = compact(
+        configIds.map(configId => {
+          const modelConfig = uploadedModelConfigs.find(mc => mc.id === configId)
+          if (!modelConfig) {
+            return null
+          }
+          return {
+            modelId: modelConfig.modelId,
+            quantity: modelConfig.quantity
+          }
+        })
+      )
+
+      printingEngine
+        .createConfiguration({items})
+        .then(({configurationId}) => {
+          openShareConfigurationModal(configurationId)
+        })
+        .catch(fatalError)
     }
   }),
   lifecycle({
+    componentDidMount() {
+      const {location} = this.props
+      const allModelConfigIds = this.props.uploadedModelConfigs.map(modelConfig => modelConfig.id)
+      const selectModelConfigIds = (location.state && location.state.selectModelConfigIds) || []
+      const filteredModelConfigIds = intersection(allModelConfigIds, selectModelConfigIds)
+      this.props.updateSelectedModelConfigs(filteredModelConfigIds)
+    },
     componentDidUpdate(prevProps) {
+      const {
+        uploadedModelsWithConfig,
+        modelsWithConfig,
+        selectedModelConfigIds,
+        goToMaterial,
+        updateSelectedModelConfigs,
+        isModelOpen
+      } = this.props
+
+      // If user uploads exactly one model directly go to the material page.
       if (
-        this.props.isUploadCompleted &&
-        !prevProps.isUploadCompleted &&
-        this.props.useSameMaterial
+        prevProps.uploadedModelsWithConfig.length === 0 &&
+        uploadedModelsWithConfig.length === 1 &&
+        modelsWithConfig.length === 1 &&
+        !isModelOpen
       ) {
-        scrollTo('#section-material')
+        goToMaterial(uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id))
+      }
+      // Add new uploaded model to selection
+      else if (uploadedModelsWithConfig.length > prevProps.uploadedModelsWithConfig.length) {
+        updateSelectedModelConfigs([
+          ...selectedModelConfigIds,
+          ...difference(
+            uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id),
+            prevProps.uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id)
+          )
+        ])
       }
     }
   })

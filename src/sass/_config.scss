@@ -3,12 +3,12 @@
 
 $font-family-base: 'Roboto', sans-serif;
 
-$font-size-s: 12px;
-$font-size-base: 15px;
+$font-size-xs: 12px;
+$font-size-s: 14px;
+$font-size-base: 16px;
 $font-size-l: 20px;
-$font-size-xl: 25px;
-$font-size-xxl: 35px;
-$font-size-xxxl: 45px;
+$font-size-xl: 35px;
+$font-size-xxl: 45px;
 
 $line-height-s: 1.2;
 $line-height-base: 1.4;
@@ -32,7 +32,7 @@ $color-blue: #0078e2;
 $color-blue-light: #3692e2;
 $color-blue-lighter: #aad7fd;
 $color-blue-very-light: #e9f5ff;
-$color-yellow: #f6a623;
+$color-yellow: #e38c00;
 $color-yellow-light: #fbb94e;
 $color-red: #ca0f0f;
 $color-red-light: #fcd1d1;
@@ -49,10 +49,8 @@ $color-primary: $color-blue;
 $color-primary-active: $color-blue-light;
 $color-minor: $color-gray-2;
 $color-minor-highlighted: $color-gray-1;
-$color-bg-minor: $color-gray-5;
 $color-border: $color-gray-2;
 $color-border-minor: $color-gray-4;
-$color-warning: $color-yellow;
 $color-error: $color-red;
 $color-field-focus: $color-primary;
 $color-field-bg: $color-white;
@@ -61,6 +59,7 @@ $color-link: $color-blue;
 $color-success: $color-green;
 $color-warning: $color-yellow;
 $color-warning-active: $color-yellow-light;
+$color-cart-count: $color-yellow;
 
 $color-tooltip-bg: rgba(0, 0, 0, 0.89);
 $color-tooltip-text: $color-white;
@@ -91,18 +90,23 @@ $screen-sm-max: 749px;
 $screen-md-min: 750px;
 $screen-md-max: 959px;
 $screen-lg-min: 960px;
+$screen-lg-max: 1499px;
+$screen-xlg-min: 1500px;
 
 $mediaqueries: (
   small-only: '(max-width: #{$screen-sm-max})',
   medium: '(min-width: #{$screen-md-min})',
   medium-only: '(min-width: #{$screen-md-min}) and (max-width: #{$screen-md-max})',
-  large: '(min-width: #{$screen-lg-min})'
+  large: '(min-width: #{$screen-lg-min})',
+  large-only: '(min-width: #{$screen-lg-min}) and (max-width: #{$screen-lg-max})',
+  xlarge: '(min-width: #{$screen-xlg-min})'
 );
 
 // Misc
 // ---------------------------------------------------
 
 $nav-bar-content-height: 40px;
+$nav-bar-height: $nav-bar-content-height + 2 * $space-l;
 $field-height: 50px;
 $compact-field-height: 40px;
 $tiny-field-height: 30px;
@@ -113,17 +117,22 @@ $model-item-image-width: 180px;
 $model-item-height: $model-item-image-width / 4 * 3 + 2 * $space-base + 2px;
 $upload-model-item-height: 122px;
 $upload-model-item-height-s: 102px;
-$color-square-size: 20px;
+
+$material-card-width: 245px;
+
+$cart-model-item-height: 185px;
+$cart-model-item-height-s: 60px;
 
 $box-shadow-base: 1px 1px 2px 1px rgba(0, 0, 0, 0.15);
 $box-shadow-active: 1px 1px 6px 0 rgba(0, 0, 0, 0.4);
+$box-shadow-flyout: 2px 2px 12px 0 rgba(0, 0, 0, 0.33);
 $box-shadow-focus: 0px 0px 4px 0 rgba($color-primary, 0.5);
 $box-shadow-error: 0px 0px 4px 0 rgba($color-error, 0.5);
 
 $transition-duration: 0.4s;
 $transition-duration-fast: 0.15s;
 
-$global-stacking: app, tooltip, overlay, select-menu;
+$global-stacking: app, tooltip, overlay, select-menu, positioning-portal;
 
 $interface-touchable-min-size: 45px;
 

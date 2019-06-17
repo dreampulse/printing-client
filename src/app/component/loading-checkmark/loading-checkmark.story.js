@@ -3,7 +3,7 @@ import {storiesOf} from '@storybook/react'
 
 import LoadingCheckmark from '.'
 
-storiesOf('Loading Checkmark', module)
+storiesOf('LoadingCheckmark', module)
   .add('default', () => <LoadingCheckmark />)
-  .add('done', () => <LoadingCheckmark modifiers={['done']} />)
-  .add('hideWithDelay', () => <LoadingCheckmark modifiers={['hideWithDelay']} />)
+  .add('done', () => <LoadingCheckmark done />)
+  .add('hideAfterTimeout', () => <LoadingCheckmark hideAfterTimeout />)

@@ -4,13 +4,18 @@ import {getCountryName} from '../service/country'
 import config from '../../../config'
 import {Location} from '../type'
 
-export function formatPrice(value: number, currency: string) {
-  const formattedValue = value.toFixed(2)
+export function formatPrice(value: number | null, currency: string) {
+  const formattedValue = value === null ? '-' : value.toFixed(2)
   const supportedCurrency = config.currencies.find(c => c.value === currency)
   const prefix = supportedCurrency ? supportedCurrency.prefix : true
   const symbol = supportedCurrency ? supportedCurrency.symbol : currency
 
-  return prefix ? `${symbol}${formattedValue}` : `${formattedValue}${symbol}`
+  return prefix ? `${symbol} ${formattedValue}` : `${formattedValue} ${symbol}`
+}
+
+export function formatPriceDifference(value: number, baseValue: number, currency: string) {
+  const sign = value - baseValue >= 0 ? '+' : '-'
+  return `${sign}${formatPrice(Math.abs(value - baseValue), currency)}`
 }
 
 function appendDays(n: number) {
@@ -38,7 +43,7 @@ export function formatTimeRange(from: number, to: number): string {
 export const formatLocation = (location: Location) =>
   compact([location.city, location.countryCode && getCountryName(location.countryCode)]).join(', ')
 
-export function formatDimensions({x, y, z}: {x: number, y: number, z: number}, unit: string) {
+export function formatDimensions({x, y, z}: {x: number; y: number; z: number}, unit: string) {
   if (!x && !y && !z) return null
 
   // Round to at most 2 decimal places but drop 0s

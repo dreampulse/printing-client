@@ -8,7 +8,7 @@
   height: $field-height;
   padding: 0 (2 * $space-around-icon + 1em) 0 1em;
   line-height: $field-height;
-  font-size: $font-size-l;
+  font-size: $font-size-base;
   border-radius: $border-radius;
   border: 1px solid $color-border;
   box-shadow: $box-shadow-base;
@@ -17,23 +17,13 @@
   background: $color-bg;
   color: $color-minor;
 
-  & > .color-square {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-
-    & + .select-field__value {
-      margin-left: $color-square-size + $space-base;
-    }
-  }
-
   &__value {
     @include scut-truncate;
 
     display: block;
   }
 
-  & > .icon {
+  & > .Icon {
     position: absolute;
     top: 0;
     right: $space-around-icon;
@@ -57,7 +47,7 @@
     padding-left: 0.5em;
     padding-right: 2 * $space-around-icon-compact + 1em;
 
-    & > .icon {
+    & > .Icon {
       right: $space-around-icon-compact;
     }
   }
@@ -71,7 +61,7 @@
     background-color: transparent;
     cursor: initial;
 
-    & > .icon {
+    & > .Icon {
       display: none;
     }
   }

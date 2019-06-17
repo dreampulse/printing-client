@@ -10,13 +10,25 @@ storiesOf('Tooltip', module)
   .addDecorator(centered)
   .add('default', () => (
     <Tooltip>
-      <Headline modifiers={['s']} label="Headline" />
+      <Headline label="Headline" />
       <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
     </Tooltip>
   ))
-  .add('right', () => (
-    <Tooltip modifiers={['right']}>
-      <Headline modifiers={['s']} label="Headline" />
+  .add('orientation right', () => (
+    <Tooltip orientation="right">
+      <Headline label="Headline" />
+      <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
+    </Tooltip>
+  ))
+  .add('orientation top', () => (
+    <Tooltip orientation="top">
+      <Headline label="Headline" />
+      <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
+    </Tooltip>
+  ))
+  .add('orientation bottom', () => (
+    <Tooltip orientation="bottom">
+      <Headline label="Headline" />
       <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
     </Tooltip>
   ))

@@ -1,14 +1,19 @@
 import velocity from 'velocity-animate'
 
-import config from '../../../config'
+export default function scrollTo(selector: string, container?: string) {
+  let el: HTMLElement | null = window.document.querySelector(selector) as HTMLElement
+  // As any because types of velocity.animate are broken (it awaits jQuery<HTMLElement>)
+  const containerEl = container ? (window.document.querySelector(container) as any) : window
 
-export default function scrollTo(selector: any, container?: any) {
-  const el = window.document.querySelector(selector)
+  if (!el) {
+    return
+  }
 
-  velocity.animate(el, 'scroll', {
-    duration: 300,
-    easing: 'ease-in-out',
-    offset: -1 * config.scrollToOffset,
-    container
-  })
+  let offset = 0
+  while (el !== containerEl && el !== null) {
+    offset += el.offsetTop
+    el = el.parentElement
+  }
+
+  containerEl.scrollTop = offset
 }

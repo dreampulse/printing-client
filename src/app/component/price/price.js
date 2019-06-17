@@ -1,31 +1,29 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import LoadingIndicator from '../loading-indicator'
 
 const Price = ({
   classNames,
-  modifiers,
   value,
   prefix,
-  meta,
   loading = false,
-  loadingCheckmark = null
+  loadingCheckmark = null,
+  loadingLabel = 'Fetching'
 }) => (
-  <div className={buildClassName('price', modifiers, classNames)}>
+  <div className={cn('Price', {}, classNames)}>
     {loading ? (
-      <div className="price__loading">
-        <LoadingIndicator /> Fetching prices
+      <div className="Price__loading">
+        <LoadingIndicator /> {loadingLabel}
       </div>
     ) : (
-      <div className="price__price">
-        {prefix ? <small className="price__prefix">{prefix}</small> : null}
-        <div className="price__value">{value}</div>
-        {meta ? <small className="price__meta">{meta}</small> : null}
-        {loadingCheckmark && <div className="price__loading-checkmark">{loadingCheckmark}</div>}
+      <div className="Price__price">
+        {prefix ? <small className="Price__prefix">{prefix}</small> : null}
+        <div className="Price__value">{value}</div>
+        {loadingCheckmark && <div className="Price__loadingCheckmark">{loadingCheckmark}</div>}
       </div>
     )}
   </div>
@@ -35,9 +33,9 @@ Price.propTypes = {
   ...propTypes.component,
   value: PropTypes.string,
   prefix: PropTypes.string,
-  meta: PropTypes.string,
   loading: PropTypes.bool,
-  loadingCheckmark: PropTypes.node
+  loadingCheckmark: PropTypes.node,
+  loadingLabel: PropTypes.string
 }
 
 export default Price

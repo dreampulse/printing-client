@@ -14,7 +14,6 @@ export type UpdateMaterialGroupsAction = Action<
 >
 export type UpdateLocationAction = Action<'CORE.UPDATE_LOCATION', {location: Location; force: boolean}>
 export type UpdateUnitAction = Action<'CORE.UPDATE_UNIT', {unit: string}>
-export type UpdateUseSameMaterialAction = Action<'CORE.UPDATE_USE_SAME_MATERIAL', boolean>
 export type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string; force: boolean}>
 export type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 export type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Shipping[]>
@@ -22,6 +21,7 @@ export type SaveUserAction = Action<'CORE.SAVE_USER', User>
 export type RestoreUserAction = Action<'CORE.RESTORE_USER', void>
 export type UserReceivedAction = Action<'CORE.USER_RECEIVED', UserResponse>
 export type ResetAction = Action<'CORE.RESET', void>
+export type InitDoneAction = Action<'CORE.INIT_DONE', void>
 
 export type CoreAction =
   | InitAction
@@ -34,8 +34,8 @@ export type CoreAction =
   | SaveUserAction
   | UserReceivedAction
   | ResetAction
-  | UpdateUseSameMaterialAction
   | RestoreUserAction
+  | InitDoneAction
 
 export const init = ({featureFlags, urlParams}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
@@ -63,11 +63,6 @@ export const updateLocation = (
 export const updateUnit = (unit: string): UpdateUnitAction => ({
   type: 'CORE.UPDATE_UNIT',
   payload: {unit}
-})
-
-export const updateUseSameMaterial = (useSameMaterial: boolean): UpdateUseSameMaterialAction => ({
-  type: 'CORE.UPDATE_USE_SAME_MATERIAL',
-  payload: useSameMaterial
 })
 
 export const updateCurrency = (currency: string, force: boolean = false): UpdateCurrencyAction => ({
@@ -102,5 +97,10 @@ export const userReceived = (payload: UserResponse): UserReceivedAction => ({
 
 export const reset = (): ResetAction => ({
   type: 'CORE.RESET',
+  payload: undefined
+})
+
+export const initDone = (): InitDoneAction => ({
+  type: 'CORE.INIT_DONE',
   payload: undefined
 })

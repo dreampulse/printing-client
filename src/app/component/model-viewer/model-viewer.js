@@ -1,20 +1,21 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import buildClassName from '../../lib/class-names'
+
 import LoadingIndicator from '../loading-indicator'
 
-const ModelViewer = ({classNames, modifiers = [], sceneId}) => (
-  <div className={buildClassName('model-viewer', modifiers, classNames)}>
+const ModelViewer = ({classNames, sceneId}) => (
+  <div className={buildClassName('ModelViewer', {}, classNames)}>
     {sceneId ? (
       <iframe
-        className="model-viewer__iframe"
+        className="ModelViewer__iframe"
         title={`Model viewer ${sceneId}`}
         src={`https://www.3dvieweronline.com/members/Idee1d01930813d9f10858db96fd9d58b1/${sceneId}`}
       />
     ) : (
-      <LoadingIndicator classNames={['model-viewer__loading-indicator']} modifiers={['invert']} />
+      <LoadingIndicator invert />
     )}
   </div>
 )

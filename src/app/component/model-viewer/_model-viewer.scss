@@ -1,4 +1,4 @@
-.model-viewer {
+.ModelViewer {
   @include scut-ratio-box(4/3);
   position: relative;
   background: $color-gray-3;
@@ -11,9 +11,9 @@
     border: 0;
   }
 
-  &__loading-indicator {
+  & > .LoadingIndicator {
     @include scut-center-transform;
-    font-size: $font-size-xl;
-    color: $color-gray-0;
+    font-size: $font-size-l;
+    color: $color-text;
   }
 }

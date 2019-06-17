@@ -1,22 +1,63 @@
-.description-list {
+.DescriptionList {
   display: inline-grid;
-  grid-template-columns: auto auto;
-  grid-column-gap: $space-base;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: $space-l;
+  align-items: baseline;
   font-size: $font-size-s;
   color: $color-minor;
   margin: 0;
   text-align: left;
 
-  & > :nth-child(2n) {
-    @include scut-truncate();
-    margin-left: 0;
+  & > dt {
+    & > strong {
+      font-weight: $font-weight-regular;
+      color: $color-text;
+    }
+
+    & > em {
+      color: $color-text;
+      font-style: normal;
+    }
   }
 
-  &--align-right {
-    & > :nth-child(2n) {
-      margin-left: 0;
+  & > dd {
+    @include scut-truncate();
+    margin-left: 0;
+
+    & > strong {
+      font-weight: $font-weight-bold;
+      color: $color-text;
+      font-size: $font-size-l;
+      line-height: $line-height-s;
+    }
+
+    & > em {
+      color: $color-text;
+      font-style: normal;
+    }
+
+    // There is a grid bug when provider image is a block element
+    & > .ProviderImage {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  &__topline {
+    grid-column: span 2;
+  }
+
+  &--alignRight {
+    & > dt {
       text-align: right;
     }
   }
-}
 
+  &--doubleValues {
+    grid-template-columns: auto auto 1fr;
+
+    .DescriptionList__topline {
+      grid-column: span 3;
+    }
+  }
+}

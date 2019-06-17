@@ -2,71 +2,128 @@ import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
-import lifecycle from 'recompose/lifecycle'
+import withState from 'recompose/withState'
+import unzip from 'lodash/unzip'
 
 import * as navigationAction from '../action/navigation'
+import * as modelViewerAction from '../action/model-viewer'
+import * as modelAction from '../action/model'
 
-import {selectModelConfigsByIds, selectUploadedModelConfigs} from '../lib/selector'
-import {scrollToTop} from './util/scroll-to-top'
+import backIcon from '../../asset/icon/back.svg'
+import zoomInIcon from '../../asset/icon/zoom-in.svg'
 
-import FooterPartial from './footer-partial'
-import ConfigurationHeaderPartial from './configuration-header-partial'
+import {formatDimensions} from '../lib/formatter'
+import {selectModelsOfModelConfigs, selectCommonMaterialPathOfModelConfigs} from '../lib/selector'
+import {guard} from './util/guard'
+
 import MaterialPartial from './material-partial'
+import OfferFooterPartial from './offer-footer-partial'
+import LocationInfoPartial from './location-info-partial'
 
-import PageLayout from '../component/page-layout'
-import Container from '../component/container'
-import NavBar from '../component/nav-bar'
-import CloseButton from '../component/close-button'
 import Headline from '../component/headline'
 import Section from '../component/section'
+import ToolLayout from '../component/tool-layout'
+import Link from '../component/link'
+import Button from '../component/button'
+import ButtonBar from '../component/button-bar'
+import UploadModelItem from '../component/upload-model-item'
+import NumberField from '../component/number-field'
+import OfferLayout from '../component/offer-layout'
 
-const EditMaterialPage = ({goToCart, configIds, uploadedModelConfigs}) => {
-  const title = `Edit material (${configIds.length} of ${uploadedModelConfigs.length} items)`
+const SCROLL_CONTAINER_ID = 'main-container'
+
+const EditMaterialPage = ({
+  goToCart,
+  modelsWithConfig,
+  configIds,
+  openModelViewer,
+  updateQuantities,
+  selectedState,
+  setSelectedState
+}) => {
+  const sidebar = () => (
+    <>
+      <Section>
+        <Link
+          label="Back to cart"
+          icon={backIcon}
+          onClick={event => {
+            event.preventDefault()
+            goToCart({
+              selectModelConfigIds: configIds
+            })
+          }}
+        />
+      </Section>
+      <Section classNames={['u-no-margin']}>
+        <Headline
+          modifiers={['light']}
+          label={`Your selection (${modelsWithConfig.length} ${
+            modelsWithConfig.length > 1 ? 'files' : 'file'
+          })`}
+        />
+        {modelsWithConfig.map(([modelConfig, model]) => (
+          <UploadModelItem
+            s
+            classNames={['u-margin-bottom']}
+            key={modelConfig.id}
+            imageSource={model.thumbnailUrl}
+            title={model.fileName}
+            subline={formatDimensions(model.dimensions, model.fileUnit)}
+            buttonsLeft={
+              <NumberField
+                value={modelConfig.quantity}
+                onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+              />
+            }
+            buttonsRight={
+              <ButtonBar>
+                <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
+              </ButtonBar>
+            }
+          />
+        ))}
+      </Section>
+    </>
+  )
 
   return (
-    <PageLayout
-      header={[
-        <NavBar
-          key="header-bar"
-          leftContent={
-            <>
-              <CloseButton
-                modifiers={['l', 'minor']}
-                onClick={() => goToCart({selectModelConfigIds: configIds})}
-              />
-              <Headline modifiers={['l', 'minor']} label={title} />
-            </>
-          }
+    <ToolLayout fullMain scrollContainerId={SCROLL_CONTAINER_ID} sidebar={sidebar()}>
+      <OfferLayout
+        footer={<OfferFooterPartial configIds={configIds} selectedState={selectedState} />}
+      >
+        <Section>
+          <LocationInfoPartial />
+        </Section>
+        <MaterialPartial
+          isEditMode
+          configIds={configIds}
+          scrollContainerId={SCROLL_CONTAINER_ID}
+          selectedState={selectedState}
+          onChange={setSelectedState}
         />
-      ]}
-      footer={<FooterPartial />}
-    >
-      <Section>
-        <Container>
-          <ConfigurationHeaderPartial key="configuration-header" />
-        </Container>
-      </Section>
-      <Container>
-        <MaterialPartial configIds={configIds} />
-      </Container>
-    </PageLayout>
+      </OfferLayout>
+    </ToolLayout>
   )
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  selectedModelConfigs: selectModelConfigsByIds(state, ownProps.configIds),
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
+    ([modelConfig]) =>
+      modelConfig.type !== 'UPLOADED' || ownProps.configIds.includes(modelConfig.id)
+  ),
   currency: state.core.currency,
   location: state.core.location,
-  uploadedModelConfigs: selectUploadedModelConfigs(state)
+  commonMaterialPath: selectCommonMaterialPathOfModelConfigs(state, ownProps.configIds)
 })
 
 const mapDispatchToProps = {
-  goToUpload: navigationAction.goToUpload,
-  goToCart: navigationAction.goToCart
+  goToCart: navigationAction.goToCart,
+  openModelViewer: modelViewerAction.open,
+  updateQuantities: modelAction.updateQuantities
 }
 
 export default compose(
-  scrollToTop(),
   withProps(({location}) => ({
     configIds: (location.state && location.state.configIds) || []
   })),
@@ -74,11 +131,11 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  lifecycle({
-    componentWillMount() {
-      if (this.props.selectedModelConfigs.length === 0) {
-        this.props.goToUpload()
-      }
-    }
-  })
+  withState('selectedState', 'setSelectedState', ({commonMaterialPath}) => ({
+    materialGroupId: commonMaterialPath.materialGroupId,
+    materialId: commonMaterialPath.materialId,
+    finishGroupId: commonMaterialPath.finishGroupId,
+    materialConfigId: commonMaterialPath.materialConfigId
+  })),
+  guard(props => props.modelsWithConfig.length > 0)
 )(EditMaterialPage)

@@ -4,4 +4,12 @@
   margin: 0 auto;
   padding: 0 $space-l;
   max-width: $global-max-width + 2 * $space-l;
+
+  &--full {
+    max-width: none;
+  }
+
+  &--s {
+    max-width: 750px + 2 * $space-l;
+  }
 }

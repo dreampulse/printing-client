@@ -9,14 +9,11 @@ import withHandlers from 'recompose/withHandlers'
 
 import ModelList from '../component/model-list'
 import Button from '../component/button'
-import NumberField from '../component/number-field'
-import Link from '../component/link'
 
 import * as coreAction from '../action/core'
 import * as modelAction from '../action/model'
 import * as modalAction from '../action/modal'
 
-import {getCommonQuantity} from '../lib/quantity'
 import * as selector from '../lib/selector'
 import * as printingEngine from '../lib/printing-engine'
 
@@ -24,13 +21,10 @@ import deleteIcon from '../../asset/icon/delete.svg'
 
 const ModelListPartial = ({
   children,
-  editMode = false,
   enableShare = false,
   selectedModelConfigIds,
-  commonQuantity,
   updateSelectedModelConfigs,
   deleteModelConfigs,
-  updateQuantities,
   onPrimaryActionClick,
   createConfiguration
 }) => {
@@ -38,47 +32,8 @@ const ModelListPartial = ({
   const numberOfItems = React.Children.count(children)
   const numberOfSelectedItems = selectedModelConfigIds.length
 
-  const renderPrimaryActions = () => {
-    if (editMode) {
-      return (
-        <Button
-          tiny
-          minor
-          disabled={disabled}
-          label={`Edit Material${
-            numberOfSelectedItems > 0 ? ` (${numberOfSelectedItems} of ${numberOfItems})` : ''
-          }`}
-          onClick={() => onPrimaryActionClick(selectedModelConfigIds)}
-        />
-      )
-    }
-
-    return (
-      <span>
-        {numberOfSelectedItems} of {numberOfItems} files selected
-        {numberOfSelectedItems > 0 && ' – '}
-        {numberOfSelectedItems > 0 && (
-          <Link
-            label="Proceed"
-            onClick={event => {
-              event.preventDefault()
-              onPrimaryActionClick(selectedModelConfigIds)
-            }}
-          />
-        )}
-      </span>
-    )
-  }
-
-  const renderSecondaryActions = () =>
+  const renderActions = () =>
     compact([
-      !editMode && commonQuantity && (
-        <NumberField
-          key="quantity"
-          value={commonQuantity}
-          onChange={quantity => updateQuantities(selectedModelConfigIds, quantity)}
-        />
-      ),
       <Button
         disabled={disabled}
         iconOnly
@@ -86,8 +41,21 @@ const ModelListPartial = ({
         key="delete"
         onClick={() => deleteModelConfigs(selectedModelConfigIds)}
       />,
+      <Button
+        key="edit"
+        tiny
+        minor
+        disabled={disabled}
+        label={`Edit Material${
+          numberOfSelectedItems > 0 ? ` (${numberOfSelectedItems} of ${numberOfItems})` : ''
+        }`}
+        onClick={() => onPrimaryActionClick(selectedModelConfigIds)}
+      />,
       enableShare && (
         <Button
+          key="share"
+          tiny
+          minor
           disabled={disabled}
           label="Share configuration"
           onClick={() => createConfiguration(selectedModelConfigIds)}
@@ -99,9 +67,10 @@ const ModelListPartial = ({
     <ModelList
       checkedIds={selectedModelConfigIds}
       onChangeCheckedIds={updateSelectedModelConfigs}
-      primaryActions={renderPrimaryActions()}
-      secondaryActions={renderSecondaryActions()}
+      actions={renderActions()}
       headerAlwaysVisible={enableShare}
+      selectLabel="Select all files"
+      deselectLabel="Deselect all files"
     >
       {children}
     </ModelList>
@@ -110,15 +79,13 @@ const ModelListPartial = ({
 
 const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
-  uploadedModelConfigs: selector.selectUploadedModelConfigs(state),
-  commonQuantity: getCommonQuantity(selector.selectSelectedModelConfigs(state))
+  uploadedModelConfigs: selector.selectUploadedModelConfigs(state)
 })
 
 const mapDispatchToProps = {
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
   clearSelectedModelConfigs: modelAction.clearSelectedModelConfigs,
   deleteModelConfigs: modelAction.deleteModelConfigs,
-  updateQuantities: modelAction.updateQuantities,
   openShareConfigurationModal: modalAction.openShareConfigurationModal,
   fatalError: coreAction.fatalError
 }
@@ -162,12 +129,7 @@ export default compose(
       const allModelConfigIds = this.props.uploadedModelConfigs.map(modelConfig => modelConfig.id)
       const selectModelConfigIds = (location.state && location.state.selectModelConfigIds) || []
       const filteredModelConfigIds = intersection(allModelConfigIds, selectModelConfigIds)
-      if (filteredModelConfigIds.length > 0) {
-        this.props.updateSelectedModelConfigs(filteredModelConfigIds)
-      }
-    },
-    componentWillUnmount() {
-      this.props.clearSelectedModelConfigs()
+      this.props.updateSelectedModelConfigs(filteredModelConfigIds)
     }
   })
 )(ModelListPartial)

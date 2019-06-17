@@ -1,64 +1,53 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
-const PaymentSection = ({
-  classNames,
-  modifiers,
-  children,
-  childrenLabel,
-  subtotal,
-  shippings,
-  vat,
-  total
-}) => (
-  <section className={buildClassName('payment-section', modifiers, classNames)}>
-    <div className="payment-section__box">
-      <ul className="payment-section__price-components">
-        <li className="payment-section__price-component">
-          <span className="payment-section__price-label">Subtotal:</span>
-          <span className="payment-section__price-value">{subtotal}</span>
+const PaymentSection = ({classNames, children, childrenLabel, subtotal, shippings, vat, total}) => (
+  <section className={cn('PaymentSection', {}, classNames)}>
+    <ul className="PaymentSection__priceComponents">
+      <li className="PaymentSection__priceComponent">
+        <span className="PaymentSection__priceLabel">Subtotal:</span>
+        <span className="PaymentSection__priceValue">{subtotal}</span>
+      </li>
+      {shippings.length > 0 && (
+        <li className="PaymentSection__priceComponent">
+          <span className="PaymentSection__priceLabel">Shipping:</span>
+          {shippings.length === 1 && (
+            <span className="PaymentSection__priceValue">{shippings[0].price}</span>
+          )}
+          {shippings.length > 1 && (
+            <ul className="PaymentSection__priceDetail">
+              {shippings.map(shipping => (
+                <li key={shipping.label} className="PaymentSection__priceDetailItem">
+                  <span className="PaymentSection__priceDetailLabel">{shipping.label}</span>
+                  <span className="PaymentSection__priceDetailValue">{shipping.price}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
-        {shippings.length > 0 && (
-          <li className="payment-section__price-component">
-            <span className="payment-section__price-label">Shipping:</span>
-            {shippings.length === 1 && (
-              <span className="payment-section__price-value">{shippings[0].price}</span>
-            )}
-            {shippings.length > 1 && (
-              <ul className="payment-section__price-detail">
-                {shippings.map(shipping => (
-                  <li key={shipping.label} className="payment-section__price-detail-item">
-                    <span className="payment-section__price-detail-label">{shipping.label}</span>
-                    <span className="payment-section__price-detail-value">{shipping.price}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-        )}
-        {vat && (
-          <li className="payment-section__price-component">
-            <span className="payment-section__price-label">VAT:</span>
-            <span className="payment-section__price-value">{vat}</span>
-          </li>
-        )}
-        <li className="payment-section__total-price">
-          <span className="payment-section__price-label">Total:</span>
-          <span className="payment-section__price-value">{total}</span>
+      )}
+      {vat && (
+        <li className="PaymentSection__priceComponent">
+          <span className="PaymentSection__priceLabel">VAT:</span>
+          <span className="PaymentSection__priceValue">{vat}</span>
         </li>
-      </ul>
-      {childrenLabel && <div className="payment-section__section-label">{childrenLabel}</div>}
-      <ul className="payment-section__buttons">
-        {React.Children.map(children, child => (
-          <li key={child.key} className="payment-section__button">
-            {child}
-          </li>
-        ))}
-      </ul>
-    </div>
+      )}
+      <li className="PaymentSection__totalPrice">
+        <span className="PaymentSection__priceLabel">Total:</span>
+        <span className="PaymentSection__priceValue">{total}</span>
+      </li>
+    </ul>
+    {childrenLabel && <div className="PaymentSection__sectionLabel">{childrenLabel}</div>}
+    <ul className="PaymentSection__buttons">
+      {React.Children.map(children, (child, index) => (
+        <li key={index} className="PaymentSection__button">
+          {child}
+        </li>
+      ))}
+    </ul>
   </section>
 )
 
@@ -74,7 +63,7 @@ PaymentSection.propTypes = {
     })
   ),
   vat: PropTypes.string,
-  total: PropTypes.string.isRequired
+  total: PropTypes.node.isRequired
 }
 
 export default PaymentSection

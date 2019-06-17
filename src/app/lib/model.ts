@@ -1,6 +1,6 @@
 import keyBy from 'lodash/keyBy'
 
-import {ModelConfig, Quote, Shipping, ConfigId} from '../type'
+import {ModelConfig, Quote, Shipping, ConfigId, QuoteId} from '../type'
 
 export const resetModelConfigs = (modelConfigs: ModelConfig[]): ModelConfig[] =>
   modelConfigs.map(modelConfig => {
@@ -45,3 +45,32 @@ export const setQuotesAndShippingInModelConfigs = (
     return modelConfig
   })
 }
+
+// Update quoteIds if quantities changed in configured modelConfigs.
+// This happens when quantites are changed on cart or edit material page.
+export const updateQuotesInModelConfigs = (
+  modelConfigs: ModelConfig[],
+  newQuotes: Quote[],
+  quotesMap: {[quoteId: string]: Quote}
+): ModelConfig[] =>
+  modelConfigs.map(modelConfig => {
+    if (modelConfig.type === 'UPLOADED' && modelConfig.quoteId) {
+      const prevQuote = quotesMap[modelConfig.quoteId]
+      const quote = newQuotes.find(
+        q =>
+          q.quantity === modelConfig.quantity &&
+          q.materialConfigId === prevQuote.materialConfigId &&
+          q.modelId === prevQuote.modelId &&
+          q.vendorId === prevQuote.vendorId
+      )
+
+      if (quote) {
+        return {
+          ...modelConfig,
+          quoteId: quote.quoteId
+        }
+      }
+    }
+
+    return modelConfig
+  })

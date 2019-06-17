@@ -23,7 +23,7 @@ export default ({error}) => {
           <Image src={errorImage} alt="System Error" />
         </Column>
         <Column sm={9}>
-          <Paragraph modifiers={['minor']}>{error.message}</Paragraph>
+          <Paragraph minor>{error.message}</Paragraph>
           <Paragraph>
             An unexpected error occured. Our technicians have been automatically warned and are
             working to fix the problem.
