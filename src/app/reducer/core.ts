@@ -841,8 +841,7 @@ const configurationReceived = (
   return {
     ...state,
     modelConfigs,
-    backendModels,
-    selectedModelConfigs: modelConfigs.map(modelConfig => modelConfig.id)
+    backendModels
   }
 }
 
