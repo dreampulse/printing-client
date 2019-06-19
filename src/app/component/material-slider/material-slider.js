@@ -44,8 +44,8 @@ export default class MaterialSlider extends Component {
     const prevChildrenSet = new Set(Children.map(prevProps.children, child => child.props.title))
 
     if (
-      Children.count(this.props.children) !== Children.count(prevProps.children) &&
-      Children.map(this.props.children, child => child.props.title).every(child =>
+      Children.count(this.props.children) !== Children.count(prevProps.children) ||
+      !Children.map(this.props.children, child => child.props.title).every(child =>
         prevChildrenSet.has(child)
       )
     ) {
