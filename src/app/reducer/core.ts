@@ -590,8 +590,7 @@ const duplicateModelConfig = (
       ...state.modelConfigs.slice(0, modelConfigIndex + 1),
       nextModelConfig,
       ...state.modelConfigs.slice(modelConfigIndex + 1)
-    ],
-    selectedModelConfigs: [...state.selectedModelConfigs, nextId]
+    ]
   }
 }
 
