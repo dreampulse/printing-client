@@ -89,3 +89,12 @@ storiesOf('CartModelItem', module)
       info="42 x 42 x 42 mm"
     />
   ))
+  .add('s & selected', () => (
+    <CartModelItem
+      s
+      id="someId"
+      imageSource="http://placehold.it/180x180"
+      title="model_item_title_can_be_long_and_gets_truncated.stl"
+      info="42 x 42 x 42 mm"
+    />
+  ))
