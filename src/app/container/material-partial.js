@@ -280,7 +280,10 @@ const MaterialPartial = ({
       )
 
     return (
-      <MaterialStepSection headline={<Headline size="xl" light label="2. Select Finish" />} fadeIn>
+      <MaterialStepSection
+        headline={<Headline size="xl" light label="2. Select Variation/Finish" />}
+        fadeIn
+      >
         <MaterialSlider>
           {selectedMaterial &&
             selectedMaterial.finishGroups.length > 0 &&
