@@ -283,7 +283,7 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        headline={<Headline modifiers={['xl', 'light']} label="2. Select Finish" />}
+        headline={<Headline modifiers={['xl', 'light']} label="2. Select Variation/Finish" />}
         fadeIn
       >
         <MaterialSlider>
