@@ -172,8 +172,6 @@ export default class MaterialSlider extends Component {
       this.currentTween.abort()
     }
 
-    this.canvasDom.scrollLeft = 0
-
     this.updateButtonVisibilityState()
     this.updateDots()
   }
