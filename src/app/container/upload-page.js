@@ -48,11 +48,6 @@ import StickyFooter from '../component/sticky-footer'
 import Link from '../component/link'
 import Paragraph from '../component/paragraph'
 
-const getConfiguredModelIds = modelConfigs =>
-  modelConfigs
-    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null)
-    .map(modelConfig => modelConfig.id)
-
 const getUnconfiguredModelIds = modelConfigs =>
   modelConfigs
     .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null)
