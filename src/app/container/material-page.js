@@ -7,6 +7,7 @@ import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import lifecycle from 'recompose/lifecycle'
 import intersection from 'lodash/intersection'
+import difference from 'lodash/difference'
 
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
@@ -241,9 +242,27 @@ export default compose(
         goToUpload()
       }
     },
-    componentDidUpdate() {
-      if (this.props.modelsWithConfig.length === 0) {
-        this.props.goToUpload()
+    componentDidUpdate(prevProps) {
+      const {
+        modelsWithConfig,
+        updateSelectedModelConfigs,
+        goToUpload,
+        selectedModelConfigIds
+      } = this.props
+
+      if (modelsWithConfig.length === 0) {
+        goToUpload()
+      }
+
+      // Duplicate a model selection
+      if (modelsWithConfig.length > prevProps.modelsWithConfig.length) {
+        updateSelectedModelConfigs([
+          ...selectedModelConfigIds,
+          ...difference(
+            modelsWithConfig.map(([modelConfig]) => modelConfig.id),
+            prevProps.modelsWithConfig.map(([modelConfig]) => modelConfig.id)
+          )
+        ])
       }
     }
   })
