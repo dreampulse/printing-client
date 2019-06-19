@@ -32,11 +32,6 @@ const MaterialCard = ({
     backgroundImage: `url(${image})`
   }
 
-  const onTitleClick = event => {
-    event.preventDefault()
-    onSelectClick(event)
-  }
-
   return (
     <div
       className={cn(
@@ -50,10 +45,8 @@ const MaterialCard = ({
     >
       {image && <div className="MaterialCard__image" style={imageStyle} />}
       <div className="MaterialCard__content">
-        <div className="MaterialCard__header">
-          <a className="MaterialCard__headerLink" href="#" onClick={onTitleClick}>
-            <Headline label={title} tag="strong" />
-          </a>
+        <div className="MaterialCard__header" onClick={onSelectClick}>
+          <Headline label={title} tag="strong" />
         </div>
         {Boolean(description) && (
           <div className="MaterialCard__body">

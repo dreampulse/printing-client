@@ -21,44 +21,33 @@ const ColorCard = ({
   selectedLabel = 'Selected',
   unavailableLabel = 'Not printable',
   contactUsLabel = 'Contact us'
-}) => {
-  const handleTitleClick = event => {
-    event.preventDefault()
-    onSelectClick(event)
-  }
-
-  return (
-    <div className={cn('ColorCard', {unavailable, selected}, classNames)}>
-      <div className="ColorCard__content">
-        <div className="ColorCard__colorTrait">{colorTrait}</div>
-        <div className="ColorCard__title">
-          <a className="ColorCard__titleLink" onClick={handleTitleClick} href="#">
-            {title}
-          </a>
-        </div>
-      </div>
-      {unavailable ? (
-        <div className="ColorCard__footer">
-          <span className="ColorCard__unavailableText">{unavailableLabel}</span>
-          <Button block minor tiny label={contactUsLabel} onClick={onUnavailableClick} />
-        </div>
-      ) : (
-        <div className="ColorCard__footer">
-          {price && cloneElement(price, {loading})}
-          <Button
-            block
-            minor={!selected}
-            tiny
-            disabled={loading}
-            selected={selected}
-            label={selected ? selectedLabel : selectLabel}
-            onClick={onSelectClick}
-          />
-        </div>
-      )}
+}) => (
+  <div className={cn('ColorCard', {unavailable, selected}, classNames)}>
+    <div className="ColorCard__content" onClick={onSelectClick}>
+      <div className="ColorCard__colorTrait">{colorTrait}</div>
+      <div className="ColorCard__title">{title}</div>
     </div>
-  )
-}
+    {unavailable ? (
+      <div className="ColorCard__footer">
+        <span className="ColorCard__unavailableText">{unavailableLabel}</span>
+        <Button block minor tiny label={contactUsLabel} onClick={onUnavailableClick} />
+      </div>
+    ) : (
+      <div className="ColorCard__footer">
+        {price && cloneElement(price, {loading})}
+        <Button
+          block
+          minor={!selected}
+          tiny
+          disabled={loading}
+          selected={selected}
+          label={selected ? selectedLabel : selectLabel}
+          onClick={onSelectClick}
+        />
+      </div>
+    )}
+  </div>
+)
 
 ColorCard.propTypes = {
   ...propTypes.component,
