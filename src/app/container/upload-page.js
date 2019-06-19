@@ -48,6 +48,16 @@ import StickyFooter from '../component/sticky-footer'
 import Link from '../component/link'
 import Paragraph from '../component/paragraph'
 
+const getConfiguredModelIds = modelConfigs =>
+  modelConfigs
+    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null)
+    .map(modelConfig => modelConfig.id)
+
+const getUnconfiguredModelIds = modelConfigs =>
+  modelConfigs
+    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null)
+    .map(modelConfig => modelConfig.id)
+
 const UploadPage = ({
   openPickUnitModal,
   deleteModelConfigs,
@@ -62,10 +72,12 @@ const UploadPage = ({
   selectedModelConfigIds,
   toggleId,
   toggleAll,
-  createConfiguration
+  createConfiguration,
+  modelConfigs
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
+  const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
 
   const renderPromoSection = () => (
     <Section>
@@ -231,7 +243,9 @@ const UploadPage = ({
           <Section>
             <Headline
               modifiers={['light']}
-              label={`Your selection (${selectedModelConfigIds.length}/${numModels} files)`}
+              label={`Your selection (${selectedModelConfigIds.length}/${
+                unconfiguredConfigIds.length
+              } files)`}
             />
             <Paragraph>
               <Link
@@ -269,7 +283,8 @@ const mapStateToProps = state => ({
   featureFlags: state.core.featureFlags,
   useSameMaterial: state.core.useSameMaterial,
   uploadedModelConfigs: selector.selectUploadedModelConfigs(state),
-  isModelOpen: state.modal.isOpen
+  isModelOpen: state.modal.isOpen,
+  modelConfigs: state.core.modelConfigs
 })
 
 const mapDispatchToProps = {
@@ -310,11 +325,12 @@ const enhance = compose(
         updateSelectedModelConfigs([...selectedModelConfigIds, id])
       }
     },
-    toggleAll: ({updateSelectedModelConfigs, modelsWithConfig, selectedModelConfigIds}) => () => {
-      if (modelsWithConfig.length === selectedModelConfigIds.length) {
+    toggleAll: ({updateSelectedModelConfigs, modelConfigs, selectedModelConfigIds}) => () => {
+      const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
+      if (unconfiguredConfigIds.length === selectedModelConfigIds.length) {
         updateSelectedModelConfigs([])
       } else {
-        updateSelectedModelConfigs(modelsWithConfig.map(([modelConfig]) => modelConfig.id))
+        updateSelectedModelConfigs(unconfiguredConfigIds)
       }
     },
     createConfiguration: ({
