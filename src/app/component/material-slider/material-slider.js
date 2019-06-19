@@ -1,5 +1,5 @@
 // import PropTypes from 'prop-types'
-import React, {Component} from 'react'
+import React, {Component, Children} from 'react'
 import clamp from 'lodash/clamp'
 import range from 'lodash/range'
 import find from 'lodash/find'
@@ -40,12 +40,19 @@ export default class MaterialSlider extends Component {
   componentDidUpdate(prevProps) {
     // Check if children changed
     // The only easy check is to test for MaterialCard titles
-    if (
-      prevProps.children.length !== this.props.children.length ||
-      !prevProps.children.every(
-        (child, index) => child.props.title === this.props.children[index].props.title
-      )
-    ) {
+
+    const childrenSet = new Set(Children.map(this.props.children, child => child.props.title))
+    const prevChildrenSet = new Set(Children.map(prevProps.children, child => child.props.title))
+
+    let needsReset = prevChildrenSet.size !== childrenSet.size
+
+    for (let child of childrenSet) {
+      if (!prevChildrenSet.has(child)) {
+        needsReset = true
+      }
+    }
+
+    if (needsReset) {
       this.reset()
     }
   }
@@ -171,6 +178,8 @@ export default class MaterialSlider extends Component {
       // Abort possible running animation
       this.currentTween.abort()
     }
+
+    this.canvasDom.scrollLeft = 0
 
     this.updateButtonVisibilityState()
     this.updateDots()
