@@ -41,18 +41,14 @@ export default class MaterialSlider extends Component {
     // Check if children changed
     // The only easy check is to test for MaterialCard titles
 
-    const childrenSet = new Set(Children.map(this.props.children, child => child.props.title))
     const prevChildrenSet = new Set(Children.map(prevProps.children, child => child.props.title))
 
-    let needsReset = prevChildrenSet.size !== childrenSet.size
-
-    for (let child of childrenSet) {
-      if (!prevChildrenSet.has(child)) {
-        needsReset = true
-      }
-    }
-
-    if (needsReset) {
+    if (
+      Children.count(this.props.children) !== Children.count(prevProps.children) &&
+      Children.map(this.props.children, child => child.props.title).every(child =>
+        prevChildrenSet.has(child)
+      )
+    ) {
       this.reset()
     }
   }
@@ -71,7 +67,7 @@ export default class MaterialSlider extends Component {
   }
 
   getNumPages = () => {
-    const numChildren = React.Children.count(this.props.children)
+    const numChildren = Children.count(this.props.children)
     return Math.ceil(numChildren / this.getPageSize())
   }
 
@@ -254,7 +250,7 @@ export default class MaterialSlider extends Component {
               this.canvasDom = el
             }}
           >
-            {React.Children.map(children, (child, index) => (
+            {Children.map(children, (child, index) => (
               <li key={index} className="material-slider__item">
                 {child}
               </li>

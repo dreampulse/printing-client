@@ -46,7 +46,7 @@ storiesOf('Material Slider', module)
           </MaterialSlider>
         </Container>
 
-        <Button label="Add card" onClick={() => store.set({count: store.state.count + 1})} />
+        <Button label="Add Card" onClick={() => store.set({count: store.state.count + 1})} />
       </>
     ))
   )
@@ -59,7 +59,7 @@ storiesOf('Material Slider', module)
         </Container>
 
         <Button
-          label={`Shuffel Cards #${store.state.count}`}
+          label={`Shuffle Cards #${store.state.count}`}
           onClick={() => store.set({count: store.state.count + 1})}
         />
       </>
