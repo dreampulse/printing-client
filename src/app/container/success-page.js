@@ -40,7 +40,7 @@ const SuccessPage = ({location}) => {
     <PageLayout minorBackground footer={<FooterPartial />}>
       <Container>
         <Section classNames={['u-align-center']}>
-          <Headline modifiers={['xl']} label="Thank you for ordering with Craftcloud by All3DP" />
+          <Headline size="xl" label="Thank you for ordering with Craftcloud by All3DP" />
           <Headline
             label={location.state.orderNumber ? `Order number: ${location.state.orderNumber}` : ''}
           />
@@ -70,7 +70,7 @@ const SuccessPage = ({location}) => {
           </OrderConfirmationList>
         </Section>
         <Section classNames={['u-align-center']}>
-          <Headline modifiers={['l']} classNames={['u-margin-bottom-xl']} label="Any questions?" />
+          <Headline size="l" classNames={['u-margin-bottom-xl']} label="Any questions?" />
           <Button minor label="Contact Us" onClick={() => openIntercom()} />
         </Section>
         <Section classNames={['u-align-center']}>

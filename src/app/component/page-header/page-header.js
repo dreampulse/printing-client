@@ -9,7 +9,7 @@ import Headline from '../headline'
 const PageHeader = ({classNames, modifiers, label, backLink}) => (
   <div className={buildClassName('page-header', modifiers, classNames)}>
     <div className="page-header__title">
-      <Headline modifiers={['xl', 'light']} label={label} />
+      <Headline size="xl" light label={label} />
     </div>
     {backLink}
   </div>

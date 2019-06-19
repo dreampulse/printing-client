@@ -195,7 +195,7 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        headline={<Headline modifiers={['xl', 'light']} label="1. Select Material" />}
+        headline={<Headline size="xl" light label="1. Select Material" />}
       >
         <Grid>
           <Column lg={8} classNames={['u-margin-bottom']}>
@@ -283,7 +283,7 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        headline={<Headline modifiers={['xl', 'light']} label="2. Select Finish" />}
+        headline={<Headline size="xl" light label="2. Select Finish" />}
         fadeIn
       >
         <MaterialSlider>
@@ -346,7 +346,7 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        headline={<Headline modifiers={['xl', 'light']} label="3. Select Color" />}
+        headline={<Headline size="xl" light label="3. Select Color" />}
         fadeIn
       >
         {selectedFinishGroup && (
@@ -612,7 +612,7 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        headline={<Headline modifiers={['xl', 'light']} label="4. Select Offer" />}
+        headline={<Headline size="xl" light label="4. Select Offer" />}
         fadeIn
       >
         <RecommendedOfferSection classNames={['u-margin-bottom-xl']}>
@@ -625,7 +625,7 @@ const MaterialPartial = ({
   }
 
   if (selectedModelConfigs.length === 0) {
-    return <Headline label="Select a file to start configuring" modifiers={['xl', 'light']} />
+    return <Headline label="Select a file to start configuring" size="xl" light />
   }
 
   return (

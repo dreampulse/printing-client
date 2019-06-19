@@ -117,7 +117,7 @@ const CartPage = ({
           <Column md={6}>
             {!user && (
               <>
-                <Headline modifiers={['l', 'minor']} label="Shipping Address" />
+                <Headline size="l" minor label="Shipping Address" />
                 <Button label="Add Address" onClick={() => openAddressFormModal()} />
               </>
             )}
@@ -166,7 +166,8 @@ const CartPage = ({
             {user && (
               <>
                 <Headline
-                  modifiers={['minor', 'l']}
+                  size="l"
+                  minor
                   label={
                     <>
                       Billing Address{' '}
@@ -398,7 +399,7 @@ const CartPage = ({
         <Paragraph>
           <Headline
             tag="strong"
-            modifiers={['s']}
+            size="s"
             label="Need different payment option?"
             classNames={['u-no-margin-bottom']}
           />
@@ -414,7 +415,7 @@ const CartPage = ({
         <Paragraph>
           <Headline
             tag="strong"
-            modifiers={['s']}
+            size="s"
             label="Any questions?"
             classNames={['u-no-margin-bottom']}
           />
@@ -475,7 +476,7 @@ const CartPage = ({
         {hasModels && (
           <SidebarLayout sidebar={paymentSection()}>
             {addressSection()}
-            <Headline modifiers={['minor', 'l']} label="Your Cart" />
+            <Headline size="l" minor label="Your Cart" />
             {modelListSection()}
           </SidebarLayout>
         )}

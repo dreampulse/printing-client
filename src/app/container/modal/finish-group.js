@@ -18,7 +18,7 @@ import Column from '../../component/column'
 import Image from '../../component/image'
 
 const FinishGroupModal = ({finishGroup, closeModal}) => {
-  const headline = <Headline label={finishGroup.name} modifiers={['l']} />
+  const headline = <Headline label={finishGroup.name} size="l" />
   const buttons = [<Button label="Close" onClick={() => closeModal()} />]
 
   return (
@@ -55,9 +55,7 @@ const FinishGroupModal = ({finishGroup, closeModal}) => {
               </FeatureList>
             </Column>
             <Column sm={6}>
-              {finishGroup.properties.materialSpec && (
-                <Headline modifiers={['s']} label="Material Spec" />
-              )}
+              {finishGroup.properties.materialSpec && <Headline size="s" label="Material Spec" />}
               {finishGroup.properties.materialSpec && (
                 <Paragraph classNames={['u-margin-bottom-xl']}>
                   {finishGroup.properties.materialSpec}
