@@ -6,7 +6,7 @@ import find from 'lodash/find'
 
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
-import {tweenFromTo, easeInOutQuad} from '../../service/animate'
+import {tweenFromTo, easeInOut} from '../../service/animate'
 
 import SliderButton from '../slider-button'
 import Dot from '../dot'
@@ -147,17 +147,17 @@ export default class MaterialSlider extends Component {
   startScrollAnimation = (startPosition, targetPosition) => {
     if (this.currentTween) {
       // Abort possible running animation
-      this.currentTween.abort()
+      this.currentTween.cancel()
     }
 
     this.currentTween = tweenFromTo(
       startPosition,
       targetPosition,
-      SCROLL_ANIMATION_DURATION,
       position => {
         this.canvasDom.scrollLeft = position
       },
-      easeInOutQuad
+      SCROLL_ANIMATION_DURATION,
+      easeInOut
     )
   }
 
@@ -169,7 +169,7 @@ export default class MaterialSlider extends Component {
   reset = () => {
     if (this.currentTween) {
       // Abort possible running animation
-      this.currentTween.abort()
+      this.currentTween.cancel()
     }
 
     this.canvasDom.scrollLeft = 0
