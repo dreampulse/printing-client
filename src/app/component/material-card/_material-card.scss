@@ -27,6 +27,11 @@
     flex-shrink: 0;
     position: relative;
     margin-bottom: $space-base;
+  }
+
+  &__headerLink {
+    color: inherit;
+    text-decoration: none;
 
     & > .headline {
       @include scut-truncate();

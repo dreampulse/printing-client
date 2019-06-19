@@ -23,6 +23,11 @@
     font-weight: $font-weight-bold;
   }
 
+  &__titleLink {
+    color: inherit;
+    text-decoration: none;
+  }
+
   &__footer {
     display: flex;
     flex-direction: row;
