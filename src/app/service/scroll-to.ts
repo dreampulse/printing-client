@@ -19,10 +19,10 @@ export default function scrollTo(selector: string, container?: string) {
   return tweenFromTo(
     containerEl.scrollTop,
     scrollTop,
-    600,
     (value: number) => {
       containerEl.scrollTop = value
     },
+    600,
     easeInOut
   )
 }

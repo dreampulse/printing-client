@@ -147,16 +147,16 @@ export default class MaterialSlider extends Component {
   startScrollAnimation = (startPosition, targetPosition) => {
     if (this.currentTween) {
       // Abort possible running animation
-      this.currentTween.abort()
+      this.currentTween.cancel()
     }
 
     this.currentTween = tweenFromTo(
       startPosition,
       targetPosition,
-      SCROLL_ANIMATION_DURATION,
       position => {
         this.canvasDom.scrollLeft = position
       },
+      SCROLL_ANIMATION_DURATION,
       easeInOut
     )
   }
@@ -169,7 +169,7 @@ export default class MaterialSlider extends Component {
   reset = () => {
     if (this.currentTween) {
       // Abort possible running animation
-      this.currentTween.abort()
+      this.currentTween.cancel()
     }
 
     this.canvasDom.scrollLeft = 0
