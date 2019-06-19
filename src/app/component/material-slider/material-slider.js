@@ -6,7 +6,7 @@ import find from 'lodash/find'
 
 import propTypes from '../../lib/prop-types'
 import buildClassName from '../../lib/build-class-name'
-import {tweenFromTo, easeInOutQuad} from '../../service/animate'
+import {tweenFromTo, easeInOut} from '../../service/animate'
 
 import SliderButton from '../slider-button'
 import Dot from '../dot'
@@ -157,7 +157,7 @@ export default class MaterialSlider extends Component {
       position => {
         this.canvasDom.scrollLeft = position
       },
-      easeInOutQuad
+      easeInOut
     )
   }
 

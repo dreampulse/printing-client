@@ -3,7 +3,7 @@
 // No easing, no acceleration
 export const easeLinear = (t: number) => t
 // Acceleration until halfway, then deceleration
-export const easeInOutQuad = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t)
+export const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t)
 
 export const tween = (duration: number, fn: (t: number) => void, easingFn = easeLinear) => {
   let isRunning = true
