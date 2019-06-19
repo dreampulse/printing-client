@@ -1,5 +1,5 @@
 // import PropTypes from 'prop-types'
-import React, {Component} from 'react'
+import React, {Component, Children} from 'react'
 import clamp from 'lodash/clamp'
 import range from 'lodash/range'
 import find from 'lodash/find'
@@ -40,10 +40,13 @@ export default class MaterialSlider extends Component {
   componentDidUpdate(prevProps) {
     // Check if children changed
     // The only easy check is to test for MaterialCard titles
+
+    const prevChildrenSet = new Set(Children.map(prevProps.children, child => child.props.title))
+
     if (
-      prevProps.children.length !== this.props.children.length ||
-      !prevProps.children.every(
-        (child, index) => child.props.title === this.props.children[index].props.title
+      Children.count(this.props.children) !== Children.count(prevProps.children) ||
+      !Children.map(this.props.children, child => child.props.title).every(child =>
+        prevChildrenSet.has(child)
       )
     ) {
       this.reset()
@@ -64,7 +67,7 @@ export default class MaterialSlider extends Component {
   }
 
   getNumPages = () => {
-    const numChildren = React.Children.count(this.props.children)
+    const numChildren = Children.count(this.props.children)
     return Math.ceil(numChildren / this.getPageSize())
   }
 
@@ -247,7 +250,7 @@ export default class MaterialSlider extends Component {
               this.canvasDom = el
             }}
           >
-            {React.Children.map(children, (child, index) => (
+            {Children.map(children, (child, index) => (
               <li key={index} className="material-slider__item">
                 {child}
               </li>
