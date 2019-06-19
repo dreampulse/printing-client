@@ -38,7 +38,7 @@ const enhance = compose(
       const {goToUpload, modelConfigs} = this.props
 
       // If the modelConfig updates we know the loading of the configuration is done
-      if (prevProps.modelConfigs.length !== modelConfigs.length) {
+      if (prevProps.modelConfigs.length < modelConfigs.length) {
         const selectModelConfigIds = modelConfigs.map(modelConfig => modelConfig.id)
         goToUpload({selectModelConfigIds}, replace)
       }
