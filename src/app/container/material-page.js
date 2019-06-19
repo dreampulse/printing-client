@@ -7,7 +7,6 @@ import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import lifecycle from 'recompose/lifecycle'
 import intersection from 'lodash/intersection'
-import difference from 'lodash/difference'
 
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
