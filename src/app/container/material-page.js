@@ -67,7 +67,8 @@ const MaterialPage = ({
   deleteModelConfigs,
   configuredConfigIds,
   setConfiguredConfigIds,
-  modelConfigs
+  modelConfigs,
+  updateSelectedModelConfigs
 }) => {
   const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
 
@@ -135,7 +136,11 @@ const MaterialPage = ({
                     <Button
                       icon={copyIcon}
                       iconOnly
-                      onClick={() => duplicateModelConfig(modelConfig.id)}
+                      onClick={() => {
+                        duplicateModelConfig(modelConfig.id).then(({payload: {nextId}}) => {
+                          updateSelectedModelConfigs([...selectedModelConfigIds, nextId])
+                        })
+                      }}
                     />
                     <Button
                       icon={deleteIcon}
@@ -242,27 +247,11 @@ export default compose(
         goToUpload()
       }
     },
-    componentDidUpdate(prevProps) {
-      const {
-        modelsWithConfig,
-        updateSelectedModelConfigs,
-        goToUpload,
-        selectedModelConfigIds
-      } = this.props
+    componentDidUpdate() {
+      const {modelsWithConfig, goToUpload} = this.props
 
       if (modelsWithConfig.length === 0) {
         goToUpload()
-      }
-
-      // Duplicate a model selection
-      if (modelsWithConfig.length > prevProps.modelsWithConfig.length) {
-        updateSelectedModelConfigs([
-          ...selectedModelConfigIds,
-          ...difference(
-            modelsWithConfig.map(([modelConfig]) => modelConfig.id),
-            prevProps.modelsWithConfig.map(([modelConfig]) => modelConfig.id)
-          )
-        ])
       }
     }
   })

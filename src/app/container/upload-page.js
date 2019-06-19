@@ -370,7 +370,7 @@ const enhance = compose(
       ) {
         goToMaterial(uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id))
       }
-      // Add new uploaded model or duplicate a selection
+      // Add new uploaded model to selection
       else if (uploadedModelsWithConfig.length > prevProps.uploadedModelsWithConfig.length) {
         updateSelectedModelConfigs([
           ...selectedModelConfigIds,
