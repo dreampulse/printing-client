@@ -14,7 +14,6 @@ import CartNavLink from '../component/cart-nav-link'
 import NavLink from '../component/nav-link'
 import NavBar from '../component/nav-bar'
 import Logo from '../component/logo'
-import CartFlyout from '../component/cart-flyout'
 import CartModelItem from '../component/cart-model-item'
 
 const NavBarPartial = ({
@@ -47,27 +46,18 @@ const NavBarPartial = ({
                 event.preventDefault()
                 onCartClick()
               }}
-              cartFlyout={
-                modelsWithConfig.length > 0 && (
-                  <CartFlyout
-                    title={`${modelsWithConfig.length} ${
-                      modelsWithConfig.length > 1 ? 'files' : 'file'
-                    } in your cart`}
-                  >
-                    {modelsWithConfig.map(({modelConfig, model}) => (
-                      <CartModelItem
-                        id={modelConfig.id}
-                        key={modelConfig.id}
-                        s
-                        imageSource={model.thumbnailUrl}
-                        title={model.fileName}
-                        info={formatDimensions(model.dimensions, model.fileUnit)}
-                      />
-                    ))}
-                  </CartFlyout>
-                )
-              }
-            />
+            >
+              {modelsWithConfig.map(({modelConfig, model}) => (
+                <CartModelItem
+                  id={modelConfig.id}
+                  key={modelConfig.id}
+                  s
+                  imageSource={model.thumbnailUrl}
+                  title={model.fileName}
+                  info={formatDimensions(model.dimensions, model.fileUnit)}
+                />
+              ))}
+            </CartNavLink>
           </>
         )}
         <NavLink

@@ -8,6 +8,7 @@ import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 import PositioningPortal from '../positioning-portal'
+import CartFlyout from '../cart-flyout'
 
 import basketIcon from '../../../asset/icon/basket.svg'
 
@@ -16,6 +17,7 @@ const FLYOUT_TRANSITION_TIMEOUT = 300
 const COUNT_TRANSITION_TIMEOUT = 500
 
 const FLYOUT_CLOSING_DELAY = 500
+const FLYOUT_NOTIFY_DELAY = 4000
 
 class CartNavLink extends React.Component {
   static propTypes = {
@@ -24,7 +26,7 @@ class CartNavLink extends React.Component {
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func,
     count: PropTypes.number,
-    cartFlyout: PropTypes.node
+    children: PropTypes.node
   }
 
   static defaultProps = {
@@ -33,7 +35,15 @@ class CartNavLink extends React.Component {
   }
 
   state = {
-    open: 0
+    open: 0,
+    notify: false,
+    prevChildren: []
+  }
+
+  componentDidUpdate(prevProps) {
+    if (React.Children.count(prevProps.children) < React.Children.count(this.props.children)) {
+      this.doNotify(React.Children.map(prevProps.children, child => child.props.id))
+    }
   }
 
   onEnter = () => {
@@ -50,18 +60,40 @@ class CartNavLink extends React.Component {
     }, FLYOUT_CLOSING_DELAY)
   }
 
+  onEnded = () => {
+    if (this.state.notify) {
+      this.setState({
+        notify: false
+      })
+    }
+  }
+
+  doNotify = prevChildren => {
+    this.setState({
+      open: this.state.open + 1,
+      notify: true,
+      prevChildren
+    })
+
+    setTimeout(() => {
+      this.setState({
+        open: this.state.open - 1
+      })
+    }, FLYOUT_NOTIFY_DELAY)
+  }
+
   render() {
     const {
       classNames,
       label,
       count,
-      cartFlyout,
+      children,
       href = '#',
       disabled = false,
       onClick = noop
     } = this.props
 
-    const {open} = this.state
+    const {open, notify, prevChildren} = this.state
 
     const handleClick = event => {
       event.preventDefault()
@@ -70,6 +102,13 @@ class CartNavLink extends React.Component {
       }
       onClick(event, href)
     }
+
+    const itemDiff = React.Children.count(children) - prevChildren.length
+    const flyoutTitle = notify
+      ? `${itemDiff} ${itemDiff > 1 ? 'files' : 'file'} added to your cart`
+      : `${React.Children.count(children)} ${
+          React.Children.count(children) > 1 ? 'files' : 'file'
+        } in your cart`
 
     return (
       <PositioningPortal
@@ -87,26 +126,42 @@ class CartNavLink extends React.Component {
             timeout={FLYOUT_TRANSITION_TIMEOUT}
             in={isOpen && !!position}
             onEnter={transitionStarted}
-            onExited={transitionEnded}
+            onExited={() => {
+              transitionEnded()
+              this.onEnded()
+            }}
           >
             <div
               className="CartNavLink__portal"
               onMouseEnter={this.onEnter}
               onMouseLeave={this.onLeave}
             >
-              {cartFlyout}
+              {React.Children.count(children) > 0 && (
+                <CartFlyout notify={notify} title={flyoutTitle}>
+                  {React.Children.toArray(children)
+                    .filter(child => prevChildren.indexOf(child.props.id) === -1)
+                    .map(child =>
+                      React.cloneElement(child, {
+                        selected: notify && prevChildren.indexOf(child.props.id) === -1
+                      })
+                    )}
+                  {React.Children.toArray(children).filter(
+                    child => prevChildren.indexOf(child.props.id) > -1
+                  )}
+                </CartFlyout>
+              )}
             </div>
           </CSSTransition>
         )}
-        isOpen={cartFlyout && open > 0}
+        isOpen={React.Children.count(children) > 0 && open > 0}
       >
         <a
           href={href}
           disabled={disabled}
           className={cn('CartNavLink', {zero: !count}, classNames)}
           onClick={handleClick}
-          onMouseEnter={cartFlyout ? this.onEnter : noop}
-          onMouseLeave={cartFlyout ? this.onLeave : noop}
+          onMouseEnter={React.Children.count(children) > 0 ? this.onEnter : noop}
+          onMouseLeave={React.Children.count(children) > 0 ? this.onLeave : noop}
         >
           <div className="CartNavLink__icon">
             <TransitionGroup>
