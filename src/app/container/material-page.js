@@ -49,7 +49,7 @@ const getConfiguredModelIds = modelConfigs =>
 
 const getUnconfiguredModelIds = modelConfigs =>
   modelConfigs
-    .filter(modelConfig => modelConfig.quoteId === null)
+    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null)
     .map(modelConfig => modelConfig.id)
 
 const MaterialPage = ({
