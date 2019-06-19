@@ -62,9 +62,7 @@ storiesOf('Overlay', module)
     </Overlay>
   ))
   .add('prices changed', () => {
-    const pricesChangedHeadline = (
-      <Headline label="Prices could have changed" size="l" warning />
-    )
+    const pricesChangedHeadline = <Headline label="Prices could have changed" size="l" warning />
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <Paragraph>
