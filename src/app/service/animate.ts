@@ -3,52 +3,65 @@
 // No easing, no acceleration
 export const easeLinear = (t: number) => t
 // Acceleration until halfway, then deceleration
-export const easeInOutQuad = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t)
+export const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t)
 
-export const tween = (duration: number, fn: (t: number) => void, easingFn = easeLinear) => {
-  let isRunning = true
+export type AnimatePromise = Promise<void> & {
+  cancel: () => AnimatePromise
+  finally: (cb: () => void) => AnimatePromise
+}
+
+export const tween = (fn: (t: number) => void, duration: number, easingFn = easeLinear) => {
+  let isCancelled = false
   let startTimestamp: number
+  let finallyCallback: () => void
 
-  const animationStep = (timestamp: number) => {
-    if (!isRunning) {
-      return
-    } // Early return, aborts animation
+  const promise: any = new Promise(resolve => {
+    const animationStep = (timestamp: number) => {
+      if (isCancelled) {
+        if (finallyCallback) {
+          finallyCallback()
+        }
+        return
+      }
 
-    if (!startTimestamp) {
-      // Save initial timestamp
-      startTimestamp = timestamp
+      if (!startTimestamp) {
+        // Save initial timestamp
+        startTimestamp = timestamp
+      }
+
+      // Assure 0 <= progress <= 1
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1)
+
+      fn(easingFn(progress))
+
+      if (progress < 1) {
+        window.requestAnimationFrame(animationStep) // Request next animation frame
+      } else {
+        resolve()
+      }
     }
 
-    let progress = (timestamp - startTimestamp) / duration
+    window.requestAnimationFrame(animationStep)
+  })
 
-    if (progress > 1) {
-      progress = 1
-    } // Assure 0 <= progress <= 1
-
-    fn(easingFn(progress))
-
-    if (progress < 1) {
-      window.requestAnimationFrame(animationStep) // Request next animation frame
-    }
+  promise.cancel = () => {
+    isCancelled = true
+    return promise
   }
 
-  window.requestAnimationFrame(animationStep)
-
-  return {
-    isRunning() {
-      return isRunning
-    },
-    abort() {
-      isRunning = false
-    }
+  promise.finally = (cb: () => void) => {
+    finallyCallback = cb
+    return promise
   }
+
+  return promise as AnimatePromise
 }
 
 export const tweenFromTo = (
   from: number,
   to: number,
-  duration: number,
   fn: (t: number) => void,
+  duration: number,
   easingFn: (t: number) => number
 ) => {
   const fromToFn = (progress: number) => {
@@ -56,5 +69,5 @@ export const tweenFromTo = (
     fn(from + delta * progress)
   }
 
-  return tween(duration, fromToFn, easingFn)
+  return tween(fromToFn, duration, easingFn)
 }
