@@ -1,19 +1,28 @@
-import velocity from 'velocity-animate'
+import {tweenFromTo, easeInOut} from './animate'
 
 export default function scrollTo(selector: string, container?: string) {
   let el: HTMLElement | null = window.document.querySelector(selector) as HTMLElement
-  // As any because types of velocity.animate are broken (it awaits jQuery<HTMLElement>)
-  const containerEl = container ? (window.document.querySelector(container) as any) : window
+  const containerEl = container
+    ? (window.document.querySelector(container) as HTMLElement)
+    : window.document.documentElement
 
-  if (!el) {
-    return
+  if (!el || !containerEl) {
+    return Promise.reject(new Error('Element not found.'))
   }
 
-  let offset = 0
+  let scrollTop = 0
   while (el !== containerEl && el !== null) {
-    offset += el.offsetTop
+    scrollTop += el.offsetTop
     el = el.parentElement
   }
 
-  containerEl.scrollTop = offset
+  return tweenFromTo(
+    containerEl.scrollTop,
+    scrollTop,
+    (value: number) => {
+      containerEl.scrollTop = value
+    },
+    600,
+    easeInOut
+  )
 }

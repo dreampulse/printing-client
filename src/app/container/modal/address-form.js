@@ -163,7 +163,7 @@ const AddressFormModal = ({
     </div>
   )
 
-  const headline = <Headline label="Your Address" size="l" />
+  const headline = <Headline label="Enter delivery address" size="l" />
   const buttons = [
     <Button
       key="cancel_button"
@@ -440,7 +440,7 @@ const enhance = compose(
         this.props.setFieldValue('vatId', '')
       }
 
-      if (this.props.cart !== prevProps.cart) {
+      if (!this.props.cart) {
         this.props.goToUpload({
           notification: {
             warning: true,
