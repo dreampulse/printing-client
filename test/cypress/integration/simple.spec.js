@@ -37,8 +37,7 @@ context('Simple application flow', () => {
   })
 
   it('handles address form', () => {
-    cy.contains('.headline', 'Shipping Address')
-    cy.contains('button', 'Add Address').click()
+    cy.contains('button', 'Checkout').click()
 
     // Because label of InputField overlaps input we have to force the interactions here.
     cy.get('input[name="shippingAddress.firstName"]').type('TEST firstName', {force: true})
