@@ -124,7 +124,8 @@ const CartPage = ({
             {user && (
               <>
                 <Headline
-                  modifiers={['minor', 'l']}
+                  size="l"
+                  minor
                   label={
                     <>
                       Shipping Address{' '}

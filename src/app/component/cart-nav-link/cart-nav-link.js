@@ -13,6 +13,7 @@ import CartFlyout from '../cart-flyout'
 import basketIcon from '../../../asset/icon/basket.svg'
 
 // Needs to be synced with the styles
+const FLYOUT_NOTIFY_TRANSITION_DELAY = 1000
 const FLYOUT_TRANSITION_TIMEOUT = 300
 const COUNT_TRANSITION_TIMEOUT = 500
 
@@ -46,18 +47,20 @@ class CartNavLink extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    if (this.notifyTimeout) {
+      clearTimeout(this.notifyTimeout)
+    }
+
+    if (this.leaveTimeout) {
+      clearTimeout(this.leaveTimeout)
+    }
+  }
+
   onEnter = () => {
     this.setState({
       open: this.state.open + 1
     })
-  }
-
-  onLeave = () => {
-    setTimeout(() => {
-      this.setState({
-        open: this.state.open - 1
-      })
-    }, FLYOUT_CLOSING_DELAY)
   }
 
   onEnded = () => {
@@ -68,6 +71,17 @@ class CartNavLink extends React.Component {
     }
   }
 
+  onLeave = () => {
+    this.leaveTimeout = setTimeout(() => {
+      this.setState({
+        open: this.state.open - 1
+      })
+    }, FLYOUT_CLOSING_DELAY)
+  }
+
+  notifyTimeout = null
+  leaveTimeout = null
+
   doNotify = prevChildren => {
     this.setState({
       open: this.state.open + 1,
@@ -75,7 +89,7 @@ class CartNavLink extends React.Component {
       prevChildren
     })
 
-    setTimeout(() => {
+    this.notifyTimeout = setTimeout(() => {
       this.setState({
         open: this.state.open - 1
       })
@@ -123,7 +137,7 @@ class CartNavLink extends React.Component {
         portalContent={({isOpen, transitionStarted, transitionEnded, position}) => (
           <CSSTransition
             classNames="CartNavLink--transition"
-            timeout={FLYOUT_TRANSITION_TIMEOUT}
+            timeout={FLYOUT_TRANSITION_TIMEOUT + (notify ? FLYOUT_NOTIFY_TRANSITION_DELAY : 0)}
             in={isOpen && !!position}
             onEnter={transitionStarted}
             onExited={() => {
@@ -158,7 +172,7 @@ class CartNavLink extends React.Component {
         <a
           href={href}
           disabled={disabled}
-          className={cn('CartNavLink', {zero: !count}, classNames)}
+          className={cn('CartNavLink', {zero: !count, notify}, classNames)}
           onClick={handleClick}
           onMouseEnter={React.Children.count(children) > 0 ? this.onEnter : noop}
           onMouseLeave={React.Children.count(children) > 0 ? this.onLeave : noop}
