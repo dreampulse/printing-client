@@ -167,7 +167,7 @@ const AddressFormModal = ({
     </div>
   )
 
-  const headline = <Headline label="Your Address" modifiers={['l']} />
+  const headline = <Headline label="Enter delivery address" modifiers={['l']} />
   const buttons = [
     <Button
       key="cancel_button"

@@ -180,7 +180,7 @@ const UploadPage = ({
 
   return (
     <PageLayout
-      minorBackground={hasModels}
+      minorBackground
       stickyFooter={hasModels}
       footer={
         hasModels ? (
