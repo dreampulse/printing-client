@@ -23,6 +23,7 @@ context('Simple application flow', () => {
     cy.get('.UploadArea').trigger('drop', dropEvent)
     cy.contains('button', 'Upload').click()
     cy.get('.UploadModelItem').should('have.length', 1)
+    cy.contains('button', 'Configure Selection').click()
   })
 
   it('selects material and provider', () => {
