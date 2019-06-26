@@ -452,7 +452,7 @@ const enhance = compose(
         this.props.setFieldValue('vatId', '')
       }
 
-      if (this.props.cart !== prevProps.cart) {
+      if (!this.props.cart) {
         this.props.goToUpload({
           notification: {
             warning: true,
