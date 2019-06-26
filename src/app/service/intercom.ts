@@ -22,3 +22,11 @@ function exec(cmd: string): void {
 export const openIntercom = (): void => {
   exec('show')
 }
+
+export const handleIncomingMessages = (): void => {
+  window.Intercom('onUnreadCountChange', (unreadCount: number) => {
+    if (unreadCount !== 0) {
+      window.Intercom('show')
+    }
+  })
+}
