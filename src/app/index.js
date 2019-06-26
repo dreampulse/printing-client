@@ -9,6 +9,7 @@ import './service/logging'
 
 import Store from './store'
 import Router from './router'
+import {handleIncomingMessages} from './service/intercom'
 
 import '../sass/main.scss'
 
@@ -27,6 +28,8 @@ function renderApp(CurrentRouter) {
 }
 
 renderApp(Router)
+
+handleIncomingMessages()
 
 // Webpack (uglify) will remove this code in the production build
 if (process.env.NODE_ENV !== 'production') {
