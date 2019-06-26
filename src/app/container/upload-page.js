@@ -365,24 +365,12 @@ const enhance = compose(
     componentDidUpdate(prevProps) {
       const {
         uploadedModelsWithConfig,
-        modelsWithConfig,
         selectedModelConfigIds,
-        goToMaterial,
-        updateSelectedModelConfigs,
-        isModelOpen
+        updateSelectedModelConfigs
       } = this.props
 
-      // If user uploads exactly one model directly go to the material page.
-      if (
-        prevProps.uploadedModelsWithConfig.length === 0 &&
-        uploadedModelsWithConfig.length === 1 &&
-        modelsWithConfig.length === 1 &&
-        !isModelOpen
-      ) {
-        goToMaterial(uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id))
-      }
       // Add new uploaded model to selection
-      else if (uploadedModelsWithConfig.length > prevProps.uploadedModelsWithConfig.length) {
+      if (uploadedModelsWithConfig.length > prevProps.uploadedModelsWithConfig.length) {
         updateSelectedModelConfigs([
           ...selectedModelConfigIds,
           ...difference(
