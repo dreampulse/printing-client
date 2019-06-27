@@ -9,7 +9,7 @@ import Headline from '../../component/headline'
 import ModelViewer from '../../component/model-viewer'
 
 const ModelViewerModal = ({closeModal, sceneId, modelName}) => {
-  const headline = <Headline label={`Preview ${modelName}`} modifiers={['l']} />
+  const headline = <Headline label={`Preview ${modelName}`} size="l" />
   const buttons = [<Button label="Close" onClick={closeModal} />]
 
   return (

@@ -218,7 +218,8 @@ const UploadPage = ({
         {hasModels && (
           <Headline
             classNames={['u-align-center']}
-            modifiers={['xl', 'light']}
+            size="xl"
+            light
             label="Which files do you want to configure first?"
           />
         )}
@@ -237,7 +238,7 @@ const UploadPage = ({
         <Container s>
           <Section>
             <Headline
-              modifiers={['light']}
+              light
               label={`Your selection (${selectedModelConfigIds.length}/${
                 unconfiguredConfigIds.length
               } files)`}

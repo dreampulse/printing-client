@@ -86,7 +86,7 @@ const MaterialPage = ({
       </Section>
       <Section>
         <Headline
-          modifiers={['light']}
+          light
           label={`Your selection (${selectedModelConfigIds.length}/${
             unconfiguredConfigIds.length
           } files)`}

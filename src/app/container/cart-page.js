@@ -114,7 +114,8 @@ const CartPage = ({
         <Grid>
           <Column md={6}>
             <Headline
-              modifiers={['minor', 'l']}
+              minor
+              size="l"
               label={
                 <>
                   Shipping Address{' '}
@@ -154,7 +155,8 @@ const CartPage = ({
             {user && (
               <>
                 <Headline
-                  modifiers={['minor', 'l']}
+                  size="l"
+                  minor
                   label={
                     <>
                       Billing Address{' '}
@@ -392,7 +394,7 @@ const CartPage = ({
           <Paragraph>
             <Headline
               tag="strong"
-              modifiers={['s']}
+              size="s"
               label="Payment options?"
               classNames={['u-no-margin-bottom']}
             />
@@ -402,7 +404,7 @@ const CartPage = ({
         <Paragraph>
           <Headline
             tag="strong"
-            modifiers={['s']}
+            size="s"
             label="Any questions?"
             classNames={['u-no-margin-bottom']}
           />
@@ -463,7 +465,7 @@ const CartPage = ({
         {hasModels && (
           <SidebarLayout sidebar={paymentSection()}>
             {user && addressSection()}
-            <Headline modifiers={['minor', 'l']} label="Your Cart" />
+            <Headline minor size="l" label="Your Cart" />
             {modelListSection()}
           </SidebarLayout>
         )}

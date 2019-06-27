@@ -26,8 +26,8 @@ import errorImage from '../../../asset/image/error.svg'
 import {googleMapsApiKey, currencies, selectMenuValues} from '../../../../stories/util/data'
 import HandleValue from '../../../../stories/util/handle-value'
 
-const headline = <Headline label="Warning Headline" modifiers={['l']} />
-const headlineOther = <Headline label="Overlay Headline" modifiers={['l']} />
+const headline = <Headline label="Warning Headline" size="l" />
+const headlineOther = <Headline label="Overlay Headline" size="l" />
 const buttons = [<Button label="Cancel" text />, <Button label="OK" />]
 
 storiesOf('Overlay', module)
@@ -62,9 +62,7 @@ storiesOf('Overlay', module)
     </Overlay>
   ))
   .add('prices changed', () => {
-    const pricesChangedHeadline = (
-      <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
-    )
+    const pricesChangedHeadline = <Headline label="Prices could have changed" size="l" warning />
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <Paragraph>
@@ -80,7 +78,7 @@ storiesOf('Overlay', module)
   })
   .add('fetching new prices', () => {
     const fetchingNewPricesHeadline = (
-      <Headline label="Prices could have changed" modifiers={['l', 'warning']} />
+      <Headline label="Prices could have changed" size="l" warning />
     )
     const fetchingNewPricesButtons = [
       <Button label="Cancel" text />,
@@ -101,7 +99,7 @@ storiesOf('Overlay', module)
     )
   })
   .add('system error', () => {
-    const systemErrorHeadline = <Headline label="System Error" modifiers={['l']} />
+    const systemErrorHeadline = <Headline label="System Error" size="l" />
     const systemErrorButtons = [<Button label="OK" />]
     return (
       <Overlay
@@ -125,7 +123,7 @@ storiesOf('Overlay', module)
     )
   })
   .add('shipping address', () => {
-    const pricesChangedHeadline = <Headline label="Shipping address" modifiers={['l']} />
+    const pricesChangedHeadline = <Headline label="Shipping address" size="l" />
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <Paragraph>We need your address and currency to calculate the shipping prices</Paragraph>
@@ -150,7 +148,7 @@ storiesOf('Overlay', module)
     )
   })
   .add('material detail', () => {
-    const materialDetailHeadline = <Headline label="Polyamide" modifiers={['l']} />
+    const materialDetailHeadline = <Headline label="Polyamide" size="l" />
     const materialDetailButtons = [<Button label="Close" />]
     const rating = <StarRating stars={3} />
     const checked = <Checked checked />
@@ -177,7 +175,7 @@ storiesOf('Overlay', module)
             </RichText>
             <Grid>
               <Column sm={6}>
-                <Headline modifiers={['s']} label="Printing Method" />
+                <Headline size="s" label="Printing Method" />
                 <Paragraph classNames={['u-margin-bottom-xl']}>
                   EOS Selective Laser Sintering (SLS)
                 </Paragraph>
@@ -189,7 +187,7 @@ storiesOf('Overlay', module)
                 </FeatureList>
               </Column>
               <Column sm={6}>
-                <Headline modifiers={['s']} label="Material Spec" />
+                <Headline size="s" label="Material Spec" />
                 <Paragraph classNames={['u-margin-bottom-xl']}>EOS PA 2200 (PA 12)</Paragraph>
                 <FeatureList>
                   <FeatureListItem feature={unchecked} label="Dishwasher safe" />
@@ -208,7 +206,7 @@ storiesOf('Overlay', module)
     )
   })
   .add('change country', () => {
-    const pricesChangedHeadline = <Headline label="Change country" modifiers={['l']} />
+    const pricesChangedHeadline = <Headline label="Change country" size="l" />
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <Grid>
@@ -240,7 +238,7 @@ storiesOf('Overlay', module)
     )
   })
   .add('confirm location', () => {
-    const pricesChangedHeadline = <Headline label="Confirm your location" modifiers={['l']} />
+    const pricesChangedHeadline = <Headline label="Confirm your location" size="l" />
     return (
       <Overlay headline={pricesChangedHeadline}>
         <LabeledField
@@ -263,7 +261,7 @@ storiesOf('Overlay', module)
     )
   })
   .add('thank you', () => {
-    const pricesChangedHeadline = <Headline label="Thank you for using All3DP" modifiers={['l']} />
+    const pricesChangedHeadline = <Headline label="Thank you for using All3DP" size="l" />
     return (
       <Overlay headline={pricesChangedHeadline} buttons={buttons} closePortal={action('onClose')}>
         <Grid>

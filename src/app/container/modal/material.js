@@ -14,7 +14,7 @@ import Column from '../../component/column'
 import Image from '../../component/image'
 
 const MaterialModal = ({material, closeModal}) => {
-  const headline = <Headline label={material.name} modifiers={['l']} />
+  const headline = <Headline label={material.name} size="l" />
   const buttons = [<Button label="Close" onClick={() => closeModal()} />]
 
   return (

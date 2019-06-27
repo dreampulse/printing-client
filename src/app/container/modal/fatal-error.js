@@ -14,7 +14,7 @@ import errorImage from '../../../asset/image/error.svg'
 
 export default ({error}) => {
   const buttons = [<Button label="OK" onClick={() => reloadPage()} />]
-  const headline = <Headline label="System error occured" modifiers={['l']} />
+  const headline = <Headline label="System error occured" size="l" />
 
   return (
     <Overlay headline={headline} buttons={buttons} closeable={false}>

@@ -71,11 +71,7 @@ const AddressFormModal = ({
   const renderCompanySection = () => (
     <>
       <FormRow>
-        <Headline
-          modifiers={['s']}
-          label="Company information"
-          classNames={['u-no-margin-bottom']}
-        />
+        <Headline size="s" label="Company information" classNames={['u-no-margin-bottom']} />
       </FormRow>
       <FormRow modifiers={['half-half']}>
         <Field
@@ -96,7 +92,7 @@ const AddressFormModal = ({
 
   const billingAddressSection = (
     <div id="billing-address">
-      <Headline modifiers={['s']} classNames={['u-margin-top-xl']} label="Billing Address" />
+      <Headline size="s" classNames={['u-margin-top-xl']} label="Billing Address" />
       <FormRow modifiers={['half-half']}>
         <Field
           validate={required}
@@ -167,7 +163,7 @@ const AddressFormModal = ({
     </div>
   )
 
-  const headline = <Headline label="Enter delivery address" modifiers={['l']} />
+  const headline = <Headline label="Enter delivery address" size="l" />
   const buttons = [
     <Button
       key="cancel_button"
@@ -202,11 +198,7 @@ const AddressFormModal = ({
       <Form>
         <div id="shipping-address">
           <FormRow>
-            <Headline
-              modifiers={['s']}
-              label="Personal information"
-              classNames={['u-no-margin-bottom']}
-            />
+            <Headline size="s" label="Personal information" classNames={['u-no-margin-bottom']} />
           </FormRow>
 
           <FormRow modifiers={['half-half']}>
@@ -254,11 +246,7 @@ const AddressFormModal = ({
           {values.isCompany && renderCompanySection()}
 
           <FormRow>
-            <Headline
-              modifiers={['s']}
-              label="Shipping address"
-              classNames={['u-no-margin-bottom']}
-            />
+            <Headline size="s" label="Shipping address" classNames={['u-no-margin-bottom']} />
           </FormRow>
 
           <FormRow>
