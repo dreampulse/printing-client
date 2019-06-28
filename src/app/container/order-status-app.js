@@ -47,7 +47,7 @@ const OrderStatusApp = ({orderStatusError, orderStatus}) => (
         <Container>
           {orderStatus && !orderStatus.cancelled && (
             <Section classNames={['u-align-center']}>
-              <Headline modifiers={['xl']} label="Where is my order?" />
+              <Headline size="xl" label="Where is my order?" />
               <Headline
                 classNames={['u-margin-bottom-xl']}
                 label={orderStatus.orderNumber ? `Order number: ${orderStatus.orderNumber}` : ''}
@@ -87,7 +87,7 @@ const OrderStatusApp = ({orderStatusError, orderStatus}) => (
           )}
           {orderStatus && orderStatus.cancelled && (
             <Section classNames={['u-align-center']}>
-              <Headline modifiers={['xl']} label="Your order got cancelled!" />
+              <Headline size="xl" label="Your order got cancelled!" />
               <Headline
                 label={orderStatus.orderNumber ? `Order number: ${orderStatus.orderNumber}` : ''}
               />
@@ -96,18 +96,14 @@ const OrderStatusApp = ({orderStatusError, orderStatus}) => (
           )}
           {orderStatusError && (
             <Section classNames={['u-align-center']}>
-              <Headline modifiers={['xl']} label="Order not found!" />
+              <Headline size="xl" label="Order not found!" />
               <Paragraph>
                 Please contact our support team or check the link in your email.
               </Paragraph>
             </Section>
           )}
           <Section classNames={['u-align-center']}>
-            <Headline
-              modifiers={['l']}
-              classNames={['u-margin-bottom-xl']}
-              label="Any questions?"
-            />
+            <Headline size="l" classNames={['u-margin-bottom-xl']} label="Any questions?" />
             <Button minor label="Contact Us" onClick={() => openIntercom()} />
           </Section>
           <Section classNames={['u-align-center']}>

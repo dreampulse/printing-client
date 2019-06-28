@@ -6,15 +6,12 @@ import Headline from '../headline'
 
 storiesOf('MaterialStepSection', module)
   .add('default', () => (
-    <MaterialStepSection headline={<Headline modifiers={['xl', 'light']} label="Headline" />}>
+    <MaterialStepSection headline={<Headline size="xl" light label="Headline" />}>
       Material Step Section content
     </MaterialStepSection>
   ))
   .add('fadeIn', () => (
-    <MaterialStepSection
-      headline={<Headline modifiers={['xl', 'light']} label="Headline" />}
-      fadeIn
-    >
+    <MaterialStepSection headline={<Headline size="xl" light label="Headline" />} fadeIn>
       Material Step Section content
     </MaterialStepSection>
   ))

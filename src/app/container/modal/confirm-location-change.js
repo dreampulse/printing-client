@@ -12,7 +12,7 @@ import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 
 const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation, closeModal}) => {
-  const headline = <Headline label="Confirmation necessary" modifiers={['l', 'warning']} />
+  const headline = <Headline label="Confirmation necessary" size="l" warning />
   const buttons = [
     <Button
       label="Cancel"

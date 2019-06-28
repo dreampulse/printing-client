@@ -180,7 +180,7 @@ const UploadPage = ({
 
   return (
     <PageLayout
-      minorBackground={hasModels}
+      minorBackground
       stickyFooter={hasModels}
       footer={
         hasModels ? (
@@ -218,7 +218,8 @@ const UploadPage = ({
         {hasModels && (
           <Headline
             classNames={['u-align-center']}
-            modifiers={['xl', 'light']}
+            size="xl"
+            light
             label="Which files do you want to configure first?"
           />
         )}
@@ -237,7 +238,7 @@ const UploadPage = ({
         <Container s>
           <Section>
             <Headline
-              modifiers={['light']}
+              light
               label={`Your selection (${selectedModelConfigIds.length}/${
                 unconfiguredConfigIds.length
               } files)`}
@@ -365,24 +366,12 @@ const enhance = compose(
     componentDidUpdate(prevProps) {
       const {
         uploadedModelsWithConfig,
-        modelsWithConfig,
         selectedModelConfigIds,
-        goToMaterial,
-        updateSelectedModelConfigs,
-        isModelOpen
+        updateSelectedModelConfigs
       } = this.props
 
-      // If user uploads exactly one model directly go to the material page.
-      if (
-        prevProps.uploadedModelsWithConfig.length === 0 &&
-        uploadedModelsWithConfig.length === 1 &&
-        modelsWithConfig.length === 1 &&
-        !isModelOpen
-      ) {
-        goToMaterial(uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id))
-      }
       // Add new uploaded model to selection
-      else if (uploadedModelsWithConfig.length > prevProps.uploadedModelsWithConfig.length) {
+      if (uploadedModelsWithConfig.length > prevProps.uploadedModelsWithConfig.length) {
         updateSelectedModelConfigs([
           ...selectedModelConfigIds,
           ...difference(

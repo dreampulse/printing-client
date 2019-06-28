@@ -15,7 +15,7 @@ const INPUT_ID = 'share-configuration-input'
 
 const ShareConfigurationModal = ({configurationUrl, closeModal}) => (
   <Overlay
-    headline={<Headline label="Configuration created" modifiers={['l']} />}
+    headline={<Headline label="Configuration created" size="l" />}
     buttons={[
       <Button
         label="Copy to clipboard and Close"

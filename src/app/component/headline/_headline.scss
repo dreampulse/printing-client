@@ -49,4 +49,8 @@
   &--inline {
     display: inline-block;
   }
+
+  &--primary {
+    color: $color-primary;
+  }
 }
