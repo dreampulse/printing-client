@@ -139,11 +139,20 @@ const init = (
           failActionCreator: coreActions.fatalError,
           args: []
         }),
-        Cmd.run<Actions>(getLocationFromCookie, {
-          successActionCreator: coreActions.updateLocation,
-          failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
-          args: []
-        }),
+        userFromLocalStorage
+          ? Cmd.action(
+              coreActions.updateLocation({
+                city: userFromLocalStorage.billingAddress.city,
+                zipCode: userFromLocalStorage.billingAddress.zipCode,
+                stateCode: userFromLocalStorage.billingAddress.stateCode,
+                countryCode: userFromLocalStorage.billingAddress.countryCode
+              })
+            )
+          : Cmd.run<Actions>(getLocationFromCookie, {
+              successActionCreator: coreActions.updateLocation,
+              failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
+              args: []
+            }),
         userFromLocalStorage ? Cmd.action(coreActions.saveUser(userFromLocalStorage)) : Cmd.none,
         Cmd.action(coreActions.initDone())
       ],
