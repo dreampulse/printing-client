@@ -352,20 +352,12 @@ const enhance = compose(
   ),
   withFormik({
     mapPropsToValues: props => {
-      const userFromLocalStorage = localStorage.getItem(config.localStorageAddressKey)
       let initialUser
-      if (userFromLocalStorage) {
+      if (props.user) {
         initialUser = {
-          ...userFromLocalStorage,
-          shippingAddress: {
-            ...userFromLocalStorage.shippingAddress,
-            ...props.userLocation
-          },
-          billingAddress: {
-            ...userFromLocalStorage.billingAddress
-          },
+          ...props.user,
           useDifferentBillingAddress:
-            !userFromLocalStorage.useDifferentBillingAddress && props.scrollTo === 'billing-address'
+            !props.user.useDifferentBillingAddress && props.scrollTo === 'billing-address'
         }
       } else {
         initialUser = {
@@ -391,15 +383,15 @@ const enhance = compose(
         values.billingAddress = values.shippingAddress
       }
 
-      if (values.saveAddress) {
-        localStorage.setItem(config.localStorageAddressKey, omit(values, 'userId'))
-      } else {
-        localStorage.removeItem(config.localStorageAddressKey)
-      }
-
       const normalizedValues = {
         ...values,
         phoneNumber: formatTelephoneNumber(values.phoneNumber)
+      }
+
+      if (normalizedValues.saveAddress) {
+        localStorage.setItem(config.localStorageAddressKey, omit(normalizedValues, 'userId'))
+      } else {
+        localStorage.removeItem(config.localStorageAddressKey)
       }
 
       if (!isSameCountry(props.userLocation, values.shippingAddress)) {
