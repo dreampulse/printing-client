@@ -64,7 +64,7 @@ export default {
     'UK',
     'GB'
   ],
-  localStorageAddressKey: 'address_v2',
+  localStorageAddressKey: 'address_v3',
   printingEngineBaseUrl: 'http://localhost:8000',
   stripePublicKey: 'pk_test_vgy9WdRy48FnhegkMYXMQXit'
 }

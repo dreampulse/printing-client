@@ -8,6 +8,7 @@ import pick from 'lodash/pick'
 import zip from 'lodash/zip'
 import compact from 'lodash/compact'
 
+import * as localStorage from '../service/local-storage'
 import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
 import {
   resetModelConfigs,
@@ -47,6 +48,7 @@ import {
   PollingStatus,
   ModelConfigUploaded
 } from '../type'
+import config from '../../../config'
 
 import {Actions} from '../action'
 import * as coreActions from '../action/core'
@@ -119,8 +121,10 @@ const createPriceRequestSingleton = singletonPromise()
 const init = (
   state: CoreState,
   {payload: {featureFlags, urlParams}}: coreActions.InitAction
-): CoreReducer =>
-  loop(
+): CoreReducer => {
+  const userFromLocalStorage = localStorage.getItem<User>(config.localStorageAddressKey)
+
+  return loop(
     {
       ...state,
       featureFlags,
@@ -140,11 +144,13 @@ const init = (
           failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
           args: []
         }),
+        userFromLocalStorage ? Cmd.action(coreActions.saveUser(userFromLocalStorage)) : Cmd.none,
         Cmd.action(coreActions.initDone())
       ],
       {sequence: true}
     )
   )
+}
 
 const fatalError = (
   state: CoreState,
