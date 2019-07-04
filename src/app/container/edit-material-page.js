@@ -70,6 +70,7 @@ const EditMaterialPage = ({
             imageSource={model.thumbnailUrl}
             title={model.fileName}
             subline={formatDimensions(model.dimensions, model.fileUnit)}
+            onPreviewImageClick={() => openModelViewer(model)}
             buttonsLeft={
               <NumberField
                 value={modelConfig.quantity}

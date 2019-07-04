@@ -10,6 +10,7 @@ import './service/logging'
 import Store from './store'
 import Router from './router'
 import {handleIncomingMessages} from './service/intercom'
+import {trackPageImpression} from './service/google-analytics'
 
 import '../sass/main.scss'
 
@@ -47,4 +48,9 @@ if (process.env.NODE_ENV !== 'production') {
 } else {
   // In production version only
   browserUpdate({required: {i: -1, f: -1, o: -1, s: -1, c: -1}}) // Warn outdated browsers
+
+  history.listen(location => {
+    const {pathname} = location
+    trackPageImpression(pathname)
+  })
 }

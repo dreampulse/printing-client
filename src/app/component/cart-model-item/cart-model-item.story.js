@@ -1,5 +1,6 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
+import {action} from '@storybook/addon-actions'
 import {withState} from '@dump247/storybook-state'
 
 import CartModelItem from '.'
@@ -77,19 +78,11 @@ storiesOf('CartModelItem', module)
         buttonsRight={rightButtonBar()}
         selected={store.state.selected}
         onSelect={selected => store.set({selected})}
+        onPreviewImageClick={action('onPreviewImageClick')}
       />
     ))
   )
   .add('s', () => (
-    <CartModelItem
-      s
-      id="someId"
-      imageSource="http://placehold.it/180x180"
-      title="model_item_title_can_be_long_and_gets_truncated.stl"
-      info="42 x 42 x 42 mm"
-    />
-  ))
-  .add('s & selected', () => (
     <CartModelItem
       s
       id="someId"

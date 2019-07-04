@@ -145,6 +145,7 @@ const UploadPage = ({
               imageSource={model.thumbnailUrl}
               title={model.fileName}
               subline={formatDimensions(model.dimensions, model.fileUnit)}
+              onPreviewImageClick={() => openModelViewer(model)}
               buttonsRight={
                 <ButtonBar>
                   <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />

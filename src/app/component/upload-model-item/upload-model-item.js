@@ -25,16 +25,19 @@ const UploadModelItem = ({
   selected = false,
   onSelect,
   noCache = false,
+  onPreviewImageClick = noop,
   s = false
 }) => (
-  <div className={cn('UploadModelItem', {selected, s, onSelect}, classNames)}>
-    <div className="UploadModelItem__aside" onClick={onSelect ? () => onSelect(!selected) : noop}>
-      <ImageContainer
-        modifiers={['ratio-1-1']}
-        source={noCache ? null : imageSource}
-        fallbackSource={noCache ? imageSource : fallbackSource}
-        alt={`Preview image of ${title}`}
-      />
+  <div className={cn('UploadModelItem', {selected, s}, classNames)}>
+    <div className="UploadModelItem__aside">
+      <button type="button" className="UploadModelItem__previewImage" onClick={onPreviewImageClick}>
+        <ImageContainer
+          modifiers={['ratio-1-1']}
+          source={noCache ? null : imageSource}
+          fallbackSource={noCache ? imageSource : fallbackSource}
+          alt={`Preview image of ${title}`}
+        />
+      </button>
       {onSelect && <CheckboxField checked={selected} onChange={onSelect} />}
     </div>
     <div className="UploadModelItem__content">
@@ -61,7 +64,8 @@ UploadModelItem.propTypes = {
   selected: PropTypes.bool,
   onSelect: PropTypes.func,
   noCache: PropTypes.bool,
-  s: PropTypes.bool
+  s: PropTypes.bool,
+  onPreviewImageClick: PropTypes.func
 }
 
 export default UploadModelItem

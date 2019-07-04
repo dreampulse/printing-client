@@ -264,6 +264,7 @@ const CartPage = ({
                 />
               }
               buttonsRight={buttonBar(modelConfig, model)}
+              onPreviewImageClick={() => openModelViewer(model)}
             />
           )
         )}
