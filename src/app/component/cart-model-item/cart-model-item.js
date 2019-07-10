@@ -27,16 +27,19 @@ const CartModelItem = ({
   shippingInfo,
   selected = false,
   onSelect,
+  onPreviewImageClick = noop,
   s = false
 }) => (
-  <div className={cn('CartModelItem', {selected, s, onSelect}, classNames)}>
-    <div className="CartModelItem__aside" onClick={onSelect ? () => onSelect(!selected) : noop}>
-      <ImageContainer
-        modifiers={['ratio-1-1']}
-        source={imageSource}
-        fallbackSource={fallbackSource}
-        alt={`Preview image of ${title}`}
-      />
+  <div className={cn('CartModelItem', {selected, s}, classNames)}>
+    <div className="CartModelItem__aside">
+      <button type="button" className="CartModelItem__previewImage" onClick={onPreviewImageClick}>
+        <ImageContainer
+          modifiers={['ratio-1-1']}
+          source={imageSource}
+          fallbackSource={fallbackSource}
+          alt={`Preview image of ${title}`}
+        />
+      </button>
       {onSelect && <CheckboxField checked={selected} onChange={onSelect} />}
     </div>
     <div className="CartModelItem__content">
@@ -76,7 +79,8 @@ CartModelItem.propTypes = {
   buttonsRight: PropTypes.node,
   selected: PropTypes.bool,
   onSelect: PropTypes.func,
-  s: PropTypes.bool
+  s: PropTypes.bool,
+  onPreviewImageClick: PropTypes.func
 }
 
 export default CartModelItem

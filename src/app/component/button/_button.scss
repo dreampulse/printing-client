@@ -38,8 +38,7 @@
 
   &[disabled] {
     cursor: not-allowed;
-    background-color: $color-gray-5;
-    color: $color-minor;
+    opacity: 0.5;
     box-shadow: none;
   }
 
@@ -137,10 +136,6 @@
       background-color: $color-bg;
       color: $color-primary-active;
       border-color: $color-primary-active;
-    }
-
-    &[disabled] {
-      border-color: $color-gray-5;
     }
   }
 }

@@ -21,6 +21,7 @@ export type SaveUserAction = Action<'CORE.SAVE_USER', User>
 export type RestoreUserAction = Action<'CORE.RESTORE_USER', void>
 export type UserReceivedAction = Action<'CORE.USER_RECEIVED', UserResponse>
 export type ResetAction = Action<'CORE.RESET', void>
+export type InitDoneAction = Action<'CORE.INIT_DONE', void>
 
 export type CoreAction =
   | InitAction
@@ -34,6 +35,7 @@ export type CoreAction =
   | UserReceivedAction
   | ResetAction
   | RestoreUserAction
+  | InitDoneAction
 
 export const init = ({featureFlags, urlParams}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
@@ -95,5 +97,10 @@ export const userReceived = (payload: UserResponse): UserReceivedAction => ({
 
 export const reset = (): ResetAction => ({
   type: 'CORE.RESET',
+  payload: undefined
+})
+
+export const initDone = (): InitDoneAction => ({
+  type: 'CORE.INIT_DONE',
   payload: undefined
 })

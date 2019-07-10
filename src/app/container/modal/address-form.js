@@ -71,11 +71,7 @@ const AddressFormModal = ({
   const renderCompanySection = () => (
     <>
       <FormRow>
-        <Headline
-          modifiers={['s']}
-          label="Company information"
-          classNames={['u-no-margin-bottom']}
-        />
+        <Headline size="s" label="Company information" classNames={['u-no-margin-bottom']} />
       </FormRow>
       <FormRow modifiers={['half-half']}>
         <Field
@@ -96,7 +92,7 @@ const AddressFormModal = ({
 
   const billingAddressSection = (
     <div id="billing-address">
-      <Headline modifiers={['s']} classNames={['u-margin-top-xl']} label="Billing Address" />
+      <Headline size="s" classNames={['u-margin-top-xl']} label="Billing Address" />
       <FormRow modifiers={['half-half']}>
         <Field
           validate={required}
@@ -167,7 +163,7 @@ const AddressFormModal = ({
     </div>
   )
 
-  const headline = <Headline label="Your Address" modifiers={['l']} />
+  const headline = <Headline label="Enter delivery address" size="l" />
   const buttons = [
     <Button
       key="cancel_button"
@@ -202,11 +198,7 @@ const AddressFormModal = ({
       <Form>
         <div id="shipping-address">
           <FormRow>
-            <Headline
-              modifiers={['s']}
-              label="Personal information"
-              classNames={['u-no-margin-bottom']}
-            />
+            <Headline size="s" label="Personal information" classNames={['u-no-margin-bottom']} />
           </FormRow>
 
           <FormRow modifiers={['half-half']}>
@@ -254,11 +246,7 @@ const AddressFormModal = ({
           {values.isCompany && renderCompanySection()}
 
           <FormRow>
-            <Headline
-              modifiers={['s']}
-              label="Shipping address"
-              classNames={['u-no-margin-bottom']}
-            />
+            <Headline size="s" label="Shipping address" classNames={['u-no-margin-bottom']} />
           </FormRow>
 
           <FormRow>
@@ -315,7 +303,7 @@ const AddressFormModal = ({
           {!isSameCountry(userLocation, values.shippingAddress) && (
             <FormRow>
               <Notification
-                message="By changing the country you have customize all models in your cart again."
+                message="By changing the country you have configure all models in your cart again."
                 warning
               />
             </FormRow>
@@ -364,20 +352,12 @@ const enhance = compose(
   ),
   withFormik({
     mapPropsToValues: props => {
-      const userFromLocalStorage = localStorage.getItem(config.localStorageAddressKey)
       let initialUser
-      if (userFromLocalStorage) {
+      if (props.user) {
         initialUser = {
-          ...userFromLocalStorage,
-          shippingAddress: {
-            ...userFromLocalStorage.shippingAddress,
-            ...props.userLocation
-          },
-          billingAddress: {
-            ...userFromLocalStorage.billingAddress
-          },
+          ...props.user,
           useDifferentBillingAddress:
-            !userFromLocalStorage.useDifferentBillingAddress && props.scrollTo === 'billing-address'
+            !props.user.useDifferentBillingAddress && props.scrollTo === 'billing-address'
         }
       } else {
         initialUser = {
@@ -403,15 +383,15 @@ const enhance = compose(
         values.billingAddress = values.shippingAddress
       }
 
-      if (values.saveAddress) {
-        localStorage.setItem(config.localStorageAddressKey, omit(values, 'userId'))
-      } else {
-        localStorage.removeItem(config.localStorageAddressKey)
-      }
-
       const normalizedValues = {
         ...values,
         phoneNumber: formatTelephoneNumber(values.phoneNumber)
+      }
+
+      if (normalizedValues.saveAddress) {
+        localStorage.setItem(config.localStorageAddressKey, omit(normalizedValues, 'userId'))
+      } else {
+        localStorage.removeItem(config.localStorageAddressKey)
       }
 
       if (!isSameCountry(props.userLocation, values.shippingAddress)) {
@@ -452,7 +432,7 @@ const enhance = compose(
         this.props.setFieldValue('vatId', '')
       }
 
-      if (this.props.cart !== prevProps.cart) {
+      if (!this.props.cart) {
         this.props.goToUpload({
           notification: {
             warning: true,

@@ -23,7 +23,7 @@ const PickUnitModal = ({
   onUploadFiles,
   featureFlags
 }) => {
-  const headline = <Headline label="Pick file unit" modifiers={['l']} />
+  const headline = <Headline label="Pick file unit" size="l" />
   const buttons = [
     <Button label="Cancel" text onClick={() => closeModal()} />,
     <Button

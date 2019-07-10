@@ -9,7 +9,7 @@
     opacity: 0;
   }
 
-  @keyframes check-animation {
+  @keyframes LoadingCheckmark-check {
     0% {
       opacity: 0;
     }
@@ -24,6 +24,12 @@
     }
   }
 
+  @keyframes LoadingCheckmark-timeout {
+    100% {
+      opacity: 0;
+    }
+  }
+
   &--done {
     .LoadingCheckmark__loading {
       transition: opacity 0.2s linear;
@@ -33,12 +39,11 @@
 
   &--doneActive {
     .LoadingCheckmark__check {
-      animation: check-animation 2s linear forwards;
+      animation: LoadingCheckmark-check 2s linear forwards;
     }
   }
 
   &--hideAfterTimeout {
-    transition: opacity 0.2s 30s linear;
-    opacity: 0;
+    animation: LoadingCheckmark-timeout 0.2s 30s linear forwards;
   }
 }

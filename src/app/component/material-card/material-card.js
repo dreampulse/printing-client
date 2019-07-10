@@ -45,7 +45,7 @@ const MaterialCard = ({
     >
       {image && <div className="MaterialCard__image" style={imageStyle} />}
       <div className="MaterialCard__content">
-        <div className="MaterialCard__header">
+        <div className="MaterialCard__header" onClick={onSelectClick}>
           <Headline label={title} tag="strong" />
         </div>
         {Boolean(description) && (

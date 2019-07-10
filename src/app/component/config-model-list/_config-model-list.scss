@@ -22,13 +22,13 @@
     // First item to exit
     &.PortalTransition-appear-active {
       animation: ConfigModelList-phase1-exit-first 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s,
-        ConfigModelList-phase2-exit-first 0.3s cubic-bezier(0.9, -0.02, 0.58, 1) 0.6s forwards !important;
+        ConfigModelList-phase2-exit-first 0.6s cubic-bezier(0.9, -0.02, 0.58, 1) 0.6s forwards !important;
     }
 
     // Item to exit expect the first
     &.PortalTransition-appear-active + &.PortalTransition-appear-active {
       animation: ConfigModelList-phase1-exit 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s,
-        ConfigModelList-phase2-exit 0.3s cubic-bezier(0.9, -0.02, 0.58, 1) 0.6s forwards !important;
+        ConfigModelList-phase2-exit 0.6s cubic-bezier(0.9, -0.02, 0.58, 1) 0.6s forwards !important;
     }
 
     &.PortalTransition-appear-done {

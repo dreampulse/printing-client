@@ -3,6 +3,7 @@
   // Needs to be synced with the component
   $count-transition-timeout: 0.5s;
   $flyout-transition-timeout: 0.3s;
+  $notify-transition-delay: 1s;
 
   display: inline-flex;
   flex-direction: column;
@@ -64,7 +65,6 @@
   &__portal {
     opacity: 0;
 
-    &.CartNavLink--transition-enter-active,
     &.CartNavLink--transition-enter-done {
       transition: opacity $flyout-transition-timeout ease-out;
       opacity: 1;
@@ -84,6 +84,16 @@
 
     &:hover {
       color: $color-primary;
+    }
+  }
+
+  &--notify {
+    .CartNavLink__portal {
+      &.CartNavLink--transition-enter {
+        transition-delay: $notify-transition-delay;
+        transition: opacity $flyout-transition-timeout ease-out;
+        opacity: 1;
+      }
     }
   }
 }

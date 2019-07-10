@@ -8,6 +8,7 @@ import pick from 'lodash/pick'
 import zip from 'lodash/zip'
 import compact from 'lodash/compact'
 
+import * as localStorage from '../service/local-storage'
 import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
 import {
   resetModelConfigs,
@@ -47,6 +48,7 @@ import {
   PollingStatus,
   ModelConfigUploaded
 } from '../type'
+import config from '../../../config'
 
 import {Actions} from '../action'
 import * as coreActions from '../action/core'
@@ -82,6 +84,8 @@ export type CoreState = {
   cart: Cart | null
   paymentId: PaymentId | null
   orderNumber: string | null
+  initTriggered: boolean
+  initDone: boolean
 }
 
 type CoreReducer = CoreState | Loop<CoreState, Actions>
@@ -107,7 +111,9 @@ const initialState: CoreState = {
   user: null,
   cart: null,
   paymentId: null,
-  orderNumber: null
+  orderNumber: null,
+  initTriggered: false,
+  initDone: false
 }
 
 const createPriceRequestSingleton = singletonPromise()
@@ -115,27 +121,45 @@ const createPriceRequestSingleton = singletonPromise()
 const init = (
   state: CoreState,
   {payload: {featureFlags, urlParams}}: coreActions.InitAction
-): CoreReducer =>
-  loop(
+): CoreReducer => {
+  const userFromLocalStorage = localStorage.getItem<User>(config.localStorageAddressKey)
+
+  return loop(
     {
       ...state,
       featureFlags,
-      urlParams
+      urlParams,
+      initTriggered: true
     },
-    Cmd.list([
-      Cmd.run<Actions>(printingEngine.getMaterialGroups, {
-        successActionCreator: response =>
-          coreActions.updateMaterialGroups(response.materialStructure),
-        failActionCreator: coreActions.fatalError,
-        args: []
-      }),
-      Cmd.run<Actions>(getLocationFromCookie, {
-        successActionCreator: coreActions.updateLocation,
-        failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
-        args: []
-      })
-    ])
+    Cmd.list(
+      [
+        Cmd.run<Actions>(printingEngine.getMaterialGroups, {
+          successActionCreator: response =>
+            coreActions.updateMaterialGroups(response.materialStructure),
+          failActionCreator: coreActions.fatalError,
+          args: []
+        }),
+        userFromLocalStorage
+          ? Cmd.action(
+              coreActions.updateLocation({
+                city: userFromLocalStorage.billingAddress.city,
+                zipCode: userFromLocalStorage.billingAddress.zipCode,
+                stateCode: userFromLocalStorage.billingAddress.stateCode,
+                countryCode: userFromLocalStorage.billingAddress.countryCode
+              })
+            )
+          : Cmd.run<Actions>(getLocationFromCookie, {
+              successActionCreator: coreActions.updateLocation,
+              failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
+              args: []
+            }),
+        userFromLocalStorage ? Cmd.action(coreActions.saveUser(userFromLocalStorage)) : Cmd.none,
+        Cmd.action(coreActions.initDone())
+      ],
+      {sequence: true}
+    )
   )
+}
 
 const fatalError = (
   state: CoreState,
@@ -457,12 +481,6 @@ const uploadComplete = (
     shippingId: null
   }))
 
-  const selectedModelConfigs: string[] = [
-    ...state.selectedModelConfigs,
-    modelConfig.id,
-    ...additionalModelConfigs.map<string>(m => m.id)
-  ]
-
   return {
     ...state,
     backendModels: {
@@ -483,8 +501,7 @@ const uploadComplete = (
           : item
       ),
       ...additionalModelConfigs
-    ],
-    selectedModelConfigs
+    ]
   }
 }
 
@@ -588,8 +605,7 @@ const duplicateModelConfig = (
       ...state.modelConfigs.slice(0, modelConfigIndex + 1),
       nextModelConfig,
       ...state.modelConfigs.slice(modelConfigIndex + 1)
-    ],
-    selectedModelConfigs: [...state.selectedModelConfigs, nextId]
+    ]
   }
 }
 
@@ -839,8 +855,7 @@ const configurationReceived = (
   return {
     ...state,
     modelConfigs,
-    backendModels,
-    selectedModelConfigs: modelConfigs.map(modelConfig => modelConfig.id)
+    backendModels
   }
 }
 
@@ -857,12 +872,16 @@ const reset = (state: CoreState): CoreReducer => ({
     'unit',
     'featureFlags',
     'shippings',
-    'urlParams'
+    'urlParams',
+    'initTriggered',
+    'initDone'
   ),
   user: {
     ...omit(state.user, 'userId')
   }
 })
+
+const initDone = (state: CoreState): CoreReducer => ({...state, initDone: true})
 
 export const reducer = (state: CoreState = initialState, action: Actions): CoreReducer => {
   switch (action.type) {
@@ -930,6 +949,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return configurationReceived(state, action)
     case 'CORE.RESET':
       return reset(state)
+    case 'CORE.INIT_DONE':
+      return initDone(state)
     default:
       return state
   }

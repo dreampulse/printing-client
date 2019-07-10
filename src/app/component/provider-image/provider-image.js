@@ -11,6 +11,7 @@ import imaterialiseImage from '../../../asset/image/printing-service/imaterialis
 import jawstecImage from '../../../asset/image/printing-service/jawstec.png'
 import sculpteoImage from '../../../asset/image/printing-service/sculpteo.png'
 import shapewaysImage from '../../../asset/image/printing-service/shapeways.png'
+import simply3dImage from '../../../asset/image/printing-service/simply3d.png'
 import treatstockImage from '../../../asset/image/printing-service/treatstock.png'
 import zverseImage from '../../../asset/image/printing-service/zverse.png'
 
@@ -22,6 +23,7 @@ const providerImages = {
   jawstec: jawstecImage,
   sculpteo: sculpteoImage,
   shapeways: shapewaysImage,
+  simply3d: simply3dImage,
   treatstock: treatstockImage,
   zverse: zverseImage
 }

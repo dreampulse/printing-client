@@ -1,5 +1,6 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
+import {action} from '@storybook/addon-actions'
 import {withState} from '@dump247/storybook-state'
 
 import UploadModelItem from '.'
@@ -44,6 +45,7 @@ storiesOf('UploadModelItem', module)
         buttonsRight={buttonBar()}
         selected={store.state.selected}
         onSelect={selected => store.set({selected})}
+        onPreviewImageClick={action('onPreviewImageClick')}
       />
     ))
   )

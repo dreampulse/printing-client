@@ -7,6 +7,7 @@ import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 import withHandlers from 'recompose/withHandlers'
 import intersection from 'lodash/intersection'
+import difference from 'lodash/difference'
 import lifecycle from 'recompose/lifecycle'
 
 import deleteIcon from '../../asset/icon/delete.svg'
@@ -47,6 +48,11 @@ import StickyFooter from '../component/sticky-footer'
 import Link from '../component/link'
 import Paragraph from '../component/paragraph'
 
+const getUnconfiguredModelIds = modelConfigs =>
+  modelConfigs
+    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null)
+    .map(modelConfig => modelConfig.id)
+
 const UploadPage = ({
   openPickUnitModal,
   deleteModelConfigs,
@@ -61,10 +67,12 @@ const UploadPage = ({
   selectedModelConfigIds,
   toggleId,
   toggleAll,
-  createConfiguration
+  createConfiguration,
+  modelConfigs
 }) => {
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
+  const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
 
   const renderPromoSection = () => (
     <Section>
@@ -115,16 +123,8 @@ const UploadPage = ({
               <UploadModelItemError
                 key={modelConfig.id}
                 title="Upload failed"
-                subline={model.errorMessage}
-                buttonsRight={
-                  <ButtonBar>
-                    <Button
-                      icon={deleteIcon}
-                      iconOnly
-                      onClick={() => deleteModelConfigs([modelConfig.id])}
-                    />
-                  </ButtonBar>
-                }
+                subline="Invalid file uploaded."
+                onDelete={() => deleteModelConfigs([modelConfig.id])}
               />
             )
           }
@@ -134,15 +134,7 @@ const UploadPage = ({
               status={model.progress}
               title="Uploading"
               subline={model.fileName}
-              buttonsRight={
-                <ButtonBar>
-                  <Button
-                    icon={deleteIcon}
-                    iconOnly
-                    onClick={() => deleteModelConfigs([modelConfig.id])}
-                  />
-                </ButtonBar>
-              }
+              onDelete={() => deleteModelConfigs([modelConfig.id])}
             />
           )
         }
@@ -153,6 +145,7 @@ const UploadPage = ({
               imageSource={model.thumbnailUrl}
               title={model.fileName}
               subline={formatDimensions(model.dimensions, model.fileUnit)}
+              onPreviewImageClick={() => openModelViewer(model)}
               buttonsRight={
                 <ButtonBar>
                   <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
@@ -188,10 +181,10 @@ const UploadPage = ({
 
   return (
     <PageLayout
-      footer={<FooterPartial />}
-      minorBackground={hasModels}
-      stickyFooter={
-        hasModels && (
+      minorBackground
+      stickyFooter={hasModels}
+      footer={
+        hasModels ? (
           <StickyFooter>
             {featureFlags.share && (
               <Button
@@ -203,14 +196,16 @@ const UploadPage = ({
             )}
             <Button
               disabled={!selectedModelConfigIds.length > 0}
-              label="Customize"
+              label="Configure Selection"
               onClick={() => goToMaterial(selectedModelConfigIds)}
             />
           </StickyFooter>
+        ) : (
+          <FooterPartial />
         )
       }
     >
-      <Container full={Boolean(cart)}>
+      <Container full={hasModels}>
         {hasModels || cart ? (
           <LocationInfoPartial />
         ) : (
@@ -224,8 +219,9 @@ const UploadPage = ({
         {hasModels && (
           <Headline
             classNames={['u-align-center']}
-            modifiers={['xl', 'light']}
-            label="Which files do you want to customize first?"
+            size="xl"
+            light
+            label="Which files do you want to configure first?"
           />
         )}
         {!hasModels && (
@@ -243,8 +239,10 @@ const UploadPage = ({
         <Container s>
           <Section>
             <Headline
-              modifiers={['light']}
-              label={`Your selection (${selectedModelConfigIds.length}/${numModels} files)`}
+              light
+              label={`Your selection (${selectedModelConfigIds.length}/${
+                unconfiguredConfigIds.length
+              } files)`}
             />
             <Paragraph>
               <Link
@@ -281,7 +279,9 @@ const mapStateToProps = state => ({
   cart: state.core.cart,
   featureFlags: state.core.featureFlags,
   useSameMaterial: state.core.useSameMaterial,
-  uploadedModelConfigs: selector.selectUploadedModelConfigs(state)
+  uploadedModelConfigs: selector.selectUploadedModelConfigs(state),
+  isModelOpen: state.modal.isOpen,
+  modelConfigs: state.core.modelConfigs
 })
 
 const mapDispatchToProps = {
@@ -322,11 +322,12 @@ const enhance = compose(
         updateSelectedModelConfigs([...selectedModelConfigIds, id])
       }
     },
-    toggleAll: ({updateSelectedModelConfigs, modelsWithConfig, selectedModelConfigIds}) => () => {
-      if (modelsWithConfig.length === selectedModelConfigIds.length) {
+    toggleAll: ({updateSelectedModelConfigs, modelConfigs, selectedModelConfigIds}) => () => {
+      const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
+      if (unconfiguredConfigIds.length === selectedModelConfigIds.length) {
         updateSelectedModelConfigs([])
       } else {
-        updateSelectedModelConfigs(modelsWithConfig.map(([modelConfig]) => modelConfig.id))
+        updateSelectedModelConfigs(unconfiguredConfigIds)
       }
     },
     createConfiguration: ({
@@ -364,13 +365,21 @@ const enhance = compose(
       this.props.updateSelectedModelConfigs(filteredModelConfigIds)
     },
     componentDidUpdate(prevProps) {
-      // If user uploads exactly one model directly go to the material page.
-      if (
-        prevProps.uploadedModelsWithConfig.length === 0 &&
-        this.props.uploadedModelsWithConfig.length === 1 &&
-        this.props.modelsWithConfig.length === 1
-      ) {
-        this.props.goToMaterial(this.props.selectedModelConfigIds)
+      const {
+        uploadedModelsWithConfig,
+        selectedModelConfigIds,
+        updateSelectedModelConfigs
+      } = this.props
+
+      // Add new uploaded model to selection
+      if (uploadedModelsWithConfig.length > prevProps.uploadedModelsWithConfig.length) {
+        updateSelectedModelConfigs([
+          ...selectedModelConfigIds,
+          ...difference(
+            uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id),
+            prevProps.uploadedModelsWithConfig.map(([modelConfig]) => modelConfig.id)
+          )
+        ])
       }
     }
   })

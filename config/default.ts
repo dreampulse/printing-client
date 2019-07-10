@@ -12,7 +12,7 @@ export default {
   ravenUrl: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
   ravenRelease: process.env.SENTRY_RELEASE_VERSION,
   countryCookie: 'country',
-  supportEmailAddress: 'support@all3dp.com',
+  supportContactUrl: '//craftcloud.all3dp.com/contact',
   currencies: [
     {value: 'USD', label: 'USD', symbol: '$', prefix: true},
     {value: 'EUR', label: 'EUR', symbol: '€', prefix: false},
@@ -29,6 +29,7 @@ export default {
     jawstec: 'JawsTec',
     sculpteo: 'Sculpteo',
     shapeways: 'Shapeways',
+    simply3d: 'Simply 3D',
     treatstock: 'Treatstock',
     zverse: 'ZVerse'
   },
@@ -63,7 +64,7 @@ export default {
     'UK',
     'GB'
   ],
-  localStorageAddressKey: 'address_v2',
+  localStorageAddressKey: 'address_v3',
   printingEngineBaseUrl: 'http://localhost:8000',
   stripePublicKey: 'pk_test_vgy9WdRy48FnhegkMYXMQXit'
 }

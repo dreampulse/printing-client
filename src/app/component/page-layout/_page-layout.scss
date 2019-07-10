@@ -1,5 +1,5 @@
 .PageLayout {
-  $stacking: content, sticky;
+  $stacking: content, footer;
 
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
   }
 
   &__content {
-    margin: $space-l 0 $space-l 0;
+    margin-top: $space-l;
     flex-grow: 1;
     height: 100%;
     z-index: z($stacking, content);
@@ -30,10 +30,21 @@
     }
   }
 
-  &__stickyFooter {
-    position: sticky;
-    bottom: 0;
-    z-index: z($stacking, sticky);
+  &__footer {
+    width: 100%;
+    z-index: z($stacking, footer);
+  }
+
+  &--stickyFooter {
+    .PageLayout__content {
+      height: auto;
+      flex-grow: 0;
+    }
+
+    .PageLayout__footer {
+      position: sticky;
+      bottom: 0;
+    }
   }
 
   &--minorBackground {

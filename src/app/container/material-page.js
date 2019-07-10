@@ -43,13 +43,19 @@ import ConfigModelList from '../component/config-model-list'
 const SCROLL_CONTAINER_ID = 'main-container'
 
 const getConfiguredModelIds = modelConfigs =>
-  modelConfigs.filter(model => model.quoteId).map(model => model.id)
+  modelConfigs
+    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null)
+    .map(modelConfig => modelConfig.id)
+
+const getUnconfiguredModelIds = modelConfigs =>
+  modelConfigs
+    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null)
+    .map(modelConfig => modelConfig.id)
 
 const MaterialPage = ({
   selectedState,
   setSelectedState,
   goToUpload,
-  uploadedModelConfigs,
   openModelViewer,
   modelsWithConfig,
   selectedModelConfigIds,
@@ -58,10 +64,13 @@ const MaterialPage = ({
   duplicateModelConfig,
   updateQuantities,
   deleteModelConfigs,
-  initialConfigIds,
-  setInitialConfigIds,
-  modelConfigs
+  configuredConfigIds,
+  setConfiguredConfigIds,
+  modelConfigs,
+  updateSelectedModelConfigs
 }) => {
+  const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
+
   const sidebar = asideNode => (
     <>
       <Section>
@@ -71,15 +80,15 @@ const MaterialPage = ({
           icon={backIcon}
           onClick={event => {
             event.preventDefault()
-            goToUpload()
+            goToUpload({selectModelConfigIds: selectedModelConfigIds})
           }}
         />
       </Section>
       <Section>
         <Headline
-          modifiers={['light']}
+          light
           label={`Your selection (${selectedModelConfigIds.length}/${
-            uploadedModelConfigs.length
+            unconfiguredConfigIds.length
           } files)`}
         />
         <Paragraph>
@@ -89,7 +98,7 @@ const MaterialPage = ({
               toggleAll()
             }}
             label={
-              modelsWithConfig.length === selectedModelConfigIds.length
+              unconfiguredConfigIds.length === selectedModelConfigIds.length
                 ? 'Deselect all files'
                 : 'Select all files'
             }
@@ -100,11 +109,11 @@ const MaterialPage = ({
             asideNode.scrollTop = 0
           }}
           onConfigurationDidChange={() => {
-            setInitialConfigIds(getConfiguredModelIds(modelConfigs))
+            setConfiguredConfigIds(getConfiguredModelIds(modelConfigs))
           }}
         >
           {modelsWithConfig
-            .filter(([modelConfig]) => !initialConfigIds.includes(modelConfig.id))
+            .filter(([modelConfig]) => !configuredConfigIds.includes(modelConfig.id))
             .map(([modelConfig, model]) => (
               <UploadModelItem
                 configured={modelConfig.quoteId}
@@ -114,6 +123,7 @@ const MaterialPage = ({
                 imageSource={model.thumbnailUrl}
                 title={model.fileName}
                 subline={formatDimensions(model.dimensions, model.fileUnit)}
+                onPreviewImageClick={() => openModelViewer(model)}
                 buttonsLeft={
                   <NumberField
                     value={modelConfig.quantity}
@@ -126,7 +136,11 @@ const MaterialPage = ({
                     <Button
                       icon={copyIcon}
                       iconOnly
-                      onClick={() => duplicateModelConfig(modelConfig.id)}
+                      onClick={() => {
+                        duplicateModelConfig(modelConfig.id).then(({payload: {nextId}}) => {
+                          updateSelectedModelConfigs([...selectedModelConfigIds, nextId])
+                        })
+                      }}
                     />
                     <Button
                       icon={deleteIcon}
@@ -167,7 +181,9 @@ const MaterialPage = ({
 
 const mapStateToProps = state => ({
   selectedModelConfigIds: state.core.selectedModelConfigs,
-  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]),
+  modelsWithConfig: unzip([state.core.modelConfigs, selectModelsOfModelConfigs(state)]).filter(
+    ([modelConfig]) => modelConfig.type === 'UPLOADED'
+  ),
   currency: state.core.currency,
   location: state.core.location,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
@@ -201,11 +217,12 @@ export default compose(
         updateSelectedModelConfigs([...selectedModelConfigIds, id])
       }
     },
-    toggleAll: ({updateSelectedModelConfigs, modelsWithConfig, selectedModelConfigIds}) => () => {
-      if (modelsWithConfig.length === selectedModelConfigIds.length) {
+    toggleAll: ({updateSelectedModelConfigs, modelConfigs, selectedModelConfigIds}) => () => {
+      const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
+      if (unconfiguredConfigIds.length === selectedModelConfigIds.length) {
         updateSelectedModelConfigs([])
       } else {
-        updateSelectedModelConfigs(modelsWithConfig.map(([modelConfig]) => modelConfig.id))
+        updateSelectedModelConfigs(unconfiguredConfigIds)
       }
     }
   }),
@@ -215,7 +232,7 @@ export default compose(
     finishGroupId: null,
     materialConfigId: null
   }),
-  withState('initialConfigIds', 'setInitialConfigIds', ({modelConfigs}) =>
+  withState('configuredConfigIds', 'setConfiguredConfigIds', ({modelConfigs}) =>
     getConfiguredModelIds(modelConfigs)
   ),
   lifecycle({
@@ -231,8 +248,10 @@ export default compose(
       }
     },
     componentDidUpdate() {
-      if (this.props.modelsWithConfig.length === 0) {
-        this.props.goToUpload()
+      const {modelsWithConfig, goToUpload} = this.props
+
+      if (modelsWithConfig.length === 0) {
+        goToUpload()
       }
     }
   })

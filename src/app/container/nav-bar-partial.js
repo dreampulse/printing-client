@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Route} from 'react-router'
 import config from '../../../config'
 import uploadIcon from '../../asset/icon/upload.svg'
+import intercomIcon from '../../asset/icon/intercom.svg'
 
 import * as selector from '../lib/selector'
 import {formatDimensions} from '../lib/formatter'
@@ -12,9 +13,7 @@ import {openIntercom, isActualIntercomImpl} from '../service/intercom'
 import CartNavLink from '../component/cart-nav-link'
 import NavLink from '../component/nav-link'
 import NavBar from '../component/nav-bar'
-import Button from '../component/button'
 import Logo from '../component/logo'
-import CartFlyout from '../component/cart-flyout'
 import CartModelItem from '../component/cart-model-item'
 
 const NavBarPartial = ({
@@ -47,39 +46,29 @@ const NavBarPartial = ({
                 event.preventDefault()
                 onCartClick()
               }}
-              cartFlyout={
-                modelsWithConfig.length > 0 && (
-                  <CartFlyout
-                    title={`${modelsWithConfig.length} ${
-                      modelsWithConfig.length > 1 ? 'files' : 'file'
-                    } in your cart`}
-                  >
-                    {modelsWithConfig.map(({modelConfig, model}) => (
-                      <CartModelItem
-                        id={modelConfig.id}
-                        key={modelConfig.id}
-                        s
-                        imageSource={model.thumbnailUrl}
-                        title={model.fileName}
-                        info={formatDimensions(model.dimensions, model.fileUnit)}
-                      />
-                    ))}
-                  </CartFlyout>
-                )
-              }
-            />
+            >
+              {modelsWithConfig.map(({modelConfig, model}) => (
+                <CartModelItem
+                  id={modelConfig.id}
+                  key={modelConfig.id}
+                  s
+                  imageSource={model.thumbnailUrl}
+                  title={model.fileName}
+                  info={formatDimensions(model.dimensions, model.fileUnit)}
+                />
+              ))}
+            </CartNavLink>
           </>
         )}
-        <Button
-          minor
-          compact
+        <NavLink
           label="Need help?"
+          icon={intercomIcon}
           onClick={event => {
             event.preventDefault()
             if (isActualIntercomImpl()) {
               openIntercom()
             } else {
-              global.document.location.href = `mailto:${config.supportEmailAddress}`
+              global.document.location.href = config.supportContactUrl
             }
           }}
         />

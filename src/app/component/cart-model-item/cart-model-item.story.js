@@ -1,5 +1,6 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
+import {action} from '@storybook/addon-actions'
 import {withState} from '@dump247/storybook-state'
 
 import CartModelItem from '.'
@@ -77,6 +78,7 @@ storiesOf('CartModelItem', module)
         buttonsRight={rightButtonBar()}
         selected={store.state.selected}
         onSelect={selected => store.set({selected})}
+        onPreviewImageClick={action('onPreviewImageClick')}
       />
     ))
   )

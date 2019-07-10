@@ -102,10 +102,8 @@
     }
   }
 
-  &--onSelect {
-    .CartModelItem__aside {
-      cursor: pointer;
-    }
+  &__previewImage {
+    outline: 0;
   }
 
   &--selected:after {

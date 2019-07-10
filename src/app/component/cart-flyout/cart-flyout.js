@@ -10,7 +10,14 @@ import Headline from '../headline'
 // Has to be in sync with the components style
 const MAX_ITEMS = 4
 
-const CartFylout = ({classNames, children, title, onMouseLeave = noop, onMouseEnter = noop}) => (
+const CartFylout = ({
+  classNames,
+  children,
+  title,
+  onMouseLeave = noop,
+  onMouseEnter = noop,
+  notify = false
+}) => (
   <div
     className={cn(
       'CartFlyout',
@@ -20,7 +27,7 @@ const CartFylout = ({classNames, children, title, onMouseLeave = noop, onMouseEn
     onMouseLeave={onMouseLeave}
     onMouseEnter={onMouseEnter}
   >
-    <Headline label={title} modifiers={['light']} />
+    <Headline label={title} light={!notify} primary={notify} />
     <ul className="CartFlyout__items">
       {React.Children.map(children, (child, index) => (
         <li key={`cartFlyoutItem-${index}`}>{child}</li>
@@ -34,7 +41,8 @@ CartFylout.propTypes = {
   children: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
   onMouseLeave: PropTypes.func,
-  onMouseEnter: PropTypes.func
+  onMouseEnter: PropTypes.func,
+  notify: PropTypes.bool
 }
 
 export default CartFylout

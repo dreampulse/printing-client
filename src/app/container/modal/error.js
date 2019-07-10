@@ -15,7 +15,7 @@ import errorImage from '../../../asset/image/error.svg'
 
 const ErrorModal = ({error, closeModal}) => {
   const buttons = [<Button label="OK" onClick={closeModal} />]
-  const headline = <Headline label="Error occurred" modifiers={['l']} />
+  const headline = <Headline label="Error occurred" size="l" />
 
   return (
     <Modal headline={headline} buttons={buttons} closeable={false}>

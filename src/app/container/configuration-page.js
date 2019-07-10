@@ -5,10 +5,6 @@ import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 import {replace} from 'react-router-redux'
 
-import {getFeatureFlags, getUrlParams} from '../lib/url'
-import {removeBootsplash} from '../service/bootsplash'
-
-import * as coreActions from '../action/core'
 import * as configurationAction from '../action/configuration'
 import * as navigationAction from '../action/navigation'
 
@@ -16,12 +12,14 @@ import LoadingContainer from '../component/loading-container'
 
 const ConfigurationPage = () => <LoadingContainer />
 
-const mapStateToProps = () => ({})
+const mapStateToProps = state => ({
+  selectedModelConfigs: state.core.selectedModelConfigs,
+  modelConfigs: state.core.modelConfigs
+})
 
 const mapDispatchToProps = {
   goToUpload: navigationAction.goToUpload,
-  loadConfiguration: configurationAction.loadConfiguration,
-  init: coreActions.init
+  loadConfiguration: configurationAction.loadConfiguration
 }
 
 const enhance = compose(
@@ -32,17 +30,18 @@ const enhance = compose(
   ),
   lifecycle({
     componentDidMount() {
-      const {init, loadConfiguration, goToUpload} = this.props
+      const {loadConfiguration} = this.props
 
-      init({
-        featureFlags: getFeatureFlags(global.location),
-        urlParams: getUrlParams(global.location)
-      })
-        .then(() => {
-          loadConfiguration(this.props.match.params.id)
-          removeBootsplash()
-        })
-        .then(() => goToUpload(undefined, replace))
+      loadConfiguration(this.props.match.params.id)
+    },
+    componentDidUpdate(prevProps) {
+      const {goToUpload, modelConfigs} = this.props
+
+      // If the modelConfig updates we know the loading of the configuration is done
+      if (prevProps.modelConfigs.length < modelConfigs.length) {
+        const selectModelConfigIds = modelConfigs.map(modelConfig => modelConfig.id)
+        goToUpload({selectModelConfigIds}, replace)
+      }
     }
   })
 )

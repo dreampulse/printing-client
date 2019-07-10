@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 import withState from 'recompose/withState'
@@ -39,16 +38,16 @@ const localDate = orderStatus =>
     day: 'numeric'
   })
 
-const OrderStatusPage = ({orderStatusError, orderStatus}) => (
+const OrderStatusApp = ({orderStatusError, orderStatus}) => (
   <AppLayout header={<NavBarPartial helpOnly />}>
-    <PageLayout minorBackground stickyFooter={<FooterPartial />}>
+    <PageLayout minorBackground footer={<FooterPartial />}>
       {!orderStatusError && !orderStatus ? (
         <LoadingContainer insideContent />
       ) : (
         <Container>
           {orderStatus && !orderStatus.cancelled && (
             <Section classNames={['u-align-center']}>
-              <Headline modifiers={['xl']} label="Where is my order?" />
+              <Headline size="xl" label="Where is my order?" />
               <Headline
                 classNames={['u-margin-bottom-xl']}
                 label={orderStatus.orderNumber ? `Order number: ${orderStatus.orderNumber}` : ''}
@@ -88,7 +87,7 @@ const OrderStatusPage = ({orderStatusError, orderStatus}) => (
           )}
           {orderStatus && orderStatus.cancelled && (
             <Section classNames={['u-align-center']}>
-              <Headline modifiers={['xl']} label="Your order got cancelled!" />
+              <Headline size="xl" label="Your order got cancelled!" />
               <Headline
                 label={orderStatus.orderNumber ? `Order number: ${orderStatus.orderNumber}` : ''}
               />
@@ -97,18 +96,14 @@ const OrderStatusPage = ({orderStatusError, orderStatus}) => (
           )}
           {orderStatusError && (
             <Section classNames={['u-align-center']}>
-              <Headline modifiers={['xl']} label="Order not found!" />
+              <Headline size="xl" label="Order not found!" />
               <Paragraph>
                 Please contact our support team or check the link in your email.
               </Paragraph>
             </Section>
           )}
           <Section classNames={['u-align-center']}>
-            <Headline
-              modifiers={['l']}
-              classNames={['u-margin-bottom-xl']}
-              label="Any questions?"
-            />
+            <Headline size="l" classNames={['u-margin-bottom-xl']} label="Any questions?" />
             <Button minor label="Contact Us" onClick={() => openIntercom()} />
           </Section>
           <Section classNames={['u-align-center']}>
@@ -122,18 +117,10 @@ const OrderStatusPage = ({orderStatusError, orderStatus}) => (
   </AppLayout>
 )
 
-const mapStateToProps = () => ({})
-
-const mapDispatchToProps = {}
-
 const enhance = compose(
   scrollToTop(),
   withState('orderStatusError', 'setOrderStatusError', null),
   withState('orderStatus', 'setOrderStatus', null),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
   lifecycle({
     componentDidMount() {
       getOrderStatus(this.props.match.params.id)
@@ -149,4 +136,4 @@ const enhance = compose(
   })
 )
 
-export default enhance(OrderStatusPage)
+export default enhance(OrderStatusApp)

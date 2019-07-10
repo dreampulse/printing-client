@@ -10,6 +10,7 @@ import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import debounce from 'lodash/debounce'
 import keyBy from 'lodash/keyBy'
+import defer from 'lodash/defer'
 
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
@@ -193,9 +194,7 @@ const MaterialPartial = ({
       )
 
     return (
-      <MaterialStepSection
-        headline={<Headline modifiers={['xl', 'light']} label="1. Select Material" />}
-      >
+      <MaterialStepSection headline={<Headline size="xl" light label="1. Select Material" />}>
         <Grid>
           <Column lg={8} classNames={['u-margin-bottom']}>
             <RadioButtonGroup
@@ -282,7 +281,7 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        headline={<Headline modifiers={['xl', 'light']} label="2. Select Finish" />}
+        headline={<Headline size="xl" light label="2. Select Variation/Finish" />}
         fadeIn
       >
         <MaterialSlider>
@@ -344,10 +343,7 @@ const MaterialPartial = ({
     }
 
     return (
-      <MaterialStepSection
-        headline={<Headline modifiers={['xl', 'light']} label="3. Select Color" />}
-        fadeIn
-      >
+      <MaterialStepSection headline={<Headline size="xl" light label="3. Select Color" />} fadeIn>
         {selectedFinishGroup && (
           <ColorCardList>{selectedFinishGroup.materialConfigs.map(renderColorCard)}</ColorCardList>
         )}
@@ -414,7 +410,7 @@ const MaterialPartial = ({
                     global.document.querySelector(`#${scrollContainerId}`).scrollTo(0, 0)
                   } else {
                     goToCart({
-                      selectModelConfigIds: configIds
+                      selectModelConfigIds: isEditMode ? configIds : []
                     })
                   }
                 })
@@ -605,11 +601,12 @@ const MaterialPartial = ({
       (offer1, offer2) => getDeliveryTime(offer1) - getDeliveryTime(offer2)
     )[0]
 
+    if (offers.length === 0) {
+      return null
+    }
+
     return (
-      <MaterialStepSection
-        headline={<Headline modifiers={['xl', 'light']} label="4. Select Offer" />}
-        fadeIn
-      >
+      <MaterialStepSection headline={<Headline size="xl" light label="4. Select Offer" />} fadeIn>
         <RecommendedOfferSection classNames={['u-margin-bottom-xl']}>
           {renderOfferCard(cheapestOffer, true)}
           {renderOfferCard(fastestOffer)}
@@ -620,7 +617,7 @@ const MaterialPartial = ({
   }
 
   if (selectedModelConfigs.length === 0) {
-    return <Headline label="Select a file to start customizing" modifiers={['xl', 'light']} />
+    return <Headline label="Select a file to start configuring" size="xl" light />
   }
 
   return (
@@ -686,7 +683,7 @@ export default compose(
         finishGroupId: null,
         materialConfigId: null
       })
-      scrollTo('#material-step-2', `#${scrollContainerId}`)
+      defer(() => scrollTo('#material-step-2', `#${scrollContainerId}`))
       setShowAllOffers(false)
     },
     selectFinishGroup: ({onChange, selectedState, scrollContainerId, setShowAllOffers}) => id => {
@@ -695,7 +692,7 @@ export default compose(
         finishGroupId: id,
         materialConfigId: null
       })
-      scrollTo('#material-step-3', `#${scrollContainerId}`)
+      defer(() => scrollTo('#material-step-3', `#${scrollContainerId}`))
       setShowAllOffers(false)
     },
     selectMaterialConfig: ({onChange, selectedState, scrollContainerId}) => id => {
@@ -703,7 +700,7 @@ export default compose(
         ...selectedState,
         materialConfigId: id
       })
-      scrollTo('#material-step-4', `#${scrollContainerId}`)
+      defer(() => scrollTo('#material-step-4', `#${scrollContainerId}`))
     }
   }),
   withProps(({materialGroups, materials, finishGroups, materialConfigs, selectedState}) => ({

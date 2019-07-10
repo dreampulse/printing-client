@@ -40,8 +40,6 @@ import Grid from '../component/grid'
 import Column from '../component/column'
 import PaypalButton from '../component/paypal-button'
 import PageHeader from '../component/page-header'
-import Tooltip from '../component/tooltip'
-import TooltipHint from '../component/tooltip-hint'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
@@ -115,58 +113,50 @@ const CartPage = ({
       <Section>
         <Grid>
           <Column md={6}>
-            {!user && (
-              <>
-                <Headline modifiers={['l', 'minor']} label="Shipping Address" />
-                <Button label="Add Address" onClick={() => openAddressFormModal()} />
-              </>
-            )}
-            {user && (
-              <>
-                <Headline
-                  modifiers={['minor', 'l']}
-                  label={
-                    <>
-                      Shipping Address{' '}
-                      <Link
-                        label="edit"
-                        onClick={() => openAddressFormModal()}
-                        classNames={['u-font-size-base']}
-                      />
-                    </>
-                  }
-                />
-                <Paragraph>
-                  {user.companyName ? (
-                    <span>
-                      {user.companyName}
-                      <br />
-                    </span>
-                  ) : null}
-                  {user.shippingAddress.firstName} {user.shippingAddress.lastName}
+            <Headline
+              minor
+              size="l"
+              label={
+                <>
+                  Shipping Address{' '}
+                  <Link
+                    label="edit"
+                    onClick={() => openAddressFormModal()}
+                    classNames={['u-font-size-base']}
+                  />
+                </>
+              }
+            />
+            <Paragraph>
+              {user.companyName ? (
+                <span>
+                  {user.companyName}
                   <br />
-                  {user.shippingAddress.address}
+                </span>
+              ) : null}
+              {user.shippingAddress.firstName} {user.shippingAddress.lastName}
+              <br />
+              {user.shippingAddress.address}
+              <br />
+              {user.shippingAddress.addressLine2}
+              <br />
+              {user.shippingAddress.zipCode} {user.shippingAddress.city}
+              <br />
+              {shippingStateName && (
+                <span>
+                  {shippingStateName}
                   <br />
-                  {user.shippingAddress.addressLine2}
-                  <br />
-                  {user.shippingAddress.zipCode} {user.shippingAddress.city}
-                  <br />
-                  {shippingStateName && (
-                    <span>
-                      {shippingStateName}
-                      <br />
-                    </span>
-                  )}
-                  {getCountryName(user.shippingAddress.countryCode)}
-                </Paragraph>
-              </>
-            )}
+                </span>
+              )}
+              {getCountryName(user.shippingAddress.countryCode)}
+            </Paragraph>
           </Column>
           <Column md={6}>
             {user && (
               <>
                 <Headline
-                  modifiers={['minor', 'l']}
+                  size="l"
+                  minor
                   label={
                     <>
                       Billing Address{' '}
@@ -274,6 +264,7 @@ const CartPage = ({
                 />
               }
               buttonsRight={buttonBar(modelConfig, model)}
+              onPreviewImageClick={() => openModelViewer(model)}
             />
           )
         )}
@@ -305,115 +296,116 @@ const CartPage = ({
           }))}
           vat={showVat ? formatPrice(showCart ? cart.vatPrice : null, cart.currency) : ''}
           total={showCart ? formatPrice(totalPrice, cart.currency) : <LoadingIndicator />}
-          childrenLabel="Pay with:"
+          childrenLabel={user ? 'Pay with:' : 'Proceed to:'}
         >
-          <Button
-            block
-            disabled={!showCart || paymentInProgress || !user || !user.userId}
-            icon={creditCardIcon}
-            label="Credit card"
-            onClick={async () => {
-              try {
-                setPaymentInProgress(true)
-                const {orderNumber, paymentId} = await payWithStripe()
-                await orderPaid({orderNumber, paymentId})
-                setPaymentInProgress(false)
-                onSuccess()
-              } catch (error) {
-                logging.captureException(error)
+          {user ? (
+            [
+              <Button
+                key="CREDIT_CARD"
+                block
+                disabled={!showCart || paymentInProgress}
+                icon={creditCardIcon}
+                label="Credit card"
+                onClick={async () => {
+                  try {
+                    setPaymentInProgress(true)
+                    const {orderNumber, paymentId} = await payWithStripe()
+                    await orderPaid({orderNumber, paymentId})
+                    setPaymentInProgress(false)
+                    onSuccess()
+                  } catch (error) {
+                    logging.captureException(error)
 
-                if (error.type !== PaymentAbortedError.TYPE) {
-                  openErrorModal(error)
-                  openIntercom()
-                }
-                // Payment aborted by user
-                setPaymentInProgress(false)
-              }
-            }}
-          />
-          {featureFlags.invoice && (
-            <Button
-              block
-              disabled={!showCart || paymentInProgress || !user || !user.userId}
-              label="Pay with Invoice"
-              onClick={async () => {
-                try {
+                    if (error.type !== PaymentAbortedError.TYPE) {
+                      openErrorModal(error)
+                      openIntercom()
+                    }
+                    // Payment aborted by user
+                    setPaymentInProgress(false)
+                  }
+                }}
+              />,
+              featureFlags.invoice && (
+                <Button
+                  key="INVOICE"
+                  block
+                  disabled={!showCart || paymentInProgress}
+                  label="Pay with Invoice"
+                  onClick={async () => {
+                    try {
+                      setPaymentInProgress(true)
+                      const {orderNumber, paymentId} = await payWithInvoice()
+                      await orderPaid({orderNumber, paymentId})
+                      onSuccess()
+                    } catch (error) {
+                      logging.captureException(error)
+
+                      setPaymentInProgress(false)
+                      openErrorModal(error)
+                    }
+                  }}
+                />
+              ),
+              <PaypalButton
+                key="PAYPAL"
+                disabled={!showCart || paymentInProgress}
+                onClick={async () => {
                   setPaymentInProgress(true)
-                  const {orderNumber, paymentId} = await payWithInvoice()
-                  await orderPaid({orderNumber, paymentId})
-                  onSuccess()
-                } catch (error) {
-                  logging.captureException(error)
-
-                  setPaymentInProgress(false)
-                  openErrorModal(error)
-                }
-              }}
-            />
+                  const {paymentToken, orderNumber, paymentId} = await payWithPaypal()
+                  orderPaid({orderNumber, paymentId})
+                  return paymentToken
+                }}
+                onAuthorize={async data => {
+                  try {
+                    const payment = await executePaypalPayment(data)
+                    onSuccess()
+                    return payment
+                  } catch (error) {
+                    logging.captureException(error)
+                    return null
+                  } finally {
+                    setPaymentInProgress(false)
+                  }
+                }}
+                onCancel={() => setPaymentInProgress(false)}
+              />
+            ]
+          ) : (
+            <Button label="Checkout" block onClick={() => openAddressFormModal()} />
           )}
-          <TooltipHint
-            tooltip={
-              <Tooltip>
-                <Paragraph>
-                  You need to{' '}
-                  <Link
-                    invert
-                    label="add your address"
-                    onClick={event => {
-                      event.preventDefault()
-                      openAddressFormModal()
-                    }}
-                  />{' '}
-                  first.
-                </Paragraph>
-              </Tooltip>
-            }
-            show={!user || !user.userId}
-          >
-            <PaypalButton
-              disabled={!showCart || paymentInProgress || !user}
-              onClick={async () => {
-                setPaymentInProgress(true)
-                const {paymentToken, orderNumber, paymentId} = await payWithPaypal()
-                orderPaid({orderNumber, paymentId})
-                return paymentToken
-              }}
-              onAuthorize={async data => {
-                try {
-                  const payment = await executePaypalPayment(data)
-                  onSuccess()
-                  return payment
-                } catch (error) {
-                  logging.captureException(error)
-                  return null
-                } finally {
-                  setPaymentInProgress(false)
-                }
-              }}
-              onCancel={() => setPaymentInProgress(false)}
-            />
-          </TooltipHint>
         </PaymentSection>
+        {user ? (
+          <Paragraph>
+            <Headline
+              tag="strong"
+              modifiers={['s']}
+              label="Need different payment option?"
+              classNames={['u-no-margin-bottom']}
+            />
+            <Link
+              label="Contact us."
+              href="#"
+              onClick={event => {
+                event.preventDefault()
+                openIntercom()
+              }}
+            />
+          </Paragraph>
+        ) : (
+          <Paragraph>
+            <Headline
+              tag="strong"
+              size="s"
+              label="Payment options?"
+              classNames={['u-no-margin-bottom']}
+            />
+            We support credit card and Paypal payments.
+          </Paragraph>
+        )}
         <Paragraph>
           <Headline
             tag="strong"
-            modifiers={['s']}
-            label="Need different payment option?"
-            classNames={['u-no-margin-bottom']}
-          />
-          <Link
-            label="Contact us."
-            href="#"
-            onClick={event => {
-              event.preventDefault()
-              openIntercom()
-            }}
-          />
-        </Paragraph>
-        <Paragraph>
-          <Headline
-            tag="strong"
-            modifiers={['s']}
+            size="s"
             label="Any questions?"
             classNames={['u-no-margin-bottom']}
           />
@@ -473,8 +465,8 @@ const CartPage = ({
         <PageHeader label="Review Order" />
         {hasModels && (
           <SidebarLayout sidebar={paymentSection()}>
-            {addressSection()}
-            <Headline modifiers={['minor', 'l']} label="Your Cart" />
+            {user && addressSection()}
+            <Headline minor size="l" label="Your Cart" />
             {modelListSection()}
           </SidebarLayout>
         )}

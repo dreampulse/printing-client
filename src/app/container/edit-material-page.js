@@ -49,13 +49,15 @@ const EditMaterialPage = ({
           icon={backIcon}
           onClick={event => {
             event.preventDefault()
-            goToCart()
+            goToCart({
+              selectModelConfigIds: configIds
+            })
           }}
         />
       </Section>
       <Section classNames={['u-no-margin']}>
         <Headline
-          modifiers={['light']}
+          light
           label={`Your selection (${modelsWithConfig.length} ${
             modelsWithConfig.length > 1 ? 'files' : 'file'
           })`}
@@ -68,6 +70,7 @@ const EditMaterialPage = ({
             imageSource={model.thumbnailUrl}
             title={model.fileName}
             subline={formatDimensions(model.dimensions, model.fileUnit)}
+            onPreviewImageClick={() => openModelViewer(model)}
             buttonsLeft={
               <NumberField
                 value={modelConfig.quantity}
