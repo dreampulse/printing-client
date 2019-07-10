@@ -1,0 +1,65 @@
+.ModalPortal {
+  $stacking: background, modal;
+  // This has to be synced with the transition timeouts in the component
+  $transition-timeout: 0.2s;
+  $transition-delay: 0.1s;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: z($global-stacking, modal);
+  padding: $space-base;
+
+  &__background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: z($stacking, background);
+    background-color: rgba($color-gray-0, 0.5);
+    opacity: 0;
+    transition: opacity $transition-timeout linear;
+  }
+
+  &__content {
+    position: relative;
+    z-index: z($stacking, modal);
+    transition: opacity $transition-timeout linear, transform $transition-timeout ease-out;
+    transition-delay: $transition-delay, $transition-delay;
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+  }
+
+  &--entering,
+  &--entered {
+    .ModalPortal__background {
+      opacity: 1;
+    }
+
+    .ModalPortal__content {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  &--exiting,
+  &--exited {
+    .ModalPortal__background {
+      opacity: 0;
+      transition-delay: $transition-delay, $transition-delay;
+    }
+
+    .ModalPortal__content {
+      opacity: 0;
+      transform: translateY(-1 * $space-base) scale(0.95);
+      transition: opacity $transition-timeout linear, transform $transition-timeout ease-in;
+    }
+  }
+}

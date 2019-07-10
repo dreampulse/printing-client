@@ -8,7 +8,7 @@ import LoadingIndicator from '../loading-indicator'
 
 const LabeledLoadingIndicator = ({classNames, modifiers, children}) => (
   <div className={buildClassName('labeled-loading-indicator', modifiers, classNames)}>
-    <LoadingIndicator modifiers={['l']} />
+    <LoadingIndicator />
     <p className="labeled-loading-indicator__text">{children}</p>
   </div>
 )
