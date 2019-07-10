@@ -10,3 +10,6 @@ export const email = (value: string) =>
 export const vat = (countryCode: string, euCountries: string[]) => (value: string) => {
   return !value && euCountries.includes(countryCode) ? 'Vat Id required' : undefined
 }
+
+export const phoneNumber = (value: string) =>
+  !value || !value.replace(/\D/g, '') ? 'Invalid phone number' : undefined

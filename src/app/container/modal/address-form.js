@@ -14,7 +14,7 @@ import config from '../../../../config'
 import {renderFormikField} from '../util/form'
 import {formatTelephoneNumber} from '../../lib/formatter'
 import {getCountriesMenu, getStateName, getStates, getCountryName} from '../../service/country'
-import {required, email, vat} from '../../lib/validator'
+import {required, email, vat, phoneNumber} from '../../lib/validator'
 import scrollTo from '../../service/scroll-to'
 
 import Button from '../../component/button'
@@ -123,7 +123,7 @@ const AddressFormModal = ({
       <FormRow>
         <Field
           component={renderFormikField(InputField)}
-          label="Additional address information, e.g. company name, floor, building, etc..."
+          label="Address line 2 (optional)"
           name="billingAddress.addressLine2"
           maxLength="35"
         />
@@ -198,9 +198,8 @@ const AddressFormModal = ({
       <Form>
         <div id="shipping-address">
           <FormRow>
-            <Headline size="s" label="Personal information" classNames={['u-no-margin-bottom']} />
+            <Headline size="s" label="Delivery address" classNames={['u-no-margin-bottom']} />
           </FormRow>
-
           <FormRow modifiers={['half-half']}>
             <Field
               validate={required}
@@ -218,37 +217,6 @@ const AddressFormModal = ({
             />
           </FormRow>
 
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={email}
-              component={renderFormikField(InputField)}
-              label="Email address"
-              name="emailAddress"
-              type="email"
-            />
-            <Field
-              validate={required}
-              component={renderFormikField(InputField)}
-              label="Phone number"
-              name="phoneNumber"
-              type="tel"
-            />
-          </FormRow>
-
-          <FormRow>
-            <Field
-              name="isCompany"
-              component={renderFormikField(LabeledCheckbox)}
-              label="I am ordering on behalf of a company"
-            />
-          </FormRow>
-
-          {values.isCompany && renderCompanySection()}
-
-          <FormRow>
-            <Headline size="s" label="Shipping address" classNames={['u-no-margin-bottom']} />
-          </FormRow>
-
           <FormRow>
             <Field
               validate={required}
@@ -262,7 +230,7 @@ const AddressFormModal = ({
           <FormRow>
             <Field
               component={renderFormikField(InputField)}
-              label="Additional address information, e.g. company name, floor, building, etc..."
+              label="Address line 2 / company"
               name="shippingAddress.addressLine2"
               maxLength="35"
             />
@@ -282,7 +250,6 @@ const AddressFormModal = ({
               name="shippingAddress.zipCode"
             />
           </FormRow>
-
           <FormRow modifiers={['half-half']}>
             <Field
               validate={getStates(values.shippingAddress.countryCode) ? required : undefined}
@@ -300,6 +267,30 @@ const AddressFormModal = ({
             />
           </FormRow>
 
+          <FormRow modifiers={['half-half']}>
+            <Field
+              validate={email}
+              component={renderFormikField(InputField)}
+              label="Email address"
+              name="emailAddress"
+              type="email"
+            />
+            <Field
+              validate={phoneNumber}
+              component={renderFormikField(InputField)}
+              label="Phone number"
+              name="phoneNumber"
+              type="tel"
+            />
+          </FormRow>
+
+          <Field
+            name="isCompany"
+            component={renderFormikField(LabeledCheckbox)}
+            label="I am ordering on behalf of a company"
+          />
+
+          {values.isCompany && renderCompanySection()}
           {!isSameCountry(userLocation, values.shippingAddress) && (
             <FormRow>
               <Notification
