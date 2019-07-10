@@ -13,7 +13,7 @@ const ModelViewerModal = ({closeModal, sceneId, modelName}) => {
   const buttons = [<Button label="Close" onClick={closeModal} />]
 
   return (
-    <Modal modifiers={['l']} headline={headline} buttons={buttons} closePortal={() => closeModal()}>
+    <Modal l headline={headline} buttons={buttons} closePortal={() => closeModal()}>
       <ModelViewer sceneId={sceneId} />
     </Modal>
   )

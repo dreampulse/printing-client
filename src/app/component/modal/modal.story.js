@@ -209,10 +209,10 @@ storiesOf('Modal', module)
             <WarningIcon />
           </Column>
           <Column sm={10}>
-            <Paragraph modifiers={['l', 'strong']} classNames={['u-no-margin']}>
+            <Paragraph l strong classNames={['u-no-margin']}>
               WARNING: Changing country requires starting over with the order configuration
             </Paragraph>
-            <Paragraph modifiers={['l', 'minor']}>
+            <Paragraph l minor>
               Material choice and shipping provider are country dependent
             </Paragraph>
           </Column>
@@ -249,7 +249,7 @@ storiesOf('Modal', module)
             />
           </HandleValue>
         </LabeledField>
-        <Paragraph modifiers={['minor', 'l']}>
+        <Paragraph l minor>
           Why do we need to know this? Printing prices and shipping options depend on your location
         </Paragraph>
       </Modal>
@@ -264,10 +264,10 @@ storiesOf('Modal', module)
             <Image src="http://placehold.it/200x200" alt="Thank you image" />
           </Column>
           <Column sm={9}>
-            <Paragraph modifiers={['l']}>
+            <Paragraph l>
               By the way: Prices change.. <strong>all! the! time!</strong>
             </Paragraph>
-            <Paragraph modifiers={['l']}>
+            <Paragraph l>
               Come back to All3DP to get the best offers next time you 3D print.
             </Paragraph>
           </Column>

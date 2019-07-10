@@ -7,7 +7,7 @@ import Modal from '../modal'
 import Headline from '../headline'
 import Button from '../button'
 
-const headline = <Headline label="Headline" modifiers={['l']} />
+const headline = <Headline label="Headline" size="l" />
 const buttons = [<Button label="Cancel" text />, <Button label="OK" />]
 
 storiesOf('ModalPortal', module).add(

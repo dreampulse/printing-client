@@ -9,5 +9,5 @@ storiesOf('Price', module)
   .add('prefix', () => <Price value="$19.44" prefix="+" />)
   .add('loading', () => <Price value="$19.44" loading />)
   .add('loadingCheckmark', () => (
-    <Price value="$19.44" loadingCheckmark={<LoadingCheckmark modifiers={['done']} />} />
+    <Price value="$19.44" loadingCheckmark={<LoadingCheckmark done />} />
   ))
