@@ -1,4 +1,8 @@
 context('Simple application flow', () => {
+  beforeEach(() => {
+    Cypress.Cookies.preserveOnce('country')
+  })
+
   it('loads', () => {
     cy.setCookie('country', 'DE')
     cy.visit(
