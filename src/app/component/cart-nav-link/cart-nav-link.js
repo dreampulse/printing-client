@@ -127,11 +127,14 @@ class CartNavLink extends React.Component {
     return (
       <PositioningPortal
         positionStrategy={(parentRect, portalRect) => {
-          const horizontalCenter = (parentRect.width - portalRect.width) / 2
+          // This strategy positions the portal always right on the screen with some extra space
+          const EXTRA_SPACE = 20
+          const left = global.body.clientWidth - portalRect.width - EXTRA_SPACE
+
           return {
-            position: 'bottom',
+            position: parentRect.left - left + parentRect.width / 2,
             top: parentRect.top + parentRect.height + global.scrollY,
-            left: parentRect.left + global.scrollX + horizontalCenter
+            left
           }
         }}
         portalContent={({isOpen, transitionStarted, transitionEnded, position}) => (
@@ -151,7 +154,7 @@ class CartNavLink extends React.Component {
               onMouseLeave={this.onLeave}
             >
               {React.Children.count(children) > 0 && (
-                <CartFlyout notify={notify} title={flyoutTitle}>
+                <CartFlyout notify={notify} title={flyoutTitle} trianglePosition={position}>
                   {React.Children.toArray(children)
                     .filter(child => prevChildren.indexOf(child.props.id) === -1)
                     .map(child =>

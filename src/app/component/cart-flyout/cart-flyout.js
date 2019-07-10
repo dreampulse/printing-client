@@ -10,13 +10,14 @@ import Headline from '../headline'
 // Has to be in sync with the components style
 const MAX_ITEMS = 4
 
-const CartFylout = ({
+const CartFlyout = ({
   classNames,
   children,
   title,
   onMouseLeave = noop,
   onMouseEnter = noop,
-  notify = false
+  notify = false,
+  trianglePosition = 50
 }) => (
   <div
     className={cn(
@@ -33,16 +34,18 @@ const CartFylout = ({
         <li key={`cartFlyoutItem-${index}`}>{child}</li>
       ))}
     </ul>
+    <div className="CartFlyout__triangle" style={{left: trianglePosition}} />
   </div>
 )
 
-CartFylout.propTypes = {
+CartFlyout.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
   onMouseLeave: PropTypes.func,
   onMouseEnter: PropTypes.func,
-  notify: PropTypes.bool
+  notify: PropTypes.bool,
+  trianglePosition: PropTypes.number
 }
 
-export default CartFylout
+export default CartFlyout
