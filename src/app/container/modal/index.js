@@ -1,11 +1,13 @@
 import React, {createElement} from 'react'
 import {connect} from 'react-redux'
-import {Portal} from 'react-portal'
-import lifecycle from 'recompose/lifecycle'
 import compose from 'recompose/compose'
+import map from 'lodash/map'
+import {TransitionGroup} from 'react-transition-group'
 
+import * as modalAction from '../../action/modal'
 import {ModalContentType} from '../../type'
-import {closeModal} from '../../action/modal'
+import ModalPortal from '../../component/modal-portal'
+
 import FatalErrorModal from './fatal-error'
 import ModelViewerModal from './model-viewer'
 import AddressFormModal from './address-form'
@@ -32,53 +34,43 @@ const modals = {
   [ModalContentType.ADDRESS_FORM]: AddressFormModal
 }
 
-const getContent = (contentType, contentProps, meta) => {
+const getContent = ({contentType, contentProps, isCloseable}, closeModal) => {
   if (contentType === null) {
     return <div />
   }
+
   if (contentType in modals) {
-    return createElement(modals[contentType], {...contentProps, meta})
+    return (
+      <ModalPortal key={contentType} onClose={isCloseable ? () => closeModal() : undefined}>
+        {createElement(modals[contentType], {
+          ...contentProps,
+          meta: {isCloseable: isCloseable}
+        })}
+      </ModalPortal>
+    )
   }
+
   throw new Error(`Unknown modal contentType "${contentType}"`)
 }
 
-const Modal = ({isOpen, contentType, contentProps, isCloseable}) =>
-  isOpen && (
-    <Portal>
-      {getContent(contentType, contentProps, {
-        isCloseable
-      })}
-    </Portal>
-  )
+const Modal = ({isOpen, modalConfig, closeModal}) => (
+  <TransitionGroup>{isOpen && getContent(modalConfig, closeModal)}</TransitionGroup>
+)
 
 const mapStateToProps = state => ({
-  ...state.modal.modalConfig,
+  modalConfig: state.modal.modalConfig || {},
   isOpen: state.modal.isOpen
 })
 
 const mapDispatchToProps = {
-  onModalClose: closeModal
+  closeModal: modalAction.closeModal
 }
 
 const enhance = compose(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  ),
-  lifecycle({
-    componentDidMount() {
-      this.handleKeyDown = event => {
-        if (this.props.isOpen && this.props.isCloseable && event.keyCode === 27) {
-          this.props.onModalClose()
-        }
-      }
-
-      global.addEventListener('keydown', this.handleKeyDown, false)
-    },
-    componentWillUnmount() {
-      global.removeEventListener('keydown', this.handleKeyDown, false)
-    }
-  })
+  )
 )
 
 export default enhance(Modal)

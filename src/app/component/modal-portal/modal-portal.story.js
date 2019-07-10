@@ -7,16 +7,17 @@ import Modal from '../modal'
 import Headline from '../headline'
 import Button from '../button'
 
-const headline = <Headline label="Headline" size="l" />
-const buttons = [<Button label="Cancel" text />, <Button label="OK" />]
-
 storiesOf('ModalPortal', module).add(
   'default',
   withState({isOpen: false}, store => (
     <>
       <Button label="Open modal" onClick={() => store.set({isOpen: true})} />
       <ModalPortal isOpen={store.state.isOpen} onClose={() => store.set({isOpen: false})}>
-        <Modal headline={headline} buttons={buttons} closePortal={() => store.set({isOpen: false})}>
+        <Modal
+          headline={<Headline label="Headline" size="l" />}
+          buttons={[<Button key="cancel" label="Cancel" text />, <Button key="ok" label="OK" />]}
+          onClose={() => store.set({isOpen: false})}
+        >
           <div>Modal content</div>
         </Modal>
       </ModalPortal>

@@ -27,7 +27,7 @@ const ShareConfigurationModal = ({configurationUrl, closeModal}) => (
         }}
       />
     ]}
-    closePortal={() => closeModal()}
+    onClose={() => closeModal()}
   >
     <Paragraph>Configuration has been created with the following URL.</Paragraph>
     <InputField

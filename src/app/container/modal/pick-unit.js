@@ -22,31 +22,30 @@ const PickUnitModal = ({
   files,
   onUploadFiles,
   featureFlags
-}) => {
-  const headline = <Headline label="Pick file unit" size="l" />
-  const buttons = [
-    <Button label="Cancel" text onClick={() => closeModal()} />,
-    <Button
-      label="Upload"
-      onClick={() => {
-        onUpdateUnit(unit)
-        onUploadFiles(files, unit, !!featureFlags.refresh)
-        closeModal()
-      }}
-    />
-  ]
-
-  return (
-    <Modal headline={headline} buttons={buttons} closeable={false}>
-      <Paragraph>In which unit are the chosen files?</Paragraph>
-      <RadioButtonGroup name="unit" value={unit} onChange={value => setUnit(value)}>
-        <RadioButton value="mm" />
-        <RadioButton value="cm" />
-        <RadioButton value="in" />
-      </RadioButtonGroup>
-    </Modal>
-  )
-}
+}) => (
+  <Modal
+    headline={<Headline label="Pick file unit" size="l" />}
+    buttons={[
+      <Button key="cancel" label="Cancel" text onClick={() => closeModal()} />,
+      <Button
+        key="upload"
+        label="Upload"
+        onClick={() => {
+          onUpdateUnit(unit)
+          onUploadFiles(files, unit, !!featureFlags.refresh)
+          closeModal()
+        }}
+      />
+    ]}
+  >
+    <Paragraph>In which unit are the chosen files?</Paragraph>
+    <RadioButtonGroup name="unit" value={unit} onChange={value => setUnit(value)}>
+      <RadioButton value="mm" />
+      <RadioButton value="cm" />
+      <RadioButton value="in" />
+    </RadioButtonGroup>
+  </Modal>
+)
 
 const mapStateToProps = state => ({
   globalUnit: state.core.unit,

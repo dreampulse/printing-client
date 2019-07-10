@@ -13,23 +13,21 @@ import * as modalActions from '../../action/modal'
 
 import errorImage from '../../../asset/image/error.svg'
 
-const ErrorModal = ({error, closeModal}) => {
-  const buttons = [<Button label="OK" onClick={closeModal} />]
-  const headline = <Headline label="Error occurred" size="l" />
-
-  return (
-    <Modal headline={headline} buttons={buttons} closeable={false}>
-      <Grid>
-        <Column sm={3}>
-          <Image src={errorImage} alt="System Error" />
-        </Column>
-        <Column sm={9}>
-          <Paragraph minor>{error.message}</Paragraph>
-        </Column>
-      </Grid>
-    </Modal>
-  )
-}
+const ErrorModal = ({error, closeModal}) => (
+  <Modal
+    headline={<Headline label="Error occurred" size="l" />}
+    buttons={<Button label="OK" onClick={closeModal} />}
+  >
+    <Grid>
+      <Column sm={3}>
+        <Image src={errorImage} alt="System Error" />
+      </Column>
+      <Column sm={9}>
+        <Paragraph minor>{error.message}</Paragraph>
+      </Column>
+    </Grid>
+  </Modal>
+)
 
 const mapStateToProps = _state => ({})
 

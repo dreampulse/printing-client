@@ -166,7 +166,7 @@ const AddressFormModal = ({
   const headline = <Headline label="Enter delivery address" size="l" />
   const buttons = [
     <Button
-      key="cancel_button"
+      key="cancel"
       label="Cancel"
       text
       onClick={() => {
@@ -174,7 +174,7 @@ const AddressFormModal = ({
       }}
     />,
     <Button
-      key="confirm_button"
+      key="confirm"
       label={
         isSameCountry(userLocation, values.shippingAddress)
           ? 'Confirm'
@@ -191,8 +191,7 @@ const AddressFormModal = ({
     <Modal
       headline={headline}
       buttons={buttons}
-      closePortal={() => closeModal()}
-      noCloseOnClickOutside
+      onClose={() => closeModal()}
       scrollContainerId={addressFormModalScrollContainerId}
     >
       <Form>

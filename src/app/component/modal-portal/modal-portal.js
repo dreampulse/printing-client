@@ -12,6 +12,7 @@ const TRANSITION_TIMEOUT = 0.3 * 1000
 class ModalPortal extends Component {
   static propTypes = {
     ...propTypes.component,
+    in: PropTypes.bool, // To stay compatible with TransitionGroup
     isOpen: PropTypes.bool,
     onClose: PropTypes.func,
     children: PropTypes.node
@@ -21,6 +22,8 @@ class ModalPortal extends Component {
     if (this.props.isOpen) {
       global.document.body.style.overflow = 'hidden'
     }
+
+    global.addEventListener('keydown', this.onKeyDown, false)
   }
 
   componentDidUpdate(prevProps) {
@@ -33,14 +36,24 @@ class ModalPortal extends Component {
 
   componentWillUnmount() {
     global.document.body.style.overflow = ''
+
+    global.removeEventListener('keydown', this.onKeyDown, false)
   }
 
+  onKeyDown = event => {
+    if (this.isOpen() && this.props.onClose && event.keyCode === 27) {
+      this.props.onClose()
+    }
+  }
+
+  isOpen = () => this.props.isOpen || this.props.in
+
   render() {
-    const {classNames, isOpen, onClose, children} = this.props
+    const {classNames, onClose, children} = this.props
 
     return (
       <Transition
-        in={isOpen}
+        in={this.isOpen()}
         appear
         timeout={TRANSITION_TIMEOUT}
         mountOnEnter

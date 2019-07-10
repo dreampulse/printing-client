@@ -6,8 +6,19 @@ import buildClassName from '../../lib/class-names'
 
 import CloseButton from '../close-button'
 
-const Modal = ({l, classNames, onClose, children, headline, scrollContainerId, buttons}) => (
-  <section id={scrollContainerId} className={buildClassName('Modal', {l}, classNames)}>
+const Modal = ({
+  size = 'default',
+  classNames,
+  onClose,
+  children,
+  headline,
+  scrollContainerId,
+  buttons
+}) => (
+  <section
+    id={scrollContainerId}
+    className={buildClassName('Modal', {[`size-${size}`]: true}, classNames)}
+  >
     <header className="Modal__header">
       <div className="Modal__headline">
         {headline}
@@ -21,11 +32,11 @@ const Modal = ({l, classNames, onClose, children, headline, scrollContainerId, b
 
 Modal.propTypes = {
   ...propTypes.component,
-  l: PropTypes.bool,
+  size: PropTypes.oneOf(['default', 'l']),
   onClose: PropTypes.func,
   children: PropTypes.node,
   headline: PropTypes.node.isRequired,
-  buttons: PropTypes.arrayOf(PropTypes.node),
+  buttons: PropTypes.node.isRequired,
   scrollContainerId: PropTypes.string
 }
 

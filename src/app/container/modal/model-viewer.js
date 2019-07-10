@@ -8,16 +8,16 @@ import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import ModelViewer from '../../component/model-viewer'
 
-const ModelViewerModal = ({closeModal, sceneId, modelName}) => {
-  const headline = <Headline label={`Preview ${modelName}`} size="l" />
-  const buttons = [<Button label="Close" onClick={closeModal} />]
-
-  return (
-    <Modal l headline={headline} buttons={buttons} closePortal={() => closeModal()}>
-      <ModelViewer sceneId={sceneId} />
-    </Modal>
-  )
-}
+const ModelViewerModal = ({closeModal, sceneId, modelName}) => (
+  <Modal
+    size="l"
+    headline={<Headline label={`Preview ${modelName}`} size="l" />}
+    buttons={<Button label="Close" onClick={closeModal} />}
+    onClose={() => closeModal()}
+  >
+    <ModelViewer sceneId={sceneId} />
+  </Modal>
+)
 
 const mapStateToProps = state => ({
   sceneId: state.modelViewer.sceneId

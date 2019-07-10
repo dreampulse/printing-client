@@ -62,8 +62,7 @@ const PickLocationModal = ({
     <Modal
       headline={hasQuotes ? headlineWarning : headline}
       buttons={compact(buttons)}
-      closeable={meta.isCloseable}
-      closePortal={() => meta.isCloseable && closeModal()}
+      onClose={meta.isCloseable ? () => closeModal() : undefined}
     >
       {hasQuotes ? (
         <Paragraph>

@@ -15,6 +15,7 @@ const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation,
   const headline = <Headline label="Confirmation necessary" size="l" warning />
   const buttons = [
     <Button
+      key="cancel"
       label="Cancel"
       onClick={() => {
         updateLocation({...previousLocation}, true)
@@ -22,6 +23,7 @@ const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation,
       }}
     />,
     <Button
+      key="confirm"
       label="Confirm"
       text
       onClick={() => {
@@ -32,7 +34,7 @@ const ConfirmLocationChangeModal = ({location, previousLocation, updateLocation,
   ]
 
   return (
-    <Modal headline={headline} buttons={buttons} closeable={false}>
+    <Modal headline={headline} buttons={buttons}>
       <Paragraph strong>
         Do you really want to change your location to <strong>{formatLocation(location)}</strong>?
       </Paragraph>
