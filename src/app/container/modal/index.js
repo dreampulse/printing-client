@@ -1,7 +1,6 @@
 import React, {createElement} from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
-import map from 'lodash/map'
 import {TransitionGroup} from 'react-transition-group'
 
 import * as modalAction from '../../action/modal'
