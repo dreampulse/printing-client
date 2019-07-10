@@ -16,13 +16,12 @@
 
   display: inline-block;
 
-  &:after {
+  &__triangle {
     @include scut-triangle(up, $triangle-width $triangle-height, $color-bg);
-    content: "";
     position: absolute;
     bottom: 100%;
-    left: 50%;
     transform: translateX(-50%);
+    // left style will be set by the component
   }
 
   &__items {
