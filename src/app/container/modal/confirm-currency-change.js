@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import Button from '../../component/button'
-import Overlay from '../../component/overlay'
+import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 
@@ -12,8 +12,9 @@ import * as coreActions from '../../action/core'
 const ConfirmCurrencyChangeModal = ({currency, updateCurrency, closeModal}) => {
   const headline = <Headline label="Confirmation necessary" size="l" warning />
   const buttons = [
-    <Button label="Cancel" onClick={() => closeModal()} />,
+    <Button key="cancel" label="Cancel" onClick={() => closeModal()} />,
     <Button
+      key="confirm"
       label="Confirm"
       text
       onClick={() => {
@@ -24,14 +25,14 @@ const ConfirmCurrencyChangeModal = ({currency, updateCurrency, closeModal}) => {
   ]
 
   return (
-    <Overlay headline={headline} buttons={buttons} closeable={false}>
+    <Modal headline={headline} buttons={buttons}>
       <Paragraph strong>
         Do you really want to change the currency to <strong>{currency}</strong>?
       </Paragraph>
       <Paragraph>
         By changing the currency you have to configure all models in your cart again.
       </Paragraph>
-    </Overlay>
+    </Modal>
   )
 }
 

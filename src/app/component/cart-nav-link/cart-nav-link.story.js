@@ -10,7 +10,7 @@ import Button from '../button'
 
 storiesOf('CartNavLink', module)
   .add('default', () => (
-    <div style={{paddingLeft: '30%'}}>
+    <div style={{paddingRight: '120px', textAlign: 'right'}}>
       <CartNavLink onClick={action('onClick')} label="Your Cart" count={6}>
         {range(6).map(index => (
           <CartModelItem

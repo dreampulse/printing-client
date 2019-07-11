@@ -4,7 +4,7 @@ import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
 
 import Button from '../../component/button'
-import Overlay from '../../component/overlay'
+import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 import InputField from '../../component/input-field'
@@ -14,7 +14,7 @@ import * as modalActions from '../../action/modal'
 const INPUT_ID = 'share-configuration-input'
 
 const ShareConfigurationModal = ({configurationUrl, closeModal}) => (
-  <Overlay
+  <Modal
     headline={<Headline label="Configuration created" size="l" />}
     buttons={[
       <Button
@@ -27,7 +27,7 @@ const ShareConfigurationModal = ({configurationUrl, closeModal}) => (
         }}
       />
     ]}
-    closePortal={() => closeModal()}
+    onClose={() => closeModal()}
   >
     <Paragraph>Configuration has been created with the following URL.</Paragraph>
     <InputField
@@ -37,7 +37,7 @@ const ShareConfigurationModal = ({configurationUrl, closeModal}) => (
       autoFocus
       onFocus={event => event.target.select()}
     />
-  </Overlay>
+  </Modal>
 )
 
 const mapStateToProps = () => ({})

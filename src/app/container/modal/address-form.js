@@ -18,7 +18,7 @@ import {required, email, vat} from '../../lib/validator'
 import scrollTo from '../../service/scroll-to'
 
 import Button from '../../component/button'
-import Overlay from '../../component/overlay'
+import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import FormRow from '../../component/form-row'
 import InputField from '../../component/input-field'
@@ -29,7 +29,7 @@ import Notification from '../../component/notification'
 
 const isSameCountry = (location, address) => location.countryCode === address.countryCode
 
-const addressFormOverlayScrollContainerId = 'addressFormOverlayScrollContainer'
+const addressFormModalScrollContainerId = 'addressFormModalScrollContainer'
 
 const AddressFormModal = ({
   closeModal,
@@ -166,7 +166,7 @@ const AddressFormModal = ({
   const headline = <Headline label="Enter delivery address" size="l" />
   const buttons = [
     <Button
-      key="cancel_button"
+      key="cancel"
       label="Cancel"
       text
       onClick={() => {
@@ -174,7 +174,7 @@ const AddressFormModal = ({
       }}
     />,
     <Button
-      key="confirm_button"
+      key="confirm"
       label={
         isSameCountry(userLocation, values.shippingAddress)
           ? 'Confirm'
@@ -188,12 +188,11 @@ const AddressFormModal = ({
   ]
 
   return (
-    <Overlay
+    <Modal
       headline={headline}
       buttons={buttons}
-      closePortal={() => closeModal()}
-      noCloseOnClickOutside
-      scrollContainerId={addressFormOverlayScrollContainerId}
+      onClose={() => closeModal()}
+      scrollContainerId={addressFormModalScrollContainerId}
     >
       <Form>
         <div id="shipping-address">
@@ -328,7 +327,7 @@ const AddressFormModal = ({
           />
         </FormRow>
       </Form>
-    </Overlay>
+    </Modal>
   )
 }
 
@@ -444,7 +443,7 @@ const enhance = compose(
     },
     componentDidMount() {
       if (this.props.scrollTo === 'billing-address') {
-        scrollTo('#billing-address', `#${addressFormOverlayScrollContainerId}`)
+        scrollTo('#billing-address', `#${addressFormModalScrollContainerId}`)
       }
     }
   })
