@@ -612,10 +612,10 @@ export default compose(
         currency,
         utmParams
       })
-      const stripeTokenObject = await stripe.checkout({price, currency, email})
-      const token = stripeTokenObject.id
 
-      await printingEngine.createStripePayment({orderId, token})
+      const {sessionId} = await printingEngine.createStripePayment({orderId})
+
+      const result = await stripe.redirectToCheckout({sessionId})
 
       return {
         orderId,

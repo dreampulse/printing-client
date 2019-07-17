@@ -114,9 +114,7 @@ type PaymentResponse = {
   paymentId: PaymentId
 }
 
-export type StripePaymentRequest = PaymentRequest & {
-  token: string
-}
+export type StripePaymentRequest = PaymentRequest
 
 export type StripePaymentResponse = PaymentResponse & {
   status: boolean

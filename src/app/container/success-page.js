@@ -33,28 +33,22 @@ import orderShipped from '../../asset/icon/order-shipped.svg'
 import orderReceived from '../../asset/icon/order-received.svg'
 
 const SuccessPage = ({location}) => {
-  if (!location.state || !location.state.orderNumber) {
-    return <Redirect to="/" />
-  }
   return (
     <PageLayout minorBackground footer={<FooterPartial />}>
       <Container>
         <Section classNames={['u-align-center']}>
           <Headline size="xl" label="Thank you for ordering with Craftcloud by All3DP" />
-          <Headline
-            label={location.state.orderNumber ? `Order number: ${location.state.orderNumber}` : ''}
-          />
-          <Paragraph>
+          <Paragraph classNames={['u-margin-bottom-xl']}>
             You should receive an order confirmation email from us shortly. We will also let you
             know when we have received the tracking number for your print from the manufacturer.
             Your order will be produced by:
           </Paragraph>
 
-          <ProviderTeaser classNames={['u-margin-bottom-xl']}>
+          {/* <ProviderTeaser classNames={['u-margin-bottom-xl']}>
             {uniq(location.state.vendorIds).map(vendorId => (
               <ProviderImage key={vendorId} slug={vendorId} name={getProviderName(vendorId)} />
             ))}
-          </ProviderTeaser>
+          </ProviderTeaser> */}
 
           <OrderConfirmationList step={1}>
             <OrderConfirmationItem icon={<Icon source={orderPlaced} />} title="Order Placed" />
