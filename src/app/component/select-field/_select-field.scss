@@ -82,4 +82,10 @@
     border-color: $color-error;
     box-shadow: $box-shadow-error;
   }
+
+  &--warning,
+  &--warning:focus:not(:disabled) {
+    border-color: $color-warning;
+    box-shadow: $box-shadow-warning;
+  }
 }

@@ -72,6 +72,18 @@
     }
   }
 
+  &--warning {
+    .input-field__input,
+    .input-field__input:focus {
+      border-color: $color-warning;
+      color: $color-warning;
+      box-shadow: $box-shadow-error;
+    }
+    .input-field__input:focus {
+      box-shadow: $box-shadow-focus;
+    }
+  }
+
   &--disabled {
     opacity: 0.5;
     cursor: not-allowed;

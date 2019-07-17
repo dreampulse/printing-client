@@ -11,6 +11,7 @@ const LabeledCheckbox = ({
   checked,
   label,
   error = false,
+  warning = false,
   onChange = () => {},
   name = ''
 }) => {
@@ -22,6 +23,7 @@ const LabeledCheckbox = ({
         error={error}
         id={id}
         checked={checked}
+        warning={warning}
         onChange={e => onChange(!checked, name, e)}
       />
       <label htmlFor={id} className="labeled-checkbox__label">
@@ -37,7 +39,8 @@ LabeledCheckbox.propTypes = {
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   name: PropTypes.string,
-  error: PropTypes.bool
+  error: PropTypes.bool,
+  warning: PropTypes.bool
 }
 
 export default LabeledCheckbox

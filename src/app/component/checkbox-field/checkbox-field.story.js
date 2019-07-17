@@ -20,3 +20,8 @@ storiesOf('CheckboxField', module)
       <CheckboxField error />
     </HandleValue>
   ))
+  .add('warning', () => (
+    <HandleValue valueName="checked">
+      <CheckboxField warning />
+    </HandleValue>
+  ))

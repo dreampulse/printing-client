@@ -23,7 +23,8 @@ export default class SelectField extends Component {
     disabled: PropTypes.bool,
     name: PropTypes.string,
     compact: PropTypes.bool,
-    error: PropTypes.bool
+    error: PropTypes.bool,
+    warning: PropTypes.bool
   }
 
   state = {
@@ -71,7 +72,8 @@ export default class SelectField extends Component {
       menu,
       disabled = false,
       compact = false,
-      error = false
+      error = false,
+      warning = false
     } = this.props
     const {menuStyle} = this.state
 
@@ -85,6 +87,7 @@ export default class SelectField extends Component {
             compact,
             error,
             disabled,
+            warning,
             selected: Boolean(value),
             constant: !menu
           },

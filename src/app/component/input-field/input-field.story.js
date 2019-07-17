@@ -21,6 +21,11 @@ storiesOf('Input Field', module)
       <InputField error label="Label" />
     </HandleValue>
   ))
+  .add('warning', () => (
+    <HandleValue initialValue="Some value">
+      <InputField warning label="Label" />
+    </HandleValue>
+  ))
   .add('disabled', () => (
     <HandleValue initialValue="Some value">
       <InputField label="Label" disabled />

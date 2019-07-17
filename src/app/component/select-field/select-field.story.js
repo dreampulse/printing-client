@@ -56,3 +56,8 @@ storiesOf('Select Field', module)
       <SelectField error placeholder="Placeholder" menu={menu} />
     </HandleValue>
   ))
+  .add('warning', () => (
+    <HandleValue>
+      <SelectField warning placeholder="Placeholder" menu={menu} />
+    </HandleValue>
+  ))

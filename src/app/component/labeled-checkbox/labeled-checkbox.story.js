@@ -22,3 +22,8 @@ storiesOf('Labeled Checkbox', module)
       <LabeledCheckbox error label="Label" />
     </HandleValue>
   ))
+  .add('warning', () => (
+    <HandleValue valueName="checked">
+      <LabeledCheckbox warning label="Label" />
+    </HandleValue>
+  ))
