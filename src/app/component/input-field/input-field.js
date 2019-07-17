@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import cn from '../../lib/class-names'
+import propTypes from '../../prop-types'
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class InputField extends Component {
@@ -17,7 +17,8 @@ export default class InputField extends Component {
     onFocus: PropTypes.func,
     autoFocus: PropTypes.bool,
     id: PropTypes.string,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    error: PropTypes.bool
   }
 
   static defaultProps = {
@@ -29,21 +30,27 @@ export default class InputField extends Component {
   }
 
   render() {
-    const {id, modifiers, classNames, onChange, name, ...inputFieldProps} = this.props
+    const {
+      id,
+      classNames,
+      onChange,
+      name,
+      value,
+      error = false,
+      disabled = false,
+      ...inputFieldProps
+    } = this.props
 
     const inputId = id || uniqueId('uid-')
-    const finalModifiers = [
-      ...modifiers,
-      {empty: !this.props.value},
-      {disabled: this.props.disabled}
-    ]
+
     return (
-      <div className={buildClassName('input-field', finalModifiers, classNames)}>
+      <div className={cn('input-field', {error, disabled, empty: !value}, classNames)}>
         <input
           name={name}
           id={inputId}
           className="input-field__input"
           onChange={e => onChange(e.target.value, name, e)}
+          value={value}
           {...inputFieldProps}
         />
         <label htmlFor={inputId} className="input-field__label">

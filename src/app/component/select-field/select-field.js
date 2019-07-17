@@ -3,8 +3,8 @@ import React, {Component, cloneElement} from 'react'
 import ReactDOM from 'react-dom'
 import {PortalWithState} from 'react-portal'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import cn from '../../lib/class-names'
+import propTypes from '../../prop-types'
 
 import Icon from '../icon'
 
@@ -21,7 +21,9 @@ export default class SelectField extends Component {
     onChange: PropTypes.func,
     menu: PropTypes.node, // When not provided select field will be in constant mode
     disabled: PropTypes.bool,
-    name: PropTypes.string
+    name: PropTypes.string,
+    compact: PropTypes.bool,
+    error: PropTypes.bool
   }
 
   state = {
@@ -62,24 +64,34 @@ export default class SelectField extends Component {
   }
 
   render() {
-    const {modifiers = [], classNames, value, placeholder, menu} = this.props
+    const {
+      classNames,
+      value,
+      placeholder,
+      menu,
+      disabled = false,
+      compact = false,
+      error = false
+    } = this.props
     const {menuStyle} = this.state
-    const finalModifiers = [
-      ...modifiers,
-      {
-        selected: Boolean(value),
-        constant: !menu,
-        disabled: this.props.disabled
-      }
-    ]
 
     const renderButton = (portal = {}) => (
       <button
         type="button"
         key="button"
-        className={buildClassName('select-field', finalModifiers, classNames)}
+        className={cn(
+          'select-field',
+          {
+            compact,
+            error,
+            disabled,
+            selected: Boolean(value),
+            constant: !menu
+          },
+          classNames
+        )}
         onClick={portal.isOpen ? portal.closePortal : portal.openPortal}
-        disabled={!menu || this.props.disabled}
+        disabled={!menu || disabled}
       >
         <span className="select-field__value">{value ? this.getLabel(value) : placeholder}</span>
         <Icon source={arrowIcon} />
