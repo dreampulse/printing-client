@@ -13,7 +13,7 @@ import * as localStorage from '../../service/local-storage'
 import config from '../../../../config'
 import {renderFormikField} from '../util/form'
 import {formatTelephoneNumber} from '../../lib/formatter'
-import {getCountriesMenu, getStateName, getStates, getCountryName} from '../../service/country'
+import {getStateName, getStates} from '../../service/country'
 import {required, email, vat, phoneNumber} from '../../lib/validator'
 import scrollTo from '../../service/scroll-to'
 
@@ -24,8 +24,8 @@ import FormRow from '../../component/form-row'
 import InputField from '../../component/input-field'
 import LabeledCheckbox from '../../component/labeled-checkbox'
 import SelectField from '../../component/select-field'
+import CountrySelectField from '../../component/country-select-field'
 import SelectMenu from '../../component/select-menu'
-import Notification from '../../component/notification'
 
 const isSameCountry = (location, address) => location.countryCode === address.countryCode
 
@@ -39,15 +39,6 @@ const AddressFormModal = ({
   isValid,
   userLocation
 }) => {
-  const CountrySelect = ({onChange, value, name, ...props}) => {
-    const changeCountry = val => onChange(val.value, name)
-    const val = !value || value === '' ? undefined : {value, label: getCountryName(value)}
-    const countryMenu = <SelectMenu values={getCountriesMenu()} />
-    return (
-      <SelectField menu={countryMenu} value={val} onChange={changeCountry} name={name} {...props} />
-    )
-  }
-
   const StateSelect = ({onChange, countryCode, value, name, ...props}) => {
     const changeState = val => onChange(val.value, name)
     const states = getStates(countryCode)
@@ -155,7 +146,7 @@ const AddressFormModal = ({
         />
         <Field
           validate={required}
-          component={renderFormikField(CountrySelect)}
+          component={renderFormikField(CountrySelectField)}
           placeholder="Country"
           name="billingAddress.countryCode"
         />
@@ -261,9 +252,12 @@ const AddressFormModal = ({
             />
             <Field
               validate={required}
-              component={renderFormikField(CountrySelect)}
+              component={renderFormikField(CountrySelectField)}
               placeholder="Country"
               name="shippingAddress.countryCode"
+              changeLabel="Changing the country will reset all your material selections"
+              changedLabel="If you select this country your material selection will be reset"
+              changeButtonLabel="edit & reset material"
             />
           </FormRow>
 
@@ -291,14 +285,6 @@ const AddressFormModal = ({
           />
 
           {values.isCompany && renderCompanySection()}
-          {!isSameCountry(userLocation, values.shippingAddress) && (
-            <FormRow>
-              <Notification
-                message="By changing the country you have configure all models in your cart again."
-                warning
-              />
-            </FormRow>
-          )}
 
           <FormRow>
             <Field
