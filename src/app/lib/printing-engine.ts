@@ -265,7 +265,7 @@ export const createOrder = async (order: OrderRequest): Promise<OrderResponse> =
 export const createStripePayment = async (
   payment: StripePaymentRequest
 ): Promise<StripePaymentResponse> => {
-  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/payment/stripe`, {
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/payment/stripe/checkout`, {
     method: 'POST',
     body: payment
   })
