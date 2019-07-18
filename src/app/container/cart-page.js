@@ -599,12 +599,9 @@ export default compose(
       }
     },
     payWithStripe: props => async () => {
-      const userId = props.user.userId
-      const cartId = props.cart.cartId
-      const email = props.user.emailAddress
-      const price = props.liableForVat ? props.cart.totalPrice : props.cart.totalNetPrice
-      const currency = props.cart.currency
-      const utmParams = props.utmParams
+      const {utmParams, user, cart} = props
+      const {userId} = user
+      const {cartId, currency} = cart
 
       const {orderId, orderNumber} = await printingEngine.createOrder({
         userId,
@@ -615,7 +612,7 @@ export default compose(
 
       const {sessionId} = await printingEngine.createStripePayment({orderId})
 
-      const result = await stripe.redirectToCheckout({sessionId})
+      await stripe.redirectToCheckout({sessionId})
 
       return {
         orderId,

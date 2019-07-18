@@ -2,7 +2,7 @@ import config from '../../../config'
 
 import {PaymentAbortedError} from '../lib/error'
 
-const stripe = Stripe('pk_test_eTpkzA3nxYgJa0NQJj8ohL0X');
+const stripe = Stripe('pk_test_eTpkzA3nxYgJa0NQJj8ohL0X')
 
 export const {redirectToCheckout} = stripe
 

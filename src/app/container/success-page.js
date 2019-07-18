@@ -1,17 +1,12 @@
 import React from 'react'
-import {Redirect} from 'react-router'
 import {connect} from 'react-redux'
-import uniq from 'lodash/uniq'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 
-import {getProviderName} from '../lib/provider-selector'
 import {openIntercom} from '../service/intercom'
 
 import {scrollToTop} from './util/scroll-to-top'
 
-import ProviderTeaser from '../component/provider-teaser'
-import ProviderImage from '../component/provider-image'
 import Section from '../component/section'
 import Headline from '../component/headline'
 import Paragraph from '../component/paragraph'
@@ -32,7 +27,7 @@ import orderStarted from '../../asset/icon/order-started.svg'
 import orderShipped from '../../asset/icon/order-shipped.svg'
 import orderReceived from '../../asset/icon/order-received.svg'
 
-const SuccessPage = ({location}) => {
+const SuccessPage = () => {
   return (
     <PageLayout minorBackground footer={<FooterPartial />}>
       <Container>
