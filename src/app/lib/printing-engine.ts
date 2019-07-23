@@ -116,8 +116,8 @@ type PaymentResponse = {
 
 export type StripePaymentRequest = PaymentRequest
 
-export type StripePaymentResponse = PaymentResponse & {
-  status: boolean
+export type StripePaymentResponse = {
+  sessionId: string
 }
 
 export type InvoicePaymentRequest = PaymentRequest & {
