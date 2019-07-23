@@ -39,12 +39,6 @@ const SuccessPage = () => {
             Your order will be produced by:
           </Paragraph>
 
-          {/* <ProviderTeaser classNames={['u-margin-bottom-xl']}>
-            {uniq(location.state.vendorIds).map(vendorId => (
-              <ProviderImage key={vendorId} slug={vendorId} name={getProviderName(vendorId)} />
-            ))}
-          </ProviderTeaser> */}
-
           <OrderConfirmationList step={1}>
             <OrderConfirmationItem icon={<Icon source={orderPlaced} />} title="Order Placed" />
 
