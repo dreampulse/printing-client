@@ -58,7 +58,7 @@ import zoomInIcon from '../../asset/icon/zoom-in.svg'
 import useHasAdblocker from '../hook/use-has-adblocker'
 import Notification from '../component/notification'
 
-const stripe = Stripe(config.stripePublicKey)
+const stripe = global.window.Stripe(config.stripePublicKey)
 
 const CartPage = ({
   modelsWithConfig,
