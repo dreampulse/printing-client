@@ -94,7 +94,7 @@ const CartPage = ({
   const notificationSection = () => (
     <Section>
       <Notification
-        message="You use an ad blocker. Paypal payment won't work. Please use credit cart payment or deactivate your ad blocker."
+        message="It seems that you are using an ad blocker. Please temporarily disable this to pay using PayPal, or select a different payment method."
         warning
       />
     </Section>
