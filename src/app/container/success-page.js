@@ -1,17 +1,13 @@
 import React from 'react'
-import {Redirect} from 'react-router'
 import {connect} from 'react-redux'
-import uniq from 'lodash/uniq'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
+import withState from 'recompose/withState'
 
-import {getProviderName} from '../lib/provider-selector'
 import {openIntercom} from '../service/intercom'
 
 import {scrollToTop} from './util/scroll-to-top'
 
-import ProviderTeaser from '../component/provider-teaser'
-import ProviderImage from '../component/provider-image'
 import Section from '../component/section'
 import Headline from '../component/headline'
 import Paragraph from '../component/paragraph'
@@ -31,30 +27,20 @@ import orderPlaced from '../../asset/icon/order-placed.svg'
 import orderStarted from '../../asset/icon/order-started.svg'
 import orderShipped from '../../asset/icon/order-shipped.svg'
 import orderReceived from '../../asset/icon/order-received.svg'
+import {getUrlParams} from '../lib/url'
 
-const SuccessPage = ({location}) => {
-  if (!location.state || !location.state.orderNumber) {
-    return <Redirect to="/" />
-  }
+const SuccessPage = ({orderNumber}) => {
   return (
     <PageLayout minorBackground footer={<FooterPartial />}>
       <Container>
         <Section classNames={['u-align-center']}>
           <Headline size="xl" label="Thank you for ordering with Craftcloud by All3DP" />
-          <Headline
-            label={location.state.orderNumber ? `Order number: ${location.state.orderNumber}` : ''}
-          />
+          <Headline label={orderNumber ? `Order number: ${orderNumber}` : ''} />
           <Paragraph>
             You should receive an order confirmation email from us shortly. We will also let you
             know when we have received the tracking number for your print from the manufacturer.
             Your order will be produced by:
           </Paragraph>
-
-          <ProviderTeaser classNames={['u-margin-bottom-xl']}>
-            {uniq(location.state.vendorIds).map(vendorId => (
-              <ProviderImage key={vendorId} slug={vendorId} name={getProviderName(vendorId)} />
-            ))}
-          </ProviderTeaser>
 
           <OrderConfirmationList step={1}>
             <OrderConfirmationItem icon={<Icon source={orderPlaced} />} title="Order Placed" />
@@ -95,6 +81,7 @@ const enhance = compose(
     mapStateToProps,
     mapDispatchToProps
   ),
+  withState('orderNumber', 'setOrderNumber', () => getUrlParams(global.location).orderNumber),
   lifecycle({
     componentDidMount() {
       this.props.reset()

@@ -327,10 +327,8 @@ const CartPage = ({
                 onClick={async () => {
                   try {
                     setPaymentInProgress(true)
-                    const {orderNumber, paymentId} = await payWithStripe()
-                    await orderPaid({orderNumber, paymentId})
-                    setPaymentInProgress(false)
-                    onSuccess()
+                    await payWithStripe()
+                    // leaving page after redirect to Stripe
                   } catch (error) {
                     logging.captureException(error)
 
@@ -599,28 +597,20 @@ export default compose(
       }
     },
     payWithStripe: props => async () => {
-      const userId = props.user.userId
-      const cartId = props.cart.cartId
-      const email = props.user.emailAddress
-      const price = props.liableForVat ? props.cart.totalPrice : props.cart.totalNetPrice
-      const currency = props.cart.currency
-      const utmParams = props.utmParams
+      const {utmParams, user, cart} = props
+      const {userId} = user
+      const {cartId, currency} = cart
 
-      const {orderId, orderNumber} = await printingEngine.createOrder({
+      const {orderId} = await printingEngine.createOrder({
         userId,
         cartId,
         currency,
         utmParams
       })
-      const stripeTokenObject = await stripe.checkout({price, currency, email})
-      const token = stripeTokenObject.id
 
-      await printingEngine.createStripePayment({orderId, token})
+      const {sessionId} = await printingEngine.createStripePayment({orderId})
 
-      return {
-        orderId,
-        orderNumber
-      }
+      await stripe.redirectToCheckout({sessionId})
     },
     payWithInvoice: props => async () => {
       const userId = props.user.userId

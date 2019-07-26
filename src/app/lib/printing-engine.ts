@@ -114,12 +114,10 @@ type PaymentResponse = {
   paymentId: PaymentId
 }
 
-export type StripePaymentRequest = PaymentRequest & {
-  token: string
-}
+export type StripePaymentRequest = PaymentRequest
 
-export type StripePaymentResponse = PaymentResponse & {
-  status: boolean
+export type StripePaymentResponse = {
+  sessionId: string
 }
 
 export type InvoicePaymentRequest = PaymentRequest & {
@@ -267,7 +265,7 @@ export const createOrder = async (order: OrderRequest): Promise<OrderResponse> =
 export const createStripePayment = async (
   payment: StripePaymentRequest
 ): Promise<StripePaymentResponse> => {
-  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/payment/stripe`, {
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/payment/stripe/checkout`, {
     method: 'POST',
     body: payment
   })

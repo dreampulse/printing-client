@@ -3,7 +3,7 @@ interface Window {
   /* tslint:enable */
   ga: any
   Intercom: any
-  StripeCheckout: any
+  Stripe: any
   mixpanel: any
   initMap: () => void
 }
