@@ -131,7 +131,7 @@ const CartPage = ({
               size="l"
               label={
                 <>
-                  Shipping Address{' '}
+                  Delivery Address{' '}
                   <Link
                     label="edit"
                     onClick={() => openAddressFormModal()}
@@ -141,12 +141,6 @@ const CartPage = ({
               }
             />
             <Paragraph>
-              {user.companyName ? (
-                <span>
-                  {user.companyName}
-                  <br />
-                </span>
-              ) : null}
               {user.shippingAddress.firstName} {user.shippingAddress.lastName}
               <br />
               {user.shippingAddress.address}
