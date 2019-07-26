@@ -56,6 +56,8 @@ import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
+import useHasAdblocker from '../hook/use-has-adblocker'
+import Notification from '../component/notification'
 
 const CartPage = ({
   modelsWithConfig,
@@ -84,8 +86,19 @@ const CartPage = ({
   orderPaid,
   executePaypalPayment
 }) => {
+  const hasAdblocker = useHasAdblocker()
+
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
+
+  const notificationSection = () => (
+    <Section>
+      <Notification
+        message="It seems that you are using an ad blocker. Please temporarily disable this to pay using PayPal, or select a different payment method."
+        warning
+      />
+    </Section>
+  )
 
   const buttonBar = (modelConfig, model) => (
     <ButtonBar l>
@@ -436,6 +449,7 @@ const CartPage = ({
   return (
     <PageLayout>
       <Container full>
+        {hasAdblocker && notificationSection()}
         <Section>
           <Link
             label={
