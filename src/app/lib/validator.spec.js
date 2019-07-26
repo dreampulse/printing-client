@@ -28,12 +28,12 @@ describe('vat()', () => {
 })
 
 describe('phoneNumber()', () => {
-  it('returns undefined if a string is provide', () =>
+  it('returns undefined if a valid string is provided', () =>
     expect(phoneNumber('123'), 'to be undefined'))
 
-  it('returns "Invalid phone number" if an empty string is provide', () =>
+  it('returns "Invalid phone number" if an empty string is provided', () =>
     expect(phoneNumber(''), 'to equal', 'Invalid phone number'))
 
-  it('returns "Invalid phone number" if an invalid phone number is provide', () =>
+  it('returns "Invalid phone number" if an invalid phone number is provided', () =>
     expect(phoneNumber('INVALID'), 'to equal', 'Invalid phone number'))
 })
