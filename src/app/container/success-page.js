@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
+import withState from 'recompose/withState'
 
 import {openIntercom} from '../service/intercom'
 
@@ -26,14 +27,16 @@ import orderPlaced from '../../asset/icon/order-placed.svg'
 import orderStarted from '../../asset/icon/order-started.svg'
 import orderShipped from '../../asset/icon/order-shipped.svg'
 import orderReceived from '../../asset/icon/order-received.svg'
+import {getUrlParams} from '../lib/url'
 
-const SuccessPage = () => {
+const SuccessPage = ({orderNumber}) => {
   return (
     <PageLayout minorBackground footer={<FooterPartial />}>
       <Container>
         <Section classNames={['u-align-center']}>
           <Headline size="xl" label="Thank you for ordering with Craftcloud by All3DP" />
-          <Paragraph classNames={['u-margin-bottom-xl']}>
+          <Headline label={orderNumber ? `Order number: ${orderNumber}` : ''} />
+          <Paragraph>
             You should receive an order confirmation email from us shortly. We will also let you
             know when we have received the tracking number for your print from the manufacturer.
             Your order will be produced by:
@@ -78,6 +81,7 @@ const enhance = compose(
     mapStateToProps,
     mapDispatchToProps
   ),
+  withState('orderNumber', 'setOrderNumber', () => getUrlParams(global.location).orderNumber),
   lifecycle({
     componentDidMount() {
       this.props.reset()
