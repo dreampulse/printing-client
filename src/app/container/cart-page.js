@@ -162,6 +162,11 @@ const CartPage = ({
                 </span>
               )}
               {getCountryName(user.shippingAddress.countryCode)}
+              <br />
+              <br />
+              Contact Email: {user.emailAddress}
+              <br />
+              Contact Phone: {user.phoneNumber}
             </Paragraph>
           </Column>
           <Column md={6}>

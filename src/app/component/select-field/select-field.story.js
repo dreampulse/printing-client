@@ -32,12 +32,12 @@ storiesOf('Select Field', module)
   ))
   .add('compact', () => (
     <HandleValue>
-      <SelectField modifiers={['compact']} placeholder="Placeholder" menu={menu} />
+      <SelectField compact placeholder="Placeholder" menu={menu} />
     </HandleValue>
   ))
   .add('constant', () => (
     <SelectField
-      modifiers={['compact']}
+      compact
       value={{value: 'item2', colorValue: 'ff0000', label: 'Constant Select Field'}}
     />
   ))
@@ -53,6 +53,11 @@ storiesOf('Select Field', module)
   ))
   .add('error', () => (
     <HandleValue>
-      <SelectField placeholder="Placeholder" menu={menu} modifiers={['error']} />
+      <SelectField error placeholder="Placeholder" menu={menu} />
+    </HandleValue>
+  ))
+  .add('warning', () => (
+    <HandleValue>
+      <SelectField warning placeholder="Placeholder" menu={menu} />
     </HandleValue>
   ))

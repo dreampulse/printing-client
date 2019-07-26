@@ -13,8 +13,8 @@ import * as localStorage from '../../service/local-storage'
 import config from '../../../../config'
 import {renderFormikField} from '../util/form'
 import {formatTelephoneNumber} from '../../lib/formatter'
-import {getCountriesMenu, getStateName, getStates, getCountryName} from '../../service/country'
-import {required, email, vat} from '../../lib/validator'
+import {getStateName, getStates} from '../../service/country'
+import {required, email, vat, phoneNumber} from '../../lib/validator'
 import scrollTo from '../../service/scroll-to'
 
 import Button from '../../component/button'
@@ -24,8 +24,8 @@ import FormRow from '../../component/form-row'
 import InputField from '../../component/input-field'
 import LabeledCheckbox from '../../component/labeled-checkbox'
 import SelectField from '../../component/select-field'
+import CountrySelectField from '../../component/country-select-field'
 import SelectMenu from '../../component/select-menu'
-import Notification from '../../component/notification'
 
 const isSameCountry = (location, address) => location.countryCode === address.countryCode
 
@@ -39,15 +39,6 @@ const AddressFormModal = ({
   isValid,
   userLocation
 }) => {
-  const CountrySelect = ({onChange, value, name, ...props}) => {
-    const changeCountry = val => onChange(val.value, name)
-    const val = !value || value === '' ? undefined : {value, label: getCountryName(value)}
-    const countryMenu = <SelectMenu values={getCountriesMenu()} />
-    return (
-      <SelectField menu={countryMenu} value={val} onChange={changeCountry} name={name} {...props} />
-    )
-  }
-
   const StateSelect = ({onChange, countryCode, value, name, ...props}) => {
     const changeState = val => onChange(val.value, name)
     const states = getStates(countryCode)
@@ -123,7 +114,7 @@ const AddressFormModal = ({
       <FormRow>
         <Field
           component={renderFormikField(InputField)}
-          label="Additional address information, e.g. company name, floor, building, etc..."
+          label="Address line 2 (optional)"
           name="billingAddress.addressLine2"
           maxLength="35"
         />
@@ -155,7 +146,7 @@ const AddressFormModal = ({
         />
         <Field
           validate={required}
-          component={renderFormikField(CountrySelect)}
+          component={renderFormikField(CountrySelectField)}
           placeholder="Country"
           name="billingAddress.countryCode"
         />
@@ -197,9 +188,8 @@ const AddressFormModal = ({
       <Form>
         <div id="shipping-address">
           <FormRow>
-            <Headline size="s" label="Personal information" classNames={['u-no-margin-bottom']} />
+            <Headline size="s" label="Delivery address" classNames={['u-no-margin-bottom']} />
           </FormRow>
-
           <FormRow modifiers={['half-half']}>
             <Field
               validate={required}
@@ -217,37 +207,6 @@ const AddressFormModal = ({
             />
           </FormRow>
 
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={email}
-              component={renderFormikField(InputField)}
-              label="Email address"
-              name="emailAddress"
-              type="email"
-            />
-            <Field
-              validate={required}
-              component={renderFormikField(InputField)}
-              label="Phone number"
-              name="phoneNumber"
-              type="tel"
-            />
-          </FormRow>
-
-          <FormRow>
-            <Field
-              name="isCompany"
-              component={renderFormikField(LabeledCheckbox)}
-              label="I am ordering on behalf of a company"
-            />
-          </FormRow>
-
-          {values.isCompany && renderCompanySection()}
-
-          <FormRow>
-            <Headline size="s" label="Shipping address" classNames={['u-no-margin-bottom']} />
-          </FormRow>
-
           <FormRow>
             <Field
               validate={required}
@@ -261,7 +220,7 @@ const AddressFormModal = ({
           <FormRow>
             <Field
               component={renderFormikField(InputField)}
-              label="Additional address information, e.g. company name, floor, building, etc..."
+              label="Address line 2 / company"
               name="shippingAddress.addressLine2"
               maxLength="35"
             />
@@ -281,7 +240,6 @@ const AddressFormModal = ({
               name="shippingAddress.zipCode"
             />
           </FormRow>
-
           <FormRow modifiers={['half-half']}>
             <Field
               validate={getStates(values.shippingAddress.countryCode) ? required : undefined}
@@ -293,20 +251,41 @@ const AddressFormModal = ({
             />
             <Field
               validate={required}
-              component={renderFormikField(CountrySelect)}
+              component={renderFormikField(CountrySelectField)}
               placeholder="Country"
               name="shippingAddress.countryCode"
+              changeLabel="Changing the country will reset all your material selections"
+              changedLabel="If you select this country your material selection will be reset"
+              changeButtonLabel="edit & reset material"
             />
           </FormRow>
 
-          {!isSameCountry(userLocation, values.shippingAddress) && (
-            <FormRow>
-              <Notification
-                message="By changing the country you have configure all models in your cart again."
-                warning
-              />
-            </FormRow>
-          )}
+          <FormRow modifiers={['half-half']}>
+            <Field
+              validate={email}
+              component={renderFormikField(InputField)}
+              label="Email address"
+              name="emailAddress"
+              type="email"
+            />
+            <Field
+              validate={phoneNumber}
+              component={renderFormikField(InputField)}
+              label="Phone number"
+              name="phoneNumber"
+              type="tel"
+            />
+          </FormRow>
+
+          <FormRow>
+            <Field
+              name="isCompany"
+              component={renderFormikField(LabeledCheckbox)}
+              label="I am ordering on behalf of a company"
+            />
+          </FormRow>
+
+          {values.isCompany && renderCompanySection()}
 
           <FormRow>
             <Field

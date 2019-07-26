@@ -1,4 +1,4 @@
-.input-field {
+.InputField {
   $field-space: 10px;
   $border-width: 1px;
 
@@ -51,23 +51,35 @@
   }
 
   &--empty {
-    .input-field__input:not(:focus) ~ .input-field__label {
+    .InputField__input:not(:focus) ~ .InputField__label {
       transform: none;
     }
 
-    .input-field__input:not(:focus) {
+    .InputField__input:not(:focus) {
       color: transparent;
     }
   }
 
   &--error {
-    .input-field__input,
-    .input-field__input:focus {
+    .InputField__input,
+    .InputField__input:focus {
       border-color: $color-error;
       color: $color-error;
       box-shadow: $box-shadow-error;
     }
-    .input-field__input:focus {
+    .InputField__input:focus {
+      box-shadow: $box-shadow-focus;
+    }
+  }
+
+  &--warning {
+    .InputField__input,
+    .InputField__input:focus {
+      border-color: $color-warning;
+      color: $color-warning;
+      box-shadow: $box-shadow-error;
+    }
+    .InputField__input:focus {
       box-shadow: $box-shadow-focus;
     }
   }

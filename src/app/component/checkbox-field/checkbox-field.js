@@ -12,12 +12,13 @@ import checkIcon from '../../../asset/icon/selected.svg'
 const CheckboxField = ({
   classNames,
   error = false,
+  warning = false,
   checked,
   id = '',
   onChange = noop,
   name = ''
 }) => (
-  <div className={cn('CheckboxField', {checked, error}, classNames)}>
+  <div className={cn('CheckboxField', {checked, error, warning}, classNames)}>
     <input
       name={name}
       id={id}
@@ -34,6 +35,7 @@ const CheckboxField = ({
 CheckboxField.propTypes = {
   ...propTypes.component,
   error: PropTypes.bool,
+  warning: PropTypes.bool,
   checked: PropTypes.bool,
   id: PropTypes.string,
   name: PropTypes.string,

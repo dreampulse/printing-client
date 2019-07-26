@@ -1,4 +1,4 @@
-.select-field {
+.SelectField {
   $space-around-icon: 0.7em;
   $space-around-icon-compact: 0.5em;
 
@@ -81,5 +81,11 @@
   &--error:focus:not(:disabled) {
     border-color: $color-error;
     box-shadow: $box-shadow-error;
+  }
+
+  &--warning,
+  &--warning:focus:not(:disabled) {
+    border-color: $color-warning;
+    box-shadow: $box-shadow-warning;
   }
 }
