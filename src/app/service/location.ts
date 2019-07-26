@@ -1,1 +1,6 @@
-export const reloadPage = () => window.location.reload(true)
+import * as localStorageSession from './local-storage-session'
+
+export const reloadPage = () => {
+  localStorageSession.clear()
+  window.location.reload(true)
+}

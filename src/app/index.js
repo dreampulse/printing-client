@@ -6,13 +6,11 @@ import {AppContainer} from 'react-hot-loader'
 import browserUpdate from 'browser-update'
 import './service/logging'
 
-import config from '../../config'
-
 import Store from './store'
 import Router from './router'
 import {handleIncomingMessages} from './service/intercom'
 import {trackPageImpression} from './service/google-analytics'
-import {setItem} from './service/local-storage'
+import * as localStorageSession from './service/local-storage-session'
 
 import '../sass/main.scss'
 
@@ -59,9 +57,5 @@ if (process.env.NODE_ENV !== 'production') {
 
 global.addEventListener('unload', function() {
   const {core: coreState} = store.getState()
-
-  setItem(config.localStorageCoreSessionKey, {
-    coreState,
-    timestamp: new Date()
-  })
+  localStorageSession.save(coreState)
 })

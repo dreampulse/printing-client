@@ -9,6 +9,7 @@ import zip from 'lodash/zip'
 import compact from 'lodash/compact'
 
 import * as localStorage from '../service/local-storage'
+import * as localStorageSession from '../service/local-storage-session'
 import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
 import {
   resetModelConfigs,
@@ -122,23 +123,19 @@ const init = (
   state: CoreState,
   {payload: {featureFlags, urlParams}}: coreActions.InitAction
 ): CoreReducer => {
-  const localCoreSession = localStorage.getItem<{coreState: CoreState; timestamp: Date}>(
-    config.localStorageCoreSessionKey
-  )
-
-  if (localCoreSession && !featureFlags.clear) {
-    const timeDiff = new Date().getTime() - new Date(localCoreSession.timestamp).getTime()
-    const timeDiffInMinutes = timeDiff / 1000 / 60
-
-    const restoreTimeout = 30
-
-    localStorage.removeItem(config.localStorageCoreSessionKey)
-
-    if (timeDiffInMinutes < restoreTimeout) {
+  if (localStorageSession.hasValidSession() && !featureFlags.clear) {
+    const coreState = localStorageSession.get<CoreState>()
+    if (coreState) {
       // tslint:disable-next-line:no-console
       console.log('Using initial core state from local storage.')
-      return localCoreSession.coreState
+
+      localStorageSession.clear()
+      return coreState
     }
+  }
+
+  if (featureFlags.clear) {
+    localStorageSession.clear()
   }
 
   const userFromLocalStorage = localStorage.getItem<User>(config.localStorageAddressKey)
