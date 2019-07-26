@@ -11,8 +11,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding-left: $space-base;
 
-    & > * {
+    & > * + * {
       margin-left: $space-base;
     }
   }
