@@ -186,6 +186,8 @@ const fatalError = (
     return state
   }
 
+  localStorageSession.disable()
+
   return loop(
     state,
     Cmd.list<Actions>([

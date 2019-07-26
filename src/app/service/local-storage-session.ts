@@ -31,3 +31,11 @@ export const get = <S>() => {
   const localSession = localStorage.getItem<{state: S}>(config.localStorageSessionKey)
   return localSession && localSession.state
 }
+
+let isEnabledState = true
+
+export const isEnabled = () => isEnabledState
+export const disable = () => {
+  clear()
+  isEnabledState = false
+}
