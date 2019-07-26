@@ -278,11 +278,13 @@ const AddressFormModal = ({
             />
           </FormRow>
 
-          <Field
-            name="isCompany"
-            component={renderFormikField(LabeledCheckbox)}
-            label="I am ordering on behalf of a company"
-          />
+          <FormRow>
+            <Field
+              name="isCompany"
+              component={renderFormikField(LabeledCheckbox)}
+              label="I am ordering on behalf of a company"
+            />
+          </FormRow>
 
           {values.isCompany && renderCompanySection()}
 

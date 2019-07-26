@@ -46,7 +46,7 @@ const CountrySelectField = ({
 
   const renderReadMode = () => (
     <div className="CountrySelectField__readMode">
-      <div>{value ? getCountryName(value) : '-'}</div>
+      {value ? getCountryName(value) : '-'}
       <Button text tiny label={changeButtonLabel} onClick={() => setEditMode(true)} />
     </div>
   )
