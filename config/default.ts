@@ -66,5 +66,6 @@ export default {
   ],
   localStorageAddressKey: 'address_v3',
   printingEngineBaseUrl: 'http://localhost:8000',
-  stripePublicKey: 'pk_test_vgy9WdRy48FnhegkMYXMQXit'
+  stripePublicKey: 'pk_test_vgy9WdRy48FnhegkMYXMQXit',
+  localStorageCoreSessionKey: 'core_session_v1'
 }

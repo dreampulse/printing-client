@@ -4,8 +4,9 @@ import {Provider} from 'react-redux'
 import {createBrowserHistory} from 'history'
 import {AppContainer} from 'react-hot-loader'
 import browserUpdate from 'browser-update'
-
 import './service/logging'
+
+import config from '../../config'
 
 import Store from './store'
 import Router from './router'
@@ -56,10 +57,10 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
-global.addEventListener('unload', function(_event) {
+global.addEventListener('unload', function() {
   const {core: coreState} = store.getState()
 
-  setItem('__EXAMPLE', {
+  setItem(config.localStorageCoreSessionKey, {
     coreState,
     timestamp: new Date()
   })

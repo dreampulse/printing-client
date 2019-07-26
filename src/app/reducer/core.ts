@@ -123,16 +123,16 @@ const init = (
   {payload: {featureFlags, urlParams}}: coreActions.InitAction
 ): CoreReducer => {
   const localCoreSession = localStorage.getItem<{coreState: CoreState; timestamp: Date}>(
-    '__EXAMPLE'
+    config.localStorageCoreSessionKey
   )
 
   if (localCoreSession && !featureFlags.clear) {
-    const timeDiff = (new Date).getTime() - (new Date(localCoreSession.timestamp)).getTime()
+    const timeDiff = new Date().getTime() - new Date(localCoreSession.timestamp).getTime()
     const timeDiffInMinutes = timeDiff / 1000 / 60
 
     const restoreTimeout = 30
 
-    localStorage.removeItem('__EXAMPLE')
+    localStorage.removeItem(config.localStorageCoreSessionKey)
 
     if (timeDiffInMinutes < restoreTimeout) {
       // tslint:disable-next-line:no-console
