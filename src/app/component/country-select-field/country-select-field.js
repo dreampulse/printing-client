@@ -37,7 +37,7 @@ const CountrySelectField = ({
         {...rest}
       />
       {
-        <div className="countrySelectField__notification">
+        <div className="CountrySelectField__notification">
           {initialValue !== value ? changedLabel : changeLabel}
         </div>
       }
@@ -45,14 +45,14 @@ const CountrySelectField = ({
   )
 
   const renderReadMode = () => (
-    <div className="countrySelectField__readMode">
+    <div className="CountrySelectField__readMode">
       <div>{value ? getCountryName(value) : '-'}</div>
       <Button text tiny label={changeButtonLabel} onClick={() => setEditMode(true)} />
     </div>
   )
 
   return (
-    <div className={cn('countrySelectField', {}, classNames)}>
+    <div className={cn('CountrySelectField', {}, classNames)}>
       {editMode ? renderEditMode() : renderReadMode()}
     </div>
   )

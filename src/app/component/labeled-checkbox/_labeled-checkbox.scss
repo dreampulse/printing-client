@@ -1,4 +1,4 @@
-.labeledCheckbox {
+.LabeledCheckbox {
   height: $field-height;
   position: relative;
   padding-left: 30px;
@@ -15,7 +15,7 @@
   }
 
   &--error {
-    .labeledCheckbox__label {
+    .LabeledCheckbox__label {
       color: $color-error;
     }
   }

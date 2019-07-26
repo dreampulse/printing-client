@@ -17,7 +17,7 @@ const LabeledCheckbox = ({
 }) => {
   const id = uniqueId('uid-')
   return (
-    <div className={cn('labeledCheckbox', {}, classNames)}>
+    <div className={cn('LabeledCheckbox', {}, classNames)}>
       <CheckboxField
         name={name}
         error={error}
@@ -26,7 +26,7 @@ const LabeledCheckbox = ({
         warning={warning}
         onChange={e => onChange(!checked, name, e)}
       />
-      <label htmlFor={id} className="labeledCheckbox__label">
+      <label htmlFor={id} className="LabeledCheckbox__label">
         {label}
       </label>
     </div>

@@ -45,16 +45,16 @@ export default class InputField extends Component {
     const inputId = id || uniqueId('uid-')
 
     return (
-      <div className={cn('inputField', {error, warning, disabled, empty: !value}, classNames)}>
+      <div className={cn('InputField', {error, warning, disabled, empty: !value}, classNames)}>
         <input
           name={name}
           id={inputId}
-          className="inputField__input"
+          className="InputField__input"
           onChange={e => onChange(e.target.value, name, e)}
           value={value}
           {...inputFieldProps}
         />
-        <label htmlFor={inputId} className="inputField__label">
+        <label htmlFor={inputId} className="InputField__label">
           {this.props.label}
         </label>
       </div>

@@ -82,7 +82,7 @@ export default class SelectField extends Component {
         type="button"
         key="button"
         className={cn(
-          'selectField',
+          'SelectField',
           {
             compact,
             error,
@@ -96,7 +96,7 @@ export default class SelectField extends Component {
         onClick={portal.isOpen ? portal.closePortal : portal.openPortal}
         disabled={!menu || disabled}
       >
-        <span className="selectField__value">{value ? this.getLabel(value) : placeholder}</span>
+        <span className="SelectField__value">{value ? this.getLabel(value) : placeholder}</span>
         <Icon source={arrowIcon} />
       </button>
     )
@@ -113,7 +113,7 @@ export default class SelectField extends Component {
             renderButton({openPortal, closePortal, isOpen}),
             portal(
               <div
-                className="selectField__menu"
+                className="SelectField__menu"
                 key="menu"
                 ref={d => {
                   this.menuDOM = d
