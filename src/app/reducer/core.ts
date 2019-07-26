@@ -122,6 +122,25 @@ const init = (
   state: CoreState,
   {payload: {featureFlags, urlParams}}: coreActions.InitAction
 ): CoreReducer => {
+  const localCoreSession = localStorage.getItem<{coreState: CoreState; timestamp: Date}>(
+    '__EXAMPLE'
+  )
+
+  if (localCoreSession && !featureFlags.clear) {
+    const timeDiff = (new Date).getTime() - (new Date(localCoreSession.timestamp)).getTime()
+    const timeDiffInMinutes = timeDiff / 1000 / 60
+
+    const restoreTimeout = 30
+
+    localStorage.removeItem('__EXAMPLE')
+
+    if (timeDiffInMinutes < restoreTimeout) {
+      // tslint:disable-next-line:no-console
+      console.log('Using initial core state from local storage.')
+      return localCoreSession.coreState
+    }
+  }
+
   const userFromLocalStorage = localStorage.getItem<User>(config.localStorageAddressKey)
 
   return loop(

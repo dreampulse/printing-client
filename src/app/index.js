@@ -11,6 +11,7 @@ import Store from './store'
 import Router from './router'
 import {handleIncomingMessages} from './service/intercom'
 import {trackPageImpression} from './service/google-analytics'
+import {setItem} from './service/local-storage'
 
 import '../sass/main.scss'
 
@@ -54,3 +55,12 @@ if (process.env.NODE_ENV !== 'production') {
     trackPageImpression(pathname)
   })
 }
+
+global.addEventListener('unload', function(_event) {
+  const {core: coreState} = store.getState()
+
+  setItem('__EXAMPLE', {
+    coreState,
+    timestamp: new Date()
+  })
+})
