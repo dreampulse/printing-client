@@ -18,6 +18,7 @@ import {guard} from './util/guard'
 import {getStateName, getCountryName} from '../service/country'
 import {openIntercom} from '../service/intercom'
 import * as printingEngine from '../lib/printing-engine'
+import * as stripe from '../service/stripe'
 import * as logging from '../service/logging'
 import config from '../../../config'
 
@@ -57,8 +58,6 @@ import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 import useHasAdblocker from '../hook/use-has-adblocker'
 import Notification from '../component/notification'
-
-const stripe = global.window.Stripe(config.stripePublicKey)
 
 const CartPage = ({
   modelsWithConfig,
