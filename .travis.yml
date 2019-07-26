@@ -9,7 +9,7 @@ cache:
 script:
   - npm test
   - npm run test:cypress
-  - if [ "$TRAVIS_BRANCH" = "develop" ]; then npm run build:development; npm run build; fi
+  - if [ "$TRAVIS_BRANCH" = "develop" ]; then npm run build:development; else npm run build; fi
 install:
   - npm ci
 deploy:
