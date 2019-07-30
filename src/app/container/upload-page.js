@@ -18,6 +18,7 @@ import {formatDimensions} from '../lib/formatter'
 import * as printingEngine from '../lib/printing-engine'
 import * as selector from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
+import {openIntercom} from '../service/intercom'
 
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
@@ -83,11 +84,7 @@ const UploadPage = ({
             Large quantities, recurring orders or special requirements?
           </RichText>
           <div className="u-align-center ">
-            <Button
-              minor
-              label="Contact Us"
-              onClick={() => global.window.open('https://craftcloud.all3dp.com/contact', '_blank')}
-            />
+            <Button minor label="Contact Us" onClick={() => openIntercom()} />
           </div>
         </Column>
         <Column md={0} lg={4} />
