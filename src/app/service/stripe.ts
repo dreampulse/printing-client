@@ -1,5 +1,6 @@
 import config from '../../../config'
 
-const stripe = window.Stripe('pk_test_vgy9WdRy48FnhegkMYXMQXit')
-
-export const {redirectToCheckout} = stripe
+export const redirectToCheckout = ({sessionId}: {sessionId: string}) => {
+  const stripe = window.Stripe(config.stripePublicKey)
+  return stripe.redirectToCheckout({sessionId})
+}

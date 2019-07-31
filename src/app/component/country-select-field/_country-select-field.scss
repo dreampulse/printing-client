@@ -12,6 +12,7 @@
     flex-direction: row;
     align-items: center;
     padding-left: $space-base;
+    white-space: nowrap;
 
     & > * + * {
       margin-left: $space-base;

@@ -195,16 +195,30 @@ const CartPage = ({
                       <br />
                     </span>
                   ) : null}
-                  {user.billingAddress.firstName || user.shippingAddress.firstName}{' '}
-                  {user.billingAddress.lastName || user.shippingAddress.lastName}
-                  <br />
-                  {user.billingAddress.address || user.shippingAddress.address}
-                  <br />
-                  {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}
-                  <br />
-                  {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
-                  {user.billingAddress.city || user.shippingAddress.city}
-                  <br />
+                  {user.useDifferentBillingAddress ? (
+                    <>
+                      {user.billingAddress.firstName} {user.billingAddress.lastName}
+                      <br />
+                      {user.billingAddress.address}
+                      <br />
+                      {user.billingAddress.addressLine2}
+                      <br />
+                      {user.billingAddress.zipCode} {user.billingAddress.city}
+                      <br />
+                    </>
+                  ) : (
+                    <>
+                      {user.shippingAddress.firstName} {user.shippingAddress.lastName}
+                      <br />
+                      {user.shippingAddress.address}
+                      <br />
+                      {user.shippingAddress.addressLine2}
+                      <br />
+                      {user.shippingAddress.zipCode} {user.shippingAddress.city}
+                      <br />
+                    </>
+                  )}
+
                   {billingStateName && (
                     <span>
                       {billingStateName}

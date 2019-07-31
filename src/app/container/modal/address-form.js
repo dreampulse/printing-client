@@ -82,8 +82,12 @@ const AddressFormModal = ({
   )
 
   const billingAddressSection = (
-    <div id="billing-address">
-      <Headline size="s" classNames={['u-margin-top-xl']} label="Billing Address" />
+    <>
+      <a id="billing-address" />
+
+      <FormRow>
+        <Headline size="s" classNames={['u-no-margin-bottom']} label="Billing Address" />
+      </FormRow>
       <FormRow modifiers={['half-half']}>
         <Field
           validate={required}
@@ -151,7 +155,7 @@ const AddressFormModal = ({
           name="billingAddress.countryCode"
         />
       </FormRow>
-    </div>
+    </>
   )
 
   const headline = <Headline label="Enter delivery address" size="l" />
@@ -186,125 +190,118 @@ const AddressFormModal = ({
       scrollContainerId={addressFormModalScrollContainerId}
     >
       <Form>
-        <div id="shipping-address">
-          <FormRow>
-            <Headline size="s" label="Delivery address" classNames={['u-no-margin-bottom']} />
-          </FormRow>
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={required}
-              component={renderFormikField(InputField)}
-              label="First name"
-              name="shippingAddress.firstName"
-              maxLength="20"
-            />
-            <Field
-              validate={required}
-              component={renderFormikField(InputField)}
-              label="Last name"
-              name="shippingAddress.lastName"
-              maxLength="20"
-            />
-          </FormRow>
-
-          <FormRow>
-            <Field
-              validate={required}
-              component={renderFormikField(InputField)}
-              label="Address"
-              name="shippingAddress.address"
-              maxLength="35"
-            />
-          </FormRow>
-
-          <FormRow>
-            <Field
-              component={renderFormikField(InputField)}
-              label="Address line 2 / company"
-              name="shippingAddress.addressLine2"
-              maxLength="35"
-            />
-          </FormRow>
-
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={required}
-              component={renderFormikField(InputField)}
-              label="City"
-              name="shippingAddress.city"
-            />
-            <Field
-              validate={required}
-              component={renderFormikField(InputField)}
-              label="Zip code"
-              name="shippingAddress.zipCode"
-            />
-          </FormRow>
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={getStates(values.shippingAddress.countryCode) ? required : undefined}
-              component={renderFormikField(StateSelect)}
-              placeholder="State"
-              name="shippingAddress.stateCode"
-              type="select"
-              countryCode={values.shippingAddress.countryCode}
-            />
-            <Field
-              validate={required}
-              component={renderFormikField(CountrySelectField)}
-              placeholder="Country"
-              name="shippingAddress.countryCode"
-              changeLabel="Changing the country will reset all your material selections"
-              changedLabel="If you select this country your material selection will be reset"
-              changeButtonLabel="edit & reset material"
-            />
-          </FormRow>
-
-          <FormRow modifiers={['half-half']}>
-            <Field
-              validate={email}
-              component={renderFormikField(InputField)}
-              label="Email address"
-              name="emailAddress"
-              type="email"
-            />
-            <Field
-              validate={phoneNumber}
-              component={renderFormikField(InputField)}
-              label="Phone number"
-              name="phoneNumber"
-              type="tel"
-            />
-          </FormRow>
-
-          <FormRow>
-            <Field
-              name="isCompany"
-              component={renderFormikField(LabeledCheckbox)}
-              label="I am ordering on behalf of a company"
-            />
-          </FormRow>
-
-          {values.isCompany && renderCompanySection()}
-
-          <FormRow>
-            <Field
-              name="useDifferentBillingAddress"
-              component={renderFormikField(LabeledCheckbox)}
-              label="Use different billing address"
-            />
-          </FormRow>
-        </div>
-
-        {values.useDifferentBillingAddress && billingAddressSection}
+        <a id="shipping-address" />
+        <FormRow>
+          <Headline size="s" label="Delivery address" classNames={['u-no-margin-bottom']} />
+        </FormRow>
+        <FormRow modifiers={['half-half']}>
+          <Field
+            validate={required}
+            component={renderFormikField(InputField)}
+            label="First name"
+            name="shippingAddress.firstName"
+            maxLength="20"
+          />
+          <Field
+            validate={required}
+            component={renderFormikField(InputField)}
+            label="Last name"
+            name="shippingAddress.lastName"
+            maxLength="20"
+          />
+        </FormRow>
 
         <FormRow>
           <Field
-            name="saveAddress"
-            component={renderFormikField(LabeledCheckbox)}
-            label="Save address for your next purchase"
+            validate={required}
+            component={renderFormikField(InputField)}
+            label="Address"
+            name="shippingAddress.address"
+            maxLength="35"
           />
         </FormRow>
+
+        <FormRow>
+          <Field
+            component={renderFormikField(InputField)}
+            label="Address line 2 / company"
+            name="shippingAddress.addressLine2"
+            maxLength="35"
+          />
+        </FormRow>
+
+        <FormRow modifiers={['half-half']}>
+          <Field
+            validate={required}
+            component={renderFormikField(InputField)}
+            label="City"
+            name="shippingAddress.city"
+          />
+          <Field
+            validate={required}
+            component={renderFormikField(InputField)}
+            label="Zip code"
+            name="shippingAddress.zipCode"
+          />
+        </FormRow>
+        <FormRow modifiers={['half-half']}>
+          <Field
+            validate={getStates(values.shippingAddress.countryCode) ? required : undefined}
+            component={renderFormikField(StateSelect)}
+            placeholder="State"
+            name="shippingAddress.stateCode"
+            type="select"
+            countryCode={values.shippingAddress.countryCode}
+          />
+          <Field
+            validate={required}
+            component={renderFormikField(CountrySelectField)}
+            placeholder="Country"
+            name="shippingAddress.countryCode"
+            changeLabel="Changing the country will reset all your material selections"
+            changedLabel="If you select this country your material selection will be reset"
+            changeButtonLabel="edit & reset material"
+          />
+        </FormRow>
+
+        <FormRow modifiers={['half-half']}>
+          <Field
+            validate={email}
+            component={renderFormikField(InputField)}
+            label="Email address"
+            name="emailAddress"
+            type="email"
+          />
+          <Field
+            validate={phoneNumber}
+            component={renderFormikField(InputField)}
+            label="Phone number"
+            name="phoneNumber"
+            type="tel"
+          />
+        </FormRow>
+
+        <Field
+          name="isCompany"
+          component={renderFormikField(LabeledCheckbox)}
+          label="I am ordering on behalf of a company"
+        />
+
+        {values.isCompany && renderCompanySection()}
+
+        <Field
+          name="useDifferentBillingAddress"
+          component={renderFormikField(LabeledCheckbox)}
+          label="Use different billing address"
+        />
+
+        {values.useDifferentBillingAddress && billingAddressSection}
+
+        <Field
+          name="saveAddress"
+          component={renderFormikField(LabeledCheckbox)}
+          label="Save address for your next purchase"
+        />
       </Form>
     </Modal>
   )
