@@ -8,7 +8,7 @@ import intercomIcon from '../../asset/icon/intercom.svg'
 import * as selector from '../lib/selector'
 import {formatDimensions} from '../lib/formatter'
 import {goToUpload, goToCart} from '../action/navigation'
-import {openIntercom, isActualIntercomImpl} from '../service/intercom'
+import {openIntercom, isIntercomBlocked} from '../service/intercom'
 
 import CartNavLink from '../component/cart-nav-link'
 import NavLink from '../component/nav-link'
@@ -34,7 +34,14 @@ const NavBarPartial = ({
             <Route path="/" exact>
               {({match}) =>
                 !match && (
-                  <NavLink label="Upload" onClick={() => onUploadClick()} icon={uploadIcon} />
+                  <NavLink
+                    label="Upload"
+                    onClick={event => {
+                      event.preventDefault()
+                      onUploadClick()
+                    }}
+                    icon={uploadIcon}
+                  />
                 )
               }
             </Route>
@@ -63,12 +70,12 @@ const NavBarPartial = ({
         <NavLink
           label="Need help?"
           icon={intercomIcon}
+          href="mailto:support@all3dp.com"
+          target="_blank"
           onClick={event => {
-            event.preventDefault()
-            if (isActualIntercomImpl()) {
+            if (!isIntercomBlocked()) {
+              event.preventDefault()
               openIntercom()
-            } else {
-              global.document.location.href = config.supportContactUrl
             }
           }}
         />

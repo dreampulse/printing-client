@@ -7,9 +7,16 @@ import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
-const NavLink = ({classNames, icon, label, onClick = noop, href = '#', disabled = false}) => {
+const NavLink = ({
+  classNames,
+  icon,
+  label,
+  onClick = noop,
+  href = '#',
+  disabled = false,
+  target = undefined
+}) => {
   const handleLinkClick = event => {
-    event.preventDefault()
     if (disabled) {
       return
     }
@@ -18,6 +25,7 @@ const NavLink = ({classNames, icon, label, onClick = noop, href = '#', disabled 
   return (
     <a
       href={href}
+      target={target}
       disabled={disabled}
       onClick={handleLinkClick}
       className={cn('NavLink', {}, classNames)}
@@ -32,6 +40,7 @@ NavLink.propTypes = {
   ...propTypes.component,
   label: PropTypes.string.isRequired,
   href: PropTypes.string,
+  target: PropTypes.string,
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
   icon: PropTypes.shape({
