@@ -10,8 +10,6 @@ export const setItem = (key: string, item: any) => {
 }
 
 export const getItem = <T>(key: string): T | null => {
-  if (!window.localStorage) return null
-
   try {
     const result = window.localStorage.getItem(key)
     return result && JSON.parse(result)
