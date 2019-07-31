@@ -56,7 +56,7 @@ import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
-import shareIcon from '../../asset/icon/share.svg'
+import placeholderIcon from '../../asset/icon/placeholder.svg'
 import useHasAdblocker from '../hook/use-has-adblocker'
 import Notification from '../component/notification'
 
@@ -481,7 +481,7 @@ const CartPage = ({
             featureFlags.share && (
               <Link
                 largeIcon
-                icon={shareIcon}
+                icon={placeholderIcon}
                 label="Share"
                 onClick={() => {
                   openShareCartModal(cart.cartId)
