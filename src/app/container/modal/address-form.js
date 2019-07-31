@@ -83,8 +83,8 @@ const AddressFormModal = ({
 
   const billingAddressSection = (
     <>
-      <div id="billing-address" />
-      <Headline size="s" classNames={['u-margin-top-xl']} label="Billing Address" />
+      <a id="billing-address" />
+      <Headline size="s" classNames={['u-no-margin-bottom']} label="Billing Address" />
       <FormRow modifiers={['half-half']}>
         <Field
           validate={required}
@@ -187,7 +187,7 @@ const AddressFormModal = ({
       scrollContainerId={addressFormModalScrollContainerId}
     >
       <Form>
-        <div id="shipping-address" />
+        <a id="shipping-address" />
         <FormRow>
           <Headline size="s" label="Delivery address" classNames={['u-no-margin-bottom']} />
         </FormRow>
