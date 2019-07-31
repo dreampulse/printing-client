@@ -135,6 +135,7 @@ const init = (
   }
 
   if (featureFlags.clear) {
+    localStorageSession.disable()
     localStorageSession.clear()
   }
 

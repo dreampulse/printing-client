@@ -28,4 +28,8 @@
     color: inherit;
     text-decoration: underline;
   }
+
+  &--largeIcon > .Icon {
+    font-size: $font-size-l;
+  }
 }
