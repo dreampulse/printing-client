@@ -84,7 +84,10 @@ const AddressFormModal = ({
   const billingAddressSection = (
     <>
       <a id="billing-address" />
-      <Headline size="s" classNames={['u-no-margin-bottom']} label="Billing Address" />
+
+      <FormRow>
+        <Headline size="s" classNames={['u-no-margin-bottom']} label="Billing Address" />
+      </FormRow>
       <FormRow modifiers={['half-half']}>
         <Field
           validate={required}
@@ -278,33 +281,27 @@ const AddressFormModal = ({
           />
         </FormRow>
 
-        <FormRow>
-          <Field
-            name="isCompany"
-            component={renderFormikField(LabeledCheckbox)}
-            label="I am ordering on behalf of a company"
-          />
-        </FormRow>
+        <Field
+          name="isCompany"
+          component={renderFormikField(LabeledCheckbox)}
+          label="I am ordering on behalf of a company"
+        />
 
         {values.isCompany && renderCompanySection()}
 
-        <FormRow>
-          <Field
-            name="useDifferentBillingAddress"
-            component={renderFormikField(LabeledCheckbox)}
-            label="Use different billing address"
-          />
-        </FormRow>
+        <Field
+          name="useDifferentBillingAddress"
+          component={renderFormikField(LabeledCheckbox)}
+          label="Use different billing address"
+        />
 
         {values.useDifferentBillingAddress && billingAddressSection}
 
-        <FormRow>
-          <Field
-            name="saveAddress"
-            component={renderFormikField(LabeledCheckbox)}
-            label="Save address for your next purchase"
-          />
-        </FormRow>
+        <Field
+          name="saveAddress"
+          component={renderFormikField(LabeledCheckbox)}
+          label="Save address for your next purchase"
+        />
       </Form>
     </Modal>
   )
