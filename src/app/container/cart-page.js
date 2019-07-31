@@ -16,7 +16,7 @@ import {PaymentAbortedError} from '../lib/error'
 import {scrollToTop} from './util/scroll-to-top'
 import {guard} from './util/guard'
 import {getStateName, getCountryName} from '../service/country'
-import {openIntercom} from '../service/intercom'
+import {openIntercom, isIntercomBlocked} from '../service/intercom'
 import * as printingEngine from '../lib/printing-engine'
 import * as stripe from '../service/stripe'
 import * as logging from '../service/logging'
@@ -407,11 +407,14 @@ const CartPage = ({
               classNames={['u-no-margin-bottom']}
             />
             <Link
-              label="Contact us."
-              href="#"
+              label="Contact us"
+              href="mailto:support@all3dp.com"
+              target="_blank"
               onClick={event => {
-                event.preventDefault()
-                openIntercom()
+                if (!isIntercomBlocked()) {
+                  event.preventDefault()
+                  openIntercom()
+                }
               }}
             />
           </Paragraph>
@@ -435,14 +438,15 @@ const CartPage = ({
           />
           <Link
             label="Get in touch"
-            href="#"
+            href="mailto:support@all3dp.com"
+            target="_blank"
             onClick={event => {
-              event.preventDefault()
-              openIntercom()
+              if (!isIntercomBlocked()) {
+                event.preventDefault()
+                openIntercom()
+              }
             }}
           />
-          {' or '}
-          <Link label="search our knowledge base." href="https://help.all3dp.com" target="_blank" />
         </Paragraph>
         <Paragraph>
           <Link
