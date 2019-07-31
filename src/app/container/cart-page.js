@@ -56,6 +56,7 @@ import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
+import placeholderIcon from '../../asset/icon/placeholder.svg'
 import useHasAdblocker from '../hook/use-has-adblocker'
 import Notification from '../component/notification'
 
@@ -84,7 +85,8 @@ const CartPage = ({
   onSuccess,
   openErrorModal,
   orderPaid,
-  executePaypalPayment
+  executePaypalPayment,
+  openShareCartModal
 }) => {
   const hasAdblocker = useHasAdblocker()
 
@@ -487,7 +489,21 @@ const CartPage = ({
         </Section>
       </Container>
       <Container>
-        <PageHeader label="Review Order" />
+        <PageHeader
+          label="Review Order"
+          action={
+            featureFlags.share && (
+              <Link
+                largeIcon
+                icon={placeholderIcon}
+                label="Share"
+                onClick={() => {
+                  openShareCartModal(cart.cartId)
+                }}
+              />
+            )
+          }
+        />
         {hasModels && (
           <SidebarLayout sidebar={paymentSection()}>
             {user && addressSection()}
@@ -546,6 +562,7 @@ const mapDispatchToProps = dispatch => ({
   orderPaid: bindActionCreators(orderAction.paid, dispatch),
   executePaypalPayment: bindActionCreators(orderAction.executePaypalPayment, dispatch),
   restoreUser: bindActionCreators(coreAction.restoreUser, dispatch),
+  openShareCartModal: bindActionCreators(modalAction.openShareCartModal, dispatch),
   duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)
     return dispatch(action).then(() => {

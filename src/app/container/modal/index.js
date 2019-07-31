@@ -17,6 +17,7 @@ import PickUnitModal from './pick-unit'
 import ConfirmLocationChangeModal from './confirm-location-change'
 import ConfirmCurrencyChangeModal from './confirm-currency-change'
 import ShareConfigurationModal from './share-configuration'
+import ShareCartModal from './share-cart'
 import ErrorModal from './error'
 
 const modals = {
@@ -29,6 +30,7 @@ const modals = {
   [ModalContentType.CONFIRM_LOCATION_CHANGE]: ConfirmLocationChangeModal,
   [ModalContentType.CONFIRM_CURRENCY_CHANGE]: ConfirmCurrencyChangeModal,
   [ModalContentType.SHARE_CONFIGURATION]: ShareConfigurationModal,
+  [ModalContentType.SHARE_CART]: ShareCartModal,
   [ModalContentType.ERROR]: ErrorModal,
   [ModalContentType.ADDRESS_FORM]: AddressFormModal
 }

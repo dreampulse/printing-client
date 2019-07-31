@@ -130,7 +130,7 @@ const init = (
       console.log('Using initial core state from local storage.')
 
       localStorageSession.clear()
-      return coreState
+      return {...coreState, featureFlags}
     }
   }
 

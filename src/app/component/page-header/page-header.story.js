@@ -6,7 +6,10 @@ import Link from '../link'
 
 import backIcon from '../../../asset/icon/back.svg'
 
-storiesOf('Page Header', module).add('default', () => {
-  const link = <Link icon={backIcon} label="Back" />
-  return <PageHeader label="Page Header" backLink={link} />
-})
+storiesOf('Page Header', module).add('default', () => (
+  <PageHeader
+    label="Page Header"
+    backLink={<Link icon={backIcon} label="Back" />}
+    action={<Link largeIcon label="Action" />}
+  />
+))
