@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, {createElement} from 'react'
+import noop from 'lodash/noop'
 
 import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
@@ -21,19 +22,26 @@ const Button = ({
   block = false,
   selected = false,
   iconOnly = false,
-  onClick = () => {}
+  onClick = noop,
+  href = undefined,
+  target = undefined
 }) => {
   const finalIcon = selected ? selectedIcon : icon
-  return (
-    <button
-      className={cn('Button', {minor, tiny, compact, text, block, selected, iconOnly}, classNames)}
-      type={type}
-      disabled={disabled}
-      onClick={onClick}
-    >
+
+  return createElement(
+    href ? 'a' : 'button',
+    {
+      className: cn('Button', {minor, tiny, compact, text, block, selected, iconOnly}, classNames),
+      type: href ? undefined : type,
+      disabled: href ? undefined : disabled,
+      onClick,
+      href,
+      target
+    },
+    <>
       {finalIcon && <Icon source={finalIcon} />}
       {label && <span className="Button__label">{label}</span>}
-    </button>
+    </>
   )
 }
 
@@ -52,7 +60,9 @@ Button.propTypes = {
   text: PropTypes.bool,
   block: PropTypes.bool,
   selected: PropTypes.bool,
-  iconOnly: PropTypes.bool
+  iconOnly: PropTypes.bool,
+  href: PropTypes.string,
+  target: PropTypes.string
 }
 
 export default Button

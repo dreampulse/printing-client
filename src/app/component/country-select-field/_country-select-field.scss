@@ -1,0 +1,21 @@
+.CountrySelectField {
+  &__notification {
+    color: $color-warning;
+    padding: $space-base;
+    padding-bottom: 0;
+    font-size: $font-size-s;
+  }
+
+  &__readMode {
+    height: $field-height;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: $space-base;
+    white-space: nowrap;
+
+    & > * + * {
+      margin-left: $space-base;
+    }
+  }
+}

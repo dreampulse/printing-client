@@ -56,6 +56,8 @@ import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
+import useHasAdblocker from '../hook/use-has-adblocker'
+import Notification from '../component/notification'
 
 const CartPage = ({
   modelsWithConfig,
@@ -84,8 +86,19 @@ const CartPage = ({
   orderPaid,
   executePaypalPayment
 }) => {
+  const hasAdblocker = useHasAdblocker()
+
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
+
+  const notificationSection = () => (
+    <Section>
+      <Notification
+        message="It seems that you are using an ad blocker. Please temporarily disable this to pay using PayPal, or select a different payment method."
+        warning
+      />
+    </Section>
+  )
 
   const buttonBar = (modelConfig, model) => (
     <ButtonBar l>
@@ -118,7 +131,7 @@ const CartPage = ({
               size="l"
               label={
                 <>
-                  Shipping Address{' '}
+                  Delivery Address{' '}
                   <Link
                     label="edit"
                     onClick={() => openAddressFormModal()}
@@ -128,12 +141,6 @@ const CartPage = ({
               }
             />
             <Paragraph>
-              {user.companyName ? (
-                <span>
-                  {user.companyName}
-                  <br />
-                </span>
-              ) : null}
               {user.shippingAddress.firstName} {user.shippingAddress.lastName}
               <br />
               {user.shippingAddress.address}
@@ -149,6 +156,11 @@ const CartPage = ({
                 </span>
               )}
               {getCountryName(user.shippingAddress.countryCode)}
+              <br />
+              <br />
+              Contact Email: {user.emailAddress}
+              <br />
+              Contact Phone: {user.phoneNumber}
             </Paragraph>
           </Column>
           <Column md={6}>
@@ -181,16 +193,30 @@ const CartPage = ({
                       <br />
                     </span>
                   ) : null}
-                  {user.billingAddress.firstName || user.shippingAddress.firstName}{' '}
-                  {user.billingAddress.lastName || user.shippingAddress.lastName}
-                  <br />
-                  {user.billingAddress.address || user.shippingAddress.address}
-                  <br />
-                  {user.billingAddress.addressLine2 || user.shippingAddress.addressLine2}
-                  <br />
-                  {user.billingAddress.zipCode || user.shippingAddress.zipCode}{' '}
-                  {user.billingAddress.city || user.shippingAddress.city}
-                  <br />
+                  {user.useDifferentBillingAddress ? (
+                    <>
+                      {user.billingAddress.firstName} {user.billingAddress.lastName}
+                      <br />
+                      {user.billingAddress.address}
+                      <br />
+                      {user.billingAddress.addressLine2}
+                      <br />
+                      {user.billingAddress.zipCode} {user.billingAddress.city}
+                      <br />
+                    </>
+                  ) : (
+                    <>
+                      {user.shippingAddress.firstName} {user.shippingAddress.lastName}
+                      <br />
+                      {user.shippingAddress.address}
+                      <br />
+                      {user.shippingAddress.addressLine2}
+                      <br />
+                      {user.shippingAddress.zipCode} {user.shippingAddress.city}
+                      <br />
+                    </>
+                  )}
+
                   {billingStateName && (
                     <span>
                       {billingStateName}
@@ -309,10 +335,8 @@ const CartPage = ({
                 onClick={async () => {
                   try {
                     setPaymentInProgress(true)
-                    const {orderNumber, paymentId} = await payWithStripe()
-                    await orderPaid({orderNumber, paymentId})
-                    setPaymentInProgress(false)
-                    onSuccess()
+                    await payWithStripe()
+                    // leaving page after redirect to Stripe
                   } catch (error) {
                     logging.captureException(error)
 
@@ -436,6 +460,7 @@ const CartPage = ({
   return (
     <PageLayout>
       <Container full>
+        {hasAdblocker && notificationSection()}
         <Section>
           <Link
             label={
@@ -580,28 +605,20 @@ export default compose(
       }
     },
     payWithStripe: props => async () => {
-      const userId = props.user.userId
-      const cartId = props.cart.cartId
-      const email = props.user.emailAddress
-      const price = props.liableForVat ? props.cart.totalPrice : props.cart.totalNetPrice
-      const currency = props.cart.currency
-      const utmParams = props.utmParams
+      const {utmParams, user, cart} = props
+      const {userId} = user
+      const {cartId, currency} = cart
 
-      const {orderId, orderNumber} = await printingEngine.createOrder({
+      const {orderId} = await printingEngine.createOrder({
         userId,
         cartId,
         currency,
         utmParams
       })
-      const stripeTokenObject = await stripe.checkout({price, currency, email})
-      const token = stripeTokenObject.id
 
-      await printingEngine.createStripePayment({orderId, token})
+      const {sessionId} = await printingEngine.createStripePayment({orderId})
 
-      return {
-        orderId,
-        orderNumber
-      }
+      await stripe.redirectToCheckout({sessionId})
     },
     payWithInvoice: props => async () => {
       const userId = props.user.userId

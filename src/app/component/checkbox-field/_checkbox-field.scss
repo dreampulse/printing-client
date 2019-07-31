@@ -50,4 +50,16 @@
       color: $color-bg;
     }
   }
+
+  &--warning {
+    border-color: $color-warning;
+  }
+
+  &--warning.CheckboxField--checked {
+    background: $color-warning;
+
+    .CheckboxField__checkedIcon {
+      color: $color-bg;
+    }
+  }
 }

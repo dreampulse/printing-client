@@ -333,7 +333,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `SOME-BASE-URL/v3/payment/stripe`,
+        `SOME-BASE-URL/v3/payment/stripe/checkout`,
         {method: 'POST', body: 'some-stripe-payment-request'}
       ]))
 

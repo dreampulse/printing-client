@@ -2,29 +2,31 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import uniqueId from 'lodash/uniqueId'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import cn from '../../lib/class-names'
+import propTypes from '../../prop-types'
 import CheckboxField from '../checkbox-field'
 
 const LabeledCheckbox = ({
   classNames,
-  modifiers = [],
   checked,
   label,
+  error = false,
+  warning = false,
   onChange = () => {},
   name = ''
 }) => {
   const id = uniqueId('uid-')
   return (
-    <div className={buildClassName('labeled-checkbox', modifiers, classNames)}>
+    <div className={cn('LabeledCheckbox', {}, classNames)}>
       <CheckboxField
         name={name}
-        error={modifiers.indexOf('error') > -1}
+        error={error}
         id={id}
         checked={checked}
+        warning={warning}
         onChange={e => onChange(!checked, name, e)}
       />
-      <label htmlFor={id} className="labeled-checkbox__label">
+      <label htmlFor={id} className="LabeledCheckbox__label">
         {label}
       </label>
     </div>
@@ -36,7 +38,9 @@ LabeledCheckbox.propTypes = {
   checked: PropTypes.bool,
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func,
-  name: PropTypes.string
+  name: PropTypes.string,
+  error: PropTypes.bool,
+  warning: PropTypes.bool
 }
 
 export default LabeledCheckbox

@@ -4,13 +4,13 @@ import {Provider} from 'react-redux'
 import {createBrowserHistory} from 'history'
 import {AppContainer} from 'react-hot-loader'
 import browserUpdate from 'browser-update'
-
 import './service/logging'
 
 import Store from './store'
 import Router from './router'
 import {handleIncomingMessages} from './service/intercom'
 import {trackPageImpression} from './service/google-analytics'
+import * as localStorageSession from './service/local-storage-session'
 
 import '../sass/main.scss'
 
@@ -54,3 +54,10 @@ if (process.env.NODE_ENV !== 'production') {
     trackPageImpression(pathname)
   })
 }
+
+global.addEventListener('unload', () => {
+  if (localStorageSession.isEnabled()) {
+    const {core: coreState} = store.getState()
+    localStorageSession.save(coreState)
+  }
+})

@@ -18,7 +18,12 @@ storiesOf('Input Field', module)
   ))
   .add('error', () => (
     <HandleValue initialValue="Some value">
-      <InputField modifiers={['error']} label="Label" />
+      <InputField error label="Label" />
+    </HandleValue>
+  ))
+  .add('warning', () => (
+    <HandleValue initialValue="Some value">
+      <InputField warning label="Label" />
     </HandleValue>
   ))
   .add('disabled', () => (

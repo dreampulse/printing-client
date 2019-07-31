@@ -9,6 +9,7 @@ import zip from 'lodash/zip'
 import compact from 'lodash/compact'
 
 import * as localStorage from '../service/local-storage'
+import * as localStorageSession from '../service/local-storage-session'
 import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
 import {
   resetModelConfigs,
@@ -122,6 +123,21 @@ const init = (
   state: CoreState,
   {payload: {featureFlags, urlParams}}: coreActions.InitAction
 ): CoreReducer => {
+  if (localStorageSession.hasValidSession() && !featureFlags.clear) {
+    const coreState = localStorageSession.get<CoreState>()
+    if (coreState) {
+      // tslint:disable-next-line:no-console
+      console.log('Using initial core state from local storage.')
+
+      localStorageSession.clear()
+      return coreState
+    }
+  }
+
+  if (featureFlags.clear) {
+    localStorageSession.clear()
+  }
+
   const userFromLocalStorage = localStorage.getItem<User>(config.localStorageAddressKey)
 
   return loop(
@@ -169,6 +185,8 @@ const fatalError = (
   if (error.name === 'PromiseCancelledError') {
     return state
   }
+
+  localStorageSession.disable()
 
   return loop(
     state,

@@ -18,6 +18,7 @@ import {formatDimensions} from '../lib/formatter'
 import * as printingEngine from '../lib/printing-engine'
 import * as selector from '../lib/selector'
 import {scrollToTop} from './util/scroll-to-top'
+import {openIntercom, isIntercomBlocked} from '../service/intercom'
 
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
@@ -86,7 +87,14 @@ const UploadPage = ({
             <Button
               minor
               label="Contact Us"
-              onClick={() => global.window.open('https://craftcloud.all3dp.com/contact', '_blank')}
+              onClick={event => {
+                if (!isIntercomBlocked()) {
+                  event.preventDefault()
+                  openIntercom()
+                }
+              }}
+              href="mailto:support@all3dp.com"
+              target="_blank"
             />
           </div>
         </Column>
