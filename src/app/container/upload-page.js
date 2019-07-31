@@ -85,7 +85,6 @@ const UploadPage = ({
           </RichText>
           <div className="u-align-center ">
             <Button
-              asLink
               minor
               label="Contact Us"
               onClick={event => {

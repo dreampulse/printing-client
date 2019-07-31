@@ -29,67 +29,6 @@ storiesOf('Button', module)
     <Button icon={placeholderIcon} disabled iconOnly onClick={action('onClick')} />
   ))
 
-  .add('default & asLink', () => (
-    <Button asLink href="https://google.com" label="Default Button" onClick={action('onClick')} />
-  ))
-  .add('with icon & asLink', () => (
-    <Button
-      asLink
-      href="https://google.com"
-      label="Button with Icon"
-      icon={placeholderIcon}
-      onClick={action('onClick')}
-    />
-  ))
-  .add('text & asLink', () => (
-    <Button asLink href="https://google.com" label="Text Button" text onClick={action('onClick')} />
-  ))
-  .add('block & asLink', () => (
-    <Button
-      asLink
-      href="https://google.com"
-      label="Block Button"
-      block
-      onClick={action('onClick')}
-    />
-  ))
-  .add('compact & asLink', () => (
-    <Button
-      asLink
-      href="https://google.com"
-      label="Compact Button"
-      compact
-      onClick={action('onClick')}
-    />
-  ))
-  .add('tiny & asLink', () => (
-    <Button asLink href="https://google.com" label="Tiny Button" tiny onClick={action('onClick')} />
-  ))
-  .add('minor & asLink', () => (
-    <Button
-      asLink
-      href="https://google.com"
-      label="Minor Button"
-      minor
-      onClick={action('onClick')}
-    />
-  ))
-  .add('minor & tiny & asLink', () => (
-    <Button
-      asLink
-      href="https://google.com"
-      label="Tiny Minor Button"
-      minor
-      tiny
-      onClick={action('onClick')}
-    />
-  ))
-  .add('iconOnly & asLink', () => (
-    <Button
-      asLink
-      href="https://google.com"
-      icon={placeholderIcon}
-      iconOnly
-      onClick={action('onClick')}
-    />
+  .add('href', () => (
+    <Button href="https://google.com" label="Default Button" onClick={action('onClick')} />
   ))
