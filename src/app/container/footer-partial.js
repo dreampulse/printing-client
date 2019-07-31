@@ -12,7 +12,7 @@ const FooterPartial = () => (
       href="mailto:support@all3dp.com"
       target="_blank"
       onClick={event => {
-        if (!isIntercomBlocked) {
+        if (!isIntercomBlocked()) {
           event.preventDefault()
           openIntercom()
         }

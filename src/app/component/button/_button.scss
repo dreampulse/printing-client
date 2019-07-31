@@ -15,6 +15,7 @@
   transition: background-color $transition-duration-fast ease-in-out,
     color $transition-duration-fast ease-in-out;
   vertical-align: middle;
+  text-decoration: none;
 
   & > .Icon {
     position: relative;

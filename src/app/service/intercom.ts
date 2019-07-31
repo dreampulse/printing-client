@@ -6,9 +6,9 @@ const wellKnownIntercomMethodNames = ['boot', 'shutdown']
 // We need to check if the given Intercom function is the actual Intercom function
 // because ad-blockers replace the Intercom function with a stub function. Hence we check
 // for well-known method names. This is the best we can do.
-const isIntercomBlocked = () => {
+export const isIntercomBlocked = () => {
   const intercomImpl = window.Intercom.toString()
-  return wellKnownIntercomMethodNames.every(methodName => intercomImpl.includes(methodName))
+  return !wellKnownIntercomMethodNames.every(methodName => intercomImpl.includes(methodName))
 }
 
 const intercom = (cmd: string): void => {
