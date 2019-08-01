@@ -31,7 +31,7 @@ export default class UploadArea extends Component {
     super(props)
 
     this.state = {
-      inputId: `upload-area-input-${uniqueId()}`,
+      inputId: uniqueId('upload-area-input-'),
       dragOver: 0
     }
   }

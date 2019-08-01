@@ -1,9 +1,12 @@
-import uniqueId from 'lodash/uniqueId'
+import uuidv1 from 'uuid/v1'
 
 import {Action, ConfigId, ConfigurationId, BackendModel} from '../type'
 import {BackendConfiguration} from '../lib/printing-engine'
 
-export type LoadConfigurationAction = Action<'CONFIGURATION.LOAD_CONFIGURATION', {id: ConfigurationId}>
+export type LoadConfigurationAction = Action<
+  'CONFIGURATION.LOAD_CONFIGURATION',
+  {id: ConfigurationId}
+>
 export type ConfigurationReceivedAction = Action<
   'CONFIGURATION.CONFIGURATION_RECEIVED',
   {
@@ -24,7 +27,7 @@ export const configurationReceived = (
   payload: {
     items: payload.items.map(item => ({
       ...item,
-      id: uniqueId('config-id-')
+      id: uuidv1()
     }))
   }
 })

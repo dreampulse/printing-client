@@ -1,4 +1,4 @@
-import uniqueId from 'lodash/uniqueId'
+import uuidv1 from 'uuid/v1'
 import range from 'lodash/range'
 import {Action, BackendModel, ConfigId, FileId} from '../type'
 
@@ -52,8 +52,8 @@ export const uploadFiles = (
   payload: {
     files: Array.from(files).map(file => ({
       file,
-      fileId: uniqueId('file-id-'),
-      configId: uniqueId('config-id-')
+      fileId: uuidv1(),
+      configId: uuidv1()
     })),
     unit,
     refresh
@@ -70,7 +70,7 @@ export const uploadComplete = (fileId: FileId, models: BackendModel[]): UploadCo
   payload: {
     fileId,
     models,
-    additionalConfigIds: range(models.length - 1).map(() => uniqueId('config-id-'))
+    additionalConfigIds: range(models.length - 1).map(() => uuidv1())
   }
 })
 
@@ -115,6 +115,6 @@ export const duplicateModelConfig = (id: ConfigId): DuplicateModelConfigAction =
   type: 'MODEL.DUPLICATE_MODEL_CONFIG',
   payload: {
     id,
-    nextId: uniqueId('config-id-')
+    nextId: uuidv1()
   }
 })
