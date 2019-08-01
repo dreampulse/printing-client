@@ -1,4 +1,4 @@
-import uniqueId from 'lodash/uniqueId'
+import uuidv1 from 'uuid/v1'
 import {Action, TimeoutId, TimeoutCallId, TimeoutOnEndActionCreator} from '../type'
 
 export type StartAction = Action<
@@ -18,11 +18,11 @@ export type TimeoutAction = StartAction | CancelAction | HandleEndAction
 export const start = (
   onEndActionCreator: TimeoutOnEndActionCreator,
   delay: number,
-  timeoutId: string = uniqueId('timeout-id-')
+  timeoutId: string = uuidv1()
 ): StartAction => ({
   type: 'TIMEOUT.START',
   payload: {
-    timeoutCallId: uniqueId('timeout-call-id-'),
+    timeoutCallId: uuidv1(),
     timeoutId,
     onEndActionCreator,
     delay

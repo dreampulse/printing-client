@@ -1,4 +1,4 @@
-import uniqueId from 'lodash/uniqueId'
+import uuidv1 from 'uuid/v1'
 import {
   Action,
   PollingId,
@@ -13,24 +13,24 @@ import {
 import config from '../../../config'
 
 export type StartActionParams = {
-  pollingFunction: PollingFunction,
-  pollingArgs?: PollingArgs,
-  onSuccessActionCreator: PollingOnSuccessActionCreator,
-  onFailActionCreator: PollingOnFailActionCreator,
-  onPartialResultActionCreator?: PollingOnPartialResultActionCreator,
-  retryInterval?: number,
+  pollingFunction: PollingFunction
+  pollingArgs?: PollingArgs
+  onSuccessActionCreator: PollingOnSuccessActionCreator
+  onFailActionCreator: PollingOnFailActionCreator
+  onPartialResultActionCreator?: PollingOnPartialResultActionCreator
+  retryInterval?: number
   maxRetries?: number
 }
 export type StartActionPayload = {
-  pollingId: PollingId,
-  retryInterval: number,
+  pollingId: PollingId
+  retryInterval: number
   maxRetries: number
 } & StartActionParams
 
 export type StartAction = Action<'POLLING.START', StartActionPayload>
 export type HandleResultAction = Action<
   'POLLING.HANDLE_RESULT',
-  {pollingId: PollingId, pollingResult: PollingResult}
+  {pollingId: PollingId; pollingResult: PollingResult}
 >
 export type HandleRetryAction = Action<'POLLING.HANDLE_RETRY', {pollingId: PollingId}>
 export type CancelAction = Action<'POLLING.CANCEL', {pollingId: PollingId}>
@@ -39,7 +39,7 @@ export type PollingAction = StartAction | HandleResultAction | HandleRetryAction
 
 export const start = (params: StartActionParams): StartAction => {
   const payload: StartActionPayload = {
-    pollingId: uniqueId('polling-id-'),
+    pollingId: uuidv1(),
     pollingFunction: params.pollingFunction,
     pollingArgs: params.pollingArgs || [],
     onSuccessActionCreator: params.onSuccessActionCreator,
@@ -54,7 +54,10 @@ export const start = (params: StartActionParams): StartAction => {
   }
 }
 
-export const handleResult = (pollingId: PollingId, pollingResult: PollingResult): HandleResultAction => ({
+export const handleResult = (
+  pollingId: PollingId,
+  pollingResult: PollingResult
+): HandleResultAction => ({
   type: 'POLLING.HANDLE_RESULT',
   payload: {
     pollingId,

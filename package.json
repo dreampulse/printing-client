@@ -61,6 +61,7 @@
     "@types/node": "^10.12.7",
     "@types/react-router-redux": "^5.0.16",
     "@types/url-search-params": "^0.10.2",
+    "@types/uuid": "^3.4.5",
     "autoprefixer": "^9.3.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.0.1",
@@ -157,6 +158,7 @@
     "timeout-as-promise": "^1.0.0",
     "timezones.json": "^1.1.0",
     "url-search-params": "^0.10.0",
+    "uuid": "^3.3.2",
     "whatwg-fetch": "^2.0.1"
   },
   "repository": {
