@@ -42,7 +42,7 @@ export default class InputField extends Component {
       ...inputFieldProps
     } = this.props
 
-    const inputId = id || uniqueId('uid-')
+    const inputId = id || uniqueId('input-field-')
 
     return (
       <div className={cn('InputField', {error, warning, disabled, empty: !value}, classNames)}>

@@ -15,7 +15,7 @@ const LabeledCheckbox = ({
   onChange = () => {},
   name = ''
 }) => {
-  const id = uniqueId('uid-')
+  const id = uniqueId('checkbox-field-')
   return (
     <div className={cn('LabeledCheckbox', {}, classNames)}>
       <CheckboxField
