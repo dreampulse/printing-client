@@ -121,9 +121,9 @@ const createPriceRequestSingleton = singletonPromise()
 
 const init = (
   state: CoreState,
-  {payload: {featureFlags, urlParams}}: coreActions.InitAction
+  {payload: {featureFlags, urlParams, restoreSessionEnabled}}: coreActions.InitAction
 ): CoreReducer => {
-  if (localStorageSession.hasValidSession() && !featureFlags.clear) {
+  if (restoreSessionEnabled && localStorageSession.hasValidSession() && !featureFlags.clear) {
     const coreState = localStorageSession.get<CoreState>()
     if (coreState) {
       // tslint:disable-next-line:no-console
