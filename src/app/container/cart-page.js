@@ -56,7 +56,7 @@ import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
-import placeholderIcon from '../../asset/icon/placeholder.svg'
+import shareIcon from '../../asset/icon/share.svg'
 import useHasAdblocker from '../hook/use-has-adblocker'
 import Notification from '../component/notification'
 
@@ -86,7 +86,7 @@ const CartPage = ({
   openErrorModal,
   orderPaid,
   executePaypalPayment,
-  openShareCartModal
+  createOffer
 }) => {
   const hasAdblocker = useHasAdblocker()
 
@@ -499,10 +499,10 @@ const CartPage = ({
             featureFlags.share && (
               <Link
                 largeIcon
-                icon={placeholderIcon}
+                icon={shareIcon}
                 label="Share"
                 onClick={() => {
-                  openShareCartModal(cart.cartId)
+                  createOffer(cart.cartId)
                 }}
               />
             )
@@ -567,6 +567,7 @@ const mapDispatchToProps = dispatch => ({
   executePaypalPayment: bindActionCreators(orderAction.executePaypalPayment, dispatch),
   restoreUser: bindActionCreators(coreAction.restoreUser, dispatch),
   openShareCartModal: bindActionCreators(modalAction.openShareCartModal, dispatch),
+  fatalError: bindActionCreators(coreAction.fatalError, dispatch),
   duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)
     return dispatch(action).then(() => {
@@ -660,6 +661,14 @@ export default compose(
         orderId,
         orderNumber
       }
+    },
+    createOffer: ({fatalError, openShareCartModal}) => cartId => {
+      printingEngine
+        .createOffer({cartId})
+        .then(() => {
+          openShareCartModal(cartId)
+        })
+        .catch(fatalError)
     }
   }),
   lifecycle({
