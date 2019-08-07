@@ -661,6 +661,16 @@ export default compose(
         orderNumber
       }
     }
+    // shareCartModal: ({fatalError, openShareConfigurationModal}) => cartId => {
+    // TODO: fatalError?
+
+    // printingEngine
+    //   .createConfiguration({items})
+    //   .then(({configurationId}) => {
+    //     openShareConfigurationModal(configurationId)
+    //   })
+    //   .catch(fatalError)
+    // }
   }),
   lifecycle({
     componentWillMount() {

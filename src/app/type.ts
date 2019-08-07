@@ -19,6 +19,7 @@ export type ConfigurationId = string
 export type OrderId = string
 export type PaymentId = string
 export type UserId = string
+export type OfferId = string
 
 // Material structure json-schema
 // https://github.com/all3dp/material-structure/blob/master/src/schema.js
@@ -158,6 +159,7 @@ export type Shipping = {
   currency: string
 }
 
+// TODO: maybe rename
 export type Offer = {
   multiModelQuote: MultiModelQuote
   shipping: Shipping
