@@ -159,13 +159,6 @@ export type Shipping = {
   currency: string
 }
 
-// TODO: maybe rename
-export type Offer = {
-  multiModelQuote: MultiModelQuote
-  shipping: Shipping
-  totalGrossPrice: number
-}
-
 export type ModelConfigUploading = {
   type: 'UPLOADING'
   fileId: FileId

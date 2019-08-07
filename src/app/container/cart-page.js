@@ -56,7 +56,7 @@ import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
-import placeholderIcon from '../../asset/icon/placeholder.svg'
+import shareIcon from '../../asset/icon/share.svg'
 import useHasAdblocker from '../hook/use-has-adblocker'
 import Notification from '../component/notification'
 
@@ -86,7 +86,7 @@ const CartPage = ({
   openErrorModal,
   orderPaid,
   executePaypalPayment,
-  openShareCartModal
+  shareCartModal
 }) => {
   const hasAdblocker = useHasAdblocker()
 
@@ -496,16 +496,14 @@ const CartPage = ({
         <PageHeader
           label="Review Order"
           action={
-            featureFlags.share && (
-              <Link
-                largeIcon
-                icon={placeholderIcon}
-                label="Share"
-                onClick={() => {
-                  openShareCartModal(cart.cartId)
-                }}
-              />
-            )
+            <Link
+              largeIcon
+              icon={shareIcon}
+              label="Share"
+              onClick={() => {
+                shareCartModal(cart.cartId)
+              }}
+            />
           }
         />
         {hasModels && (
@@ -567,6 +565,7 @@ const mapDispatchToProps = dispatch => ({
   executePaypalPayment: bindActionCreators(orderAction.executePaypalPayment, dispatch),
   restoreUser: bindActionCreators(coreAction.restoreUser, dispatch),
   openShareCartModal: bindActionCreators(modalAction.openShareCartModal, dispatch),
+  fatalError: bindActionCreators(coreAction.fatalError, dispatch),
   duplicateModelConfig: id => {
     const action = modelAction.duplicateModelConfig(id)
     return dispatch(action).then(() => {
@@ -660,17 +659,15 @@ export default compose(
         orderId,
         orderNumber
       }
+    },
+    shareCartModal: ({fatalError, openShareCartModal}) => cartId => {
+      printingEngine
+        .createOffer({cartId})
+        .then(() => {
+          openShareCartModal(cartId)
+        })
+        .catch(fatalError)
     }
-    // shareCartModal: ({fatalError, openShareConfigurationModal}) => cartId => {
-    // TODO: fatalError?
-
-    // printingEngine
-    //   .createConfiguration({items})
-    //   .then(({configurationId}) => {
-    //     openShareConfigurationModal(configurationId)
-    //   })
-    //   .catch(fatalError)
-    // }
   }),
   lifecycle({
     componentWillMount() {

@@ -23,6 +23,7 @@ import {openIntercom, isIntercomBlocked} from '../service/intercom'
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 import * as modelViewerAction from '../action/model-viewer'
+import * as coreAction from '../action/core'
 import * as modalAction from '../action/modal'
 
 import ConfigurationHeaderPartial from './configuration-header-partial'
@@ -300,7 +301,8 @@ const mapDispatchToProps = {
   goToMaterial: navigationAction.goToMaterial,
   openModelViewer: modelViewerAction.open,
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
-  openShareConfigurationModal: modalAction.openShareConfigurationModal
+  openShareConfigurationModal: modalAction.openShareConfigurationModal,
+  fatalError: coreAction.fatalError
 }
 
 const enhance = compose(
