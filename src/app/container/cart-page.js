@@ -86,7 +86,7 @@ const CartPage = ({
   openErrorModal,
   orderPaid,
   executePaypalPayment,
-  shareCartModal
+  createOffer
 }) => {
   const hasAdblocker = useHasAdblocker()
 
@@ -502,7 +502,7 @@ const CartPage = ({
                 icon={shareIcon}
                 label="Share"
                 onClick={() => {
-                  shareCartModal(cart.cartId)
+                  createOffer(cart.cartId)
                 }}
               />
             )
@@ -662,7 +662,7 @@ export default compose(
         orderNumber
       }
     },
-    shareCartModal: ({fatalError, openShareCartModal}) => cartId => {
+    createOffer: ({fatalError, openShareCartModal}) => cartId => {
       printingEngine
         .createOffer({cartId})
         .then(() => {
