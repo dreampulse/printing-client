@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {Route, Switch, Redirect} from 'react-router'
 import {connect} from 'react-redux'
 import lifecycle from 'recompose/lifecycle'

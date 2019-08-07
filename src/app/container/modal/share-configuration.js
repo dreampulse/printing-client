@@ -15,7 +15,7 @@ const INPUT_ID = 'share-configuration-input'
 
 const ShareConfigurationModal = ({configurationUrl, closeModal}) => (
   <Modal
-    headline={<Headline label="Configuration created" size="l" />}
+    headline={<Headline label="Shareable link created" size="l" />}
     buttons={[
       <Button
         label="Copy to clipboard and Close"
@@ -29,7 +29,7 @@ const ShareConfigurationModal = ({configurationUrl, closeModal}) => (
     ]}
     onClose={() => closeModal()}
   >
-    <Paragraph>Configuration has been created with the following URL.</Paragraph>
+    <Paragraph>Use the link below to share your uploaded models.</Paragraph>
     <InputField
       id={INPUT_ID}
       label="URL to configuration"
