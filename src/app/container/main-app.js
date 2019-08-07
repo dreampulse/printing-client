@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import {Route, Switch, Redirect} from 'react-router'
 import {connect} from 'react-redux'
+import lifecycle from 'recompose/lifecycle'
 
 import * as coreActions from '../action/core'
 import {getFeatureFlags, getUrlParams} from '../lib/url'
@@ -17,12 +18,11 @@ import ConfigurationPage from './configuration-page'
 
 import Modal from './modal'
 
-const Empty = ({onMount}) => {
-  useEffect(() => {
-    onMount()
-  })
-  return null
-}
+const Empty = lifecycle({
+  componentDidMount() {
+    this.props.onMount()
+  }
+})(() => null)
 
 const MainApp = ({initDone, initTriggered, initAction}) => {
   const init = initParams => () => {
@@ -43,9 +43,9 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
         <Route
           path="/configuration/:id"
           exact
-          component={() => <Empty onMount={init({restoreSessionEnabled: false})} />}
+          render={() => <Empty onMount={init({restoreSessionEnabled: false})} />}
         />
-        <Route component={() => <Empty onMount={init({restoreSessionEnabled: true})} />} />
+        <Route render={() => <Empty onMount={init({restoreSessionEnabled: true})} />} />
       </Switch>
     )
   }
