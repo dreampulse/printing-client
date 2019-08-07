@@ -496,14 +496,16 @@ const CartPage = ({
         <PageHeader
           label="Review Order"
           action={
-            <Link
-              largeIcon
-              icon={shareIcon}
-              label="Share"
-              onClick={() => {
-                shareCartModal(cart.cartId)
-              }}
-            />
+            featureFlags.share && (
+              <Link
+                largeIcon
+                icon={shareIcon}
+                label="Share"
+                onClick={() => {
+                  shareCartModal(cart.cartId)
+                }}
+              />
+            )
           }
         />
         {hasModels && (
