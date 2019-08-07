@@ -83,7 +83,9 @@ export type CreateOfferRequest = {
   cartId: CartId
 }
 
-export type CreateOfferResponse = CreateOfferRequest
+export type CreateOfferResponse = {
+  offerId: OfferId
+}
 
 export type OfferResponse = CartResponse & {
   shippings: ShippingsResponse
