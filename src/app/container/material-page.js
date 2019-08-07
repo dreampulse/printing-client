@@ -26,7 +26,6 @@ import {
 
 import MaterialPartial from './material-partial'
 import OfferFooterPartial from './offer-footer-partial'
-import LocationInfoPartial from './location-info-partial'
 
 import ToolLayout from '../component/tool-layout'
 import Link from '../component/link'
