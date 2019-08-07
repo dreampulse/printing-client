@@ -6,6 +6,7 @@ const autoprefixer = require('autoprefixer')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const jsonImporter = require('node-sass-json-importer')
 
 const env = process.env.WEBPACK_ENV || 'development'
 const isProd = env === 'production'
@@ -69,7 +70,8 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: isDev
+              sourceMap: isDev,
+              importer: jsonImporter()
             }
           },
           {
