@@ -18,9 +18,9 @@ import ConfigurationPage from './configuration-page'
 
 import Modal from './modal'
 
-const Empty = lifecycle({
+const DidMount = lifecycle({
   componentDidMount() {
-    this.props.onMount()
+    this.props.onDidMount()
   }
 })(() => null)
 
@@ -43,9 +43,9 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
         <Route
           path="/configuration/:id"
           exact
-          render={() => <Empty onMount={init({restoreSessionEnabled: false})} />}
+          render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
         />
-        <Route render={() => <Empty onMount={init({restoreSessionEnabled: true})} />} />
+        <Route render={() => <DidMount onDidMount={init({restoreSessionEnabled: true})} />} />
       </Switch>
     )
   }

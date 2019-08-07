@@ -49,7 +49,6 @@ import Container from '../component/container'
 import UploadModelList from '../component/upload-model-list'
 import StickyFooter from '../component/sticky-footer'
 import Link from '../component/link'
-import Paragraph from '../component/paragraph'
 
 const getUnconfiguredModelIds = modelConfigs =>
   modelConfigs
