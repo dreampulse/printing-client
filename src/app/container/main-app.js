@@ -1,8 +1,6 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Route, Switch, Redirect} from 'react-router'
 import {connect} from 'react-redux'
-import compose from 'recompose/compose'
-import lifecycle from 'recompose/lifecycle'
 
 import * as coreActions from '../action/core'
 import {getFeatureFlags, getUrlParams} from '../lib/url'
@@ -19,9 +17,37 @@ import ConfigurationPage from './configuration-page'
 
 import Modal from './modal'
 
-const MainApp = ({initDone}) => {
+const Empty = ({onMount}) => {
+  useEffect(() => {
+    onMount()
+  })
+  return null
+}
+
+const MainApp = ({initDone, initTriggered, initAction}) => {
+  const init = initParams => () => {
+    if (!initTriggered) {
+      initAction({
+        featureFlags: getFeatureFlags(global.location),
+        urlParams: getUrlParams(global.location),
+        ...initParams
+      }).then(() => {
+        removeBootsplash()
+      })
+    }
+  }
+
   if (!initDone) {
-    return null
+    return (
+      <Switch>
+        <Route
+          path="/configuration/:id"
+          exact
+          component={() => <Empty onMount={init({restoreSessionEnabled: false})} />}
+        />
+        <Route component={() => <Empty onMount={init({restoreSessionEnabled: true})} />} />
+      </Switch>
+    )
   }
 
   return (
@@ -46,28 +72,10 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  init: coreActions.init
+  initAction: coreActions.init
 }
 
-const enhance = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  lifecycle({
-    componentDidMount() {
-      const {init, initTriggered} = this.props
-
-      if (!initTriggered) {
-        init({
-          featureFlags: getFeatureFlags(global.location),
-          urlParams: getUrlParams(global.location)
-        }).then(() => {
-          removeBootsplash()
-        })
-      }
-    }
-  })
-)
-
-export default enhance(MainApp)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainApp)
