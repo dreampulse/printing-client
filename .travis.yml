@@ -12,6 +12,10 @@ script:
   - npm run build
 install:
   - npm ci
+addons:
+  apt:
+    packages:
+      - libgconf-2-4
 deploy:
   # Deploy to production
   - provider: s3
