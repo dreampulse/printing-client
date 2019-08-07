@@ -4,10 +4,11 @@ import {connect} from 'react-redux'
 import * as cartAction from '../action/cart'
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
+import * as modalActions from '../action/modal'
 
 import {getBestMultiModelOffers} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
-import {formatPrice} from '../lib/formatter'
+import {formatPrice, formatLocation} from '../lib/formatter'
 import {
   selectModelConfigsByIds,
   selectQuotes,
@@ -17,6 +18,7 @@ import {
 
 import DescriptionList from '../component/description-list'
 import OfferFooter from '../component/offer-footer'
+import Link from '../component/link'
 
 const OfferPartial = ({
   // Own props
@@ -27,7 +29,9 @@ const OfferPartial = ({
   selectedModelConfigs,
   shippings,
   usedShippingIds,
-  currency
+  currency,
+  location,
+  openPickLocationModal
 }) => {
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
@@ -44,18 +48,27 @@ const OfferPartial = ({
 
   return (
     <OfferFooter>
-      <DescriptionList>
+      <DescriptionList block>
         <dt>
-          <strong>Best price (incl. shipping):</strong>
+          <strong>Best Price</strong>
         </dt>
         <dd>
-          <strong className="u-font-size-xl">
+          <strong className="u-font-size-l">
             {offers.length > 0
               ? formatPrice(offers[0].totalGrossPrice, offers[0].multiModelQuote.currency)
               : formatPrice(null, currency)}
           </strong>
         </dd>
       </DescriptionList>
+      Includes shipping costs to{' '}
+      <Link
+        onClick={event => {
+          event.preventDefault()
+          openPickLocationModal({isCloseable: true})
+        }}
+        label={formatLocation(location)}
+      />
+      .
     </OfferFooter>
   )
 }
@@ -70,13 +83,15 @@ const mapStateToProps = (state, ownProps) => ({
   shippings: state.core.shippings,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
   usedShippingIds: selectUsedShippingIdsAndFilter(state, ownProps.configIds),
-  currency: state.core.currency
+  currency: state.core.currency,
+  location: state.core.location
 })
 
 const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
   addToCart: cartAction.addToCart,
-  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs
+  updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
+  openPickLocationModal: modalActions.openPickLocationModal
 }
 
 export default connect(

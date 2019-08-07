@@ -60,4 +60,8 @@
       grid-column: span 3;
     }
   }
+
+  &--block {
+    display: grid;
+  }
 }

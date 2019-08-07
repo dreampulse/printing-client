@@ -165,9 +165,6 @@ const MaterialPage = ({
           <OfferFooterPartial configIds={selectedModelConfigIds} selectedState={selectedState} />
         }
       >
-        <Section>
-          <LocationInfoPartial />
-        </Section>
         <MaterialPartial
           configIds={selectedModelConfigIds}
           scrollContainerId={SCROLL_CONTAINER_ID}
