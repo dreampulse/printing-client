@@ -13,6 +13,8 @@ import sculpteoImage from '../../../asset/image/printing-service/sculpteo.png'
 import shapewaysImage from '../../../asset/image/printing-service/shapeways.png'
 import simply3dImage from '../../../asset/image/printing-service/simply3d.png'
 import treatstockImage from '../../../asset/image/printing-service/treatstock.png'
+import wenextImage from '../../../asset/image/printing-service/wenext.png'
+import zelta3dImage from '../../../asset/image/printing-service/zelta3d.png'
 import zverseImage from '../../../asset/image/printing-service/zverse.png'
 
 const providerImages = {
@@ -25,6 +27,8 @@ const providerImages = {
   shapeways: shapewaysImage,
   simply3d: simply3dImage,
   treatstock: treatstockImage,
+  wenext: wenextImage,
+  zelta3d: zelta3dImage,
   zverse: zverseImage
 }
 

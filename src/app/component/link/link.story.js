@@ -13,3 +13,6 @@ storiesOf('Link', module)
   .add('with icon', () => (
     <Link label="Link with Icon" href="#" icon={backIcon} onClick={action('onClick')} />
   ))
+  .add('with large icon', () => (
+    <Link label="Link with Icon" href="#" largeIcon icon={backIcon} onClick={action('onClick')} />
+  ))

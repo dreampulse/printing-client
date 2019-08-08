@@ -11,11 +11,11 @@ import InputField from '../../component/input-field'
 
 import * as modalActions from '../../action/modal'
 
-const INPUT_ID = 'share-configuration-input'
+const INPUT_ID = 'share-cart-input'
 
-const ShareConfigurationModal = ({configurationUrl, closeModal}) => (
+const ShareCartModal = ({cartUrl, closeModal}) => (
   <Modal
-    headline={<Headline label="Shareable link created" size="l" />}
+    headline={<Headline label="Share cart" size="l" />}
     buttons={[
       <Button
         label="Copy to clipboard and Close"
@@ -29,11 +29,11 @@ const ShareConfigurationModal = ({configurationUrl, closeModal}) => (
     ]}
     onClose={() => closeModal()}
   >
-    <Paragraph>Use the link below to share your uploaded models.</Paragraph>
+    <Paragraph>Cart has been created with the following URL.</Paragraph>
     <InputField
       id={INPUT_ID}
-      label="URL to configuration"
-      value={configurationUrl}
+      label="URL to Cart"
+      value={cartUrl}
       autoFocus
       onFocus={event => event.target.select()}
     />
@@ -51,7 +51,7 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withProps(({configurationId}) => ({
-    configurationUrl: `${global.location.origin}/configuration/${configurationId}`
+  withProps(({cartId}) => ({
+    cartUrl: `${global.location.origin}/cart/${cartId}`
   }))
-)(ShareConfigurationModal)
+)(ShareCartModal)

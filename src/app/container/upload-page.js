@@ -13,6 +13,7 @@ import lifecycle from 'recompose/lifecycle'
 import deleteIcon from '../../asset/icon/delete.svg'
 import copyIcon from '../../asset/icon/copy.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
+import shareIcon from '../../asset/icon/share.svg'
 
 import {formatDimensions} from '../lib/formatter'
 import * as printingEngine from '../lib/printing-engine'
@@ -23,6 +24,7 @@ import {openIntercom, isIntercomBlocked} from '../service/intercom'
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 import * as modelViewerAction from '../action/model-viewer'
+import * as coreAction from '../action/core'
 import * as modalAction from '../action/modal'
 
 import ConfigurationHeaderPartial from './configuration-header-partial'
@@ -47,7 +49,6 @@ import Container from '../component/container'
 import UploadModelList from '../component/upload-model-list'
 import StickyFooter from '../component/sticky-footer'
 import Link from '../component/link'
-import Paragraph from '../component/paragraph'
 
 const getUnconfiguredModelIds = modelConfigs =>
   modelConfigs
@@ -64,7 +65,6 @@ const UploadPage = ({
   openModelViewer,
   cart,
   location,
-  featureFlags,
   selectedModelConfigIds,
   toggleId,
   toggleAll,
@@ -115,7 +115,32 @@ const UploadPage = ({
   )
 
   const renderModelList = () => (
-    <UploadModelList>
+    <UploadModelList
+      header={
+        <>
+          <Link
+            onClick={event => {
+              event.preventDefault()
+              toggleAll()
+            }}
+            label={
+              modelsWithConfig.length === selectedModelConfigIds.length
+                ? 'Deselect all files'
+                : 'Select all files'
+            }
+          />
+
+          <Link
+            largeIcon
+            icon={shareIcon}
+            label="Share"
+            onClick={() => {
+              createConfiguration(selectedModelConfigIds)
+            }}
+          />
+        </>
+      }
+    >
       <UploadArea
         s
         label="Drag additional 3D files here or"
@@ -194,14 +219,6 @@ const UploadPage = ({
       footer={
         hasModels ? (
           <StickyFooter>
-            {featureFlags.share && (
-              <Button
-                text
-                disabled={selectedModelConfigIds.length === 0}
-                label="Share configuration"
-                onClick={() => createConfiguration(selectedModelConfigIds)}
-              />
-            )}
             <Button
               disabled={!selectedModelConfigIds.length > 0}
               label="Configure Selection"
@@ -252,19 +269,6 @@ const UploadPage = ({
                 unconfiguredConfigIds.length
               } files)`}
             />
-            <Paragraph>
-              <Link
-                onClick={event => {
-                  event.preventDefault()
-                  toggleAll()
-                }}
-                label={
-                  modelsWithConfig.length === selectedModelConfigIds.length
-                    ? 'Deselect all files'
-                    : 'Select all files'
-                }
-              />
-            </Paragraph>
             {renderModelList()}
           </Section>
         </Container>
@@ -285,7 +289,6 @@ const mapStateToProps = state => ({
     selector.selectModelsOfModelConfigs(state)
   ]).filter(([modelConfig]) => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null),
   cart: state.core.cart,
-  featureFlags: state.core.featureFlags,
   useSameMaterial: state.core.useSameMaterial,
   uploadedModelConfigs: selector.selectUploadedModelConfigs(state),
   isModelOpen: state.modal.isOpen,
@@ -300,7 +303,8 @@ const mapDispatchToProps = {
   goToMaterial: navigationAction.goToMaterial,
   openModelViewer: modelViewerAction.open,
   updateSelectedModelConfigs: modelAction.updateSelectedModelConfigs,
-  openShareConfigurationModal: modalAction.openShareConfigurationModal
+  openShareConfigurationModal: modalAction.openShareConfigurationModal,
+  fatalError: coreAction.fatalError
 }
 
 const enhance = compose(

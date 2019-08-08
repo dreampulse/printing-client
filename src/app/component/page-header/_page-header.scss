@@ -2,7 +2,15 @@
   margin-bottom: $space-xxl;
 
   &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
     margin-bottom: $space-base;
     border-bottom: 1px solid $color-border;
+  }
+
+  &__action {
+    margin-bottom: $space-base;
   }
 }

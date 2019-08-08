@@ -14,6 +14,7 @@ import {
   CartId,
   ConfigurationId,
   OrderId,
+  OfferId,
   PaymentId,
   Quote,
   BackendModel,
@@ -77,6 +78,20 @@ export type CartRequest = {
 }
 
 export type CartResponse = Cart
+
+export type CreateOfferRequest = {
+  cartId: CartId
+}
+
+export type CreateOfferResponse = {
+  offerId: OfferId
+}
+
+export type OfferResponse = CartResponse & {
+  shippings: ShippingsResponse
+  quotes: Quote[]
+  models: ModelResponse[]
+}
 
 export type ConfigurationRequest = {
   items: Array<{
@@ -235,6 +250,21 @@ export const createCart = async (cart: CartRequest): Promise<CartResponse> => {
   return response.json
 }
 
+export const createOffer = async (offer: CreateOfferRequest): Promise<CreateOfferResponse> => {
+  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/offer`, {
+    method: 'POST',
+    body: offer
+  })
+  return response.json
+}
+
+export const getOffer = async (offerId: OfferId, currency: string): Promise<OfferResponse> => {
+  const response = await httpJson.fetch(
+    `${config.printingEngineBaseUrl}/v3/offer/${offerId}?currency=${currency}`
+  )
+  return response.json
+}
+
 export const createConfiguration = async (
   configuration: ConfigurationRequest
 ): Promise<ConfigurationResponse> => {
@@ -265,10 +295,13 @@ export const createOrder = async (order: OrderRequest): Promise<OrderResponse> =
 export const createStripePayment = async (
   payment: StripePaymentRequest
 ): Promise<StripePaymentResponse> => {
-  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/payment/stripe/checkout`, {
-    method: 'POST',
-    body: payment
-  })
+  const response = await httpJson.fetch(
+    `${config.printingEngineBaseUrl}/v3/payment/stripe/checkout`,
+    {
+      method: 'POST',
+      body: payment
+    }
+  )
   return response.json
 }
 

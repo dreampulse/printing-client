@@ -5,6 +5,7 @@ import {UserResponse} from '../lib/printing-engine'
 export type InitPayload = {
   featureFlags: Features
   urlParams: UrlParams
+  restoreSessionEnabled: boolean
 }
 
 export type InitAction = Action<'CORE.INIT', InitPayload>
@@ -12,9 +13,15 @@ export type UpdateMaterialGroupsAction = Action<
   'CORE.UPDATE_MATERIAL_GROUPS',
   {materialGroups: MaterialGroup[]}
 >
-export type UpdateLocationAction = Action<'CORE.UPDATE_LOCATION', {location: Location; force: boolean}>
+export type UpdateLocationAction = Action<
+  'CORE.UPDATE_LOCATION',
+  {location: Location; force: boolean}
+>
 export type UpdateUnitAction = Action<'CORE.UPDATE_UNIT', {unit: string}>
-export type UpdateCurrencyAction = Action<'CORE.UPDATE_CURRENCY', {currency: string; force: boolean}>
+export type UpdateCurrencyAction = Action<
+  'CORE.UPDATE_CURRENCY',
+  {currency: string; force: boolean}
+>
 export type FatalErrorAction = Action<'CORE.FATAL_ERROR', Error>
 export type UpdateShippingsAction = Action<'CORE.UPDATE_SHIPPINGS', Shipping[]>
 export type SaveUserAction = Action<'CORE.SAVE_USER', User>
@@ -37,11 +44,12 @@ export type CoreAction =
   | RestoreUserAction
   | InitDoneAction
 
-export const init = ({featureFlags, urlParams}: InitPayload): InitAction => ({
+export const init = ({featureFlags, urlParams, restoreSessionEnabled}: InitPayload): InitAction => ({
   type: 'CORE.INIT',
   payload: {
     featureFlags,
-    urlParams
+    urlParams,
+    restoreSessionEnabled
   }
 })
 

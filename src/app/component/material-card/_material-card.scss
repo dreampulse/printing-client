@@ -58,7 +58,8 @@
     align-items: center;
     border-top: 1px solid $color-border-minor;
     padding-top: $space-base;
-    height: 1px + $space-base + $tiny-field-height;
+    font-size: $font-size-xs;
+    height: 1px + $space-base + 2 * $font-size-xs * $line-height-base;
 
     & > .Button {
       width: 50%;
