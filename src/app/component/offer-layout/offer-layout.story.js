@@ -3,7 +3,6 @@ import {storiesOf} from '@storybook/react'
 
 import OfferLayout from '.'
 import OfferFooter from '../offer-footer'
-import DescriptionList from '../description-list'
 import Link from '../link'
 
 const lorem = `
@@ -179,17 +178,15 @@ const lorem = `
 storiesOf('OfferLayout', module).add('default', () => (
   <OfferLayout
     footer={
-      <OfferFooter>
-        <DescriptionList block>
-          <dt>
-            <strong>Best Price</strong>
-          </dt>
-          <dd>
-            <strong className="u-font-size-l">- €</strong>
-          </dd>
-        </DescriptionList>
-        Includes shipping costs to <Link label="Munich, Germany" />.
-      </OfferFooter>
+      <OfferFooter
+        priceLabel="Best Price"
+        price="- €"
+        subline={
+          <>
+            Includes shipping costs to <Link label="Munich, Germany" />.
+          </>
+        }
+      />
     }
   >
     {lorem}

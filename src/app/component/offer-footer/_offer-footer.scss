@@ -3,4 +3,20 @@
   background: $color-bg;
   padding: $space-base $space-xl;
   font-size: $font-size-s;
+
+  &__priceLabel {
+    font-weight: $font-weight-bold;
+    vertical-align: baseline;
+  }
+
+  &__price {
+    font-weight: $font-weight-bold;
+    font-size: $font-size-l;
+    margin-left: $space-l;
+    vertical-align: baseline;
+  }
+
+  &__subline {
+    font-size: $font-size-xs;
+  }
 }

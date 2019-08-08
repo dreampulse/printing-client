@@ -28,7 +28,7 @@ const MaterialCard = ({
   learnMoreLabel = 'Learn more',
   unavailableLabel = 'Not printable',
   contactUsLabel = 'Contact us',
-  priceSublineLabel = 'Incl. Shipping'
+  priceSublineLabel = 'Incl. shipping'
 }) => {
   const imageStyle = {
     backgroundImage: `url(${image})`

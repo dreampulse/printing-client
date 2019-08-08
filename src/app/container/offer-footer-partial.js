@@ -16,7 +16,6 @@ import {
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
 
-import DescriptionList from '../component/description-list'
 import OfferFooter from '../component/offer-footer'
 import Link from '../component/link'
 
@@ -47,29 +46,27 @@ const OfferPartial = ({
     : []
 
   return (
-    <OfferFooter>
-      <DescriptionList block>
-        <dt>
-          <strong>Best Price</strong>
-        </dt>
-        <dd>
-          <strong className="u-font-size-l">
-            {offers.length > 0
-              ? formatPrice(offers[0].totalGrossPrice, offers[0].multiModelQuote.currency)
-              : formatPrice(null, currency)}
-          </strong>
-        </dd>
-      </DescriptionList>
-      Includes shipping costs to{' '}
-      <Link
-        onClick={event => {
-          event.preventDefault()
-          openPickLocationModal({isCloseable: true})
-        }}
-        label={formatLocation(location)}
-      />
-      .
-    </OfferFooter>
+    <OfferFooter
+      priceLabel="Best Price"
+      price={
+        offers.length > 0
+          ? formatPrice(offers[0].totalGrossPrice, offers[0].multiModelQuote.currency)
+          : formatPrice(null, currency)
+      }
+      subline={
+        <>
+          Includes shipping costs to{' '}
+          <Link
+            onClick={event => {
+              event.preventDefault()
+              openPickLocationModal({isCloseable: true})
+            }}
+            label={formatLocation(location)}
+          />
+          .
+        </>
+      }
+    />
   )
 }
 
