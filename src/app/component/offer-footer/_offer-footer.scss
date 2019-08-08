@@ -6,5 +6,11 @@
 
   > .DescriptionList {
     font-size: $font-size-s;
+
+    & > dt {
+      & > strong {
+        font-weight: $font-weight-bold;
+      }
+    }
   }
 }
