@@ -3,4 +3,8 @@
   background: $color-bg;
   padding: $space-base $space-xl;
   font-size: $font-size-xs;
+
+  > .DescriptionList {
+    font-size: $font-size-s;
+  }
 }
