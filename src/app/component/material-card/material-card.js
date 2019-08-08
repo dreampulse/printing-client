@@ -27,7 +27,8 @@ const MaterialCard = ({
   selectedLabel = 'Selected',
   learnMoreLabel = 'Learn more',
   unavailableLabel = 'Not printable',
-  contactUsLabel = 'Contact us'
+  contactUsLabel = 'Contact us',
+  priceSublineLabel = 'Incl. Shipping'
 }) => {
   const imageStyle = {
     backgroundImage: `url(${image})`
@@ -71,7 +72,7 @@ const MaterialCard = ({
           <div className="MaterialCard__footer">
             <div>
               {price && cloneElement(price, {loading})}
-              {showPriceSubline && <div>Incl. Shipping</div>}
+              {showPriceSubline && <div>{priceSublineLabel}</div>}
             </div>
             <Button
               block
@@ -106,6 +107,7 @@ MaterialCard.propTypes = {
   contactUsLabel: PropTypes.string,
   selectLabel: PropTypes.string,
   selectedLabel: PropTypes.string,
+  priceSublineLabel: PropTypes.string,
   selected: PropTypes.bool,
   showPriceSubline: PropTypes.bool
 }
