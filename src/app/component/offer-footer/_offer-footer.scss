@@ -19,14 +19,4 @@
   &__subline {
     font-size: $font-size-xs;
   }
-
-  > .DescriptionList {
-    font-size: $font-size-s;
-
-    & > dt {
-      & > strong {
-        font-weight: $font-weight-bold;
-      }
-    }
-  }
 }
