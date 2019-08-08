@@ -8,10 +8,11 @@ const DescriptionList = ({
   classNames,
   alignRight = false,
   doubleValues = false,
+  block = false,
   topline,
   children
 }) => (
-  <dl className={buildClassName('DescriptionList', {alignRight, doubleValues}, classNames)}>
+  <dl className={buildClassName('DescriptionList', {alignRight, doubleValues, block}, classNames)}>
     {topline && <dd className="DescriptionList__topline">{topline}</dd>}
     {children}
   </dl>
@@ -22,6 +23,7 @@ DescriptionList.propTypes = {
   children: PropTypes.node.isRequired,
   alignRight: PropTypes.bool,
   doubleValues: PropTypes.bool,
+  block: PropTypes.bool,
   topline: PropTypes.node
 }
 

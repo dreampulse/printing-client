@@ -103,3 +103,25 @@ storiesOf('DescriptionList', module)
       </dd>
     </DescriptionList>
   ))
+  .add('block', () => (
+    <DescriptionList block>
+      <dt>
+        <strong>Coffee:</strong>
+      </dt>
+      <dd>
+        <strong>Black hot drink</strong>
+      </dd>
+      <dt>
+        <em>Milk:</em>
+      </dt>
+      <dd>
+        <em>White cold drink</em>
+      </dd>
+      <dt>Milk:</dt>
+      <dd>White cold drink</dd>
+      <dt>Milk:</dt>
+      <dd>
+        <ProviderImage xs name="imaterialise" slug="imaterialise" />
+      </dd>
+    </DescriptionList>
+  ))
