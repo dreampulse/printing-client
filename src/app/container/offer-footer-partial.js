@@ -16,7 +16,6 @@ import {
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
 
-import DescriptionList from '../component/description-list'
 import OfferFooter from '../component/offer-footer'
 import Link from '../component/link'
 
