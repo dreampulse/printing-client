@@ -3,14 +3,14 @@
   grid-template-columns: auto 1fr;
   grid-column-gap: $space-l;
   align-items: baseline;
-  font-size: $font-size-s;
+  font-size: $font-size-base;
   color: $color-minor;
   margin: 0;
   text-align: left;
 
   & > dt {
     & > strong {
-      font-weight: $font-weight-regular;
+      font-weight: $font-weight-bold;
       color: $color-text;
     }
 
