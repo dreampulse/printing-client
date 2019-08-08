@@ -31,6 +31,8 @@ export default {
     shapeways: 'Shapeways',
     simply3d: 'Simply 3D',
     treatstock: 'Treatstock',
+    wenext: 'WeNext',
+    zelta3d: 'Zelta 3D',
     zverse: 'ZVerse'
   },
   euCountries: [
