@@ -849,6 +849,28 @@ const loadConfiguration = (
     })
   )
 
+// TODO: maybe call that offer too (in order to stay insync with the backend)
+const loadSharedCart = (
+  state: CoreState,
+  {payload: {id, currency}}: cartActions.LoadSharedCartAction
+): CoreReducer =>
+  loop(
+    state,
+    Cmd.run<Actions>(printingEngine.getOffer, {
+      args: [id, currency],
+      successActionCreator: cartActions.sharedCartReceived,
+      failActionCreator: coreActions.fatalError
+    })
+  )
+
+const sharedCartReceived = (
+  state: CoreState,
+  payload: cartActions.SharedCartReceivedAction
+): CoreReducer => {
+  console.log('-- payload', payload)
+  return state
+}
+
 const configurationReceived = (
   state: CoreState,
   {payload: {items}}: configurationActions.ConfigurationReceivedAction
@@ -957,6 +979,10 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return createCart(state)
     case 'CART.CART_RECEIVED':
       return cartReceived(state, action)
+    case 'CART.LOAD_SHARED':
+      return loadSharedCart(state, action)
+    case 'CART.SHARD_RECEIVED':
+      return sharedCartReceived(state, action)
     case 'ORDER.PAID':
       return paid(state, action)
     case 'ORDER.EXECUTE_PAYPAL_PAYMENT':
