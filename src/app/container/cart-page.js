@@ -600,11 +600,7 @@ export default compose(
     })
   ),
   withHandlers({
-    onSuccess: props => () =>
-      props.goToSuccess({
-        orderNumber: props.orderNumber,
-        vendorIds: props.modelsWithConfig.map(info => info.quote.vendorId)
-      }),
+    onSuccess: props => () => props.goToSuccess(props.orderNumber),
     payWithPaypal: props => async () => {
       const userId = props.user.userId
       const cartId = props.cart.cartId

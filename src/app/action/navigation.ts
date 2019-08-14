@@ -2,11 +2,6 @@ import {push} from 'react-router-redux'
 
 import {ConfigId, Notification, VendorId} from '../type'
 
-export type SuccessPageRouteState = {
-  vendorIds: VendorId[]
-  orderNumber: string
-}
-
 export type AddressPageSection = 'billing-address' | 'shipping-address'
 
 export const goToUpload = (
@@ -37,5 +32,5 @@ export const goToCart = (
   routerAction: any = push
 ) => routerAction('/cart', {numAddedItems, selectModelConfigIds})
 
-export const goToSuccess = (state: SuccessPageRouteState, routerAction: any = push) =>
-  routerAction(`/success?orderNumber=${state.orderNumber}`, state)
+export const goToSuccess = (orderNumber: string, routerAction: any = push) =>
+  routerAction(`/success?orderNumber=${encodeURIComponent(orderNumber)}`)
