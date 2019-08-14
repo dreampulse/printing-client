@@ -10,13 +10,13 @@
     grid-template-columns: 12fr;
     grid-gap: $space-base;
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       grid-template-columns: 6fr 6fr;
     }
   }
 
   &__copyline {
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       text-align: left;
     }
   }
@@ -26,7 +26,7 @@
     margin: 0;
     padding: 0;
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       text-align: right;
     }
   }

@@ -4,7 +4,7 @@
   display: inline-flex;
   align-items: center;
 
-  @include respond-to(medium) {
+  @include respond-to(tablet) {
     flex-direction: column;
   }
 
@@ -26,7 +26,7 @@
     color: $color-minor-highlighted;
     margin-left: $space-base;
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       text-align: center;
       margin-top: $space-base;
       margin-left: 0;
