@@ -1,0 +1,11 @@
+{
+  "mediaqueries": {
+    "small": "'(min-width: 0px)'",
+    "small-only": "'(max-width: 599px)'",
+    "medium": "'(min-width: 600px)'",
+    "medium-only": "'(min-width: 600px) and (max-width: 959px)'",
+    "large": "'(min-width: 960px)'",
+    "large-only": "'(min-width: 960px) and (max-width: 1499px)'",
+    "xlarge": "'(min-width: 1500px)'"
+  }
+}

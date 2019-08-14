@@ -6,7 +6,7 @@ import {noop} from 'lodash'
 
 import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
-import {getScrollParents} from '../../lib/service/scroll-parent'
+import {getScrollParents} from '../../service/scroll-parent'
 
 const renderProps = (element, props) => (typeof element === 'function' ? element(props) : element)
 

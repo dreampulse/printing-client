@@ -85,21 +85,7 @@ $gutter-width: $space-xl;
 // Breakpoints
 // ---------------------------------------------------
 
-$screen-s-max: 599px;
-$screen-md-min: 600px;
-$screen-md-max: 959px;
-$screen-lg-min: 960px;
-$screen-lg-max: 1499px;
-$screen-xlg-min: 1500px;
-
-$mediaqueries: (
-  small-only: '(max-width: #{$screen-s-max})',
-  medium: '(min-width: #{$screen-md-min})',
-  medium-only: '(min-width: #{$screen-md-min}) and (max-width: #{$screen-md-max})',
-  large: '(min-width: #{$screen-lg-min})',
-  large-only: '(min-width: #{$screen-lg-min}) and (max-width: #{$screen-lg-max})',
-  xlarge: '(min-width: #{$screen-xlg-min})'
-);
+@import 'mediaqueries.json';
 
 // Misc
 // ---------------------------------------------------
