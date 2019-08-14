@@ -38,4 +38,4 @@ export const goToCart = (
 ) => routerAction('/cart', {numAddedItems, selectModelConfigIds})
 
 export const goToSuccess = (state: SuccessPageRouteState, routerAction: any = push) =>
-  routerAction('/success', state)
+  routerAction(`/success?orderNumber=${state.orderNumber}`, state)
