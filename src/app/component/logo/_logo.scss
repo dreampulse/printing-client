@@ -10,6 +10,10 @@
 
   &__image {
     max-width: 100%;
-    max-height: $nav-bar-content-height;
+    max-height: $nav-bar-content-height-mobile;
+
+    @include respond-to(tablet) {
+      max-height: $nav-bar-content-height;
+    }
   }
 }

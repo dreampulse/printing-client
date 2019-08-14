@@ -6,9 +6,13 @@
   padding: 0 $space-l;
   display: flex;
   flex-direction: row;
-  height: $nav-bar-height;
+  height: $nav-bar-height-mobile;
   align-items: center;
   overflow: hidden;
+
+  @include respond-to(tablet) {
+    height: $nav-bar-height;
+  }
 
   @include respond-to(desktop) {
     padding: 0 $space-xl;

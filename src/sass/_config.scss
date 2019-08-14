@@ -91,7 +91,9 @@ $gutter-width: $space-xl;
 // ---------------------------------------------------
 
 $nav-bar-content-height: 40px;
+$nav-bar-content-height-mobile: 30px;
 $nav-bar-height: $nav-bar-content-height + 2 * $space-l;
+$nav-bar-height-mobile: $nav-bar-content-height-mobile + 2 * $space-base;
 $field-height: 50px;
 $compact-field-height: 40px;
 $tiny-field-height: 30px;
