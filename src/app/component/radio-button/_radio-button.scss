@@ -1,8 +1,8 @@
 .RadioButton {
   display: block;
   background-color: $color-white;
-  height: $field-height;
-  line-height: $field-height;
+  height: $field-height-compact;
+  line-height: $field-height-compact;
   font-size: $font-size-l;
   padding: 0 1em;
   text-align: center;
@@ -33,13 +33,18 @@
     color: $color-invert-text;
   }
 
+  @include respond-to(tablet) {
+    height: $field-height;
+    line-height: $field-height;
+  }
+
   &__input {
     display: none;
   }
 
   &--tiny {
-    height: $tiny-field-height;
-    line-height: $tiny-field-height;
+    height: $field-height-tiny;
+    line-height: $field-height-tiny;
     font-size: $font-size-base;
     padding: 0 0.5em;
   }

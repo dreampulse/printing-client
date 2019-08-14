@@ -1,15 +1,24 @@
-.container {
+.Container {
   position: relative;
   width: 100%;
   margin: 0 auto;
-  padding: 0 $space-l;
-  max-width: $global-max-width + 2 * $space-l;
+  padding: 0 $space-base;
+  max-width: $global-max-width + 2 * $space-base;
+
+  @include respond-to(tablet) {
+    padding: 0 $space-l;
+    max-width: $global-max-width + 2 * $space-l;
+  }
 
   &--full {
     max-width: none;
   }
 
   &--s {
-    max-width: 750px + 2 * $space-l;
+    max-width: $global-max-width-s + 2 * $space-base;
+
+    @include respond-to(tablet) {
+      max-width: $global-max-width-s + 2 * $space-l;
+    }
   }
 }

@@ -4,6 +4,7 @@ import uniqueId from 'lodash/uniqueId'
 
 import cn from '../../lib/class-names'
 import propTypes from '../../prop-types'
+
 import CheckboxField from '../checkbox-field'
 
 const LabeledCheckbox = ({
