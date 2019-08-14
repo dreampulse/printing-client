@@ -849,25 +849,33 @@ const loadConfiguration = (
     })
   )
 
-// TODO: maybe call that offer too (in order to stay insync with the backend)
-const loadSharedCart = (
+const loadOffer = (
   state: CoreState,
-  {payload: {id, currency}}: cartActions.LoadSharedCartAction
+  {payload: {id, currency}}: cartActions.LoadOfferAction
 ): CoreReducer =>
   loop(
     state,
     Cmd.run<Actions>(printingEngine.getOffer, {
       args: [id, currency],
-      successActionCreator: cartActions.sharedCartReceived,
+      successActionCreator: cartActions.offerReceived,
       failActionCreator: coreActions.fatalError
     })
   )
 
-const sharedCartReceived = (
+const offerReceived = (
   state: CoreState,
-  {payload}: cartActions.SharedCartReceivedAction
+  {payload}: cartActions.OfferReceivedAction
 ): CoreReducer => {
-  console.log('-- payload', payload)
+  const arrayLengths = payload.models.length
+
+  invariant(
+    payload.models.length === arrayLengths &&
+      payload.quotes.length === arrayLengths &&
+      payload.shippings.length === arrayLengths &&
+      payload.modelConfigIds.length === arrayLengths,
+    'Invalid offer response lengths'
+  )
+
   const backendModels = keyBy(payload.models, 'modelId')
   const quotes = keyBy(payload.quotes, 'quoteId')
   const shippings = payload.shippings
@@ -884,21 +892,19 @@ const sharedCartReceived = (
     currency: payload.currency
   }
 
-  const modelConfigs: ModelConfig[] = zip(payload.models, payload.quotes, payload.shippings).map(
-    ([model, quote, shipping]) => {
-      const modelConfig: ModelConfig = {
-        type: 'UPLOADED',
-        quantity: 1, // The offer API doesn't store a quantity (to check)
-        modelId: (model && model.modelId) || '',
-        quoteId: (quote && quote.quoteId) || '',
-        shippingId: (shipping && shipping.shippingId) || '',
-        id: 'TODO_some-id'
-      }
-      return modelConfig
-    }
-  )
-
-  console.log('-- modelConfigs', modelConfigs)
+  const modelConfigs: ModelConfig[] = zip(
+    payload.models,
+    payload.quotes,
+    payload.shippings,
+    payload.modelConfigIds
+  ).map(([model, quote, shipping, modelConfigId]) => ({
+    type: 'UPLOADED',
+    quantity: (quote as Quote).quantity,
+    modelId: (model as BackendModel).modelId,
+    quoteId: (quote as Quote).quoteId,
+    shippingId: (shipping as Shipping).shippingId,
+    id: modelConfigId as ConfigId
+  }))
 
   return {
     ...state,
@@ -1018,10 +1024,10 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return createCart(state)
     case 'CART.CART_RECEIVED':
       return cartReceived(state, action)
-    case 'CART.LOAD_SHARED':
-      return loadSharedCart(state, action)
-    case 'CART.SHARD_RECEIVED':
-      return sharedCartReceived(state, action)
+    case 'CART.LOAD_OFFER':
+      return loadOffer(state, action)
+    case 'CART.OFFER_RECEIVED':
+      return offerReceived(state, action)
     case 'ORDER.PAID':
       return paid(state, action)
     case 'ORDER.EXECUTE_PAYPAL_PAYMENT':

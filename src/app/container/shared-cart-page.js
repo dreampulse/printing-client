@@ -13,14 +13,13 @@ import LoadingContainer from '../component/loading-container'
 const SharedCartPage = () => <LoadingContainer />
 
 const mapStateToProps = state => ({
-  // selectedModelConfigs: state.core.selectedModelConfigs,
   modelConfigs: state.core.modelConfigs,
   currency: state.core.currency
 })
 
 const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
-  loadSharedCart: cartAction.loadSharedCart
+  loadOffer: cartAction.loadOffer
 }
 
 const enhance = compose(
@@ -32,28 +31,33 @@ const enhance = compose(
   lifecycle({
     componentDidMount() {
       const {
-        loadSharedCart,
+        loadOffer,
         currency,
         match: {
           params: {id}
         }
       } = this.props
-
-      console.log('-- this.props', this.props)
-      console.log('-- id', id)
-      console.log('-- currency', currency)
-
-      loadSharedCart(id, currency)
-
-      // loadConfiguration(this.props.match.params.id)
-
-      // TODO: Falls die location nicht klar ist,
-      // muss hier gewartet werden bis die da ist...
+      if (currency) {
+        loadOffer(id, currency)
+      }
     },
     componentDidUpdate(prevProps) {
-      const {goToCart, modelConfigs} = this.props
+      const {
+        goToCart,
+        modelConfigs,
+        currency,
+        loadOffer,
+        match: {
+          params: {id}
+        }
+      } = this.props
 
-      // If the modelConfig updates we know the loading of the configuration is done
+      // We might need to wait until we have a location & currency until we can load the shared cart
+      if (!prevProps.currency && currency) {
+        loadOffer(id, currency)
+      }
+
+      // If the modelConfig updates we know the loading of the cart is done
       if (prevProps.modelConfigs.length < modelConfigs.length) {
         const selectModelConfigIds = modelConfigs.map(modelConfig => modelConfig.id)
         goToCart({selectModelConfigIds}, replace)

@@ -1,4 +1,5 @@
-import {Action, Quote, Shipping, Cart, ConfigId, CartId} from '../type'
+import uuidv1 from 'uuid/v1'
+import {Action, Quote, Shipping, Cart, ConfigId, CartId, OfferId} from '../type'
 import {OfferResponse} from '../lib/printing-engine'
 
 export type AddToCartAction = Action<
@@ -7,15 +8,18 @@ export type AddToCartAction = Action<
 >
 export type CreateCartAction = Action<'CART.CREATE_CART', void>
 export type CartReceivedAction = Action<'CART.CART_RECEIVED', {cart: Cart}>
-export type LoadSharedCartAction = Action<'CART.LOAD_SHARED', {id: CartId; currency: string}>
-export type SharedCartReceivedAction = Action<'CART.SHARD_RECEIVED', OfferResponse>
+export type LoadOfferAction = Action<'CART.LOAD_OFFER', {id: OfferId; currency: string}>
+export type OfferReceivedAction = Action<
+  'CART.OFFER_RECEIVED',
+  OfferResponse & {modelConfigIds: ConfigId[]}
+>
 
 export type CartAction =
   | AddToCartAction
   | CreateCartAction
   | CartReceivedAction
-  | LoadSharedCartAction
-  | SharedCartReceivedAction
+  | LoadOfferAction
+  | OfferReceivedAction
 
 export const addToCart = (
   configIds: ConfigId[],
@@ -42,25 +46,12 @@ export const cartReceived = (cart: Cart): CartReceivedAction => ({
   }
 })
 
-export const loadSharedCart = (id: CartId, currency: string): LoadSharedCartAction => ({
-  type: 'CART.LOAD_SHARED',
+export const loadOffer = (id: OfferId, currency: string): LoadOfferAction => ({
+  type: 'CART.LOAD_OFFER',
   payload: {id, currency}
 })
 
-export const sharedCartReceived = (offer: OfferResponse): SharedCartReceivedAction => ({
-  type: 'CART.SHARD_RECEIVED',
-  payload: offer
-  // TODO: maybe we need to map here to crate some uuids
+export const offerReceived = (offer: OfferResponse): OfferReceivedAction => ({
+  type: 'CART.OFFER_RECEIVED',
+  payload: {...offer, modelConfigIds: offer.models.map(_ => uuidv1())}
 })
-
-// export const configurationReceived = (
-//   payload: BackendConfiguration
-// ): ConfigurationReceivedAction => ({
-//   type: 'CONFIGURATION.CONFIGURATION_RECEIVED',
-//   payload: {
-//     items: payload.items.map(item => ({
-//       ...item,
-//       id: uuidv1()
-//     }))
-//   }
-// })

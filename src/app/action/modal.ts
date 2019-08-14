@@ -84,7 +84,6 @@ export const openShareConfigurationModal = (configurationId: ConfigurationId) =>
     contentProps: {configurationId}
   })
 
-// TODO: maybe update this to offerId
 export const openShareCartModal = (cartId: CartId) =>
   open({
     isCloseable: true,
