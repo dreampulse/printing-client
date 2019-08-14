@@ -3,7 +3,6 @@ import {storiesOf} from '@storybook/react'
 
 import LabeledField from '.'
 import NumberField from '../number-field'
-import InputField from '../input-field'
 
 import HandleValue from '../../../../stories/util/handle-value'
 
