@@ -865,10 +865,49 @@ const loadSharedCart = (
 
 const sharedCartReceived = (
   state: CoreState,
-  payload: cartActions.SharedCartReceivedAction
+  {payload}: cartActions.SharedCartReceivedAction
 ): CoreReducer => {
   console.log('-- payload', payload)
-  return state
+  const backendModels = keyBy(payload.models, 'modelId')
+  const quotes = keyBy(payload.quotes, 'quoteId')
+  const shippings = payload.shippings
+  const cart: Cart = {
+    cartId: payload.cartId,
+    shippingIds: payload.shippings.map(shipping => shipping.shippingId),
+    quoteIds: payload.quotes.map(quote => quote.quoteId),
+    subTotalPrice: payload.subTotalPrice,
+    shippingTotal: payload.shippingTotal,
+    vatPercentage: payload.vatPercentage,
+    vatPrice: payload.vatPrice,
+    totalPrice: payload.totalPrice,
+    totalNetPrice: payload.totalNetPrice,
+    currency: payload.currency
+  }
+
+  const modelConfigs: ModelConfig[] = zip(payload.models, payload.quotes, payload.shippings).map(
+    ([model, quote, shipping]) => {
+      const modelConfig: ModelConfig = {
+        type: 'UPLOADED',
+        quantity: 1, // The offer API doesn't store a quantity (to check)
+        modelId: (model && model.modelId) || '',
+        quoteId: (quote && quote.quoteId) || '',
+        shippingId: (shipping && shipping.shippingId) || '',
+        id: 'TODO_some-id'
+      }
+      return modelConfig
+    }
+  )
+
+  console.log('-- modelConfigs', modelConfigs)
+
+  return {
+    ...state,
+    backendModels,
+    quotes,
+    shippings,
+    cart,
+    modelConfigs
+  }
 }
 
 const configurationReceived = (

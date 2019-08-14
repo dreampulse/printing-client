@@ -14,7 +14,7 @@ const SharedCartPage = () => <LoadingContainer />
 
 const mapStateToProps = state => ({
   // selectedModelConfigs: state.core.selectedModelConfigs,
-  // modelConfigs: state.core.modelConfigs
+  modelConfigs: state.core.modelConfigs,
   currency: state.core.currency
 })
 
@@ -51,13 +51,13 @@ const enhance = compose(
       // muss hier gewartet werden bis die da ist...
     },
     componentDidUpdate(prevProps) {
-      const {goToUpload, modelConfigs} = this.props
+      const {goToCart, modelConfigs} = this.props
 
-      // // If the modelConfig updates we know the loading of the configuration is done
-      // if (prevProps.modelConfigs.length < modelConfigs.length) {
-      //   const selectModelConfigIds = modelConfigs.map(modelConfig => modelConfig.id)
-      //   goToUpload({selectModelConfigIds}, replace)
-      // }
+      // If the modelConfig updates we know the loading of the configuration is done
+      if (prevProps.modelConfigs.length < modelConfigs.length) {
+        const selectModelConfigIds = modelConfigs.map(modelConfig => modelConfig.id)
+        goToCart({selectModelConfigIds}, replace)
+      }
     }
   })
 )

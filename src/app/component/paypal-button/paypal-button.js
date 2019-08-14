@@ -24,8 +24,7 @@ class PaypalButton extends Component {
         height: BUTTON_HEIGHT
       }
     }
-
-    global.paypal.Button.render(options, this.paypalButton)
+    global.paypal && global.paypal.Button && global.paypal.Button.render(options, this.paypalButton)
   }
 
   render() {
