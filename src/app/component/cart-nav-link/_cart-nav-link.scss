@@ -1,5 +1,6 @@
 .CartNavLink {
-  $icon-size: 30px;
+  $icon-size: 40px;
+  $icon-size-tablet: 30px;
   // Needs to be synced with the component
   $count-transition-timeout: 0.5s;
   $flyout-transition-timeout: 0.3s;
@@ -19,6 +20,10 @@
     & > .Icon {
       color: $color-primary;
       font-size: scut-em($icon-size);
+
+      @include respond-to(tablet) {
+        font-size: scut-em($icon-size-tablet);
+      }
     }
   }
 
@@ -26,17 +31,25 @@
     display: block;
     position: absolute;
     // Position the count within the icon
-    top: scut-em(-2px, $font-size-s);
-    left: scut-em(7px, $font-size-s);
+    top: scut-em(2px, $font-size-s);
+    left: scut-em(9px, $font-size-s);
     width: scut-em(16px, $font-size-s);
 
     transition: transform $count-transition-timeout cubic-bezier(0.2, 0.9, 0.3, 1.5);
     transform: scale(1);
 
     color: $color-cart-count;
-    font-size: $font-size-s;
+    font-size: $font-size-base;
     font-weight: $font-weight-bold;
     text-align: center;
+
+    @include respond-to(tablet) {
+      // Position the count within the icon
+      top: scut-em(-2px, $font-size-s);
+      left: scut-em(7px, $font-size-s);
+      width: scut-em(16px, $font-size-s);
+      font-size: $font-size-s;
+    }
 
     &.CartNavLink--count-transition-enter {
       transform: scale(1.5);
@@ -55,6 +68,11 @@
 
   &__label {
     margin-top: 0.2em;
+    display: none;
+
+    @include respond-to(tablet) {
+      display: block;
+    }
   }
 
   &:hover,

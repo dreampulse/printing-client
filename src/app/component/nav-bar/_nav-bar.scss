@@ -3,17 +3,24 @@
   color: $color-primary;
   font-size: $font-size-l;
   border-bottom: solid 1px $color-border-minor;
-  padding: 0 $space-xl;
+  padding: 0 $space-l;
   display: flex;
   flex-direction: row;
   height: $nav-bar-height;
   align-items: center;
+  overflow: hidden;
+
+  @include respond-to(desktop) {
+    padding: 0 $space-xl;
+  }
 
   &__left {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-grow: 1;
+    flex-shrink: 1;
+    margin-right: $space-l;
 
     & > * + * {
       margin-left: $space-l;
@@ -25,6 +32,7 @@
     margin-top: $space-s;
     align-items: center;
     margin-top: 0;
+    flex-shrink: 0;
     justify-content: flex-end;
 
     & > * {

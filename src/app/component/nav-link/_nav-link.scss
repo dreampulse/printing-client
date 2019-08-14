@@ -1,5 +1,6 @@
 .NavLink {
-  $icon-size: 30px;
+  $icon-size: 40px;
+  $icon-size-tablet: 30px;
 
   display: inline-flex;
   flex-direction: column;
@@ -11,10 +12,19 @@
 
   & > .Icon {
     font-size: scut-em($icon-size);
+
+    @include respond-to(tablet) {
+      font-size: scut-em($icon-size-tablet);
+    }
   }
 
   &__label {
+    display: none;
     margin-top: 0.2em;
+
+    @include respond-to(tablet) {
+      display: block;
+    }
   }
 
   &:hover,
