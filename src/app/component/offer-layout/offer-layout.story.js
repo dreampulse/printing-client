@@ -1,93 +1,9 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
-import {withState} from '@dump247/storybook-state'
-import range from 'lodash/range'
 
 import OfferLayout from '.'
 import OfferFooter from '../offer-footer'
-import OfferItem from '../offer-item'
-import Button from '../button'
-import DescriptionList from '../description-list'
-
-const offerFooter = store => (
-  <OfferFooter showMore={store.state.showMore}>
-    <OfferItem
-      actions={
-        <>
-          {!store.state.showMore && (
-            <Button text label="See all offers" onClick={() => store.set({showMore: true})} />
-          )}
-          <Button primary label="Primary Action" />
-        </>
-      }
-    >
-      <DescriptionList>
-        <dt>
-          <strong>Term:</strong>
-        </dt>
-        <dd>
-          <strong className="u-font-size-l">Value</strong>
-        </dd>
-        <dt>Term:</dt>
-        <dd>Value</dd>
-        <dt>Term:</dt>
-        <dd>Value</dd>
-      </DescriptionList>
-      <DescriptionList>
-        <dt>
-          <strong>Term:</strong>
-        </dt>
-        <dd>
-          <strong className="u-font-size-l">Value</strong>
-        </dd>
-        <dt>Term:</dt>
-        <dd>Value</dd>
-        <dt>Term:</dt>
-        <dd>Value</dd>
-      </DescriptionList>
-      <DescriptionList>
-        <dt>Term:</dt>
-        <dd>Value</dd>
-        <dt>Term:</dt>
-        <dd>Value</dd>
-      </DescriptionList>
-    </OfferItem>
-    {range(10).map(i => (
-      <OfferItem key={i} actions={<Button primary label="Primary Action" />}>
-        <DescriptionList>
-          <dt>
-            <strong>Term:</strong>
-          </dt>
-          <dd>
-            <strong>Value</strong>
-          </dd>
-          <dt>Term:</dt>
-          <dd>Value</dd>
-          <dt>Term:</dt>
-          <dd>Value</dd>
-        </DescriptionList>
-        <DescriptionList>
-          <dt>
-            <strong>Term:</strong>
-          </dt>
-          <dd>
-            <strong>Value</strong>
-          </dd>
-          <dt>Term:</dt>
-          <dd>Value</dd>
-          <dt>Term:</dt>
-          <dd>Value</dd>
-        </DescriptionList>
-        <DescriptionList>
-          <dt>Term:</dt>
-          <dd>Value</dd>
-          <dt>Term:</dt>
-          <dd>Value</dd>
-        </DescriptionList>
-      </OfferItem>
-    ))}
-  </OfferFooter>
-)
+import Link from '../link'
 
 const lorem = `
   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
@@ -259,9 +175,20 @@ const lorem = `
   deserunt mollit anim id est laborum.
 `
 
-storiesOf('OfferLayout', module).add(
-  'default',
-  withState({showMore: false}, store => (
-    <OfferLayout footer={offerFooter(store)}>{lorem}</OfferLayout>
-  ))
-)
+storiesOf('OfferLayout', module).add('default', () => (
+  <OfferLayout
+    footer={
+      <OfferFooter
+        priceLabel="Best Price"
+        price="- €"
+        subline={
+          <>
+            Includes shipping costs to <Link label="Munich, Germany" />.
+          </>
+        }
+      />
+    }
+  >
+    {lorem}
+  </OfferLayout>
+))

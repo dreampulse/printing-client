@@ -6,10 +6,18 @@ import UploadModelList from '.'
 import UploadModelItem from '../upload-model-item'
 import UploadModelItemError from '../upload-model-item-error'
 import UploadModelItemLoad from '../upload-model-item-load'
+import Link from '../link'
 
 storiesOf('UploadModelList', module)
   .add('default', () => (
-    <UploadModelList>
+    <UploadModelList
+      header={
+        <>
+          <Link label="Some link left" />
+          <Link label="Some link right" />
+        </>
+      }
+    >
       {range(0, 5).map(index => (
         <UploadModelItem
           key={index}

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import noop from 'lodash/noop'
 
 import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
@@ -13,14 +14,30 @@ const Link = ({
   icon,
   warning = false,
   invert = false,
-  onClick = () => {},
+  largeIcon = false,
+  onClick = noop,
   ...rest
-}) => (
-  <a className={cn('Link', {warning, invert}, classNames)} href={href} onClick={onClick} {...rest}>
-    {icon && <Icon source={icon} />}
-    {label}
-  </a>
-)
+}) => {
+  const handleOnClick =
+    href === '#'
+      ? event => {
+          event.preventDefault()
+          onClick(event)
+        }
+      : onClick
+
+  return (
+    <a
+      className={cn('Link', {warning, invert, largeIcon}, classNames)}
+      href={href}
+      onClick={handleOnClick}
+      {...rest}
+    >
+      {icon && <Icon source={icon} />}
+      {label}
+    </a>
+  )
+}
 
 Link.propTypes = {
   ...propTypes.component,
@@ -29,7 +46,8 @@ Link.propTypes = {
   string: PropTypes.string,
   onClick: PropTypes.func,
   warning: PropTypes.bool,
-  invert: PropTypes.bool
+  invert: PropTypes.bool,
+  largeIcon: PropTypes.bool
 }
 
 export default Link

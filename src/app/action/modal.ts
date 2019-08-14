@@ -5,7 +5,8 @@ import {
   FinishGroupId,
   Location,
   ModalContentType,
-  ConfigurationId
+  ConfigurationId,
+  CartId
 } from '../type'
 
 export type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
@@ -81,6 +82,13 @@ export const openShareConfigurationModal = (configurationId: ConfigurationId) =>
     isCloseable: true,
     contentType: ModalContentType.SHARE_CONFIGURATION,
     contentProps: {configurationId}
+  })
+
+export const openShareCartModal = (cartId: CartId) =>
+  open({
+    isCloseable: true,
+    contentType: ModalContentType.SHARE_CART,
+    contentProps: {cartId}
   })
 
 export const openFatalErrorModal = (error: Error): OpenModalAction =>

@@ -164,6 +164,7 @@ const MaterialPartial = ({
           description={material.descriptionShort}
           descriptionHeadline="Best used for:"
           price={renderPrice(bestOffer)}
+          showPriceSubline={!!bestOffer}
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
