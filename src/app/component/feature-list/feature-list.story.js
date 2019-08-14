@@ -10,7 +10,7 @@ import Checked from '../checked'
 const feature = <StarRating stars={3} />
 const checked = <Checked />
 
-storiesOf('Feature List & Feature List Item', module)
+storiesOf('FeatureList & FeatureListItem', module)
   .add('default', () => (
     <FeatureList>
       <FeatureListItem feature={feature} label="Label 1" />

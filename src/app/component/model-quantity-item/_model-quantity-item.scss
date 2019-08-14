@@ -8,7 +8,7 @@
   height: $model-item-height;
   background: $color-bg;
 
-  & > .image-container {
+  & > .ImageContainer {
     flex-shrink: 0;
     width: $image-container-width;
   }

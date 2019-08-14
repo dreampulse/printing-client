@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
-const Grid = ({classNames, modifiers, children}) => (
-  <div className={buildClassName('grid', modifiers, classNames)}>{children}</div>
+const Grid = ({classNames, children}) => (
+  <div className={cn('Grid', {}, classNames)}>{children}</div>
 )
 
 Grid.propTypes = {

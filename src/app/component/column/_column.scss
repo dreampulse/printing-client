@@ -1,4 +1,4 @@
-.column {
+.Column {
   @for $i from 1 through 12 {
     &--sm-#{$i} {
       grid-column-end: span $i;

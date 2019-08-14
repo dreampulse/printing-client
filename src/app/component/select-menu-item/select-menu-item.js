@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
@@ -10,29 +10,20 @@ import selectedIcon from '../../../asset/icon/selected.svg'
 
 const getLabel = ({value, label}) => label || value
 
-const SelectMenuItem = ({
-  classNames,
-  modifiers = [],
-  value,
-  selected = false,
-  onClick = () => {}
-}) => {
+const SelectMenuItem = ({classNames, value, selected = false, onClick = () => {}}) => {
   const handleClick = event => {
     event.preventDefault()
     onClick(value, event)
   }
 
-  const finalModifier = [...modifiers, {selected}]
-
   return (
     <button
       type="button"
-      className={buildClassName('select-menu-item', finalModifier, classNames)}
+      className={cn('SelectMenuItem', {selected}, classNames)}
       onClick={handleClick}
     >
       {selected && <Icon source={selectedIcon} />}
-      <span className="select-menu-item__label">{getLabel(value)}</span>
-      {value.price && <small className="select-menu-item__price">{value.price}</small>}
+      <span className="SelectMenuItem__label">{getLabel(value)}</span>
     </button>
   )
 }
@@ -41,8 +32,7 @@ SelectMenuItem.propTypes = {
   ...propTypes.component,
   value: PropTypes.shape({
     value: PropTypes.any.isRequired,
-    label: PropTypes.string, // When not provided value will be shown
-    price: PropTypes.string
+    label: PropTypes.string // When not provided value will be shown
   }).isRequired,
   selected: PropTypes.bool,
   onClick: PropTypes.func
