@@ -13,15 +13,15 @@ const useBreakpoints = () => {
       calculateAndSetBreakpoints()
     }, 200)
 
-    global.addEventListener('resize', onResize)
-    global.addEventListener('orientationchange', onResize)
+    global.addEventListener('resize', onResize, false)
+    global.addEventListener('orientationchange', onResize, false)
 
     calculateAndSetBreakpoints()
 
     return () => {
-      this.onResize.cancel()
-      global.removeEventListener('resize', this.onResize)
-      global.removeEventListener('orientationchange', this.onResize)
+      onResize.cancel()
+      global.removeEventListener('resize', onResize, false)
+      global.removeEventListener('orientationchange', onResize, false)
     }
   }, [])
 
