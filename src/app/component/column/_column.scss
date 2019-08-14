@@ -5,7 +5,7 @@
     }
   }
 
-  @include respond-to(medium) {
+  @include respond-to(tablet) {
     @for $i from 1 through 12 {
       &--md-#{$i} {
         grid-column-end: span $i;
@@ -13,7 +13,7 @@
     }
   }
 
-  @include respond-to(large) {
+  @include respond-to(desktop) {
     @for $i from 1 through 12 {
       &--lg-#{$i} {
         grid-column-end: span $i;

@@ -1,60 +1,60 @@
 // Responsive visibility
 
-.u-hide-small {
-  @include respond-to(small-only) {
+.u-hide-mobile {
+  @include respond-to(mobile-only) {
     display: none !important;
   }
 }
-.u-show-small {
-  @include respond-to(medium) {
-    display: none !important;
-  }
-}
-
-.u-hide-medium {
-  @include respond-to(medium-only) {
-    display: none !important;
-  }
-}
-.u-show-medium {
-  @include respond-to(small-only) {
-    display: none !important;
-  }
-  @include respond-to(large) {
+.u-show-mobile {
+  @include respond-to(tablet) {
     display: none !important;
   }
 }
 
-.u-hide-large {
-  @include respond-to(large-only) {
+.u-hide-tablet {
+  @include respond-to(tablet-only) {
     display: none !important;
   }
 }
-.u-show-large {
-  @include respond-to(small-only) {
+.u-show-tablet {
+  @include respond-to(mobile-only) {
     display: none !important;
   }
-  @include respond-to(medium-only) {
-    display: none !important;
-  }
-  @include respond-to(xlarge) {
+  @include respond-to(desktop) {
     display: none !important;
   }
 }
 
-.u-hide-xlarge {
-  @include respond-to(xlarge) {
+.u-hide-desktop {
+  @include respond-to(desktop-only) {
     display: none !important;
   }
 }
-.u-show-xlarge {
-  @include respond-to(small-only) {
+.u-show-desktop {
+  @include respond-to(mobile-only) {
     display: none !important;
   }
-  @include respond-to(medium-only) {
+  @include respond-to(tablet-only) {
     display: none !important;
   }
-  @include respond-to(large-only) {
+  @include respond-to(bigscreen) {
+    display: none !important;
+  }
+}
+
+.u-hide-bigscreen {
+  @include respond-to(bigscreen) {
+    display: none !important;
+  }
+}
+.u-show-bigscreen {
+  @include respond-to(mobile-only) {
+    display: none !important;
+  }
+  @include respond-to(tablet-only) {
+    display: none !important;
+  }
+  @include respond-to(desktop-only) {
     display: none !important;
   }
 }

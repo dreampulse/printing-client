@@ -11,7 +11,7 @@
       'text text' auto
       / 1fr $currency-width;
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       grid-template:
         'location currency text' auto
         / 1fr $currency-width auto;
