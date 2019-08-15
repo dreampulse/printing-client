@@ -1,0 +1,74 @@
+.TooltipBalloon {
+  $tooltip-width: 300px;
+  $triangle-size: 10px;
+  $SQRT_2: 1.4142135623730951;
+  $some-extra: 5px; // Avoid overlapping shadows
+
+  display: inline-block;
+  position: relative;
+  padding: $space-l;
+  border-radius: $border-radius;
+  max-width: $tooltip-width;
+  pointer-events: none;
+  font-size: $font-size-s;
+  font-weight: $font-weight-light;
+  word-wrap: break-all;
+  color: $color-tooltip-text;
+  background-color: $color-tooltip-bg;
+  box-shadow: none;
+
+  &__arrow {
+    position: absolute;
+    top: 100%;
+    top: calc(100% - 1px); // Compensate rounding issues
+    left: 50%; // Fallback
+    left: calc(50% - #{$triangle-size * $SQRT_2 - $some-extra / 2});
+    height: $triangle-size / $SQRT_2 + $triangle-size;
+    width: 2 * ($triangle-size / $SQRT_2) + 2 * $some-extra;
+    overflow: hidden;
+
+    &::after {
+      display: block;
+      content: "";
+      height: $triangle-size;
+      width: $triangle-size;
+      transform: translateY(-$triangle-size / 2)
+        translateX($triangle-size * ($SQRT_2 - 1) / 2 + $some-extra)
+        rotate(45deg);
+      background-color: $color-tooltip-bg;
+      box-shadow: none;
+    }
+  }
+
+  &--bottom {
+    .TooltipBalloon__arrow {
+      top: auto;
+      bottom: 100%;
+      bottom: calc(100% - 1px); // Compensate rounding issues
+      transform: rotate(180deg);
+    }
+  }
+
+  &--right {
+    .TooltipBalloon__arrow {
+      top: auto;
+      left: $triangle-size * -2;
+      left: calc(#{$triangle-size * -2} + 1px); // Compensate rounding issues
+      bottom: 50%;
+      bottom: calc(50% - #{$triangle-size * $SQRT_2 / 2});
+      transform: rotate(90deg);
+    }
+  }
+
+  &--left {
+    .TooltipBalloon__arrow {
+      top: auto;
+      left: auto;
+      right: $triangle-size * -2;
+      right: calc(#{$triangle-size * -2} + 1px); // Compensate rounding issues
+      bottom: 50%;
+      bottom: calc(50% - #{$triangle-size * $SQRT_2 / 2});
+      transform: rotate(-90deg);
+    }
+  }
+}

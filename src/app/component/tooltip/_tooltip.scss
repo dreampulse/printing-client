@@ -1,58 +1,29 @@
-.tooltip {
-  $arrow-width: 5px;
-  $tooltip-width: 300px;
+.Tooltip {
+  display: inline-block;
+  max-width: 100%; // This fixes a case where the child is a block element with truncation.
 
-  text-align: left;
-  max-width: $tooltip-width;
-  position: relative;
-  background: $color-tooltip-bg;
-  padding: $space-l;
-  color: $color-tooltip-text;
-  border-radius: $border-radius;
-  font-size: $font-size-s;
+  // This node is no rendered as a child of the .Tooltip
+  &__portal {
+    // This has to be synced with the transition timeouts in the component
+    $transition-timeout: 0.3s;
+    $transition-delay-enter: 0.3s;
+    $transition-delay-exit: 0.3s;
 
-  & > :last-child {
-    margin-bottom: 0;
-  }
+    opacity: 0;
+    margin: 0;
 
-  &:before {
-    content: ' ';
-    position: absolute;
-    @include scut-triangle(left, $arrow-width 15px, $color-tooltip-bg);
-    transform: rotate(360deg) translateY(-50%);
-    left: -1 * $arrow-width;
-    top: 50%;
-  }
-
-  &--left {
-    &:before {
-      @include scut-triangle(right, $arrow-width 15px, $color-tooltip-bg);
-      transform: rotate(360deg) translateY(-50%);
-      right: -1 * $arrow-width;
-      left: auto;
+    &.Tooltip--transition-enter-active,
+    &.Tooltip--transition-enter-done {
+      transition: opacity $transition-timeout ease-out;
+      transition-delay: $transition-delay-enter;
+      opacity: 1;
     }
-  }
 
-  &--top {
-    text-align: center;
-
-    &:before {
-      @include scut-triangle(down, 15px $arrow-width, $color-tooltip-bg);
-      transform: rotate(360deg) translateX(-50%);
-      top: auto;
-      bottom: -1 * $arrow-width;
-      left: 50%;
-    }
-  }
-
-  &--bottom {
-    text-align: center;
-
-    &:before {
-      @include scut-triangle(up, 15px $arrow-width, $color-tooltip-bg);
-      transform: rotate(360deg) translateX(-50%);
-      top: -1 * $arrow-width;
-      left: 50%;
+    &.Tooltip--transition-exit,
+    &.Tooltip--transition-exit-done {
+      transition: opacity $transition-timeout ease-out;
+      transition-delay: $transition-delay-exit;
+      opacity: 0;
     }
   }
 }
