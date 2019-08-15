@@ -10,7 +10,7 @@ import {selectMenuValues, selectMenuMaterialValues} from '../../../../stories/ut
 const menu = <SelectMenu values={selectMenuValues} />
 const materialMenu = <SelectMenu modifiers={['l']} values={selectMenuMaterialValues} />
 
-storiesOf('Select Field', module)
+storiesOf('SelectField', module)
   .add('default', () => (
     <HandleValue>
       <SelectField placeholder="Placeholder" menu={menu} />

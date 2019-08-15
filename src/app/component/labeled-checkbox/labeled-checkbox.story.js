@@ -6,7 +6,7 @@ import LabeledCheckbox from '.'
 
 import HandleValue from '../../../../stories/util/handle-value'
 
-storiesOf('Labeled Checkbox', module)
+storiesOf('LabeledCheckbox', module)
   .add('default', () => (
     <HandleValue>
       <LabeledCheckbox label="Label" onChange={action('onChange')} />

@@ -6,7 +6,7 @@ import RadioButton from '../radio-button'
 
 import HandleValue from '../../../../stories/util/handle-value'
 
-storiesOf('Radio Button Group & Radio Button', module)
+storiesOf('RadioButtonGroup & RadioButton', module)
   .add('default', () => (
     <HandleValue>
       <RadioButtonGroup name="group1">

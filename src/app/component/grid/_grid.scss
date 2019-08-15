@@ -1,5 +1,9 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-column-gap: $gutter-width;
+  grid-column-gap: $space-base;
+
+  @include respond-to(tablet) {
+    grid-column-gap: $space-xl;
+  }
 }

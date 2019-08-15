@@ -1,27 +1,29 @@
 .InputField {
-  $field-space: 10px;
   $border-width: 1px;
 
   position: relative;
-  height: $field-height;
+  height: $field-height-compact;
+
+  @include respond-to(tablet) {
+    height: $field-height;
+  }
 
   &__input {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: $field-height;
+    height: 100%;
     border: $border-width solid $color-border;
     border-radius: $border-radius;
     font-size: $font-size-base;
-    padding: {
-      top: $space-base;
-      left: $field-space;
-      right: $field-space;
-    }
-
     outline: none;
     color: $color-text;
+    padding: {
+      top: $space-base;
+      left: $space-base;
+      right: $space-base;
+    }
 
     &:focus {
       border-color: $color-field-focus;
@@ -38,16 +40,21 @@
   &__label {
     position: absolute;
     top: 0;
-    left: $border-width + $field-space;
-    right: $border-width + $field-space;
-    height: $field-height;
-    line-height: $field-height;
+    left: $border-width + $space-base;
+    right: $border-width + $space-base;
+    height: $field-height-compact;
+    line-height: $field-height-compact;
     cursor: text;
     color: $color-minor;
     font-size: $font-size-base;
     transform-origin: 0 0; // To keep the distance to the left
     transition: transform $transition-duration-fast ease-in-out;
     transform: scale(0.65) translateY(-10%); // Resize label manually
+
+    @include respond-to(tablet) {
+      height: $field-height;
+      line-height: $field-height;
+    }
   }
 
   &--empty {

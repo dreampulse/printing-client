@@ -1,13 +1,12 @@
 .SelectField {
   $space-around-icon: 0.7em;
-  $space-around-icon-compact: 0.5em;
 
   position: relative;
   display: block;
   width: 100%;
-  height: $field-height;
-  padding: 0 (2 * $space-around-icon + 1em) 0 1em;
-  line-height: $field-height;
+  height: $field-height-compact;
+  line-height: $field-height-compact;
+  padding: 0 (2 * $space-around-icon + 1em) 0 $space-base;
   font-size: $font-size-base;
   border-radius: $border-radius;
   border: 1px solid $color-border;
@@ -17,18 +16,23 @@
   background: $color-bg;
   color: $color-minor;
 
-  &__value {
-    @include scut-truncate;
-
-    display: block;
-  }
-
   & > .Icon {
     position: absolute;
     top: 0;
     right: $space-around-icon;
     height: 100%;
     color: $color-text;
+  }
+
+  @include respond-to(tablet) {
+    height: $field-height;
+    line-height: $field-height;
+  }
+
+  &__value {
+    @include scut-truncate;
+
+    display: block;
   }
 
   &__menu {
@@ -41,14 +45,9 @@
   }
 
   &--compact {
-    height: $compact-field-height;
-    line-height: $compact-field-height;
-    font-size: $font-size-base;
-    padding-left: 0.5em;
-    padding-right: 2 * $space-around-icon-compact + 1em;
-
-    & > .Icon {
-      right: $space-around-icon-compact;
+    @include respond-to(tablet) {
+      height: $field-height-compact;
+      line-height: $field-height-compact;
     }
   }
 
@@ -70,6 +69,12 @@
     opacity: 0.5;
     cursor: not-allowed;
     box-shadow: none;
+  }
+
+  &--open {
+    & > .Icon {
+      transform: rotate(180deg);
+    }
   }
 
   &:focus:not(:disabled) {

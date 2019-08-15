@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 
-import buildClassName from '../../lib/build-class-name'
+import cn from '../../lib/class-names'
 import {getGoogleMaps, geocode} from '../../service/google-maps'
 import geolocate from '../../service/navigator-geolocate'
 
@@ -12,19 +12,18 @@ import locationIcon from '../../../asset/icon/location.svg'
 
 export default class LocationField extends Component {
   static propTypes = {
-    modifiers: PropTypes.arrayOf(PropTypes.string),
     classNames: PropTypes.arrayOf(PropTypes.string),
     googleMapsApiKey: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     placeholder: PropTypes.string,
     onChange: PropTypes.func,
     name: PropTypes.string,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    error: PropTypes.bool
   }
 
   static defaultProps = {
     onChange: () => {},
-    modifiers: [],
     value: ''
   }
 
@@ -127,18 +126,21 @@ export default class LocationField extends Component {
   }
 
   render() {
-    const {modifiers, classNames, name, placeholder} = this.props
-    const {loading, locationError} = this.state
-
-    const disabled = !this.state.autocompleteReady || this.props.disabled
-    const finalModifiers = [...modifiers, {disabled}, {locationError}]
+    const {classNames, name, placeholder, error, disabled} = this.props
+    const {loading, locationError, autocompleteReady} = this.state
     const supportsGeolocation = 'geolocation' in global.navigator
 
     return (
-      <div className={buildClassName('location-field', finalModifiers, classNames)}>
+      <div
+        className={cn(
+          'LocationField',
+          {disabled: disabled || autocompleteReady, error: error || locationError},
+          classNames
+        )}
+      >
         <input
           name={name}
-          className="location-field__input"
+          className="LocationField__input"
           type="text"
           placeholder={placeholder}
           value={this.getValue()}
@@ -149,7 +151,7 @@ export default class LocationField extends Component {
           onChange={this.onInputChange}
         />
         {supportsGeolocation && !loading && (
-          <button type="button" className="location-field__button" onClick={this.onLocationClick}>
+          <button type="button" className="LocationField__button" onClick={this.onLocationClick}>
             <Icon source={locationIcon} />
           </button>
         )}

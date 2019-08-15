@@ -3,7 +3,11 @@
   margin: 0 0 $space-base;
   font-weight: $font-weight-bold;
   color: inherit;
-  font-size: $font-size-l;
+  font-size: $font-size-base;
+
+  @include respond-to(tablet) {
+    font-size: $font-size-l;
+  }
 
   & > .Icon {
     position: relative;
@@ -15,17 +19,31 @@
   &--s {
     font-size: $font-size-base;
     font-weight: $font-weight-bold;
+
+    @include respond-to(tablet) {
+      font-size: $font-size-base;
+    }
   }
 
   &--l {
-    font-size: $font-size-xl;
+    font-size: $font-size-l;
     font-weight: $font-weight-light;
+    line-height: $line-height-s;
+
+    @include respond-to(tablet) {
+      font-size: $font-size-xl;
+    }
   }
 
   &--xl {
     margin-bottom: $space-l;
-    font-size: $font-size-xxl;
+    font-size: $font-size-xl;
     font-weight: $font-weight-light;
+    line-height: $line-height-s;
+
+    @include respond-to(tablet) {
+      font-size: $font-size-xxl;
+    }
   }
 
   &--minor {

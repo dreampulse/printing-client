@@ -80,7 +80,7 @@ $space-xxxl: 70px;
 $space-xxxxl: 100px;
 
 $global-max-width: 1140px;
-$gutter-width: $space-xl;
+$global-max-width-s: 750px;
 
 // Breakpoints
 // ---------------------------------------------------
@@ -93,8 +93,8 @@ $gutter-width: $space-xl;
 $nav-bar-content-height: 40px;
 $nav-bar-height: $nav-bar-content-height + 2 * $space-l;
 $field-height: 50px;
-$compact-field-height: 40px;
-$tiny-field-height: 30px;
+$field-height-compact: 40px;
+$field-height-tiny: 30px;
 $border-radius: 5px;
 $model-item-height: 161px;
 $model-item-space-left: $space-xxxl;

@@ -6,7 +6,7 @@ import SearchField from '.'
 
 import HandleValue from '../../../../stories/util/handle-value'
 
-storiesOf('Search Field', module)
+storiesOf('SearchField', module)
   .add('default', () => (
     <HandleValue>
       <SearchField placeholder="Search…" onClearClick={action('clear click')} />
