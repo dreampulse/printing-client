@@ -38,14 +38,11 @@
     @include respond-to(tablet) {
       height: $layout-height;
     }
-
-    @include respond-to(desktop) {
-      display: none;
-    }
   }
 
   &__aside {
     position: absolute;
+    flex-shrink: 0;
     background: $color-bg-minor;
     transition: transform $transition-duration-fast ease-out;
     transform: translateX(-100%);
@@ -94,11 +91,6 @@
         opacity: 0;
         transition: opacity $transition-duration-fast linear;
       }
-    }
-
-
-    @include respond-to(desktop) {
-      display: none;
     }
   }
 
