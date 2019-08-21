@@ -24,8 +24,3 @@ storiesOf('TooltipBalloon', module)
       Lorem ipsum dolor, sit amet <strong>consectetur</strong> adipisicing elit.
     </TooltipBalloon>
   ))
-  .add('invert', () => (
-    <TooltipBalloon invert>
-      Lorem ipsum dolor, sit amet <strong>consectetur</strong> adipisicing elit.
-    </TooltipBalloon>
-  ))
