@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
@@ -41,6 +41,8 @@ const EditMaterialPage = ({
   selectedState,
   setSelectedState
 }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   const sidebar = () => (
     <>
       <Section>
@@ -89,7 +91,13 @@ const EditMaterialPage = ({
   )
 
   return (
-    <ToolLayout fullMain scrollContainerId={SCROLL_CONTAINER_ID} sidebar={sidebar()}>
+    <ToolLayout
+      isOpen={sidebarOpen}
+      onToggle={isOpen => setSidebarOpen(isOpen)}
+      fullMain
+      scrollContainerId={SCROLL_CONTAINER_ID}
+      sidebar={sidebar()}
+    >
       <OfferLayout
         footer={<OfferFooterPartial configIds={configIds} selectedState={selectedState} />}
       >

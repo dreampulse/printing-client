@@ -1,6 +1,5 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
-import {withState} from '../../../../stories/util/state'
 
 import ToolLayout from '.'
 
@@ -175,19 +174,11 @@ const lorem = `
 `
 
 storiesOf('ToolLayout', module)
-  .add(
-    'default',
-    withState({isOpen: false})(({store}) => (
-      <ToolLayout
-        isOpen={store.state.isOpen}
-        onToggle={isOpen => store.set({isOpen})}
-        sidebar={lorem}
-        scrollContainerId="main-container"
-      >
-        {lorem}
-      </ToolLayout>
-    ))
-  )
+  .add('default', () => (
+    <ToolLayout sidebar={lorem} scrollContainerId="main-container">
+      {lorem}
+    </ToolLayout>
+  ))
   .add('fullMain', () => (
     <ToolLayout sidebar={lorem} fullMain scrollContainerId="main-container">
       {lorem}

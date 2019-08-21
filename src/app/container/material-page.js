@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 import compose from 'recompose/compose'
@@ -69,6 +69,7 @@ const MaterialPage = ({
   updateSelectedModelConfigs
 }) => {
   const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const sidebar = asideNode => (
     <>
@@ -158,7 +159,13 @@ const MaterialPage = ({
   )
 
   return (
-    <ToolLayout fullMain scrollContainerId={SCROLL_CONTAINER_ID} sidebar={sidebar}>
+    <ToolLayout
+      isOpen={sidebarOpen}
+      onToggle={isOpen => setSidebarOpen(isOpen)}
+      fullMain
+      scrollContainerId={SCROLL_CONTAINER_ID}
+      sidebar={sidebar}
+    >
       <OfferLayout
         footer={
           <OfferFooterPartial configIds={selectedModelConfigIds} selectedState={selectedState} />
