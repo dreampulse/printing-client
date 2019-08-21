@@ -868,6 +868,7 @@ const offerReceived = (
 ): CoreReducer => {
   const arrayLengths = payload.models.length
 
+  // TODO: This might change and we need to match the items using the modelId
   invariant(
     payload.models.length === arrayLengths &&
       payload.quotes.length === arrayLengths &&
