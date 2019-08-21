@@ -7,7 +7,7 @@
     display: block;
     margin: 0 auto $space-l;
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       display: inline-block;
       margin-left: $space-xl;
       margin-right: $space-xl;

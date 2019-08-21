@@ -5,7 +5,7 @@ import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
 
 const Container = ({classNames, children, full = false, s = false}) => (
-  <div className={cn('container', {full, s}, classNames)}>{children}</div>
+  <div className={cn('Container', {full, s}, classNames)}>{children}</div>
 )
 
 Container.propTypes = {

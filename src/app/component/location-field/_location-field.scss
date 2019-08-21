@@ -1,14 +1,17 @@
-.location-field {
-  $field-space: 10px;
-  $button-size: 30px;
+.LocationField {
+  $icon-size: round(0.6 * $field-height);
+  $icon-size-compact: round(0.6 * $field-height-compact);
+  // It looks better when the loading indicator is a bit smaller than the button icon
+  $loading-indicator-size: round(0.6 * $icon-size);
+  $loading-indicator-size-compact: round(0.6 * $icon-size-compact);
 
   position: relative;
 
   &__input {
     display: block;
     width: 100%;
-    height: $field-height;
-    padding: 0 (2 * $field-space + $button-size) 0 $field-space;
+    height: $field-height-compact;
+    padding: 0 $field-height-compact 0 $space-base;
     border: 1px solid $color-border;
     box-shadow: $box-shadow-base;
     border-radius: $border-radius;
@@ -21,10 +24,6 @@
       box-shadow: $box-shadow-focus;
     }
 
-    &:active {
-      box-shadow: $box-shadow-active;
-    }
-
     &:invalid {
       border-color: $color-error;
       color: $color-error;
@@ -34,15 +33,22 @@
     &:placeholder {
       color: $color-minor;
     }
+
+    @include respond-to(tablet) {
+      height: $field-height;
+      padding-right: $field-height;
+    }
   }
 
   &__button {
     position: absolute;
-    top: 0.5 * ($field-height - $button-size);
-    right: $field-space;
-    display: inline-block;
-    width: $button-size;
-    height: $button-size;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $field-height-compact;
+    height: $field-height-compact;
     color: $color-primary;
     outline: 0;
 
@@ -53,28 +59,47 @@
 
     & > .Icon {
       display: block;
-      width: $button-size;
-      height: $button-size;
+      width: $icon-size-compact;
+      height: $icon-size-compact;
+    }
+
+    @include respond-to(tablet) {
+      top: 0;
+      width: $field-height;
+      height: $field-height;
+
+      & > .Icon {
+        display: block;
+        width: $icon-size;
+        height: $icon-size;
+      }
     }
   }
 
   & > .LoadingIndicator {
     position: absolute;
-    top: 0.5 * ($field-height - $button-size);
-    right: $field-space;
-    font-size: $button-size;
-    line-height: $button-size;
+    top: 0.5 * ($field-height-compact - $loading-indicator-size-compact);
+    right: 0.5 * ($field-height-compact - $loading-indicator-size-compact);
+    font-size: $loading-indicator-size-compact;
+    line-height: $loading-indicator-size-compact;
+
+    @include respond-to(tablet) {
+      top: 0.5 * ($field-height - $loading-indicator-size);
+      right: 0.5 * ($field-height - $loading-indicator-size);
+      font-size: $loading-indicator-size;
+      line-height: $loading-indicator-size;
+    }
   }
 
-  &--error,
-  &--locationError {
-    .location-field__input,
-    .location-field__input:focus {
+  &--error {
+    .LocationField__input,
+    .LocationField__input:focus {
       border-color: $color-error;
       color: $color-error;
       box-shadow: $box-shadow-error;
     }
-    .location-field__input:focus {
+
+    .LocationField__input:focus {
       box-shadow: $box-shadow-focus;
     }
   }

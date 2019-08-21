@@ -3,7 +3,7 @@
   grid-template-columns: minmax(auto, 600px);
   grid-gap: $space-l;
 
-  @include respond-to(xlarge) {
+  @include respond-to(bigscreen) {
     grid-template-columns: minmax(auto, 600px) minmax(auto, 600px);
   }
 }

@@ -5,7 +5,7 @@ import CountrySelectField from '.'
 
 import HandleValue from '../../../../stories/util/handle-value'
 
-storiesOf('Country Select Field', module).add('default', () => (
+storiesOf('CountrySelectField', module).add('default', () => (
   <HandleValue initialValue="DE">
     <CountrySelectField
       placeholder="Placeholder"

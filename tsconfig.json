@@ -13,7 +13,8 @@
     "strict": true,
     // Import non-ES modules as default imports.
     "esModuleInterop": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src",

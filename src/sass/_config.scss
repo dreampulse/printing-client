@@ -80,35 +80,23 @@ $space-xxxl: 70px;
 $space-xxxxl: 100px;
 
 $global-max-width: 1140px;
-$gutter-width: $space-xl;
+$global-max-width-s: 750px;
 
 // Breakpoints
 // ---------------------------------------------------
 
-$screen-s-max: 599px;
-$screen-md-min: 600px;
-$screen-md-max: 959px;
-$screen-lg-min: 960px;
-$screen-lg-max: 1499px;
-$screen-xlg-min: 1500px;
-
-$mediaqueries: (
-  small-only: '(max-width: #{$screen-s-max})',
-  medium: '(min-width: #{$screen-md-min})',
-  medium-only: '(min-width: #{$screen-md-min}) and (max-width: #{$screen-md-max})',
-  large: '(min-width: #{$screen-lg-min})',
-  large-only: '(min-width: #{$screen-lg-min}) and (max-width: #{$screen-lg-max})',
-  xlarge: '(min-width: #{$screen-xlg-min})'
-);
+@import 'mediaqueries.json';
 
 // Misc
 // ---------------------------------------------------
 
 $nav-bar-content-height: 40px;
+$nav-bar-content-height-mobile: 30px;
 $nav-bar-height: $nav-bar-content-height + 2 * $space-l;
+$nav-bar-height-mobile: $nav-bar-content-height-mobile + 2 * $space-base;
 $field-height: 50px;
-$compact-field-height: 40px;
-$tiny-field-height: 30px;
+$field-height-compact: 40px;
+$field-height-tiny: 30px;
 $border-radius: 5px;
 $model-item-height: 161px;
 $model-item-space-left: $space-xxxl;

@@ -1,18 +1,24 @@
 .SearchField {
   $border-width: 1px;
-  $field-space: 10px;
-  $button-size: 20px;
+  $icon-size: round(0.4 * $field-height);
+  $icon-size-compact: round(0.5 * $field-height-compact);
+  $icon-size-tiny: round(0.6 * $field-height-tiny);
 
   position: relative;
+  height: $field-height-compact;
+
+  @include respond-to(tablet) {
+    height: $field-height;
+  }
 
   &__input {
     display: block;
     width: 100%;
-    height: $field-height;
+    height: 100%;
     border: $border-width solid $color-border;
     border-radius: $border-radius;
     font-size: $font-size-l;
-    padding: 0 (2 * $field-space + $button-size) 0 $field-space;
+    padding: 0 $field-height-compact 0 $space-base;
     outline: none;
     color: $color-text;
 
@@ -28,16 +34,22 @@
     &::placeholder {
       color: $color-minor;
     }
+
+    @include respond-to(tablet) {
+      padding-right: $field-height;
+    }
   }
 
   &__clear {
     position: absolute;
-    top: 0.5 * ($field-height - $button-size);
-    right: $field-space;
-    display: inline-block;
-    width: $button-size;
-    height: $button-size;
-    font-size: $button-size;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $field-height-compact;
+    height: $field-height-compact;
+    font-size: $icon-size-compact;
     color: $color-primary;
     outline: 0;
 
@@ -45,34 +57,57 @@
     &:focus {
       color: $color-primary-active;
     }
+
+    @include respond-to(tablet) {
+      width: $field-height;
+      height: $field-height;
+      font-size: $icon-size;
+    }
   }
 
   &__search {
     position: absolute;
-    top: 0.5 * ($field-height - $button-size);
-    right: $field-space;
-    display: inline-block;
-    width: $button-size;
-    height: $button-size;
-    font-size: $button-size;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $field-height-compact;
+    height: $field-height-compact;
+    font-size: $icon-size-compact;
     color: $color-minor;
     outline: 0;
+
+    @include respond-to(tablet) {
+      width: $field-height;
+      height: $field-height;
+      font-size: $icon-size;
+    }
   }
 
   &--tiny {
-    $button-size-tiny: 16px;
-
     .SearchField__input {
-      height: $tiny-field-height;
+      height: $field-height-tiny;
+      padding-right: $field-height-tiny;
       font-size: $font-size-base;
+
+      @include respond-to(tablet) {
+        height: $field-height-tiny;
+        padding-right: $field-height-tiny;
+      }
     }
 
     .SearchField__search,
     .SearchField__clear {
-      top: 0.5 * ($tiny-field-height - $button-size-tiny);
-      width: $button-size-tiny;
-      height: $button-size-tiny;
-      font-size: $button-size-tiny;
+      width: $field-height-tiny;
+      height: $field-height-tiny;
+      font-size: $icon-size-tiny;
+
+      @include respond-to(tablet) {
+        width: $field-height-tiny;
+        height: $field-height-tiny;
+        font-size: $icon-size-tiny;
+      }
     }
   }
 
