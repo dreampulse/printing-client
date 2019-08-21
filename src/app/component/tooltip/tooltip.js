@@ -110,7 +110,7 @@ const positionStrategy = preferredPosition => (parentRect, portalRect) => {
 }
 
 class Tooltip extends React.Component {
-  propTypes = {
+  static propTypes = {
     classNames: PropTypes.arrayOf(PropTypes.string),
     content: PropTypes.node.isRequired,
     children: PropTypes.node.isRequired,
