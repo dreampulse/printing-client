@@ -195,7 +195,7 @@ const MaterialPartial = ({
       )
 
     return (
-      <MaterialStepSection headline={<Headline size="xl" light label="1. Select Material" />}>
+      <MaterialStepSection headline={<Headline size="l" light label="1. Select Material" />}>
         <Grid>
           <Column lg={8} classNames={['u-margin-bottom']}>
             <RadioButtonGroup
@@ -282,7 +282,7 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        headline={<Headline size="xl" light label="2. Select Variation/Finish" />}
+        headline={<Headline size="l" light label="2. Select Variation/Finish" />}
         fadeIn
       >
         <MaterialSlider>
@@ -344,7 +344,7 @@ const MaterialPartial = ({
     }
 
     return (
-      <MaterialStepSection headline={<Headline size="xl" light label="3. Select Color" />} fadeIn>
+      <MaterialStepSection headline={<Headline size="l" light label="3. Select Color" />} fadeIn>
         {selectedFinishGroup && (
           <ColorCardList>{selectedFinishGroup.materialConfigs.map(renderColorCard)}</ColorCardList>
         )}

@@ -204,11 +204,16 @@ export default class MaterialSlider extends Component {
     const {numDots} = this.state
 
     // Needs a second render cycle
-    if (!this.canvasDom || numDots <= 1) {
+    if (!this.canvasDom || numDots <= 1 || pageSize < 2) {
       return null
     }
 
     const pageSize = this.getPageSize()
+
+    // Don't show too many dots on mobile
+    if (pageSize < 2) {
+      return null
+    }
 
     return (
       <ul className="MaterialSlider__dots" role="presentation">
