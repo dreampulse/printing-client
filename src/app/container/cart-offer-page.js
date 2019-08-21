@@ -10,7 +10,7 @@ import * as navigationAction from '../action/navigation'
 
 import LoadingContainer from '../component/loading-container'
 
-const SharedCartPage = () => <LoadingContainer />
+const CartOfferPage = () => <LoadingContainer />
 
 const mapStateToProps = state => ({
   modelConfigs: state.core.modelConfigs,
@@ -66,4 +66,4 @@ const enhance = compose(
   })
 )
 
-export default enhance(SharedCartPage)
+export default enhance(CartOfferPage)

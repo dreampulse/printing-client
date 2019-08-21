@@ -15,7 +15,7 @@ import EditMaterialPage from './edit-material-page'
 import CartPage from './cart-page'
 import SuccessPage from './success-page'
 import ConfigurationPage from './configuration-page'
-import SharedCartPage from './shared-cart-page'
+import CartOfferPage from './cart-offer-page'
 
 import Modal from './modal'
 
@@ -48,7 +48,7 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
           render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
         />
         <Route
-          path="/cart/:id"
+          path="/offer/:id"
           exact
           render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
         />
@@ -66,7 +66,7 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
         <Route component={CartPage} path="/cart" exact />
         <Route component={SuccessPage} path="/success" exact />
         <Route component={ConfigurationPage} path="/configuration/:id" exact />
-        <Route component={SharedCartPage} path="/cart/:id" exact />
+        <Route component={CartOfferPage} path="/offer/:id" exact />
         <Redirect to="/" />
       </Switch>
       <Modal />

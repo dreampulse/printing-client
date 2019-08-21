@@ -51,7 +51,9 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withProps(({cartId}) => ({
-    cartUrl: `${global.location.origin}/cart/${cartId}?utm_campaign=shareable_cart`
+  withProps(({offerId}) => ({
+    cartUrl: `${global.location.origin}/offer/${encodeURIComponent(
+      offerId
+    )}?utm_campaign=shareable_cart`
   }))
 )(ShareCartModal)
