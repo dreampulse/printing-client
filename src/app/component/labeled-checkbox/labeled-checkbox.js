@@ -7,41 +7,44 @@ import propTypes from '../../prop-types'
 
 import CheckboxField from '../checkbox-field'
 
-const LabeledCheckbox = ({
-  classNames,
-  checked,
-  label,
-  error = false,
-  warning = false,
-  onChange = () => {},
-  name = ''
-}) => {
-  const id = uniqueId('checkbox-field-')
-  return (
-    <div className={cn('LabeledCheckbox', {}, classNames)}>
-      <CheckboxField
-        name={name}
-        error={error}
-        id={id}
-        checked={checked}
-        warning={warning}
-        onChange={e => onChange(!checked, name, e)}
-      />
-      <label htmlFor={id} className="LabeledCheckbox__label">
-        {label}
-      </label>
-    </div>
-  )
-}
+export default class LabeledCheckbox extends React.Component {
+  static propTypes = {
+    ...propTypes.component,
+    checked: PropTypes.bool,
+    label: PropTypes.string.isRequired,
+    onChange: PropTypes.func,
+    name: PropTypes.string,
+    error: PropTypes.bool,
+    warning: PropTypes.bool
+  }
 
-LabeledCheckbox.propTypes = {
-  ...propTypes.component,
-  checked: PropTypes.bool,
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func,
-  name: PropTypes.string,
-  error: PropTypes.bool,
-  warning: PropTypes.bool
-}
+  fieldId = uniqueId('checkbox-field-')
 
-export default LabeledCheckbox
+  render() {
+    const {
+      classNames,
+      checked,
+      label,
+      error = false,
+      warning = false,
+      onChange = () => {},
+      name = ''
+    } = this.props
+
+    return (
+      <div className={cn('LabeledCheckbox', {}, classNames)}>
+        <CheckboxField
+          name={name}
+          error={error}
+          id={this.fieldId}
+          checked={checked}
+          warning={warning}
+          onChange={e => onChange(!checked, name, e)}
+        />
+        <label htmlFor={this.fieldId} className="LabeledCheckbox__label">
+          {label}
+        </label>
+      </div>
+    )
+  }
+}
