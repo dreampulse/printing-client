@@ -47,7 +47,8 @@ import {
   UrlParams,
   UserId,
   PollingStatus,
-  ModelConfigUploaded
+  ModelConfigUploaded,
+  ModelId
 } from '../type'
 import config from '../../../config'
 
@@ -866,17 +867,6 @@ const offerReceived = (
   state: CoreState,
   {payload}: cartActions.OfferReceivedAction
 ): CoreReducer => {
-  const arrayLengths = payload.models.length
-
-  // TODO: This might change and we need to match the items using the modelId
-  invariant(
-    payload.models.length === arrayLengths &&
-      payload.quotes.length === arrayLengths &&
-      payload.shippings.length === arrayLengths &&
-      payload.modelConfigIds.length === arrayLengths,
-    'Invalid offer response lengths'
-  )
-
   const backendModels = keyBy(payload.models, 'modelId')
   const quotes = keyBy(payload.quotes, 'quoteId')
   const shippings = payload.shippings
@@ -893,19 +883,20 @@ const offerReceived = (
     currency: payload.currency
   }
 
-  const modelConfigs: ModelConfig[] = zip(
-    payload.models,
-    payload.quotes,
-    payload.shippings,
-    payload.modelConfigIds
-  ).map(([model, quote, shipping, modelConfigId]) => ({
-    type: 'UPLOADED',
-    quantity: (quote as Quote).quantity,
-    modelId: (model as BackendModel).modelId,
-    quoteId: (quote as Quote).quoteId,
-    shippingId: (shipping as Shipping).shippingId,
-    id: modelConfigId as ConfigId
-  }))
+  const modelConfigs: ModelConfig[] = payload.quotes.map((quote, index) => {
+    const modelId: ModelId = quote.modelId
+    const shipping = payload.shippings.find(s => s.vendorId === quote.vendorId) as Shipping
+    invariant(quote, 'Shipping not found in the quote of the offer response')
+
+    return {
+      type: 'UPLOADED',
+      modelId,
+      quantity: quote.quantity,
+      quoteId: quote.quoteId,
+      shippingId: shipping.shippingId,
+      id: payload.modelConfigIds[index]
+    }
+  })
 
   return {
     ...state,
