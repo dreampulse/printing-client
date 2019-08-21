@@ -19,7 +19,6 @@ export type ConfigurationId = string
 export type OrderId = string
 export type PaymentId = string
 export type UserId = string
-export type OfferId = string
 export type CartOfferId = string
 
 // Material structure json-schema

@@ -1,5 +1,5 @@
 import uuidv1 from 'uuid/v1'
-import {Action, Quote, Shipping, Cart, ConfigId, CartOffer, OfferId} from '../type'
+import {Action, Quote, Shipping, Cart, ConfigId, CartOffer, CartOfferId} from '../type'
 
 export type AddToCartAction = Action<
   'CART.ADD_TO_CART',
@@ -7,7 +7,7 @@ export type AddToCartAction = Action<
 >
 export type CreateCartAction = Action<'CART.CREATE_CART', void>
 export type CartReceivedAction = Action<'CART.CART_RECEIVED', {cart: Cart}>
-export type LoadOfferAction = Action<'CART.LOAD_OFFER', {id: OfferId; currency: string}>
+export type LoadOfferAction = Action<'CART.LOAD_OFFER', {id: CartOfferId; currency: string}>
 export type OfferReceivedAction = Action<
   'CART.OFFER_RECEIVED',
   CartOffer & {modelConfigIds: ConfigId[]}
@@ -45,7 +45,7 @@ export const cartReceived = (cart: Cart): CartReceivedAction => ({
   }
 })
 
-export const loadOffer = (id: OfferId, currency: string): LoadOfferAction => ({
+export const loadOffer = (id: CartOfferId, currency: string): LoadOfferAction => ({
   type: 'CART.LOAD_OFFER',
   payload: {id, currency}
 })

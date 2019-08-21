@@ -14,7 +14,7 @@ import {
   CartId,
   ConfigurationId,
   OrderId,
-  OfferId,
+  CartOfferId,
   PaymentId,
   Quote,
   BackendModel,
@@ -84,7 +84,7 @@ export type CreateCartOfferRequest = {
 }
 
 export type CreateCartOfferResponse = {
-  offerId: OfferId
+  offerId: CartOfferId
 }
 
 export type CartOfferResponse = CartOffer
@@ -254,7 +254,7 @@ export const createOffer = async (offer: CreateCartOfferRequest): Promise<Create
   return response.json
 }
 
-export const getOffer = async (offerId: OfferId, currency: string): Promise<CartOfferResponse> => {
+export const getOffer = async (offerId: CartOfferId, currency: string): Promise<CartOfferResponse> => {
   const response = await httpJson.fetch(
     `${config.printingEngineBaseUrl}/v3/offer/${offerId}?currency=${currency}`
   )
