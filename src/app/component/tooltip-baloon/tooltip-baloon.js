@@ -6,11 +6,11 @@ import cn from '../../lib/class-names'
 const getTransform = (position, shift) => {
   switch (position) {
     case 'left':
-      return `translateY(${-shift}px) rotate(-90deg)`
+      return `translateY(${-shift}px)`
     case 'right':
-      return `translateY(${-shift}px) rotate(90deg)`
+      return `translateY(${-shift}px)`
     case 'bottom':
-      return `translateX(${-shift}px) rotate(180deg)`
+      return `translateX(${-shift}px)`
     default:
       return `translateX(${-shift}px)`
   }

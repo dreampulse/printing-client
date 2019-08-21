@@ -1,74 +1,82 @@
 .TooltipBalloon {
-  $tooltip-width: 300px;
-  $triangle-size: 10px;
-  $SQRT_2: 1.4142135623730951;
-  $some-extra: 5px; // Avoid overlapping shadows
+  $triangle-width: 10px;
+  $triangle-height: 6px;
 
   display: inline-block;
   position: relative;
+  max-width: 300px;
   padding: $space-l;
   border-radius: $border-radius;
-  max-width: $tooltip-width;
-  pointer-events: none;
-  font-size: $font-size-s;
-  font-weight: $font-weight-light;
-  word-wrap: break-all;
   color: $color-tooltip-text;
   background-color: $color-tooltip-bg;
-  box-shadow: none;
+  font-size: $font-size-s;
+  font-weight: $font-weight-light;
+  pointer-events: none;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+
+  & > strong {
+    font-weight: $font-weight-bold;
+  }
 
   &__arrow {
+    @include scut-triangle(
+      down,
+      $triangle-width $triangle-height,
+      $color-tooltip-bg
+    );
+
     position: absolute;
     top: 100%;
-    top: calc(100% - 1px); // Compensate rounding issues
-    left: 50%; // Fallback
-    left: calc(50% - #{$triangle-size * $SQRT_2 - $some-extra / 2});
-    height: $triangle-size / $SQRT_2 + $triangle-size;
-    width: 2 * ($triangle-size / $SQRT_2) + 2 * $some-extra;
-    overflow: hidden;
-
-    &::after {
-      display: block;
-      content: "";
-      height: $triangle-size;
-      width: $triangle-size;
-      transform: translateY(-$triangle-size / 2)
-        translateX($triangle-size * ($SQRT_2 - 1) / 2 + $some-extra)
-        rotate(45deg);
-      background-color: $color-tooltip-bg;
-      box-shadow: none;
-    }
+    left: 50%;
+    margin-left: -0.5 * $triangle-width;
   }
 
   &--bottom {
     .TooltipBalloon__arrow {
+      @include scut-triangle(
+        up,
+        $triangle-width $triangle-height,
+        $color-tooltip-bg
+      );
+
       top: auto;
       bottom: 100%;
-      bottom: calc(100% - 1px); // Compensate rounding issues
-      transform: rotate(180deg);
-    }
-  }
-
-  &--right {
-    .TooltipBalloon__arrow {
-      top: auto;
-      left: $triangle-size * -2;
-      left: calc(#{$triangle-size * -2} + 1px); // Compensate rounding issues
-      bottom: 50%;
-      bottom: calc(50% - #{$triangle-size * $SQRT_2 / 2});
-      transform: rotate(90deg);
     }
   }
 
   &--left {
+    text-align: left;
+
     .TooltipBalloon__arrow {
-      top: auto;
+      @include scut-triangle(
+        right,
+        $triangle-height $triangle-width,
+        $color-tooltip-bg
+      );
+
+      left: 100%;
+      top: 50%;
+      margin-left: 0;
+      margin-top: -0.5 * $triangle-width;
+    }
+  }
+
+  &--right {
+    text-align: left;
+
+    .TooltipBalloon__arrow {
+      @include scut-triangle(
+        left,
+        $triangle-height $triangle-width,
+        $color-tooltip-bg
+      );
+
       left: auto;
-      right: $triangle-size * -2;
-      right: calc(#{$triangle-size * -2} + 1px); // Compensate rounding issues
-      bottom: 50%;
-      bottom: calc(50% - #{$triangle-size * $SQRT_2 / 2});
-      transform: rotate(-90deg);
+      top: 50%;
+      right: 100%;
+      margin-left: 0;
+      margin-top: -0.5 * $triangle-width;
     }
   }
 }

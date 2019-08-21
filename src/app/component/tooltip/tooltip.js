@@ -5,7 +5,7 @@ import {CSSTransition} from 'react-transition-group'
 
 import cn from '../../lib/class-names'
 
-import PositioningPortalWithState from '../positioning-portal-with-state'
+import PositioningPortal from '../positioning-portal'
 import TooltipBaloon from '../tooltip-baloon'
 
 // This has to be synced with the transition timeouts in the styles
@@ -110,12 +110,18 @@ const positionStrategy = preferredPosition => (parentRect, portalRect) => {
 }
 
 class Tooltip extends React.Component {
-  static propTypes = {
+  propTypes = {
     classNames: PropTypes.arrayOf(PropTypes.string),
     content: PropTypes.node.isRequired,
     children: PropTypes.node.isRequired,
     preferredPosition: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
     timeout: PropTypes.number
+  }
+
+  state = {
+    isOpen: false,
+    isHovered: false,
+    closeOnLeave: false
   }
 
   componentWillUnmount() {
@@ -124,11 +130,31 @@ class Tooltip extends React.Component {
     }
   }
 
-  portalRef = React.createRef()
-  timer = null
+  onEnter = () => {
+    this.setState({isHovered: true})
+  }
+
+  onLeave = () => {
+    const {closeOnLeave} = this.state
+    this.setState({isHovered: false})
+
+    if (closeOnLeave) {
+      this.close()
+    }
+  }
+
+  open = () => {
+    this.setState({isOpen: true})
+  }
+
+  close = () => {
+    this.setState({isOpen: false})
+    this.setState({closeOnLeave: false})
+  }
 
   startTimeout = () => {
     const {timeout} = this.props
+
     if (!timeout) {
       return
     }
@@ -137,24 +163,31 @@ class Tooltip extends React.Component {
       clearTimeout(this.timer)
     }
     this.timer = setTimeout(() => {
-      if (this.portalRef.current) {
-        this.portalRef.current.close()
+      const {isHovered} = this.state
+      if (!isHovered) {
+        this.close()
+      } else {
+        this.setState({closeOnLeave: true})
       }
     }, timeout)
   }
 
+  timer = null
+
   render() {
     const {classNames, content, children, preferredPosition = 'top'} = this.props
+    const {isOpen} = this.state
     return (
-      <PositioningPortalWithState
-        ref={this.portalRef}
+      <PositioningPortal
+        isOpen={isOpen}
         onShouldClose={() => {
           if (this.timer) {
             clearTimeout(this.timer)
           }
+          this.close()
         }}
         positionStrategy={positionStrategy(preferredPosition)}
-        portalContent={({isOpen, position, transitionStarted, transitionEnded}) => (
+        portalContent={({position, transitionStarted, transitionEnded}) => (
           <CSSTransition
             classNames="Tooltip--transition"
             timeout={TRANSITION_TIMEOUT}
@@ -173,19 +206,19 @@ class Tooltip extends React.Component {
           </CSSTransition>
         )}
       >
-        {({open, close}) => (
-          <span
-            className={cn('Tooltip', {}, classNames)}
-            onClick={() => {
-              open()
-              this.startTimeout()
-            }}
-            onBlur={close}
-          >
-            {children}
-          </span>
-        )}
-      </PositioningPortalWithState>
+        <span
+          className={cn('Tooltip', {}, classNames)}
+          onClick={() => {
+            this.open()
+            this.startTimeout()
+          }}
+          onMouseEnter={this.onEnter}
+          onMouseLeave={this.onLeave}
+          onBlur={this.close}
+        >
+          {children}
+        </span>
+      </PositioningPortal>
     )
   }
 }
