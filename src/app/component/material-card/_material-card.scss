@@ -52,23 +52,26 @@
 
   &__footer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-grow: 1;
-    justify-content: space-between;
-    align-items: center;
     border-top: 1px solid $color-border-minor;
     padding-top: $space-base;
     font-size: $font-size-xs;
-    height: 1px + $space-base + 2 * $font-size-xs * $line-height-base;
+    height: 1px + 2 * $space-base + 2 * $font-size-xs * $line-height-base + $field-height-compact;
 
-    & > .Button {
-      width: 50%;
+    & > * + * {
+      margin-top: $space-base;
     }
+  }
+
+  &__priceSubline {
+    height: $font-size-s * $line-height-base;
   }
 
   &__unavailableText {
     font-size: $font-size-base;
     font-weight: $font-weight-bold;
+    height: ($font-size-base + $font-size-s) * $line-height-base;
   }
 
   &--unavailable {

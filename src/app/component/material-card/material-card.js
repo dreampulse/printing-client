@@ -72,7 +72,11 @@ const MaterialCard = ({
           <div className="MaterialCard__footer">
             <div>
               {price && cloneElement(price, {loading})}
-              {showPriceSubline && <div>{priceSublineLabel}</div>}
+              {
+                <div className="MaterialCard__priceSubline">
+                  {showPriceSubline && priceSublineLabel}
+                </div>
+              }
             </div>
             <Button
               block

@@ -156,7 +156,7 @@ const MaterialPartial = ({
           materialId: material.id
         }
       )
-
+      // console.log('-- bestOffer', bestOffer)
       return (
         <MaterialCard
           key={material.id}
@@ -165,6 +165,7 @@ const MaterialPartial = ({
           descriptionHeadline="Best used for:"
           price={renderPrice(bestOffer)}
           showPriceSubline={!!bestOffer}
+          priceSublineLabel="Foobar"
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
