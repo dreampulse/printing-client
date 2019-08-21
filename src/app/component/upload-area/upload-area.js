@@ -17,14 +17,12 @@ export default class UploadArea extends Component {
     accept: PropTypes.string,
     description: PropTypes.string.isRequired,
     onChange: PropTypes.func,
-    s: PropTypes.bool,
-    l: PropTypes.bool
+    s: PropTypes.bool
   }
 
   static defaultProps = {
     onChange: () => {},
-    s: false,
-    l: false
+    s: false
   }
 
   constructor(props) {
@@ -71,7 +69,7 @@ export default class UploadArea extends Component {
   }
 
   render() {
-    const {classNames, label, linkLabel, accept, description, s, l} = this.props
+    const {classNames, label, linkLabel, accept, description, s} = this.props
     const {inputId, dragOver} = this.state
 
     return (
@@ -80,8 +78,7 @@ export default class UploadArea extends Component {
           'UploadArea',
           {
             drag: dragOver > 0,
-            s,
-            l
+            s
           },
           classNames
         )}

@@ -27,6 +27,7 @@ import * as modelViewerAction from '../action/model-viewer'
 import * as coreAction from '../action/core'
 import * as modalAction from '../action/modal'
 
+import useBreakpoints from '../hook/use-breakpoints'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import LocationInfoPartial from './location-info-partial'
 import FooterPartial from './footer-partial'
@@ -71,6 +72,7 @@ const UploadPage = ({
   createConfiguration,
   modelConfigs
 }) => {
+  const breakpoints = useBreakpoints()
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
   const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
@@ -143,8 +145,8 @@ const UploadPage = ({
     >
       <UploadArea
         s
-        label="Drag additional 3D files here or"
-        linkLabel="select files"
+        label={breakpoints.desktop ? 'Drag additional 3D files here or' : ''}
+        linkLabel={breakpoints.desktop ? 'select files' : 'Select additional 3D files'}
         description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
         accept="*"
         onChange={openPickUnitModal}
@@ -250,14 +252,15 @@ const UploadPage = ({
           />
         )}
         {!hasModels && (
-          <UploadArea
-            l
-            label="Drag any 3D files here or"
-            linkLabel="select files"
-            description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
-            accept="*"
-            onChange={openPickUnitModal}
-          />
+          <Section>
+            <UploadArea
+              label={breakpoints.desktop ? 'Drag any 3D files here or' : ''}
+              linkLabel={breakpoints.desktop ? 'select files' : 'Select your 3D files'}
+              description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+              accept="*"
+              onChange={openPickUnitModal}
+            />
+          </Section>
         )}
       </Container>
       {hasModels && (
