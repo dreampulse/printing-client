@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
-const SidebarLayout = ({classNames, modifiers, children, sidebar}) => (
-  <section className={buildClassName('sidebar-layout', modifiers, classNames)}>
+const SidebarLayout = ({classNames, children, sidebar}) => (
+  <section className={cn('SidebarLayout', {}, classNames)}>
     <div>{children}</div>
     <div>
-      <aside className="sidebar-layout__aside">{sidebar}</aside>
+      <aside className="SidebarLayout__aside">{sidebar}</aside>
     </div>
   </section>
 )

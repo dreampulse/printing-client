@@ -7,7 +7,7 @@ import Button from '../button'
 import creditCardIcon from '../../../asset/icon/credit-card.svg'
 import paypalIcon from '../../../asset/icon/paypal.svg'
 
-storiesOf('Payment Section', module)
+storiesOf('PaymentSection', module)
   .add('default', () => (
     <PaymentSection
       subtotal="$245.25"

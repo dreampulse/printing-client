@@ -5,9 +5,9 @@ import SidebarLayout from '.'
 import Section from '../section'
 import Paragraph from '../paragraph'
 
-storiesOf('Sidebar Layout', module).add('default', () => {
+storiesOf('SidebarLayout', module).add('default', () => {
   const sidebar = (
-    <Section modifiers={['highlight']}>
+    <Section>
       <Paragraph>
         Sidebar Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -18,7 +18,7 @@ storiesOf('Sidebar Layout', module).add('default', () => {
 
   return (
     <SidebarLayout sidebar={sidebar}>
-      <Section modifiers={['highlight']}>
+      <Section>
         <Paragraph>
           Main Content Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
           tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
