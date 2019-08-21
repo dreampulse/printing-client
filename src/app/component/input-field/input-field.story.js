@@ -5,7 +5,7 @@ import InputField from '.'
 
 import HandleValue from '../../../../stories/util/handle-value'
 
-storiesOf('Input Field', module)
+storiesOf('InputField', module)
   .add('default', () => (
     <HandleValue>
       <InputField label="Label" />
