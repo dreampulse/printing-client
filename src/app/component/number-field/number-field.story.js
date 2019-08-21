@@ -5,7 +5,7 @@ import NumberField from '.'
 
 import HandleValue from '../../../../stories/util/handle-value'
 
-storiesOf('Number Field', module)
+storiesOf('NumberField', module)
   .add('default', () => (
     <HandleValue initialValue={42}>
       <NumberField />

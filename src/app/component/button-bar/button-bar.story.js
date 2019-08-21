@@ -5,18 +5,18 @@ import {action} from '@storybook/addon-actions'
 import Button from '../button'
 import ButtonBar from '.'
 
-storiesOf('Button Bar', module)
+storiesOf('ButtonBar', module)
   .add('default', () => (
     <ButtonBar>
-      <Button label="Button" onClick={action('click')} />
-      <Button label="Button" onClick={action('click')} />
-      <Button label="Button" onClick={action('click')} />
+      <Button label="Button" onClick={action('onClick')} />
+      <Button label="Button" onClick={action('onClick')} />
+      <Button label="Button" onClick={action('onClick')} />
     </ButtonBar>
   ))
   .add('l', () => (
     <ButtonBar l>
-      <Button label="Button" onClick={action('click')} />
-      <Button label="Button" onClick={action('click')} />
-      <Button label="Button" onClick={action('click')} />
+      <Button label="Button" onClick={action('onClick')} />
+      <Button label="Button" onClick={action('onClick')} />
+      <Button label="Button" onClick={action('onClick')} />
     </ButtonBar>
   ))

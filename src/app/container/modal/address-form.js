@@ -64,7 +64,7 @@ const AddressFormModal = ({
       <FormRow>
         <Headline size="s" label="Company information" classNames={['u-no-margin-bottom']} />
       </FormRow>
-      <FormRow modifiers={['half-half']}>
+      <FormRow layout="half-half">
         <Field
           component={renderFormikField(InputField)}
           label="Company Name"
@@ -88,7 +88,7 @@ const AddressFormModal = ({
       <FormRow>
         <Headline size="s" classNames={['u-no-margin-bottom']} label="Billing Address" />
       </FormRow>
-      <FormRow modifiers={['half-half']}>
+      <FormRow layout="half-half">
         <Field
           validate={required}
           component={renderFormikField(InputField)}
@@ -124,7 +124,7 @@ const AddressFormModal = ({
         />
       </FormRow>
 
-      <FormRow modifiers={['half-half']}>
+      <FormRow layout="half-half">
         <Field
           validate={required}
           component={renderFormikField(InputField)}
@@ -139,7 +139,7 @@ const AddressFormModal = ({
         />
       </FormRow>
 
-      <FormRow modifiers={['half-half']}>
+      <FormRow layout="half-half">
         <Field
           validate={getStates(values.billingAddress.countryCode) ? required : undefined}
           component={renderFormikField(StateSelect)}
@@ -153,6 +153,9 @@ const AddressFormModal = ({
           component={renderFormikField(CountrySelectField)}
           placeholder="Country"
           name="billingAddress.countryCode"
+          changeLabel="Changing the country will reset all your material selections"
+          changedLabel="If you select this country your material selection will be reset"
+          changeButtonLabel="edit & reset material"
         />
       </FormRow>
     </>
@@ -194,7 +197,7 @@ const AddressFormModal = ({
         <FormRow>
           <Headline size="s" label="Delivery address" classNames={['u-no-margin-bottom']} />
         </FormRow>
-        <FormRow modifiers={['half-half']}>
+        <FormRow layout="half-half">
           <Field
             validate={required}
             component={renderFormikField(InputField)}
@@ -230,7 +233,7 @@ const AddressFormModal = ({
           />
         </FormRow>
 
-        <FormRow modifiers={['half-half']}>
+        <FormRow layout="half-half">
           <Field
             validate={required}
             component={renderFormikField(InputField)}
@@ -244,7 +247,7 @@ const AddressFormModal = ({
             name="shippingAddress.zipCode"
           />
         </FormRow>
-        <FormRow modifiers={['half-half']}>
+        <FormRow layout="half-half">
           <Field
             validate={getStates(values.shippingAddress.countryCode) ? required : undefined}
             component={renderFormikField(StateSelect)}
@@ -264,7 +267,7 @@ const AddressFormModal = ({
           />
         </FormRow>
 
-        <FormRow modifiers={['half-half']}>
+        <FormRow layout="half-half">
           <Field
             validate={email}
             component={renderFormikField(InputField)}

@@ -27,13 +27,9 @@ export default class UploadArea extends Component {
     l: false
   }
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      inputId: uniqueId('upload-area-input-'),
-      dragOver: 0
-    }
+  state = {
+    inputId: uniqueId('upload-area-input-'),
+    dragOver: 0
   }
 
   onDragEnter = () => {

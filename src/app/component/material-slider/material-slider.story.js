@@ -27,7 +27,7 @@ const card = ({title = 'Polyamide'}) => (
 
 const cards = range(14).map(index => card({title: `Polyamide ${index + 1}`}))
 
-storiesOf('Material Slider', module)
+storiesOf('MaterialSlider', module)
   .add('default', () => (
     /* We need the container here to test the max size of the slider */
     <Container>
@@ -45,7 +45,6 @@ storiesOf('Material Slider', module)
             {range(store.state.count).map(index => card({title: `Polyamide ${index + 1}`}))}
           </MaterialSlider>
         </Container>
-
         <Button label="Add Card" onClick={() => store.set({count: store.state.count + 1})} />
       </>
     ))
@@ -57,7 +56,6 @@ storiesOf('Material Slider', module)
         <Container>
           <MaterialSlider>{shuffle(cards)}</MaterialSlider>
         </Container>
-
         <Button
           label={`Shuffle Cards #${store.state.count}`}
           onClick={() => store.set({count: store.state.count + 1})}

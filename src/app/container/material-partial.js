@@ -221,7 +221,7 @@ const MaterialPartial = ({
           <MaterialSlider>{sortMaterials(showMaterials).map(renderMaterialCard)}</MaterialSlider>
         )}
         {showMaterials.length === 0 && (
-          <Paragraph modifiers={['l']} classNames={['u-align-center']}>
+          <Paragraph size="l" classNames={['u-align-center']}>
             No materials found.
           </Paragraph>
         )}

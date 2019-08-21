@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
-const Image = ({modifiers, classNames, src, alt = ''}) => (
-  <img className={buildClassName('image', modifiers, classNames)} src={src} alt={alt} />
+const Image = ({classNames, src, alt = ''}) => (
+  <img className={cn('Image', {}, classNames)} src={src} alt={alt} />
 )
 
 Image.propTypes = {
