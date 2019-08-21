@@ -32,7 +32,7 @@ export function getMultiModelQuotes(
       vendorId: currentQuotes[0].vendorId,
       materialConfigId: currentQuotes[0].materialConfigId,
       currency: currentQuotes[0].currency,
-      isPrintable: quotesPerModelConfig.reduce(
+      isPrintable: quotesPerModelConfig.reduce<boolean>(
         (result, quote) => result && !!quote && quote.isPrintable,
         true
       ),

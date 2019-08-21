@@ -41,7 +41,6 @@ const SuccessPage = ({orderNumber}) => {
             know when we have received the tracking number for your print from the manufacturer.
             Your order will be produced by:
           </Paragraph>
-
           <OrderConfirmationList step={1}>
             <OrderConfirmationItem icon={<Icon source={orderPlaced} />} title="Order Placed" />
 

@@ -27,6 +27,7 @@ import * as modelViewerAction from '../action/model-viewer'
 import * as coreAction from '../action/core'
 import * as modalAction from '../action/modal'
 
+import useBreakpoints from '../hook/use-breakpoints'
 import ConfigurationHeaderPartial from './configuration-header-partial'
 import LocationInfoPartial from './location-info-partial'
 import FooterPartial from './footer-partial'
@@ -43,12 +44,12 @@ import Notification from '../component/notification'
 import NumberField from '../component/number-field'
 import Grid from '../component/grid'
 import Column from '../component/column'
-import RichText from '../component/rich-text'
 import PageLayout from '../component/page-layout'
 import Container from '../component/container'
 import UploadModelList from '../component/upload-model-list'
 import StickyFooter from '../component/sticky-footer'
 import Link from '../component/link'
+import Paragraph from '../component/paragraph'
 
 const getUnconfiguredModelIds = modelConfigs =>
   modelConfigs
@@ -71,6 +72,7 @@ const UploadPage = ({
   createConfiguration,
   modelConfigs
 }) => {
+  const breakpoints = useBreakpoints()
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
   const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
@@ -80,9 +82,9 @@ const UploadPage = ({
       <Grid>
         <Column md={0} lg={4} />
         <Column md={12} lg={4}>
-          <RichText classNames={['u-margin-bottom-xl', 'u-align-center']}>
+          <Paragraph classNames={['u-margin-bottom-xl', 'u-align-center']}>
             Large quantities, recurring orders or special requirements?
-          </RichText>
+          </Paragraph>
           <div className="u-align-center ">
             <Button
               minor
@@ -108,7 +110,7 @@ const UploadPage = ({
       {location.state && location.state.notification && (
         <Notification
           message={location.state.notification.message}
-          warning={location.state.notification.warning}
+          type={location.state.notification.warning ? 'warning' : 'default'}
         />
       )}
     </Section>
@@ -143,8 +145,8 @@ const UploadPage = ({
     >
       <UploadArea
         s
-        label="Drag additional 3D files here or"
-        linkLabel="select files"
+        label={breakpoints.desktop ? 'Drag additional 3D files here or' : ''}
+        linkLabel={breakpoints.desktop ? 'select files' : 'Select additional 3D files'}
         description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
         accept="*"
         onChange={openPickUnitModal}
@@ -250,14 +252,15 @@ const UploadPage = ({
           />
         )}
         {!hasModels && (
-          <UploadArea
-            l
-            label="Drag any 3D files here or"
-            linkLabel="select files"
-            description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
-            accept="*"
-            onChange={openPickUnitModal}
-          />
+          <Section>
+            <UploadArea
+              label={breakpoints.desktop ? 'Drag any 3D files here or' : ''}
+              linkLabel={breakpoints.desktop ? 'select files' : 'Select your 3D files'}
+              description="We support most file formats, but STL and OBJ files generally provide the best results and the lowest prices."
+              accept="*"
+              onChange={openPickUnitModal}
+            />
+          </Section>
         )}
       </Container>
       {hasModels && (

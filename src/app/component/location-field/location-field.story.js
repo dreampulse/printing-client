@@ -13,7 +13,7 @@ storiesOf('LocationField', module)
       <LocationField
         placeholder="Set your location"
         googleMapsApiKey={googleMapsApiKey}
-        onChange={action('change')}
+        onChange={action('onChange')}
       />
     </HandleValue>
   ))
@@ -22,7 +22,7 @@ storiesOf('LocationField', module)
       <LocationField
         placeholder="Set your location"
         googleMapsApiKey={googleMapsApiKey}
-        onChange={action('change')}
+        onChange={action('onChange')}
       />
     </HandleValue>
   ))
@@ -32,7 +32,7 @@ storiesOf('LocationField', module)
         error
         placeholder="Set your location"
         googleMapsApiKey={googleMapsApiKey}
-        onChange={action('change')}
+        onChange={action('onChange')}
       />
     </HandleValue>
   ))

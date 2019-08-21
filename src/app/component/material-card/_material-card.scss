@@ -28,7 +28,7 @@
     position: relative;
     margin-bottom: $space-base;
 
-    & > .headline {
+    & > .Headline {
       @include scut-truncate();
       margin-bottom: 0;
     }

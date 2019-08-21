@@ -1,34 +1,32 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
-import centered from '@storybook/addon-centered'
 
 import Tooltip from '.'
-import Headline from '../headline'
-import Paragraph from '../paragraph'
+import Button from '../button'
 
 storiesOf('Tooltip', module)
-  .addDecorator(centered)
   .add('default', () => (
-    <Tooltip>
-      <Headline label="Headline" />
-      <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
+    <Tooltip content="Tooltip content with larger text can also span multiple lines">
+      <Button label="Open tooltip" />
     </Tooltip>
   ))
-  .add('orientation right', () => (
-    <Tooltip orientation="right">
-      <Headline label="Headline" />
-      <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
+  .add('with timeout', () => (
+    <Tooltip timeout={1000} content="Tooltip content with larger text can also span multiple lines">
+      <Button label="Open tooltip" />
     </Tooltip>
   ))
-  .add('orientation top', () => (
-    <Tooltip orientation="top">
-      <Headline label="Headline" />
-      <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
-    </Tooltip>
-  ))
-  .add('orientation bottom', () => (
-    <Tooltip orientation="bottom">
-      <Headline label="Headline" />
-      <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Paragraph>
-    </Tooltip>
+  .add('scrollable test', () => (
+    <div style={{margin: '150vh 150vw', display: 'inline-block'}}>
+      <Tooltip
+        timeout={5000}
+        preferredPosition="right"
+        content={
+          <>
+            Tooltip content with larger text <br /> can also span multiple lines
+          </>
+        }
+      >
+        <Button label="Open tooltip" />
+      </Tooltip>
+    </div>
   ))

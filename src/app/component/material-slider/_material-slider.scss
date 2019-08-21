@@ -1,4 +1,4 @@
-.material-slider {
+.MaterialSlider {
   $item-width: $material-card-width;
   $item-gutter: $space-l;
   $item-space-top: 2px; // Due to material card shadow
@@ -113,8 +113,8 @@
     }
   }
 
-  &--show-back {
-    .material-slider__back {
+  &--showBack {
+    .MaterialSlider__back {
       opacity: 1;
 
       & > * {
@@ -131,8 +131,8 @@
     }
   }
 
-  &--show-next {
-    .material-slider__next {
+  &--showNext {
+    .MaterialSlider__next {
       opacity: 1;
 
       & > * {

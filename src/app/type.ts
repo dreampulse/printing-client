@@ -156,6 +156,12 @@ export type MultiModelQuote = {
   quotes: Quote[]
 }
 
+export type Offer = {
+  multiModelQuote: MultiModelQuote
+  shipping: Shipping
+  totalGrossPrice: number
+}
+
 export type Shipping = {
   shippingId: ShippingId
   vendorId: VendorId

@@ -2,20 +2,17 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import range from 'lodash/range'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
 import starIcon from '../../../asset/icon/star.svg'
 
-const StarRating = ({classNames, modifiers, stars, of = 5}) => (
-  <ul
-    className={buildClassName('star-rating', modifiers, classNames)}
-    aria-label={`${stars} of ${of}`}
-  >
+const StarRating = ({classNames, stars, of = 5}) => (
+  <ul className={cn('StarRating', {}, classNames)} aria-label={`${stars} of ${of}`}>
     {range(of).map(key => (
-      <li key={`star-${key}`} className={key >= stars ? 'star-rating__star-empty' : null}>
+      <li key={`star-${key}`} className={key >= stars ? 'StarRating__star-empty' : null}>
         <Icon source={starIcon} />
       </li>
     ))}

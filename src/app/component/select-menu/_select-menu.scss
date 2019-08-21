@@ -1,7 +1,5 @@
-.select-menu {
+.SelectMenu {
   $max-height: 250px;
-  $max-height-l: 500px;
-  $min-width-l: 400px;
 
   max-height: $max-height;
   overflow-y: auto;
@@ -13,10 +11,5 @@
 
   &__item {
     display: block;
-  }
-
-  &--l {
-    min-width: $min-width-l;
-    max-height: $max-height-l;
   }
 }

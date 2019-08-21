@@ -22,7 +22,6 @@ export default class InputField extends Component {
   }
 
   static defaultProps = {
-    modifiers: [], // eslint-disable-line react/default-props-match-prop-types
     type: 'text',
     onChange: () => {},
     name: '',

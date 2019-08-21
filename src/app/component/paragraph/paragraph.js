@@ -4,14 +4,14 @@ import React from 'react'
 import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
 
-const Paragraph = ({classNames, children, l = false, strong = false, minor = false}) => (
-  <p className={cn('Paragraph', {l, strong, minor}, classNames)}>{children}</p>
+const Paragraph = ({classNames, children, size = 'default', strong = false, minor = false}) => (
+  <p className={cn('Paragraph', {[`size-${size}`]: size, strong, minor}, classNames)}>{children}</p>
 )
 
 Paragraph.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
-  l: PropTypes.bool,
+  size: PropTypes.oneOf(['default', 'l']),
   strong: PropTypes.bool,
   minor: PropTypes.bool
 }
