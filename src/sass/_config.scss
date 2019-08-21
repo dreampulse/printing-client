@@ -91,7 +91,9 @@ $global-max-width-s: 750px;
 // ---------------------------------------------------
 
 $nav-bar-content-height: 40px;
+$nav-bar-content-height-mobile: 30px;
 $nav-bar-height: $nav-bar-content-height + 2 * $space-l;
+$nav-bar-height-mobile: $nav-bar-content-height-mobile + 2 * $space-base;
 $field-height: 50px;
 $field-height-compact: 40px;
 $field-height-tiny: 30px;

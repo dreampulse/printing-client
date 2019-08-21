@@ -27,7 +27,8 @@ class CartNavLink extends React.Component {
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func,
     count: PropTypes.number,
-    children: PropTypes.node
+    children: PropTypes.node,
+    linkOnly: PropTypes.bool
   }
 
   static defaultProps = {
@@ -58,6 +59,11 @@ class CartNavLink extends React.Component {
   }
 
   onEnter = () => {
+    const {linkOnly} = this.props
+    if (linkOnly) {
+      return
+    }
+
     this.setState({
       open: this.state.open + 1
     })
@@ -72,6 +78,10 @@ class CartNavLink extends React.Component {
   }
 
   onLeave = () => {
+    const {linkOnly} = this.props
+    if (linkOnly) {
+      return
+    }
     this.leaveTimeout = setTimeout(() => {
       this.setState({
         open: this.state.open - 1
@@ -83,6 +93,11 @@ class CartNavLink extends React.Component {
   leaveTimeout = null
 
   doNotify = prevChildren => {
+    const {linkOnly} = this.props
+    if (linkOnly) {
+      return
+    }
+
     this.setState({
       open: this.state.open + 1,
       notify: true,
