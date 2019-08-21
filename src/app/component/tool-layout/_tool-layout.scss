@@ -56,8 +56,6 @@
     }
 
     @include respond-to(desktop) {
-      position: relative;
-      transform: none;
       width: $sidebar-width;
       height: $layout-height;
     }
