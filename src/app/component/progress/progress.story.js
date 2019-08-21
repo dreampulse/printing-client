@@ -3,16 +3,7 @@ import {storiesOf} from '@storybook/react'
 
 import Progress from '.'
 
-const Container = ({children}) => <div style={{height: '100px'}}>{children}</div>
-
 storiesOf('Progress', module)
-  .add('default', () => (
-    <Container>
-      <Progress value={100} />
-    </Container>
-  ))
-  .add('20%', () => (
-    <Container>
-      <Progress value={20} />
-    </Container>
-  ))
+  .addDecorator(story => <div style={{height: '100px'}}>{story()}</div>)
+  .add('default', () => <Progress value={100} />)
+  .add('20%', () => <Progress value={20} />)

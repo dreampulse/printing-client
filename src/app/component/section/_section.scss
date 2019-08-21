@@ -1,8 +1,3 @@
-.section {
+.Section {
   margin: 0 0 $space-xxl;
-
-  &--highlight {
-    padding: $space-xl $space-xxl;
-    border: 1px solid $color-border-minor;
-  }
 }

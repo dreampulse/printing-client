@@ -9,7 +9,7 @@ import SelectMenu from '../select-menu'
 import HandleValue from '../../../../stories/util/handle-value'
 import {googleMapsApiKey, currencies} from '../../../../stories/util/data'
 
-storiesOf('Configuration Header', module).add('default', () => (
+storiesOf('ConfigurationHeader', module).add('default', () => (
   <ConfigurationHeader
     location={
       <HandleValue>

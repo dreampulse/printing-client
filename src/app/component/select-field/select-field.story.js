@@ -5,10 +5,9 @@ import SelectField from '.'
 import SelectMenu from '../select-menu'
 
 import HandleValue from '../../../../stories/util/handle-value'
-import {selectMenuValues, selectMenuMaterialValues} from '../../../../stories/util/data'
+import {selectMenuValues} from '../../../../stories/util/data'
 
 const menu = <SelectMenu values={selectMenuValues} />
-const materialMenu = <SelectMenu modifiers={['l']} values={selectMenuMaterialValues} />
 
 storiesOf('SelectField', module)
   .add('default', () => (
@@ -40,11 +39,6 @@ storiesOf('SelectField', module)
       compact
       value={{value: 'item2', colorValue: 'ff0000', label: 'Constant Select Field'}}
     />
-  ))
-  .add('material', () => (
-    <HandleValue>
-      <SelectField placeholder="Placeholder" menu={materialMenu} />
-    </HandleValue>
   ))
   .add('disabled', () => (
     <HandleValue>

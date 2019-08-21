@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
 import closeIcon from '../../../asset/icon/close.svg'
 
-const CloseButton = ({classNames, modifiers, onClick = () => {}}) => (
+const CloseButton = ({classNames, size = 'default', invert = false, onClick = () => {}}) => (
   <button
     type="button"
-    className={buildClassName('close-button', modifiers, classNames)}
+    className={cn('CloseButton', {invert, [`size-${size}`]: true}, classNames)}
     onClick={onClick}
   >
     <Icon block source={closeIcon} title="Close" />
@@ -20,7 +20,9 @@ const CloseButton = ({classNames, modifiers, onClick = () => {}}) => (
 
 CloseButton.propTypes = {
   ...propTypes.component,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  size: PropTypes.oneOf(['default', 'l']),
+  invert: PropTypes.bool
 }
 
 export default CloseButton

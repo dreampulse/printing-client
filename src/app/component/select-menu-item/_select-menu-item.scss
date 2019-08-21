@@ -1,4 +1,4 @@
-.select-menu-item {
+.SelectMenuItem {
   $height: 40px;
 
   position: relative;
@@ -27,13 +27,7 @@
     flex-grow: 1;
   }
 
-  &__price {
-    flex-shrink: 0;
-    color: $color-minor;
-    margin-left: $space-base;
-  }
-
-  &:hover:not(.select-menu-item--selected) {
+  &:hover:not(.SelectMenuItem--selected) {
     background: $color-gray-5;
   }
 }

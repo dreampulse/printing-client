@@ -1,9 +1,9 @@
-.feature-list {
+.FeatureList {
   list-style: none;
   margin: 0 0 $space-base;
   padding: 0;
 
-  & > .feature-list-item:last-child {
+  & > .FeatureListItem:last-child {
     margin-bottom: 0;
   }
 }

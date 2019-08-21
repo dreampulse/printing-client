@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import {createPollHandle} from '../../service/image'
 
@@ -12,19 +12,24 @@ export default class ImageContainer extends Component {
     // Required for a11y purposes
     alt: PropTypes.string.isRequired,
     source: PropTypes.string,
-    fallbackSource: PropTypes.string
+    fallbackSource: PropTypes.string,
+    ratio: PropTypes.oneOf(['default', '1-1'])
+  }
+
+  static defaultProps = {
+    ratio: 'default'
   }
 
   constructor() {
     super()
-    this.state = {
-      imageLoaded: false
-    }
-    this.onPollSuccess = this.onPollSuccess.bind(this)
     this.pollHandle = createPollHandle(this.onPollSuccess)
   }
 
-  componentWillMount() {
+  state = {
+    imageLoaded: false
+  }
+
+  componentDidMount() {
     const source = this.props.source
 
     if (source) {
@@ -32,14 +37,15 @@ export default class ImageContainer extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const source = nextProps.source
-
-    if (source && source !== this.props.source) {
-      this.startLoading(source)
+  componentDidUpdate(prevProps) {
+    if (this.props.source === prevProps.source) {
+      return
     }
 
-    if (!source && source !== this.props.source) {
+    if (this.props.source) {
+      this.startLoading(this.props.source)
+    } else {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         imageLoaded: false
       })
@@ -50,13 +56,13 @@ export default class ImageContainer extends Component {
     this.pollHandle.dispose()
   }
 
-  onPollSuccess() {
+  onPollSuccess = () => {
     this.setState({
       imageLoaded: true
     })
   }
 
-  startLoading(source) {
+  startLoading = source => {
     this.pollHandle.startPoll(source)
     this.setState({
       imageLoaded: false
@@ -64,16 +70,20 @@ export default class ImageContainer extends Component {
   }
 
   render() {
-    const {source, fallbackSource, modifiers = [], classNames, alt} = this.props
+    const {source, fallbackSource, ratio, classNames, alt} = this.props
     const {imageLoaded} = this.state
 
-    const finalModifiers = source ? modifiers : ['no-source', ...modifiers]
-
     return (
-      <div className={buildClassName('image-container', finalModifiers, classNames)}>
-        {imageLoaded && <img className="image-container__image" src={source} alt={alt} />}
+      <div
+        className={cn(
+          'ImageContainer',
+          {noSource: !source, [`ratio-${ratio}`]: !!ratio},
+          classNames
+        )}
+      >
+        {imageLoaded && <img className="ImageContainer__image" src={source} alt={alt} />}
         {!imageLoaded && fallbackSource && (
-          <img className="image-container__image" src={fallbackSource} alt={alt} />
+          <img className="ImageContainer__image" src={fallbackSource} alt={alt} />
         )}
       </div>
     )

@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
 import Headline from '../headline'
 
-const PageHeader = ({classNames, modifiers, label, backLink, action}) => (
-  <div className={buildClassName('page-header', modifiers, classNames)}>
-    <div className="page-header__title">
+const PageHeader = ({classNames, label, backLink, action}) => (
+  <div className={cn('PageHeader', {}, classNames)}>
+    <div className="PageHeader__title">
       <Headline size="xl" light label={label} />
-      {action && <div className="page-header__action">{action}</div>}
+      {action && <div className="PageHeader__action">{action}</div>}
     </div>
     {backLink}
   </div>

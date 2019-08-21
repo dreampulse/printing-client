@@ -3,4 +3,4 @@ import {storiesOf} from '@storybook/react'
 
 import LoadingContainer from '.'
 
-storiesOf('Loading Container', module).add('default', () => <LoadingContainer />)
+storiesOf('LoadingContainer', module).add('default', () => <LoadingContainer />)

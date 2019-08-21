@@ -4,7 +4,7 @@ import {action} from '@storybook/addon-actions'
 
 import UploadArea from '.'
 
-storiesOf('Upload Area', module)
+storiesOf('UploadArea', module)
   .add('default', () => (
     <UploadArea
       label="Drag any 3D files here or"
