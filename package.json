@@ -13,7 +13,7 @@
     "start:cypress": "PORT=3002 NODE_ENV=cypress WEBPACK_ENV=development webpack-dev-server",
     "start:storybook": "start-storybook -p 3001",
     "start": "babel-node bin/app-server",
-    "test": "npm run test:coverage && npm run test:lint",
+    "test": "npm run test:coverage && npm run test:lint && npm run test:compile",
     "test:coverage": "NODE_ENV=test BABEL_ENV=coverage nyc mocha --opts test/unit/mocha.opts ./src/**/*.spec.js",
     "test:lint": "npm run test:eslint && npm run test:tslint",
     "test:eslint": "eslint src test bin stories .storybook ./*.js",
