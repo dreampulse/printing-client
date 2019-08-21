@@ -5,39 +5,41 @@ import uniqueId from 'lodash/uniqueId'
 import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
 
-const RadioButtonGroup = ({
-  classNames,
-  children,
-  name,
-  value,
-  disabled = false,
-  onChange = () => {},
-  tiny = false
-}) => {
-  const onClick = event => {
-    onChange(event.target.value, name, event)
+export default class RadioButtonGroup extends React.Component {
+  static propTypes = {
+    ...propTypes.component,
+    children: PropTypes.node,
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    disabled: PropTypes.bool,
+    tiny: PropTypes.bool
   }
-  const groupName = name || uniqueId('button-group-')
-  const buttons = React.Children.map(children, child =>
-    cloneElement(child, {
-      onClick,
-      name: groupName,
-      checked: value === child.props.value,
-      disabled: child.props.disabled || disabled,
-      tiny
-    })
-  )
-  return <div className={cn('RadioButtonGroup', {}, classNames)}>{buttons}</div>
-}
 
-RadioButtonGroup.propTypes = {
-  ...propTypes.component,
-  children: PropTypes.node,
-  name: PropTypes.string.isRequired,
-  onChange: PropTypes.func,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  disabled: PropTypes.bool,
-  tiny: PropTypes.bool
-}
+  groupName = uniqueId('button-group-')
 
-export default RadioButtonGroup
+  render() {
+    const {
+      classNames,
+      children,
+      name = this.groupName,
+      value,
+      disabled = false,
+      onChange = () => {},
+      tiny = false
+    } = this.props
+    const onClick = event => {
+      onChange(event.target.value, name, event)
+    }
+    const buttons = React.Children.map(children, child =>
+      cloneElement(child, {
+        onClick,
+        name,
+        checked: value === child.props.value,
+        disabled: child.props.disabled || disabled,
+        tiny
+      })
+    )
+    return <div className={cn('RadioButtonGroup', {}, classNames)}>{buttons}</div>
+  }
+}
