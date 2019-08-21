@@ -87,6 +87,7 @@ const UploadPage = ({
           </Paragraph>
           <div className="u-align-center ">
             <Button
+              block={!breakpoints.tablet}
               minor
               label="Contact Us"
               onClick={event => {
@@ -222,6 +223,7 @@ const UploadPage = ({
         hasModels ? (
           <StickyFooter>
             <Button
+              block={!breakpoints.tablet}
               disabled={!selectedModelConfigIds.length > 0}
               label="Configure Selection"
               onClick={() => goToMaterial(selectedModelConfigIds)}
