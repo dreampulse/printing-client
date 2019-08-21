@@ -1,6 +1,5 @@
 import uuidv1 from 'uuid/v1'
-import {Action, Quote, Shipping, Cart, ConfigId, CartId, OfferId} from '../type'
-import {OfferResponse} from '../lib/printing-engine'
+import {Action, Quote, Shipping, Cart, ConfigId, CartOffer, OfferId} from '../type'
 
 export type AddToCartAction = Action<
   'CART.ADD_TO_CART',
@@ -11,7 +10,7 @@ export type CartReceivedAction = Action<'CART.CART_RECEIVED', {cart: Cart}>
 export type LoadOfferAction = Action<'CART.LOAD_OFFER', {id: OfferId; currency: string}>
 export type OfferReceivedAction = Action<
   'CART.OFFER_RECEIVED',
-  OfferResponse & {modelConfigIds: ConfigId[]}
+  CartOffer & {modelConfigIds: ConfigId[]}
 >
 
 export type CartAction =
@@ -51,7 +50,7 @@ export const loadOffer = (id: OfferId, currency: string): LoadOfferAction => ({
   payload: {id, currency}
 })
 
-export const offerReceived = (offer: OfferResponse): OfferReceivedAction => ({
+export const offerReceived = (offer: CartOffer): OfferReceivedAction => ({
   type: 'CART.OFFER_RECEIVED',
   payload: {...offer, modelConfigIds: offer.models.map(_ => uuidv1())}
 })
