@@ -72,8 +72,8 @@ const OfferPartial = ({
             timeout={5000}
             content={
               <>
-                All prices displayed take into consideration your provided location as well asthat
-                of the most ideal manufacturer, shipping and tax estimatesincluded.
+                All prices displayed take into consideration your provided location as well as that
+                of the most ideal manufacturer, shipping and tax estimates are all included.
               </>
             }
           >
