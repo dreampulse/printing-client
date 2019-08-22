@@ -499,7 +499,7 @@ const CartPage = ({
             <Link
               largeIcon
               icon={shareIcon}
-              label="Share"
+              label="Share Cart"
               onClick={() => {
                 createOffer(cart.cartId)
               }}
