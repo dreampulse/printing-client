@@ -869,7 +869,6 @@ const offerReceived = (
 ): CoreReducer => {
   const backendModels = keyBy(payload.models, 'modelId')
   const quotes = keyBy(payload.quotes, 'quoteId')
-  const shippings = payload.shippings
   const cart: Cart = {
     cartId: payload.cartId,
     shippingIds: payload.shippings.map(shipping => shipping.shippingId),
@@ -886,7 +885,11 @@ const offerReceived = (
   const modelConfigs: ModelConfig[] = payload.quotes.map((quote, index) => {
     const modelId: ModelId = quote.modelId
     const shipping = payload.shippings.find(s => s.vendorId === quote.vendorId) as Shipping
-    invariant(quote, 'Shipping not found in the quote of the offer response')
+    invariant(quote, 'Shipping not found in the cart offer!')
+    invariant(
+      state.shippings.find(s => s.shippingId === shipping.shippingId),
+      'Cart offer shippingId not found in general shippings!'
+    )
 
     return {
       type: 'UPLOADED',
@@ -902,7 +905,6 @@ const offerReceived = (
     ...state,
     backendModels,
     quotes,
-    shippings,
     cart,
     modelConfigs
   }
