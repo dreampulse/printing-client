@@ -1,4 +1,4 @@
-.model-list {
+.ModelList {
   position: relative;
   margin-bottom: $space-base;
 
@@ -14,7 +14,7 @@
     background: $color-bg;
     border-bottom: 1px solid $color-border-minor;
 
-    & + .model-list__items {
+    & + .ModelList__items {
       // To pull items back to top (due to position sticky)
       margin-top: -1 * $model-item-height + $space-base;
     }

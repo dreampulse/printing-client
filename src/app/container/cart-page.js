@@ -97,7 +97,7 @@ const CartPage = ({
     <Section>
       <Notification
         message="It seems that you are using an ad blocker. Please temporarily disable this to pay using PayPal, or select a different payment method."
-        warning
+        type="warning"
       />
     </Section>
   )
@@ -404,7 +404,7 @@ const CartPage = ({
           <Paragraph>
             <Headline
               tag="strong"
-              modifiers={['s']}
+              size="s"
               label="Need different payment option?"
               classNames={['u-no-margin-bottom']}
             />
@@ -496,16 +496,14 @@ const CartPage = ({
         <PageHeader
           label="Review Order"
           action={
-            featureFlags.share && (
-              <Link
-                largeIcon
-                icon={shareIcon}
-                label="Share"
-                onClick={() => {
-                  createOffer(cart.cartId)
-                }}
-              />
-            )
+            <Link
+              largeIcon
+              icon={shareIcon}
+              label="Share Cart"
+              onClick={() => {
+                createOffer(cart.cartId)
+              }}
+            />
           }
         />
         {hasModels && (
@@ -516,7 +514,7 @@ const CartPage = ({
           </SidebarLayout>
         )}
         {!hasModels && (
-          <Paragraph l>
+          <Paragraph size="l">
             Your cart is currently empty. Start by{' '}
             <Link
               href="/"
@@ -600,11 +598,7 @@ export default compose(
     })
   ),
   withHandlers({
-    onSuccess: props => () =>
-      props.goToSuccess({
-        orderNumber: props.orderNumber,
-        vendorIds: props.modelsWithConfig.map(info => info.quote.vendorId)
-      }),
+    onSuccess: props => () => props.goToSuccess(props.orderNumber),
     payWithPaypal: props => async () => {
       const userId = props.user.userId
       const cartId = props.cart.cartId
@@ -665,8 +659,8 @@ export default compose(
     createOffer: ({fatalError, openShareCartModal}) => cartId => {
       printingEngine
         .createOffer({cartId})
-        .then(() => {
-          openShareCartModal(cartId)
+        .then(({offerId}) => {
+          openShareCartModal(offerId)
         })
         .catch(fatalError)
     }

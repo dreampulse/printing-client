@@ -10,10 +10,10 @@
   position: relative;
 
   & > &__item + &__item {
-    margin-top: $space-xxxl;
+    margin-top: $space-xl;
   }
 
-  @include respond-to(medium) {
+  @include respond-to(tablet) {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -37,7 +37,7 @@
     height: calc(100% - #{$oder-confirmation-item-size});
     width: $bar-width;
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       left: $oder-confirmation-item-size / 2;
       top: $oder-confirmation-item-size / 2 - $bar-width / 2;
       height: $bar-width;
@@ -52,7 +52,7 @@
     transform-origin: center top;
     transform: scaleY(0);
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       transform-origin: left center;
       transform: scaleX(0);
     }
@@ -64,7 +64,7 @@
     &--step#{$i} &__progress {
       transform: scaleY(#{$value});
 
-      @include respond-to(medium) {
+      @include respond-to(tablet) {
         transform: scaleX(#{$value});
       }
     }

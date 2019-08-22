@@ -1,13 +1,4 @@
-@keyframes image-container-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.image-container {
+.ImageContainer {
   @include scut-ratio-box(4/3);
 
   &__image {
@@ -18,7 +9,7 @@
     height: 100%;
     object-fit: cover;
     object-position: center center;
-    animation-name: image-container-fade-in;
+    animation-name: ImageContainer-fadeIn;
     animation-duration: $transition-duration;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
@@ -28,7 +19,16 @@
     @include scut-ratio-box(1/1);
   }
 
-  &--no-source &__image {
+  &--noSource &__image {
     animation-name: none;
+  }
+
+  @keyframes ImageContainer-fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 }

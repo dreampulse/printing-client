@@ -47,7 +47,8 @@ import {
   UrlParams,
   UserId,
   PollingStatus,
-  ModelConfigUploaded
+  ModelConfigUploaded,
+  ModelId
 } from '../type'
 import config from '../../../config'
 
@@ -849,6 +850,66 @@ const loadConfiguration = (
     })
   )
 
+const loadOffer = (
+  state: CoreState,
+  {payload: {id, currency}}: cartActions.LoadOfferAction
+): CoreReducer =>
+  loop(
+    state,
+    Cmd.run<Actions>(printingEngine.getOffer, {
+      args: [id, currency],
+      successActionCreator: cartActions.offerReceived,
+      failActionCreator: coreActions.fatalError
+    })
+  )
+
+const offerReceived = (
+  state: CoreState,
+  {payload}: cartActions.OfferReceivedAction
+): CoreReducer => {
+  const backendModels = keyBy(payload.models, 'modelId')
+  const quotes = keyBy(payload.quotes, 'quoteId')
+  const cart: Cart = {
+    cartId: payload.cartId,
+    shippingIds: payload.shippings.map(shipping => shipping.shippingId),
+    quoteIds: payload.quotes.map(quote => quote.quoteId),
+    subTotalPrice: payload.subTotalPrice,
+    shippingTotal: payload.shippingTotal,
+    vatPercentage: payload.vatPercentage,
+    vatPrice: payload.vatPrice,
+    totalPrice: payload.totalPrice,
+    totalNetPrice: payload.totalNetPrice,
+    currency: payload.currency
+  }
+
+  const modelConfigs: ModelConfig[] = payload.quotes.map((quote, index) => {
+    const modelId: ModelId = quote.modelId
+    const shipping = payload.shippings.find(s => s.vendorId === quote.vendorId) as Shipping
+    invariant(quote, 'Shipping not found in the cart offer!')
+    invariant(
+      state.shippings.find(s => s.shippingId === shipping.shippingId),
+      'Cart offer shippingId not found in general shippings!'
+    )
+
+    return {
+      type: 'UPLOADED',
+      modelId,
+      quantity: quote.quantity,
+      quoteId: quote.quoteId,
+      shippingId: shipping.shippingId,
+      id: payload.modelConfigIds[index]
+    }
+  })
+
+  return {
+    ...state,
+    backendModels,
+    quotes,
+    cart,
+    modelConfigs
+  }
+}
+
 const configurationReceived = (
   state: CoreState,
   {payload: {items}}: configurationActions.ConfigurationReceivedAction
@@ -957,6 +1018,10 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return createCart(state)
     case 'CART.CART_RECEIVED':
       return cartReceived(state, action)
+    case 'CART.LOAD_OFFER':
+      return loadOffer(state, action)
+    case 'CART.OFFER_RECEIVED':
+      return offerReceived(state, action)
     case 'ORDER.PAID':
       return paid(state, action)
     case 'ORDER.EXECUTE_PAYPAL_PAYMENT':

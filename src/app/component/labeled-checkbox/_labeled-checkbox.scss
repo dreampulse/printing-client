@@ -1,22 +1,21 @@
 .LabeledCheckbox {
-  height: $field-height;
-  position: relative;
-  padding-left: 30px;
-  line-height: $field-height;
+  display: flex;
+  align-items: center;
+  height: $field-height-compact;
+  line-height: $field-height-compact;
+  font-size: $font-size-base;
+  color: $color-text;
+
+  @include respond-to(tablet) {
+    height: $field-height;
+    line-height: $field-height;
+  }
 
   & > .CheckboxField {
-    @include scut-center-transform(y);
-    left: 0;
+    flex-shrink: 0;
   }
 
   &__label {
-    font-size: $font-size-base;
-    color: $color-text;
-  }
-
-  &--error {
-    .LabeledCheckbox__label {
-      color: $color-error;
-    }
+    margin-left: $space-base;
   }
 }

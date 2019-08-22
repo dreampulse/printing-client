@@ -4,6 +4,7 @@ import React, {Component} from 'react'
 import config from '../../../../config'
 
 const BUTTON_HEIGHT = 50
+const CHECK_INTERVAL = 250
 
 class PaypalButton extends Component {
   componentDidMount() {
@@ -25,7 +26,20 @@ class PaypalButton extends Component {
       }
     }
 
-    global.paypal.Button.render(options, this.paypalButton)
+    const renderPaypalButton = () => {
+      if (global.paypal && global.paypal.Button) {
+        clearInterval(this.checkInterval)
+        global.paypal.Button.render(options, this.paypalButton)
+      }
+    }
+
+    this.checkInterval = setInterval(renderPaypalButton, CHECK_INTERVAL)
+
+    renderPaypalButton()
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.checkInterval)
   }
 
   render() {

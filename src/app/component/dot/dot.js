@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
-const Dot = ({classNames, index, modifiers = [], onClick = () => {}}) => (
-  <button className={buildClassName('dot', modifiers, classNames)} type="button" onClick={onClick}>
+const Dot = ({classNames, index, active = false, onClick = () => {}}) => (
+  <button className={cn('Dot', {active}, classNames)} type="button" onClick={onClick}>
     {index}
   </button>
 )
@@ -13,7 +13,8 @@ const Dot = ({classNames, index, modifiers = [], onClick = () => {}}) => (
 Dot.propTypes = {
   ...propTypes.component,
   index: PropTypes.number,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  active: PropTypes.bool
 }
 
 export default Dot

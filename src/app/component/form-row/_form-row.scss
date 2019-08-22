@@ -1,36 +1,32 @@
-.form-row {
+.FormRow {
   display: grid;
   grid-gap: $space-base;
 
-  &--half-half {
+  &--layout-half-half {
     grid-template-columns: 12fr;
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       grid-template-columns: 6fr 6fr;
     }
   }
 
-  &--s-l {
+  &--layout-s-l {
     grid-template-columns: 12fr;
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       grid-template-columns: 3fr 9fr;
     }
   }
 
-  &--l-s {
+  &--layout-l-s {
     grid-template-columns: 12fr;
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       grid-template-columns: 9fr 3fr;
     }
   }
 
   &__column {
     margin-bottom: $space-base;
-  }
-
-  &:last-child {
-    margin-bottom: -1 * $space-base;
   }
 }

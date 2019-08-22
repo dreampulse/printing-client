@@ -16,6 +16,8 @@ import NavBar from '../component/nav-bar'
 import Logo from '../component/logo'
 import CartModelItem from '../component/cart-model-item'
 
+import useBreakpoints from '../hook/use-breakpoints'
+
 const NavBarPartial = ({
   navBarContent,
   cartCount,
@@ -23,66 +25,72 @@ const NavBarPartial = ({
   onCartClick,
   helpOnly = false,
   modelsWithConfig
-}) => (
-  <NavBar
-    leftContent={<Logo href={config.landingPageUrl} />}
-    rightContent={
-      <>
-        {navBarContent}
-        {!helpOnly && (
-          <>
-            <Route path="/" exact>
-              {({match}) =>
-                !match && (
-                  <NavLink
-                    label="Upload"
-                    onClick={event => {
-                      event.preventDefault()
-                      onUploadClick()
-                    }}
-                    icon={uploadIcon}
+}) => {
+  const breakpoints = useBreakpoints()
+  return (
+    <NavBar
+      leftContent={<Logo href={config.landingPageUrl} />}
+      rightContent={
+        <>
+          {navBarContent}
+          {!helpOnly && (
+            <>
+              {breakpoints['tablet'] && (
+                <Route path="/" exact>
+                  {({match}) =>
+                    !match && (
+                      <NavLink
+                        label="Upload"
+                        onClick={event => {
+                          event.preventDefault()
+                          onUploadClick()
+                        }}
+                        icon={uploadIcon}
+                      />
+                    )
+                  }
+                </Route>
+              )}
+              <CartNavLink
+                href="/cart"
+                label="Your Cart"
+                count={cartCount}
+                linkOnly={breakpoints['mobile-only']}
+                onClick={event => {
+                  event.preventDefault()
+                  onCartClick()
+                }}
+              >
+                {modelsWithConfig.map(({modelConfig, model}) => (
+                  <CartModelItem
+                    id={modelConfig.id}
+                    key={modelConfig.id}
+                    s
+                    imageSource={model.thumbnailUrl}
+                    title={model.fileName}
+                    info={formatDimensions(model.dimensions, model.fileUnit)}
                   />
-                )
-              }
-            </Route>
-            <CartNavLink
-              href="/cart"
-              label="Your Cart"
-              count={cartCount}
-              onClick={event => {
+                ))}
+              </CartNavLink>
+            </>
+          )}
+          <NavLink
+            label="Need help?"
+            icon={intercomIcon}
+            href="mailto:support@all3dp.com"
+            target="_blank"
+            onClick={event => {
+              if (!isIntercomBlocked()) {
                 event.preventDefault()
-                onCartClick()
-              }}
-            >
-              {modelsWithConfig.map(({modelConfig, model}) => (
-                <CartModelItem
-                  id={modelConfig.id}
-                  key={modelConfig.id}
-                  s
-                  imageSource={model.thumbnailUrl}
-                  title={model.fileName}
-                  info={formatDimensions(model.dimensions, model.fileUnit)}
-                />
-              ))}
-            </CartNavLink>
-          </>
-        )}
-        <NavLink
-          label="Need help?"
-          icon={intercomIcon}
-          href="mailto:support@all3dp.com"
-          target="_blank"
-          onClick={event => {
-            if (!isIntercomBlocked()) {
-              event.preventDefault()
-              openIntercom()
-            }
-          }}
-        />
-      </>
-    }
-  />
-)
+                openIntercom()
+              }
+            }}
+          />
+        </>
+      }
+    />
+  )
+}
 
 const mapStateToProps = state => ({
   cartCount: selector.selectCartCount(state),

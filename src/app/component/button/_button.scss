@@ -2,11 +2,12 @@
   $icon-only-size: 22px;
 
   display: inline-block;
-  height: $field-height;
-  padding: 0 1em;
+
+  height: $field-height-compact;
+  line-height: $field-height-compact;
+  padding: 0 1.5em;
   background-color: $color-primary;
   color: $color-invert-text;
-  line-height: $field-height;
   font-size: $font-size-l;
   border-radius: $border-radius;
   text-align: center;
@@ -16,6 +17,12 @@
     color $transition-duration-fast ease-in-out;
   vertical-align: middle;
   text-decoration: none;
+
+  @include respond-to(tablet) {
+    height: $field-height;
+    line-height: $field-height;
+    padding: 0 1em;
+  }
 
   & > .Icon {
     position: relative;
@@ -83,14 +90,16 @@
   }
 
   &--compact {
-    height: $compact-field-height;
-    line-height: $compact-field-height;
-    padding: 0 1.5em;
+    @include respond-to(tablet) {
+      height: $field-height-compact;
+      line-height: $field-height-compact;
+      padding: 0 1.5em;
+    }
   }
 
   &--tiny {
-    height: $tiny-field-height;
-    line-height: $tiny-field-height;
+    height: $field-height-tiny;
+    line-height: $field-height-tiny;
     font-size: $font-size-base;
     padding: 0 0.5em;
   }

@@ -11,17 +11,6 @@
   vertical-align: middle;
   transition: color $transition-duration-fast ease-in-out;
 
-  &__cartCount {
-    position: absolute;
-    color: $color-invert-text;
-    top: 0.8em;
-    left: 0.3em;
-    right: 0;
-    text-align: center;
-    font-size: 0.33em;
-    font-weight: $font-weight-bold;
-  }
-
   &:hover:not([aria-disabled='true']),
   &:focus:not([aria-disabled='true']) {
     color: $color-primary-active;
@@ -32,9 +21,5 @@
     color: $color-disabled;
     filter: none;
     pointer-events: none;
-
-    .IconLink__cartCount {
-      display: none;
-    }
   }
 }

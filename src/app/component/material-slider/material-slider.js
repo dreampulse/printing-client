@@ -4,8 +4,8 @@ import clamp from 'lodash/clamp'
 import range from 'lodash/range'
 import find from 'lodash/find'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 import {tweenFromTo, easeInOut} from '../../service/animate'
 
 import SliderButton from '../slider-button'
@@ -191,10 +191,10 @@ export default class MaterialSlider extends Component {
 
   renderNavigationButtons() {
     return [
-      <div key="back" className="material-slider__back">
-        <SliderButton modifiers={['back']} onClick={this.handleBackClick} />
+      <div key="back" className="MaterialSlider__back">
+        <SliderButton back onClick={this.handleBackClick} />
       </div>,
-      <div key="next" className="material-slider__next">
+      <div key="next" className="MaterialSlider__next">
         <SliderButton onClick={this.handleNextClick} />
       </div>
     ]
@@ -211,11 +211,11 @@ export default class MaterialSlider extends Component {
     const pageSize = this.getPageSize()
 
     return (
-      <ul className="material-slider__dots" role="presentation">
+      <ul className="MaterialSlider__dots" role="presentation">
         {range(numDots).map(index => (
           <li key={index} role="presentation">
             <Dot
-              modifiers={this.state.currentDotIndex === index ? ['active'] : undefined}
+              active={this.state.currentDotIndex === index}
               index={index + 1}
               onClick={() => this.scrollTo(index * pageSize)}
             />
@@ -226,32 +226,34 @@ export default class MaterialSlider extends Component {
   }
 
   render() {
-    const {classNames, modifiers, children} = this.props
+    const {classNames, children} = this.props
     const {showBack, showNext} = this.state
-    const finalModifiers = [
-      {
-        'show-back': showBack,
-        'show-next': showNext
-      },
-      modifiers
-    ]
 
     return (
-      <div className={buildClassName('material-slider', finalModifiers, classNames)}>
+      <div
+        className={cn(
+          'MaterialSlider',
+          {
+            showBack: showBack,
+            showNext: showNext
+          },
+          classNames
+        )}
+      >
         <div
-          className="material-slider__slider"
+          className="MaterialSlider__slider"
           ref={el => {
             this.sliderDom = el
           }}
         >
           <ul
-            className="material-slider__canvas"
+            className="MaterialSlider__canvas"
             ref={el => {
               this.canvasDom = el
             }}
           >
             {Children.map(children, (child, index) => (
-              <li key={index} className="material-slider__item">
+              <li key={index} className="MaterialSlider__item">
                 {child}
               </li>
             ))}

@@ -7,13 +7,13 @@ import LocationField from '.'
 import HandleValue from '../../../../stories/util/handle-value'
 import {googleMapsApiKey} from '../../../../stories/util/data'
 
-storiesOf('Location Field', module)
+storiesOf('LocationField', module)
   .add('default', () => (
     <HandleValue>
       <LocationField
         placeholder="Set your location"
         googleMapsApiKey={googleMapsApiKey}
-        onChange={action('change')}
+        onChange={action('onChange')}
       />
     </HandleValue>
   ))
@@ -22,17 +22,17 @@ storiesOf('Location Field', module)
       <LocationField
         placeholder="Set your location"
         googleMapsApiKey={googleMapsApiKey}
-        onChange={action('change')}
+        onChange={action('onChange')}
       />
     </HandleValue>
   ))
   .add('error', () => (
     <HandleValue>
       <LocationField
-        modifiers={['error']}
+        error
         placeholder="Set your location"
         googleMapsApiKey={googleMapsApiKey}
-        onChange={action('change')}
+        onChange={action('onChange')}
       />
     </HandleValue>
   ))

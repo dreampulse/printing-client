@@ -11,7 +11,7 @@
       'text text' auto
       / 1fr $currency-width;
 
-    @include respond-to(medium) {
+    @include respond-to(desktop) {
       grid-template:
         'location currency text' auto
         / 1fr $currency-width auto;
@@ -27,8 +27,18 @@
   }
 
   &__text {
-    color: $color-minor;
+    color: $color-text-label;
     grid-area: text;
     align-self: center;
+    text-align: center;
+    font-size: $font-size-s;
+
+    @include respond-to(tablet) {
+      font-size: $font-size-base;
+    }
+
+    @include respond-to(desktop) {
+      text-align: left;
+    }
   }
 }

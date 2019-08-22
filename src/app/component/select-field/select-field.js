@@ -89,7 +89,8 @@ export default class SelectField extends Component {
             disabled,
             warning,
             selected: Boolean(value),
-            constant: !menu
+            constant: !menu,
+            open: portal.isOpen
           },
           classNames
         )}

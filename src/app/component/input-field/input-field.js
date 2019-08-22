@@ -5,7 +5,6 @@ import uniqueId from 'lodash/uniqueId'
 import cn from '../../lib/class-names'
 import propTypes from '../../prop-types'
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class InputField extends Component {
   static propTypes = {
     ...propTypes.component,
@@ -22,16 +21,17 @@ export default class InputField extends Component {
   }
 
   static defaultProps = {
-    modifiers: [], // eslint-disable-line react/default-props-match-prop-types
     type: 'text',
     onChange: () => {},
     name: '',
     value: ''
   }
 
+  fieldId = uniqueId('input-field-')
+
   render() {
     const {
-      id,
+      id = this.fieldId,
       classNames,
       onChange,
       name,
@@ -42,19 +42,17 @@ export default class InputField extends Component {
       ...inputFieldProps
     } = this.props
 
-    const inputId = id || uniqueId('input-field-')
-
     return (
       <div className={cn('InputField', {error, warning, disabled, empty: !value}, classNames)}>
         <input
           name={name}
-          id={inputId}
+          id={id}
           className="InputField__input"
           onChange={e => onChange(e.target.value, name, e)}
           value={value}
           {...inputFieldProps}
         />
-        <label htmlFor={inputId} className="InputField__label">
+        <label htmlFor={id} className="InputField__label">
           {this.props.label}
         </label>
       </div>

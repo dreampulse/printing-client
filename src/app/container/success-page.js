@@ -5,8 +5,9 @@ import lifecycle from 'recompose/lifecycle'
 import withState from 'recompose/withState'
 
 import {openIntercom} from '../service/intercom'
-
 import {scrollToTop} from './util/scroll-to-top'
+import {getUrlParams} from '../lib/url'
+import useBreakpoints from '../hook/use-breakpoints'
 
 import Section from '../component/section'
 import Headline from '../component/headline'
@@ -15,33 +16,38 @@ import Button from '../component/button'
 import Link from '../component/link'
 import PageLayout from '../component/page-layout'
 import Container from '../component/container'
+import OrderConfirmationList from '../component/order-confirmation-list'
+import OrderConfirmationItem from '../component/order-confirmation-item'
+import Icon from '../component/icon'
 
 import FooterPartial from './footer-partial'
 
 import * as coreActions from '../action/core'
-import OrderConfirmationList from '../component/order-confirmation-list'
-import OrderConfirmationItem from '../component/order-confirmation-item'
-import Icon from '../component/icon'
 
 import orderPlaced from '../../asset/icon/order-placed.svg'
 import orderStarted from '../../asset/icon/order-started.svg'
 import orderShipped from '../../asset/icon/order-shipped.svg'
 import orderReceived from '../../asset/icon/order-received.svg'
-import {getUrlParams} from '../lib/url'
 
 const SuccessPage = ({orderNumber}) => {
+  const breakpoints = useBreakpoints()
   return (
     <PageLayout minorBackground footer={<FooterPartial />}>
-      <Container>
+      <Container s>
         <Section classNames={['u-align-center']}>
-          <Headline size="xl" label="Thank you for ordering with Craftcloud by All3DP" />
+          <Headline
+            size="xl"
+            classNames={['u-margin-top-xl']}
+            label="Thank you for ordering with Craftcloud by All3DP"
+          />
           <Headline label={orderNumber ? `Order number: ${orderNumber}` : ''} />
           <Paragraph>
             You should receive an order confirmation email from us shortly. We will also let you
             know when we have received the tracking number for your print from the manufacturer.
             Your order will be produced by:
           </Paragraph>
-
+        </Section>
+        <Section classNames={['u-align-center']}>
           <OrderConfirmationList step={1}>
             <OrderConfirmationItem icon={<Icon source={orderPlaced} />} title="Order Placed" />
 
@@ -57,7 +63,12 @@ const SuccessPage = ({orderNumber}) => {
         </Section>
         <Section classNames={['u-align-center']}>
           <Headline size="l" classNames={['u-margin-bottom-xl']} label="Any questions?" />
-          <Button minor label="Contact Us" onClick={() => openIntercom()} />
+          <Button
+            block={!breakpoints.tablet}
+            minor
+            label="Contact Us"
+            onClick={() => openIntercom()}
+          />
         </Section>
         <Section classNames={['u-align-center']}>
           <Paragraph>

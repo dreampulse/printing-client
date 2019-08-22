@@ -1,19 +1,19 @@
 .Logo {
   display: flex;
-  flex-grow: 1;
   align-items: center;
-  justify-content: center;
-  margin-bottom: $space-l;
   text-align: left;
-  height: $nav-bar-content-height;
+  width: 100%;
 
-  @include respond-to(medium) {
-    margin-bottom: 0;
+  @include respond-to(tablet) {
     justify-content: flex-start;
   }
 
   &__image {
-    height: $nav-bar-content-height;
-    margin-right: $space-base;
+    max-width: 100%;
+    max-height: $nav-bar-content-height-mobile;
+
+    @include respond-to(tablet) {
+      max-height: $nav-bar-content-height;
+    }
   }
 }

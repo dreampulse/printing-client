@@ -34,7 +34,7 @@ const CartModelItem = ({
     <div className="CartModelItem__aside">
       <button type="button" className="CartModelItem__previewImage" onClick={onPreviewImageClick}>
         <ImageContainer
-          modifiers={['ratio-1-1']}
+          ratio="1-1"
           source={imageSource}
           fallbackSource={fallbackSource}
           alt={`Preview image of ${title}`}

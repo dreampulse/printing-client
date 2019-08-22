@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
-const FeatureListItem = ({classNames, modifiers, feature, label}) => (
-  <li className={buildClassName('feature-list-item', modifiers, classNames)}>
-    <div className="feature-list-item__feature">{feature}</div>
-    <div className="feature-list-item__label">{label}</div>
+const FeatureListItem = ({classNames, feature, label}) => (
+  <li className={cn('FeatureListItem', {}, classNames)}>
+    <div className="FeatureListItem__feature">{feature}</div>
+    <div className="FeatureListItem__label">{label}</div>
   </li>
 )
 

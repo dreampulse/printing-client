@@ -1,9 +1,9 @@
-.sidebar-layout {
+.SidebarLayout {
   $sidebar-width: 260px;
 
   display: grid;
   grid-template-columns: auto $sidebar-width;
-  grid-gap: $gutter-width;
+  grid-gap: $space-xl;
 
   &__aside {
     position: sticky;

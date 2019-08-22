@@ -16,8 +16,12 @@ import {
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
 
+import infoIcon from '../../asset/icon/info.svg'
+
 import OfferFooter from '../component/offer-footer'
 import Link from '../component/link'
+import Button from '../component/button'
+import Tooltip from '../component/tooltip'
 
 const OfferPartial = ({
   // Own props
@@ -63,7 +67,13 @@ const OfferPartial = ({
             }}
             label={formatLocation(location)}
           />
-          .
+          .{' '}
+          <Tooltip
+            timeout={5000}
+            content="All prices displayed take into consideration your provided location as well as that of the most ideal manufacturer. Shipping and tax estimations are all included."
+          >
+            <Button icon={infoIcon} iconOnly />
+          </Tooltip>
         </>
       }
     />

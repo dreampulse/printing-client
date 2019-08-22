@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import cn from '../../lib/class-names'
 
-const FeatureList = ({classNames, modifiers, children}) => (
-  <ul className={buildClassName('feature-list', modifiers, classNames)}>{children}</ul>
+const FeatureList = ({classNames, children}) => (
+  <ul className={cn('FeatureList', {}, classNames)}>{children}</ul>
 )
 
 FeatureList.propTypes = {

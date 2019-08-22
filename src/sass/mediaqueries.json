@@ -1,0 +1,10 @@
+{
+  "mediaqueries": {
+    "mobile-only": "'(max-width: 599px)'",
+    "tablet": "'(min-width: 600px)'",
+    "tablet-only": "'(min-width: 600px) and (max-width: 959px)'",
+    "desktop": "'(min-width: 960px)'",
+    "desktop-only": "'(min-width: 960px) and (max-width: 1499px)'",
+    "bigscreen": "'(min-width: 1500px)'"
+  }
+}

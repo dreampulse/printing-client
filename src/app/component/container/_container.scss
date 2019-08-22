@@ -1,4 +1,4 @@
-.container {
+.Container {
   position: relative;
   width: 100%;
   margin: 0 auto;
@@ -10,6 +10,6 @@
   }
 
   &--s {
-    max-width: 750px + 2 * $space-l;
+    max-width: $global-max-width-s + 2 * $space-l;
   }
 }
