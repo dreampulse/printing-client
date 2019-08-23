@@ -709,20 +709,34 @@ const quotesReceived = (
   {payload: {quotes, printingServiceComplete}}: quoteActions.QuotesReceivedAction
 ): CoreReducer => {
   const quoteMap = keyBy(quotes, 'quoteId')
-  const modelConfigs = updateQuotesInModelConfigs(state.modelConfigs, quotes, state.quotes)
+  // Only update those quotes where the related printing service has been completely fetched!
+  const modelConfigs = updateQuotesInModelConfigs(
+    state.modelConfigs,
+    quotes.filter(quote => printingServiceComplete[quote.vendorId]),
+    state.quotes
+  )
+  const nextQuotes = {
+    ...state.quotes,
+    ...quoteMap
+  }
 
   const nextState = {
     ...state,
-    quotes: {
-      ...state.quotes,
-      ...quoteMap
-    },
+    quotes: nextQuotes,
     modelConfigs,
     printingServiceComplete
   }
 
+  const incompleteModelConfigs = modelConfigs.filter(
+    modelConfig =>
+      modelConfig.type === 'UPLOADED' &&
+      modelConfig.quoteId &&
+      !printingServiceComplete[nextQuotes[modelConfig.quoteId].vendorId]
+  )
+
   // Create new cart if at least one model config changed its quote id
-  if (!isEqual(modelConfigs, state.modelConfigs)) {
+  // and all printing services which are in the cart are complete.
+  if (incompleteModelConfigs.length === 0 && !isEqual(modelConfigs, state.modelConfigs)) {
     return loop(nextState, Cmd.action(cartActions.createCart()))
   }
 
