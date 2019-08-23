@@ -300,7 +300,8 @@ describe('updateQuotesInModelConfigs()', () => {
         modelId: 'model-id-1',
         materialConfigId: 'material-config-id-1',
         vendorId: 'vendor-id-1',
-        quantity: 2
+        quantity: 2,
+        isPrintable: true
       }
     ]
 
@@ -310,7 +311,8 @@ describe('updateQuotesInModelConfigs()', () => {
         modelId: 'model-id-1',
         materialConfigId: 'material-config-id-1',
         vendorId: 'vendor-id-1',
-        quantity: 1
+        quantity: 1,
+        isPrintable: true
       }
     }
 
@@ -326,6 +328,62 @@ describe('updateQuotesInModelConfigs()', () => {
         modelId: 'model-id-1',
         id: 'id-1',
         quoteId: 'quote-id-2',
+        shippingId: 'shipping-id-1'
+      }
+    ])
+  })
+
+  it('does not update with quotes which are not printable', () => {
+    const modelConfigs = [
+      {
+        type: 'UPLOADING',
+        fileId: 'file-id-1',
+        id: 'id-1'
+      },
+      {
+        type: 'UPLOADED',
+        quantity: 2,
+        modelId: 'model-id-1',
+        id: 'id-1',
+        quoteId: 'quote-id-1',
+        shippingId: 'shipping-id-1'
+      }
+    ]
+
+    const newQuotes = [
+      {
+        quoteId: 'quote-id-2',
+        modelId: 'model-id-1',
+        materialConfigId: 'material-config-id-1',
+        vendorId: 'vendor-id-1',
+        quantity: 2,
+        isPrintable: false
+      }
+    ]
+
+    const quotesMap = {
+      'quote-id-1': {
+        quoteId: 'quote-id-1',
+        modelId: 'model-id-1',
+        materialConfigId: 'material-config-id-1',
+        vendorId: 'vendor-id-1',
+        quantity: 1,
+        isPrintable: true
+      }
+    }
+
+    expect(updateQuotesInModelConfigs(modelConfigs, newQuotes, quotesMap), 'to equal', [
+      {
+        type: 'UPLOADING',
+        fileId: 'file-id-1',
+        id: 'id-1'
+      },
+      {
+        type: 'UPLOADED',
+        quantity: 2,
+        modelId: 'model-id-1',
+        id: 'id-1',
+        quoteId: 'quote-id-1',
         shippingId: 'shipping-id-1'
       }
     ])
@@ -354,7 +412,8 @@ describe('updateQuotesInModelConfigs()', () => {
         modelId: 'model-id-2',
         materialConfigId: 'material-config-id-2',
         vendorId: 'vendor-id-2',
-        quantity: 2
+        quantity: 2,
+        isPrintable: true
       }
     ]
 
@@ -364,7 +423,8 @@ describe('updateQuotesInModelConfigs()', () => {
         modelId: 'model-id-1',
         materialConfigId: 'material-config-id-1',
         vendorId: 'vendor-id-1',
-        quantity: 1
+        quantity: 1,
+        isPrintable: true
       }
     }
 
