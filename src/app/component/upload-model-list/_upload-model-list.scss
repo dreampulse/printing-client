@@ -9,13 +9,21 @@
     list-style: none;
     padding: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: $space-xl;
+    grid-template-columns: 1fr;
+    grid-gap: $space-base;
     margin: 0;
+
+    @include respond-to(tablet) {
+      grid-template-columns: 1fr 1fr;
+      grid-gap: $space-xl;
+    }
   }
 
   &__item {
-    height: $upload-model-item-height;
     min-width: 0;
+
+    @include respond-to(tablet) {
+      height: $upload-model-item-height;
+    }
   }
 }

@@ -4,11 +4,14 @@ import {connect} from 'react-redux'
 import config from '../../../config'
 import {formatLocation} from '../lib/formatter'
 import * as modalActions from '../action/modal'
+import useBreakpoints from '../hook/use-breakpoints'
 
+import Section from '../component/section'
 import Link from '../component/link'
 import Paragraph from '../component/paragraph'
 
 const LocationInfoPartial = ({currency, location, openPickLocationModal}) => {
+  const breakpoints = useBreakpoints()
   const currencies = config.currencies
   const selectedCurrencyValue = currencies.find(({value}) => value === currency)
 
@@ -17,16 +20,18 @@ const LocationInfoPartial = ({currency, location, openPickLocationModal}) => {
     : 'Select location'
 
   return (
-    <Paragraph classNames={['u-align-right']}>
-      Your printing and shipping prices depend on your location.{' '}
-      <Link
-        onClick={event => {
-          event.preventDefault()
-          openPickLocationModal({isCloseable: true})
-        }}
-        label={locationNameAndCurrency}
-      />
-    </Paragraph>
+    <Section>
+      <Paragraph minor classNames={[breakpoints.tablet ? 'u-align-right' : 'u-align-center']}>
+        Your printing and shipping prices depend on your location.{' '}
+        <Link
+          onClick={event => {
+            event.preventDefault()
+            openPickLocationModal({isCloseable: true})
+          }}
+          label={locationNameAndCurrency}
+        />
+      </Paragraph>
+    </Section>
   )
 }
 const mapStateToProps = state => ({

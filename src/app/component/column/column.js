@@ -1,33 +1,27 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import compact from 'lodash/compact'
 
-import propTypes from '../../lib/prop-types'
-import buildClassName from '../../lib/build-class-name'
+import propTypes from '../../prop-types'
+import buildClassName from '../../lib/class-names'
 
-const Column = ({
-  classNames,
-  modifiers = [],
-  children,
-  sm = 12,
-  md,
-  lg,
-  smPush,
-  mdPush,
-  lgPush
-}) => {
-  const finalModifiers = compact([
-    ...modifiers,
-    sm ? `sm-${sm}` : undefined,
-    md ? `md-${md}` : undefined,
-    lg ? `lg-${lg}` : undefined,
-    smPush ? `sm-push-${smPush}` : undefined,
-    mdPush ? `md-push-${mdPush}` : undefined,
-    lgPush ? `lg-push-${lgPush}` : undefined
-  ])
-
-  return <div className={buildClassName('column', finalModifiers, classNames)}>{children}</div>
-}
+const Column = ({classNames, children, sm = 12, md, lg, smPush, mdPush, lgPush}) => (
+  <div
+    className={buildClassName(
+      'Column',
+      {
+        [`sm-${sm}`]: sm,
+        [`md-${md}`]: md,
+        [`lg-${lg}`]: lg,
+        [`sm-push-${smPush}`]: smPush,
+        [`md-push-${mdPush}`]: mdPush,
+        [`lg-push-${lgPush}`]: lgPush
+      },
+      classNames
+    )}
+  >
+    {children}
+  </div>
+)
 
 Column.propTypes = {
   ...propTypes.component,

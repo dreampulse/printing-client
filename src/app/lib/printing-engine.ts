@@ -6,7 +6,7 @@ import {
   ModelOnProgressActionCreator,
   PriceId,
   MaterialConfigId,
-  User,
+  CartOffer,
   UserId,
   Shipping,
   ShippingId,
@@ -14,7 +14,7 @@ import {
   CartId,
   ConfigurationId,
   OrderId,
-  OfferId,
+  CartOfferId,
   PaymentId,
   Quote,
   BackendModel,
@@ -79,19 +79,15 @@ export type CartRequest = {
 
 export type CartResponse = Cart
 
-export type CreateOfferRequest = {
+export type CreateCartOfferRequest = {
   cartId: CartId
 }
 
-export type CreateOfferResponse = {
-  offerId: OfferId
+export type CreateCartOfferResponse = {
+  offerId: CartOfferId
 }
 
-export type OfferResponse = CartResponse & {
-  shippings: ShippingsResponse
-  quotes: Quote[]
-  models: ModelResponse[]
-}
+export type CartOfferResponse = CartOffer
 
 export type ConfigurationRequest = {
   items: Array<{
@@ -250,7 +246,7 @@ export const createCart = async (cart: CartRequest): Promise<CartResponse> => {
   return response.json
 }
 
-export const createOffer = async (offer: CreateOfferRequest): Promise<CreateOfferResponse> => {
+export const createOffer = async (offer: CreateCartOfferRequest): Promise<CreateCartOfferResponse> => {
   const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/offer`, {
     method: 'POST',
     body: offer
@@ -258,7 +254,7 @@ export const createOffer = async (offer: CreateOfferRequest): Promise<CreateOffe
   return response.json
 }
 
-export const getOffer = async (offerId: OfferId, currency: string): Promise<OfferResponse> => {
+export const getOffer = async (offerId: CartOfferId, currency: string): Promise<CartOfferResponse> => {
   const response = await httpJson.fetch(
     `${config.printingEngineBaseUrl}/v3/offer/${offerId}?currency=${currency}`
   )

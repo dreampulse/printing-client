@@ -32,7 +32,7 @@ const rightButtonBar = () => (
   </ButtonBar>
 )
 
-storiesOf('Model List', module).add('default', () => (
+storiesOf('ModelList', module).add('default', () => (
   <HandleValue initialValue={[]} valueName="checkedIds" onChangeName="onChangeCheckedIds">
     <ModelList
       actions={actions()}
@@ -42,7 +42,7 @@ storiesOf('Model List', module).add('default', () => (
       {range(0, 5).map(index => (
         <CartModelItem
           key={index}
-          id={index}
+          id={`${index}`}
           imageSource="http://placehold.it/180x180"
           title="model_item_title_can_be_long_and_gets_truncated.stl"
           price="26.44€"

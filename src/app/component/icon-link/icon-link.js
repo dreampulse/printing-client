@@ -6,14 +6,7 @@ import cn from '../../lib/class-names'
 
 import Icon from '../icon'
 
-const IconLink = ({
-  classNames,
-  icon,
-  disabled = false,
-  href = '#',
-  onClick = () => {},
-  cartCount = 0
-}) => (
+const IconLink = ({classNames, icon, disabled = false, href = '#', onClick = () => {}}) => (
   <a
     className={cn('IconLink', {}, classNames)}
     aria-disabled={disabled}
@@ -21,7 +14,6 @@ const IconLink = ({
     href={href}
   >
     <Icon source={icon} />
-    {cartCount > 0 && <span className="IconLink__cartCount">{cartCount}</span>}
   </a>
 )
 
@@ -32,8 +24,7 @@ IconLink.propTypes = {
   }).isRequired,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
-  href: PropTypes.string,
-  cartCount: PropTypes.number
+  href: PropTypes.string
 }
 
 export default IconLink

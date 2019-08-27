@@ -32,7 +32,7 @@ const UploadModelItem = ({
     <div className="UploadModelItem__aside">
       <button type="button" className="UploadModelItem__previewImage" onClick={onPreviewImageClick}>
         <ImageContainer
-          modifiers={['ratio-1-1']}
+          ratio="1-1"
           source={noCache ? null : imageSource}
           fallbackSource={noCache ? imageSource : fallbackSource}
           alt={`Preview image of ${title}`}

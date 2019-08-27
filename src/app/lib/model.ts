@@ -58,6 +58,7 @@ export const updateQuotesInModelConfigs = (
       const prevQuote = quotesMap[modelConfig.quoteId]
       const quote = newQuotes.find(
         q =>
+          q.isPrintable &&
           q.quantity === modelConfig.quantity &&
           q.materialConfigId === prevQuote.materialConfigId &&
           q.modelId === prevQuote.modelId &&

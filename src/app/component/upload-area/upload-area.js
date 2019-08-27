@@ -17,23 +17,16 @@ export default class UploadArea extends Component {
     accept: PropTypes.string,
     description: PropTypes.string.isRequired,
     onChange: PropTypes.func,
-    s: PropTypes.bool,
-    l: PropTypes.bool
+    s: PropTypes.bool
   }
 
   static defaultProps = {
     onChange: () => {},
-    s: false,
-    l: false
+    s: false
   }
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      inputId: uniqueId('upload-area-input-'),
-      dragOver: 0
-    }
+  state = {
+    dragOver: 0
   }
 
   onDragEnter = () => {
@@ -70,9 +63,11 @@ export default class UploadArea extends Component {
     event.target.value = null
   }
 
+  inputId = uniqueId('upload-area-input-')
+
   render() {
-    const {classNames, label, linkLabel, accept, description, s, l} = this.props
-    const {inputId, dragOver} = this.state
+    const {classNames, label, linkLabel, accept, description, s} = this.props
+    const {dragOver} = this.state
 
     return (
       <label
@@ -80,8 +75,7 @@ export default class UploadArea extends Component {
           'UploadArea',
           {
             drag: dragOver > 0,
-            s,
-            l
+            s
           },
           classNames
         )}
@@ -89,7 +83,7 @@ export default class UploadArea extends Component {
         onDragLeave={this.onDragLeave}
         onDragOver={this.onDragOver}
         onDrop={this.onDrop}
-        htmlFor={inputId}
+        htmlFor={this.inputId}
       >
         <Icon source={uploadIcon} />
         <div className="UploadArea__label">
@@ -97,7 +91,7 @@ export default class UploadArea extends Component {
         </div>
         <div className="UploadArea__description">{description}</div>
         <input
-          id={inputId}
+          id={this.inputId}
           type="file"
           className="UploadArea__input"
           multiple

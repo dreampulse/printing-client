@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 
 import TooltipHint from '.'
-import Tooltip from '../tooltip'
+import TooltipBaloon from '../tooltip-baloon'
 import Paragraph from '../paragraph'
 
 const lorem = `
@@ -17,14 +17,7 @@ magna aliquyam erat, sed diam voluptua.
 `
 
 storiesOf('TooltipHint', module).add('default', () => (
-  <TooltipHint
-    show
-    tooltip={
-      <Tooltip>
-        <Paragraph>Tooltip Content</Paragraph>
-      </Tooltip>
-    }
-  >
+  <TooltipHint show tooltip={<TooltipBaloon position="bottom">Tooltip Content</TooltipBaloon>}>
     <Paragraph>{lorem}</Paragraph>
   </TooltipHint>
 ))
