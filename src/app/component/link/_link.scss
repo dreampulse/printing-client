@@ -1,14 +1,22 @@
 .Link {
+  $icon-size: 0.8em;
+  $icon-size-l: 1.4em;
+  $icon-space: 0.5em;
+
+  display: inline-block;
+  position: relative;
   color: $color-link;
   font-weight: $font-weight-regular;
   text-decoration: none;
   cursor: pointer;
 
   & > .Icon {
-    position: relative;
-    margin-right: 0.5em;
-    font-size: 0.8em;
-    top: -0.08em; // Optimize vertical center
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: $icon-space;
+    font-size: $icon-size;
   }
 
   & > strong {
@@ -29,7 +37,15 @@
     text-decoration: underline;
   }
 
-  &--largeIcon > .Icon {
-    font-size: $font-size-l;
+  &--icon {
+    padding-left: $icon-size + $icon-space;
+  }
+
+  &--largeIcon {
+    padding-left: $icon-size-l + $icon-space;
+
+    & > .Icon {
+      font-size: $icon-size-l;
+    }
   }
 }

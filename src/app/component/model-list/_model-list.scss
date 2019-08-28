@@ -4,19 +4,36 @@
 
   &__header {
     position: sticky;
-    top: $nav-bar-height;
+    top: $nav-bar-height-mobile;
+    // To let the sticky head also hide shadows of the model items
+    margin-left: -1 * $space-base;
+    margin-right: -1 * $space-base;
     // To let header disappear before last model item
     margin-bottom: $model-item-height;
     display: flex;
     flex-direction: row;
-    padding: $space-base 0;
+    padding: $space-base;
     z-index: 1;
     background: $color-bg;
-    border-bottom: 1px solid $color-border-minor;
+
+    @include respond-to(tablet) {
+      top: $nav-bar-height;
+    }
 
     & + .ModelList__items {
       // To pull items back to top (due to position sticky)
       margin-top: -1 * $model-item-height + $space-base;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: $space-base;
+      right: $space-base;
+      display: block;
+      height: 0;
+      border-bottom: 1px solid $color-border-minor;
     }
   }
 

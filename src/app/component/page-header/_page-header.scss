@@ -4,13 +4,17 @@
   &__title {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-
+    align-items: center;
+    padding-bottom: $space-base;
     margin-bottom: $space-base;
     border-bottom: 1px solid $color-border;
-  }
 
-  &__action {
-    margin-bottom: $space-base;
+    & > * {
+      margin-bottom: 0;
+    }
+
+    @include respond-to(tablet) {
+      align-items: flex-end;
+    }
   }
 }

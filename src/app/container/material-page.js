@@ -38,6 +38,7 @@ import NumberField from '../component/number-field'
 import Paragraph from '../component/paragraph'
 import OfferLayout from '../component/offer-layout'
 import ConfigModelList from '../component/config-model-list'
+import Icon from '../component/icon'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
@@ -76,7 +77,7 @@ const MaterialPage = ({
         <Link
           label="Back to upload"
           href="#"
-          icon={backIcon}
+          icon={<Icon source={backIcon} />}
           onClick={event => {
             event.preventDefault()
             goToUpload({selectModelConfigIds: selectedModelConfigIds})

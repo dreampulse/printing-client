@@ -50,6 +50,7 @@ import UploadModelList from '../component/upload-model-list'
 import StickyFooter from '../component/sticky-footer'
 import Link from '../component/link'
 import Paragraph from '../component/paragraph'
+import Icon from '../component/icon'
 
 const getUnconfiguredModelIds = modelConfigs =>
   modelConfigs
@@ -135,7 +136,7 @@ const UploadPage = ({
 
           <Link
             largeIcon
-            icon={shareIcon}
+            icon={<Icon source={shareIcon} />}
             label="Share"
             onClick={() => {
               createConfiguration(selectedModelConfigIds)

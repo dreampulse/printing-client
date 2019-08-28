@@ -14,8 +14,12 @@
     flex-direction: column;
     justify-content: flex-end;
     background: $color-bg-minor;
-    width: $cart-model-item-height;
+    width: 65px;
     flex-shrink: 0;
+
+    @include respond-to(desktop) {
+      width: $cart-model-item-height;
+    }
 
     & > .CheckboxField {
       position: absolute;
@@ -46,6 +50,7 @@
   }
 
   &__contentRight {
+    display: none;
     width: 240px; // Design decision
     flex-shrink: 0;
     text-align: right;
@@ -53,16 +58,25 @@
     font-size: $font-size-base;
     line-height: $line-height-base;
     margin-left: $space-l;
+
+    @include respond-to(desktop) {
+      display: block;
+    }
   }
 
   &__title {
     display: block;
     color: $color-text;
-    font-size: $font-size-l;
-    font-weight: $font-weight-bold;
+    font-size: $font-size-base;
+    font-weight: $font-weight-regular;
     flex-grow: 1;
     flex-shrink: 1;
     overflow: hidden;
+
+    @include respond-to(desktop) {
+      font-size: $font-size-l;
+      font-weight: $font-weight-bold;
+    }
   }
 
   &__price {

@@ -5,8 +5,6 @@ import noop from 'lodash/noop'
 import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
 
-import Icon from '../icon'
-
 const Link = ({
   classNames,
   label,
@@ -28,12 +26,12 @@ const Link = ({
 
   return (
     <a
-      className={cn('Link', {warning, invert, largeIcon}, classNames)}
+      className={cn('Link', {warning, invert, icon: !!icon, largeIcon}, classNames)}
       href={href}
       onClick={handleOnClick}
       {...rest}
     >
-      {icon && <Icon source={icon} />}
+      {icon}
       {label}
     </a>
   )
@@ -41,7 +39,8 @@ const Link = ({
 
 Link.propTypes = {
   ...propTypes.component,
-  label: PropTypes.node.isRequired,
+  label: PropTypes.node,
+  icon: PropTypes.element,
   href: PropTypes.string,
   string: PropTypes.string,
   onClick: PropTypes.func,
