@@ -15,6 +15,7 @@ import EditMaterialPage from './edit-material-page'
 import CartPage from './cart-page'
 import SuccessPage from './success-page'
 import ConfigurationPage from './configuration-page'
+import CartOfferPage from './cart-offer-page'
 
 import Modal from './modal'
 
@@ -38,10 +39,16 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
   }
 
   if (!initDone) {
+    // Configuration whether session should be restored
     return (
       <Switch>
         <Route
           path="/configuration/:id"
+          exact
+          render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
+        />
+        <Route
+          path="/offer/:id"
           exact
           render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
         />
@@ -59,6 +66,7 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
         <Route component={CartPage} path="/cart" exact />
         <Route component={SuccessPage} path="/success" exact />
         <Route component={ConfigurationPage} path="/configuration/:id" exact />
+        <Route component={CartOfferPage} path="/offer/:id" exact />
         <Redirect to="/" />
       </Switch>
       <Modal />

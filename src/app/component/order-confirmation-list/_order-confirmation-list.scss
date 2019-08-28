@@ -10,7 +10,7 @@
   position: relative;
 
   & > &__item + &__item {
-    margin-top: $space-xxxl;
+    margin-top: $space-xl;
   }
 
   @include respond-to(tablet) {

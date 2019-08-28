@@ -19,7 +19,7 @@ export type ConfigurationId = string
 export type OrderId = string
 export type PaymentId = string
 export type UserId = string
-export type OfferId = string
+export type CartOfferId = string
 
 // Material structure json-schema
 // https://github.com/all3dp/material-structure/blob/master/src/schema.js
@@ -125,6 +125,12 @@ export type BackendModel = {
   }
   thumbnailUrl: string
   sceneId?: ModelSceneId
+}
+
+export type CartOffer = Cart & {
+  shippings: Shipping[]
+  quotes: Quote[]
+  models: BackendModel[]
 }
 
 export type Quote = {

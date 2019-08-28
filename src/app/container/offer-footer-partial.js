@@ -70,12 +70,7 @@ const OfferPartial = ({
           .{' '}
           <Tooltip
             timeout={5000}
-            content={
-              <>
-                All prices displayed take into consideration your provided location as well asthat
-                of the most ideal manufacturer, shipping and tax estimatesincluded.
-              </>
-            }
+            content="All prices displayed take into consideration your provided location as well as that of the most ideal manufacturer. Shipping and tax estimations are all included."
           >
             <Button icon={infoIcon} iconOnly />
           </Tooltip>

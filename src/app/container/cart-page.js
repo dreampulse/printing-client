@@ -496,16 +496,14 @@ const CartPage = ({
         <PageHeader
           label="Review Order"
           action={
-            featureFlags.share && (
-              <Link
-                largeIcon
-                icon={shareIcon}
-                label="Share"
-                onClick={() => {
-                  createOffer(cart.cartId)
-                }}
-              />
-            )
+            <Link
+              largeIcon
+              icon={shareIcon}
+              label="Share Cart"
+              onClick={() => {
+                createOffer(cart.cartId)
+              }}
+            />
           }
         />
         {hasModels && (
@@ -661,8 +659,8 @@ export default compose(
     createOffer: ({fatalError, openShareCartModal}) => cartId => {
       printingEngine
         .createOffer({cartId})
-        .then(() => {
-          openShareCartModal(cartId)
+        .then(({offerId}) => {
+          openShareCartModal(offerId)
         })
         .catch(fatalError)
     }
