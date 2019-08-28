@@ -145,11 +145,6 @@ const MaterialPartial = ({
     )
   }
 
-  const renderPriceSubline = offer =>
-    offer
-      ? `${formatPrice(offer.totalGrossPrice, offer.multiModelQuote.currency)} incl shipping`
-      : ''
-
   const renderMaterialSection = () => {
     const renderMaterialCard = material => {
       const [bestOffer] = getBestMultiModelOffers(
@@ -170,7 +165,13 @@ const MaterialPartial = ({
           descriptionHeadline="Best used for:"
           price={renderPrice(bestOffer)}
           hasPriceSubline
-          priceSublineLabel={renderPriceSubline(bestOffer)}
+          priceSublineLabel={
+            bestOffer &&
+            `${formatPrice(
+              bestOffer.totalGrossPrice,
+              bestOffer.multiModelQuote.currency
+            )} incl. shipping`
+          }
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
