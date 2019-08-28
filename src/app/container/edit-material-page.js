@@ -44,18 +44,6 @@ const EditMaterialPage = ({
 
   const sidebar = () => (
     <>
-      <Section>
-        <Link
-          label="Back to cart"
-          icon={backIcon}
-          onClick={event => {
-            event.preventDefault()
-            goToCart({
-              selectModelConfigIds: configIds
-            })
-          }}
-        />
-      </Section>
       <Section classNames={['u-no-margin']}>
         <Headline
           light
