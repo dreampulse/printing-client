@@ -62,6 +62,11 @@ const CartModelItem = ({
         <div className="CartModelItem__buttonsRight">{buttonsRight || '\u00A0'}</div>
       </div>
     </div>
+    <div className="CartModelItem__additionalContent">
+      <strong className="CartModelItem__price">{price}</strong>
+      {shippingInfo && <div className="CartModelItem__shippingInfo">{shippingInfo}</div>}
+      {providerImage && <div className="CartModelItem__provider">{providerImage}</div>}
+    </div>
   </div>
 )
 
