@@ -64,6 +64,8 @@ class AddressFormPartial extends React.Component {
     }
   }
 
+  onSubmitForm
+
   render() {
     const {
       closeModal,
