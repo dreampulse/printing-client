@@ -529,7 +529,7 @@ const CartPage = ({
         {hasModels && (
           <SidebarLayout sidebar={renderPaymentSection()}>
             {user && renderAddressSection()}
-            <Headline minor size="l" label="Your Cart" classNames={['u-no-margin']} />
+            <Headline minor size="l" label="Your Cart" />
             {renderModelListSection()}
             {!breakpoints.tablet && <Section>{renderAdditionalInformation()}</Section>}
           </SidebarLayout>

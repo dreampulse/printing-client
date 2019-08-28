@@ -6,6 +6,7 @@
     position: sticky;
     top: $nav-bar-height-mobile;
     // To let the sticky head also hide shadows of the model items
+    margin-top: -1 * $space-base;
     margin-left: -1 * $space-base;
     margin-right: -1 * $space-base;
     // To let header disappear before last model item
