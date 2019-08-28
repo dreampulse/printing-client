@@ -18,7 +18,6 @@ import {guard} from './util/guard'
 
 import MaterialPartial from './material-partial'
 import OfferFooterPartial from './offer-footer-partial'
-import LocationInfoPartial from './location-info-partial'
 
 import Headline from '../component/headline'
 import Section from '../component/section'
@@ -108,7 +107,16 @@ const EditMaterialPage = ({
         }
       >
         <Section>
-          <LocationInfoPartial />
+          <Link
+            label="Back to cart"
+            icon={backIcon}
+            onClick={event => {
+              event.preventDefault()
+              goToCart({
+                selectModelConfigIds: configIds
+              })
+            }}
+          />
         </Section>
         <MaterialPartial
           isEditMode

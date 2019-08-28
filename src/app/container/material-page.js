@@ -73,19 +73,51 @@ const MaterialPage = ({
   const breakpoints = useBreakpoints()
   const [sidebarOpen, setSidebarOpen] = useState()
 
+  const renderModelsWithConfig = () =>
+    modelsWithConfig
+      .filter(([modelConfig]) => !configuredConfigIds.includes(modelConfig.id))
+      .map(([modelConfig, model]) => (
+        <UploadModelItem
+          configured={modelConfig.quoteId}
+          s
+          classNames={['u-margin-bottom']}
+          key={modelConfig.id}
+          imageSource={model.thumbnailUrl}
+          title={model.fileName}
+          subline={formatDimensions(model.dimensions, model.fileUnit)}
+          onPreviewImageClick={() => openModelViewer(model)}
+          buttonsLeft={
+            <NumberField
+              value={modelConfig.quantity}
+              onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+            />
+          }
+          buttonsRight={
+            <ButtonBar>
+              <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
+              <Button
+                icon={copyIcon}
+                iconOnly
+                onClick={() => {
+                  duplicateModelConfig(modelConfig.id).then(({payload: {nextId}}) => {
+                    updateSelectedModelConfigs([...selectedModelConfigIds, nextId])
+                  })
+                }}
+              />
+              <Button
+                icon={deleteIcon}
+                iconOnly
+                onClick={() => deleteModelConfigs([modelConfig.id])}
+              />
+            </ButtonBar>
+          }
+          selected={selectedModelConfigIds.includes(modelConfig.id)}
+          onSelect={() => toggleId(modelConfig.id)}
+        />
+      ))
+
   const sidebar = asideNode => (
     <>
-      <Section>
-        <Link
-          label="Back to upload"
-          href="#"
-          icon={backIcon}
-          onClick={event => {
-            event.preventDefault()
-            goToUpload({selectModelConfigIds: selectedModelConfigIds})
-          }}
-        />
-      </Section>
       <Section>
         <Headline
           light
@@ -107,6 +139,7 @@ const MaterialPage = ({
           />
         </Paragraph>
         <ConfigModelList
+          withCartLinkAnimation={breakpoints.desktop}
           onConfigurationChanged={() => {
             asideNode.scrollTop = 0
           }}
@@ -114,47 +147,7 @@ const MaterialPage = ({
             setConfiguredConfigIds(getConfiguredModelIds(modelConfigs))
           }}
         >
-          {modelsWithConfig
-            .filter(([modelConfig]) => !configuredConfigIds.includes(modelConfig.id))
-            .map(([modelConfig, model]) => (
-              <UploadModelItem
-                configured={modelConfig.quoteId}
-                s
-                classNames={['u-margin-bottom']}
-                key={modelConfig.id}
-                imageSource={model.thumbnailUrl}
-                title={model.fileName}
-                subline={formatDimensions(model.dimensions, model.fileUnit)}
-                onPreviewImageClick={() => openModelViewer(model)}
-                buttonsLeft={
-                  <NumberField
-                    value={modelConfig.quantity}
-                    onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-                  />
-                }
-                buttonsRight={
-                  <ButtonBar>
-                    <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
-                    <Button
-                      icon={copyIcon}
-                      iconOnly
-                      onClick={() => {
-                        duplicateModelConfig(modelConfig.id).then(({payload: {nextId}}) => {
-                          updateSelectedModelConfigs([...selectedModelConfigIds, nextId])
-                        })
-                      }}
-                    />
-                    <Button
-                      icon={deleteIcon}
-                      iconOnly
-                      onClick={() => deleteModelConfigs([modelConfig.id])}
-                    />
-                  </ButtonBar>
-                }
-                selected={selectedModelConfigIds.includes(modelConfig.id)}
-                onSelect={() => toggleId(modelConfig.id)}
-              />
-            ))}
+          {renderModelsWithConfig()}
         </ConfigModelList>
       </Section>
     </>
@@ -177,6 +170,17 @@ const MaterialPage = ({
           />
         }
       >
+        <Section>
+          <Link
+            label="Back to upload"
+            href="#"
+            icon={backIcon}
+            onClick={event => {
+              event.preventDefault()
+              goToUpload({selectModelConfigIds: selectedModelConfigIds})
+            }}
+          />
+        </Section>
         <MaterialPartial
           configIds={selectedModelConfigIds}
           scrollContainerId={SCROLL_CONTAINER_ID}
