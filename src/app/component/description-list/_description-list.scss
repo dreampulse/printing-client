@@ -27,8 +27,12 @@
     & > strong {
       font-weight: $font-weight-bold;
       color: $color-text;
-      font-size: $font-size-l;
+      font-size: $font-size-base;
       line-height: $line-height-s;
+
+      @include respond-to(desktop) {
+        font-size: $font-size-l;
+      }
     }
 
     & > em {
