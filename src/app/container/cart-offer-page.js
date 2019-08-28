@@ -71,7 +71,7 @@ const enhance = compose(
           goToUpload({
             notification: {
               message:
-                'Some of the models could not be fully restored because the original offer was created in a different country.',
+                'One or more offers in this shared basket are not available in your region. Please select new offers for the specified models.',
               warning: true
             },
             selectModelConfigIds: unconfiguredModelConfigIds
