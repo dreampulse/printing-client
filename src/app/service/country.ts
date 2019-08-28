@@ -2,6 +2,29 @@ import createCountryList from 'country-list'
 
 type StateMap = {[state: string]: string}
 
+const itStates: StateMap = {
+  Lazio: 'Lazio',
+  Umbria: 'Umbria',
+  Sardinia: 'Sardinia',
+  Piedmont: 'Piedmont',
+  'Aosta Valley': 'Aosta Valley',
+  Liguria: 'Liguria',
+  Lombardy: 'Lombardy',
+  'Emilia-Romagna': 'Emilia-Romagna',
+  'Friuli-Venezia Giulia': 'Friuli-Venezia Giulia',
+  Veneto: 'Veneto',
+  'Trentino-Alto Adige/Südtirol': 'Trentino-Alto Adige/Südtirol',
+  Tuscany: 'Tuscany',
+  Marche: 'Marche',
+  Abruzzo: 'Abruzzo',
+  Apulia: 'Apulia',
+  Basilicata: 'Basilicata',
+  Campania: 'Campania',
+  Molise: 'Molise',
+  Calabria: 'Calabria',
+  Sicily: 'Sicily'
+}
+
 const usStates: StateMap = {
   AL: 'Alabama',
   AK: 'Alaska',
@@ -328,6 +351,8 @@ export function getStateName(countryCode: string, stateCode: string) {
       return caStates[stateCode]
     case 'GB':
       return ukStates[stateCode]
+    case 'IT':
+      return itStates[stateCode]
     default:
       return null
   }
@@ -345,6 +370,8 @@ export function getStates(countryCode: string) {
       return getStateList(caStates)
     case 'GB':
       return getStateList(ukStates)
+    case 'IT':
+      return getStateList(itStates)
     default:
       return null
   }
