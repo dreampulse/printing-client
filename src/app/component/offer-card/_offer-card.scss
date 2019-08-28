@@ -4,42 +4,73 @@
   padding: $space-base;
 
   &__header {
-    display: flex;
-    align-items: center;
     padding-bottom: $space-base;
 
+    @include respond-to(tablet) {
+      display: flex;
+      align-items: center;
+    }
+
     & > .Icon {
+      display: none;
       flex-shrink: 0;
       font-size: $font-size-xl;
       color: $color-primary;
       margin-right: $space-base;
+
+      @include respond-to(tablet) {
+        display: inline-block;
+      }
     }
   }
 
   &__label {
     font-weight: bold;
-    font-size: $font-size-l;
+    font-size: $font-size-base;
     line-height: $line-height-s;
+
+    @include respond-to(tablet) {
+      font-size: $font-size-l;
+    }
   }
 
   &__mainValue {
     font-weight: bold;
-    font-size: $font-size-xl;
+    font-size: $font-size-l;
+
+    @include respond-to(tablet) {
+      font-size: $font-size-xl;
+    }
   }
 
   &__action {
-    margin-left: auto;
+    margin-top: $space-base;
+
+    @include respond-to(tablet) {
+      margin-top: 0;
+      margin-left: auto;
+    }
+
+    & > * {
+      display: block;
+      width: 100%;
+    }
   }
 
   &__content {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     border-top: 1px solid $color-border-minor;
     padding-top: $space-base;
-    margin-left: $space-base + $font-size-xl;
 
-    & > * + * {
-      margin-left: $space-xl;
+    @include respond-to(tablet) {
+      flex-direction: row;
+      margin-left: $space-base + $font-size-xl; // Sync to icon size
+
+      & > * + * {
+        margin-left: $space-xl;
+      }
     }
   }
 }

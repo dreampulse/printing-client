@@ -1,4 +1,6 @@
 .RadioButton {
+  @include scut-truncate;
+
   display: block;
   background-color: $color-white;
   height: $field-height-compact;
