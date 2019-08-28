@@ -19,13 +19,14 @@ storiesOf('MaterialCard', module)
       onSelectClick={action('onSelectClick')}
     />
   ))
-  .add('showPriceSubline', () => (
+  .add('hasPriceSubline', () => (
     <MaterialCard
       title="Polyamide"
       descriptionHeadline="Best used for:"
       description="Best all-round material"
       price={price}
-      showPriceSubline
+      hasPriceSubline
+      priceSublineLabel="some subline text"
       image="http://placehold.it/260x170/cccccc"
       onMoreClick={action('onMoreClick')}
       onSelectClick={action('onSelectClick')}
@@ -54,6 +55,7 @@ storiesOf('MaterialCard', module)
   ))
   .add('loading', () => (
     <MaterialCard
+      hasPriceSubline
       loading
       title="Polyamide"
       description="Best all-round material. Best all-round material. Best all-round material"
@@ -66,6 +68,7 @@ storiesOf('MaterialCard', module)
   .add('unavailable', () => (
     <MaterialCard
       unavailable
+      hasPriceSubline
       title="Polyamide"
       description="Best all-round material"
       price={price}

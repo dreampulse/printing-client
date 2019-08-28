@@ -52,15 +52,17 @@
 
   &__footer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
     border-top: 1px solid $color-border-minor;
     padding-top: $space-base;
     font-size: $font-size-xs;
-    height: 1px + 2 * $space-base + 2 * $font-size-xs * $line-height-base + $field-height-compact;
+    height: 1px + $space-base + 2 * $font-size-xs * $line-height-base;
 
-    & > * + * {
-      margin-top: $space-base;
+    & > .Button {
+      width: 50%;
     }
   }
 
@@ -94,5 +96,23 @@
     pointer-events: none;
     border: 1px solid $color-primary;
     border-radius: $border-radius;
+  }
+
+  &--hasPriceSubline {
+    .MaterialCard__footer {
+      flex-direction: column;
+      height: 1px + 2 * $space-base + 2 * $font-size-xs * $line-height-base + $field-height-compact;
+
+      justify-content: initial;
+      align-items: initial;
+
+      & > * + * {
+        margin-top: $space-base;
+      }
+
+      & > .Button {
+        width: initial;
+      }
+    }
   }
 }
