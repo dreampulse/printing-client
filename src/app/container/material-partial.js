@@ -63,13 +63,12 @@ import ColorCardList from '../component/color-card-list'
 import MaterialStepSection from '../component/material-step-section'
 import RecommendedOfferSection from '../component/recommended-offer-section'
 import OfferCard from '../component/offer-card'
-
 import OfferList from '../component/offer-list'
 import OfferItem from '../component/offer-item'
+import ProviderName from '../component/provider-name'
 
 import fastestIcon from '../../asset/icon/fastest.svg'
 import cheapestIcon from '../../asset/icon/cheapest.svg'
-import ProviderName from '../component/provider-name'
 
 const MaterialPartial = ({
   // Own props

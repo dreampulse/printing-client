@@ -7,9 +7,9 @@ import CartModelItem from '.'
 import Button from '../button'
 import ButtonBar from '../button-bar'
 import NumberField from '../number-field'
+import ProviderName from '../provider-name'
 
 import placeholderIcon from '../../../asset/icon/placeholder.svg'
-import ProviderName from '../provider-name'
 
 const leftButtonBar = () => (
   <ButtonBar l>

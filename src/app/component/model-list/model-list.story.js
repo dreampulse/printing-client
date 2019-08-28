@@ -7,12 +7,12 @@ import Button from '../button'
 import ButtonBar from '../button-bar'
 import CartModelItem from '../cart-model-item'
 import NumberField from '../number-field'
+import ProviderName from '../provider-name'
 
 import placeholderIcon from '../../../asset/icon/placeholder.svg'
 import deleteIcon from '../../../asset/icon/delete.svg'
 
 import HandleValue from '../../../../stories/util/handle-value'
-import ProviderName from '../provider-name'
 
 const actions = () => [
   <Button icon={deleteIcon} iconOnly key="delete" />,
