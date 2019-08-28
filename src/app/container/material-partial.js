@@ -133,7 +133,7 @@ const MaterialPartial = ({
           offer.multiModelQuote.currency
         )
       } else {
-        price = formatPrice(offer.totalGrossPrice, offer.multiModelQuote.currency)
+        price = formatPrice(offer.multiModelQuote.grossPrice, offer.multiModelQuote.currency)
       }
     }
 
@@ -166,7 +166,14 @@ const MaterialPartial = ({
           description={material.descriptionShort}
           descriptionHeadline="Best used for:"
           price={renderPrice(bestOffer)}
-          showPriceSubline={!!bestOffer}
+          hasPriceSubline
+          priceSublineLabel={
+            bestOffer &&
+            `${formatPrice(
+              bestOffer.totalGrossPrice,
+              bestOffer.multiModelQuote.currency
+            )} incl. shipping`
+          }
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
