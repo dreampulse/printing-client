@@ -14,7 +14,8 @@ import {
   selectQuotes,
   selectUsedShippingIdsAndFilter,
   hasOnlyValidModelConfigsWithQuote,
-  isCartUpToDate
+  isCartUpToDate,
+  isAppReady
 } from './selector'
 
 describe('selectModelsOfModelConfigs()', () => {
@@ -1198,5 +1199,37 @@ describe('isCartUpToDate()', () => {
     }
 
     expect(isCartUpToDate(state), 'to be', true)
+  })
+
+  describe('isAppReady()', () => {
+    it('returns true if all fields are set which are necessary for the application to run', () => {
+      const state = {
+        core: {
+          materialGroups: 'some-material-group',
+          materials: 'some-materials',
+          finishGroups: 'some-finishGroups',
+          materialConfigs: 'some-materialConfigs',
+          location: 'some-location',
+          currency: 'some-currency'
+        }
+      }
+
+      expect(isAppReady(state), 'to be', true)
+    })
+
+    it('returns false if some fields are missing which are necessary for the application to run', () => {
+      const state = {
+        core: {
+          materialGroups: 'some-material-group',
+          materials: 'some-materials',
+          finishGroups: 'some-finishGroups',
+          materialConfigs: 'some-materialConfigs',
+          location: null,
+          currency: null
+        }
+      }
+
+      expect(isAppReady(state), 'to be', false)
+    })
   })
 })

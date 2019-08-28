@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Route, Switch, Redirect} from 'react-router'
 import {connect} from 'react-redux'
 import lifecycle from 'recompose/lifecycle'
@@ -6,6 +6,7 @@ import lifecycle from 'recompose/lifecycle'
 import * as coreActions from '../action/core'
 import {getFeatureFlags, getUrlParams} from '../lib/url'
 import {removeBootsplash} from '../service/bootsplash'
+import * as selectors from '../lib/selector'
 
 import AppLayout from '../component/app-layout'
 import NavBarPartial from './nav-bar-partial'
@@ -25,7 +26,9 @@ const DidMount = lifecycle({
   }
 })(() => null)
 
-const MainApp = ({initDone, initTriggered, initAction}) => {
+const MainApp = ({initTriggered, initAction, isAppReady}) => {
+  const [initActionDone, setInitActionDone] = useState(false)
+
   const init = initParams => () => {
     if (!initTriggered) {
       initAction({
@@ -34,11 +37,12 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
         ...initParams
       }).then(() => {
         removeBootsplash()
+        setInitActionDone(true)
       })
     }
   }
 
-  if (!initDone) {
+  if (!initActionDone) {
     // Configuration whether session should be restored
     return (
       <Switch>
@@ -54,6 +58,15 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
         />
         <Route render={() => <DidMount onDidMount={init({restoreSessionEnabled: true})} />} />
       </Switch>
+    )
+  }
+
+  if (!isAppReady) {
+    // Even if the app is not ready we may need to show some modals
+    return (
+      <AppLayout header={<NavBarPartial />}>
+        <Modal />
+      </AppLayout>
     )
   }
 
@@ -76,7 +89,7 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
 
 const mapStateToProps = state => ({
   initTriggered: state.core.initTriggered,
-  initDone: state.core.initDone
+  isAppReady: selectors.isAppReady(state)
 })
 
 const mapDispatchToProps = {

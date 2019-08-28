@@ -193,3 +193,13 @@ export const isCartUpToDate = (state: AppState) => {
 
   return !!state.core.cart && isEqual(state.core.cart.quoteIds, quoteIds)
 }
+
+export const isAppReady = (state: AppState) => {
+  const haveMaterialGroups = !!(
+    state.core.materialGroups &&
+    state.core.materials &&
+    state.core.finishGroups &&
+    state.core.materialConfigs
+  )
+  return !!(haveMaterialGroups && state.core.location && state.core.currency)
+}
