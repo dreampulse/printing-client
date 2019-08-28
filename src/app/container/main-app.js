@@ -16,6 +16,7 @@ import CartPage from './cart-page'
 import SuccessPage from './success-page'
 import ConfigurationPage from './configuration-page'
 import CartOfferPage from './cart-offer-page'
+import AddressPage from './address-page'
 
 import Modal from './modal'
 
@@ -64,6 +65,7 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
         <Route component={MaterialPage} path="/material" exact />
         <Route component={EditMaterialPage} path="/material/edit" exact />
         <Route component={CartPage} path="/cart" exact />
+        <Route component={AddressPage} path="/address" exact />
         <Route component={SuccessPage} path="/success" exact />
         <Route component={ConfigurationPage} path="/configuration/:id" exact />
         <Route component={CartOfferPage} path="/offer/:id" exact />
