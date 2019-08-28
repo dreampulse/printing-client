@@ -42,12 +42,11 @@
   }
 
   &__listButton {
-    position: relative;
     display: block;
     outline: none;
     width: $height-s;
     height: $height-s;
-    font-size: scut-em($icon-size);
+    font-size: $icon-size;
     background: $color-bg-minor;
     color: $color-primary;
 
@@ -61,7 +60,7 @@
     }
 
     & > .Icon {
-      @include scut-center-transform();
+      margin: 0 auto;
     }
   }
 

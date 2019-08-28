@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, {useRef} from 'react'
-import {noop} from 'lodash'
+import noop from 'lodash/noop'
 
 import propTypes from '../../prop-types'
 import buildClassName from '../../lib/class-names'
