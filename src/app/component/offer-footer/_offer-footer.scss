@@ -1,8 +1,17 @@
 .OfferFooter {
   border-top: 2px solid $color-bg-minor;
   background: $color-bg;
-  padding: $space-base $space-xl;
   font-size: $font-size-s;
+  height: $offer-footer-height-s;
+  padding: $space-s $space-base;
+  padding-left: $offer-footer-height-s + $space-base;
+  overflow: hidden;
+
+  @include respond-to(tablet) {
+    height: $offer-footer-height;
+    padding: $space-base $space-xl;
+    padding-left: $offer-footer-height + $space-xl;
+  }
 
   &__priceLabel {
     font-weight: $font-weight-bold;
@@ -11,12 +20,23 @@
 
   &__price {
     font-weight: $font-weight-bold;
-    font-size: $font-size-l;
+    font-size: $font-size-base;
     margin-left: $space-l;
     vertical-align: baseline;
+    line-height: $line-height-s;
+
+    @include respond-to(tablet) {
+      font-size: $font-size-l;
+      line-height: $line-height-base;
+    }
   }
 
   &__subline {
     font-size: $font-size-xs;
+    line-height: $line-height-s;
+
+    @include respond-to(tablet) {
+      line-height: $line-height-base;
+    }
   }
 }

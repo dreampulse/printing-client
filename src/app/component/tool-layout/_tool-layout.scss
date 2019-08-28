@@ -1,9 +1,12 @@
 .ToolLayout {
   $stacking: main, curtain, aside;
   $sidebar-width: 360px;
-  $toggle-size: 50px;
+  $toggle-size: $offer-footer-height;
+  $toggle-size-s: $offer-footer-height-s;
   $layout-height: calc(100vh - #{$nav-bar-height});
   $layout-height-mobile: calc(100vh - #{$nav-bar-height-mobile});
+  $icon-size: 20px;
+  $icon-size-tablet: 25px;
 
   position: relative;
   z-index: z($global-stacking, app);
@@ -21,6 +24,7 @@
     padding: $space-xl;
     overflow-y: auto;
     z-index: z($stacking, main);
+    transition: margin-left $transition-duration-fast ease-out; // This is slow bit there is no other way
   }
 
   &__curtain {
@@ -38,6 +42,10 @@
     @include respond-to(tablet) {
       height: $layout-height;
     }
+
+    @include respond-to(desktop) {
+      display: none;
+    }
   }
 
   &__aside {
@@ -46,11 +54,12 @@
     background: $color-bg-minor;
     transition: transform $transition-duration-fast ease-out;
     transform: translateX(-100%);
-    width: calc(100vw - #{$toggle-size});
+    width: calc(100vw - #{$toggle-size-s});
     height: $layout-height-mobile;
     z-index: z($stacking, aside);
 
     @include respond-to(tablet) {
+      width: calc(100vw - #{$toggle-size});
       height: $layout-height;
       width: $sidebar-width;
     }
@@ -70,12 +79,20 @@
   &__toggle {
     position: absolute;
     bottom: 0;
-    right: -1 * $toggle-size;
-    width: $toggle-size;
-    height: $toggle-size;
+    right: -1 * $toggle-size-s;
+    width: $toggle-size-s;
+    height: $toggle-size-s;
     background: $color-bg-minor;
     color: $color-primary;
     outline: none;
+    font-size: scut-em($icon-size);
+
+    @include respond-to(tablet) {
+      right: -1 * $toggle-size;
+      width: $toggle-size;
+      height: $toggle-size;
+      font-size: scut-em($icon-size-tablet);
+    }
 
     & > .Icon {
       @include scut-center-transform();
@@ -109,6 +126,12 @@
 
       &:last-child {
         opacity: 1;
+      }
+    }
+
+    .ToolLayout__main {
+      @include respond-to(desktop) {
+        margin-left: $sidebar-width;
       }
     }
   }

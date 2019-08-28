@@ -23,6 +23,7 @@ import {
   selectCartCount,
   selectModelsOfModelConfigs
 } from '../lib/selector'
+import useBreakpoints from '../hook/use-breakpoints'
 
 import MaterialPartial from './material-partial'
 import OfferFooterPartial from './offer-footer-partial'
@@ -69,7 +70,8 @@ const MaterialPage = ({
   updateSelectedModelConfigs
 }) => {
   const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const breakpoints = useBreakpoints()
+  const [sidebarOpen, setSidebarOpen] = useState()
 
   const sidebar = asideNode => (
     <>
@@ -160,7 +162,7 @@ const MaterialPage = ({
 
   return (
     <ToolLayout
-      isOpen={sidebarOpen}
+      isOpen={(sidebarOpen === undefined && breakpoints.desktop) || sidebarOpen}
       onToggle={isOpen => setSidebarOpen(isOpen)}
       fullMain
       scrollContainerId={SCROLL_CONTAINER_ID}
