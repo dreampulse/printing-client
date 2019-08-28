@@ -6,16 +6,23 @@
 
   &__main {
     display: flex;
-    align-items: flex-end;
     flex-grow: 1;
-    margin-right: $space-xxxl;
+    flex-direction: column;
+    margin-right: $space-s;
 
-    & > * {
-      min-width: $data-column-width;
-    }
+    @include respond-to(desktop) {
+      flex-direction: row;
+      align-items: flex-end;
+      margin-right: $space-xxxl;
 
-    & > * + * {
-      margin-left: $space-xxl;
+      & > * {
+        min-width: $data-column-width;
+      }
+
+      & > * + * {
+        margin-top: 0;
+        margin-left: $space-xxl;
+      }
     }
   }
 
