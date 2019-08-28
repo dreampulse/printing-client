@@ -13,7 +13,7 @@ const itStates: StateMap = {
   'Emilia-Romagna': 'Emilia-Romagna',
   'Friuli-Venezia Giulia': 'Friuli-Venezia Giulia',
   Veneto: 'Veneto',
-  'Trentino-Alto Adige/Südtirol': 'Trentino-Alto Adige/Südtirol',
+  'Trentino-Südtirol': 'Trentino-Südtirol',
   Tuscany: 'Tuscany',
   Marche: 'Marche',
   Abruzzo: 'Abruzzo',
