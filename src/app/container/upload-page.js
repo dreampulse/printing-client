@@ -71,12 +71,11 @@ const UploadPage = ({
   toggleId,
   toggleAll,
   createConfiguration,
-  modelConfigs
+  unconfiguredModelConfigIds
 }) => {
   const breakpoints = useBreakpoints()
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
-  const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
 
   const renderPromoSection = () => (
     <Section>
@@ -272,7 +271,7 @@ const UploadPage = ({
             <Headline
               light
               label={`Your selection (${selectedModelConfigIds.length}/${
-                unconfiguredConfigIds.length
+                unconfiguredModelConfigIds.length
               } files)`}
             />
             {renderModelList()}
@@ -298,7 +297,7 @@ const mapStateToProps = state => ({
   useSameMaterial: state.core.useSameMaterial,
   uploadedModelConfigs: selector.selectUploadedModelConfigs(state),
   isModelOpen: state.modal.isOpen,
-  modelConfigs: state.core.modelConfigs
+  unconfiguredModelConfigIds: selector.selectUnconfiguredModelConfigIds(state)
 })
 
 const mapDispatchToProps = {

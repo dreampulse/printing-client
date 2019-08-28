@@ -66,9 +66,14 @@
     }
   }
 
+  &__priceSubline {
+    height: $font-size-s * $line-height-base;
+  }
+
   &__unavailableText {
     font-size: $font-size-base;
     font-weight: $font-weight-bold;
+    height: ($font-size-base + $font-size-s) * $line-height-base;
   }
 
   &--unavailable {
@@ -91,5 +96,23 @@
     pointer-events: none;
     border: 1px solid $color-primary;
     border-radius: $border-radius;
+  }
+
+  &--hasPriceSubline {
+    .MaterialCard__footer {
+      flex-direction: column;
+      height: 1px + 2 * $space-base + 2 * $font-size-xs * $line-height-base + $field-height-compact;
+
+      justify-content: initial;
+      align-items: initial;
+
+      & > * + * {
+        margin-top: $space-base;
+      }
+
+      & > .Button {
+        width: initial;
+      }
+    }
   }
 }

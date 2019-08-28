@@ -7,7 +7,7 @@ import CartModelItem from '.'
 import Button from '../button'
 import ButtonBar from '../button-bar'
 import NumberField from '../number-field'
-import ProviderImage from '../provider-image'
+import ProviderName from '../provider-name'
 
 import placeholderIcon from '../../../asset/icon/placeholder.svg'
 
@@ -52,7 +52,7 @@ storiesOf('CartModelItem', module)
           Deslivery method: <strong>Standard</strong>
         </>
       }
-      providerImage={<ProviderImage s slug="imaterialise" name="i.Materialise" />}
+      provider={<ProviderName vendorId="imaterialise" />}
       buttonsLeft={leftButtonBar()}
       buttonsRight={rightButtonBar()}
     />
@@ -79,7 +79,7 @@ storiesOf('CartModelItem', module)
             Deslivery method: <strong>Standard</strong>
           </>
         }
-        providerImage={<ProviderImage s slug="imaterialise" name="i.Materialise" />}
+        provider={<ProviderName vendorId="imaterialise" />}
         buttonsLeft={leftButtonBar()}
         buttonsRight={rightButtonBar()}
         selected={store.state.selected}

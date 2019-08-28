@@ -1,4 +1,4 @@
-.notification {
+.Notification {
   $border: 1px solid $color-border;
 
   border: $border;
@@ -71,12 +71,12 @@
     margin-left: auto;
   }
 
-  &--warning {
-    .notification__icon {
+  &--type-warning {
+    .Notification__icon {
       color: $color-warning;
     }
 
-    .notification__message {
+    .Notification__message {
       color: $color-text;
     }
   }

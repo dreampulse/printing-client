@@ -39,12 +39,6 @@
       color: $color-text;
       font-style: normal;
     }
-
-    // There is a grid bug when provider image is a block element
-    & > .ProviderImage {
-      display: inline-block;
-      vertical-align: middle;
-    }
   }
 
   &__topline {
