@@ -20,7 +20,6 @@ import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
 import config from '../../../config'
-import {getProviderName} from '../lib/material'
 import {getBestMultiModelOffers} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {

@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 
 import DescriptionList from '.'
-import ProviderImage from '../provider-image'
+import ProviderName from '../provider-name'
 
 storiesOf('DescriptionList', module)
   .add('default', () => (
@@ -23,7 +23,7 @@ storiesOf('DescriptionList', module)
       <dd>White cold drink</dd>
       <dt>Milk:</dt>
       <dd>
-        <ProviderImage xs name="imaterialise" slug="imaterialise" />
+        <ProviderName vendorId="imaterialise" />
       </dd>
     </DescriptionList>
   ))
@@ -45,7 +45,7 @@ storiesOf('DescriptionList', module)
       <dd>White cold drink</dd>
       <dt>Milk:</dt>
       <dd>
-        <ProviderImage xs name="imaterialise" slug="imaterialise" />
+        <ProviderName vendorId="imaterialise" />
       </dd>
     </DescriptionList>
   ))
@@ -74,10 +74,10 @@ storiesOf('DescriptionList', module)
       <dd>White cold drink</dd>
       <dt>Milk:</dt>
       <dd>
-        <ProviderImage xs name="imaterialise" slug="imaterialise" />
+        <ProviderName vendorId="imaterialise" />
       </dd>
       <dd>
-        <ProviderImage xs name="imaterialise" slug="imaterialise" />
+        <ProviderName vendorId="imaterialise" />
       </dd>
     </DescriptionList>
   ))
@@ -99,7 +99,7 @@ storiesOf('DescriptionList', module)
       <dd>White cold drink</dd>
       <dt>Milk:</dt>
       <dd>
-        <ProviderImage xs name="imaterialise" slug="imaterialise" />
+        <ProviderName vendorId="imaterialise" />
       </dd>
     </DescriptionList>
   ))
