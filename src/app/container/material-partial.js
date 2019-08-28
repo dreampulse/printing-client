@@ -20,7 +20,6 @@ import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
 import config from '../../../config'
-import {getProviderName} from '../lib/material'
 import {getBestMultiModelOffers} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {
@@ -64,9 +63,9 @@ import ColorCardList from '../component/color-card-list'
 import MaterialStepSection from '../component/material-step-section'
 import RecommendedOfferSection from '../component/recommended-offer-section'
 import OfferCard from '../component/offer-card'
-import ProviderImage from '../component/provider-image'
 import OfferList from '../component/offer-list'
 import OfferItem from '../component/offer-item'
+import ProviderName from '../component/provider-name'
 
 import fastestIcon from '../../asset/icon/fastest.svg'
 import cheapestIcon from '../../asset/icon/cheapest.svg'
@@ -470,11 +469,7 @@ const MaterialPartial = ({
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
                 <dt>Fulfilled by:</dt>
                 <dd>
-                  <ProviderImage
-                    xs
-                    name={getProviderName(multiModelQuote.vendorId)}
-                    slug={multiModelQuote.vendorId}
-                  />
+                  <ProviderName vendorId={multiModelQuote.vendorId} />
                 </dd>
               </DescriptionList>
             </>
@@ -492,11 +487,7 @@ const MaterialPartial = ({
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
                 <dt>Fulfilled by:</dt>
                 <dd>
-                  <ProviderImage
-                    xs
-                    name={getProviderName(multiModelQuote.vendorId)}
-                    slug={multiModelQuote.vendorId}
-                  />
+                  <ProviderName vendorId={multiModelQuote.vendorId} />
                 </dd>
               </DescriptionList>
               <DescriptionList alignRight doubleValues>
@@ -612,11 +603,7 @@ const MaterialPartial = ({
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
                     <dt>Fulfilled by:</dt>
                     <dd>
-                      <ProviderImage
-                        xs
-                        name={getProviderName(multiModelQuote.vendorId)}
-                        slug={multiModelQuote.vendorId}
-                      />
+                      <ProviderName vendorId={multiModelQuote.vendorId} />
                     </dd>
                   </DescriptionList>
                 </>
@@ -651,11 +638,7 @@ const MaterialPartial = ({
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
                     <dt>Fulfilled by:</dt>
                     <dd>
-                      <ProviderImage
-                        xs
-                        name={getProviderName(multiModelQuote.vendorId)}
-                        slug={multiModelQuote.vendorId}
-                      />
+                      <ProviderName vendorId={multiModelQuote.vendorId} />
                     </dd>
                   </DescriptionList>
                 </>
@@ -706,11 +689,7 @@ const MaterialPartial = ({
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
                     <dt>Fulfilled by:</dt>
                     <dd>
-                      <ProviderImage
-                        xs
-                        name={getProviderName(multiModelQuote.vendorId)}
-                        slug={multiModelQuote.vendorId}
-                      />
+                      <ProviderName vendorId={multiModelQuote.vendorId} />
                     </dd>
                   </DescriptionList>
                 </>

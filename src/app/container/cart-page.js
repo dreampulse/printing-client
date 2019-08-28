@@ -30,7 +30,6 @@ import Button from '../component/button'
 import Paragraph from '../component/paragraph'
 import PaymentSection from '../component/payment-section'
 import CartModelItem from '../component/cart-model-item'
-import ProviderImage from '../component/provider-image'
 import ButtonBar from '../component/button-bar'
 import LoadingIndicator from '../component/loading-indicator'
 import PageLayout from '../component/page-layout'
@@ -59,6 +58,7 @@ import zoomInIcon from '../../asset/icon/zoom-in.svg'
 import shareIcon from '../../asset/icon/share.svg'
 import useHasAdblocker from '../hook/use-has-adblocker'
 import Notification from '../component/notification'
+import ProviderName from '../component/provider-name'
 
 const CartPage = ({
   modelsWithConfig,
@@ -278,13 +278,7 @@ const CartPage = ({
                   Delivery method: <strong>{shipping.name}</strong>
                 </>
               }
-              providerImage={
-                <ProviderImage
-                  s
-                  name={getProviderName(shipping.vendorId)}
-                  slug={shipping.vendorId}
-                />
-              }
+              provider={<ProviderName vendorId={shipping.vendorId} />}
               buttonsLeft={
                 <NumberField
                   value={modelConfig.quantity}

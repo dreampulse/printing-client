@@ -23,7 +23,7 @@ const CartModelItem = ({
   info,
   buttonsLeft,
   buttonsRight,
-  providerImage,
+  provider,
   shippingInfo,
   selected = false,
   onSelect,
@@ -50,7 +50,7 @@ const CartModelItem = ({
           </strong>
           {/* \u00A0 = &nbsp to keep space for info even if empty. */}
           <div className="CartModelItem__info">{info || '\u00A0'}</div>
-          {providerImage && <div className="CartModelItem__provider">{providerImage}</div>}
+          {provider}
         </div>
         <div className="CartModelItem__contentRight">
           <strong className="CartModelItem__price">{price}</strong>
@@ -74,7 +74,7 @@ CartModelItem.propTypes = {
   price: PropTypes.string,
   info: PropTypes.node,
   shippingInfo: PropTypes.node,
-  providerImage: PropTypes.element,
+  provider: PropTypes.node,
   buttonsLeft: PropTypes.node,
   buttonsRight: PropTypes.node,
   selected: PropTypes.bool,
