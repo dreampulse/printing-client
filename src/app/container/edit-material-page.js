@@ -93,13 +93,19 @@ const EditMaterialPage = ({
   return (
     <ToolLayout
       isOpen={sidebarOpen}
-      onToggle={isOpen => setSidebarOpen(isOpen)}
+      onClose={() => setSidebarOpen(false)}
       fullMain
       scrollContainerId={SCROLL_CONTAINER_ID}
       sidebar={sidebar()}
     >
       <OfferLayout
-        footer={<OfferFooterPartial configIds={configIds} selectedState={selectedState} />}
+        footer={
+          <OfferFooterPartial
+            onOpenSidebar={() => setSidebarOpen(true)}
+            configIds={configIds}
+            selectedState={selectedState}
+          />
+        }
       >
         <Section>
           <LocationInfoPartial />

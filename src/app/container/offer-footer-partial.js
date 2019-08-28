@@ -34,7 +34,8 @@ const OfferPartial = ({
   usedShippingIds,
   currency,
   location,
-  openPickLocationModal
+  openPickLocationModal,
+  onOpenSidebar
 }) => {
   // Filter out quotes which do not have a valid shipping method
   const validQuotes = quotes.filter(quote =>
@@ -51,6 +52,7 @@ const OfferPartial = ({
 
   return (
     <OfferFooter
+      onOpenSidebar={onOpenSidebar}
       priceLabel="Best Price"
       price={
         offers.length > 0

@@ -1,8 +1,8 @@
 .ToolLayout {
   $stacking: main, curtain, aside;
   $sidebar-width: 360px;
-  $toggle-size: $offer-footer-height;
-  $toggle-size-s: $offer-footer-height-s;
+  $toggle-size: 70px;
+  $toggle-size-s: 50px;
   $layout-height: calc(100vh - #{$nav-bar-height});
   $layout-height-mobile: calc(100vh - #{$nav-bar-height-mobile});
   $icon-size: 20px;
@@ -24,7 +24,10 @@
     padding: $space-xl;
     overflow-y: auto;
     z-index: z($stacking, main);
-    transition: margin-left $transition-duration-fast ease-out; // This is slow bit there is no other way
+
+    @include respond-to(desktop) {
+      margin-left: $sidebar-width;
+    }
   }
 
   &__curtain {
@@ -67,6 +70,7 @@
     @include respond-to(desktop) {
       width: $sidebar-width;
       height: $layout-height;
+      transform: none;
     }
   }
 
@@ -76,16 +80,18 @@
     padding: $space-xl;
   }
 
-  &__toggle {
+  &__close {
     position: absolute;
-    bottom: 0;
+    top: 0;
     right: -1 * $toggle-size-s;
     width: $toggle-size-s;
     height: $toggle-size-s;
-    background: $color-bg-minor;
-    color: $color-primary;
+    color: $color-invert-text;
     outline: none;
     font-size: scut-em($icon-size);
+    opacity: 0;
+    transition: opacity $transition-duration-fast ease-out;
+    pointer-events: none;
 
     @include respond-to(tablet) {
       right: -1 * $toggle-size;
@@ -94,18 +100,12 @@
       font-size: scut-em($icon-size-tablet);
     }
 
+    @include respond-to(desktop) {
+      display: none;
+    }
+
     & > .Icon {
       @include scut-center-transform();
-
-      &:first-child {
-        opacity: 1;
-        transition: opacity $transition-duration-fast linear;
-      }
-
-      &:last-child {
-        opacity: 0;
-        transition: opacity $transition-duration-fast linear;
-      }
     }
   }
 
@@ -119,20 +119,9 @@
       pointer-events: all;
     }
 
-    .ToolLayout__toggle > .Icon {
-      &:first-child {
-        opacity: 0;
-      }
-
-      &:last-child {
-        opacity: 1;
-      }
-    }
-
-    .ToolLayout__main {
-      @include respond-to(desktop) {
-        margin-left: $sidebar-width;
-      }
+    .ToolLayout__close {
+      opacity: 1;
+      pointer-events: all;
     }
   }
 

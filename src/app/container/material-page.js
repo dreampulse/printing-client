@@ -162,15 +162,19 @@ const MaterialPage = ({
 
   return (
     <ToolLayout
-      isOpen={(sidebarOpen === undefined && breakpoints.desktop) || sidebarOpen}
-      onToggle={isOpen => setSidebarOpen(isOpen)}
+      isOpen={breakpoints.desktop || sidebarOpen}
+      onClose={() => setSidebarOpen(false)}
       fullMain
       scrollContainerId={SCROLL_CONTAINER_ID}
       sidebar={sidebar}
     >
       <OfferLayout
         footer={
-          <OfferFooterPartial configIds={selectedModelConfigIds} selectedState={selectedState} />
+          <OfferFooterPartial
+            onOpenSidebar={() => setSidebarOpen(true)}
+            configIds={selectedModelConfigIds}
+            selectedState={selectedState}
+          />
         }
       >
         <MaterialPartial

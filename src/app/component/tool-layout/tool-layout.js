@@ -7,7 +7,6 @@ import buildClassName from '../../lib/class-names'
 
 import Icon from '../icon'
 
-import listIcon from '../../../asset/icon/list.svg'
 import closeIcon from '../../../asset/icon/close.svg'
 
 const ToolLayout = ({
@@ -17,7 +16,7 @@ const ToolLayout = ({
   isOpen = false,
   fullMain = false,
   scrollContainerId,
-  onToggle = noop
+  onClose = noop
 }) => {
   const asideRef = useRef()
 
@@ -27,16 +26,11 @@ const ToolLayout = ({
         <div className="ToolLayout__sidebar">
           {typeof sidebar === 'function' ? sidebar(asideRef.current) : sidebar}
         </div>
-        <button
-          type="button"
-          className="ToolLayout__toggle"
-          onClick={event => onToggle(!isOpen, event)}
-        >
-          <Icon block source={listIcon} />
+        <button type="button" className="ToolLayout__close" onClick={event => onClose(event)}>
           <Icon block source={closeIcon} />
         </button>
       </aside>
-      <div onClick={event => onToggle(false, event)} className="ToolLayout__curtain" />
+      <div onClick={event => onClose(event)} className="ToolLayout__curtain" />
       <main className="ToolLayout__main" id={scrollContainerId}>
         {children}
       </main>
@@ -51,7 +45,7 @@ ToolLayout.propTypes = {
   fullMain: PropTypes.bool,
   scrollContainerId: PropTypes.string,
   isOpen: PropTypes.bool,
-  onToggle: PropTypes.func
+  onClose: PropTypes.func
 }
 
 export default ToolLayout

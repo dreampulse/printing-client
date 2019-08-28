@@ -1,16 +1,26 @@
 .OfferFooter {
+  $icon-size: 20px;
+  $icon-size-tablet: 25px;
+  $height: 76px;
+  $height-s: 50px;
+
   border-top: 2px solid $color-bg-minor;
   background: $color-bg;
   font-size: $font-size-s;
-  height: $offer-footer-height-s;
-  padding: $space-s $space-base;
-  padding-left: $offer-footer-height-s + $space-base;
+  display: flex;
+  height: $height-s;
   overflow: hidden;
 
   @include respond-to(tablet) {
-    height: $offer-footer-height;
-    padding: $space-base $space-xl;
-    padding-left: $offer-footer-height + $space-xl;
+    height: $height;
+  }
+
+  &__content {
+    padding: $space-s $space-base;
+
+    @include respond-to(tablet) {
+      padding: $space-base $space-xl;
+    }
   }
 
   &__priceLabel {
@@ -28,6 +38,30 @@
     @include respond-to(tablet) {
       font-size: $font-size-l;
       line-height: $line-height-base;
+    }
+  }
+
+  &__listButton {
+    position: relative;
+    display: block;
+    outline: none;
+    width: $height-s;
+    height: $height-s;
+    font-size: scut-em($icon-size);
+    background: $color-bg-minor;
+    color: $color-primary;
+
+    @include respond-to(tablet) {
+      width: $height;
+      height: $height;
+    }
+
+    @include respond-to(desktop) {
+      display: none;
+    }
+
+    & > .Icon {
+      @include scut-center-transform();
     }
   }
 
