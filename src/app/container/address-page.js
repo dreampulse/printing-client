@@ -1,5 +1,3 @@
-// const addressFormModalScrollContainerId = 'addressFormModalScrollContainer'
-
 import React from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
@@ -14,9 +12,16 @@ import Headline from '../component/headline'
 
 import AddressFormPartial from './address-form-partial'
 
-const AddressPage = ({onGoToCart}) => {
+const addressFormPageScrollContainerSelector = 'html'
+
+const AddressPage = ({onGoToCart, location}) => {
   return (
-    <AddressFormPartial onSubmitted={() => onGoToCart()} onCancel={() => onGoToCart()}>
+    <AddressFormPartial
+      scrollContainerSelector={addressFormPageScrollContainerSelector}
+      scrollTo={location.state.scrollTo}
+      onSubmitted={() => onGoToCart()}
+      onCancel={() => onGoToCart()}
+    >
       {({submitButton, addressForm, cancelButton}) => (
         <PageLayout>
           <Container s>

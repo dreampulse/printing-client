@@ -89,13 +89,22 @@ const CartPage = ({
   openErrorModal,
   orderPaid,
   executePaypalPayment,
-  createOffer
+  createOffer,
+  onGoToAddress
 }) => {
   const hasAdblocker = useHasAdblocker()
   const breakpoints = useBreakpoints()
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
   const hasItemsOnUploadPage = modelConfigs.length > modelsWithConfig.length
+
+  const onEditAddress = scrollTo => {
+    if (breakpoints['mobile-only']) {
+      onGoToAddress(scrollTo)
+    } else {
+      openAddressFormModal(scrollTo)
+    }
+  }
 
   const renderNotificationSection = () => (
     <Section>
@@ -146,7 +155,7 @@ const CartPage = ({
                   Delivery Address{' '}
                   <Link
                     label="edit"
-                    onClick={() => openAddressFormModal()}
+                    onClick={() => onEditAddress()}
                     classNames={['u-font-size-base']}
                   />
                 </>
@@ -191,7 +200,7 @@ const CartPage = ({
                       Billing Address{' '}
                       <Link
                         label="edit"
-                        onClick={() => openAddressFormModal('billing-address')}
+                        onClick={() => onEditAddress('billing-address')}
                         classNames={['u-font-size-base']}
                       />
                     </>
@@ -475,7 +484,7 @@ const CartPage = ({
               />
             ]
           ) : (
-            <Button label="Checkout" block onClick={() => openAddressFormModal()} />
+            <Button label="Checkout" block onClick={() => onEditAddress()} />
           )}
         </PaymentSection>
         {breakpoints.tablet && renderAdditionalInformation()}
@@ -592,7 +601,8 @@ const mapDispatchToProps = dispatch => ({
     return dispatch(action).then(() => {
       dispatch(navigationAction.goToMaterial([action.payload.nextId]))
     })
-  }
+  },
+  onGoToAddress: bindActionCreators(navigationAction.goToAddress, dispatch)
 })
 
 export default compose(

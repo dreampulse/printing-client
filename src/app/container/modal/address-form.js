@@ -14,7 +14,7 @@ const addressFormModalScrollContainerId = 'addressFormModalScrollContainer'
 const AddressFormModal = ({closeModal, scrollTo}) => (
   <AddressFormPartial
     scrollTo={scrollTo}
-    scrollContainerId={addressFormModalScrollContainerId}
+    scrollContainerSelector={`#${addressFormModalScrollContainerId}`}
     onCancel={() => closeModal()}
     onSubmitted={() => closeModal()}
   >

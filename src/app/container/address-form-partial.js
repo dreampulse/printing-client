@@ -421,15 +421,18 @@ const enhance = compose(
     },
     componentDidMount() {
       if (this.props.scrollTo === 'billing-address') {
-        scrollTo('#billing-address', `#${this.props.scrollContainerId}`)
+        scrollTo('#billing-address', this.props.scrollContainerSelector)
       }
     }
   })
 )
 
 AddressFormPartial.propTypes = {
-  scrollContainerId: PropTypes.string.isRequired,
-  scrollTo: PropTypes.string
+  scrollContainerSelector: PropTypes.string.isRequired,
+  scrollTo: PropTypes.string,
+  children: PropTypes.func,
+  onSubmitted: PropTypes.func,
+  onCancel: PropTypes.func
 }
 
 export default enhance(AddressFormPartial)
