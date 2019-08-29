@@ -21,7 +21,13 @@ const rightButtonBar = () => (
   <ButtonBar l>
     <Button icon={placeholderIcon} iconOnly />
     <Button icon={placeholderIcon} iconOnly />
-    <Button icon={placeholderIcon} label="Edit material" tiny minor />
+    <Button
+      icon={placeholderIcon}
+      label="Edit material"
+      tiny
+      minor
+      classNames={['u-hide-mobile', 'u-hide-tablet']}
+    />
   </ButtonBar>
 )
 

@@ -28,6 +28,7 @@ import ButtonBar from '../component/button-bar'
 import UploadModelItem from '../component/upload-model-item'
 import NumberField from '../component/number-field'
 import OfferLayout from '../component/offer-layout'
+import Icon from '../component/icon'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
@@ -97,7 +98,7 @@ const EditMaterialPage = ({
         <Section>
           <Link
             label="Back to cart"
-            icon={backIcon}
+            icon={<Icon source={backIcon} />}
             onClick={event => {
               event.preventDefault()
               goToCart({
