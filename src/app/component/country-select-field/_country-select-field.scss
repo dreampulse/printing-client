@@ -1,9 +1,7 @@
 .CountrySelectField {
-  height: $field-height-compact;
   line-height: $field-height-compact;
 
   @include respond-to(tablet) {
-    height: $field-height;
     line-height: $field-height;
   }
 
@@ -12,6 +10,7 @@
   }
 
   &__notification {
+    line-height: $line-height-base;
     color: $color-warning;
     padding: $space-base;
     padding-bottom: 0;

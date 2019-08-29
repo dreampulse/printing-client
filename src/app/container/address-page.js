@@ -1,9 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Redirect} from 'react-router'
 import compose from 'recompose/compose'
 
 import {scrollToTop} from './util/scroll-to-top'
 import {goToCart} from '../action/navigation'
+import useBreakpoints from '../hook/use-breakpoints'
 
 import PageLayout from '../component/page-layout'
 import Container from '../component/container'
@@ -16,10 +18,16 @@ import Paragraph from '../component/paragraph'
 const addressFormPageScrollContainerSelector = 'html'
 
 const AddressPage = ({onGoToCart, location}) => {
+  const breakpoints = useBreakpoints()
+
+  if (breakpoints.tablet) {
+    return <Redirect to="/cart" />
+  }
+
   return (
     <AddressFormPartial
       scrollContainerSelector={addressFormPageScrollContainerSelector}
-      scrollTo={location.state.scrollTo}
+      scrollTo={(location.state || {}).scrollTo}
       onSubmitted={() => onGoToCart()}
       onCancel={() => onGoToCart()}
     >
