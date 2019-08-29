@@ -1205,12 +1205,10 @@ describe('isCartUpToDate()', () => {
     it('returns true if all fields are set which are necessary for the application to run', () => {
       const state = {
         core: {
-          materialGroups: 'some-material-group',
-          materials: 'some-materials',
-          finishGroups: 'some-finishGroups',
           materialConfigs: 'some-materialConfigs',
           location: 'some-location',
-          currency: 'some-currency'
+          currency: 'some-currency',
+          shippings: 'some-shippings'
         }
       }
 
@@ -1220,12 +1218,10 @@ describe('isCartUpToDate()', () => {
     it('returns false if some fields are missing which are necessary for the application to run', () => {
       const state = {
         core: {
-          materialGroups: 'some-material-group',
-          materials: 'some-materials',
-          finishGroups: 'some-finishGroups',
           materialConfigs: 'some-materialConfigs',
           location: null,
-          currency: null
+          currency: null,
+          shippings: null
         }
       }
 

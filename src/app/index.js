@@ -57,8 +57,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 global.addEventListener('unload', () => {
-  const {core: coreState} = store.getState()
-  if (localStorageSession.isEnabled() && isAppReady(coreState)) {
-    localStorageSession.save(coreState)
+  const state = store.getState()
+  if (localStorageSession.isEnabled() && isAppReady(state)) {
+    localStorageSession.save(state.core)
   }
 })

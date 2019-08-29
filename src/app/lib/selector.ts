@@ -197,10 +197,8 @@ export const isCartUpToDate = (state: AppState) => {
 export const isAppReady = (state: AppState) =>
   !!(
     state.core &&
-    state.core.materialGroups &&
-    state.core.materials &&
-    state.core.finishGroups &&
     state.core.materialConfigs &&
     state.core.location &&
-    state.core.currency
+    state.core.currency &&
+    state.core.shippings
   )

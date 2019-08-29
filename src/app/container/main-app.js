@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {Route, Switch, Redirect} from 'react-router'
 import {connect} from 'react-redux'
 import lifecycle from 'recompose/lifecycle'
@@ -27,8 +27,6 @@ const DidMount = lifecycle({
 })(() => null)
 
 const MainApp = ({initTriggered, initAction, isAppReady}) => {
-  const [initActionDone, setInitActionDone] = useState(false)
-
   const init = initParams => () => {
     if (!initTriggered) {
       initAction({
@@ -37,36 +35,29 @@ const MainApp = ({initTriggered, initAction, isAppReady}) => {
         ...initParams
       }).then(() => {
         removeBootsplash()
-        setInitActionDone(true)
       })
     }
   }
 
-  if (!initActionDone) {
+  if (!isAppReady) {
     // Configuration whether session should be restored
     return (
-      <Switch>
-        <Route
-          path="/configuration/:id"
-          exact
-          render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
-        />
-        <Route
-          path="/offer/:id"
-          exact
-          render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
-        />
-        <Route render={() => <DidMount onDidMount={init({restoreSessionEnabled: true})} />} />
-      </Switch>
-    )
-  }
-
-  if (!isAppReady) {
-    // Even if the app is not ready we may need to show some modals
-    return (
-      <AppLayout header={<NavBarPartial />}>
+      <>
+        <Switch>
+          <Route
+            path="/configuration/:id"
+            exact
+            render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
+          />
+          <Route
+            path="/offer/:id"
+            exact
+            render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
+          />
+          <Route render={() => <DidMount onDidMount={init({restoreSessionEnabled: true})} />} />
+        </Switch>
         <Modal />
-      </AppLayout>
+      </>
     )
   }
 

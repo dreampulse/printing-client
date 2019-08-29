@@ -30,9 +30,7 @@ context('Share cart flow', () => {
   })
 
   it('selects material and provider', () => {
-    cy.get('.MaterialCard')
-      .contains('button', 'Select')
-      .click()
+    cy.contains('button', 'Select').click()
     cy.get('#material-step-2')
       .contains('button', 'Select')
       .click()
