@@ -87,7 +87,6 @@ export type CoreState = {
   paymentId: PaymentId | null
   orderNumber: string | null
   initTriggered: boolean
-  initDone: boolean
 }
 
 type CoreReducer = CoreState | Loop<CoreState, Actions>
@@ -114,8 +113,7 @@ const initialState: CoreState = {
   cart: null,
   paymentId: null,
   orderNumber: null,
-  initTriggered: false,
-  initDone: false
+  initTriggered: false
 }
 
 const createPriceRequestSingleton = singletonPromise()
@@ -170,8 +168,7 @@ const init = (
               failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
               args: []
             }),
-        userFromLocalStorage ? Cmd.action(coreActions.saveUser(userFromLocalStorage)) : Cmd.none,
-        Cmd.action(coreActions.initDone())
+        userFromLocalStorage ? Cmd.action(coreActions.saveUser(userFromLocalStorage)) : Cmd.none
       ],
       {sequence: true}
     )
@@ -967,15 +964,12 @@ const reset = (state: CoreState): CoreReducer => ({
     'featureFlags',
     'shippings',
     'urlParams',
-    'initTriggered',
-    'initDone'
+    'initTriggered'
   ),
   user: {
     ...omit(state.user, 'userId')
   }
 })
-
-const initDone = (state: CoreState): CoreReducer => ({...state, initDone: true})
 
 export const reducer = (state: CoreState = initialState, action: Actions): CoreReducer => {
   switch (action.type) {
@@ -1047,8 +1041,6 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return configurationReceived(state, action)
     case 'CORE.RESET':
       return reset(state)
-    case 'CORE.INIT_DONE':
-      return initDone(state)
     default:
       return state
   }

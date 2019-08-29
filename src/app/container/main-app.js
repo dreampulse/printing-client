@@ -6,6 +6,7 @@ import lifecycle from 'recompose/lifecycle'
 import * as coreActions from '../action/core'
 import {getFeatureFlags, getUrlParams} from '../lib/url'
 import {removeBootsplash} from '../service/bootsplash'
+import * as selectors from '../lib/selector'
 
 import AppLayout from '../component/app-layout'
 import NavBarPartial from './nav-bar-partial'
@@ -26,7 +27,7 @@ const DidMount = lifecycle({
   }
 })(() => null)
 
-const MainApp = ({initDone, initTriggered, initAction}) => {
+const MainApp = ({initTriggered, initAction, isAppReady}) => {
   const init = initParams => () => {
     if (!initTriggered) {
       initAction({
@@ -39,22 +40,25 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
     }
   }
 
-  if (!initDone) {
+  if (!isAppReady) {
     // Configuration whether session should be restored
     return (
-      <Switch>
-        <Route
-          path="/configuration/:id"
-          exact
-          render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
-        />
-        <Route
-          path="/offer/:id"
-          exact
-          render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
-        />
-        <Route render={() => <DidMount onDidMount={init({restoreSessionEnabled: true})} />} />
-      </Switch>
+      <>
+        <Switch>
+          <Route
+            path="/configuration/:id"
+            exact
+            render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
+          />
+          <Route
+            path="/offer/:id"
+            exact
+            render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
+          />
+          <Route render={() => <DidMount onDidMount={init({restoreSessionEnabled: true})} />} />
+        </Switch>
+        <Modal />
+      </>
     )
   }
 
@@ -78,7 +82,7 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
 
 const mapStateToProps = state => ({
   initTriggered: state.core.initTriggered,
-  initDone: state.core.initDone
+  isAppReady: selectors.isAppReady(state)
 })
 
 const mapDispatchToProps = {

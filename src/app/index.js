@@ -11,6 +11,7 @@ import Router from './router'
 import {handleIncomingMessages} from './service/intercom'
 import {trackPageImpression} from './service/google-analytics'
 import * as localStorageSession from './service/local-storage-session'
+import {isAppReady} from './lib/selector'
 
 import '../sass/main.scss'
 
@@ -56,8 +57,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 global.addEventListener('unload', () => {
-  if (localStorageSession.isEnabled()) {
-    const {core: coreState} = store.getState()
-    localStorageSession.save(coreState)
+  const state = store.getState()
+  if (localStorageSession.isEnabled() && isAppReady(state)) {
+    localStorageSession.save(state.core)
   }
 })
