@@ -475,7 +475,7 @@ const MaterialPartial = ({
               >
                 <dt>Process:</dt>
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
-                <dt>Fulfilled by:</dt>
+                <dt>Produced by:</dt>
                 <dd>
                   <ProviderName vendorId={multiModelQuote.vendorId} />
                 </dd>
@@ -493,7 +493,7 @@ const MaterialPartial = ({
               >
                 <dt>Process:</dt>
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
-                <dt>Fulfilled by:</dt>
+                <dt>Produced by:</dt>
                 <dd>
                   <ProviderName vendorId={multiModelQuote.vendorId} />
                 </dd>
@@ -609,7 +609,7 @@ const MaterialPartial = ({
                   >
                     <dt>Process:</dt>
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
-                    <dt>Fulfilled by:</dt>
+                    <dt>Produced by:</dt>
                     <dd>
                       <ProviderName vendorId={multiModelQuote.vendorId} />
                     </dd>
@@ -644,7 +644,7 @@ const MaterialPartial = ({
                   >
                     <dt>Process:</dt>
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
-                    <dt>Fulfilled by:</dt>
+                    <dt>Produced by:</dt>
                     <dd>
                       <ProviderName vendorId={multiModelQuote.vendorId} />
                     </dd>
@@ -695,7 +695,7 @@ const MaterialPartial = ({
                   >
                     <dt>Process:</dt>
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
-                    <dt>Fulfilled by:</dt>
+                    <dt>Produced by:</dt>
                     <dd>
                       <ProviderName vendorId={multiModelQuote.vendorId} />
                     </dd>
