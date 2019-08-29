@@ -78,3 +78,15 @@ storiesOf('MaterialCard', module)
       onUnavailableClick={action('onUnavailableClick')}
     />
   ))
+  .add('selectOnImageClick', () => (
+    <MaterialCard
+      selectOnImageClick
+      title="Polyamide"
+      descriptionHeadline="Best used for:"
+      description="Best all-round material"
+      price={price}
+      image="http://placehold.it/260x170/cccccc"
+      onMoreClick={action('onMoreClick')}
+      onSelectClick={action('onSelectClick')}
+    />
+  ))

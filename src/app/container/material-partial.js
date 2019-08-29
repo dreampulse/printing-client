@@ -161,6 +161,7 @@ const MaterialPartial = ({
 
       return (
         <MaterialCard
+          selectOnImageClick={breakpoints['mobile-only']}
           key={material.id}
           title={material.name}
           description={material.descriptionShort}

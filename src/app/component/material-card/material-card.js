@@ -28,7 +28,8 @@ const MaterialCard = ({
   learnMoreLabel = 'Learn more',
   unavailableLabel = 'Not printable',
   contactUsLabel = 'Contact us',
-  priceSublineLabel = ''
+  priceSublineLabel = '',
+  selectOnImageClick = false
 }) => {
   const imageStyle = {
     backgroundImage: `url(${image})`
@@ -46,7 +47,13 @@ const MaterialCard = ({
         classNames
       )}
     >
-      {image && <div className="MaterialCard__image" style={imageStyle} />}
+      {image && (
+        <div
+          onClick={!loading && selectOnImageClick ? onSelectClick : noop}
+          className="MaterialCard__image"
+          style={imageStyle}
+        />
+      )}
       <div className="MaterialCard__content">
         <div className="MaterialCard__header" onClick={onSelectClick}>
           <Headline label={title} tag="strong" />
@@ -112,7 +119,8 @@ MaterialCard.propTypes = {
   selectedLabel: PropTypes.string,
   priceSublineLabel: PropTypes.string,
   selected: PropTypes.bool,
-  hasPriceSubline: PropTypes.bool
+  hasPriceSubline: PropTypes.bool,
+  selectOnImageClick: PropTypes.bool
 }
 
 export default MaterialCard
