@@ -428,7 +428,8 @@ const enhance = compose(
 )
 
 AddressFormPartial.propTypes = {
-  scrollContainerId: PropTypes.string.isRequired
+  scrollContainerId: PropTypes.string.isRequired,
+  scrollTo: PropTypes.string
 }
 
 export default enhance(AddressFormPartial)
