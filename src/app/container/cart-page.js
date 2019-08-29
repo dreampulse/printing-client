@@ -30,7 +30,6 @@ import Button from '../component/button'
 import Paragraph from '../component/paragraph'
 import PaymentSection from '../component/payment-section'
 import CartModelItem from '../component/cart-model-item'
-import ProviderImage from '../component/provider-image'
 import ButtonBar from '../component/button-bar'
 import LoadingIndicator from '../component/loading-indicator'
 import PageLayout from '../component/page-layout'
@@ -40,6 +39,9 @@ import Grid from '../component/grid'
 import Column from '../component/column'
 import PaypalButton from '../component/paypal-button'
 import PageHeader from '../component/page-header'
+import Icon from '../component/icon'
+import Notification from '../component/notification'
+import ProviderName from '../component/provider-name'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
@@ -57,8 +59,9 @@ import copyIcon from '../../asset/icon/copy.svg'
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 import shareIcon from '../../asset/icon/share.svg'
+
 import useHasAdblocker from '../hook/use-has-adblocker'
-import Notification from '../component/notification'
+import useBreakpoints from '../hook/use-breakpoints'
 
 const CartPage = ({
   modelsWithConfig,
@@ -89,11 +92,12 @@ const CartPage = ({
   createOffer
 }) => {
   const hasAdblocker = useHasAdblocker()
-
+  const breakpoints = useBreakpoints()
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
+  const hasItemsOnUploadPage = modelConfigs.length > modelsWithConfig.length
 
-  const notificationSection = () => (
+  const renderNotificationSection = () => (
     <Section>
       <Notification
         message="It seems that you are using an ad blocker. Please temporarily disable this to pay using PayPal, or select a different payment method."
@@ -102,16 +106,22 @@ const CartPage = ({
     </Section>
   )
 
-  const buttonBar = (modelConfig, model) => (
+  const renderButtonBar = (modelConfig, model) => (
     <ButtonBar l>
       <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
       <Button icon={copyIcon} iconOnly onClick={() => duplicateModelConfig(modelConfig.id)} />
       <Button icon={deleteIcon} iconOnly onClick={() => deleteModelConfigs([modelConfig.id])} />
-      <Button label="Edit Material" tiny minor onClick={() => goToEditMaterial([modelConfig.id])} />
+      <Button
+        label="Edit Material"
+        tiny
+        minor
+        onClick={() => goToEditMaterial([modelConfig.id])}
+        classNames={['u-hide-mobile', 'u-hide-tablet']}
+      />
     </ButtonBar>
   )
 
-  const addressSection = () => {
+  const renderAddressSection = () => {
     const shippingStateName =
       user && getStateName(user.shippingAddress.countryCode, user.shippingAddress.stateCode)
 
@@ -148,18 +158,23 @@ const CartPage = ({
               {user.shippingAddress.address}
               <br />
               {user.shippingAddress.addressLine2}
-              <br />
+              {user.shippingAddress.addressLine2 && (
+                <>
+                  {user.shippingAddress.addressLine2}
+                  <br />
+                </>
+              )}
               {user.shippingAddress.zipCode} {user.shippingAddress.city}
               <br />
               {shippingStateName && (
-                <span>
+                <>
                   {shippingStateName}
                   <br />
-                </span>
+                </>
               )}
               {getCountryName(user.shippingAddress.countryCode)}
-              <br />
-              <br />
+            </Paragraph>
+            <Paragraph classNames={['u-margin-bottom-l']}>
               Contact Email: {user.emailAddress}
               <br />
               Contact Phone: {user.phoneNumber}
@@ -182,18 +197,18 @@ const CartPage = ({
                     </>
                   }
                 />
-                <Paragraph>
+                <Paragraph classNames={['u-margin-bottom-l']}>
                   {user.companyName ? (
-                    <span>
+                    <>
                       {user.companyName}
                       <br />
-                    </span>
+                    </>
                   ) : null}
                   {user.vatId ? (
-                    <span>
+                    <>
                       {user.vatId}
                       <br />
-                    </span>
+                    </>
                   ) : null}
                   {user.useDifferentBillingAddress ? (
                     <>
@@ -201,8 +216,12 @@ const CartPage = ({
                       <br />
                       {user.billingAddress.address}
                       <br />
-                      {user.billingAddress.addressLine2}
-                      <br />
+                      {user.billingAddress.addressLine2 && (
+                        <>
+                          {user.billingAddress.addressLine2}
+                          <br />
+                        </>
+                      )}
                       {user.billingAddress.zipCode} {user.billingAddress.city}
                       <br />
                     </>
@@ -212,18 +231,21 @@ const CartPage = ({
                       <br />
                       {user.shippingAddress.address}
                       <br />
-                      {user.shippingAddress.addressLine2}
-                      <br />
+                      {user.shippingAddress.addressLine2 && (
+                        <>
+                          {user.shippingAddress.addressLine2}
+                          <br />
+                        </>
+                      )}
                       {user.shippingAddress.zipCode} {user.shippingAddress.city}
                       <br />
                     </>
                   )}
-
                   {billingStateName && (
-                    <span>
+                    <>
                       {billingStateName}
                       <br />
-                    </span>
+                    </>
                   )}
                   {user.billingAddress.countryCode
                     ? getCountryName(user.billingAddress.countryCode)
@@ -237,7 +259,7 @@ const CartPage = ({
     )
   }
 
-  const modelListSection = () => (
+  const renderModelListSection = () => (
     <Section>
       <ModelListPartial editMode onPrimaryActionClick={goToEditMaterial}>
         {modelsWithConfig.map(
@@ -278,20 +300,14 @@ const CartPage = ({
                   Delivery method: <strong>{shipping.name}</strong>
                 </>
               }
-              providerImage={
-                <ProviderImage
-                  s
-                  name={getProviderName(shipping.vendorId)}
-                  slug={shipping.vendorId}
-                />
-              }
+              provider={<ProviderName vendorId={shipping.vendorId} />}
               buttonsLeft={
                 <NumberField
                   value={modelConfig.quantity}
                   onChange={quantity => updateQuantities([modelConfig.id], quantity)}
                 />
               }
-              buttonsRight={buttonBar(modelConfig, model)}
+              buttonsRight={renderButtonBar(modelConfig, model)}
               onPreviewImageClick={() => openModelViewer(model)}
             />
           )
@@ -300,7 +316,69 @@ const CartPage = ({
     </Section>
   )
 
-  const paymentSection = () => {
+  const renderAdditionalInformation = () => (
+    <>
+      {user ? (
+        <Paragraph>
+          <Headline
+            tag="strong"
+            size="s"
+            label="Need different payment option?"
+            classNames={['u-no-margin-bottom']}
+          />
+          <Link
+            label="Contact us"
+            href="mailto:support@all3dp.com"
+            target="_blank"
+            onClick={event => {
+              if (!isIntercomBlocked()) {
+                event.preventDefault()
+                openIntercom()
+              }
+            }}
+          />
+        </Paragraph>
+      ) : (
+        <Paragraph>
+          <Headline
+            tag="strong"
+            size="s"
+            label="Payment options?"
+            classNames={['u-no-margin-bottom']}
+          />
+          We support credit card and Paypal payments.
+        </Paragraph>
+      )}
+      <Paragraph>
+        <Headline
+          tag="strong"
+          size="s"
+          label="Any questions?"
+          classNames={['u-no-margin-bottom']}
+        />
+        <Link
+          label="Get in touch"
+          href="mailto:support@all3dp.com"
+          target="_blank"
+          onClick={event => {
+            if (!isIntercomBlocked()) {
+              event.preventDefault()
+              openIntercom()
+            }
+          }}
+        />
+      </Paragraph>
+      <Paragraph>
+        <Link
+          target="_blank"
+          label="Terms of service"
+          href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
+        />
+      </Paragraph>
+    </>
+  )
+
+  const renderPaymentSection = () => {
     if (!cart) {
       return (
         <div className="u-align-center">
@@ -400,73 +478,15 @@ const CartPage = ({
             <Button label="Checkout" block onClick={() => openAddressFormModal()} />
           )}
         </PaymentSection>
-        {user ? (
-          <Paragraph>
-            <Headline
-              tag="strong"
-              size="s"
-              label="Need different payment option?"
-              classNames={['u-no-margin-bottom']}
-            />
-            <Link
-              label="Contact us"
-              href="mailto:support@all3dp.com"
-              target="_blank"
-              onClick={event => {
-                if (!isIntercomBlocked()) {
-                  event.preventDefault()
-                  openIntercom()
-                }
-              }}
-            />
-          </Paragraph>
-        ) : (
-          <Paragraph>
-            <Headline
-              tag="strong"
-              size="s"
-              label="Payment options?"
-              classNames={['u-no-margin-bottom']}
-            />
-            We support credit card and Paypal payments.
-          </Paragraph>
-        )}
-        <Paragraph>
-          <Headline
-            tag="strong"
-            size="s"
-            label="Any questions?"
-            classNames={['u-no-margin-bottom']}
-          />
-          <Link
-            label="Get in touch"
-            href="mailto:support@all3dp.com"
-            target="_blank"
-            onClick={event => {
-              if (!isIntercomBlocked()) {
-                event.preventDefault()
-                openIntercom()
-              }
-            }}
-          />
-        </Paragraph>
-        <Paragraph>
-          <Link
-            target="_blank"
-            label="Terms of service"
-            href="https://all3dp.com/3dp-price-comparison-terms-of-service/"
-          />
-        </Paragraph>
+        {breakpoints.tablet && renderAdditionalInformation()}
       </>
     )
   }
 
-  const hasItemsOnUploadPage = modelConfigs.length > modelsWithConfig.length
-
   return (
     <PageLayout>
       <Container full>
-        {hasAdblocker && notificationSection()}
+        {hasAdblocker && renderNotificationSection()}
         <Section>
           <Link
             label={
@@ -484,7 +504,7 @@ const CartPage = ({
             }
             warning={hasItemsOnUploadPage}
             href="/"
-            icon={backIcon}
+            icon={<Icon source={backIcon} />}
             onClick={event => {
               event.preventDefault()
               goToUpload()
@@ -498,8 +518,8 @@ const CartPage = ({
           action={
             <Link
               largeIcon
-              icon={shareIcon}
-              label="Share Cart"
+              icon={<Icon source={shareIcon} />}
+              label={breakpoints.tablet ? 'Share Cart' : undefined}
               onClick={() => {
                 createOffer(cart.cartId)
               }}
@@ -507,10 +527,11 @@ const CartPage = ({
           }
         />
         {hasModels && (
-          <SidebarLayout sidebar={paymentSection()}>
-            {user && addressSection()}
+          <SidebarLayout sidebar={renderPaymentSection()}>
+            {user && renderAddressSection()}
             <Headline minor size="l" label="Your Cart" />
-            {modelListSection()}
+            {renderModelListSection()}
+            {!breakpoints.tablet && <Section>{renderAdditionalInformation()}</Section>}
           </SidebarLayout>
         )}
         {!hasModels && (

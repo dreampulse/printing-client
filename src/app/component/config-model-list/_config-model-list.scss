@@ -35,6 +35,11 @@
       display: none;
     }
 
+    // Disable transition of the items to the cartNavLink
+    &.DisabledPortalTransition-appear {
+      display: none;
+    }
+
     // Item is removed
     &.ItemTransition-exit-active,
     &.ItemTransition-exit {

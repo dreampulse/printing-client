@@ -898,19 +898,20 @@ const offerReceived = (
 
   const modelConfigs: ModelConfig[] = payload.quotes.map((quote, index) => {
     const modelId: ModelId = quote.modelId
-    const shipping = payload.shippings.find(s => s.vendorId === quote.vendorId) as Shipping
-    invariant(quote, 'Shipping not found in the cart offer!')
-    invariant(
-      state.shippings.find(s => s.shippingId === shipping.shippingId),
-      'Cart offer shippingId not found in general shippings!'
+    const shipping = payload.shippings.find(s => s.vendorId === quote.vendorId)
+    // We have to check whether the shipping in the cart offer also exists in general shippings.
+    // It the user is in a different country he has other shippings and we cannot match them
+    // therefore we fall back to unconfigured model configs.
+    const shippingExists = !!(
+      shipping && state.shippings.find(s => s.shippingId === shipping.shippingId)
     )
 
     return {
       type: 'UPLOADED',
       modelId,
       quantity: quote.quantity,
-      quoteId: quote.quoteId,
-      shippingId: shipping.shippingId,
+      quoteId: shippingExists ? quote.quoteId : null,
+      shippingId: shipping && shippingExists ? shipping.shippingId : null,
       id: payload.modelConfigIds[index]
     }
   })

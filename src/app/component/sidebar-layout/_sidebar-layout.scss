@@ -2,12 +2,29 @@
   $sidebar-width: 260px;
 
   display: grid;
-  grid-template-columns: auto $sidebar-width;
+  grid-template-columns: auto;
   grid-gap: $space-xl;
 
+  @include respond-to(tablet) {
+    grid-template-columns: auto $sidebar-width;
+  }
+
+  &__main {
+    order: 2;
+
+    @include respond-to(tablet) {
+      order: 1;
+    }
+  }
+
   &__aside {
-    position: sticky;
-    top: $nav-bar-height + $space-l;
+    order: 1;
+
+    @include respond-to(tablet) {
+      position: sticky;
+      top: $nav-bar-height + $space-l;
+      order: 2;
+    }
 
     // Special spacing for paragraphs
     & > .Paragraph {

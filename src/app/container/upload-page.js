@@ -50,6 +50,7 @@ import UploadModelList from '../component/upload-model-list'
 import StickyFooter from '../component/sticky-footer'
 import Link from '../component/link'
 import Paragraph from '../component/paragraph'
+import Icon from '../component/icon'
 
 const getUnconfiguredModelIds = modelConfigs =>
   modelConfigs
@@ -70,12 +71,11 @@ const UploadPage = ({
   toggleId,
   toggleAll,
   createConfiguration,
-  modelConfigs
+  unconfiguredModelConfigIds
 }) => {
   const breakpoints = useBreakpoints()
   const numModels = modelsWithConfig.length
   const hasModels = numModels > 0
-  const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
 
   const renderPromoSection = () => (
     <Section>
@@ -135,7 +135,7 @@ const UploadPage = ({
 
           <Link
             largeIcon
-            icon={shareIcon}
+            icon={<Icon source={shareIcon} />}
             label="Share"
             onClick={() => {
               createConfiguration(selectedModelConfigIds)
@@ -271,7 +271,7 @@ const UploadPage = ({
             <Headline
               light
               label={`Your selection (${selectedModelConfigIds.length}/${
-                unconfiguredConfigIds.length
+                unconfiguredModelConfigIds.length
               } files)`}
             />
             {renderModelList()}
@@ -297,7 +297,7 @@ const mapStateToProps = state => ({
   useSameMaterial: state.core.useSameMaterial,
   uploadedModelConfigs: selector.selectUploadedModelConfigs(state),
   isModelOpen: state.modal.isOpen,
-  modelConfigs: state.core.modelConfigs
+  unconfiguredModelConfigIds: selector.selectUnconfiguredModelConfigIds(state)
 })
 
 const mapDispatchToProps = {

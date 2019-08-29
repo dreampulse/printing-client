@@ -1,6 +1,6 @@
 import {push} from 'react-router-redux'
 
-import {ConfigId, Notification, VendorId} from '../type'
+import {ConfigId, Notification} from '../type'
 
 export type AddressPageSection = 'billing-address' | 'shipping-address'
 
