@@ -2,6 +2,7 @@ import {
   selectModelsOfModelConfigs,
   selectCartCount,
   selectSelectedModelConfigs,
+  selectConfiguredModelConfigIds,
   selectUnconfiguredModelConfigIds,
   selectModelConfigsByIds,
   selectUploadedModelConfigs,
@@ -127,6 +128,40 @@ describe('selectQuotesOfModelConfigs()', () => {
     ]
 
     expect(selectQuotesOfModelConfigs(state), 'to equal', selected)
+  })
+})
+
+describe('selectConfiguredModelConfigIds()', () => {
+  it('returns selected model ids of model configs', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'model-config-1',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'model-config-2',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'model-config-3'
+          }
+        ]
+      }
+    }
+
+    expect(selectConfiguredModelConfigIds(state), 'to equal', ['model-config-2'])
   })
 })
 

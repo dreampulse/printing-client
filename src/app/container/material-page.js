@@ -21,7 +21,9 @@ import {formatDimensions} from '../lib/formatter'
 import {
   selectUploadedModelConfigs,
   selectCartCount,
-  selectModelsOfModelConfigs
+  selectModelsOfModelConfigs,
+  selectUnconfiguredModelConfigIds,
+  selectConfiguredModelConfigIds
 } from '../lib/selector'
 import useBreakpoints from '../hook/use-breakpoints'
 
@@ -43,16 +45,6 @@ import Icon from '../component/icon'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
-const getConfiguredModelIds = modelConfigs =>
-  modelConfigs
-    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null)
-    .map(modelConfig => modelConfig.id)
-
-const getUnconfiguredModelIds = modelConfigs =>
-  modelConfigs
-    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null)
-    .map(modelConfig => modelConfig.id)
-
 const MaterialPage = ({
   selectedState,
   setSelectedState,
@@ -65,18 +57,18 @@ const MaterialPage = ({
   duplicateModelConfig,
   updateQuantities,
   deleteModelConfigs,
-  configuredConfigIds,
-  setConfiguredConfigIds,
-  modelConfigs,
-  updateSelectedModelConfigs
+  processedModelConfigIds,
+  setProcessedModelConfigIds,
+  updateSelectedModelConfigs,
+  unconfiguredModelConfigIds,
+  configuredModelConfigIds
 }) => {
-  const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
   const breakpoints = useBreakpoints()
   const [sidebarOpen, setSidebarOpen] = useState()
 
   const renderModelsWithConfig = () =>
     modelsWithConfig
-      .filter(([modelConfig]) => !configuredConfigIds.includes(modelConfig.id))
+      .filter(([modelConfig]) => !processedModelConfigIds.includes(modelConfig.id))
       .map(([modelConfig, model]) => (
         <UploadModelItem
           configured={modelConfig.quoteId}
@@ -123,7 +115,7 @@ const MaterialPage = ({
         <Headline
           light
           label={`Your selection (${selectedModelConfigIds.length}/${
-            unconfiguredConfigIds.length
+            unconfiguredModelConfigIds.length
           } files)`}
         />
         <Paragraph>
@@ -133,7 +125,7 @@ const MaterialPage = ({
               toggleAll()
             }}
             label={
-              unconfiguredConfigIds.length === selectedModelConfigIds.length
+              unconfiguredModelConfigIds.length === selectedModelConfigIds.length
                 ? 'Deselect all files'
                 : 'Select all files'
             }
@@ -145,7 +137,7 @@ const MaterialPage = ({
             asideNode.scrollTop = 0
           }}
           onConfigurationDidChange={() => {
-            setConfiguredConfigIds(getConfiguredModelIds(modelConfigs))
+            setProcessedModelConfigIds(configuredModelConfigIds)
           }}
         >
           {renderModelsWithConfig()}
@@ -202,7 +194,9 @@ const mapStateToProps = state => ({
   location: state.core.location,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
   cartCount: selectCartCount(state),
-  modelConfigs: state.core.modelConfigs
+  modelConfigs: state.core.modelConfigs,
+  unconfiguredModelConfigIds: selectUnconfiguredModelConfigIds(state),
+  configuredModelConfigIds: selectConfiguredModelConfigIds(state)
 })
 
 const mapDispatchToProps = {
@@ -231,12 +225,15 @@ export default compose(
         updateSelectedModelConfigs([...selectedModelConfigIds, id])
       }
     },
-    toggleAll: ({updateSelectedModelConfigs, modelConfigs, selectedModelConfigIds}) => () => {
-      const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
-      if (unconfiguredConfigIds.length === selectedModelConfigIds.length) {
+    toggleAll: ({
+      updateSelectedModelConfigs,
+      unconfiguredModelConfigIds,
+      selectedModelConfigIds
+    }) => () => {
+      if (unconfiguredModelConfigIds.length === selectedModelConfigIds.length) {
         updateSelectedModelConfigs([])
       } else {
-        updateSelectedModelConfigs(unconfiguredConfigIds)
+        updateSelectedModelConfigs(unconfiguredModelConfigIds)
       }
     }
   }),
@@ -246,8 +243,10 @@ export default compose(
     finishGroupId: null,
     materialConfigId: null
   }),
-  withState('configuredConfigIds', 'setConfiguredConfigIds', ({modelConfigs}) =>
-    getConfiguredModelIds(modelConfigs)
+  withState(
+    'processedModelConfigIds',
+    'setProcessedModelConfigIds',
+    ({configuredModelConfigIds}) => configuredModelConfigIds
   ),
   lifecycle({
     componentWillMount() {
