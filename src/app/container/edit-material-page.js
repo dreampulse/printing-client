@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
@@ -18,7 +18,6 @@ import {guard} from './util/guard'
 
 import MaterialPartial from './material-partial'
 import OfferFooterPartial from './offer-footer-partial'
-import LocationInfoPartial from './location-info-partial'
 
 import Headline from '../component/headline'
 import Section from '../component/section'
@@ -42,20 +41,10 @@ const EditMaterialPage = ({
   selectedState,
   setSelectedState
 }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   const sidebar = () => (
     <>
-      <Section>
-        <Link
-          label="Back to cart"
-          icon={<Icon source={backIcon} />}
-          onClick={event => {
-            event.preventDefault()
-            goToCart({
-              selectModelConfigIds: configIds
-            })
-          }}
-        />
-      </Section>
       <Section classNames={['u-no-margin']}>
         <Headline
           light
@@ -90,12 +79,33 @@ const EditMaterialPage = ({
   )
 
   return (
-    <ToolLayout fullMain scrollContainerId={SCROLL_CONTAINER_ID} sidebar={sidebar()}>
+    <ToolLayout
+      isOpen={sidebarOpen}
+      onClose={() => setSidebarOpen(false)}
+      fullMain
+      scrollContainerId={SCROLL_CONTAINER_ID}
+      sidebar={sidebar()}
+    >
       <OfferLayout
-        footer={<OfferFooterPartial configIds={configIds} selectedState={selectedState} />}
+        footer={
+          <OfferFooterPartial
+            onOpenSidebar={() => setSidebarOpen(true)}
+            configIds={configIds}
+            selectedState={selectedState}
+          />
+        }
       >
         <Section>
-          <LocationInfoPartial />
+          <Link
+            label="Back to cart"
+            icon={<Icon source={backIcon} />}
+            onClick={event => {
+              event.preventDefault()
+              goToCart({
+                selectModelConfigIds: configIds
+              })
+            }}
+          />
         </Section>
         <MaterialPartial
           isEditMode
