@@ -80,7 +80,9 @@ context('Restore session', () => {
     cy.get('.UploadModelItem').should('have.length', 1)
     cy.contains('button', 'Configure Selection').click()
 
-    cy.contains('button', 'Select').click()
+    cy.get('.MaterialCard')
+      .contains('button', 'Select')
+      .click()
     cy.get('#material-step-2')
       .contains('button', 'Select')
       .click()
