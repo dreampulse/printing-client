@@ -84,6 +84,7 @@
   }
 
   &--block {
+    @include scut-truncate();
     display: block;
     width: 100%;
   }

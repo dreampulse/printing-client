@@ -1,4 +1,16 @@
 .CountrySelectField {
+  height: $field-height-compact;
+  line-height: $field-height-compact;
+
+  @include respond-to(tablet) {
+    height: $field-height;
+    line-height: $field-height;
+  }
+
+  &__value {
+    flex-shrink: 0;
+  }
+
   &__notification {
     color: $color-warning;
     padding: $space-base;
@@ -6,16 +18,15 @@
     font-size: $font-size-s;
   }
 
+  &__change {
+    @include scut-truncate();
+    overflow: hidden;
+  }
+
   &__readMode {
-    height: $field-height;
     display: flex;
-    flex-direction: row;
     align-items: center;
     padding-left: $space-base;
     white-space: nowrap;
-
-    & > * + * {
-      margin-left: $space-base;
-    }
   }
 }

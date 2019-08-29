@@ -11,6 +11,7 @@ import Section from '../component/section'
 import Headline from '../component/headline'
 
 import AddressFormPartial from './address-form-partial'
+import Paragraph from '../component/paragraph'
 
 const addressFormPageScrollContainerSelector = 'html'
 
@@ -28,7 +29,7 @@ const AddressPage = ({onGoToCart, location}) => {
             <Headline label="Enter delivery address" size="l" />
             <Section>{addressForm}</Section>
             <Section>
-              <div className="u-margin-bottom">{submitButton}</div>
+              <Paragraph>{submitButton}</Paragraph>
               {cancelButton}
             </Section>
           </Container>

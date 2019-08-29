@@ -84,8 +84,6 @@ const AddressFormPartial = ({
 
   const billingAddressSection = (
     <>
-      <a id="billing-address" />
-
       <FormRow>
         <Headline size="s" classNames={['u-no-margin-bottom']} label="Billing Address" />
       </FormRow>
@@ -298,6 +296,7 @@ const AddressFormPartial = ({
       />
 
       {values.useDifferentBillingAddress && billingAddressSection}
+      <a id="billing-address" />
 
       <Field
         name="saveAddress"
