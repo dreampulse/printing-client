@@ -1,8 +1,27 @@
 .OfferFooter {
+  $icon-size: 20px;
+  $icon-size-tablet: 25px;
+  $height: 76px;
+  $height-s: 50px;
+
   border-top: 2px solid $color-bg-minor;
   background: $color-bg;
-  padding: $space-base $space-xl;
   font-size: $font-size-s;
+  display: flex;
+  height: $height-s;
+  overflow: hidden;
+
+  @include respond-to(tablet) {
+    height: $height;
+  }
+
+  &__content {
+    padding: $space-s $space-base;
+
+    @include respond-to(tablet) {
+      padding: $space-base $space-xl;
+    }
+  }
 
   &__priceLabel {
     font-weight: $font-weight-bold;
@@ -11,12 +30,46 @@
 
   &__price {
     font-weight: $font-weight-bold;
-    font-size: $font-size-l;
+    font-size: $font-size-base;
     margin-left: $space-l;
     vertical-align: baseline;
+    line-height: $line-height-s;
+
+    @include respond-to(tablet) {
+      font-size: $font-size-l;
+      line-height: $line-height-base;
+    }
+  }
+
+  &__listButton {
+    display: block;
+    outline: none;
+    width: $height-s;
+    height: $height-s;
+    font-size: $icon-size;
+    background: $color-bg-minor;
+    color: $color-primary;
+
+    @include respond-to(tablet) {
+      width: $height;
+      height: $height;
+    }
+
+    @include respond-to(desktop) {
+      display: none;
+    }
+
+    & > .Icon {
+      margin: 0 auto;
+    }
   }
 
   &__subline {
     font-size: $font-size-xs;
+    line-height: $line-height-s;
+
+    @include respond-to(tablet) {
+      line-height: $line-height-base;
+    }
   }
 }

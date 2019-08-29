@@ -20,7 +20,7 @@ const DescriptionList = ({
 
 DescriptionList.propTypes = {
   ...propTypes.component,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   alignRight: PropTypes.bool,
   doubleValues: PropTypes.bool,
   block: PropTypes.bool,

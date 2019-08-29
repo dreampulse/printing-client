@@ -33,7 +33,8 @@ const ConfigModelList = ({
   classNames,
   children,
   onConfigurationChanged = noop,
-  onConfigurationDidChange = noop
+  onConfigurationDidChange = noop,
+  withCartLinkAnimation = false
 }) => {
   const numChildren = React.Children.count(children)
   const numUnconfiguredChildren = numOfUnconfiguredChildren(React.Children.toArray(children))
@@ -74,7 +75,9 @@ const ConfigModelList = ({
                   <CSSTransition
                     in
                     timeout={ANIMATION_DURATION}
-                    classNames="PortalTransition"
+                    classNames={
+                      withCartLinkAnimation ? 'PortalTransition' : 'DisabledPortalTransition'
+                    }
                     appear
                     onEntered={() => {
                       onConfigurationDidChange()
@@ -120,7 +123,8 @@ ConfigModelList.propTypes = {
   ...propTypes.component,
   children: PropTypes.node.isRequired,
   onConfigurationChanged: PropTypes.func,
-  onConfigurationDidChange: PropTypes.func
+  onConfigurationDidChange: PropTypes.func,
+  withCartLinkAnimation: PropTypes.bool
 }
 
 export default ConfigModelList
