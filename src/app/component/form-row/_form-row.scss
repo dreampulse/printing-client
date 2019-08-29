@@ -1,6 +1,7 @@
 .FormRow {
   display: grid;
   grid-gap: $space-base;
+  margin-bottom: $space-base;
 
   &--layout-half-half {
     grid-template-columns: 12fr;
@@ -27,6 +28,6 @@
   }
 
   &__column {
-    margin-bottom: $space-base;
+    overflow: hidden;
   }
 }
