@@ -5,40 +5,42 @@ import {connect} from 'react-redux'
 import {withFormik, Field, Form} from 'formik'
 import omit from 'lodash/omit'
 
-import * as modalActions from '../../action/modal'
-import * as coreActions from '../../action/core'
-import * as navigationActions from '../../action/navigation'
+import * as coreActions from '../action/core'
+import * as navigationActions from '../action/navigation'
 
-import * as localStorage from '../../service/local-storage'
-import config from '../../../../config'
-import {renderFormikField} from '../util/form'
-import {formatTelephoneNumber} from '../../lib/formatter'
-import {getStateName, getStates} from '../../service/country'
-import {required, email, vat, phoneNumber} from '../../lib/validator'
-import scrollTo from '../../service/scroll-to'
+import * as localStorage from '../service/local-storage'
+import config from '../../../config'
+import {renderFormikField} from './util/form'
+import {formatTelephoneNumber} from '../lib/formatter'
+import {getStateName, getStates} from '../service/country'
+import {required, email, vat, phoneNumber} from '../lib/validator'
+import scrollTo from '../service/scroll-to'
+import useBreakpoints from '../hook/use-breakpoints'
 
-import Button from '../../component/button'
-import Modal from '../../component/modal'
-import Headline from '../../component/headline'
-import FormRow from '../../component/form-row'
-import InputField from '../../component/input-field'
-import LabeledCheckbox from '../../component/labeled-checkbox'
-import SelectField from '../../component/select-field'
-import CountrySelectField from '../../component/country-select-field'
-import SelectMenu from '../../component/select-menu'
+import Button from '../component/button'
+import FormRow from '../component/form-row'
+import Headline from '../component/headline'
+import InputField from '../component/input-field'
+import LabeledCheckbox from '../component/labeled-checkbox'
+import SelectField from '../component/select-field'
+import CountrySelectField from '../component/country-select-field'
+import SelectMenu from '../component/select-menu'
 
 const isSameCountry = (location, address) => location.countryCode === address.countryCode
 
 const addressFormModalScrollContainerId = 'addressFormModalScrollContainer'
 
-const AddressFormModal = ({
-  closeModal,
+const AddressFormPartial = ({
   values,
   isSubmitting,
   handleSubmit,
   isValid,
-  userLocation
+  userLocation,
+  children,
+  onCancel
 }) => {
+  const breakpoints = useBreakpoints()
+
   const StateSelect = ({onChange, countryCode, value, name, ...props}) => {
     const changeState = val => onChange(val.value, name)
     const states = getStates(countryCode)
@@ -161,17 +163,9 @@ const AddressFormModal = ({
     </>
   )
 
-  const headline = <Headline label="Enter delivery address" size="l" />
-  const buttons = [
+  const submitButton = (
     <Button
-      key="cancel"
-      label="Cancel"
-      text
-      onClick={() => {
-        closeModal()
-      }}
-    />,
-    <Button
+      block={breakpoints['mobile-only']}
       key="confirm"
       label={
         isSameCountry(userLocation, values.shippingAddress)
@@ -183,131 +177,138 @@ const AddressFormModal = ({
         handleSubmit()
       }}
     />
-  ]
-
-  return (
-    <Modal
-      headline={headline}
-      buttons={buttons}
-      onClose={() => closeModal()}
-      scrollContainerId={addressFormModalScrollContainerId}
-    >
-      <Form>
-        <a id="shipping-address" />
-        <FormRow>
-          <Headline size="s" label="Delivery address" classNames={['u-no-margin-bottom']} />
-        </FormRow>
-        <FormRow layout="half-half">
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="First name"
-            name="shippingAddress.firstName"
-            maxLength="20"
-          />
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="Last name"
-            name="shippingAddress.lastName"
-            maxLength="20"
-          />
-        </FormRow>
-
-        <FormRow>
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="Address"
-            name="shippingAddress.address"
-            maxLength="35"
-          />
-        </FormRow>
-
-        <FormRow>
-          <Field
-            component={renderFormikField(InputField)}
-            label="Address line 2 / company"
-            name="shippingAddress.addressLine2"
-            maxLength="35"
-          />
-        </FormRow>
-
-        <FormRow layout="half-half">
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="City"
-            name="shippingAddress.city"
-          />
-          <Field
-            validate={required}
-            component={renderFormikField(InputField)}
-            label="Zip code"
-            name="shippingAddress.zipCode"
-          />
-        </FormRow>
-        <FormRow layout="half-half">
-          <Field
-            validate={getStates(values.shippingAddress.countryCode) ? required : undefined}
-            component={renderFormikField(StateSelect)}
-            placeholder="State"
-            name="shippingAddress.stateCode"
-            type="select"
-            countryCode={values.shippingAddress.countryCode}
-          />
-          <Field
-            validate={required}
-            component={renderFormikField(CountrySelectField)}
-            placeholder="Country"
-            name="shippingAddress.countryCode"
-            changeLabel="Changing the country will reset all your material selections"
-            changedLabel="If you select this country your material selection will be reset"
-            changeButtonLabel="edit & reset material"
-          />
-        </FormRow>
-
-        <FormRow layout="half-half">
-          <Field
-            validate={email}
-            component={renderFormikField(InputField)}
-            label="Email address"
-            name="emailAddress"
-            type="email"
-          />
-          <Field
-            validate={phoneNumber}
-            component={renderFormikField(InputField)}
-            label="Phone number"
-            name="phoneNumber"
-            type="tel"
-          />
-        </FormRow>
-
-        <Field
-          name="isCompany"
-          component={renderFormikField(LabeledCheckbox)}
-          label="I am ordering on behalf of a company"
-        />
-
-        {values.isCompany && renderCompanySection()}
-
-        <Field
-          name="useDifferentBillingAddress"
-          component={renderFormikField(LabeledCheckbox)}
-          label="Use different billing address"
-        />
-
-        {values.useDifferentBillingAddress && billingAddressSection}
-
-        <Field
-          name="saveAddress"
-          component={renderFormikField(LabeledCheckbox)}
-          label="Save address for your next purchase"
-        />
-      </Form>
-    </Modal>
   )
+
+  const cancelButton = (
+    <Button
+      block={breakpoints['mobile-only']}
+      key="cancel"
+      label="Cancel"
+      text
+      onClick={() => {
+        onCancel()
+      }}
+    />
+  )
+
+  const addressForm = (
+    <Form>
+      <a id="shipping-address" />
+      <FormRow>
+        <Headline size="s" label="Delivery address" classNames={['u-no-margin-bottom']} />
+      </FormRow>
+      <FormRow layout="half-half">
+        <Field
+          validate={required}
+          component={renderFormikField(InputField)}
+          label="First name"
+          name="shippingAddress.firstName"
+          maxLength="20"
+        />
+        <Field
+          validate={required}
+          component={renderFormikField(InputField)}
+          label="Last name"
+          name="shippingAddress.lastName"
+          maxLength="20"
+        />
+      </FormRow>
+
+      <FormRow>
+        <Field
+          validate={required}
+          component={renderFormikField(InputField)}
+          label="Address"
+          name="shippingAddress.address"
+          maxLength="35"
+        />
+      </FormRow>
+
+      <FormRow>
+        <Field
+          component={renderFormikField(InputField)}
+          label="Address line 2 / company"
+          name="shippingAddress.addressLine2"
+          maxLength="35"
+        />
+      </FormRow>
+
+      <FormRow layout="half-half">
+        <Field
+          validate={required}
+          component={renderFormikField(InputField)}
+          label="City"
+          name="shippingAddress.city"
+        />
+        <Field
+          validate={required}
+          component={renderFormikField(InputField)}
+          label="Zip code"
+          name="shippingAddress.zipCode"
+        />
+      </FormRow>
+      <FormRow layout="half-half">
+        <Field
+          validate={getStates(values.shippingAddress.countryCode) ? required : undefined}
+          component={renderFormikField(StateSelect)}
+          placeholder="State"
+          name="shippingAddress.stateCode"
+          type="select"
+          countryCode={values.shippingAddress.countryCode}
+        />
+        <Field
+          validate={required}
+          component={renderFormikField(CountrySelectField)}
+          placeholder="Country"
+          name="shippingAddress.countryCode"
+          changeLabel="Changing the country will reset all your material selections"
+          changedLabel="If you select this country your material selection will be reset"
+          changeButtonLabel="edit & reset material"
+        />
+      </FormRow>
+
+      <FormRow layout="half-half">
+        <Field
+          validate={email}
+          component={renderFormikField(InputField)}
+          label="Email address"
+          name="emailAddress"
+          type="email"
+        />
+        <Field
+          validate={phoneNumber}
+          component={renderFormikField(InputField)}
+          label="Phone number"
+          name="phoneNumber"
+          type="tel"
+        />
+      </FormRow>
+
+      <Field
+        name="isCompany"
+        component={renderFormikField(LabeledCheckbox)}
+        label="I am ordering on behalf of a company"
+      />
+
+      {values.isCompany && renderCompanySection()}
+
+      <Field
+        name="useDifferentBillingAddress"
+        component={renderFormikField(LabeledCheckbox)}
+        label="Use different billing address"
+      />
+
+      {values.useDifferentBillingAddress && billingAddressSection}
+
+      <Field
+        name="saveAddress"
+        component={renderFormikField(LabeledCheckbox)}
+        label="Save address for your next purchase"
+      />
+    </Form>
+  )
+
+  return children({submitButton, addressForm, cancelButton})
 }
 
 const mapStateToProps = state => ({
@@ -317,7 +318,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  closeModal: modalActions.closeModal,
   saveUser: coreActions.saveUser,
   goToUpload: navigationActions.goToUpload,
   onUpdateLocation: coreActions.updateLocation
@@ -382,10 +382,10 @@ const enhance = compose(
           },
           true
         )
-        props.closeModal()
+        props.onSubmitted()
       } else {
         props.saveUser(normalizedValues).then(() => {
-          props.closeModal()
+          props.onSubmitted()
         })
       }
     },
@@ -428,4 +428,4 @@ const enhance = compose(
   })
 )
 
-export default enhance(AddressFormModal)
+export default enhance(AddressFormPartial)

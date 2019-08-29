@@ -18,6 +18,9 @@ export const goToUpload = (
 export const goToMaterial = (configIds: ConfigId[], routerAction: any = push) =>
   routerAction('/material', {configIds})
 
+export const goToAddress = (routerAction: any = push) =>
+  routerAction('/address', {})
+
 export const goToEditMaterial = (configIds: ConfigId[], routerAction: any = push) =>
   routerAction('/material/edit', {configIds})
 
