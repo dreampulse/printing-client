@@ -113,7 +113,7 @@
     max-height: $font-size-s * $line-height-base * 3;
 
     @include respond-to(desktop) {
-      font-size: base;
+      font-size: $font-size-base;
       max-height: $font-size-base * $line-height-base * 3;
     }
   }
@@ -125,6 +125,7 @@
   }
 
   &__provider {
+    color: $color-minor;
     font-size: $font-size-s;
 
     @include respond-to(desktop) {

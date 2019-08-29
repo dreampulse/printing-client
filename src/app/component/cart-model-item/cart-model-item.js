@@ -50,7 +50,7 @@ const CartModelItem = ({
           </strong>
           {/* \u00A0 = &nbsp to keep space for info even if empty. */}
           <div className="CartModelItem__info">{info || '\u00A0'}</div>
-          {provider && <div className="CartModelItem__provider">{provider}</div>}
+          {provider && <div className="CartModelItem__provider">Fulfilled by: {provider}</div>}
         </div>
         <div className="CartModelItem__contentRight">
           <strong className="CartModelItem__price">{price}</strong>
