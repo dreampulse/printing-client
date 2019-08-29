@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import compose from 'recompose/compose'
 import lifecycle from 'recompose/lifecycle'
 import {connect} from 'react-redux'
@@ -27,8 +28,6 @@ import CountrySelectField from '../component/country-select-field'
 import SelectMenu from '../component/select-menu'
 
 const isSameCountry = (location, address) => location.countryCode === address.countryCode
-
-const addressFormModalScrollContainerId = 'addressFormModalScrollContainer'
 
 const AddressFormPartial = ({
   values,
@@ -422,10 +421,14 @@ const enhance = compose(
     },
     componentDidMount() {
       if (this.props.scrollTo === 'billing-address') {
-        scrollTo('#billing-address', `#${addressFormModalScrollContainerId}`)
+        scrollTo('#billing-address', `#${this.props.scrollContainerId}`)
       }
     }
   })
 )
+
+AddressFormPartial.propTypes = {
+  scrollContainerId: PropTypes.string.isRequired
+}
 
 export default enhance(AddressFormPartial)
