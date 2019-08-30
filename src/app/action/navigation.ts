@@ -1,6 +1,6 @@
 import {push} from 'react-router-redux'
 
-import {ConfigId, Notification, VendorId} from '../type'
+import {ConfigId, Notification} from '../type'
 
 export type AddressPageSection = 'billing-address' | 'shipping-address'
 
@@ -17,6 +17,9 @@ export const goToUpload = (
 
 export const goToMaterial = (configIds: ConfigId[], routerAction: any = push) =>
   routerAction('/material', {configIds})
+
+export const goToAddress = (scrollTo?: string, routerAction: any = push) =>
+  routerAction('/address', {scrollTo})
 
 export const goToEditMaterial = (configIds: ConfigId[], routerAction: any = push) =>
   routerAction('/material/edit', {configIds})

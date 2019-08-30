@@ -2,6 +2,8 @@ import {
   selectModelsOfModelConfigs,
   selectCartCount,
   selectSelectedModelConfigs,
+  selectConfiguredModelConfigIds,
+  selectUnconfiguredModelConfigIds,
   selectModelConfigsByIds,
   selectUploadedModelConfigs,
   selectShippingsOfModelConfigs,
@@ -13,7 +15,8 @@ import {
   selectQuotes,
   selectUsedShippingIdsAndFilter,
   hasOnlyValidModelConfigsWithQuote,
-  isCartUpToDate
+  isCartUpToDate,
+  isAppReady
 } from './selector'
 
 describe('selectModelsOfModelConfigs()', () => {
@@ -125,6 +128,74 @@ describe('selectQuotesOfModelConfigs()', () => {
     ]
 
     expect(selectQuotesOfModelConfigs(state), 'to equal', selected)
+  })
+})
+
+describe('selectConfiguredModelConfigIds()', () => {
+  it('returns selected model ids of model configs', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'model-config-1',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'model-config-2',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'model-config-3'
+          }
+        ]
+      }
+    }
+
+    expect(selectConfiguredModelConfigIds(state), 'to equal', ['model-config-2'])
+  })
+})
+
+describe('selectUnconfiguredModelConfigIds()', () => {
+  it('returns selected model ids of model configs', () => {
+    const state = {
+      core: {
+        modelConfigs: [
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'model-config-1',
+            quoteId: null,
+            shippingId: null
+          },
+          {
+            type: 'UPLOADED',
+            quantity: 1,
+            modelId: 'some-model-id',
+            id: 'model-config-2',
+            quoteId: 'quote-1',
+            shippingId: 'shipping-1'
+          },
+          {
+            type: 'UPLOADING',
+            fileId: 'some-file-id',
+            id: 'model-config-3'
+          }
+        ]
+      }
+    }
+
+    expect(selectUnconfiguredModelConfigIds(state), 'to equal', ['model-config-1'])
   })
 })
 
@@ -1163,5 +1234,33 @@ describe('isCartUpToDate()', () => {
     }
 
     expect(isCartUpToDate(state), 'to be', true)
+  })
+
+  describe('isAppReady()', () => {
+    it('returns true if all fields are set which are necessary for the application to run', () => {
+      const state = {
+        core: {
+          materialConfigs: 'some-materialConfigs',
+          location: 'some-location',
+          currency: 'some-currency',
+          shippings: 'some-shippings'
+        }
+      }
+
+      expect(isAppReady(state), 'to be', true)
+    })
+
+    it('returns false if some fields are missing which are necessary for the application to run', () => {
+      const state = {
+        core: {
+          materialConfigs: 'some-materialConfigs',
+          location: null,
+          currency: null,
+          shippings: null
+        }
+      }
+
+      expect(isAppReady(state), 'to be', false)
+    })
   })
 })

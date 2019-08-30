@@ -7,7 +7,7 @@ import CartModelItem from '.'
 import Button from '../button'
 import ButtonBar from '../button-bar'
 import NumberField from '../number-field'
-import ProviderImage from '../provider-image'
+import ProviderName from '../provider-name'
 
 import placeholderIcon from '../../../asset/icon/placeholder.svg'
 
@@ -21,7 +21,13 @@ const rightButtonBar = () => (
   <ButtonBar l>
     <Button icon={placeholderIcon} iconOnly />
     <Button icon={placeholderIcon} iconOnly />
-    <Button icon={placeholderIcon} label="Edit material" tiny minor />
+    <Button
+      icon={placeholderIcon}
+      label="Edit material"
+      tiny
+      minor
+      classNames={['u-hide-mobile', 'u-hide-tablet']}
+    />
   </ButtonBar>
 )
 
@@ -46,7 +52,7 @@ storiesOf('CartModelItem', module)
           Deslivery method: <strong>Standard</strong>
         </>
       }
-      providerImage={<ProviderImage s slug="imaterialise" name="i.Materialise" />}
+      provider={<ProviderName vendorId="imaterialise" />}
       buttonsLeft={leftButtonBar()}
       buttonsRight={rightButtonBar()}
     />
@@ -73,7 +79,7 @@ storiesOf('CartModelItem', module)
             Deslivery method: <strong>Standard</strong>
           </>
         }
-        providerImage={<ProviderImage s slug="imaterialise" name="i.Materialise" />}
+        provider={<ProviderName vendorId="imaterialise" />}
         buttonsLeft={leftButtonBar()}
         buttonsRight={rightButtonBar()}
         selected={store.state.selected}

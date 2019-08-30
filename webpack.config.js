@@ -131,7 +131,8 @@ module.exports = {
       }
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, './src/app/index.html')
+      template: path.join(__dirname, './src/app/index.html'),
+      hash: true
     }),
     new CopyWebpackPlugin([
       {

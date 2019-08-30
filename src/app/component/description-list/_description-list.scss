@@ -27,19 +27,17 @@
     & > strong {
       font-weight: $font-weight-bold;
       color: $color-text;
-      font-size: $font-size-l;
+      font-size: $font-size-base;
       line-height: $line-height-s;
+
+      @include respond-to(desktop) {
+        font-size: $font-size-l;
+      }
     }
 
     & > em {
       color: $color-text;
       font-style: normal;
-    }
-
-    // There is a grid bug when provider image is a block element
-    & > .ProviderImage {
-      display: inline-block;
-      vertical-align: middle;
     }
   }
 

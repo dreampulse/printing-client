@@ -3,18 +3,26 @@
   box-shadow: $box-shadow-base;
   background: $color-bg;
   position: relative;
-  display: flex;
-  height: $cart-model-item-height;
+  display: grid;
+  grid-template:
+    'aside content'
+    'additional additional';
+  grid-template-columns: 65px auto;
   font-size: $font-size-s;
   overflow: hidden;
 
+  @include respond-to(desktop) {
+    grid-template-columns: $cart-model-item-height auto;
+    height: $cart-model-item-height;
+  }
+
   &__aside {
+    grid-area: aside;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     background: $color-bg-minor;
-    width: $cart-model-item-height;
     flex-shrink: 0;
 
     & > .CheckboxField {
@@ -25,10 +33,23 @@
   }
 
   &__content {
+    grid-area: content;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding: $space-base;
+    padding: $space-base $space-base 0;
+
+    @include respond-to(desktop) {
+      padding-bottom: $space-base;
+    }
+
+    .CartModelItem__provider {
+      display: none;
+
+      @include respond-to(desktop) {
+        display: block;
+      }
+    }
   }
 
   &__modelInfo {
@@ -46,6 +67,7 @@
   }
 
   &__contentRight {
+    display: none;
     width: 240px; // Design decision
     flex-shrink: 0;
     text-align: right;
@@ -53,28 +75,47 @@
     font-size: $font-size-base;
     line-height: $line-height-base;
     margin-left: $space-l;
+
+    @include respond-to(desktop) {
+      display: block;
+    }
   }
 
   &__title {
     display: block;
     color: $color-text;
-    font-size: $font-size-l;
-    font-weight: $font-weight-bold;
+    font-size: $font-size-base;
+    font-weight: $font-weight-regular;
     flex-grow: 1;
     flex-shrink: 1;
     overflow: hidden;
+
+    @include respond-to(desktop) {
+      font-size: $font-size-l;
+      font-weight: $font-weight-bold;
+    }
   }
 
   &__price {
     display: block;
-    font-size: $font-size-l;
+    font-size: $font-size-base;
     font-weight: $font-weight-bold;
+
+    @include respond-to(desktop) {
+      font-size: $font-size-l;
+    }
   }
 
   &__info {
     color: $color-minor;
     overflow: hidden;
-    max-height: $font-size-base * $line-height-base * 3;
+    font-size: $font-size-s;
+    max-height: $font-size-s * $line-height-base * 3;
+
+    @include respond-to(desktop) {
+      font-size: $font-size-base;
+      max-height: $font-size-base * $line-height-base * 3;
+    }
   }
 
   &__shippingInfo {
@@ -84,7 +125,12 @@
   }
 
   &__provider {
-    margin-top: $space-s;
+    color: $color-minor;
+    font-size: $font-size-s;
+
+    @include respond-to(desktop) {
+      font-size: $font-size-base;
+    }
   }
 
   &__buttons {
@@ -106,6 +152,15 @@
     outline: 0;
   }
 
+  &__additionalContent {
+    grid-area: additional;
+    padding: $space-base;
+
+    @include respond-to(desktop) {
+      display: none;
+    }
+  }
+
   &--selected:after {
     content: '';
     display: block;
@@ -120,10 +175,12 @@
   }
 
   &--s {
+    grid-template-columns: $cart-model-item-height-s auto;
     height: $cart-model-item-height-s;
 
-    .CartModelItem__aside {
-      width: $cart-model-item-height-s;
+    @include respond-to(desktop) {
+      grid-template-columns: $cart-model-item-height-s auto;
+      height: $cart-model-item-height-s;
     }
 
     .CartModelItem__content {
@@ -146,6 +203,10 @@
     }
 
     .CartModelItem__buttons {
+      display: none;
+    }
+
+    .CartModelItem__additionalContent {
       display: none;
     }
   }

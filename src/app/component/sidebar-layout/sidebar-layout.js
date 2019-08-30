@@ -6,10 +6,8 @@ import cn from '../../lib/class-names'
 
 const SidebarLayout = ({classNames, children, sidebar}) => (
   <section className={cn('SidebarLayout', {}, classNames)}>
-    <div>{children}</div>
-    <div>
-      <aside className="SidebarLayout__aside">{sidebar}</aside>
-    </div>
+    <div className="SidebarLayout__main">{children}</div>
+    <aside className="SidebarLayout__aside">{sidebar}</aside>
   </section>
 )
 

@@ -6,6 +6,7 @@ import lifecycle from 'recompose/lifecycle'
 import * as coreActions from '../action/core'
 import {getFeatureFlags, getUrlParams} from '../lib/url'
 import {removeBootsplash} from '../service/bootsplash'
+import * as selectors from '../lib/selector'
 
 import AppLayout from '../component/app-layout'
 import NavBarPartial from './nav-bar-partial'
@@ -16,6 +17,7 @@ import CartPage from './cart-page'
 import SuccessPage from './success-page'
 import ConfigurationPage from './configuration-page'
 import CartOfferPage from './cart-offer-page'
+import AddressPage from './address-page'
 
 import Modal from './modal'
 
@@ -25,7 +27,7 @@ const DidMount = lifecycle({
   }
 })(() => null)
 
-const MainApp = ({initDone, initTriggered, initAction}) => {
+const MainApp = ({initTriggered, initAction, isAppReady}) => {
   const init = initParams => () => {
     if (!initTriggered) {
       initAction({
@@ -38,22 +40,25 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
     }
   }
 
-  if (!initDone) {
+  if (!isAppReady) {
     // Configuration whether session should be restored
     return (
-      <Switch>
-        <Route
-          path="/configuration/:id"
-          exact
-          render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
-        />
-        <Route
-          path="/offer/:id"
-          exact
-          render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
-        />
-        <Route render={() => <DidMount onDidMount={init({restoreSessionEnabled: true})} />} />
-      </Switch>
+      <>
+        <Switch>
+          <Route
+            path="/configuration/:id"
+            exact
+            render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
+          />
+          <Route
+            path="/offer/:id"
+            exact
+            render={() => <DidMount onDidMount={init({restoreSessionEnabled: false})} />}
+          />
+          <Route render={() => <DidMount onDidMount={init({restoreSessionEnabled: true})} />} />
+        </Switch>
+        <Modal />
+      </>
     )
   }
 
@@ -64,6 +69,7 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
         <Route component={MaterialPage} path="/material" exact />
         <Route component={EditMaterialPage} path="/material/edit" exact />
         <Route component={CartPage} path="/cart" exact />
+        <Route component={AddressPage} path="/address" exact />
         <Route component={SuccessPage} path="/success" exact />
         <Route component={ConfigurationPage} path="/configuration/:id" exact />
         <Route component={CartOfferPage} path="/offer/:id" exact />
@@ -76,7 +82,7 @@ const MainApp = ({initDone, initTriggered, initAction}) => {
 
 const mapStateToProps = state => ({
   initTriggered: state.core.initTriggered,
-  initDone: state.core.initDone
+  isAppReady: selectors.isAppReady(state)
 })
 
 const mapDispatchToProps = {

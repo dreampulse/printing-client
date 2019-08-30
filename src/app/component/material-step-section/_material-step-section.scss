@@ -4,7 +4,9 @@
   margin-bottom: $space-xxxl;
 
   &__content {
-    padding-left: $indentation;
+    @include respond-to(desktop) {
+      padding-left: $indentation;
+    }
   }
 
   &--fadeIn {

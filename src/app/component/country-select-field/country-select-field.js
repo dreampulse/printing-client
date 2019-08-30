@@ -45,10 +45,12 @@ const CountrySelectField = ({
   )
 
   const renderReadMode = () => (
-    <div className="CountrySelectField__readMode">
-      {value ? getCountryName(value) : '-'}
-      <Button text tiny label={changeButtonLabel} onClick={() => setEditMode(true)} />
-    </div>
+    <span className="CountrySelectField__readMode">
+      <div className="CountrySelectField__value">{value ? getCountryName(value) : '-'}</div>
+      <div className="CountrySelectField__change">
+        <Button block text tiny label={changeButtonLabel} onClick={() => setEditMode(true)} />
+      </div>
+    </span>
   )
 
   return (

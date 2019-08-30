@@ -11,6 +11,7 @@ import get from 'lodash/get'
 import debounce from 'lodash/debounce'
 import keyBy from 'lodash/keyBy'
 import defer from 'lodash/defer'
+import chunk from 'lodash/chunk'
 
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
@@ -19,7 +20,6 @@ import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 
 import config from '../../../config'
-import {getProviderName} from '../lib/material'
 import {getBestMultiModelOffers} from '../lib/offer'
 import {getMultiModelQuotes} from '../lib/quote'
 import {
@@ -40,6 +40,7 @@ import {
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
 import scrollTo from '../service/scroll-to'
+import useBreakpoints from '../hook/use-breakpoints'
 
 import MaterialFilterPartial from './material-filter-partial'
 
@@ -62,9 +63,9 @@ import ColorCardList from '../component/color-card-list'
 import MaterialStepSection from '../component/material-step-section'
 import RecommendedOfferSection from '../component/recommended-offer-section'
 import OfferCard from '../component/offer-card'
-import ProviderImage from '../component/provider-image'
 import OfferList from '../component/offer-list'
 import OfferItem from '../component/offer-item'
+import ProviderName from '../component/provider-name'
 
 import fastestIcon from '../../asset/icon/fastest.svg'
 import cheapestIcon from '../../asset/icon/cheapest.svg'
@@ -107,6 +108,7 @@ const MaterialPartial = ({
   showAllOffers,
   setShowAllOffers
 }) => {
+  const breakpoints = useBreakpoints()
   const isPollingDone =
     pollingProgress.total > 0 && pollingProgress.complete === pollingProgress.total
   const hasAtLeastOneResult = pollingProgress.complete > 0
@@ -131,7 +133,7 @@ const MaterialPartial = ({
           offer.multiModelQuote.currency
         )
       } else {
-        price = formatPrice(offer.totalGrossPrice, offer.multiModelQuote.currency)
+        price = formatPrice(offer.multiModelQuote.grossPrice, offer.multiModelQuote.currency)
       }
     }
 
@@ -159,12 +161,20 @@ const MaterialPartial = ({
 
       return (
         <MaterialCard
+          selectOnImageClick={breakpoints['mobile-only']}
           key={material.id}
           title={material.name}
           description={material.descriptionShort}
           descriptionHeadline="Best used for:"
           price={renderPrice(bestOffer)}
-          showPriceSubline={!!bestOffer}
+          hasPriceSubline
+          priceSublineLabel={
+            bestOffer &&
+            `${formatPrice(
+              bestOffer.totalGrossPrice,
+              bestOffer.multiModelQuote.currency
+            )} incl. shipping`
+          }
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
           unavailable={!bestOffer && isPollingDone}
@@ -195,7 +205,7 @@ const MaterialPartial = ({
       )
 
     return (
-      <MaterialStepSection headline={<Headline size="xl" light label="1. Select Material" />}>
+      <MaterialStepSection headline={<Headline size="l" light label="1. Select Material" />}>
         <Grid>
           <Column lg={8} classNames={['u-margin-bottom']}>
             <RadioButtonGroup
@@ -282,7 +292,7 @@ const MaterialPartial = ({
 
     return (
       <MaterialStepSection
-        headline={<Headline size="xl" light label="2. Select Variation/Finish" />}
+        headline={<Headline size="l" light label="2. Select Variation/Finish" />}
         fadeIn
       >
         <MaterialSlider>
@@ -344,9 +354,30 @@ const MaterialPartial = ({
     }
 
     return (
-      <MaterialStepSection headline={<Headline size="xl" light label="3. Select Color" />} fadeIn>
+      <MaterialStepSection headline={<Headline size="l" light label="3. Select Color" />} fadeIn>
         {selectedFinishGroup && (
-          <ColorCardList>{selectedFinishGroup.materialConfigs.map(renderColorCard)}</ColorCardList>
+          <>
+            {breakpoints.tablet && (
+              <ColorCardList>
+                {selectedFinishGroup.materialConfigs.map(renderColorCard)}
+              </ColorCardList>
+            )}
+            {!breakpoints.tablet && (
+              <MaterialSlider>
+                {chunk(selectedFinishGroup.materialConfigs.map(renderColorCard), 3).map(
+                  (elements, index) => (
+                    <React.Fragment key={index}>
+                      {elements.map((element, elementIndex) =>
+                        React.cloneElement(element, {
+                          classNames: elementIndex < 2 ? ['u-margin-bottom-l'] : []
+                        })
+                      )}
+                    </React.Fragment>
+                  )
+                )}
+              </MaterialSlider>
+            )}
+          </>
         )}
       </MaterialStepSection>
     )
@@ -419,50 +450,82 @@ const MaterialPartial = ({
             />
           }
         >
-          <DescriptionList
-            topline={
-              <em>
-                {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
-              </em>
-            }
-          >
-            <dt>Process:</dt>
-            <dd>{finishGroup.properties.printingMethodShort}</dd>
-            <dt>Fulfilled by:</dt>
-            <dd>
-              <ProviderImage
-                xs
-                name={getProviderName(multiModelQuote.vendorId)}
-                slug={multiModelQuote.vendorId}
-              />
-            </dd>
-          </DescriptionList>
-          <DescriptionList alignRight doubleValues>
-            <dt>
-              <em>Total:</em>
-            </dt>
-            <dd>
-              <em>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</em>
-            </dd>
-            <dd>
-              <em>
-                {formatTimeRange(
-                  productionTimeFast + parseInt(shipping.deliveryTime, 10),
-                  productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-                )}
-              </em>
-            </dd>
-            <dt>Production:</dt>
-            <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
-            <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
-            <dt>Shipping:</dt>
-            <dd>
-              {usedShippingIdsById[shipping.shippingId]
-                ? formatPrice(0, shipping.currency)
-                : formatPrice(shipping.grossPrice, shipping.currency)}
-            </dd>
-            <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
-          </DescriptionList>
+          {!breakpoints.tablet && (
+            <>
+              <DescriptionList>
+                <dt>
+                  <em>Total:</em>
+                </dt>
+                <dd>
+                  <em>
+                    {formatPrice(totalGrossPrice, multiModelQuote.currency)}&nbsp;&nbsp;&nbsp;
+                    {formatTimeRange(
+                      productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                      productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                    )}
+                  </em>
+                </dd>
+              </DescriptionList>
+              <DescriptionList
+                topline={
+                  <em>
+                    {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
+                  </em>
+                }
+              >
+                <dt>Process:</dt>
+                <dd>{finishGroup.properties.printingMethodShort}</dd>
+                <dt>Produced by:</dt>
+                <dd>
+                  <ProviderName vendorId={multiModelQuote.vendorId} />
+                </dd>
+              </DescriptionList>
+            </>
+          )}
+          {breakpoints.tablet && (
+            <>
+              <DescriptionList
+                topline={
+                  <em>
+                    {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
+                  </em>
+                }
+              >
+                <dt>Process:</dt>
+                <dd>{finishGroup.properties.printingMethodShort}</dd>
+                <dt>Produced by:</dt>
+                <dd>
+                  <ProviderName vendorId={multiModelQuote.vendorId} />
+                </dd>
+              </DescriptionList>
+              <DescriptionList alignRight doubleValues>
+                <dt>
+                  <em>Total:</em>
+                </dt>
+                <dd>
+                  <em>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</em>
+                </dd>
+                <dd>
+                  <em>
+                    {formatTimeRange(
+                      productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                      productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                    )}
+                  </em>
+                </dd>
+                <dt>Production:</dt>
+                <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
+                <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
+                <dt>Shipping:</dt>
+                <dd>
+                  {usedShippingIdsById[shipping.shippingId]
+                    ? formatPrice(0, shipping.currency)
+                    : formatPrice(shipping.grossPrice, shipping.currency)}
+                </dd>
+                <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
+              </DescriptionList>
+            </>
+          )}
         </OfferCard>
       )
     }
@@ -487,6 +550,7 @@ const MaterialPartial = ({
               actions={
                 <Button
                   primary
+                  tiny={!breakpoints.tablet}
                   label={isEditMode ? 'Select offer' : 'Add to cart'}
                   onClick={() =>
                     addToCart(configIds, multiModelQuote.quotes, shipping).then(() => {
@@ -522,68 +586,122 @@ const MaterialPartial = ({
                 />
               }
             >
-              <DescriptionList>
-                <dt>
-                  <strong>Price total:</strong>
-                </dt>
-                <dd>
-                  <strong>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</strong>
-                </dd>
-                <dt className="u-hide-bigscreen">
-                  <strong>Est. delivery time:</strong>
-                </dt>
-                <dd className="u-hide-bigscreen">
-                  {formatTimeRange(
-                    productionTimeFast + parseInt(shipping.deliveryTime, 10),
-                    productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-                  )}
-                </dd>
-                <dt className="u-show-bigscreen">Production:</dt>
-                <dd className="u-show-bigscreen">
-                  {formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
-                </dd>
-                <dt className="u-show-bigscreen">Shipping:</dt>
-                <dd className="u-show-bigscreen">
-                  {usedShippingIdsById[shipping.shippingId]
-                    ? formatPrice(0, shipping.currency)
-                    : formatPrice(shipping.grossPrice, shipping.currency)}
-                </dd>
-              </DescriptionList>
-              <DescriptionList classNames={['u-show-bigscreen']}>
-                <dt>
-                  <strong>Est. delivery time:</strong>
-                </dt>
-                <dd>
-                  <strong>
-                    {formatTimeRange(
-                      productionTimeFast + parseInt(shipping.deliveryTime, 10),
-                      productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-                    )}
-                  </strong>
-                </dd>
-                <dt>Production:</dt>
-                <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
-                <dt>Shipping:</dt>
-                <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
-              </DescriptionList>
-              <DescriptionList
-                topline={
-                  <em>
-                    {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
-                  </em>
-                }
-              >
-                <dt>Process:</dt>
-                <dd>{finishGroup.properties.printingMethodShort}</dd>
-                <dt>Fulfilled by:</dt>
-                <dd>
-                  <ProviderImage
-                    xs
-                    name={getProviderName(multiModelQuote.vendorId)}
-                    slug={multiModelQuote.vendorId}
+              {!breakpoints.desktop && (
+                <>
+                  <DescriptionList
+                    topline={
+                      <strong>
+                        {formatPrice(totalGrossPrice, multiModelQuote.currency)}
+                        &nbsp;&nbsp;&nbsp;
+                        {formatTimeRange(
+                          productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                          productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                        )}
+                      </strong>
+                    }
                   />
-                </dd>
-              </DescriptionList>
+                  <DescriptionList
+                    topline={
+                      <em>
+                        {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
+                      </em>
+                    }
+                  >
+                    <dt>Process:</dt>
+                    <dd>{finishGroup.properties.printingMethodShort}</dd>
+                    <dt>Produced by:</dt>
+                    <dd>
+                      <ProviderName vendorId={multiModelQuote.vendorId} />
+                    </dd>
+                  </DescriptionList>
+                </>
+              )}
+              {breakpoints.desktop && !breakpoints.bigscreen && (
+                <>
+                  <DescriptionList>
+                    <dt>
+                      <strong>Price total:</strong>
+                    </dt>
+                    <dd>
+                      <strong>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</strong>
+                    </dd>
+                    <dt>
+                      <strong>Est. delivery time:</strong>
+                    </dt>
+                    <dd>
+                      {formatTimeRange(
+                        productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                        productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                      )}
+                    </dd>
+                  </DescriptionList>
+                  <DescriptionList
+                    topline={
+                      <em>
+                        {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
+                      </em>
+                    }
+                  >
+                    <dt>Process:</dt>
+                    <dd>{finishGroup.properties.printingMethodShort}</dd>
+                    <dt>Produced by:</dt>
+                    <dd>
+                      <ProviderName vendorId={multiModelQuote.vendorId} />
+                    </dd>
+                  </DescriptionList>
+                </>
+              )}
+              {breakpoints.bigscreen && (
+                <>
+                  <DescriptionList>
+                    <dt>
+                      <strong>Price total:</strong>
+                    </dt>
+                    <dd>
+                      <strong>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</strong>
+                    </dd>
+                    <dt>Production:</dt>
+                    <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
+                    <dt>Shipping:</dt>
+                    <dd>
+                      {usedShippingIdsById[shipping.shippingId]
+                        ? formatPrice(0, shipping.currency)
+                        : formatPrice(shipping.grossPrice, shipping.currency)}
+                    </dd>
+                  </DescriptionList>
+                  <DescriptionList>
+                    <dt>
+                      <strong>Est. delivery time:</strong>
+                    </dt>
+                    <dd>
+                      <strong>
+                        {formatTimeRange(
+                          productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                          productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                        )}
+                      </strong>
+                    </dd>
+                    <dt>Production:</dt>
+                    <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
+                    <dt>Shipping:</dt>
+                    <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
+                  </DescriptionList>
+                  <DescriptionList
+                    topline={
+                      <em>
+                        {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
+                      </em>
+                    }
+                  >
+                    <dt>Process:</dt>
+                    <dd>{finishGroup.properties.printingMethodShort}</dd>
+                    <dt>Produced by:</dt>
+                    <dd>
+                      <ProviderName vendorId={multiModelQuote.vendorId} />
+                    </dd>
+                  </DescriptionList>
+                </>
+              )}
             </OfferItem>
           )
         })}
@@ -607,7 +725,7 @@ const MaterialPartial = ({
     }
 
     return (
-      <MaterialStepSection headline={<Headline size="xl" light label="4. Select Offer" />} fadeIn>
+      <MaterialStepSection headline={<Headline size="l" light label="4. Select Offer" />} fadeIn>
         <RecommendedOfferSection classNames={['u-margin-bottom-xl']}>
           {renderOfferCard(cheapestOffer, true)}
           {renderOfferCard(fastestOffer)}

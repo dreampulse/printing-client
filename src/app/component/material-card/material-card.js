@@ -17,7 +17,7 @@ const MaterialCard = ({
   loading = false,
   unavailable = false,
   selected = false,
-  showPriceSubline = false,
+  hasPriceSubline = false,
   image,
   onMoreClick = noop,
   onSelectClick = noop,
@@ -28,7 +28,8 @@ const MaterialCard = ({
   learnMoreLabel = 'Learn more',
   unavailableLabel = 'Not printable',
   contactUsLabel = 'Contact us',
-  priceSublineLabel = 'Incl. shipping'
+  priceSublineLabel = '',
+  selectOnImageClick = false
 }) => {
   const imageStyle = {
     backgroundImage: `url(${image})`
@@ -40,12 +41,19 @@ const MaterialCard = ({
         'MaterialCard',
         {
           unavailable,
-          selected
+          selected,
+          hasPriceSubline
         },
         classNames
       )}
     >
-      {image && <div className="MaterialCard__image" style={imageStyle} />}
+      {image && (
+        <div
+          onClick={!loading && selectOnImageClick ? onSelectClick : noop}
+          className="MaterialCard__image"
+          style={imageStyle}
+        />
+      )}
       <div className="MaterialCard__content">
         <div className="MaterialCard__header" onClick={onSelectClick}>
           <Headline label={title} tag="strong" />
@@ -72,7 +80,9 @@ const MaterialCard = ({
           <div className="MaterialCard__footer">
             <div>
               {price && cloneElement(price, {loading})}
-              {showPriceSubline && <div>{priceSublineLabel}</div>}
+              {hasPriceSubline && (
+                <div className="MaterialCard__priceSubline">{priceSublineLabel}</div>
+              )}
             </div>
             <Button
               block
@@ -109,7 +119,8 @@ MaterialCard.propTypes = {
   selectedLabel: PropTypes.string,
   priceSublineLabel: PropTypes.string,
   selected: PropTypes.bool,
-  showPriceSubline: PropTypes.bool
+  hasPriceSubline: PropTypes.bool,
+  selectOnImageClick: PropTypes.bool
 }
 
 export default MaterialCard

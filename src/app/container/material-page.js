@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import unzip from 'lodash/unzip'
 import compose from 'recompose/compose'
@@ -21,8 +21,11 @@ import {formatDimensions} from '../lib/formatter'
 import {
   selectUploadedModelConfigs,
   selectCartCount,
-  selectModelsOfModelConfigs
+  selectModelsOfModelConfigs,
+  selectUnconfiguredModelConfigIds,
+  selectConfiguredModelConfigIds
 } from '../lib/selector'
+import useBreakpoints from '../hook/use-breakpoints'
 
 import MaterialPartial from './material-partial'
 import OfferFooterPartial from './offer-footer-partial'
@@ -38,18 +41,9 @@ import NumberField from '../component/number-field'
 import Paragraph from '../component/paragraph'
 import OfferLayout from '../component/offer-layout'
 import ConfigModelList from '../component/config-model-list'
+import Icon from '../component/icon'
 
 const SCROLL_CONTAINER_ID = 'main-container'
-
-const getConfiguredModelIds = modelConfigs =>
-  modelConfigs
-    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null)
-    .map(modelConfig => modelConfig.id)
-
-const getUnconfiguredModelIds = modelConfigs =>
-  modelConfigs
-    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null)
-    .map(modelConfig => modelConfig.id)
 
 const MaterialPage = ({
   selectedState,
@@ -63,31 +57,65 @@ const MaterialPage = ({
   duplicateModelConfig,
   updateQuantities,
   deleteModelConfigs,
-  configuredConfigIds,
-  setConfiguredConfigIds,
-  modelConfigs,
-  updateSelectedModelConfigs
+  processedModelConfigIds,
+  setProcessedModelConfigIds,
+  updateSelectedModelConfigs,
+  unconfiguredModelConfigIds,
+  configuredModelConfigIds
 }) => {
-  const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
+  const breakpoints = useBreakpoints()
+  const [sidebarOpen, setSidebarOpen] = useState()
+
+  const renderModelsWithConfig = () =>
+    modelsWithConfig
+      .filter(([modelConfig]) => !processedModelConfigIds.includes(modelConfig.id))
+      .map(([modelConfig, model]) => (
+        <UploadModelItem
+          configured={modelConfig.quoteId}
+          s
+          classNames={['u-margin-bottom']}
+          key={modelConfig.id}
+          imageSource={model.thumbnailUrl}
+          title={model.fileName}
+          subline={formatDimensions(model.dimensions, model.fileUnit)}
+          onPreviewImageClick={() => openModelViewer(model)}
+          buttonsLeft={
+            <NumberField
+              value={modelConfig.quantity}
+              onChange={quantity => updateQuantities([modelConfig.id], quantity)}
+            />
+          }
+          buttonsRight={
+            <ButtonBar>
+              <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
+              <Button
+                icon={copyIcon}
+                iconOnly
+                onClick={() => {
+                  duplicateModelConfig(modelConfig.id).then(({payload: {nextId}}) => {
+                    updateSelectedModelConfigs([...selectedModelConfigIds, nextId])
+                  })
+                }}
+              />
+              <Button
+                icon={deleteIcon}
+                iconOnly
+                onClick={() => deleteModelConfigs([modelConfig.id])}
+              />
+            </ButtonBar>
+          }
+          selected={selectedModelConfigIds.includes(modelConfig.id)}
+          onSelect={() => toggleId(modelConfig.id)}
+        />
+      ))
 
   const sidebar = asideNode => (
     <>
       <Section>
-        <Link
-          label="Back to upload"
-          href="#"
-          icon={backIcon}
-          onClick={event => {
-            event.preventDefault()
-            goToUpload({selectModelConfigIds: selectedModelConfigIds})
-          }}
-        />
-      </Section>
-      <Section>
         <Headline
           light
           label={`Your selection (${selectedModelConfigIds.length}/${
-            unconfiguredConfigIds.length
+            unconfiguredModelConfigIds.length
           } files)`}
         />
         <Paragraph>
@@ -97,73 +125,55 @@ const MaterialPage = ({
               toggleAll()
             }}
             label={
-              unconfiguredConfigIds.length === selectedModelConfigIds.length
+              unconfiguredModelConfigIds.length === selectedModelConfigIds.length
                 ? 'Deselect all files'
                 : 'Select all files'
             }
           />
         </Paragraph>
         <ConfigModelList
+          withCartLinkAnimation={breakpoints.desktop}
           onConfigurationChanged={() => {
             asideNode.scrollTop = 0
           }}
           onConfigurationDidChange={() => {
-            setConfiguredConfigIds(getConfiguredModelIds(modelConfigs))
+            setProcessedModelConfigIds(configuredModelConfigIds)
           }}
         >
-          {modelsWithConfig
-            .filter(([modelConfig]) => !configuredConfigIds.includes(modelConfig.id))
-            .map(([modelConfig, model]) => (
-              <UploadModelItem
-                configured={modelConfig.quoteId}
-                s
-                classNames={['u-margin-bottom']}
-                key={modelConfig.id}
-                imageSource={model.thumbnailUrl}
-                title={model.fileName}
-                subline={formatDimensions(model.dimensions, model.fileUnit)}
-                onPreviewImageClick={() => openModelViewer(model)}
-                buttonsLeft={
-                  <NumberField
-                    value={modelConfig.quantity}
-                    onChange={quantity => updateQuantities([modelConfig.id], quantity)}
-                  />
-                }
-                buttonsRight={
-                  <ButtonBar>
-                    <Button icon={zoomInIcon} iconOnly onClick={() => openModelViewer(model)} />
-                    <Button
-                      icon={copyIcon}
-                      iconOnly
-                      onClick={() => {
-                        duplicateModelConfig(modelConfig.id).then(({payload: {nextId}}) => {
-                          updateSelectedModelConfigs([...selectedModelConfigIds, nextId])
-                        })
-                      }}
-                    />
-                    <Button
-                      icon={deleteIcon}
-                      iconOnly
-                      onClick={() => deleteModelConfigs([modelConfig.id])}
-                    />
-                  </ButtonBar>
-                }
-                selected={selectedModelConfigIds.includes(modelConfig.id)}
-                onSelect={() => toggleId(modelConfig.id)}
-              />
-            ))}
+          {renderModelsWithConfig()}
         </ConfigModelList>
       </Section>
     </>
   )
 
   return (
-    <ToolLayout fullMain scrollContainerId={SCROLL_CONTAINER_ID} sidebar={sidebar}>
+    <ToolLayout
+      isOpen={breakpoints.desktop || sidebarOpen}
+      onClose={() => setSidebarOpen(false)}
+      fullMain
+      scrollContainerId={SCROLL_CONTAINER_ID}
+      sidebar={sidebar}
+    >
       <OfferLayout
         footer={
-          <OfferFooterPartial configIds={selectedModelConfigIds} selectedState={selectedState} />
+          <OfferFooterPartial
+            onOpenSidebar={() => setSidebarOpen(true)}
+            configIds={selectedModelConfigIds}
+            selectedState={selectedState}
+          />
         }
       >
+        <Section>
+          <Link
+            label="Back to upload"
+            href="#"
+            icon={<Icon source={backIcon} />}
+            onClick={event => {
+              event.preventDefault()
+              goToUpload({selectModelConfigIds: selectedModelConfigIds})
+            }}
+          />
+        </Section>
         <MaterialPartial
           configIds={selectedModelConfigIds}
           scrollContainerId={SCROLL_CONTAINER_ID}
@@ -184,7 +194,9 @@ const mapStateToProps = state => ({
   location: state.core.location,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
   cartCount: selectCartCount(state),
-  modelConfigs: state.core.modelConfigs
+  modelConfigs: state.core.modelConfigs,
+  unconfiguredModelConfigIds: selectUnconfiguredModelConfigIds(state),
+  configuredModelConfigIds: selectConfiguredModelConfigIds(state)
 })
 
 const mapDispatchToProps = {
@@ -213,12 +225,15 @@ export default compose(
         updateSelectedModelConfigs([...selectedModelConfigIds, id])
       }
     },
-    toggleAll: ({updateSelectedModelConfigs, modelConfigs, selectedModelConfigIds}) => () => {
-      const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
-      if (unconfiguredConfigIds.length === selectedModelConfigIds.length) {
+    toggleAll: ({
+      updateSelectedModelConfigs,
+      unconfiguredModelConfigIds,
+      selectedModelConfigIds
+    }) => () => {
+      if (unconfiguredModelConfigIds.length === selectedModelConfigIds.length) {
         updateSelectedModelConfigs([])
       } else {
-        updateSelectedModelConfigs(unconfiguredConfigIds)
+        updateSelectedModelConfigs(unconfiguredModelConfigIds)
       }
     }
   }),
@@ -228,8 +243,10 @@ export default compose(
     finishGroupId: null,
     materialConfigId: null
   }),
-  withState('configuredConfigIds', 'setConfiguredConfigIds', ({modelConfigs}) =>
-    getConfiguredModelIds(modelConfigs)
+  withState(
+    'processedModelConfigIds',
+    'setProcessedModelConfigIds',
+    ({configuredModelConfigIds}) => configuredModelConfigIds
   ),
   lifecycle({
     componentWillMount() {

@@ -87,7 +87,6 @@ export type CoreState = {
   paymentId: PaymentId | null
   orderNumber: string | null
   initTriggered: boolean
-  initDone: boolean
 }
 
 type CoreReducer = CoreState | Loop<CoreState, Actions>
@@ -114,8 +113,7 @@ const initialState: CoreState = {
   cart: null,
   paymentId: null,
   orderNumber: null,
-  initTriggered: false,
-  initDone: false
+  initTriggered: false
 }
 
 const createPriceRequestSingleton = singletonPromise()
@@ -170,8 +168,7 @@ const init = (
               failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
               args: []
             }),
-        userFromLocalStorage ? Cmd.action(coreActions.saveUser(userFromLocalStorage)) : Cmd.none,
-        Cmd.action(coreActions.initDone())
+        userFromLocalStorage ? Cmd.action(coreActions.saveUser(userFromLocalStorage)) : Cmd.none
       ],
       {sequence: true}
     )
@@ -898,19 +895,20 @@ const offerReceived = (
 
   const modelConfigs: ModelConfig[] = payload.quotes.map((quote, index) => {
     const modelId: ModelId = quote.modelId
-    const shipping = payload.shippings.find(s => s.vendorId === quote.vendorId) as Shipping
-    invariant(quote, 'Shipping not found in the cart offer!')
-    invariant(
-      state.shippings.find(s => s.shippingId === shipping.shippingId),
-      'Cart offer shippingId not found in general shippings!'
+    const shipping = payload.shippings.find(s => s.vendorId === quote.vendorId)
+    // We have to check whether the shipping in the cart offer also exists in general shippings.
+    // It the user is in a different country he has other shippings and we cannot match them
+    // therefore we fall back to unconfigured model configs.
+    const shippingExists = !!(
+      shipping && state.shippings.find(s => s.shippingId === shipping.shippingId)
     )
 
     return {
       type: 'UPLOADED',
       modelId,
       quantity: quote.quantity,
-      quoteId: quote.quoteId,
-      shippingId: shipping.shippingId,
+      quoteId: shippingExists ? quote.quoteId : null,
+      shippingId: shipping && shippingExists ? shipping.shippingId : null,
       id: payload.modelConfigIds[index]
     }
   })
@@ -966,15 +964,12 @@ const reset = (state: CoreState): CoreReducer => ({
     'featureFlags',
     'shippings',
     'urlParams',
-    'initTriggered',
-    'initDone'
+    'initTriggered'
   ),
   user: {
     ...omit(state.user, 'userId')
   }
 })
-
-const initDone = (state: CoreState): CoreReducer => ({...state, initDone: true})
 
 export const reducer = (state: CoreState = initialState, action: Actions): CoreReducer => {
   switch (action.type) {
@@ -1046,8 +1041,6 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return configurationReceived(state, action)
     case 'CORE.RESET':
       return reset(state)
-    case 'CORE.INIT_DONE':
-      return initDone(state)
     default:
       return state
   }

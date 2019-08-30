@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import * as ReactDOM from 'react-dom'
 import {Portal} from 'react-portal'
-import {noop} from 'lodash'
+import noop from 'lodash/noop'
 
 import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'

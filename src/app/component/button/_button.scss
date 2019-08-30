@@ -2,7 +2,6 @@
   $icon-only-size: 22px;
 
   display: inline-block;
-
   height: $field-height-compact;
   line-height: $field-height-compact;
   padding: 0 1.5em;
@@ -85,6 +84,7 @@
   }
 
   &--block {
+    @include scut-truncate();
     display: block;
     width: 100%;
   }

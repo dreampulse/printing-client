@@ -42,6 +42,16 @@ export const selectQuotesOfModelConfigs = (state: AppState) =>
       : null
   )
 
+export const selectConfiguredModelConfigIds = (state: AppState) =>
+  state.core.modelConfigs
+    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null)
+    .map(modelConfig => modelConfig.id)
+
+export const selectUnconfiguredModelConfigIds = (state: AppState) =>
+  state.core.modelConfigs
+    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null)
+    .map(modelConfig => modelConfig.id)
+
 export const selectCartCount = (state: AppState) =>
   state.core.modelConfigs.filter(
     modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null
@@ -188,3 +198,12 @@ export const isCartUpToDate = (state: AppState) => {
 
   return !!state.core.cart && isEqual(state.core.cart.quoteIds, quoteIds)
 }
+
+export const isAppReady = (state: AppState) =>
+  !!(
+    state.core &&
+    state.core.materialConfigs &&
+    state.core.location &&
+    state.core.currency &&
+    state.core.shippings
+  )

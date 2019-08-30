@@ -1,14 +1,14 @@
 .LabeledCheckbox {
   display: flex;
   align-items: center;
-  height: $field-height-compact;
-  line-height: $field-height-compact;
   font-size: $font-size-base;
   color: $color-text;
+  margin-bottom: $space-base;
 
   @include respond-to(tablet) {
     height: $field-height;
     line-height: $field-height;
+    margin-bottom: 0;
   }
 
   & > .CheckboxField {

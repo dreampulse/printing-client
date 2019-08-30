@@ -57,6 +57,24 @@ storiesOf('ConfigModelList', module)
     ))
   )
   .add(
+    'withCartLinkAnimation',
+    withState({toggle: true}, store => (
+      <div style={{marginLeft: 100, width: 600}}>
+        <ConfigModelList
+          withCartLinkAnimation
+          onConfigurationChanged={action('onConfigurationChanged')}
+        >
+          {store.state.toggle ? uploadModelItemList1 : uploadModelItemList2}
+        </ConfigModelList>
+        <Button
+          classNames={['u-margin-top']}
+          label="Play animation"
+          onClick={() => store.set({toggle: !store.state.toggle})}
+        />
+      </div>
+    ))
+  )
+  .add(
     'with removing items',
     withState({toggle: true}, store => (
       <div style={{marginLeft: 100, width: 600}}>
