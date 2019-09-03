@@ -42,6 +42,11 @@ export const selectQuotesOfModelConfigs = (state: AppState) =>
       : null
   )
 
+export const selectConfiguredModelConfigIds = (state: AppState) =>
+  state.core.modelConfigs
+    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId !== null)
+    .map(modelConfig => modelConfig.id)
+
 export const selectUnconfiguredModelConfigIds = (state: AppState) =>
   state.core.modelConfigs
     .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null)

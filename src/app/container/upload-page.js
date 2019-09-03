@@ -52,11 +52,6 @@ import Link from '../component/link'
 import Paragraph from '../component/paragraph'
 import Icon from '../component/icon'
 
-const getUnconfiguredModelIds = modelConfigs =>
-  modelConfigs
-    .filter(modelConfig => modelConfig.type === 'UPLOADED' && modelConfig.quoteId === null)
-    .map(modelConfig => modelConfig.id)
-
 const UploadPage = ({
   openPickUnitModal,
   deleteModelConfigs,
@@ -339,12 +334,15 @@ const enhance = compose(
         updateSelectedModelConfigs([...selectedModelConfigIds, id])
       }
     },
-    toggleAll: ({updateSelectedModelConfigs, modelConfigs, selectedModelConfigIds}) => () => {
-      const unconfiguredConfigIds = getUnconfiguredModelIds(modelConfigs)
-      if (unconfiguredConfigIds.length === selectedModelConfigIds.length) {
+    toggleAll: ({
+      updateSelectedModelConfigs,
+      unconfiguredModelConfigIds,
+      selectedModelConfigIds
+    }) => () => {
+      if (unconfiguredModelConfigIds.length === selectedModelConfigIds.length) {
         updateSelectedModelConfigs([])
       } else {
-        updateSelectedModelConfigs(unconfiguredConfigIds)
+        updateSelectedModelConfigs(unconfiguredModelConfigIds)
       }
     },
     createConfiguration: ({

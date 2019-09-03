@@ -161,6 +161,7 @@ const MaterialPartial = ({
 
       return (
         <MaterialCard
+          selectOnImageClick={breakpoints['mobile-only']}
           key={material.id}
           title={material.name}
           description={material.descriptionShort}
@@ -364,14 +365,14 @@ const MaterialPartial = ({
             {!breakpoints.tablet && (
               <MaterialSlider>
                 {chunk(selectedFinishGroup.materialConfigs.map(renderColorCard), 3).map(
-                  elements => (
-                    <>
-                      {elements.map((element, index) =>
+                  (elements, index) => (
+                    <React.Fragment key={index}>
+                      {elements.map((element, elementIndex) =>
                         React.cloneElement(element, {
-                          classNames: index < 2 ? ['u-margin-bottom-l'] : []
+                          classNames: elementIndex < 2 ? ['u-margin-bottom-l'] : []
                         })
                       )}
-                    </>
+                    </React.Fragment>
                   )
                 )}
               </MaterialSlider>
@@ -474,7 +475,7 @@ const MaterialPartial = ({
               >
                 <dt>Process:</dt>
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
-                <dt>Fulfilled by:</dt>
+                <dt>Produced by:</dt>
                 <dd>
                   <ProviderName vendorId={multiModelQuote.vendorId} />
                 </dd>
@@ -518,7 +519,7 @@ const MaterialPartial = ({
               >
                 <dt>Process:</dt>
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
-                <dt>Fulfilled by:</dt>
+                <dt>Produced by:</dt>
                 <dd>
                   <ProviderName vendorId={multiModelQuote.vendorId} />
                 </dd>
@@ -608,7 +609,7 @@ const MaterialPartial = ({
                   >
                     <dt>Process:</dt>
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
-                    <dt>Fulfilled by:</dt>
+                    <dt>Produced by:</dt>
                     <dd>
                       <ProviderName vendorId={multiModelQuote.vendorId} />
                     </dd>
@@ -659,7 +660,7 @@ const MaterialPartial = ({
                   >
                     <dt>Process:</dt>
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
-                    <dt>Fulfilled by:</dt>
+                    <dt>Produced by:</dt>
                     <dd>
                       <ProviderName vendorId={multiModelQuote.vendorId} />
                     </dd>
