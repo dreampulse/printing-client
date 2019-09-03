@@ -484,21 +484,7 @@ const MaterialPartial = ({
           )}
           {breakpoints.tablet && (
             <>
-              <DescriptionList
-                topline={
-                  <em>
-                    {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
-                  </em>
-                }
-              >
-                <dt>Process:</dt>
-                <dd>{finishGroup.properties.printingMethodShort}</dd>
-                <dt>Produced by:</dt>
-                <dd>
-                  <ProviderName vendorId={multiModelQuote.vendorId} />
-                </dd>
-              </DescriptionList>
-              <DescriptionList alignRight doubleValues>
+              <DescriptionList doubleValues>
                 <dt>
                   <em>Total:</em>
                 </dt>
@@ -523,6 +509,20 @@ const MaterialPartial = ({
                     : formatPrice(shipping.grossPrice, shipping.currency)}
                 </dd>
                 <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
+              </DescriptionList>
+              <DescriptionList
+                topline={
+                  <em>
+                    {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
+                  </em>
+                }
+              >
+                <dt>Process:</dt>
+                <dd>{finishGroup.properties.printingMethodShort}</dd>
+                <dt>Produced by:</dt>
+                <dd>
+                  <ProviderName vendorId={multiModelQuote.vendorId} />
+                </dd>
               </DescriptionList>
             </>
           )}
@@ -586,7 +586,7 @@ const MaterialPartial = ({
                 />
               }
             >
-              {!breakpoints.desktop && (
+              {!breakpoints.bigscreen && (
                 <>
                   <DescriptionList
                     topline={
@@ -600,41 +600,6 @@ const MaterialPartial = ({
                       </strong>
                     }
                   />
-                  <DescriptionList
-                    topline={
-                      <em>
-                        {finishGroup.materialName}, {finishGroup.name} ({materialConfig.color})
-                      </em>
-                    }
-                  >
-                    <dt>Process:</dt>
-                    <dd>{finishGroup.properties.printingMethodShort}</dd>
-                    <dt>Produced by:</dt>
-                    <dd>
-                      <ProviderName vendorId={multiModelQuote.vendorId} />
-                    </dd>
-                  </DescriptionList>
-                </>
-              )}
-              {breakpoints.desktop && !breakpoints.bigscreen && (
-                <>
-                  <DescriptionList>
-                    <dt>
-                      <strong>Price total:</strong>
-                    </dt>
-                    <dd>
-                      <strong>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</strong>
-                    </dd>
-                    <dt>
-                      <strong>Est. delivery time:</strong>
-                    </dt>
-                    <dd>
-                      {formatTimeRange(
-                        productionTimeFast + parseInt(shipping.deliveryTime, 10),
-                        productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-                      )}
-                    </dd>
-                  </DescriptionList>
                   <DescriptionList
                     topline={
                       <em>
