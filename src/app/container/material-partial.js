@@ -176,7 +176,7 @@ const MaterialPartial = ({
               usedShippingIdsById[bestOffer.shipping.shippingId]
                 ? formatPrice(0, bestOffer.shipping.currency)
                 : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
-            } Shipping`
+            } shipping`
           }
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
@@ -404,7 +404,7 @@ const MaterialPartial = ({
       return (
         <OfferCard
           icon={<Icon source={isCheapest ? cheapestIcon : fastestIcon} />}
-          label={isCheapest ? 'Best Price' : 'Fastest'}
+          label={isCheapest ? 'Best Total Price' : 'Fastest'}
           mainValue={
             isCheapest
               ? formatPrice(totalGrossPrice, multiModelQuote.currency)

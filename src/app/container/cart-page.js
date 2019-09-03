@@ -287,7 +287,7 @@ const CartPage = ({
               id={modelConfig.id}
               imageSource={model.thumbnailUrl}
               title={model.fileName}
-              price={formatPrice(quote.price, quote.currency)}
+              price={formatPrice(quote.grossPrice, quote.currency)}
               info={
                 <>
                   {formatDimensions(model.dimensions, model.fileUnit)}
