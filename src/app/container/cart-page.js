@@ -166,7 +166,6 @@ const CartPage = ({
               <br />
               {user.shippingAddress.address}
               <br />
-              {user.shippingAddress.addressLine2}
               {user.shippingAddress.addressLine2 && (
                 <>
                   {user.shippingAddress.addressLine2}
