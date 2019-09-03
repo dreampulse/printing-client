@@ -53,7 +53,7 @@ const OfferPartial = ({
   return (
     <OfferFooter
       onOpenSidebar={onOpenSidebar}
-      priceLabel="Best Price"
+      priceLabel="Best Total Price"
       price={
         offers.length > 0
           ? formatPrice(offers[0].totalGrossPrice, offers[0].multiModelQuote.currency)

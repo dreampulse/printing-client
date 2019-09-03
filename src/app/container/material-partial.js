@@ -123,6 +123,8 @@ const MaterialPartial = ({
     modelConfig => !configIds.find(id => id === modelConfig.id) && !modelConfig.quoteId
   )
 
+  const usedShippingIdsById = keyBy(usedShippingIds, id => id)
+
   const renderPrice = (offer, compareOffer) => {
     let price
     if (offer) {
@@ -170,10 +172,11 @@ const MaterialPartial = ({
           hasPriceSubline
           priceSublineLabel={
             bestOffer &&
-            `${formatPrice(
-              bestOffer.totalGrossPrice,
-              bestOffer.multiModelQuote.currency
-            )} incl. shipping`
+            `+${
+              usedShippingIdsById[bestOffer.shipping.shippingId]
+                ? formatPrice(0, bestOffer.shipping.currency)
+                : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
+            } Shipping`
           }
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
@@ -384,7 +387,6 @@ const MaterialPartial = ({
   }
 
   const renderOffersSection = () => {
-    const usedShippingIdsById = keyBy(usedShippingIds, id => id)
     const getDeliveryTime = ({multiModelQuote, shipping}) => {
       const {productionTimeFast} = materialConfigs[
         multiModelQuote.materialConfigId
