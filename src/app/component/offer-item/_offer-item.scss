@@ -10,7 +10,7 @@
     flex-direction: column;
     margin-right: $space-s;
 
-    @include respond-to(desktop) {
+    @include respond-to(bigscreen) {
       flex-direction: row;
       align-items: flex-end;
       margin-right: $space-xxxl;

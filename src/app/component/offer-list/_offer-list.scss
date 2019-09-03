@@ -2,6 +2,7 @@
   $min-height: 300px;
 
   position: relative;
+  max-width: $global-max-width;
 
   &__offers {
     list-style: none;
