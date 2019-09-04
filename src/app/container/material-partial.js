@@ -628,7 +628,9 @@ const MaterialPartial = ({
                       <strong>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</strong>
                     </dd>
                     <dt>Production:</dt>
-                    <dd className="u-align-right">{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
+                    <dd className="u-align-right">
+                      {formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
+                    </dd>
                     <dt>Shipping:</dt>
                     <dd className="u-align-right">
                       {usedShippingIdsById[shipping.shippingId]
