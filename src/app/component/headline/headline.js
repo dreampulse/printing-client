@@ -25,7 +25,7 @@ const Headline = ({
   return React.createElement(
     tag,
     {
-      className: cn('headline', {warning, minor, light, invert, [size]: true, primary}, classNames)
+      className: cn('Headline', {warning, minor, light, invert, [size]: true, primary}, classNames)
     },
     <>
       {finalIcon && <Icon key="icon" source={finalIcon} />}
