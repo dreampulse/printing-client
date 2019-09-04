@@ -4,13 +4,13 @@ context('Restore session', () => {
   beforeEach(() => {
     Cypress.Cookies.preserveOnce('country')
 
-    Cypress.on('window:before:unload', () => {
+    cy.on('window:before:unload', () => {
       LOCAL_STORAGE_MEMORY = {}
       Object.keys(localStorage).forEach(key => {
         LOCAL_STORAGE_MEMORY[key] = localStorage[key]
       })
     })
-    Cypress.on('window:before:load', () => {
+    cy.on('window:before:load', () => {
       Object.keys(LOCAL_STORAGE_MEMORY).forEach(key => {
         localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key])
       })
