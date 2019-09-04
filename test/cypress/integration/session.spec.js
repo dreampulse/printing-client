@@ -1,20 +1,29 @@
 context('Restore session', () => {
   let LOCAL_STORAGE_MEMORY = {}
 
+  const storeLocalStore = () => {
+    LOCAL_STORAGE_MEMORY = {}
+    Object.keys(localStorage).forEach(key => {
+      LOCAL_STORAGE_MEMORY[key] = localStorage[key]
+    })
+  }
+
+  const restoreLocalStorage = () => {
+    Object.keys(LOCAL_STORAGE_MEMORY).forEach(key => {
+      localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key])
+    })
+  }
+
   beforeEach(() => {
     Cypress.Cookies.preserveOnce('country')
 
-    cy.on('window:before:unload', () => {
-      LOCAL_STORAGE_MEMORY = {}
-      Object.keys(localStorage).forEach(key => {
-        LOCAL_STORAGE_MEMORY[key] = localStorage[key]
-      })
-    })
-    cy.on('window:before:load', () => {
-      Object.keys(LOCAL_STORAGE_MEMORY).forEach(key => {
-        localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key])
-      })
-    })
+    Cypress.on('window:before:unload', storeLocalStore)
+    Cypress.on('window:before:load', restoreLocalStorage)
+  })
+
+  afterEach(() => {
+    Cypress.off('window:before:unload', storeLocalStore)
+    Cypress.off('window:before:load', restoreLocalStorage)
   })
 
   it('loads', () => {
