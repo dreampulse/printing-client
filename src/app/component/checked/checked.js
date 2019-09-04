@@ -7,11 +7,11 @@ import cn from '../../lib/class-names'
 import Icon from '../icon'
 
 import checkedReoundIcon from '../../../asset/icon/checked-round.svg'
-import uncheckedRoundIcon from '../../../asset/icon/unchecked.svg'
+import uncheckedIcon from '../../../asset/icon/unchecked.svg'
 
 const Checked = ({classNames, checked = false}) => (
   <span className={cn('Checked', {checked}, classNames)}>
-    <Icon source={checked ? checkedReoundIcon : uncheckedRoundIcon} />
+    <Icon source={checked ? checkedReoundIcon : uncheckedIcon} />
   </span>
 )
 

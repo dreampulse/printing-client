@@ -12,10 +12,12 @@ const ExpandableText = ({classNames, children, moreLabel, length}) => {
     setOpen(!open)
   }
 
+  const truncate = children.length > length
+
   return (
     <span className={cn('ExpandableText', {}, classNames)}>
-      {!open ? (children || '').substring(0, length) : children}{' '}
-      {!open && (
+      {!open && truncate ? children.substring(0, length) : children}{' '}
+      {!open && truncate && (
         <a href="#" onClick={onMoreClick} className="ExpandableText__more">
           {moreLabel}
         </a>
