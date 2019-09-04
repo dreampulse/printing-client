@@ -18,6 +18,7 @@ import ConfirmLocationChangeModal from './confirm-location-change'
 import ConfirmCurrencyChangeModal from './confirm-currency-change'
 import ShareConfigurationModal from './share-configuration'
 import ShareCartModal from './share-cart'
+import ProviderModal from './provider'
 import ErrorModal from './error'
 
 const modals = {
@@ -32,7 +33,8 @@ const modals = {
   [ModalContentType.SHARE_CONFIGURATION]: ShareConfigurationModal,
   [ModalContentType.SHARE_CART]: ShareCartModal,
   [ModalContentType.ERROR]: ErrorModal,
-  [ModalContentType.ADDRESS_FORM]: AddressFormModal
+  [ModalContentType.ADDRESS_FORM]: AddressFormModal,
+  [ModalContentType.PROVIDER]: ProviderModal
 }
 
 const getContent = ({contentType, contentProps, isCloseable}, closeModal) => {

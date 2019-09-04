@@ -2,7 +2,7 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 
 import DescriptionList from '.'
-import ProviderName from '../provider-name'
+import Link from '../link'
 
 storiesOf('DescriptionList', module)
   .add('default', () => (
@@ -23,7 +23,7 @@ storiesOf('DescriptionList', module)
       <dd>White cold drink</dd>
       <dt>Milk:</dt>
       <dd>
-        <ProviderName vendorId="imaterialise" />
+        <Link label="iMaterialise" />
       </dd>
     </DescriptionList>
   ))
@@ -45,7 +45,7 @@ storiesOf('DescriptionList', module)
       <dd>White cold drink</dd>
       <dt>Milk:</dt>
       <dd>
-        <ProviderName vendorId="imaterialise" />
+        <Link label="iMaterialise" />
       </dd>
     </DescriptionList>
   ))
@@ -74,10 +74,10 @@ storiesOf('DescriptionList', module)
       <dd>White cold drink</dd>
       <dt>Milk:</dt>
       <dd>
-        <ProviderName vendorId="imaterialise" />
+        <Link label="iMaterialise" />
       </dd>
       <dd>
-        <ProviderName vendorId="imaterialise" />
+        <Link label="iMaterialise" />
       </dd>
     </DescriptionList>
   ))
@@ -99,7 +99,7 @@ storiesOf('DescriptionList', module)
       <dd>White cold drink</dd>
       <dt>Milk:</dt>
       <dd>
-        <ProviderName vendorId="imaterialise" />
+        <Link label="iMaterialise" />
       </dd>
     </DescriptionList>
   ))

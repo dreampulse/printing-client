@@ -1,3 +1,16 @@
+import autotivImage from '../src/asset/image/printing-service/autotiv.png'
+import facfoxImage from '../src/asset/image/printing-service/facfox.png'
+import harpImage from '../src/asset/image/printing-service/harp.png'
+import imaterialiseImage from '../src/asset/image/printing-service/imaterialise.png'
+import jawstecImage from '../src/asset/image/printing-service/jawstec.png'
+import sculpteoImage from '../src/asset/image/printing-service/sculpteo.png'
+import shapewaysImage from '../src/asset/image/printing-service/shapeways.png'
+import simply3dImage from '../src/asset/image/printing-service/simply3d.png'
+import treatstockImage from '../src/asset/image/printing-service/treatstock.png'
+import wenextImage from '../src/asset/image/printing-service/wenext.png'
+import zelta3dImage from '../src/asset/image/printing-service/zelta3d.png'
+import zverseImage from '../src/asset/image/printing-service/zverse.png'
+
 export default {
   pollingRetries: 200,
   pollingInterval: 1000,
@@ -25,61 +38,73 @@ export default {
     {
       vendorId: 'autotiv',
       name: 'Autotiv MFG',
+      image: autotivImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'facfox',
       name: 'FacFox',
+      image: facfoxImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'harp',
       name: 'Harp Concepts',
+      image: harpImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'imaterialise',
       name: 'i.Materialise',
+      image: imaterialiseImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'jawstec',
       name: 'JawsTec',
+      image: jawstecImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'sculpteo',
       name: 'Sculpteo',
+      image: sculpteoImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'shapeways',
       name: 'Shapeways',
+      image: shapewaysImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'simply3d',
       name: 'Simply 3D',
+      image: simply3dImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'treatstock',
       name: 'Treatstock',
+      image: treatstockImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'wenext',
       name: 'WeNext',
+      image: wenextImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'zelta3d',
       name: 'Zelta 3D',
+      image: zelta3dImage,
       description: 'lorem ipsum'
     },
     {
       vendorId: 'zverse',
       name: 'ZVerse',
+      image: zverseImage,
       description: 'lorem ipsum'
     }
   ],

@@ -26,3 +26,5 @@ declare module 'raven-for-redux' {
 
   export = constructor
 }
+
+declare module '*.png'
