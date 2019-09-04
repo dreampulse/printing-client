@@ -109,7 +109,7 @@ describe('getProviderName()', () => {
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create()
-    sandbox.stub(config, 'providerNames').value({'some-vendor-id': 'some-vendor-name'})
+    sandbox.stub(config, 'providers').value([{id: 'some-vendor-id', name: 'some-vendor-name'}])
   })
 
   afterEach(() => {
