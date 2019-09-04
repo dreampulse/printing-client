@@ -579,30 +579,25 @@ const mapStateToProps = state => ({
   quotePollingId: state.core.quotePollingId
 })
 
-const mapDispatchToProps = dispatch => ({
-  openAddressFormModal: bindActionCreators(modalAction.openAddressFormModal, dispatch),
-  openErrorModal: bindActionCreators(modalAction.openErrorModal, dispatch),
-  goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
-  deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
-  goToEditMaterial: bindActionCreators(navigationAction.goToEditMaterial, dispatch),
-  goToSuccess: bindActionCreators(navigationAction.goToSuccess, dispatch),
-  openModelViewer: bindActionCreators(modelViewerAction.open, dispatch),
-  updateQuantities: bindActionCreators(modelAction.updateQuantities, dispatch),
-  goingToReceiveQuotes: bindActionCreators(quoteAction.goingToReceiveQuotes, dispatch),
-  receiveQuotes: bindActionCreators(quoteAction.receiveQuotes, dispatch),
-  orderPaid: bindActionCreators(orderAction.paid, dispatch),
-  executePaypalPayment: bindActionCreators(orderAction.executePaypalPayment, dispatch),
-  restoreUser: bindActionCreators(coreAction.restoreUser, dispatch),
-  openShareCartModal: bindActionCreators(modalAction.openShareCartModal, dispatch),
-  fatalError: bindActionCreators(coreAction.fatalError, dispatch),
-  duplicateModelConfig: id => {
-    const action = modelAction.duplicateModelConfig(id)
-    return dispatch(action).then(() => {
-      dispatch(navigationAction.goToMaterial([action.payload.nextId]))
-    })
-  },
-  onGoToAddress: bindActionCreators(navigationAction.goToAddress, dispatch)
-})
+const mapDispatchToProps = {
+  openAddressFormModal: modalAction.openAddressFormModal,
+  openErrorModal: modalAction.openErrorModal,
+  goToUpload: navigationAction.goToUpload,
+  deleteModelConfigs: modelAction.deleteModelConfigs,
+  goToEditMaterial: navigationAction.goToEditMaterial,
+  goToSuccess: navigationAction.goToSuccess,
+  openModelViewer: modelViewerAction.open,
+  updateQuantities: modelAction.updateQuantities,
+  goingToReceiveQuotes: quoteAction.goingToReceiveQuotes,
+  receiveQuotes: quoteAction.receiveQuotes,
+  orderPaid: orderAction.paid,
+  executePaypalPayment: orderAction.executePaypalPayment,
+  restoreUser: coreAction.restoreUser,
+  openShareCartModal: modalAction.openShareCartModal,
+  fatalError: coreAction.fatalError,
+  duplicateModelConfig: modelAction.duplicateModelConfig,
+  onGoToAddress: navigationAction.goToAddress
+}
 
 export default compose(
   scrollToTop(),
