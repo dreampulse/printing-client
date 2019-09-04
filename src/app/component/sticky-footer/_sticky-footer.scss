@@ -1,5 +1,5 @@
 .StickyFooter {
-  @include respond-to(medium) {
+  @include respond-to(tablet) {
     display: flex;
     align-items: stretch;
   }
@@ -14,12 +14,12 @@
       margin-left: $space-xl;
     }
 
-    @include respond-to(medium) {
+    @include respond-to(tablet) {
       display: inline-block;
     }
   }
 
-  @include respond-to(medium) {
+  @include respond-to(tablet) {
     &:before,
     &:after {
       content: '';
