@@ -1,6 +1,7 @@
 .Modal {
   $modal-default-width: 600px;
   $modal-l-width: 1000px;
+  $modal-s-width: 380px;
   $close-button-size: 20px;
   $modal-box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 4px 0;
 
@@ -49,5 +50,9 @@
 
   &--size-l {
     width: $modal-l-width;
+  }
+
+  &--size-s {
+    width: $modal-s-width;
   }
 }
