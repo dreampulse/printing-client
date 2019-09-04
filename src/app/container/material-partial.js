@@ -66,9 +66,11 @@ import OfferCard from '../component/offer-card'
 import OfferList from '../component/offer-list'
 import OfferItem from '../component/offer-item'
 import ProviderName from '../component/provider-name'
+import Tooltip from '../component/tooltip'
 
 import fastestIcon from '../../asset/icon/fastest.svg'
 import cheapestIcon from '../../asset/icon/cheapest.svg'
+import infoIcon from '../../asset/icon/info.svg'
 
 const MaterialPartial = ({
   // Own props
@@ -171,12 +173,20 @@ const MaterialPartial = ({
           price={renderPrice(bestOffer)}
           hasPriceSubline
           priceSublineLabel={
-            bestOffer &&
-            `+${
-              usedShippingIdsById[bestOffer.shipping.shippingId]
-                ? formatPrice(0, bestOffer.shipping.currency)
-                : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
-            } shipping`
+            <>
+              {bestOffer &&
+              `+${
+                usedShippingIdsById[bestOffer.shipping.shippingId]
+                  ? formatPrice(0, bestOffer.shipping.currency)
+                  : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
+              } shipping`}{' '}
+              <Tooltip
+                timeout={5000}
+                content="Adipisicing commodo id in quis sint enim magna nisi irure."
+              >
+                <Button icon={infoIcon} iconOnly tiny />
+              </Tooltip>
+            </>
           }
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}

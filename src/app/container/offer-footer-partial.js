@@ -74,7 +74,7 @@ const OfferPartial = ({
             timeout={5000}
             content="All prices displayed take into consideration your provided location as well as that of the most ideal manufacturer. Shipping and tax estimations are all included."
           >
-            <Button icon={infoIcon} iconOnly />
+            <Button icon={infoIcon} iconOnly tiny />
           </Tooltip>
         </>
       }

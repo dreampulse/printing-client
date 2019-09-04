@@ -133,6 +133,10 @@
       font-size: 1em;
       margin: 0;
     }
+
+    &.Button--tiny {
+      font-size: $font-size-s;
+    }
   }
 
   &--minor {
