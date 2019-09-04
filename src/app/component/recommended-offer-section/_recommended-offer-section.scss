@@ -1,9 +1,10 @@
 .RecommendedOfferSection {
   display: grid;
-  grid-template-columns: minmax(auto, 600px);
+  grid-template-columns: 1fr;
   grid-gap: $space-l;
+  max-width: $global-max-width;
 
   @include respond-to(bigscreen) {
-    grid-template-columns: minmax(auto, 600px) minmax(auto, 600px);
+    grid-template-columns: 1fr 1fr;
   }
 }

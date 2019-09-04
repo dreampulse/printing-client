@@ -51,8 +51,7 @@ const PickLocationModal = ({
       text={hasQuotes}
       disabled={!isLocationValid(location) || !currency}
       onClick={() => {
-        onUpdateLocation(location, true)
-        onUpdateCurrency(currency, true)
+        onUpdateLocation(location, true).then(() => onUpdateCurrency(currency, true))
         closeModal()
       }}
     />
