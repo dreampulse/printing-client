@@ -41,7 +41,7 @@ context('Share cart flow', () => {
   })
 
   it('creates a shareable cart link and visit the cart url', () => {
-    cy.contains('a', 'Share').click()
+    cy.contains('a', 'Share Cart').click()
     cy.contains('.headline', 'Share cart')
     return cy.get('#share-cart-input').then($input => {
       const shareCartUrl = $input.val()
