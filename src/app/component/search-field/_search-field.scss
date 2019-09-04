@@ -86,13 +86,17 @@
   }
 
   &--tiny {
-    .SearchField__input {
+    height: $field-height-tiny;
+
+    @include respond-to(tablet) {
       height: $field-height-tiny;
+    }
+
+    .SearchField__input {
       padding-right: $field-height-tiny;
       font-size: $font-size-base;
 
       @include respond-to(tablet) {
-        height: $field-height-tiny;
         padding-right: $field-height-tiny;
       }
     }

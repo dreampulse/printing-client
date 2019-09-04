@@ -36,9 +36,8 @@
 
   &__body {
     flex-shrink: 0;
-    border-top: 1px solid $color-border-minor;
     line-height: $line-height-base;
-    padding: $space-base 0;
+    padding: 0 0 $space-base;
     font-size: $font-size-s;
     height: 3 * $font-size-s * $line-height-base;
     box-sizing: content-box;

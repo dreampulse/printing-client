@@ -1,27 +1,39 @@
 .StickyFooter {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: $color-bg-minor;
-  padding: $space-base $space-l;
-  border-top: 1px solid $color-bg-minor;
-  opacity: 1;
-
-  & > * + * {
-    margin-left: $space-xl;
+  @include respond-to(medium) {
+    display: flex;
+    align-items: stretch;
   }
 
-  &:before {
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translateY(-100%);
-    content: '';
-    width: 100%;
+  &__content {
+    position: relative;
     display: block;
-    height: 60px; // Design decision
-    background: linear-gradient(to bottom, rgba($color-bg-minor, 0), rgba($color-bg-minor, 1));
+    padding: $space-base $space-l;
+    background: $color-bg-minor;
+
+    & > * + * {
+      margin-left: $space-xl;
+    }
+
+    @include respond-to(medium) {
+      display: inline-block;
+    }
+  }
+
+  @include respond-to(medium) {
+    &:before,
+    &:after {
+      content: '';
+      pointer-events: none;
+      display: block;
+      flex-grow: 1;
+    }
+
+    &:before {
+      background: linear-gradient(to right, rgba($color-bg-minor, 0), rgba($color-bg-minor, 1));
+    }
+
+    &:after {
+      background: linear-gradient(to left, rgba($color-bg-minor, 0), rgba($color-bg-minor, 1));
+    }
   }
 }
