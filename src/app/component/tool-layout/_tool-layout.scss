@@ -23,6 +23,7 @@
     width: 100%;
     padding: $space-xl;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     z-index: z($stacking, main);
 
     @include respond-to(desktop) {
@@ -77,6 +78,7 @@
   &__sidebar {
     height: 100%;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding: $space-l;
   }
 
