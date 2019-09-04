@@ -45,6 +45,7 @@ context('Share cart flow', () => {
     cy.contains('.headline', 'Share cart')
     return cy.get('#share-cart-input').then($input => {
       const shareCartUrl = $input.val()
+      cy.clearLocalStorage()
       cy.visit(
         `${shareCartUrl}&feature:invoice&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test`
       )
