@@ -14,11 +14,11 @@ export default {
   countryCookie: 'country',
   supportContactUrl: '//craftcloud.all3dp.com/contact',
   currencies: [
-    {value: 'USD', label: 'USD', symbol: '$', prefix: true},
-    {value: 'EUR', label: 'EUR', symbol: '€', prefix: false},
-    {value: 'GBP', label: 'GBP', symbol: '£', prefix: true},
-    {value: 'CAD', label: 'CAD', symbol: 'CDN$', prefix: true},
-    {value: 'AUD', label: 'AUD', symbol: 'AU$', prefix: true}
+    {value: 'USD', label: 'USD', symbol: '$'},
+    {value: 'EUR', label: 'EUR', symbol: '€'},
+    {value: 'GBP', label: 'GBP', symbol: '£'},
+    {value: 'CAD', label: 'CAD', symbol: 'CDN$'},
+    {value: 'AUD', label: 'AUD', symbol: 'AU$'}
   ],
   defaultCurrency: 'USD',
   providerNames: {
