@@ -3,7 +3,7 @@
   "fixturesFolder": "test/cypress/fixtures",
   "integrationFolder": "test/cypress/integration",
   "baseUrl": "http://localhost:3002",
-  "defaultCommandTimeout": 60000,
+  "defaultCommandTimeout": 30000,
   "viewportHeight": 940,
   "viewportWidth": 1260
 }

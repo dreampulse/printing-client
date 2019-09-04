@@ -22,12 +22,12 @@
   &__more {
     display: none;
     position: absolute;
+    padding-top: $space-xl;
     top: 0;
     left: 0;
     right: 0;
     height: $min-height;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
     background-image: linear-gradient(rgba($color-bg, 0.5), rgba($color-bg, 1));
     transition: opacity $transition-duration linear;
   }
@@ -39,7 +39,7 @@
     }
 
     .OfferList__more {
-      display: flex;
+      display: block;
     }
   }
 
