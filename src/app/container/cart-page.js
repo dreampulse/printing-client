@@ -535,7 +535,7 @@ const CartPage = ({
             <Link
               largeIcon
               icon={<Icon source={shareIcon} />}
-              label={breakpoints.tablet ? 'Share Cart' : undefined}
+              label={breakpoints.tablet ? 'Share quote' : undefined}
               onClick={() => {
                 createOffer(cart.cartId)
               }}

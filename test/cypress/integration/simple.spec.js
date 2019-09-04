@@ -56,13 +56,13 @@ context('Simple application flow', () => {
   })
 
   it('pays per invoice', () => {
-    cy.contains('.headline', 'Review Order')
+    cy.contains('.Headline', 'Review Order')
     cy.contains('.CartModelItem', 'test-model.stl')
 
     cy.contains('button', 'Pay with Invoice').click()
   })
 
   it('reaches success page', () => {
-    cy.contains('.headline', 'Thank you')
+    cy.contains('.Headline', 'Thank you')
   })
 })

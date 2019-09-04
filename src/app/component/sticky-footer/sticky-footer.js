@@ -5,7 +5,9 @@ import propTypes from '../../prop-types'
 import buildClassName from '../../lib/class-names'
 
 const StickyFooter = ({classNames, children}) => (
-  <div className={buildClassName('StickyFooter', {}, classNames)}>{children}</div>
+  <div className={buildClassName('StickyFooter', {}, classNames)}>
+    <div className="StickyFooter__content">{children}</div>
+  </div>
 )
 
 StickyFooter.propTypes = {
