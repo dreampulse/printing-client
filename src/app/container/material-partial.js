@@ -175,11 +175,11 @@ const MaterialPartial = ({
           priceSublineLabel={
             <>
               {bestOffer &&
-              `+${
-                usedShippingIdsById[bestOffer.shipping.shippingId]
-                  ? formatPrice(0, bestOffer.shipping.currency)
-                  : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
-              } shipping`}{' '}
+                `+${
+                  usedShippingIdsById[bestOffer.shipping.shippingId]
+                    ? formatPrice(0, bestOffer.shipping.currency)
+                    : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
+                } shipping`}{' '}
               <Tooltip
                 timeout={5000}
                 content="Adipisicing commodo id in quis sint enim magna nisi irure."
