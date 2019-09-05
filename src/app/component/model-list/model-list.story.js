@@ -7,7 +7,7 @@ import Button from '../button'
 import ButtonBar from '../button-bar'
 import CartModelItem from '../cart-model-item'
 import NumberField from '../number-field'
-import ProviderName from '../provider-name'
+import Link from '../link'
 
 import placeholderIcon from '../../../asset/icon/placeholder.svg'
 import deleteIcon from '../../../asset/icon/delete.svg'
@@ -60,7 +60,7 @@ storiesOf('ModelList', module).add('default', () => (
               Deslivery method: <strong>Standard</strong>
             </>
           }
-          provider={<ProviderName vendorId="imaterialise" />}
+          provider={<Link label="iMaterialise" />}
           buttonsLeft={leftButtonBar()}
           buttonsRight={rightButtonBar()}
         />

@@ -27,6 +27,7 @@ export const getMaterialConfigLookupTable = (materialGroups: MaterialGroup[]) =>
     item => item.id
   )
 
-export function getProviderName(vendorId: keyof typeof config.providerNames) {
-  return config.providerNames[vendorId] || vendorId
+export function getProviderName(vendorId: string) {
+  const provider = config.providers.find(p => p.vendorId === vendorId)
+  return (provider && provider.name) || vendorId
 }

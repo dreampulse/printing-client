@@ -6,7 +6,8 @@ import {
   Location,
   ModalContentType,
   ConfigurationId,
-  CartOfferId
+  CartOfferId,
+  VendorId
 } from '../type'
 
 export type OpenModalAction = Action<'MODAL.OPEN', ModalConfigOpened>
@@ -55,6 +56,13 @@ export const openFinishGroupModal = (finishGroupId: FinishGroupId) =>
     isCloseable: true,
     contentType: ModalContentType.FINISH_GROUP,
     contentProps: {finishGroupId}
+  })
+
+export const openProviderModal = (vendorId: VendorId) =>
+  open({
+    isCloseable: true,
+    contentType: ModalContentType.PROVIDER,
+    contentProps: {vendorId}
   })
 
 export const openConfirmLocationChangeModal = ({

@@ -40,7 +40,6 @@ import PaypalButton from '../component/paypal-button'
 import PageHeader from '../component/page-header'
 import Icon from '../component/icon'
 import Notification from '../component/notification'
-import ProviderName from '../component/provider-name'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
@@ -79,6 +78,7 @@ const CartPage = ({
   isCartUpToDate,
   featureFlags,
   openAddressFormModal,
+  openProviderModal,
   paymentInProgress,
   setPaymentInProgress,
   payWithPaypal,
@@ -307,7 +307,15 @@ const CartPage = ({
                   Delivery method: <strong>{shipping.name}</strong>
                 </>
               }
-              provider={<ProviderName vendorId={shipping.vendorId} />}
+              provider={
+                <Link
+                  label={getProviderName(quote.vendorId)}
+                  onClick={event => {
+                    event.preventDefault()
+                    openProviderModal(quote.vendorId)
+                  }}
+                />
+              }
               buttonsLeft={
                 <NumberField
                   value={modelConfig.quantity}
@@ -581,6 +589,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   openAddressFormModal: modalAction.openAddressFormModal,
   openErrorModal: modalAction.openErrorModal,
+  openProviderModal: modalAction.openProviderModal,
   goToUpload: navigationAction.goToUpload,
   deleteModelConfigs: modelAction.deleteModelConfigs,
   goToEditMaterial: navigationAction.goToEditMaterial,
