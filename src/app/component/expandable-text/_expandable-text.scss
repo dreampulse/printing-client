@@ -1,0 +1,13 @@
+.ExpandableText {
+  &__more {
+    color: $color-link;
+    font-weight: $font-weight-regular;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+}

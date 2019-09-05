@@ -32,7 +32,7 @@ const Modal = ({
 
 Modal.propTypes = {
   ...propTypes.component,
-  size: PropTypes.oneOf(['default', 'l']),
+  size: PropTypes.oneOf(['default', 'l', 's']),
   onClose: PropTypes.func,
   children: PropTypes.node,
   headline: PropTypes.node.isRequired,
