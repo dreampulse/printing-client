@@ -610,9 +610,7 @@ const duplicateModelConfig = (
   const modelConfigIndex = state.modelConfigs.indexOf(modelConfig)
   const nextModelConfig = {
     ...modelConfig,
-    id: nextId,
-    quoteId: null,
-    shippingId: null
+    id: nextId
   }
 
   return {
