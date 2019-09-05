@@ -184,7 +184,7 @@ const MaterialPartial = ({
                 } shipping`}{' '}
               <Tooltip
                 timeout={5000}
-                content="Adipisicing commodo id in quis sint enim magna nisi irure."
+                content="Shipping price shown is a part of the lowest possible quote, which combines both production and delivery costs."
               >
                 <Button icon={infoIcon} iconOnly tiny />
               </Tooltip>
