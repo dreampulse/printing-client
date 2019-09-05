@@ -85,7 +85,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        issuer: /\.js$/, // Prevent usage of icon sprite outside of js
+        issuer: /\.(js|ts)$/, // Prevent usage of icon sprite outside of js
         include: [path.resolve(__dirname, './src/asset/icon')],
         use: [
           {
@@ -99,7 +99,7 @@ module.exports = {
       {
         // Inline images required from JS.
         test: /\.(jpe?g|png|gif|svg)$/,
-        issuer: /\.js$/,
+        issuer: /\.(js|ts)$/,
         include: [path.resolve(__dirname, './src/asset/image')],
         use: 'url-loader'
       },

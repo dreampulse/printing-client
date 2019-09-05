@@ -37,6 +37,7 @@ import {
   selectUploadedModelConfigs,
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
+import {getProviderName} from '../lib/material'
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
 import scrollTo from '../service/scroll-to'
@@ -65,7 +66,7 @@ import RecommendedOfferSection from '../component/recommended-offer-section'
 import OfferCard from '../component/offer-card'
 import OfferList from '../component/offer-list'
 import OfferItem from '../component/offer-item'
-import ProviderName from '../component/provider-name'
+import Link from '../component/link'
 
 import fastestIcon from '../../asset/icon/fastest.svg'
 import cheapestIcon from '../../asset/icon/cheapest.svg'
@@ -96,6 +97,7 @@ const MaterialPartial = ({
   setMaterialFilter,
   openMaterialModal,
   openFinishGroupModal,
+  openProviderModal,
   quotes,
   selectedModelConfigs,
   shippings,
@@ -477,7 +479,13 @@ const MaterialPartial = ({
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
                 <dt>Produced by:</dt>
                 <dd>
-                  <ProviderName vendorId={multiModelQuote.vendorId} />
+                  <Link
+                    label={getProviderName(multiModelQuote.vendorId)}
+                    onClick={event => {
+                      event.preventDefault()
+                      openProviderModal(multiModelQuote.vendorId)
+                    }}
+                  />
                 </dd>
               </DescriptionList>
             </>
@@ -523,7 +531,13 @@ const MaterialPartial = ({
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
                 <dt>Produced by:</dt>
                 <dd>
-                  <ProviderName vendorId={multiModelQuote.vendorId} />
+                  <Link
+                    label={getProviderName(multiModelQuote.vendorId)}
+                    onClick={event => {
+                      event.preventDefault()
+                      openProviderModal(multiModelQuote.vendorId)
+                    }}
+                  />
                 </dd>
               </DescriptionList>
             </>
@@ -613,7 +627,13 @@ const MaterialPartial = ({
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
                     <dt>Produced by:</dt>
                     <dd>
-                      <ProviderName vendorId={multiModelQuote.vendorId} />
+                      <Link
+                        label={getProviderName(multiModelQuote.vendorId)}
+                        onClick={event => {
+                          event.preventDefault()
+                          openProviderModal(multiModelQuote.vendorId)
+                        }}
+                      />
                     </dd>
                   </DescriptionList>
                 </>
@@ -666,7 +686,13 @@ const MaterialPartial = ({
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
                     <dt>Produced by:</dt>
                     <dd>
-                      <ProviderName vendorId={multiModelQuote.vendorId} />
+                      <Link
+                        label={getProviderName(multiModelQuote.vendorId)}
+                        onClick={event => {
+                          event.preventDefault()
+                          openProviderModal(multiModelQuote.vendorId)
+                        }}
+                      />
                     </dd>
                   </DescriptionList>
                 </>
@@ -739,6 +765,7 @@ const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
+  openProviderModal: modalAction.openProviderModal,
   receiveQuotes: quoteAction.receiveQuotes,
   goingToReceiveQuotes: quoteAction.goingToReceiveQuotes,
   stopReceivingQuotes: quoteAction.stopReceivingQuotes,
