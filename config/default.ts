@@ -14,27 +14,75 @@ export default {
   countryCookie: 'country',
   supportContactUrl: '//craftcloud.all3dp.com/contact',
   currencies: [
-    {value: 'USD', label: 'USD', symbol: '$', prefix: true},
-    {value: 'EUR', label: 'EUR', symbol: '€', prefix: false},
-    {value: 'GBP', label: 'GBP', symbol: '£', prefix: true},
-    {value: 'CAD', label: 'CAD', symbol: 'CDN$', prefix: true},
-    {value: 'AUD', label: 'AUD', symbol: 'AU$', prefix: true}
+    {value: 'USD', label: 'USD', symbol: '$'},
+    {value: 'EUR', label: 'EUR', symbol: '€'},
+    {value: 'GBP', label: 'GBP', symbol: '£'},
+    {value: 'CAD', label: 'CAD', symbol: 'CDN$'},
+    {value: 'AUD', label: 'AUD', symbol: 'AU$'}
   ],
   defaultCurrency: 'USD',
-  providerNames: {
-    autotiv: 'Autotiv MFG',
-    facfox: 'FacFox',
-    harp: 'Harp Concepts',
-    imaterialise: 'i.Materialise',
-    jawstec: 'JawsTec',
-    sculpteo: 'Sculpteo',
-    shapeways: 'Shapeways',
-    simply3d: 'Simply 3D',
-    treatstock: 'Treatstock',
-    wenext: 'WeNext',
-    zelta3d: 'Zelta 3D',
-    zverse: 'ZVerse'
-  },
+  providers: [
+    {
+      vendorId: 'autotiv',
+      name: 'Autotiv MFG',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'facfox',
+      name: 'FacFox',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'harp',
+      name: 'Harp Concepts',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'imaterialise',
+      name: 'i.Materialise',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'jawstec',
+      name: 'JawsTec',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'sculpteo',
+      name: 'Sculpteo',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'shapeways',
+      name: 'Shapeways',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'simply3d',
+      name: 'Simply 3D',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'treatstock',
+      name: 'Treatstock',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'wenext',
+      name: 'WeNext',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'zelta3d',
+      name: 'Zelta 3D',
+      description: 'lorem ipsum'
+    },
+    {
+      vendorId: 'zverse',
+      name: 'ZVerse',
+      description: 'lorem ipsum'
+    }
+  ],
   euCountries: [
     'BE',
     'BG',

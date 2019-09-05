@@ -131,7 +131,7 @@ const UploadPage = ({
           <Link
             largeIcon
             icon={<Icon source={shareIcon} />}
-            label="Share"
+            label="Share files"
             onClick={() => {
               createConfiguration(selectedModelConfigIds)
             }}
@@ -240,14 +240,6 @@ const UploadPage = ({
       </Container>
       <Container>
         {location.state && location.state.notification && renderNotificationSection()}
-        {hasModels && (
-          <Headline
-            classNames={['u-align-center']}
-            size="xl"
-            light
-            label="Which files do you want to configure first?"
-          />
-        )}
         {!hasModels && (
           <Section>
             <UploadArea
@@ -265,6 +257,7 @@ const UploadPage = ({
           <Section>
             <Headline
               light
+              size="l"
               label={`Your selection (${selectedModelConfigIds.length}/${
                 unconfiguredModelConfigIds.length
               } files)`}

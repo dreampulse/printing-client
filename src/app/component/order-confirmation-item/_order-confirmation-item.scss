@@ -13,11 +13,11 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    height: $oder-confirmation-item-size;
-    width: $oder-confirmation-item-size;
+    height: $order-confirmation-item-size;
+    width: $order-confirmation-item-size;
     font-size: $icon-size;
     border: 2px solid $color-bg;
-    border-radius: $oder-confirmation-item-size / 2;
+    border-radius: $order-confirmation-item-size / 2;
     background-color: $color-bg;
     color: $color-minor-highlighted;
   }

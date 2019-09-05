@@ -41,7 +41,6 @@ import PaypalButton from '../component/paypal-button'
 import PageHeader from '../component/page-header'
 import Icon from '../component/icon'
 import Notification from '../component/notification'
-import ProviderName from '../component/provider-name'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
@@ -80,6 +79,7 @@ const CartPage = ({
   isCartUpToDate,
   featureFlags,
   openAddressFormModal,
+  openProviderModal,
   paymentInProgress,
   setPaymentInProgress,
   payWithPaypal,
@@ -308,7 +308,15 @@ const CartPage = ({
                   Delivery method: <strong>{shipping.name}</strong>
                 </>
               }
-              provider={<ProviderName vendorId={shipping.vendorId} />}
+              provider={
+                <Link
+                  label={getProviderName(quote.vendorId)}
+                  onClick={event => {
+                    event.preventDefault()
+                    openProviderModal(quote.vendorId)
+                  }}
+                />
+              }
               buttonsLeft={
                 <NumberField
                   value={modelConfig.quantity}
@@ -527,7 +535,7 @@ const CartPage = ({
             <Link
               largeIcon
               icon={<Icon source={shareIcon} />}
-              label={breakpoints.tablet ? 'Share Cart' : undefined}
+              label={breakpoints.tablet ? 'Share quote' : undefined}
               onClick={() => {
                 createOffer(cart.cartId)
               }}
@@ -582,6 +590,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   openAddressFormModal: bindActionCreators(modalAction.openAddressFormModal, dispatch),
   openErrorModal: bindActionCreators(modalAction.openErrorModal, dispatch),
+  openProviderModal: bindActionCreators(modalAction.openProviderModal, dispatch),
   goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
   deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
   goToEditMaterial: bindActionCreators(navigationAction.goToEditMaterial, dispatch),

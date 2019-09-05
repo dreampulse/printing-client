@@ -32,16 +32,16 @@
     position: absolute;
     z-index: z($stacking, bar);
     background-color: $color-bg;
-    left: $oder-confirmation-item-size / 2 - $bar-width / 2;
-    top: $oder-confirmation-item-size / 2;
-    height: calc(100% - #{$oder-confirmation-item-size});
+    left: $order-confirmation-item-size / 2 - $bar-width / 2;
+    top: $order-confirmation-item-size / 2;
+    height: calc(100% - #{$order-confirmation-item-size});
     width: $bar-width;
 
     @include respond-to(tablet) {
-      left: $oder-confirmation-item-size / 2;
-      top: $oder-confirmation-item-size / 2 - $bar-width / 2;
+      left: $order-confirmation-item-size / 2;
+      top: $order-confirmation-item-size / 2 - $bar-width / 2;
       height: $bar-width;
-      width: calc(100% - #{$oder-confirmation-item-size});
+      width: calc(100% - #{$order-confirmation-item-size});
     }
   }
 

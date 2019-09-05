@@ -15,7 +15,7 @@ const INPUT_ID = 'share-cart-input'
 
 const ShareCartModal = ({cartUrl, closeModal}) => (
   <Modal
-    headline={<Headline label="Share cart" size="l" />}
+    headline={<Headline label="Share quote" size="l" />}
     buttons={[
       <Button
         label="Copy to clipboard and Close"
