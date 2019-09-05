@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import config from '../../../../config'
+import providerImages from '../../../asset/image/printing-service'
 
 import * as modalActions from '../../action/modal'
 
@@ -24,7 +25,7 @@ const ProviderModal = ({vendorId, closeModal}) => {
       headline={<Headline label={provider.name} size="l" />}
       onClose={() => closeModal()}
     >
-      <ProviderImage src={provider.image} alt="Provider logo" />
+      <ProviderImage src={providerImages[provider.vendorId]} alt="Provider logo" />
       <Paragraph>
         <ExpandableText moreLabel="… more" length={200}>
           {provider.description}
