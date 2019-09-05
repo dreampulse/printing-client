@@ -80,7 +80,7 @@ export default {
     {
       vendorId: 'zverse',
       name: 'ZVerse',
-      description: 'Zverse is an American manufacturer, specialized in Carbon specific resin materials. Through Zverse, all of Carbon's materials are available at very competitive prices.'
+      description: 'Zverse is an American manufacturer, specialized in Carbon specific resin materials. Through Zverse, all of Carbon’s materials are available at very competitive prices.'
     }
   ],
   euCountries: [
