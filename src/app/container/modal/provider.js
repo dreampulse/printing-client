@@ -9,6 +9,7 @@ import Modal from '../../component/modal'
 import Headline from '../../component/headline'
 import Paragraph from '../../component/paragraph'
 import ProviderImage from '../../component/provider-image'
+import ExpandableText from '../../component/expandable-text'
 
 const ProviderModal = ({vendorId, closeModal}) => {
   const provider = config.providers.find(p => p.vendorId === vendorId)
@@ -24,7 +25,11 @@ const ProviderModal = ({vendorId, closeModal}) => {
       onClose={() => closeModal()}
     >
       <ProviderImage src={provider.image} alt="Provider logo" />
-      <Paragraph>{provider.description}</Paragraph>
+      <Paragraph>
+        <ExpandableText moreLabel="… more" length={200}>
+          {provider.description}
+        </ExpandableText>
+      </Paragraph>
     </Modal>
   )
 }
