@@ -175,20 +175,21 @@ const MaterialPartial = ({
           price={renderPrice(bestOffer)}
           hasPriceSubline
           priceSublineLabel={
-            <>
-              {bestOffer &&
-                `+${
+            bestOffer && (
+              <>
+                {`+${
                   usedShippingIdsById[bestOffer.shipping.shippingId]
                     ? formatPrice(0, bestOffer.shipping.currency)
                     : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
                 } shipping`}{' '}
-              <Tooltip
-                timeout={5000}
-                content="Shipping price shown is a part of the lowest possible quote, which combines both production and delivery costs."
-              >
-                <Button icon={infoIcon} iconOnly tiny />
-              </Tooltip>
-            </>
+                <Tooltip
+                  timeout={5000}
+                  content="Shipping price shown is a part of the lowest possible quote, which combines both production and delivery costs."
+                >
+                  <Button icon={infoIcon} iconOnly tiny />
+                </Tooltip>
+              </>
+            )
           }
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
