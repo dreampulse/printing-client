@@ -25,6 +25,9 @@ storiesOf('Button', module)
     <Button label="Tiny Minor Button" minor tiny onClick={action('onClick')} />
   ))
   .add('iconOnly', () => <Button icon={placeholderIcon} iconOnly onClick={action('onClick')} />)
+  .add('iconOnly & tiny', () => (
+    <Button icon={placeholderIcon} iconOnly tiny onClick={action('onClick')} />
+  ))
   .add('iconOnly & disabled', () => (
     <Button icon={placeholderIcon} disabled iconOnly onClick={action('onClick')} />
   ))

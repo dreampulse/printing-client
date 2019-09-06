@@ -26,17 +26,17 @@ const Modal = ({
       </div>
     </header>
     <div className="Modal__content">{children}</div>
-    <footer className="Modal__footer">{buttons}</footer>
+    {buttons && <footer className="Modal__footer">{buttons}</footer>}
   </section>
 )
 
 Modal.propTypes = {
   ...propTypes.component,
-  size: PropTypes.oneOf(['default', 'l']),
+  size: PropTypes.oneOf(['default', 'l', 's']),
   onClose: PropTypes.func,
   children: PropTypes.node,
   headline: PropTypes.node.isRequired,
-  buttons: PropTypes.node.isRequired,
+  buttons: PropTypes.node,
   scrollContainerId: PropTypes.string
 }
 

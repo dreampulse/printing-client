@@ -4,9 +4,10 @@ context('Simple application flow', () => {
   })
 
   it('loads', () => {
+    cy.clearLocalStorage()
     cy.setCookie('country', 'DE')
     cy.visit(
-      '/?feature:refresh&feature:invoice&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test'
+      '/?feature:refresh&feature:invoice&feature:clear&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test'
     )
   })
 
@@ -56,13 +57,13 @@ context('Simple application flow', () => {
   })
 
   it('pays per invoice', () => {
-    cy.contains('.headline', 'Review Order')
+    cy.contains('.Headline', 'Review Order')
     cy.contains('.CartModelItem', 'test-model.stl')
 
     cy.contains('button', 'Pay with Invoice').click()
   })
 
   it('reaches success page', () => {
-    cy.contains('.headline', 'Thank you')
+    cy.contains('.Headline', 'Thank you')
   })
 })

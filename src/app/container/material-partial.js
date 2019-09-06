@@ -37,6 +37,7 @@ import {
   selectUploadedModelConfigs,
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
+import {getProviderName} from '../lib/material'
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
 import scrollTo from '../service/scroll-to'
@@ -65,10 +66,12 @@ import RecommendedOfferSection from '../component/recommended-offer-section'
 import OfferCard from '../component/offer-card'
 import OfferList from '../component/offer-list'
 import OfferItem from '../component/offer-item'
-import ProviderName from '../component/provider-name'
+import Tooltip from '../component/tooltip'
+import Link from '../component/link'
 
 import fastestIcon from '../../asset/icon/fastest.svg'
 import cheapestIcon from '../../asset/icon/cheapest.svg'
+import infoIcon from '../../asset/icon/info.svg'
 
 const MaterialPartial = ({
   // Own props
@@ -96,6 +99,7 @@ const MaterialPartial = ({
   setMaterialFilter,
   openMaterialModal,
   openFinishGroupModal,
+  openProviderModal,
   quotes,
   selectedModelConfigs,
   shippings,
@@ -171,12 +175,21 @@ const MaterialPartial = ({
           price={renderPrice(bestOffer)}
           hasPriceSubline
           priceSublineLabel={
-            bestOffer &&
-            `+${
-              usedShippingIdsById[bestOffer.shipping.shippingId]
-                ? formatPrice(0, bestOffer.shipping.currency)
-                : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
-            } shipping`
+            bestOffer && (
+              <>
+                {`+${
+                  usedShippingIdsById[bestOffer.shipping.shippingId]
+                    ? formatPrice(0, bestOffer.shipping.currency)
+                    : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
+                } shipping`}{' '}
+                <Tooltip
+                  timeout={5000}
+                  content="Shipping price shown is a part of the lowest possible quote, which combines both production and delivery costs."
+                >
+                  <Button icon={infoIcon} iconOnly tiny />
+                </Tooltip>
+              </>
+            )
           }
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}
@@ -458,14 +471,12 @@ const MaterialPartial = ({
                 <dt>
                   <em>Total:</em>
                 </dt>
-                <dd>
-                  <em>
-                    {formatPrice(totalGrossPrice, multiModelQuote.currency)}&nbsp;&nbsp;&nbsp;
-                    {formatTimeRange(
-                      productionTimeFast + parseInt(shipping.deliveryTime, 10),
-                      productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-                    )}
-                  </em>
+                <dd className="u-align-right">
+                  {formatPrice(totalGrossPrice, multiModelQuote.currency)}&nbsp;&nbsp;&nbsp;
+                  {formatTimeRange(
+                    productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                    productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                  )}
                 </dd>
               </DescriptionList>
               <DescriptionList
@@ -479,7 +490,13 @@ const MaterialPartial = ({
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
                 <dt>Produced by:</dt>
                 <dd>
-                  <ProviderName vendorId={multiModelQuote.vendorId} />
+                  <Link
+                    label={getProviderName(multiModelQuote.vendorId)}
+                    onClick={event => {
+                      event.preventDefault()
+                      openProviderModal(multiModelQuote.vendorId)
+                    }}
+                  />
                 </dd>
               </DescriptionList>
             </>
@@ -490,7 +507,7 @@ const MaterialPartial = ({
                 <dt>
                   <em>Total:</em>
                 </dt>
-                <dd>
+                <dd className="u-align-right">
                   <em>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</em>
                 </dd>
                 <dd>
@@ -502,10 +519,12 @@ const MaterialPartial = ({
                   </em>
                 </dd>
                 <dt>Production:</dt>
-                <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
+                <dd className="u-align-right">
+                  {formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
+                </dd>
                 <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
                 <dt>Shipping:</dt>
-                <dd>
+                <dd className="u-align-right">
                   {usedShippingIdsById[shipping.shippingId]
                     ? formatPrice(0, shipping.currency)
                     : formatPrice(shipping.grossPrice, shipping.currency)}
@@ -523,7 +542,13 @@ const MaterialPartial = ({
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
                 <dt>Produced by:</dt>
                 <dd>
-                  <ProviderName vendorId={multiModelQuote.vendorId} />
+                  <Link
+                    label={getProviderName(multiModelQuote.vendorId)}
+                    onClick={event => {
+                      event.preventDefault()
+                      openProviderModal(multiModelQuote.vendorId)
+                    }}
+                  />
                 </dd>
               </DescriptionList>
             </>
@@ -592,7 +617,7 @@ const MaterialPartial = ({
                 <>
                   <DescriptionList
                     topline={
-                      <strong>
+                      <strong className="u-align-right">
                         {formatPrice(totalGrossPrice, multiModelQuote.currency)}
                         &nbsp;&nbsp;&nbsp;
                         {formatTimeRange(
@@ -613,7 +638,13 @@ const MaterialPartial = ({
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
                     <dt>Produced by:</dt>
                     <dd>
-                      <ProviderName vendorId={multiModelQuote.vendorId} />
+                      <Link
+                        label={getProviderName(multiModelQuote.vendorId)}
+                        onClick={event => {
+                          event.preventDefault()
+                          openProviderModal(multiModelQuote.vendorId)
+                        }}
+                      />
                     </dd>
                   </DescriptionList>
                 </>
@@ -624,13 +655,15 @@ const MaterialPartial = ({
                     <dt>
                       <strong>Price total:</strong>
                     </dt>
-                    <dd>
+                    <dd className="u-align-right">
                       <strong>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</strong>
                     </dd>
                     <dt>Production:</dt>
-                    <dd>{formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}</dd>
+                    <dd className="u-align-right">
+                      {formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
+                    </dd>
                     <dt>Shipping:</dt>
-                    <dd>
+                    <dd className="u-align-right">
                       {usedShippingIdsById[shipping.shippingId]
                         ? formatPrice(0, shipping.currency)
                         : formatPrice(shipping.grossPrice, shipping.currency)}
@@ -664,7 +697,13 @@ const MaterialPartial = ({
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
                     <dt>Produced by:</dt>
                     <dd>
-                      <ProviderName vendorId={multiModelQuote.vendorId} />
+                      <Link
+                        label={getProviderName(multiModelQuote.vendorId)}
+                        onClick={event => {
+                          event.preventDefault()
+                          openProviderModal(multiModelQuote.vendorId)
+                        }}
+                      />
                     </dd>
                   </DescriptionList>
                 </>
@@ -737,6 +776,7 @@ const mapDispatchToProps = {
   goToCart: navigationAction.goToCart,
   openMaterialModal: modalAction.openMaterialModal,
   openFinishGroupModal: modalAction.openFinishGroupModal,
+  openProviderModal: modalAction.openProviderModal,
   receiveQuotes: quoteAction.receiveQuotes,
   goingToReceiveQuotes: quoteAction.goingToReceiveQuotes,
   stopReceivingQuotes: quoteAction.stopReceivingQuotes,

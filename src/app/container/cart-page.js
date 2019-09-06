@@ -1,5 +1,4 @@
 import React from 'react'
-import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import debounce from 'lodash/debounce'
 import compose from 'recompose/compose'
@@ -41,7 +40,6 @@ import PaypalButton from '../component/paypal-button'
 import PageHeader from '../component/page-header'
 import Icon from '../component/icon'
 import Notification from '../component/notification'
-import ProviderName from '../component/provider-name'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
@@ -80,6 +78,7 @@ const CartPage = ({
   isCartUpToDate,
   featureFlags,
   openAddressFormModal,
+  openProviderModal,
   paymentInProgress,
   setPaymentInProgress,
   payWithPaypal,
@@ -308,7 +307,15 @@ const CartPage = ({
                   Delivery method: <strong>{shipping.name}</strong>
                 </>
               }
-              provider={<ProviderName vendorId={shipping.vendorId} />}
+              provider={
+                <Link
+                  label={getProviderName(quote.vendorId)}
+                  onClick={event => {
+                    event.preventDefault()
+                    openProviderModal(quote.vendorId)
+                  }}
+                />
+              }
               buttonsLeft={
                 <NumberField
                   value={modelConfig.quantity}
@@ -527,7 +534,7 @@ const CartPage = ({
             <Link
               largeIcon
               icon={<Icon source={shareIcon} />}
-              label={breakpoints.tablet ? 'Share Cart' : undefined}
+              label={breakpoints.tablet ? 'Share quote' : undefined}
               onClick={() => {
                 createOffer(cart.cartId)
               }}
@@ -579,30 +586,26 @@ const mapStateToProps = state => ({
   quotePollingId: state.core.quotePollingId
 })
 
-const mapDispatchToProps = dispatch => ({
-  openAddressFormModal: bindActionCreators(modalAction.openAddressFormModal, dispatch),
-  openErrorModal: bindActionCreators(modalAction.openErrorModal, dispatch),
-  goToUpload: bindActionCreators(navigationAction.goToUpload, dispatch),
-  deleteModelConfigs: bindActionCreators(modelAction.deleteModelConfigs, dispatch),
-  goToEditMaterial: bindActionCreators(navigationAction.goToEditMaterial, dispatch),
-  goToSuccess: bindActionCreators(navigationAction.goToSuccess, dispatch),
-  openModelViewer: bindActionCreators(modelViewerAction.open, dispatch),
-  updateQuantities: bindActionCreators(modelAction.updateQuantities, dispatch),
-  goingToReceiveQuotes: bindActionCreators(quoteAction.goingToReceiveQuotes, dispatch),
-  receiveQuotes: bindActionCreators(quoteAction.receiveQuotes, dispatch),
-  orderPaid: bindActionCreators(orderAction.paid, dispatch),
-  executePaypalPayment: bindActionCreators(orderAction.executePaypalPayment, dispatch),
-  restoreUser: bindActionCreators(coreAction.restoreUser, dispatch),
-  openShareCartModal: bindActionCreators(modalAction.openShareCartModal, dispatch),
-  fatalError: bindActionCreators(coreAction.fatalError, dispatch),
-  duplicateModelConfig: id => {
-    const action = modelAction.duplicateModelConfig(id)
-    return dispatch(action).then(() => {
-      dispatch(navigationAction.goToMaterial([action.payload.nextId]))
-    })
-  },
-  onGoToAddress: bindActionCreators(navigationAction.goToAddress, dispatch)
-})
+const mapDispatchToProps = {
+  openAddressFormModal: modalAction.openAddressFormModal,
+  openErrorModal: modalAction.openErrorModal,
+  openProviderModal: modalAction.openProviderModal,
+  goToUpload: navigationAction.goToUpload,
+  deleteModelConfigs: modelAction.deleteModelConfigs,
+  goToEditMaterial: navigationAction.goToEditMaterial,
+  goToSuccess: navigationAction.goToSuccess,
+  openModelViewer: modelViewerAction.open,
+  updateQuantities: modelAction.updateQuantities,
+  goingToReceiveQuotes: quoteAction.goingToReceiveQuotes,
+  receiveQuotes: quoteAction.receiveQuotes,
+  orderPaid: orderAction.paid,
+  executePaypalPayment: orderAction.executePaypalPayment,
+  restoreUser: coreAction.restoreUser,
+  openShareCartModal: modalAction.openShareCartModal,
+  fatalError: coreAction.fatalError,
+  duplicateModelConfig: modelAction.duplicateModelConfig,
+  onGoToAddress: navigationAction.goToAddress
+}
 
 export default compose(
   scrollToTop(),

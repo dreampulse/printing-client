@@ -41,10 +41,11 @@ context('Share cart flow', () => {
   })
 
   it('creates a shareable cart link and visit the cart url', () => {
-    cy.contains('a', 'Share').click()
-    cy.contains('.headline', 'Share cart')
+    cy.contains('a', 'Share quote').click()
+    cy.contains('.Headline', 'Share quote')
     return cy.get('#share-cart-input').then($input => {
       const shareCartUrl = $input.val()
+      cy.clearLocalStorage()
       cy.visit(
         `${shareCartUrl}&feature:invoice&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test`
       )
@@ -67,13 +68,13 @@ context('Share cart flow', () => {
   })
 
   it('pays per invoice', () => {
-    cy.contains('.headline', 'Review Order')
+    cy.contains('.Headline', 'Review Order')
     cy.contains('.CartModelItem', 'test-model.stl')
 
     cy.contains('button', 'Pay with Invoice').click()
   })
 
   it('reaches success page', () => {
-    cy.contains('.headline', 'Thank you')
+    cy.contains('.Headline', 'Thank you')
   })
 })

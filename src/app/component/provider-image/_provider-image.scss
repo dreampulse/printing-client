@@ -1,0 +1,13 @@
+.ProviderImage {
+  padding: $space-xl;
+  border: 1px solid $color-border-minor;
+  border-radius: $border-radius;
+  margin-bottom: $space-base;
+
+  &__image {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    width: auto;
+  }
+}

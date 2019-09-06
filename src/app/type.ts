@@ -261,7 +261,8 @@ export enum ModalContentType {
   SHARE_CART = 'SHARE_CART',
   FATAL_ERROR = 'FATAL_ERROR',
   ERROR = 'ERROR',
-  ADDRESS_FORM = 'ADDRESS_FORM'
+  ADDRESS_FORM = 'ADDRESS_FORM',
+  PROVIDER = 'PROVIDER'
 }
 
 export type ModalConfigClosed = null

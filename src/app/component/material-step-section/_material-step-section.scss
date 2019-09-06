@@ -1,12 +1,8 @@
 .MaterialStepSection {
-  $indentation: $space-xl;
-
   margin-bottom: $space-xxxl;
 
   &__content {
-    @include respond-to(desktop) {
-      padding-left: $indentation;
-    }
+    margin-top: $space-xl;
   }
 
   &--fadeIn {
