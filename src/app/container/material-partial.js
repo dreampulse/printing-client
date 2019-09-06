@@ -66,10 +66,12 @@ import RecommendedOfferSection from '../component/recommended-offer-section'
 import OfferCard from '../component/offer-card'
 import OfferList from '../component/offer-list'
 import OfferItem from '../component/offer-item'
+import Tooltip from '../component/tooltip'
 import Link from '../component/link'
 
 import fastestIcon from '../../asset/icon/fastest.svg'
 import cheapestIcon from '../../asset/icon/cheapest.svg'
+import infoIcon from '../../asset/icon/info.svg'
 
 const MaterialPartial = ({
   // Own props
@@ -173,12 +175,20 @@ const MaterialPartial = ({
           price={renderPrice(bestOffer)}
           hasPriceSubline
           priceSublineLabel={
-            bestOffer &&
-            `+${
-              usedShippingIdsById[bestOffer.shipping.shippingId]
-                ? formatPrice(0, bestOffer.shipping.currency)
-                : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
-            } shipping`
+            <>
+              {bestOffer &&
+                `+${
+                  usedShippingIdsById[bestOffer.shipping.shippingId]
+                    ? formatPrice(0, bestOffer.shipping.currency)
+                    : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
+                } shipping`}{' '}
+              <Tooltip
+                timeout={5000}
+                content="Shipping price shown is a part of the lowest possible quote, which combines both production and delivery costs."
+              >
+                <Button icon={infoIcon} iconOnly tiny />
+              </Tooltip>
+            </>
           }
           image={getCloudinaryUrl(material.featuredImage, ['w_700', 'h_458', 'c_fill'])}
           loading={!bestOffer}

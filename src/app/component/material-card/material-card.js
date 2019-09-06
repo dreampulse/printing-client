@@ -117,7 +117,7 @@ MaterialCard.propTypes = {
   contactUsLabel: PropTypes.string,
   selectLabel: PropTypes.string,
   selectedLabel: PropTypes.string,
-  priceSublineLabel: PropTypes.string,
+  priceSublineLabel: PropTypes.node,
   selected: PropTypes.bool,
   hasPriceSubline: PropTypes.bool,
   selectOnImageClick: PropTypes.bool

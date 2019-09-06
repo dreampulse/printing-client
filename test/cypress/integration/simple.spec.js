@@ -4,9 +4,10 @@ context('Simple application flow', () => {
   })
 
   it('loads', () => {
+    cy.clearLocalStorage()
     cy.setCookie('country', 'DE')
     cy.visit(
-      '/?feature:refresh&feature:invoice&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test'
+      '/?feature:refresh&feature:invoice&feature:clear&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test'
     )
   })
 

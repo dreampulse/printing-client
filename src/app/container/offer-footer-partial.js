@@ -72,9 +72,9 @@ const OfferPartial = ({
           .{' '}
           <Tooltip
             timeout={5000}
-            content="All prices displayed take into consideration your provided location as well as that of the most ideal manufacturer. Shipping and tax estimations are all included."
+            content="We show you the best possible price available, combining manufacturer and shipping costs."
           >
-            <Button icon={infoIcon} iconOnly />
+            <Button icon={infoIcon} iconOnly tiny />
           </Tooltip>
         </>
       }
