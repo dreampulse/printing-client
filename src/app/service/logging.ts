@@ -4,7 +4,7 @@ import createSentryMiddleware from 'redux-sentry-middleware'
 import config from '../../../config'
 
 if (process.env.NODE_ENV === 'production') {
-  Sentry.init({dsn: config.sentryDns})
+  Sentry.init({dsn: config.sentryDns, release: config.sentryRelease})
 }
 
 export const setUserContext = (userId: string) =>

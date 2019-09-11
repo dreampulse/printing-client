@@ -10,6 +10,7 @@ export default {
   stripeDescription: '3D Printing Service',
   stripeName: 'Craftcloud by All3DP',
   sentryDns: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
+  sentryRelease: process.env.SENTRY_RELEASE_VERSION,
   countryCookie: 'country',
   supportContactUrl: '//craftcloud.all3dp.com/contact',
   currencies: [
