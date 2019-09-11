@@ -12,7 +12,6 @@ import debounce from 'lodash/debounce'
 import keyBy from 'lodash/keyBy'
 import defer from 'lodash/defer'
 import chunk from 'lodash/chunk'
-import partition from 'lodash/partition'
 
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
@@ -268,7 +267,47 @@ const MaterialPartial = ({
       }
     )
 
-    const renderFinishCard = finishGroup => {
+    const renderFinishCard = ([finishGroup, bestOffer]) => (
+      <MaterialCard
+        key={finishGroup.id}
+        title={finishGroup.name}
+        description={finishGroup.descriptionShort}
+        price={renderPrice(bestOffer, compareOffer)}
+        image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
+        loading={!bestOffer}
+        unavailable={!bestOffer && isPollingDone}
+        selected={selectedFinishGroup && selectedFinishGroup.id === finishGroup.id}
+        onSelectClick={() => {
+          selectFinishGroup(finishGroup.id)
+        }}
+        onMoreClick={() => {
+          openFinishGroupModal(finishGroup.id)
+        }}
+        onUnavailableClick={() => openIntercom()}
+      />
+    )
+
+    const finishGroupByPrice = ([finishGroupA, bestOfferA], [finishGroupB, bestOfferB]) => {
+      if (
+        finishGroupA.materialConfigs.some(materialConfig =>
+          multiModelQuotes.some(quote => quote.materialConfigId === materialConfig.id)
+        ) &&
+        finishGroupB.materialConfigs.some(materialConfig =>
+          multiModelQuotes.some(quote => quote.materialConfigId === materialConfig.id)
+        )
+      ) {
+        return bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
+          ? bestOfferA.totalGrossPrice > bestOfferB.totalGrossPrice
+            ? 1
+            : -1
+          : 0
+      }
+
+      // Sort all finished without quotes to the end
+      return 1
+    }
+
+    const withBestOfferForFinishGroup = finishGroup => {
       const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
         usedShippingIds,
@@ -279,67 +318,7 @@ const MaterialPartial = ({
         }
       )
 
-      return (
-        <MaterialCard
-          key={finishGroup.id}
-          title={finishGroup.name}
-          description={finishGroup.descriptionShort}
-          price={renderPrice(bestOffer, compareOffer)}
-          image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
-          loading={!bestOffer}
-          unavailable={!bestOffer && isPollingDone}
-          selected={selectedFinishGroup && selectedFinishGroup.id === finishGroup.id}
-          onSelectClick={() => {
-            selectFinishGroup(finishGroup.id)
-          }}
-          onMoreClick={() => {
-            openFinishGroupModal(finishGroup.id)
-          }}
-          onUnavailableClick={() => openIntercom()}
-        />
-      )
-    }
-
-    const finishGroupByPrice = (finishGroupA, finishGroupB) => {
-      const [bestOfferA] = getBestMultiModelOffers(
-        multiModelQuotes,
-        usedShippingIds,
-        shippings,
-        materialConfigs,
-        {
-          materialId: selectedState.materialId,
-          finishGroupId: finishGroupA.finishGroupId
-        }
-      )
-
-      const [bestOfferB] = getBestMultiModelOffers(
-        multiModelQuotes,
-        usedShippingIds,
-        shippings,
-        materialConfigs,
-        {
-          materialId: selectedState.materialId,
-          finishGroupId: finishGroupB.finishGroupId
-        }
-      )
-
-      return bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
-        ? bestOfferA.totalGrossPrice > bestOfferB.totalGrossPrice
-          ? 1
-          : -1
-        : 0
-    }
-
-    const sortFinishGroup = unsortedFinishGroups => {
-      const [finishGroupsPrintable, finishGroupNotPrintable] = partition(
-        unsortedFinishGroups,
-        finishGroup =>
-          finishGroup.materialConfigs.some(materialConfig =>
-            multiModelQuotes.some(quote => quote.materialConfigId === materialConfig.id)
-          )
-      )
-
-      return [...finishGroupsPrintable.sort(finishGroupByPrice), ...finishGroupNotPrintable]
+      return [finishGroup, bestOffer]
     }
 
     return (
@@ -350,7 +329,10 @@ const MaterialPartial = ({
         <MaterialSlider>
           {selectedMaterial &&
             selectedMaterial.finishGroups.length > 0 &&
-            sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
+            selectedMaterial.finishGroups
+              .map(withBestOfferForFinishGroup)
+              .sort(finishGroupByPrice)
+              .map(renderFinishCard)}
         </MaterialSlider>
       </MaterialStepSection>
     )
@@ -369,35 +351,7 @@ const MaterialPartial = ({
       }
     )
 
-    const materialConfigsByPrice = (materialConfigA, materialConfigB) => {
-      const [bestOfferA] = getBestMultiModelOffers(
-        multiModelQuotes,
-        usedShippingIds,
-        shippings,
-        materialConfigs,
-        {
-          materialConfigId: materialConfigA.id
-        }
-      )
-
-      const [bestOfferB] = getBestMultiModelOffers(
-        multiModelQuotes,
-        usedShippingIds,
-        shippings,
-        materialConfigs,
-        {
-          materialConfigId: materialConfigB.id
-        }
-      )
-
-      return bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
-        ? bestOfferA.totalGrossPrice > bestOfferB.totalGrossPrice
-          ? 1
-          : -1
-        : 0
-    }
-
-    const renderColorCard = materialConfig => {
+    const withBestOfferForMaterialConfig = materialConfig => {
       const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
         usedShippingIds,
@@ -408,30 +362,42 @@ const MaterialPartial = ({
         }
       )
 
-      return (
-        <ColorCard
-          key={materialConfig.id}
-          colorTrait={
-            <ColorTrait
-              color={materialConfig.colorCode}
-              image={
-                materialConfig.colorImage &&
-                getCloudinaryUrl(materialConfig.colorImage, ['w_30', 'h_30', 'c_fill'])
-              }
-            />
-          }
-          title={materialConfig.color}
-          price={renderPrice(bestOffer, compareOffer)}
-          loading={!bestOffer}
-          unavailable={!bestOffer && isPollingDone}
-          selected={selectedMaterialConfig && selectedMaterialConfig.id === materialConfig.id}
-          onSelectClick={() => {
-            selectMaterialConfig(materialConfig.id)
-          }}
-          onUnavailableClick={() => openIntercom()}
-        />
-      )
+      return [materialConfig, bestOffer]
     }
+
+    const materialConfigByPrice = (
+      [_materialConfigA, bestOfferA],
+      [_materialConfigB, bestOfferB]
+    ) =>
+      bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
+        ? bestOfferA.totalGrossPrice > bestOfferB.totalGrossPrice
+          ? 1
+          : -1
+        : 0
+
+    const renderColorCard = ([materialConfig, bestOffer]) => (
+      <ColorCard
+        key={materialConfig.id}
+        colorTrait={
+          <ColorTrait
+            color={materialConfig.colorCode}
+            image={
+              materialConfig.colorImage &&
+              getCloudinaryUrl(materialConfig.colorImage, ['w_30', 'h_30', 'c_fill'])
+            }
+          />
+        }
+        title={materialConfig.color}
+        price={renderPrice(bestOffer, compareOffer)}
+        loading={!bestOffer}
+        unavailable={!bestOffer && isPollingDone}
+        selected={selectedMaterialConfig && selectedMaterialConfig.id === materialConfig.id}
+        onSelectClick={() => {
+          selectMaterialConfig(materialConfig.id)
+        }}
+        onUnavailableClick={() => openIntercom()}
+      />
+    )
 
     return (
       <MaterialStepSection headline={<Headline size="l" light label="3. Select Color" />} fadeIn>
@@ -440,7 +406,8 @@ const MaterialPartial = ({
             {breakpoints.tablet && (
               <ColorCardList>
                 {selectedFinishGroup.materialConfigs
-                  .sort(materialConfigsByPrice)
+                  .map(withBestOfferForMaterialConfig)
+                  .sort(materialConfigByPrice)
                   .map(renderColorCard)}
               </ColorCardList>
             )}
