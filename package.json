@@ -60,6 +60,7 @@
     "@types/lodash": "4.14.118",
     "@types/node": "^10.12.7",
     "@types/react-router-redux": "^5.0.16",
+    "@types/redux-sentry-middleware": "^0.1.1",
     "@types/url-search-params": "^0.10.2",
     "@types/uuid": "^3.4.5",
     "autoprefixer": "^9.3.1",
@@ -122,6 +123,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
+    "@sentry/browser": "^5.6.3",
     "basic-auth": "^2.0.0",
     "browser-update": "^3.2.5",
     "compression": "^1.6.2",
@@ -139,8 +141,6 @@
     "normalize.css": "^7.0.0",
     "npm-run-all": "^4.1.5",
     "prop-types": "^15.6.0",
-    "raven-for-redux": "^1.1.1",
-    "raven-js": "^3.27.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.3.12",
@@ -153,6 +153,7 @@
     "redux": "^3.3.1",
     "redux-actions": "^2.2.1",
     "redux-loop": "^4.2.4",
+    "redux-sentry-middleware": "^0.1.1",
     "redux-thunk": "^2.0.1",
     "scut": "^1.4.0",
     "serve-favicon": "^2.3.0",

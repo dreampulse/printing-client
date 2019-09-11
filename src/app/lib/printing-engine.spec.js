@@ -19,7 +19,8 @@ import {
   executePaypalPayment,
   getOrderStatus,
   createOffer,
-  getOffer
+  getOffer,
+  getOfferConfiguration
 } from './printing-engine'
 import getFileMock from '../../../test/unit/mock/file'
 
@@ -297,6 +298,25 @@ describe('printing-engine lib', () => {
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
         `SOME-BASE-URL/v3/offer/some-offer-id?currency=some-currency`
+      ]))
+
+    it('returns the json result', () => expect(result, 'to equal', 'some-offer-result'))
+  })
+
+  describe('getOfferConfiguration()', () => {
+    let result
+
+    beforeEach(async () => {
+      sandbox.stub(httpJson, 'fetch').resolves({
+        json: 'some-offer-result'
+      })
+
+      result = await getOfferConfiguration('some-offer-id')
+    })
+
+    it('calls httpJson.fetch() with the correct URL', () =>
+      expect(httpJson.fetch, 'to have a call satisfying', [
+        `SOME-BASE-URL/v3/offer/some-offer-id/configuration`
       ]))
 
     it('returns the json result', () => expect(result, 'to equal', 'some-offer-result'))

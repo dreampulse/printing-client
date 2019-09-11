@@ -12,6 +12,10 @@ export type OfferReceivedAction = Action<
   'CART.OFFER_RECEIVED',
   CartOffer & {modelConfigIds: ConfigId[]}
 >
+export type LoadOfferConfigurationAction = Action<
+  'CART.LOAD_OFFER_CONFIGURATION',
+  {id: CartOfferId}
+>
 
 export type CartAction =
   | AddToCartAction
@@ -19,6 +23,7 @@ export type CartAction =
   | CartReceivedAction
   | LoadOfferAction
   | OfferReceivedAction
+  | LoadOfferConfigurationAction
 
 export const addToCart = (
   configIds: ConfigId[],
@@ -53,4 +58,9 @@ export const loadOffer = (id: CartOfferId, currency: string): LoadOfferAction =>
 export const offerReceived = (offer: CartOffer): OfferReceivedAction => ({
   type: 'CART.OFFER_RECEIVED',
   payload: {...offer, modelConfigIds: offer.models.map(_ => uuidv1())}
+})
+
+export const loadOfferConfiguration = (id: CartOfferId): LoadOfferConfigurationAction => ({
+  type: 'CART.LOAD_OFFER_CONFIGURATION',
+  payload: {id}
 })

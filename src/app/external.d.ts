@@ -21,10 +21,4 @@ declare module 'country-list' {
   export = constructor
 }
 
-declare module 'raven-for-redux' {
-  function constructor(raven: any, options: any): any
-
-  export = constructor
-}
-
 declare module '*.png'
