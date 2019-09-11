@@ -25,12 +25,12 @@ context('Simple application flow', () => {
     cy.contains('button', 'Configure Selection').click()
 
     // select material and provider
-    cy.contains('button', 'Select').click()
+    cy.contains('button:not(:disabled)', 'Select').click()
     cy.get('#material-step-2')
-      .contains('button', 'Select')
+      .contains('button:not(:disabled)', 'Select')
       .click()
     cy.get('#material-step-3')
-      .contains('button', 'Select')
+      .contains('button:not(:disabled)', 'Select')
       .click()
     cy.contains('button', 'Add to cart').click()
 
