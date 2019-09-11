@@ -613,7 +613,7 @@ const MaterialPartial = ({
                 />
               }
             >
-              {!breakpoints.tablet && !breakpoints.desktop && !breakpoints.bigscreen && (
+              {!breakpoints.tablet && (
                 <>
                   <DescriptionList
                     topline={
