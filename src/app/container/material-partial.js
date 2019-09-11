@@ -12,6 +12,7 @@ import debounce from 'lodash/debounce'
 import keyBy from 'lodash/keyBy'
 import defer from 'lodash/defer'
 import chunk from 'lodash/chunk'
+import partition from 'lodash/partition'
 
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
@@ -299,12 +300,47 @@ const MaterialPartial = ({
       )
     }
 
-    const sortFinishGroup = unsortedFinishGroups =>
-      partitionBy(unsortedFinishGroups, finishGroup =>
-        finishGroup.materialConfigs.some(materialConfig =>
-          multiModelQuotes.some(quote => quote.materialConfigId === materialConfig.id)
-        )
+    const finishGroupByPrice = (finishGroupA, finishGroupB) => {
+      const [bestOfferA] = getBestMultiModelOffers(
+        multiModelQuotes,
+        usedShippingIds,
+        shippings,
+        materialConfigs,
+        {
+          materialId: selectedState.materialId,
+          finishGroupId: finishGroupA.finishGroupId
+        }
       )
+
+      const [bestOfferB] = getBestMultiModelOffers(
+        multiModelQuotes,
+        usedShippingIds,
+        shippings,
+        materialConfigs,
+        {
+          materialId: selectedState.materialId,
+          finishGroupId: finishGroupB.finishGroupId
+        }
+      )
+
+      return bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
+        ? bestOfferA.totalGrossPrice > bestOfferB.totalGrossPrice
+          ? 1
+          : -1
+        : 0
+    }
+
+    const sortFinishGroup = unsortedFinishGroups => {
+      const [finishGroupsPrintable, finishGroupNotPrintable] = partition(
+        unsortedFinishGroups,
+        finishGroup =>
+          finishGroup.materialConfigs.some(materialConfig =>
+            multiModelQuotes.some(quote => quote.materialConfigId === materialConfig.id)
+          )
+      )
+
+      return [...finishGroupsPrintable.sort(finishGroupByPrice), ...finishGroupNotPrintable]
+    }
 
     return (
       <MaterialStepSection
@@ -332,6 +368,34 @@ const MaterialPartial = ({
         materialConfigId: selectedState.materialConfigId
       }
     )
+
+    const materialConfigsByPrice = (materialConfigA, materialConfigB) => {
+      const [bestOfferA] = getBestMultiModelOffers(
+        multiModelQuotes,
+        usedShippingIds,
+        shippings,
+        materialConfigs,
+        {
+          materialConfigId: materialConfigA.id
+        }
+      )
+
+      const [bestOfferB] = getBestMultiModelOffers(
+        multiModelQuotes,
+        usedShippingIds,
+        shippings,
+        materialConfigs,
+        {
+          materialConfigId: materialConfigB.id
+        }
+      )
+
+      return bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
+        ? bestOfferA.totalGrossPrice > bestOfferB.totalGrossPrice
+          ? 1
+          : -1
+        : 0
+    }
 
     const renderColorCard = materialConfig => {
       const [bestOffer] = getBestMultiModelOffers(
@@ -375,7 +439,9 @@ const MaterialPartial = ({
           <>
             {breakpoints.tablet && (
               <ColorCardList>
-                {selectedFinishGroup.materialConfigs.map(renderColorCard)}
+                {selectedFinishGroup.materialConfigs
+                  .sort(materialConfigsByPrice)
+                  .map(renderColorCard)}
               </ColorCardList>
             )}
             {!breakpoints.tablet && (
