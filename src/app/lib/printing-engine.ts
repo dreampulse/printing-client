@@ -246,7 +246,9 @@ export const createCart = async (cart: CartRequest): Promise<CartResponse> => {
   return response.json
 }
 
-export const createOffer = async (offer: CreateCartOfferRequest): Promise<CreateCartOfferResponse> => {
+export const createOffer = async (
+  offer: CreateCartOfferRequest
+): Promise<CreateCartOfferResponse> => {
   const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/offer`, {
     method: 'POST',
     body: offer
@@ -254,9 +256,21 @@ export const createOffer = async (offer: CreateCartOfferRequest): Promise<Create
   return response.json
 }
 
-export const getOffer = async (offerId: CartOfferId, currency: string): Promise<CartOfferResponse> => {
+export const getOffer = async (
+  offerId: CartOfferId,
+  currency: string
+): Promise<CartOfferResponse> => {
   const response = await httpJson.fetch(
     `${config.printingEngineBaseUrl}/v3/offer/${offerId}?currency=${currency}`
+  )
+  return response.json
+}
+
+export const getOfferConfiguration = async (
+  offerId: CartOfferId
+): Promise<BackendConfiguration> => {
+  const response = await httpJson.fetch(
+    `${config.printingEngineBaseUrl}/v3/offer/${offerId}/configuration`
   )
   return response.json
 }

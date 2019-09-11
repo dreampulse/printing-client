@@ -71,7 +71,7 @@ const enhance = compose(
           goToUpload({
             notification: {
               message:
-                'One or more offers in this shared basket are not available in your region. Please select new offers for the specified models.',
+                'One or more offers in this shared basket are outdated or not available in your region. Please select new offers for the specified models.',
               warning: true
             },
             selectModelConfigIds: unconfiguredModelConfigIds
