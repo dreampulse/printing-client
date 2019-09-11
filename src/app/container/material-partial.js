@@ -129,6 +129,19 @@ const MaterialPartial = ({
 
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
+  const byPrice = ([_a, bestOfferA], [_b, bestOfferB]) => {
+    if (!bestOfferA || !bestOfferB) {
+      // Sort all without offers to the end
+      return 1
+    }
+
+    return bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
+      ? bestOfferA.totalGrossPrice > bestOfferB.totalGrossPrice
+        ? 1
+        : -1
+      : 0
+  }
+
   const renderPrice = (offer, compareOffer) => {
     let price
     if (offer) {
@@ -287,26 +300,6 @@ const MaterialPartial = ({
       />
     )
 
-    const finishGroupByPrice = ([finishGroupA, bestOfferA], [finishGroupB, bestOfferB]) => {
-      if (
-        finishGroupA.materialConfigs.some(materialConfig =>
-          multiModelQuotes.some(quote => quote.materialConfigId === materialConfig.id)
-        ) &&
-        finishGroupB.materialConfigs.some(materialConfig =>
-          multiModelQuotes.some(quote => quote.materialConfigId === materialConfig.id)
-        )
-      ) {
-        return bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
-          ? bestOfferA.totalGrossPrice > bestOfferB.totalGrossPrice
-            ? 1
-            : -1
-          : 0
-      }
-
-      // Sort all finished without quotes to the end
-      return 1
-    }
-
     const withBestOfferForFinishGroup = finishGroup => {
       const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
@@ -331,7 +324,7 @@ const MaterialPartial = ({
             selectedMaterial.finishGroups.length > 0 &&
             selectedMaterial.finishGroups
               .map(withBestOfferForFinishGroup)
-              .sort(finishGroupByPrice)
+              .sort(byPrice)
               .map(renderFinishCard)}
         </MaterialSlider>
       </MaterialStepSection>
@@ -365,16 +358,6 @@ const MaterialPartial = ({
       return [materialConfig, bestOffer]
     }
 
-    const materialConfigByPrice = (
-      [_materialConfigA, bestOfferA],
-      [_materialConfigB, bestOfferB]
-    ) =>
-      bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
-        ? bestOfferA.totalGrossPrice > bestOfferB.totalGrossPrice
-          ? 1
-          : -1
-        : 0
-
     const renderColorCard = ([materialConfig, bestOffer]) => (
       <ColorCard
         key={materialConfig.id}
@@ -407,23 +390,27 @@ const MaterialPartial = ({
               <ColorCardList>
                 {selectedFinishGroup.materialConfigs
                   .map(withBestOfferForMaterialConfig)
-                  .sort(materialConfigByPrice)
+                  .sort(byPrice)
                   .map(renderColorCard)}
               </ColorCardList>
             )}
             {!breakpoints.tablet && (
               <MaterialSlider>
-                {chunk(selectedFinishGroup.materialConfigs.map(renderColorCard), 3).map(
-                  (elements, index) => (
-                    <React.Fragment key={index}>
-                      {elements.map((element, elementIndex) =>
-                        React.cloneElement(element, {
-                          classNames: elementIndex < 2 ? ['u-margin-bottom-l'] : []
-                        })
-                      )}
-                    </React.Fragment>
-                  )
-                )}
+                {chunk(
+                  selectedFinishGroup.materialConfigs
+                    .map(withBestOfferForMaterialConfig)
+                    .sort(byPrice)
+                    .map(renderColorCard),
+                  3
+                ).map((elements, index) => (
+                  <React.Fragment key={index}>
+                    {elements.map((element, elementIndex) =>
+                      React.cloneElement(element, {
+                        classNames: elementIndex < 2 ? ['u-margin-bottom-l'] : []
+                      })
+                    )}
+                  </React.Fragment>
+                ))}
               </MaterialSlider>
             )}
           </>
