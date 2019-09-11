@@ -9,8 +9,8 @@ export default {
   stripeCheckoutImage: 'asset/image/checkout-logo.png',
   stripeDescription: '3D Printing Service',
   stripeName: 'Craftcloud by All3DP',
-  ravenUrl: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
-  ravenRelease: process.env.SENTRY_RELEASE_VERSION,
+  sentryDns: 'https://ea87ef20371a4316aca7c9f415aad1f9@sentry.io/193367',
+  sentryRelease: process.env.SENTRY_RELEASE_VERSION,
   countryCookie: 'country',
   supportContactUrl: '//craftcloud.all3dp.com/contact',
   currencies: [
