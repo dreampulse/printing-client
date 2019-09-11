@@ -3,7 +3,7 @@ import defaultConfig from './default'
 
 export default defaultsDeep(
   {
-    printingEngineBaseUrl: 'http://localhost:8000',
+    printingEngineBaseUrl: 'https://printing-engine.all3dp.com',
     stripePublicKey: 'pk_test_vgy9WdRy48FnhegkMYXMQXit',
     paypal: {
       locale: 'en_US',

@@ -1240,23 +1240,62 @@ describe('isCartUpToDate()', () => {
     it('returns true if all fields are set which are necessary for the application to run', () => {
       const state = {
         core: {
-          materialConfigs: 'some-materialConfigs',
+          materialConfigs: {some: 'config'},
           location: 'some-location',
           currency: 'some-currency',
-          shippings: 'some-shippings'
+          shippings: [{some: 'shipping'}]
         }
       }
 
       expect(isAppReady(state), 'to be', true)
     })
 
-    it('returns false if some fields are missing which are necessary for the application to run', () => {
+    it('returns false if materialConfig is empty', () => {
       const state = {
         core: {
-          materialConfigs: 'some-materialConfigs',
+          materialConfigs: {},
+          location: 'some-location',
+          currency: 'some-currency',
+          shippings: [{some: 'shipping'}]
+        }
+      }
+
+      expect(isAppReady(state), 'to be', false)
+    })
+
+    it('returns false if location is null', () => {
+      const state = {
+        core: {
+          materialConfigs: {some: 'config'},
           location: null,
+          currency: 'some-currency',
+          shippings: [{some: 'shipping'}]
+        }
+      }
+
+      expect(isAppReady(state), 'to be', false)
+    })
+
+    it('returns false if currency is null', () => {
+      const state = {
+        core: {
+          materialConfigs: {some: 'config'},
+          location: 'some-location',
           currency: null,
-          shippings: null
+          shippings: [{some: 'shipping'}]
+        }
+      }
+
+      expect(isAppReady(state), 'to be', false)
+    })
+
+    it('returns false if shippings is empty', () => {
+      const state = {
+        core: {
+          materialConfigs: {some: 'config'},
+          location: 'some-location',
+          currency: 'some-currency',
+          shippings: []
         }
       }
 
