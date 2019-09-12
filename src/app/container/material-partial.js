@@ -152,7 +152,7 @@ const MaterialPartial = ({
           offer.multiModelQuote.currency
         )
       } else {
-        price = formatPrice(offer.multiModelQuote.grossPrice, offer.multiModelQuote.currency)
+        price = formatPrice(offer.totalGrossPrice, offer.multiModelQuote.currency)
       }
     }
 
@@ -190,14 +190,10 @@ const MaterialPartial = ({
           priceSublineLabel={
             bestOffer && (
               <>
-                {`+${
-                  usedShippingIdsById[bestOffer.shipping.shippingId]
-                    ? formatPrice(0, bestOffer.shipping.currency)
-                    : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
-                } shipping`}{' '}
+                Total price incl. shipping{' '}
                 <Tooltip
                   timeout={5000}
-                  content="Shipping price shown is a part of the lowest possible quote, which combines both production and delivery costs."
+                  content="The total price includes production, shipping, and additional costs."
                 >
                   <Button icon={infoIcon} iconOnly tiny />
                 </Tooltip>
