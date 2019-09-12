@@ -633,7 +633,7 @@ const MaterialPartial = ({
                 />
               }
             >
-              {!breakpoints.bigscreen && (
+              {!breakpoints.tablet && (
                 <>
                   <DescriptionList
                     topline={
@@ -666,6 +666,39 @@ const MaterialPartial = ({
                         }}
                       />
                     </dd>
+                  </DescriptionList>
+                </>
+              )}
+              {breakpoints.tablet && !breakpoints.bigscreen && (
+                <>
+                  <DescriptionList doubleValues>
+                    <dt>
+                      <strong>Price total:</strong>
+                    </dt>
+                    <dd className="u-align-right">
+                      <strong>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</strong>
+                    </dd>
+                    <dd>
+                      <strong>
+                        {formatTimeRange(
+                          productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                          productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                        )}
+                      </strong>
+                    </dd>
+                    <dt>Production:</dt>
+                    <dd className="u-align-right">
+                      {formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
+                    </dd>
+                    <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
+
+                    <dt>Shipping:</dt>
+                    <dd className="u-align-right">
+                      {usedShippingIdsById[shipping.shippingId]
+                        ? formatPrice(0, shipping.currency)
+                        : formatPrice(shipping.grossPrice, shipping.currency)}
+                    </dd>
+                    <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
                   </DescriptionList>
                 </>
               )}
