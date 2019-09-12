@@ -1,17 +1,12 @@
 context('Simple application flow', () => {
-  beforeEach(() => {
-    Cypress.Cookies.preserveOnce('country')
-  })
-
-  it('loads', () => {
-    cy.clearLocalStorage()
+  it('runs', () => {
+    // load site
     cy.setCookie('country', 'DE')
     cy.visit(
-      '/?feature:refresh&feature:invoice&feature:clear&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test'
+      '/?feature:refresh&feature:invoice&invoice_key=golden-reduce-heft-alia-cumin&utm_source=test'
     )
-  })
 
-  it('uploads test model', () => {
+    // upload test model
     const dropEvent = {
       dataTransfer: {
         files: []
@@ -28,20 +23,18 @@ context('Simple application flow', () => {
     cy.contains('button', 'Upload').click()
     cy.get('.UploadModelItem').should('have.length', 1)
     cy.contains('button', 'Configure Selection').click()
-  })
 
-  it('selects material and provider', () => {
-    cy.contains('button', 'Select').click()
+    // select material and provider
+    cy.contains('button:not(:disabled)', 'Select').click()
     cy.get('#material-step-2')
-      .contains('button', 'Select')
+      .contains('button:not(:disabled)', 'Select')
       .click()
     cy.get('#material-step-3')
-      .contains('button', 'Select')
+      .contains('button:not(:disabled)', 'Select')
       .click()
     cy.contains('button', 'Add to cart').click()
-  })
 
-  it('handles address form', () => {
+    // handle address form
     cy.contains('button', 'Checkout').click()
 
     // Because label of InputField overlaps input we have to force the interactions here.
@@ -54,16 +47,14 @@ context('Simple application flow', () => {
     cy.get('input[name="phoneNumber"]').type('0123456789', {force: true})
 
     cy.contains('button', 'Confirm').click()
-  })
 
-  it('pays per invoice', () => {
+    // pay per invoice
     cy.contains('.Headline', 'Review Order')
     cy.contains('.CartModelItem', 'test-model.stl')
 
     cy.contains('button', 'Pay with Invoice').click()
-  })
 
-  it('reaches success page', () => {
+    // check for success page
     cy.contains('.Headline', 'Thank you')
   })
 })

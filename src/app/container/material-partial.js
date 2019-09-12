@@ -129,6 +129,19 @@ const MaterialPartial = ({
 
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
+  const byPrice = ([_a, bestOfferA], [_b, bestOfferB]) => {
+    if (!bestOfferA || !bestOfferB) {
+      // Sort all without offers to the end
+      return 1
+    }
+
+    return bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
+      ? bestOfferA.totalGrossPrice > bestOfferB.totalGrossPrice
+        ? 1
+        : -1
+      : 0
+  }
+
   const renderPrice = (offer, compareOffer) => {
     let price
     if (offer) {
@@ -139,7 +152,7 @@ const MaterialPartial = ({
           offer.multiModelQuote.currency
         )
       } else {
-        price = formatPrice(offer.multiModelQuote.grossPrice, offer.multiModelQuote.currency)
+        price = formatPrice(offer.totalGrossPrice, offer.multiModelQuote.currency)
       }
     }
 
@@ -177,14 +190,10 @@ const MaterialPartial = ({
           priceSublineLabel={
             bestOffer && (
               <>
-                {`+${
-                  usedShippingIdsById[bestOffer.shipping.shippingId]
-                    ? formatPrice(0, bestOffer.shipping.currency)
-                    : formatPrice(bestOffer.shipping.grossPrice, bestOffer.shipping.currency)
-                } shipping`}{' '}
+                Total price incl. shipping{' '}
                 <Tooltip
                   timeout={5000}
-                  content="Shipping price shown is a part of the lowest possible quote, which combines both production and delivery costs."
+                  content="The total price includes production, shipping, and additional costs."
                 >
                   <Button icon={infoIcon} iconOnly tiny />
                 </Tooltip>
@@ -267,7 +276,27 @@ const MaterialPartial = ({
       }
     )
 
-    const renderFinishCard = finishGroup => {
+    const renderFinishCard = ([finishGroup, bestOffer]) => (
+      <MaterialCard
+        key={finishGroup.id}
+        title={finishGroup.name}
+        description={finishGroup.descriptionShort}
+        price={renderPrice(bestOffer, compareOffer)}
+        image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
+        loading={!bestOffer}
+        unavailable={!bestOffer && isPollingDone}
+        selected={selectedFinishGroup && selectedFinishGroup.id === finishGroup.id}
+        onSelectClick={() => {
+          selectFinishGroup(finishGroup.id)
+        }}
+        onMoreClick={() => {
+          openFinishGroupModal(finishGroup.id)
+        }}
+        onUnavailableClick={() => openIntercom()}
+      />
+    )
+
+    const withBestOfferForFinishGroup = finishGroup => {
       const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
         usedShippingIds,
@@ -278,33 +307,8 @@ const MaterialPartial = ({
         }
       )
 
-      return (
-        <MaterialCard
-          key={finishGroup.id}
-          title={finishGroup.name}
-          description={finishGroup.descriptionShort}
-          price={renderPrice(bestOffer, compareOffer)}
-          image={getCloudinaryUrl(finishGroup.featuredImage, ['w_700', 'h_458', 'c_fill'])}
-          loading={!bestOffer}
-          unavailable={!bestOffer && isPollingDone}
-          selected={selectedFinishGroup && selectedFinishGroup.id === finishGroup.id}
-          onSelectClick={() => {
-            selectFinishGroup(finishGroup.id)
-          }}
-          onMoreClick={() => {
-            openFinishGroupModal(finishGroup.id)
-          }}
-          onUnavailableClick={() => openIntercom()}
-        />
-      )
+      return [finishGroup, bestOffer]
     }
-
-    const sortFinishGroup = unsortedFinishGroups =>
-      partitionBy(unsortedFinishGroups, finishGroup =>
-        finishGroup.materialConfigs.some(materialConfig =>
-          multiModelQuotes.some(quote => quote.materialConfigId === materialConfig.id)
-        )
-      )
 
     return (
       <MaterialStepSection
@@ -314,7 +318,10 @@ const MaterialPartial = ({
         <MaterialSlider>
           {selectedMaterial &&
             selectedMaterial.finishGroups.length > 0 &&
-            sortFinishGroup(selectedMaterial.finishGroups).map(renderFinishCard)}
+            selectedMaterial.finishGroups
+              .map(withBestOfferForFinishGroup)
+              .sort(byPrice)
+              .map(renderFinishCard)}
         </MaterialSlider>
       </MaterialStepSection>
     )
@@ -333,7 +340,7 @@ const MaterialPartial = ({
       }
     )
 
-    const renderColorCard = materialConfig => {
+    const withBestOfferForMaterialConfig = materialConfig => {
       const [bestOffer] = getBestMultiModelOffers(
         multiModelQuotes,
         usedShippingIds,
@@ -344,30 +351,32 @@ const MaterialPartial = ({
         }
       )
 
-      return (
-        <ColorCard
-          key={materialConfig.id}
-          colorTrait={
-            <ColorTrait
-              color={materialConfig.colorCode}
-              image={
-                materialConfig.colorImage &&
-                getCloudinaryUrl(materialConfig.colorImage, ['w_30', 'h_30', 'c_fill'])
-              }
-            />
-          }
-          title={materialConfig.color}
-          price={renderPrice(bestOffer, compareOffer)}
-          loading={!bestOffer}
-          unavailable={!bestOffer && isPollingDone}
-          selected={selectedMaterialConfig && selectedMaterialConfig.id === materialConfig.id}
-          onSelectClick={() => {
-            selectMaterialConfig(materialConfig.id)
-          }}
-          onUnavailableClick={() => openIntercom()}
-        />
-      )
+      return [materialConfig, bestOffer]
     }
+
+    const renderColorCard = ([materialConfig, bestOffer]) => (
+      <ColorCard
+        key={materialConfig.id}
+        colorTrait={
+          <ColorTrait
+            color={materialConfig.colorCode}
+            image={
+              materialConfig.colorImage &&
+              getCloudinaryUrl(materialConfig.colorImage, ['w_30', 'h_30', 'c_fill'])
+            }
+          />
+        }
+        title={materialConfig.color}
+        price={renderPrice(bestOffer, compareOffer)}
+        loading={!bestOffer}
+        unavailable={!bestOffer && isPollingDone}
+        selected={selectedMaterialConfig && selectedMaterialConfig.id === materialConfig.id}
+        onSelectClick={() => {
+          selectMaterialConfig(materialConfig.id)
+        }}
+        onUnavailableClick={() => openIntercom()}
+      />
+    )
 
     return (
       <MaterialStepSection headline={<Headline size="l" light label="3. Select Color" />} fadeIn>
@@ -375,22 +384,29 @@ const MaterialPartial = ({
           <>
             {breakpoints.tablet && (
               <ColorCardList>
-                {selectedFinishGroup.materialConfigs.map(renderColorCard)}
+                {selectedFinishGroup.materialConfigs
+                  .map(withBestOfferForMaterialConfig)
+                  .sort(byPrice)
+                  .map(renderColorCard)}
               </ColorCardList>
             )}
             {!breakpoints.tablet && (
               <MaterialSlider>
-                {chunk(selectedFinishGroup.materialConfigs.map(renderColorCard), 3).map(
-                  (elements, index) => (
-                    <React.Fragment key={index}>
-                      {elements.map((element, elementIndex) =>
-                        React.cloneElement(element, {
-                          classNames: elementIndex < 2 ? ['u-margin-bottom-l'] : []
-                        })
-                      )}
-                    </React.Fragment>
-                  )
-                )}
+                {chunk(
+                  selectedFinishGroup.materialConfigs
+                    .map(withBestOfferForMaterialConfig)
+                    .sort(byPrice)
+                    .map(renderColorCard),
+                  3
+                ).map((elements, index) => (
+                  <React.Fragment key={index}>
+                    {elements.map((element, elementIndex) =>
+                      React.cloneElement(element, {
+                        classNames: elementIndex < 2 ? ['u-margin-bottom-l'] : []
+                      })
+                    )}
+                  </React.Fragment>
+                ))}
               </MaterialSlider>
             )}
           </>
@@ -613,7 +629,7 @@ const MaterialPartial = ({
                 />
               }
             >
-              {!breakpoints.bigscreen && (
+              {!breakpoints.tablet && (
                 <>
                   <DescriptionList
                     topline={
@@ -646,6 +662,39 @@ const MaterialPartial = ({
                         }}
                       />
                     </dd>
+                  </DescriptionList>
+                </>
+              )}
+              {breakpoints.tablet && !breakpoints.bigscreen && (
+                <>
+                  <DescriptionList doubleValues>
+                    <dt>
+                      <strong>Price total:</strong>
+                    </dt>
+                    <dd className="u-align-right">
+                      <strong>{formatPrice(totalGrossPrice, multiModelQuote.currency)}</strong>
+                    </dd>
+                    <dd>
+                      <strong>
+                        {formatTimeRange(
+                          productionTimeFast + parseInt(shipping.deliveryTime, 10),
+                          productionTimeSlow + parseInt(shipping.deliveryTime, 10)
+                        )}
+                      </strong>
+                    </dd>
+                    <dt>Production:</dt>
+                    <dd className="u-align-right">
+                      {formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
+                    </dd>
+                    <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
+
+                    <dt>Shipping:</dt>
+                    <dd className="u-align-right">
+                      {usedShippingIdsById[shipping.shippingId]
+                        ? formatPrice(0, shipping.currency)
+                        : formatPrice(shipping.grossPrice, shipping.currency)}
+                    </dd>
+                    <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
                   </DescriptionList>
                 </>
               )}

@@ -868,7 +868,8 @@ const loadOffer = (
     Cmd.run<Actions>(printingEngine.getOffer, {
       args: [id, currency],
       successActionCreator: cartActions.offerReceived,
-      failActionCreator: coreActions.fatalError
+      // Fallback to load configuration and go to upload page
+      failActionCreator: () => cartActions.loadOfferConfiguration(id)
     })
   )
 
@@ -919,6 +920,19 @@ const offerReceived = (
     modelConfigs
   }
 }
+
+const loadOfferConfiguration = (
+  state: CoreState,
+  {payload: {id}}: cartActions.LoadOfferConfigurationAction
+): CoreReducer =>
+  loop(
+    state,
+    Cmd.run<Actions>(printingEngine.getOfferConfiguration, {
+      args: [id],
+      successActionCreator: configurationActions.configurationReceived,
+      failActionCreator: coreActions.fatalError
+    })
+  )
 
 const configurationReceived = (
   state: CoreState,
@@ -1029,6 +1043,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return loadOffer(state, action)
     case 'CART.OFFER_RECEIVED':
       return offerReceived(state, action)
+    case 'CART.LOAD_OFFER_CONFIGURATION':
+      return loadOfferConfiguration(state, action)
     case 'ORDER.PAID':
       return paid(state, action)
     case 'ORDER.EXECUTE_PAYPAL_PAYMENT':
