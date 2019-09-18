@@ -437,10 +437,10 @@ const MaterialPartial = ({
           mainValue={
             isCheapest
               ? formatPrice(totalGrossPrice, multiModelQuote.currency)
-              : `Est. ${formatTimeRange(
+              : formatTimeRange(
                   productionTimeFast + parseInt(shipping.deliveryTime, 10),
                   productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-                )}`
+                )
           }
           subline={`${finishGroup.materialName}, ${finishGroup.name} (${materialConfig.color})`}
           action={
@@ -489,10 +489,10 @@ const MaterialPartial = ({
                 </dt>
                 <dd className="u-align-right">
                   {formatPrice(totalGrossPrice, multiModelQuote.currency)}&nbsp;&nbsp;&nbsp;
-                  {`Est. ${formatTimeRange(
+                  {formatTimeRange(
                     productionTimeFast + parseInt(shipping.deliveryTime, 10),
                     productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-                  )}`}
+                  )}
                 </dd>
               </DescriptionList>
               <DescriptionList
@@ -528,24 +528,24 @@ const MaterialPartial = ({
                 </dd>
                 <dd>
                   <em>
-                    {`Est. ${formatTimeRange(
+                    {formatTimeRange(
                       productionTimeFast + parseInt(shipping.deliveryTime, 10),
                       productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-                    )}`}
+                    )}
                   </em>
                 </dd>
                 <dt>Production:</dt>
                 <dd className="u-align-right">
                   {formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
                 </dd>
-                <dd>Est. {formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
+                <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
                 <dt>Shipping:</dt>
                 <dd className="u-align-right">
                   {usedShippingIdsById[shipping.shippingId]
                     ? formatPrice(0, shipping.currency)
                     : formatPrice(shipping.grossPrice, shipping.currency)}
                 </dd>
-                <dd>Est. {formatDeliveryTime(shipping.deliveryTime)}</dd>
+                <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
               </DescriptionList>
               <DescriptionList
                 topline={
@@ -635,7 +635,7 @@ const MaterialPartial = ({
                     topline={
                       <strong className="u-align-right">
                         {formatPrice(totalGrossPrice, multiModelQuote.currency)}
-                        &nbsp;&nbsp;&nbsp;Est.&nbsp;
+                        &nbsp;&nbsp;&nbsp;
                         {formatTimeRange(
                           productionTimeFast + parseInt(shipping.deliveryTime, 10),
                           productionTimeSlow + parseInt(shipping.deliveryTime, 10)
@@ -676,17 +676,17 @@ const MaterialPartial = ({
                     </dd>
                     <dd>
                       <strong>
-                        {`Est.${formatTimeRange(
+                        {formatTimeRange(
                           productionTimeFast + parseInt(shipping.deliveryTime, 10),
                           productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-                        )}`}
+                        )}
                       </strong>
                     </dd>
                     <dt>Production:</dt>
                     <dd className="u-align-right">
                       {formatPrice(multiModelQuote.grossPrice, multiModelQuote.currency)}
                     </dd>
-                    <dd>Est. {formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
+                    <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
 
                     <dt>Shipping:</dt>
                     <dd className="u-align-right">
@@ -694,7 +694,7 @@ const MaterialPartial = ({
                         ? formatPrice(0, shipping.currency)
                         : formatPrice(shipping.grossPrice, shipping.currency)}
                     </dd>
-                    <dd>Est. {formatDeliveryTime(shipping.deliveryTime)}</dd>
+                    <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
                   </DescriptionList>
                 </>
               )}
@@ -724,16 +724,16 @@ const MaterialPartial = ({
                     </dt>
                     <dd>
                       <strong>
-                        {`Est. ${formatTimeRange(
+                        {formatTimeRange(
                           productionTimeFast + parseInt(shipping.deliveryTime, 10),
                           productionTimeSlow + parseInt(shipping.deliveryTime, 10)
-                        )}`}
+                        )}
                       </strong>
                     </dd>
                     <dt>Production:</dt>
-                    <dd>Est. {formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
+                    <dd>{formatTimeRange(productionTimeFast, productionTimeSlow)}</dd>
                     <dt>Shipping:</dt>
-                    <dd>Est. {formatDeliveryTime(shipping.deliveryTime)}</dd>
+                    <dd>{formatDeliveryTime(shipping.deliveryTime)}</dd>
                   </DescriptionList>
                   <DescriptionList
                     topline={
