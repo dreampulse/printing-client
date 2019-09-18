@@ -54,3 +54,29 @@ export const fetch = async (
 
 export const upload = async (options: HttpUploadOptions) =>
   processResponse(await http.upload(options))
+
+export const fetchWithRetry = async (
+  url: string,
+  options: {
+    headers?: {[header: string]: string}
+    method?: string
+    body?: any
+  } = {},
+  retries = 3
+): Promise<HttpJsonResponse> => {
+  let retryCount = retries
+
+  const tryToFetch = async (): Promise<HttpJsonResponse> => {
+    try {
+      return await fetch(url, options)
+    } catch (error) {
+      if (retryCount > 0) {
+        retryCount--
+        return tryToFetch()
+      }
+      throw error
+    }
+  }
+
+  return tryToFetch()
+}

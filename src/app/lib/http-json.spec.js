@@ -1,5 +1,5 @@
 import * as http from '../service/http'
-import {fetch, upload} from './http-json'
+import {fetch, upload, fetchWithRetry} from './http-json'
 import {HttpResponseUnexpectedStatusError, HttpResponseBodyParseError} from './error'
 
 const expectAnything = expect.it(() => {})
@@ -291,6 +291,56 @@ describe('http-json lib', () => {
         'to equal',
         new HttpResponseBodyParseError(someError.message, responseMock, null)
       )
+    })
+  })
+
+  describe('fetchWithRetry()', () => {
+    it('fetches if now retry is required', async () => {
+      sandbox.stub(http, 'fetch').resolves({
+        ok: true,
+        json: () => 'some-result'
+      })
+      const result = await fetchWithRetry('some-url')
+      expect(result.json, 'to equal', 'some-result')
+    })
+
+    it('handles rejecting promises', () => {
+      sandbox.stub(http, 'fetch').rejects(new Error())
+
+      return expect(fetchWithRetry('some-url'), 'to be rejected')
+    })
+
+    it('handles if response is not ok', () => {
+      const responseMock = {
+        ok: false,
+        json: () => {},
+        text: () => 'some-error'
+      }
+      sandbox.stub(http, 'fetch').resolves(responseMock)
+
+      return expect(
+        fetchWithRetry('some-url'),
+        'to be rejected with',
+        new HttpResponseUnexpectedStatusError('2xx', responseMock, 'some-error')
+      )
+    })
+
+    it('fetches if two retry are required', async () => {
+      sandbox
+        .stub(http, 'fetch')
+        .onFirstCall()
+        .resolves({
+          ok: false,
+          json: () => {},
+          text: () => 'some-error'
+        })
+        .onSecondCall()
+        .resolves({
+          ok: true,
+          json: () => 'some-result'
+        })
+      const result = await fetchWithRetry('some-url')
+      expect(result.json, 'to equal', 'some-result')
     })
   })
 })
