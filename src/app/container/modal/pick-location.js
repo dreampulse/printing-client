@@ -71,7 +71,7 @@ const PickLocationModal = ({
         <Paragraph>We need your address and currency to calculate the shipping prices.</Paragraph>
       )}
       <Grid>
-        <Column sm={9}>
+        <Column md={9} classNames={['u-margin-bottom']}>
           <LocationField
             value={location ? formatLocation(location) : ''}
             googleMapsApiKey={config.googleMapsApiKey}
@@ -85,7 +85,7 @@ const PickLocationModal = ({
             }}
           />
         </Column>
-        <Column sm={3}>
+        <Column md={3}>
           <SelectField
             menu={currencyMenu}
             value={selectedCurrencyValue}

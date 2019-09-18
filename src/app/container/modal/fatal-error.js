@@ -18,10 +18,10 @@ export default ({error}) => (
     buttons={<Button label="OK" onClick={() => reloadPage()} />}
   >
     <Grid>
-      <Column sm={3}>
+      <Column md={3} classNames={['u-margin-bottom']}>
         <Image src={errorImage} alt="System Error" />
       </Column>
-      <Column sm={9}>
+      <Column md={9}>
         <Paragraph minor>{error.message}</Paragraph>
         <Paragraph>
           An unexpected error occured. Our technicians have been automatically warned and are
