@@ -70,8 +70,8 @@ export const fetchWithRetry = async (
     try {
       return await fetch(url, options)
     } catch (error) {
+      retryCount--
       if (retryCount > 0) {
-        retryCount--
         return tryToFetch()
       }
       throw error

@@ -298,7 +298,7 @@ describe('http-json lib', () => {
     it('fetches if now retry is required', async () => {
       sandbox.stub(http, 'fetch').resolves({
         ok: true,
-        json: () => 'some-result'
+        json: () => Promise.resolve('some-result')
       })
       const result = await fetchWithRetry('some-url')
       expect(result.json, 'to equal', 'some-result')
@@ -314,7 +314,7 @@ describe('http-json lib', () => {
       const responseMock = {
         ok: false,
         json: () => {},
-        text: () => 'some-error'
+        text: () => Promise.resolve('some-error')
       }
       sandbox.stub(http, 'fetch').resolves(responseMock)
 
@@ -325,22 +325,51 @@ describe('http-json lib', () => {
       )
     })
 
-    it('fetches if two retry are required', async () => {
+    it('fetches if two retries are required', async () => {
       sandbox
         .stub(http, 'fetch')
         .onFirstCall()
         .resolves({
           ok: false,
           json: () => {},
-          text: () => 'some-error'
+          text: () => Promise.resolve('some-error')
         })
         .onSecondCall()
         .resolves({
           ok: true,
-          json: () => 'some-result'
+          json: () => Promise.resolve('some-result')
         })
-      const result = await fetchWithRetry('some-url')
+      const result = await fetchWithRetry('some-url', undefined, 2)
       expect(result.json, 'to equal', 'some-result')
+    })
+
+    it('respects the max retry amount', async () => {
+      const failingResponseMock = {
+        ok: false,
+        json: () => {},
+        text: () => Promise.resolve('some-error')
+      }
+
+      const successfulResponseMock = {
+        ok: true,
+        json: () => Promise.resolve('some-result')
+      }
+
+      sandbox
+        .stub(http, 'fetch')
+        .onCall(0)
+        .resolves(failingResponseMock)
+        .onCall(1)
+        .resolves(failingResponseMock)
+        // This call should never happen
+        .onCall(2)
+        .resolves(successfulResponseMock)
+
+      return expect(
+        fetchWithRetry('some-url', undefined, 2),
+        'to be rejected with',
+        new HttpResponseUnexpectedStatusError('2xx', failingResponseMock, 'some-error')
+      )
     })
   })
 })
