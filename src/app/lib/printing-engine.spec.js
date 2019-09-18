@@ -41,17 +41,17 @@ describe('printing-engine lib', () => {
 
     beforeEach(() => {
       materialGroupsMock = {}
-      sandbox.stub(httpJson, 'fetch').resolves({
+      sandbox.stub(httpJson, 'fetchWithRetry').resolves({
         json: materialGroupsMock
       })
     })
 
-    it('calls httpJson.fetch() with the correct URL', async () => {
+    it('calls httpJson.fetchWithRetry() with the correct URL', async () => {
       await getMaterialGroups()
-      expect(httpJson.fetch, 'to have a call satisfying', [`SOME-BASE-URL/v3/material`])
+      expect(httpJson.fetchWithRetry, 'to have a call satisfying', [`SOME-BASE-URL/v3/material`])
     })
 
-    it('returns the material groups which is the json property from httpJson.fetch()', async () => {
+    it('returns the material groups which is the json property from httpJson.fetchWithRetry()', async () => {
       const result = await getMaterialGroups('some-model-id')
 
       expect(result, 'to be', materialGroupsMock)
