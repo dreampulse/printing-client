@@ -6,9 +6,9 @@ import cn from '../../lib/class-names'
 import propTypes from '../../prop-types'
 
 import Icon from '../icon'
+import PositioningPortal from '../positioning-portal'
 
 import arrowIcon from '../../../asset/icon/arrow-down.svg'
-import PositioningPortal from '../positioning-portal'
 
 const SelectField = ({
   classNames,
@@ -55,6 +55,7 @@ const SelectField = ({
     return (
       <PositioningPortal
         isOpen={isOpen}
+        onShouldClose={() => setOpen(false)}
         portalContent={({relatedWidth}) => (
           <div
             className="SelectField__menu"
