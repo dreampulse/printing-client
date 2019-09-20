@@ -35,11 +35,6 @@
     display: block;
   }
 
-  &__menu {
-    position: absolute;
-    z-index: z($global-stacking, select-menu);
-  }
-
   &--selected {
     color: $color-text;
   }
