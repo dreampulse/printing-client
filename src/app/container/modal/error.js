@@ -19,10 +19,10 @@ const ErrorModal = ({error, closeModal}) => (
     buttons={<Button label="OK" onClick={closeModal} />}
   >
     <Grid>
-      <Column sm={3}>
+      <Column md={3} classNames={['u-margin-bottom']}>
         <Image src={errorImage} alt="System Error" />
       </Column>
-      <Column sm={9}>
+      <Column md={9}>
         <Paragraph minor>{error.message}</Paragraph>
       </Column>
     </Grid>

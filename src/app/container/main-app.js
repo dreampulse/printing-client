@@ -34,9 +34,13 @@ const MainApp = ({initTriggered, initAction, isAppReady}) => {
         featureFlags: getFeatureFlags(global.location),
         urlParams: getUrlParams(global.location),
         ...initParams
-      }).then(() => {
-        removeBootsplash()
       })
+        .then(() => {
+          removeBootsplash()
+        })
+        .catch(_error => {
+          // If the init fails we'll show a fatal error modal
+        })
     }
   }
 

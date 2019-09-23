@@ -165,7 +165,7 @@ export type MaterialGroupsResponse = {
 // Implementations
 
 export const getMaterialGroups = async (): Promise<MaterialGroupsResponse> => {
-  const response = await httpJson.fetch(`${config.printingEngineBaseUrl}/v3/material`)
+  const response = await httpJson.fetchWithRetry(`${config.printingEngineBaseUrl}/v3/material`)
   return response.json
 }
 
