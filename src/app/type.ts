@@ -262,7 +262,8 @@ export enum ModalContentType {
   FATAL_ERROR = 'FATAL_ERROR',
   ERROR = 'ERROR',
   ADDRESS_FORM = 'ADDRESS_FORM',
-  PROVIDER = 'PROVIDER'
+  PROVIDER = 'PROVIDER',
+  SERVICE_UNAVAILABLE = 'SERVICE_UNAVAILABLE'
 }
 
 export type ModalConfigClosed = null

@@ -40,6 +40,7 @@ const MainApp = ({initTriggered, initAction, isAppReady}) => {
         })
         .catch(_error => {
           // If the init fails we'll show a fatal error modal
+          removeBootsplash()
         })
     }
   }
