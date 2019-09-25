@@ -131,9 +131,15 @@ const MaterialPartial = ({
   const usedShippingIdsById = keyBy(usedShippingIds, id => id)
 
   const byPrice = ([_a, bestOfferA], [_b, bestOfferB]) => {
-    if (!bestOfferA || !bestOfferB) {
-      // Sort all without offers to the end
+    // Sort all without offers to the end
+    if (!bestOfferA && bestOfferB) {
       return 1
+    }
+    if (bestOfferA && !bestOfferB) {
+      return -1
+    }
+    if (!bestOfferA && !bestOfferB) {
+      return 0
     }
 
     return bestOfferA.totalGrossPrice !== bestOfferB.totalGrossPrice
