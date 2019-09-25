@@ -126,6 +126,13 @@ export const openAddressFormModal = (scrollTo?: string): OpenModalAction =>
     }
   })
 
+export const openServiceUnavailable = (): OpenModalAction =>
+  open({
+    isCloseable: false,
+    contentType: ModalContentType.SERVICE_UNAVAILABLE,
+    contentProps: null
+  })
+
 export const closeModal = (): CloseModalAction => ({
   type: 'MODAL.CLOSE',
   payload: undefined

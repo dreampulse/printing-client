@@ -20,9 +20,11 @@ import ShareConfigurationModal from './share-configuration'
 import ShareCartModal from './share-cart'
 import ProviderModal from './provider'
 import ErrorModal from './error'
+import ServiceUnavailableModal from './service-unavailable'
 
 const modals = {
   [ModalContentType.FATAL_ERROR]: FatalErrorModal,
+  [ModalContentType.SERVICE_UNAVAILABLE]: ServiceUnavailableModal,
   [ModalContentType.MODEL_VIEWER]: ModelViewerModal,
   [ModalContentType.MATERIAL]: MaterialModal,
   [ModalContentType.FINISH_GROUP]: FinishGroupModal,
