@@ -30,6 +30,7 @@ import {
 } from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {partitionBy} from '../lib/util'
+import {getProviderName} from '../lib/material'
 import {
   selectModelConfigsByIds,
   selectQuotePollingProgress,
@@ -513,6 +514,7 @@ const MaterialPartial = ({
                       event.preventDefault()
                       openProviderModal(multiModelQuote.vendorId)
                     }}
+                    alt={getProviderName(multiModelQuote.vendorId)}
                   />
                 </dd>
               </DescriptionList>
@@ -566,6 +568,7 @@ const MaterialPartial = ({
                       event.preventDefault()
                       openProviderModal(multiModelQuote.vendorId)
                     }}
+                    alt={getProviderName(multiModelQuote.vendorId)}
                   />
                 </dd>
               </DescriptionList>
@@ -663,6 +666,7 @@ const MaterialPartial = ({
                           event.preventDefault()
                           openProviderModal(multiModelQuote.vendorId)
                         }}
+                        alt={getProviderName(multiModelQuote.vendorId)}
                       />
                     </dd>
                   </DescriptionList>
@@ -756,6 +760,7 @@ const MaterialPartial = ({
                           event.preventDefault()
                           openProviderModal(multiModelQuote.vendorId)
                         }}
+                        alt={getProviderName(multiModelQuote.vendorId)}
                       />
                     </dd>
                   </DescriptionList>

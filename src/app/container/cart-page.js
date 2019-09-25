@@ -317,6 +317,7 @@ const CartPage = ({
                     event.preventDefault()
                     openProviderModal(quote.vendorId)
                   }}
+                  alt={getProviderName(quote.vendorId)}
                 />
               }
               buttonsLeft={
