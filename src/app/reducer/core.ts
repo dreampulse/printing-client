@@ -478,8 +478,12 @@ const uploadComplete = (
     item => item.type === 'UPLOADING' && item.fileId === fileId
   ) as ModelConfig
 
+  // The model has been deleted
+  if (!modelConfig) {
+    return state
+  }
+
   invariant(models.length > 0, 'At least one model required')
-  invariant(modelConfig, 'Model config not found')
   invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
   invariant(
     payload.additionalConfigIds.length === additionalModels.length,
