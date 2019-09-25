@@ -40,6 +40,7 @@ import PaypalButton from '../component/paypal-button'
 import PageHeader from '../component/page-header'
 import Icon from '../component/icon'
 import Notification from '../component/notification'
+import ProviderImage from '../component/provider-image'
 
 import * as navigationAction from '../action/navigation'
 import * as modelAction from '../action/model'
@@ -57,6 +58,7 @@ import copyIcon from '../../asset/icon/copy.svg'
 import backIcon from '../../asset/icon/back.svg'
 import zoomInIcon from '../../asset/icon/zoom-in.svg'
 import shareIcon from '../../asset/icon/share.svg'
+import providerImages from '../../asset/image/printing-service'
 
 import useHasAdblocker from '../hook/use-has-adblocker'
 import useBreakpoints from '../hook/use-breakpoints'
@@ -308,12 +310,14 @@ const CartPage = ({
                 </>
               }
               provider={
-                <Link
-                  label={getProviderName(quote.vendorId)}
+                <ProviderImage
+                  inline
+                  src={providerImages[quote.vendorId]}
                   onClick={event => {
                     event.preventDefault()
                     openProviderModal(quote.vendorId)
                   }}
+                  alt={getProviderName(quote.vendorId)}
                 />
               }
               buttonsLeft={

@@ -30,6 +30,7 @@ import {
 } from '../lib/formatter'
 import getCloudinaryUrl from '../lib/cloudinary'
 import {partitionBy} from '../lib/util'
+import {getProviderName} from '../lib/material'
 import {
   selectModelConfigsByIds,
   selectQuotePollingProgress,
@@ -37,7 +38,6 @@ import {
   selectUploadedModelConfigs,
   selectUsedShippingIdsAndFilter
 } from '../lib/selector'
-import {getProviderName} from '../lib/material'
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
 import scrollTo from '../service/scroll-to'
@@ -67,11 +67,12 @@ import OfferCard from '../component/offer-card'
 import OfferList from '../component/offer-list'
 import OfferItem from '../component/offer-item'
 import Tooltip from '../component/tooltip'
-import Link from '../component/link'
+import ProviderImage from '../component/provider-image'
 
 import fastestIcon from '../../asset/icon/fastest.svg'
 import cheapestIcon from '../../asset/icon/cheapest.svg'
 import infoIcon from '../../asset/icon/info.svg'
+import providerImages from '../../asset/image/printing-service'
 
 const MaterialPartial = ({
   // Own props
@@ -506,12 +507,14 @@ const MaterialPartial = ({
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
                 <dt>Produced by:</dt>
                 <dd>
-                  <Link
-                    label={getProviderName(multiModelQuote.vendorId)}
+                  <ProviderImage
+                    inline
+                    src={providerImages[multiModelQuote.vendorId]}
                     onClick={event => {
                       event.preventDefault()
                       openProviderModal(multiModelQuote.vendorId)
                     }}
+                    alt={getProviderName(multiModelQuote.vendorId)}
                   />
                 </dd>
               </DescriptionList>
@@ -558,12 +561,14 @@ const MaterialPartial = ({
                 <dd>{finishGroup.properties.printingMethodShort}</dd>
                 <dt>Produced by:</dt>
                 <dd>
-                  <Link
-                    label={getProviderName(multiModelQuote.vendorId)}
+                  <ProviderImage
+                    inline
+                    src={providerImages[multiModelQuote.vendorId]}
                     onClick={event => {
                       event.preventDefault()
                       openProviderModal(multiModelQuote.vendorId)
                     }}
+                    alt={getProviderName(multiModelQuote.vendorId)}
                   />
                 </dd>
               </DescriptionList>
@@ -654,12 +659,14 @@ const MaterialPartial = ({
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
                     <dt>Produced by:</dt>
                     <dd>
-                      <Link
-                        label={getProviderName(multiModelQuote.vendorId)}
+                      <ProviderImage
+                        inline
+                        src={providerImages[multiModelQuote.vendorId]}
                         onClick={event => {
                           event.preventDefault()
                           openProviderModal(multiModelQuote.vendorId)
                         }}
+                        alt={getProviderName(multiModelQuote.vendorId)}
                       />
                     </dd>
                   </DescriptionList>
@@ -746,12 +753,14 @@ const MaterialPartial = ({
                     <dd>{finishGroup.properties.printingMethodShort}</dd>
                     <dt>Produced by:</dt>
                     <dd>
-                      <Link
-                        label={getProviderName(multiModelQuote.vendorId)}
+                      <ProviderImage
+                        inline
+                        src={providerImages[multiModelQuote.vendorId]}
                         onClick={event => {
                           event.preventDefault()
                           openProviderModal(multiModelQuote.vendorId)
                         }}
+                        alt={getProviderName(multiModelQuote.vendorId)}
                       />
                     </dd>
                   </DescriptionList>
