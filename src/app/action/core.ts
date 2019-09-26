@@ -9,8 +9,8 @@ export type InitPayload = {
 }
 
 export type InitAction = Action<'CORE.INIT', InitPayload>
-export type UpdateMaterialGroupsAction = Action<
-  'CORE.UPDATE_MATERIAL_GROUPS',
+export type InitContinueAction = Action<
+  'CORE.INIT_CONTINUE',
   {materialGroups: MaterialGroup[]}
 >
 export type UpdateLocationAction = Action<
@@ -31,7 +31,7 @@ export type ResetAction = Action<'CORE.RESET', void>
 
 export type CoreAction =
   | InitAction
-  | UpdateMaterialGroupsAction
+  | InitContinueAction
   | UpdateLocationAction
   | UpdateUnitAction
   | UpdateCurrencyAction
@@ -51,10 +51,10 @@ export const init = ({featureFlags, urlParams, restoreSessionEnabled}: InitPaylo
   }
 })
 
-export const updateMaterialGroups = (
+export const initContinue = (
   materialGroups: MaterialGroup[]
-): UpdateMaterialGroupsAction => ({
-  type: 'CORE.UPDATE_MATERIAL_GROUPS',
+): InitContinueAction => ({
+  type: 'CORE.INIT_CONTINUE',
   payload: {materialGroups}
 })
 

@@ -10,4 +10,20 @@
     max-width: 100%;
     width: auto;
   }
+
+  &--inline {
+    padding: 0;
+    border: 0;
+    margin: 0;
+
+    .ProviderImage__image {
+      display: inline-block;
+      vertical-align: middle;
+      height: 1em;
+    }
+  }
+
+  &--link {
+    cursor: pointer;
+  }
 }

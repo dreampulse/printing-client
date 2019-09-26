@@ -11,6 +11,7 @@ import compact from 'lodash/compact'
 import * as localStorage from '../service/local-storage'
 import * as localStorageSession from '../service/local-storage-session'
 import {getLocationFromCookie, isLocationValid} from '../lib/geolocation'
+import {HttpResponseUnexpectedStatusError} from '../lib/error'
 import {
   resetModelConfigs,
   hasModelConfigWithQuote,
@@ -137,8 +138,6 @@ const init = (
     localStorageSession.clear()
   }
 
-  const userFromLocalStorage = localStorage.getItem<User>(config.localStorageAddressKey)
-
   return loop(
     {
       ...state,
@@ -146,32 +145,17 @@ const init = (
       urlParams,
       initTriggered: true
     },
-    Cmd.list(
-      [
-        Cmd.run<Actions>(printingEngine.getMaterialGroups, {
-          successActionCreator: response =>
-            coreActions.updateMaterialGroups(response.materialStructure),
-          failActionCreator: coreActions.fatalError,
-          args: []
-        }),
-        userFromLocalStorage
-          ? Cmd.action(
-              coreActions.updateLocation({
-                city: userFromLocalStorage.billingAddress.city,
-                zipCode: userFromLocalStorage.billingAddress.zipCode,
-                stateCode: userFromLocalStorage.billingAddress.stateCode,
-                countryCode: userFromLocalStorage.billingAddress.countryCode
-              })
-            )
-          : Cmd.run<Actions>(getLocationFromCookie, {
-              successActionCreator: coreActions.updateLocation,
-              failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false}),
-              args: []
-            }),
-        userFromLocalStorage ? Cmd.action(coreActions.saveUser(userFromLocalStorage)) : Cmd.none
-      ],
-      {sequence: true}
-    )
+
+    Cmd.run<Actions>(printingEngine.getMaterialGroups, {
+      successActionCreator: response =>
+        coreActions.initContinue(response.materialStructure),
+      failActionCreator: error => {
+        if (error instanceof HttpResponseUnexpectedStatusError) {
+          return modalActions.openServiceUnavailable()
+        }
+        return coreActions.fatalError(error)
+      }
+    })
   )
 }
 
@@ -190,24 +174,48 @@ const fatalError = (
     state,
     Cmd.list<Actions>([
       Cmd.action(modalActions.openFatalErrorModal(error)),
-      Cmd.run<Actions>(() => {
-        // This will re-throw the error
-        throw error
-      })
+      Cmd.run<Actions>(
+        () => Promise.reject(error) // This will re-throw the error
+      )
     ])
   )
 }
 
-const updateMaterialGroups = (
+const initContinue = (
   state: CoreState,
-  action: coreActions.UpdateMaterialGroupsAction
-): CoreReducer => ({
-  ...state,
-  materialGroups: getMaterialGroupLookupTable(action.payload.materialGroups),
-  materials: getMaterialLookupTable(action.payload.materialGroups),
-  finishGroups: getFinishGroupLookupTable(action.payload.materialGroups),
-  materialConfigs: getMaterialConfigLookupTable(action.payload.materialGroups)
-})
+  action: coreActions.InitContinueAction
+): CoreReducer => {
+  const userFromLocalStorage = localStorage.getItem<User>(config.localStorageAddressKey)
+
+  return loop(
+    {
+      ...state,
+      materialGroups: getMaterialGroupLookupTable(action.payload.materialGroups),
+      materials: getMaterialLookupTable(action.payload.materialGroups),
+      finishGroups: getFinishGroupLookupTable(action.payload.materialGroups),
+      materialConfigs: getMaterialConfigLookupTable(action.payload.materialGroups)
+    },
+    Cmd.list(
+      [
+        userFromLocalStorage
+          ? Cmd.action(
+              coreActions.updateLocation({
+                city: userFromLocalStorage.billingAddress.city,
+                zipCode: userFromLocalStorage.billingAddress.zipCode,
+                stateCode: userFromLocalStorage.billingAddress.stateCode,
+                countryCode: userFromLocalStorage.billingAddress.countryCode
+              })
+            )
+          : Cmd.run<Actions>(getLocationFromCookie, {
+              successActionCreator: coreActions.updateLocation,
+              failActionCreator: () => modalActions.openPickLocationModal({isCloseable: false})
+            }),
+        userFromLocalStorage ? Cmd.action(coreActions.saveUser(userFromLocalStorage)) : Cmd.none
+      ],
+      {sequence: true}
+    )
+  )
+}
 
 const updateLocation = (
   state: CoreState,
@@ -478,8 +486,12 @@ const uploadComplete = (
     item => item.type === 'UPLOADING' && item.fileId === fileId
   ) as ModelConfig
 
+  // The model has been deleted
+  if (!modelConfig) {
+    return state
+  }
+
   invariant(models.length > 0, 'At least one model required')
-  invariant(modelConfig, 'Model config not found')
   invariant(state.uploadingFiles[fileId], `Error in uploadComplete(): File ${fileId} is unknown`)
   invariant(
     payload.additionalConfigIds.length === additionalModels.length,
@@ -989,8 +1001,8 @@ export const reducer = (state: CoreState = initialState, action: Actions): CoreR
       return init(state, action)
     case 'CORE.FATAL_ERROR':
       return fatalError(state, action)
-    case 'CORE.UPDATE_MATERIAL_GROUPS':
-      return updateMaterialGroups(state, action)
+    case 'CORE.INIT_CONTINUE':
+      return initContinue(state, action)
     case 'CORE.UPDATE_LOCATION':
       return updateLocation(state, action)
     case 'CORE.UPDATE_UNIT':

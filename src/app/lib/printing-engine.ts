@@ -261,7 +261,7 @@ export const getOffer = async (
   currency: string
 ): Promise<CartOfferResponse> => {
   const response = await httpJson.fetch(
-    `${config.printingEngineBaseUrl}/v3/offer/${offerId}?currency=${currency}`
+    `${config.printingEngineBaseUrl}/v3/offer/${offerId}/cart?currency=${currency}`
   )
   return response.json
 }

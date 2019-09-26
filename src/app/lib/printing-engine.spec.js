@@ -297,7 +297,7 @@ describe('printing-engine lib', () => {
 
     it('calls httpJson.fetch() with the correct URL', () =>
       expect(httpJson.fetch, 'to have a call satisfying', [
-        `SOME-BASE-URL/v3/offer/some-offer-id?currency=some-currency`
+        `SOME-BASE-URL/v3/offer/some-offer-id/cart?currency=some-currency`
       ]))
 
     it('returns the json result', () => expect(result, 'to equal', 'some-offer-result'))
