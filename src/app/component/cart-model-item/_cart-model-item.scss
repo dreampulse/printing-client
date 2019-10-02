@@ -4,7 +4,7 @@
   background: $color-bg;
   position: relative;
   display: grid;
-  grid-template:
+  grid-template-areas:
     'aside content'
     'additional additional';
   grid-template-columns: 65px auto;
