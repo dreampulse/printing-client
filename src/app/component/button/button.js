@@ -24,14 +24,19 @@ const Button = ({
   iconOnly = false,
   onClick = noop,
   href = undefined,
-  target = undefined
+  target = undefined,
+  warning = false
 }) => {
   const finalIcon = selected ? selectedIcon : icon
 
   return createElement(
     href ? 'a' : 'button',
     {
-      className: cn('Button', {minor, tiny, compact, text, block, selected, iconOnly}, classNames),
+      className: cn(
+        'Button',
+        {minor, tiny, compact, text, block, selected, iconOnly, warning},
+        classNames
+      ),
       type: href ? undefined : type,
       disabled: href ? undefined : disabled,
       onClick,
@@ -61,6 +66,7 @@ Button.propTypes = {
   block: PropTypes.bool,
   selected: PropTypes.bool,
   iconOnly: PropTypes.bool,
+  warning: PropTypes.bool,
   href: PropTypes.string,
   target: PropTypes.string
 }

@@ -1,6 +1,4 @@
 .Button {
-  $icon-only-size: 22px;
-
   display: inline-block;
   height: $field-height-compact;
   line-height: $field-height-compact;
@@ -150,6 +148,17 @@
       background-color: $color-bg;
       color: $color-primary-active;
       border-color: $color-primary-active;
+    }
+  }
+
+  &--warning {
+    color: $color-warning;
+
+    &:hover:not([disabled]),
+    &:focus:not([disabled]),
+    &:active:not([disabled])  {
+      color: $color-warning-active;
+      background-color: inherit;
     }
   }
 }

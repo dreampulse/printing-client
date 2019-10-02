@@ -167,6 +167,11 @@ export const selectQuotePollingProgress = (state: AppState) => ({
   total: Object.keys(state.core.printingServiceComplete).length
 })
 
+export const selectIsPollingDone = (state: AppState) => {
+  const pollingProgress = selectQuotePollingProgress(state)
+  return pollingProgress.total > 0 && pollingProgress.complete === pollingProgress.total
+}
+
 export const selectQuotes = (state: AppState) => Object.values(state.core.quotes)
 
 export const selectUsedShippingIdsAndFilter = (

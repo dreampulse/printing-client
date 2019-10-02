@@ -36,7 +36,8 @@ import {
   selectQuotePollingProgress,
   selectQuotes,
   selectUploadedModelConfigs,
-  selectUsedShippingIdsAndFilter
+  selectUsedShippingIdsAndFilter,
+  selectIsPollingDone
 } from '../lib/selector'
 import {createMaterialSearch} from '../service/search'
 import {openIntercom} from '../service/intercom'
@@ -111,11 +112,10 @@ const MaterialPartial = ({
   uploadedModelConfigs,
   updateSelectedModelConfigs,
   showAllOffers,
-  setShowAllOffers
+  setShowAllOffers,
+  isPollingDone
 }) => {
   const breakpoints = useBreakpoints()
-  const isPollingDone =
-    pollingProgress.total > 0 && pollingProgress.complete === pollingProgress.total
   const hasAtLeastOneResult = pollingProgress.complete > 0
 
   // Filter out quotes which do not have a valid shipping method
@@ -833,7 +833,9 @@ const mapStateToProps = (state, ownProps) => ({
   location: state.core.location,
   shippings: state.core.shippings,
   uploadedModelConfigs: selectUploadedModelConfigs(state),
-  usedShippingIds: selectUsedShippingIdsAndFilter(state, ownProps.configIds)
+  usedShippingIds: selectUsedShippingIdsAndFilter(state, ownProps.configIds),
+  quotePollingProgress: selectQuotePollingProgress(state),
+  isPollingDone: selectIsPollingDone(state)
 })
 
 const mapDispatchToProps = {
@@ -953,6 +955,10 @@ export default compose(
           currency,
           refresh
         })
+      }
+
+      if (this.props.isPollingDone && !prevProps.isPollingDone) {
+        console.log('-- done')
       }
     },
     componentWillUnmount() {

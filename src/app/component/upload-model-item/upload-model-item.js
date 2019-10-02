@@ -26,7 +26,8 @@ const UploadModelItem = ({
   onSelect,
   noCache = false,
   onPreviewImageClick = noop,
-  s = false
+  s = false,
+  warning = null
 }) => (
   <div className={cn('UploadModelItem', {selected, s}, classNames)}>
     <div className="UploadModelItem__aside">
@@ -41,9 +42,12 @@ const UploadModelItem = ({
       {onSelect && <CheckboxField checked={selected} onChange={onSelect} />}
     </div>
     <div className="UploadModelItem__content">
-      <strong className="UploadModelItem__title">
-        <FileName fileName={title} />
-      </strong>
+      <div className="UploadModelItem__titleLine">
+        <strong className="UploadModelItem__title">
+          <FileName fileName={title} />
+        </strong>
+        {warning}
+      </div>
       {/* \u00A0 = &nbsp to keep space for subline even if empty. */}
       <div className="UploadModelItem__subline">{subline || '\u00A0'}</div>
       <div className="UploadModelItem__buttons">
@@ -65,7 +69,8 @@ UploadModelItem.propTypes = {
   onSelect: PropTypes.func,
   noCache: PropTypes.bool,
   s: PropTypes.bool,
-  onPreviewImageClick: PropTypes.func
+  onPreviewImageClick: PropTypes.func,
+  warning: PropTypes.node
 }
 
 export default UploadModelItem
