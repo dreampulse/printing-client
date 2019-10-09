@@ -1,5 +1,5 @@
 // Source: https://github.com/tadeegan/locale-currency
-export const currencyByCountry = {
+export const currencyByCountry: {[countryCode: string]: string} = {
   AD: 'EUR',
   AE: 'AED',
   AF: 'AFN',
