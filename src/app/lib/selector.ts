@@ -140,7 +140,6 @@ export const selectConfiguredModelInformation = (state: AppState) =>
 
       const finishGroupName = finishGroup.name
       const materialName = finishGroup.materialName
-      const providerInfo = finishGroup.properties.printingServiceName[quote.vendorId]
       const {id: materialConfigId, colorCode, color, colorImage} = materialConfig
       const productionTimeFast = materialConfig.printingService[quote.vendorId].productionTimeFast
       const productionTimeSlow = materialConfig.printingService[quote.vendorId].productionTimeSlow
@@ -152,7 +151,6 @@ export const selectConfiguredModelInformation = (state: AppState) =>
         quote,
         finishGroupName,
         materialName,
-        providerInfo,
         materialConfigId,
         colorCode,
         color,

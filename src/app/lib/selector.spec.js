@@ -698,12 +698,6 @@ describe('selectConfiguredModelInformation()', () => {
           'finish-group-1': {
             id: 'finish-group-1',
             name: 'finish-group-name',
-            properties: {
-              printingServiceName: {
-                'vendor-id-1': 'provider-info',
-                'vendor-id-2': 'provider-info-2'
-              }
-            },
             materialConfigs: [
               {
                 id: 'material-config-1',
@@ -716,12 +710,6 @@ describe('selectConfiguredModelInformation()', () => {
           'finish-group-2': {
             id: 'finish-group-2',
             name: 'finish-group-name',
-            properties: {
-              printingServiceName: {
-                'vendor-id-1': 'provider-info',
-                'vendor-id-2': 'provider-info-2'
-              }
-            },
             materialConfigs: [
               {
                 id: 'material-config-2',
@@ -734,12 +722,6 @@ describe('selectConfiguredModelInformation()', () => {
           'finish-group-3': {
             id: 'finish-group-3',
             name: 'finish-group-name',
-            properties: {
-              printingServiceName: {
-                'vendor-id-1': 'provider-info',
-                'vendor-id-2': 'provider-info-2'
-              }
-            },
             materialConfigs: [
               {
                 id: 'material-config-3',
@@ -841,7 +823,6 @@ describe('selectConfiguredModelInformation()', () => {
           vendorId: 'vendor-id-1'
         },
         finishGroupName: 'finish-group-name',
-        providerInfo: 'provider-info',
         materialConfigId: 'material-config-1',
         colorCode: 'color-code',
         color: 'color',
@@ -873,7 +854,6 @@ describe('selectConfiguredModelInformation()', () => {
           vendorId: 'vendor-id-2'
         },
         finishGroupName: 'finish-group-name',
-        providerInfo: 'provider-info-2',
         materialConfigId: 'material-config-1',
         colorCode: 'color-code',
         color: 'color',
