@@ -8,7 +8,7 @@ import HandleValue from '../../../../stories/util/handle-value'
 import {googleMapsApiKey} from '../../../../stories/util/data'
 
 storiesOf('LocationField', module)
-  .add('default', () => (
+  .add('default (no test)', () => (
     <HandleValue>
       <LocationField
         placeholder="Set your location"
@@ -17,7 +17,7 @@ storiesOf('LocationField', module)
       />
     </HandleValue>
   ))
-  .add('initial value', () => (
+  .add('initial value (no test)', () => (
     <HandleValue initialValue="München, Deutschland">
       <LocationField
         placeholder="Set your location"
@@ -26,7 +26,7 @@ storiesOf('LocationField', module)
       />
     </HandleValue>
   ))
-  .add('error', () => (
+  .add('error (no test)', () => (
     <HandleValue>
       <LocationField
         error
