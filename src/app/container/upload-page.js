@@ -162,8 +162,8 @@ const UploadPage = ({
           return (
             <UploadModelItemLoad
               key={modelConfig.id}
-              status={model.progress}
-              title="Uploading"
+              status={model.progress !== 1 ? model.progress : undefined}
+              title={model.progress !== 1 ? 'Processing…' : 'Uploading'}
               subline={model.fileName}
               onDelete={() => deleteModelConfigs([modelConfig.id])}
             />
