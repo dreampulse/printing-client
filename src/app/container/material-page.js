@@ -17,7 +17,6 @@ import deleteIcon from '../../asset/icon/delete.svg'
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 import * as modelViewerAction from '../action/model-viewer'
-import * as modalAction from '../action/modal'
 
 import config from '../../../config'
 import {formatDimensions} from '../lib/formatter'
