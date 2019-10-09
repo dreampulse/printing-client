@@ -108,7 +108,6 @@ export type BackendConfiguration = {
 export type OrderRequest = {
   userId: UserId
   cartId: CartId
-  currency: string
   utmParams?: UtmParams
 }
 
