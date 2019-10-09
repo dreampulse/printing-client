@@ -1,4 +1,4 @@
-import {configure, addParameters, addDecorator} from '@storybook/react'
+import {configure, addParameters} from '@storybook/react'
 
 import '../src/sass/main.scss'
 

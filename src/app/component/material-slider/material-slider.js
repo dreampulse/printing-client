@@ -29,8 +29,10 @@ export default class MaterialSlider extends Component {
   }
 
   componentDidMount() {
-    this.canvasDom.addEventListener('scroll', this.updateButtonVisibilityState)
-    this.canvasDom.addEventListener('scroll', this.updateDots)
+    if (this.canvasDom) {
+      this.canvasDom.addEventListener('scroll', this.updateButtonVisibilityState)
+      this.canvasDom.addEventListener('scroll', this.updateDots)
+    }
     global.addEventListener('resize', this.updateButtonVisibilityState)
     global.addEventListener('resize', this.updateDots)
 
@@ -54,8 +56,10 @@ export default class MaterialSlider extends Component {
   }
 
   componentWillUnmount() {
-    this.canvasDom.removeEventListener('scroll', this.updateButtonVisibilityState)
-    this.canvasDom.removeEventListener('scroll', this.updateDots)
+    if (this.canvasDom) {
+      this.canvasDom.removeEventListener('scroll', this.updateButtonVisibilityState)
+      this.canvasDom.removeEventListener('scroll', this.updateDots)
+    }
     global.removeEventListener('resize', this.updateButtonVisibilityState)
     global.removeEventListener('resize', this.updateDots)
   }
@@ -175,10 +179,12 @@ export default class MaterialSlider extends Component {
       this.currentTween.cancel()
     }
 
-    this.canvasDom.scrollLeft = 0
+    if (this.canvasDom) {
+      this.canvasDom.scrollLeft = 0
 
-    this.updateButtonVisibilityState()
-    this.updateDots()
+      this.updateButtonVisibilityState()
+      this.updateDots()
+    }
   }
 
   handleBackClick = () => {

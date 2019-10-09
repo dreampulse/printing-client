@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import compose from 'recompose/compose'
 import withProps from 'recompose/withProps'
-import withHandlers from 'recompose/withHandlers'
 import defaultProps from 'recompose/defaultProps'
 
 import propTypes from '../../prop-types'
@@ -16,12 +15,26 @@ const ModelList = ({
   actions,
   ids,
   checkedIds,
-  toggleId,
-  toggleAll,
   headerAlwaysVisible = false,
   selectLabel,
-  deselectLabel
+  deselectLabel,
+  onChangeCheckedIds
 }) => {
+  const toggleId = id => {
+    if (checkedIds.includes(id)) {
+      onChangeCheckedIds(checkedIds.filter(item => item !== id))
+    } else {
+      onChangeCheckedIds([...checkedIds, id])
+    }
+  }
+  const toggleAll = () => {
+    if (ids.length === checkedIds.length) {
+      onChangeCheckedIds([])
+    } else {
+      onChangeCheckedIds(ids)
+    }
+  }
+
   const numChildren = React.Children.count(children)
   const childrenList = React.Children.map(children, (child, index) => {
     const id = child.props.id
@@ -85,23 +98,7 @@ const enhance = compose(
     ids: React.Children.toArray(children)
       .map(child => child.props.id)
       .filter(id => id !== undefined)
-  })),
-  withHandlers({
-    toggleId: ({onChangeCheckedIds, checkedIds}) => id => {
-      if (checkedIds.includes(id)) {
-        onChangeCheckedIds(checkedIds.filter(item => item !== id))
-      } else {
-        onChangeCheckedIds([...checkedIds, id])
-      }
-    },
-    toggleAll: ({onChangeCheckedIds, ids, checkedIds}) => () => {
-      if (ids.length === checkedIds.length) {
-        onChangeCheckedIds([])
-      } else {
-        onChangeCheckedIds(ids)
-      }
-    }
-  })
+  }))
 )
 
 export default enhance(ModelList)
