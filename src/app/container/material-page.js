@@ -201,6 +201,18 @@ const MaterialPage = ({
 
   const someModelsAreWithoutQuotes = numberOfModels > numberOfModelsWithQuotes && isPollingDone
 
+  const modelConfigIdsWithoutQuotes = modelConfigs
+    .filter(modelConfig => selectedModelConfigIds.includes(modelConfig.id))
+    .map(modelConfig => [
+      quotes.filter(quote => quote.modelId === modelConfig.modelId).length,
+      modelConfig.id
+    ])
+    .reduce(
+      (acc, [numberOfQuotes, modelConfigId]) =>
+        numberOfQuotes > 0 ? acc : [...acc, modelConfigId],
+      []
+    )
+
   return (
     <ToolLayout
       isOpen={breakpoints.desktop || sidebarOpen}
@@ -238,6 +250,16 @@ const MaterialPage = ({
                       numberOfModelsWithQuotes} of your ${numberOfModels} selected models. Please ensure that your uploaded models are using a valid file format and that model dimensions are neither too small nor too large.`
               }
               type="error"
+              button={
+                <Button
+                  label="Remove"
+                  onClick={() => {
+                    deleteModelConfigs(modelConfigIdsWithoutQuotes)
+                  }}
+                  compact
+                  minor
+                />
+              }
             />
           )}
         </Section>
