@@ -312,6 +312,7 @@ const CartPage = ({
               provider={
                 <ProviderImage
                   inline
+                  minor
                   src={providerImages[quote.vendorId]}
                   onClick={event => {
                     event.preventDefault()
