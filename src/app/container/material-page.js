@@ -252,7 +252,7 @@ const MaterialPage = ({
               type="error"
               button={
                 <Button
-                  label="Remove"
+                  label={numberOfModels === 1 ? 'Remove model' : 'Remove models'}
                   onClick={() => {
                     deleteModelConfigs(modelConfigIdsWithoutQuotes)
                   }}
@@ -352,7 +352,7 @@ export default compose(
         goToUpload()
       }
     },
-    componentDidUpdate(_prevProps) {
+    componentDidUpdate() {
       const {modelsWithConfig, goToUpload} = this.props
 
       if (modelsWithConfig.length === 0) {

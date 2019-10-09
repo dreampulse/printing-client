@@ -12,7 +12,6 @@ import debounce from 'lodash/debounce'
 import keyBy from 'lodash/keyBy'
 import defer from 'lodash/defer'
 import chunk from 'lodash/chunk'
-import uniq from 'lodash/uniq'
 
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
