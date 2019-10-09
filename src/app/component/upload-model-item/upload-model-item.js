@@ -27,7 +27,7 @@ const UploadModelItem = ({
   noCache = false,
   onPreviewImageClick = noop,
   s = false,
-  warning = null
+  alert = null
 }) => (
   <div className={cn('UploadModelItem', {selected, s}, classNames)}>
     <div className="UploadModelItem__aside">
@@ -46,7 +46,7 @@ const UploadModelItem = ({
         <strong className="UploadModelItem__title">
           <FileName fileName={title} />
         </strong>
-        {warning}
+        {alert}
       </div>
       {/* \u00A0 = &nbsp to keep space for subline even if empty. */}
       <div className="UploadModelItem__subline">{subline || '\u00A0'}</div>
@@ -70,7 +70,7 @@ UploadModelItem.propTypes = {
   noCache: PropTypes.bool,
   s: PropTypes.bool,
   onPreviewImageClick: PropTypes.func,
-  warning: PropTypes.node
+  alert: PropTypes.node
 }
 
 export default UploadModelItem

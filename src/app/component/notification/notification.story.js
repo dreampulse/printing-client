@@ -12,7 +12,7 @@ const button = () => (
 storiesOf('Notification', module)
   .add('default', () => <Notification message="A success notification" />)
   .add('warning', () => <Notification message="A warning notification" type="warning" />)
-  .add('error', () => <Notification message="A warning notification" type="error" />)
+  .add('error', () => <Notification message="An error notification" type="error" />)
   .add('with button', () => (
     <Notification message="A warning notification" type="warning" button={button()} />
   ))

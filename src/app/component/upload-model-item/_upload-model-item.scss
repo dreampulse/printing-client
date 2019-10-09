@@ -35,8 +35,8 @@
     display: block;
     color: $color-text;
     font-weight: $font-weight-regular;
-    max-width: calc(100% - #{$icon-only-size + $space-s});
-    line-height: $icon-only-size;
+    overflow: hidden;
+    line-height: $font-size-base * $line-height-base;
   }
 
   &__titleLine {

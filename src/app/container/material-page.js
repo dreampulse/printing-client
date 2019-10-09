@@ -136,7 +136,7 @@ const MaterialPage = ({
             }
             selected={selectedModelConfigIds.includes(modelConfig.id)}
             onSelect={() => toggleId(modelConfig.id)}
-            warning={
+            alert={
               noQuotes ? (
                 <Tooltip content="This model has issues! We did not receive any price quotes for this model. Possible issues may be: A problem with the file format or the size of the model is ether too small or too big to print.">
                   <Button icon={warningIcon} iconOnly error />
@@ -245,7 +245,7 @@ const MaterialPage = ({
               classNames={['u-margin-top']}
               message={
                 numberOfModels === 1
-                  ? `Unfortunately, we weren't able to retrieve offers for the selected model. In order to receive prices you have to upload you model again, using a valid file format.`
+                  ? `Unfortunately, we weren't able to retrieve offers for the selected model. In order to receive prices you have to upload your model again using a valid file format.`
                   : `Unfortunately, we weren't able to retrieve offers for ${numberOfModels -
                       numberOfModelsWithQuotes} of your ${numberOfModels} selected models. Please ensure that your uploaded models are using a valid file format and that model dimensions are neither too small nor too large.`
               }
@@ -297,8 +297,7 @@ const mapDispatchToProps = {
   clearSelectedModelConfigs: modelAction.clearSelectedModelConfigs,
   deleteModelConfigs: modelAction.deleteModelConfigs,
   updateQuantities: modelAction.updateQuantities,
-  duplicateModelConfig: modelAction.duplicateModelConfig,
-  openModelWithoutQuote: modalAction.openModelWithoutQuoteModal
+  duplicateModelConfig: modelAction.duplicateModelConfig
 }
 
 export default compose(
