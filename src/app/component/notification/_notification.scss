@@ -80,4 +80,14 @@
       color: $color-text;
     }
   }
+
+  &--type-error {
+    .Notification__icon {
+      color: $color-error;
+    }
+
+    .Notification__message {
+      color: $color-text;
+    }
+  }
 }
