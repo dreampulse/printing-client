@@ -25,7 +25,8 @@ const Button = ({
   onClick = noop,
   href = undefined,
   target = undefined,
-  warning = false
+  warning = false,
+  error = false
 }) => {
   const finalIcon = selected ? selectedIcon : icon
 
@@ -34,7 +35,7 @@ const Button = ({
     {
       className: cn(
         'Button',
-        {minor, tiny, compact, text, block, selected, iconOnly, warning},
+        {minor, tiny, compact, text, block, selected, iconOnly, warning, error},
         classNames
       ),
       type: href ? undefined : type,
@@ -67,6 +68,7 @@ Button.propTypes = {
   selected: PropTypes.bool,
   iconOnly: PropTypes.bool,
   warning: PropTypes.bool,
+  error: PropTypes.bool,
   href: PropTypes.string,
   target: PropTypes.string
 }

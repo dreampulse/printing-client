@@ -161,4 +161,15 @@
       background-color: inherit;
     }
   }
+
+  &--error {
+    color: $color-error;
+
+    &:hover:not([disabled]),
+    &:focus:not([disabled]),
+    &:active:not([disabled])  {
+      color: $color-error-active;
+      background-color: inherit;
+    }
+  }
 }

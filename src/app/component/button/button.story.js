@@ -34,6 +34,9 @@ storiesOf('Button', module)
   .add('iconOnly & warning', () => (
     <Button icon={placeholderIcon} iconOnly warning onClick={action('onClick')} />
   ))
+  .add('iconOnly & error', () => (
+    <Button icon={placeholderIcon} iconOnly error onClick={action('onClick')} />
+  ))
   .add('href', () => (
     <Button href="https://google.com" label="Default Button" onClick={action('onClick')} />
   ))

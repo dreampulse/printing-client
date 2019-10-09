@@ -12,6 +12,7 @@ import debounce from 'lodash/debounce'
 import keyBy from 'lodash/keyBy'
 import defer from 'lodash/defer'
 import chunk from 'lodash/chunk'
+import uniq from 'lodash/uniq'
 
 import * as modalAction from '../action/modal'
 import * as quoteAction from '../action/quote'
@@ -955,10 +956,6 @@ export default compose(
           currency,
           refresh
         })
-      }
-
-      if (this.props.isPollingDone && !prevProps.isPollingDone) {
-        console.log('-- done')
       }
     },
     componentWillUnmount() {

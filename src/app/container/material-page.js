@@ -17,6 +17,7 @@ import deleteIcon from '../../asset/icon/delete.svg'
 import * as modelAction from '../action/model'
 import * as navigationAction from '../action/navigation'
 import * as modelViewerAction from '../action/model-viewer'
+import * as modalAction from '../action/modal'
 
 import config from '../../../config'
 import {formatDimensions} from '../lib/formatter'
@@ -47,8 +48,9 @@ import OfferLayout from '../component/offer-layout'
 import ConfigModelList from '../component/config-model-list'
 import Icon from '../component/icon'
 import Tooltip from '../component/tooltip'
+import Notification from '../component/notification'
 
-import errorIcon from '../../asset/icon/error.svg'
+import warningIcon from '../../asset/icon/warning.svg'
 
 const SCROLL_CONTAINER_ID = 'main-container'
 
@@ -70,7 +72,8 @@ const MaterialPage = ({
   unconfiguredModelConfigIds,
   configuredModelConfigIds,
   quotes,
-  isPollingDone
+  isPollingDone,
+  modelConfigs
 }) => {
   const breakpoints = useBreakpoints()
   const [sidebarOpen, setSidebarOpen] = useState()
@@ -80,14 +83,19 @@ const MaterialPage = ({
       .filter(([modelConfig]) => !processedModelConfigIds.includes(modelConfig.id))
       .map(([modelConfig, model]) => {
         let lowAmountOfVendors = false
+        let noQuotes = false
 
         if (isPollingDone) {
           const numberOfVendorsWithQuotes = uniq(
             quotes.filter(quote => quote.modelId === model.modelId).map(quote => quote.vendorId)
-          )
+          ).length
 
           if (numberOfVendorsWithQuotes < config.lowAmountOfVendorsThreshold) {
             lowAmountOfVendors = true
+          }
+
+          if (numberOfVendorsWithQuotes === 0) {
+            noQuotes = true
           }
         }
 
@@ -129,10 +137,16 @@ const MaterialPage = ({
             selected={selectedModelConfigIds.includes(modelConfig.id)}
             onSelect={() => toggleId(modelConfig.id)}
             warning={
-              lowAmountOfVendors && (
-                <Tooltip content="This model has issues! We received an unusual low amount of offers. Possible issues may be: A problem with the file format or the size of the model is ether too small or too big.">
-                  <Button icon={errorIcon} iconOnly warning />
+              noQuotes ? (
+                <Tooltip content="This model has issues! We did not receive any price quotes for this model. Possible issues may be: A problem with the file format or the size of the model is ether too small or too big to print.">
+                  <Button icon={warningIcon} iconOnly error />
                 </Tooltip>
+              ) : (
+                lowAmountOfVendors && (
+                  <Tooltip content="This model has issues! We received an unusual low amount of offers. Possible issues may be: A problem with the file format or the size of the model is ether too small or too big to print.">
+                    <Button icon={warningIcon} iconOnly warning />
+                  </Tooltip>
+                )
               )
             }
           />
@@ -176,6 +190,17 @@ const MaterialPage = ({
     </>
   )
 
+  const modelIds = modelConfigs
+    .filter(modelConfig => selectedModelConfigIds.includes(modelConfig.id))
+    .map(modelConfig => modelConfig.modelId)
+
+  const numberOfModels = modelIds.length
+  const numberOfModelsWithQuotes = modelIds
+    .map(modelId => quotes.filter(quote => quote.modelId === modelId).length)
+    .reduce((acc, numberOfQuotes) => (numberOfQuotes === 0 ? acc : acc + 1), 0)
+
+  const someModelsAreWithoutQuotes = numberOfModels > numberOfModelsWithQuotes && isPollingDone
+
   return (
     <ToolLayout
       isOpen={breakpoints.desktop || sidebarOpen}
@@ -203,6 +228,18 @@ const MaterialPage = ({
               goToUpload({selectModelConfigIds: selectedModelConfigIds})
             }}
           />
+          {someModelsAreWithoutQuotes && (
+            <Notification
+              classNames={['u-margin-top']}
+              message={
+                numberOfModels === 1
+                  ? `Unfortunately, we weren't able to retrieve offers for the selected model. In order to receive prices you have to upload you model again, using a valid file format.`
+                  : `Unfortunately, we weren't able to retrieve offers for ${numberOfModels -
+                      numberOfModelsWithQuotes} of your ${numberOfModels} selected models. Please ensure that your uploaded models are using a valid file format and that model dimensions are neither too small nor too large.`
+              }
+              type="error"
+            />
+          )}
         </Section>
         <MaterialPartial
           configIds={selectedModelConfigIds}
@@ -238,7 +275,8 @@ const mapDispatchToProps = {
   clearSelectedModelConfigs: modelAction.clearSelectedModelConfigs,
   deleteModelConfigs: modelAction.deleteModelConfigs,
   updateQuantities: modelAction.updateQuantities,
-  duplicateModelConfig: modelAction.duplicateModelConfig
+  duplicateModelConfig: modelAction.duplicateModelConfig,
+  openModelWithoutQuote: modalAction.openModelWithoutQuoteModal
 }
 
 export default compose(
@@ -292,7 +330,7 @@ export default compose(
         goToUpload()
       }
     },
-    componentDidUpdate() {
+    componentDidUpdate(_prevProps) {
       const {modelsWithConfig, goToUpload} = this.props
 
       if (modelsWithConfig.length === 0) {
