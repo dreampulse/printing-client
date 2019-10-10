@@ -35,6 +35,18 @@
     display: block;
     color: $color-text;
     font-weight: $font-weight-regular;
+    overflow: hidden;
+    line-height: $font-size-base * $line-height-base;
+  }
+
+  &__titleLine {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    & > * + * {
+      padding-left: $space-s;
+    }
   }
 
   &__subline {

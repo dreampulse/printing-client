@@ -19,11 +19,24 @@
     .ProviderImage__image {
       display: inline-block;
       vertical-align: middle;
-      height: 1em;
+      height: $font-size-s;
     }
+  }
+
+  &--minor {
+    opacity: 0.5;
   }
 
   &--link {
     cursor: pointer;
+  }
+
+  &--minor.ProviderImage--link {
+    transition: opacity 0.15s linear;
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+    }
   }
 }

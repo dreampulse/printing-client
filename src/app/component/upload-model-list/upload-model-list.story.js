@@ -32,7 +32,14 @@ storiesOf('UploadModelList', module)
     </UploadModelList>
   ))
   .add('single item', () => (
-    <UploadModelList>
+    <UploadModelList
+      header={
+        <>
+          <Link label="Some link left" />
+          <Link label="Some link right" />
+        </>
+      }
+    >
       <UploadModelItem
         id="item-1"
         imageSource="http://placehold.it/130x98"

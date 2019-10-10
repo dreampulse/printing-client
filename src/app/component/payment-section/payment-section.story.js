@@ -24,8 +24,8 @@ storiesOf('PaymentSection', module)
     <PaymentSection
       subtotal="$245.25"
       shippings={[
-        {label: 'shipping provider', price: '$5.00'},
-        {label: 'shipping provider', price: '$5.30'}
+        {label: 'shipping provider 1', price: '$5.00'},
+        {label: 'shipping provider 2', price: '$5.30'}
       ]}
       vat="$50.00"
       total="$345.00"

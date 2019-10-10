@@ -42,7 +42,7 @@ const uploadModelItemList3 = [[1, false], [3, false], [4, false], [5, false]].ma
 
 storiesOf('ConfigModelList', module)
   .add(
-    'with leaving items',
+    'with leaving items (no test)',
     withState({toggle: true}, store => (
       <div style={{marginLeft: 100, width: 600}}>
         <ConfigModelList onConfigurationChanged={action('onConfigurationChanged')}>
@@ -57,7 +57,7 @@ storiesOf('ConfigModelList', module)
     ))
   )
   .add(
-    'withCartLinkAnimation',
+    'with cart link animation (no test)',
     withState({toggle: true}, store => (
       <div style={{marginLeft: 100, width: 600}}>
         <ConfigModelList
@@ -75,7 +75,7 @@ storiesOf('ConfigModelList', module)
     ))
   )
   .add(
-    'with removing items',
+    'with removing items (no test)',
     withState({toggle: true}, store => (
       <div style={{marginLeft: 100, width: 600}}>
         <ConfigModelList onConfigurationChanged={action('onConfigurationChanged')}>

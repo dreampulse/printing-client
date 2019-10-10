@@ -4,11 +4,11 @@ import React from 'react'
 import propTypes from '../../prop-types'
 import cn from '../../lib/class-names'
 
-const ProviderImage = ({classNames, src, alt, inline = false, onClick = null}) =>
+const ProviderImage = ({classNames, src, alt, inline = false, minor = false, onClick = null}) =>
   React.createElement(
     onClick ? 'a' : 'div',
     {
-      className: cn('ProviderImage', {inline, link: !!onClick}, classNames),
+      className: cn('ProviderImage', {inline, minor, link: !!onClick}, classNames),
       onClick,
       href: onClick && '#'
     },
@@ -20,6 +20,7 @@ ProviderImage.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string,
   inline: PropTypes.bool,
+  minor: PropTypes.bool,
   onClick: PropTypes.func
 }
 

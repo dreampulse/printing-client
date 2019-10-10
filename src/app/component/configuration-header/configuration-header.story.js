@@ -6,20 +6,13 @@ import LocationField from '../location-field'
 import SelectField from '../select-field'
 import SelectMenu from '../select-menu'
 
-import HandleValue from '../../../../stories/util/handle-value'
 import {googleMapsApiKey, currencies} from '../../../../stories/util/data'
 
-storiesOf('ConfigurationHeader', module).add('default', () => (
+storiesOf('ConfigurationHeader', module).add('default (no test)', () => (
   <ConfigurationHeader
-    location={
-      <HandleValue>
-        <LocationField googleMapsApiKey={googleMapsApiKey} />
-      </HandleValue>
-    }
+    location={<LocationField googleMapsApiKey={googleMapsApiKey} />}
     currency={
-      <HandleValue initialValue={{value: 'USD', label: 'USD'}}>
-        <SelectField menu={<SelectMenu values={currencies} />} />
-      </HandleValue>
+      <SelectField value={{value: 'USD', label: 'USD'}} menu={<SelectMenu values={currencies} />} />
     }
     text="Some text"
   />

@@ -1,5 +1,15 @@
-import {configure} from '@storybook/react'
+import {configure, addParameters} from '@storybook/react'
+
 import '../src/sass/main.scss'
+
+addParameters({
+  options: {
+    hierarchySeparator: /\/|\./,
+    hierarchyRootSeparator: /\|/,
+    showPanel: true,
+    sortStoriesByKind: false
+  }
+})
 
 function loadStories() {
   // Add id to body to enable css utilities

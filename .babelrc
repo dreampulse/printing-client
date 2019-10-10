@@ -1,13 +1,13 @@
 {
   "presets": [
-    ["@babel/preset-env", {
-      "targets": {
-        "browsers": [
-          "last 2 versions",
-          "not IE <= 11"
-        ]
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions", "not IE <= 11"]
+        }
       }
-    }],
+    ],
     "@babel/preset-typescript",
     "@babel/preset-react"
   ],
@@ -19,10 +19,11 @@
   "sourceMaps": true,
   "env": {
     "coverage": {
-        "plugins": [
-          "istanbul"
-        ],
+      "plugins": ["istanbul"],
       "sourceMaps": "inline"
+    },
+    "test": {
+      "plugins": ["require-context-hook"]
     }
   }
 }

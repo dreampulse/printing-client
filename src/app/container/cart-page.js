@@ -312,6 +312,7 @@ const CartPage = ({
               provider={
                 <ProviderImage
                   inline
+                  minor
                   src={providerImages[quote.vendorId]}
                   onClick={event => {
                     event.preventDefault()
@@ -639,13 +640,11 @@ export default compose(
     payWithPaypal: props => async () => {
       const userId = props.user.userId
       const cartId = props.cart.cartId
-      const currency = props.cart.currency
       const utmParams = props.utmParams
 
       const {orderId, orderNumber} = await printingEngine.createOrder({
         userId,
         cartId,
-        currency,
         utmParams
       })
       const {paymentId, providerFields} = await printingEngine.createPaypalPayment({orderId})
@@ -660,12 +659,11 @@ export default compose(
     payWithStripe: props => async () => {
       const {utmParams, user, cart} = props
       const {userId} = user
-      const {cartId, currency} = cart
+      const {cartId} = cart
 
       const {orderId} = await printingEngine.createOrder({
         userId,
         cartId,
-        currency,
         utmParams
       })
 
@@ -676,14 +674,12 @@ export default compose(
     payWithInvoice: props => async () => {
       const userId = props.user.userId
       const cartId = props.cart.cartId
-      const currency = props.cart.currency
       const utmParams = props.utmParams
       const invoiceKey = props.urlParams.invoice_key
 
       const {orderId, orderNumber} = await printingEngine.createOrder({
         userId,
         cartId,
-        currency,
         utmParams
       })
       await printingEngine.createInvoicePayment({orderId, token: invoiceKey})

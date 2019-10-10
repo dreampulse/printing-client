@@ -64,9 +64,6 @@ export type FinishGroup = {
   summary: string
   featuredImage: string
   properties: {
-    printingServiceName: {
-      [vendorId: string]: string
-    }
     printingMethod: string
     printingMethodShort: string
     materialSpec: string

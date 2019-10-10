@@ -1,0 +1,14 @@
+{
+  "modulePaths": ["<rootDir>/../../src"],
+  "setupFilesAfterEnv": ["<rootDir>/setup.js"],
+  "moduleNameMapper": {
+    "^.+\\.scss$": "<rootDir>/mock/scss.js",
+    "^.+\\.md$": "<rootDir>/mock/md.js",
+    "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/mock/asset.js"
+  },
+  "transform": {
+    "^.+\\.svg$": "<rootDir>/mock/svg.js",
+    "^.+\\.jsx?$": "babel-jest",
+    "^.+\\.tsx?$": "babel-jest"
+  }
+}

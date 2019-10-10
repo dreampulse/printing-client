@@ -152,4 +152,26 @@
       border-color: $color-primary-active;
     }
   }
+
+  &--warning {
+    color: $color-warning;
+
+    &:hover:not([disabled]),
+    &:focus:not([disabled]),
+    &:active:not([disabled])  {
+      color: $color-warning-active;
+      background-color: inherit;
+    }
+  }
+
+  &--error {
+    color: $color-error;
+
+    &:hover:not([disabled]),
+    &:focus:not([disabled]),
+    &:active:not([disabled])  {
+      color: $color-error-active;
+      background-color: inherit;
+    }
+  }
 }

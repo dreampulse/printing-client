@@ -13,7 +13,11 @@ const Notification = ({classNames, message, type = 'default', button, children})
   <div className={cn('Notification', {[`type-${type}`]: type}, classNames)}>
     <div className="Notification__title">
       <div className="Notification__icon">
-        {type === 'warning' ? <Icon source={warningIcon} /> : <Icon source={checkIcon} />}
+        {type === 'warning' || type === 'error' ? (
+          <Icon source={warningIcon} />
+        ) : (
+          <Icon source={checkIcon} />
+        )}
       </div>
       <div className="Notification__message">{message}</div>
     </div>
@@ -27,7 +31,7 @@ const Notification = ({classNames, message, type = 'default', button, children})
 Notification.propTypes = {
   ...propTypes.component,
   message: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['default', 'warning']),
+  type: PropTypes.oneOf(['default', 'warning', 'error']),
   button: PropTypes.node,
   children: PropTypes.node
 }

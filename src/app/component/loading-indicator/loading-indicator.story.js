@@ -6,5 +6,4 @@ import LoadingIndicator from '.'
 
 storiesOf('LoadingIndicator', module)
   .add('default', () => <LoadingIndicator />)
-  .addDecorator(invert)
-  .add('invert', () => <LoadingIndicator invert />)
+  .add('invert', () => <LoadingIndicator invert />, {decorators: [invert]})

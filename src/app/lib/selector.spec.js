@@ -16,7 +16,8 @@ import {
   selectUsedShippingIdsAndFilter,
   hasOnlyValidModelConfigsWithQuote,
   isCartUpToDate,
-  isAppReady
+  isAppReady,
+  selectIsPollingDone
 } from './selector'
 
 describe('selectModelsOfModelConfigs()', () => {
@@ -698,12 +699,6 @@ describe('selectConfiguredModelInformation()', () => {
           'finish-group-1': {
             id: 'finish-group-1',
             name: 'finish-group-name',
-            properties: {
-              printingServiceName: {
-                'vendor-id-1': 'provider-info',
-                'vendor-id-2': 'provider-info-2'
-              }
-            },
             materialConfigs: [
               {
                 id: 'material-config-1',
@@ -716,12 +711,6 @@ describe('selectConfiguredModelInformation()', () => {
           'finish-group-2': {
             id: 'finish-group-2',
             name: 'finish-group-name',
-            properties: {
-              printingServiceName: {
-                'vendor-id-1': 'provider-info',
-                'vendor-id-2': 'provider-info-2'
-              }
-            },
             materialConfigs: [
               {
                 id: 'material-config-2',
@@ -734,12 +723,6 @@ describe('selectConfiguredModelInformation()', () => {
           'finish-group-3': {
             id: 'finish-group-3',
             name: 'finish-group-name',
-            properties: {
-              printingServiceName: {
-                'vendor-id-1': 'provider-info',
-                'vendor-id-2': 'provider-info-2'
-              }
-            },
             materialConfigs: [
               {
                 id: 'material-config-3',
@@ -841,7 +824,6 @@ describe('selectConfiguredModelInformation()', () => {
           vendorId: 'vendor-id-1'
         },
         finishGroupName: 'finish-group-name',
-        providerInfo: 'provider-info',
         materialConfigId: 'material-config-1',
         colorCode: 'color-code',
         color: 'color',
@@ -873,7 +855,6 @@ describe('selectConfiguredModelInformation()', () => {
           vendorId: 'vendor-id-2'
         },
         finishGroupName: 'finish-group-name',
-        providerInfo: 'provider-info-2',
         materialConfigId: 'material-config-1',
         colorCode: 'color-code',
         color: 'color',
@@ -918,6 +899,46 @@ describe('selectQuotePollingProgress()', () => {
       complete: 1,
       total: 3
     })
+  })
+})
+
+describe('selectIsPollingDone()', () => {
+  it('returns false if some services are not completed', () => {
+    const state = {
+      core: {
+        printingServiceComplete: {
+          'service-1': true,
+          'service-2': false,
+          'service-3': true
+        }
+      }
+    }
+
+    expect(selectIsPollingDone(state), 'to be false')
+  })
+
+  it('returns true if all services are completed', () => {
+    const state = {
+      core: {
+        printingServiceComplete: {
+          'service-1': true,
+          'service-2': true,
+          'service-3': true
+        }
+      }
+    }
+
+    expect(selectIsPollingDone(state), 'to be true')
+  })
+
+  it('returns false if polling has not even started', () => {
+    const state = {
+      core: {
+        printingServiceComplete: {}
+      }
+    }
+
+    expect(selectIsPollingDone(state), 'to be false')
   })
 })
 

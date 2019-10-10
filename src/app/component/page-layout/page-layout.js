@@ -21,7 +21,7 @@ const PageLayout = ({
 
 PageLayout.propTypes = {
   ...propTypes.component,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   footer: PropTypes.node,
   stickyFooter: PropTypes.bool,
   minorBackground: PropTypes.bool
