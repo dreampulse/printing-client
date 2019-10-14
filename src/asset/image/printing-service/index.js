@@ -1,7 +1,9 @@
 import autotivImage from './autotiv.png'
 import facfoxImage from './facfox.png'
 import harpImage from './harp.png'
+import hudsoncreativeImage from './hudsoncreative.png'
 import imaterialiseImage from './imaterialise.png'
+import incrementalImage from './incremental.png'
 import jawstecImage from './jawstec.png'
 import sculpteoImage from './sculpteo.png'
 import shapewaysImage from './shapeways.png'
@@ -15,7 +17,9 @@ export default {
   autotiv: autotivImage,
   facfox: facfoxImage,
   harp: harpImage,
+  hudsoncreative: hudsoncreativeImage,
   imaterialise: imaterialiseImage,
+  incrementalengineering: incrementalImage,
   jawstec: jawstecImage,
   sculpteo: sculpteoImage,
   shapeways: shapewaysImage,
