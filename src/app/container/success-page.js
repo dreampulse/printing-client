@@ -31,6 +31,7 @@ import orderReceived from '../../asset/icon/order-received.svg'
 
 const SuccessPage = ({orderNumber, orderId}) => {
   const breakpoints = useBreakpoints()
+  const trackOrderUrl = global.location.origin + '/order-status/' + orderId
 
   return (
     <PageLayout minorBackground footer={<FooterPartial />}>
@@ -45,13 +46,19 @@ const SuccessPage = ({orderNumber, orderId}) => {
           <Paragraph>
             You should receive an order confirmation email from us shortly. We will also let you
             know when we have received the tracking number for your print from the manufacturer.
-            {orderId && (
-              <span>
-                You can track the progress of the order over the next days{' '}
-                <Link href={global.location.origin + '/order-status/' + orderId} label="here" />.
-              </span>
-            )}
           </Paragraph>
+          {orderId && (
+            <Paragraph>
+              <>
+                <br />
+                <span>
+                  You can track the progress of your order here:
+                  <br />
+                  <Link href={trackOrderUrl} label={trackOrderUrl} />
+                </span>
+              </>
+            </Paragraph>
+          )}
         </Section>
         <Section classNames={['u-align-center']}>
           <OrderConfirmationList step={1}>
