@@ -458,8 +458,8 @@ const CartPage = ({
                   onClick={async () => {
                     try {
                       setPaymentInProgress(true)
-                      const {orderNumber, paymentId} = await payWithInvoice()
-                      await orderPaid({orderNumber, paymentId})
+                      const {orderNumber, orderId} = await payWithInvoice()
+                      await orderPaid({orderNumber, orderId})
                       onSuccess()
                     } catch (error) {
                       logging.captureException(error)
@@ -475,8 +475,8 @@ const CartPage = ({
                 disabled={!showCart || paymentInProgress}
                 onClick={async () => {
                   setPaymentInProgress(true)
-                  const {paymentToken, orderNumber, paymentId} = await payWithPaypal()
-                  orderPaid({orderNumber, paymentId})
+                  const {paymentToken, orderNumber, paymentId, orderId} = await payWithPaypal()
+                  orderPaid({orderNumber, paymentId, orderId})
                   return paymentToken
                 }}
                 onAuthorize={async data => {

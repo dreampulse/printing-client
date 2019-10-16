@@ -29,8 +29,9 @@ import orderStarted from '../../asset/icon/order-started.svg'
 import orderShipped from '../../asset/icon/order-shipped.svg'
 import orderReceived from '../../asset/icon/order-received.svg'
 
-const SuccessPage = ({orderNumber}) => {
+const SuccessPage = ({orderNumber, orderId}) => {
   const breakpoints = useBreakpoints()
+
   return (
     <PageLayout minorBackground footer={<FooterPartial />}>
       <Container s>
@@ -44,7 +45,12 @@ const SuccessPage = ({orderNumber}) => {
           <Paragraph>
             You should receive an order confirmation email from us shortly. We will also let you
             know when we have received the tracking number for your print from the manufacturer.
-            Your order will be produced by:
+            {orderId && (
+              <span>
+                You can track the progress of the order over the next days{' '}
+                <Link href={global.location.origin + '/order-status/' + orderId} label="here" />.
+              </span>
+            )}
           </Paragraph>
         </Section>
         <Section classNames={['u-align-center']}>
@@ -80,7 +86,10 @@ const SuccessPage = ({orderNumber}) => {
   )
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = state => ({
+  orderNumber: state.core.orderNumber,
+  orderId: state.core.orderId
+})
 
 const mapDispatchToProps = {
   reset: coreActions.reset
@@ -92,7 +101,16 @@ const enhance = compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withState('orderNumber', 'setOrderNumber', () => getUrlParams(global.location).orderNumber),
+  withState(
+    'orderNumber',
+    'setOrderNumber',
+    props => getUrlParams(global.location).orderNumber || props.orderNumber
+  ),
+  withState(
+    'orderId',
+    'setOrderId',
+    props => getUrlParams(global.location).orderId || props.orderId
+  ),
   lifecycle({
     componentDidMount() {
       this.props.reset()

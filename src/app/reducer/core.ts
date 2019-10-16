@@ -87,6 +87,7 @@ export type CoreState = {
   cart: Cart | null
   paymentId: PaymentId | null
   orderNumber: string | null
+  orderId: string | null
   initTriggered: boolean
 }
 
@@ -114,6 +115,7 @@ const initialState: CoreState = {
   cart: null,
   paymentId: null,
   orderNumber: null,
+  orderId: null,
   initTriggered: false
 }
 
@@ -147,8 +149,7 @@ const init = (
     },
 
     Cmd.run<Actions>(printingEngine.getMaterialGroups, {
-      successActionCreator: response =>
-        coreActions.initContinue(response.materialStructure),
+      successActionCreator: response => coreActions.initContinue(response.materialStructure),
       failActionCreator: error => {
         if (error instanceof HttpResponseUnexpectedStatusError) {
           return modalActions.openServiceUnavailable()
@@ -181,10 +182,7 @@ const fatalError = (
   )
 }
 
-const initContinue = (
-  state: CoreState,
-  action: coreActions.InitContinueAction
-): CoreReducer => {
+const initContinue = (state: CoreState, action: coreActions.InitContinueAction): CoreReducer => {
   const userFromLocalStorage = localStorage.getItem<User>(config.localStorageAddressKey)
 
   return loop(
@@ -840,10 +838,11 @@ const cartReceived = (
 
 const paid = (
   state: CoreState,
-  {payload: {paymentId, orderNumber}}: orderActions.PaidAction
+  {payload: {paymentId, orderNumber, orderId}}: orderActions.PaidAction
 ): CoreReducer => ({
   ...state,
   paymentId,
+  orderId,
   orderNumber
 })
 
