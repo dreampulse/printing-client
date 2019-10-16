@@ -144,6 +144,18 @@ export default {
       name: 'ZVerse',
       description:
         'Zverse is an American manufacturer, specialized in Carbon specific resin materials. Through Zverse, all of Carbon’s materials are available at very competitive prices.'
+    },
+    {
+      vendorId: 'hudsoncreative',
+      name: 'Hudson Creative Group',
+      description:
+        'Hudson Creative Group is located in Fort Smith, Arkansas and offers professional printing services to customers of the entire spectrum, from consumers to industry professionals.'
+    },
+    {
+      vendorId: 'incrementalengineering',
+      name: 'Incremental Engineering',
+      description:
+        'Incremental Engineering Ltd is a UK based supplier of Additive Manufacturing and Industrial 3D printing services. Specialising in printing end use production parts using HP MJF. All print models are automatically checked then manually loaded and processed to ensure the best possible outcome of quality parts that you are proud to call your product.'
     }
   ],
   euCountries: [
